@@ -1,5 +1,13 @@
+<<<<<<< HEAD
 Manifest-Version: 1.0
 Built-By: usn20
 Build-Jdk: 1.8.0_131
 Created-By: Maven Integration for Eclipse
 
+=======
+Manifest-Version: 1.0
+Built-By: Ariel
+Build-Jdk: 1.8.0_121
+Created-By: Maven Integration for Eclipse
+
+>>>>>>> c5d3d7b6e625fd715113a2e4924928f717594358
