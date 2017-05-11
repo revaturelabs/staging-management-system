@@ -2,8 +2,6 @@
  * 
  */
 
-<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular.min.js"></script>
-
 	var app = angular.module('formSubmit', []);
 	
 	app.controller('addAssociateController',[ '$scope', '$http', function($scope, $http) {
