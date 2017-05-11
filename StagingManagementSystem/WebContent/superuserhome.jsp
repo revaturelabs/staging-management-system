@@ -17,7 +17,7 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
-<script src = "/JavaScripts/AddAssociateControllerScript.js"></script>
+<script src = "/StagingManagementSystem/JavaScripts/AddAssociateControllerScript.js"></script>
 <title>Insert title here</title>
 </head>
 <body>
@@ -73,25 +73,24 @@
 				<h4 class="modal-title">Register Employee</h4>
 			</div>
 			<div class="modal-body">
-				
-					<form data-ng-submit="submit()"
-						data-ng-controller="addAssociateController">
+				<div ng-app = "formSubmit" ng-controller = "AddAssociateController">
+					<form data-ng-submit="submit()">
 						<h3>{{headerText}}</h3>
 						<p>
-							Name: <input type="text" data-ng-model="name">
+							Name: <input type="text" name = "name" data-ng-model="fields.name">
 						</p>
 						<p>
-							Location: <input type="text" data-ng-model="location">
+							Location: <input type="text" name = "location" data-ng-model="fields.location">
 						</p>
 						<p>
-							Phone: <input type="text" data-ng-model="phone">
+							Phone: <input type="text" name = "phone" data-ng-model="fields.phone">
 						</p>
 						<input type="submit" id="submit" value="Submit" /><br>
 
 						<h4>You submitted below data through post:</h4>
 						<pre>Form data ={{list}}</pre>
 					</form>
-				
+				</div>
 				
 			</div>
 			<div class="modal-footer">
