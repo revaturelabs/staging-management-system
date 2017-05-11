@@ -2,12 +2,19 @@ package com.revature.controllers;
 
 import javax.ws.rs.FormParam;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.revature.classes.DAOService;
+
 @RestController
 public class LoginController {
+	
+	ApplicationContext ctx = new ClassPathXmlApplicationContext("appContext.xml");
+	DAOService daoserv = (DAOService) ctx.getBean("DAOImpl");
 
 	@RequestMapping(value="/login", method=RequestMethod.POST)
 	public String login(@FormParam("username") String username, @FormParam("password") String password)
@@ -18,8 +25,7 @@ public class LoginController {
 		// else, send the user to the main page
 		try 
 		{
-			// DAOImpl dao = new DAOImpl();
-			// dao.login(username, password);
+			// daoserv.login(username, password);
 			return "Welcome, " + username;
 		} catch(Exception e)
 		{
