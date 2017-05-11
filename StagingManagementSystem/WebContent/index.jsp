@@ -16,7 +16,7 @@
 <body>
 
 	<div class="wrapper">
-		<form action="login" class="form-signin">
+		<form action="login" class="form-signin" method = "post">
 			<h2 class="form-signin-heading">Please login</h2>
 			<input type="text" class="form-control" name="username"
 				placeholder="Username" required="" autofocus="" /> <input
