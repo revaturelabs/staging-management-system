@@ -1,6 +1,7 @@
 package com.revature.controllers;
 
 import java.io.IOException;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.FormParam;
@@ -52,9 +53,22 @@ public class ManipulateDataController {
 		return "bless up";
 	}
 	
-	public void addBatch()
+	@RequestMapping(value="/addBatch", method=RequestMethod.POST)
+	public void addBatch(HttpServletRequest req)
 	{
+		// get the form input
+		String name = req.getParameter("trainingname");
+		String location = req.getParameter("location");
+		String trainer = req.getParameter("trainer");
+		String startDate = req.getParameter("startdate");
+		String endDate = req.getParameter("enddate");
+		String type = req.getParameter("batchtype");
 		
+		// initialize a batch object
+		// Batch batch = new Batch(name, location, trainer, startDate, endDate, type);
+		
+		// call the addBatch method for the database
+		// daoserv.addBatch(batch);
 	}
 	
 	public void addClient()
