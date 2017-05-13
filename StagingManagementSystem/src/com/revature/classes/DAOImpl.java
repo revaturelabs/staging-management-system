@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
@@ -101,19 +100,60 @@ public class DAOImpl implements DAOService {
 	@Override
 	public ArrayList<AssociateInfo> GetAllAssociatesDB() {
 		
-		return null;
+		ArrayList<AssociateInfo> assoList = new ArrayList<AssociateInfo>();
+		
+		Session session = sf.getCurrentSession();
+		
+		Criteria cr = session.createCriteria(AssociateInfo.class);
+		List<AssociateInfo> list = cr.list();
+		
+		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+			AssociateInfo asso = (AssociateInfo) iterator.next();
+			// System.out.println(asso);
+			assoList.add(asso);
+		}
+		return assoList;
+		
 	}
 
 
 	@Override
 	public ArrayList<BatchInfo> GetAllBatchesDB() {
-		return null;
+		
+		ArrayList<BatchInfo> batchList = new ArrayList<BatchInfo>();
+		
+		Session session = sf.getCurrentSession();
+		
+		Criteria cr = session.createCriteria(BatchInfo.class);
+		List<BatchInfo> list = cr.list();
+		
+		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+			BatchInfo batch = (BatchInfo) iterator.next();
+			// System.out.println(asso);
+			batchList.add(batch);
+		}
+		return batchList;
+		
 	}
 
 
 	@Override
 	public ArrayList<ClientInfo> GetAllClientsDB() {
-		return null;
+		
+		ArrayList<ClientInfo> clientList = new ArrayList<ClientInfo>();
+		
+		Session session = sf.getCurrentSession();
+		
+		Criteria cr = session.createCriteria(ClientInfo.class);
+		List<ClientInfo> list = cr.list();
+		
+		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+			ClientInfo client = (ClientInfo) iterator.next();
+			// System.out.println(asso);
+			clientList.add(client);
+		}
+		return clientList;
+		
 	}
 
 }
