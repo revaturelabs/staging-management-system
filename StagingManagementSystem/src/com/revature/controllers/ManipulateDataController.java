@@ -1,7 +1,9 @@
 package com.revature.controllers;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.FormParam;
@@ -15,47 +17,48 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.classes.DAOService;
-import com.revature.classes.Test;
 
 @RestController
 public class ManipulateDataController {
-	
+
 	ApplicationContext ctx = new ClassPathXmlApplicationContext("springmvc-servlet.xml");
 	DAOService daoserv = (DAOService) ctx.getBean("DAOImpl");
 
-	@RequestMapping(value="/login", method=RequestMethod.POST)	
-	public String login(@FormParam("username") String username, @FormParam("password") String password)
-	{
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	public String login(@FormParam("username") String username, @FormParam("password") String password) {
 		// try to get a single result from the database
 		// if a single result cannot be returned from the database
 		// return the user to the login page and display a notification alert
 		// else, send the user to the main page
-		try 
-		{
+		try {
 			// daoserv.login(username, password);
 			return "Welcome, " + username;
-		} catch(Exception e)
-		{
+		} catch (Exception e) {
 			System.out.println("Error: username or password not found.");
 			String msg = "Username or Password not found";
 			return msg;
-		}	
+		}
 	}
-	
-	@RequestMapping(value = "/AddAssociateForm", method = RequestMethod.POST)
-	public @ResponseBody String PostService(@RequestBody Test myfuckingtest, HttpServletRequest request) throws IOException 
+
+	@RequestMapping(value = "/AddAssociate", method = RequestMethod.POST)
+	public String PostService(HttpServletRequest request) throws IOException 
 	{
-		System.out.println(request.getParameter("name"));
-		System.out.println(request.getParameter("location"));
-		System.out.println(request.getParameter("phone"));
-		System.out.println(myfuckingtest.toString());
+		// get form data
+		String name = request.getParameter("name");
+		String status = request.getParameter("associatestatus");
+
 		
+		// initialize an Associate object 
+		// Associate associate = new Associate(name, status);
+				
+		// call the addBatch method for the database 
+		// daoserv.addAssociate(associate); 
+
 		return "bless up";
 	}
-	
-	@RequestMapping(value="/addBatch", method=RequestMethod.POST)
-	public void addBatch(HttpServletRequest req)
-	{
+
+	@RequestMapping(value = "/addBatch", method = RequestMethod.POST)
+	public void addBatch(HttpServletRequest req) {
 		// get the form input
 		String name = req.getParameter("trainingname");
 		String location = req.getParameter("location");
@@ -63,16 +66,26 @@ public class ManipulateDataController {
 		String startDate = req.getParameter("startdate");
 		String endDate = req.getParameter("enddate");
 		String type = req.getParameter("batchtype");
-		
-		// initialize a batch object
+	
+		// initialize a batch object 
 		// Batch batch = new Batch(name, location, trainer, startDate, endDate, type);
 		
-		// call the addBatch method for the database
-		// daoserv.addBatch(batch);
-	}
+		// call the addBatch method for the database 
+		// daoserv.addBatch(batch); 
+		}
+
 	
-	public void addClient()
+	@RequestMapping(value = "/AddClient", method = RequestMethod.POST)
+	public void addClient(HttpServletRequest request) 
 	{
+		// get the form input
+		String name = request.getParameter("clientname");
+		String type = request.getParameter("location");
 		
+		// initialize a client object 
+		// Client client = new Client(name, location);
+				
+		// call the addBatch method for the database 
+		// daoserv.addClient(client); 
 	}
 }
