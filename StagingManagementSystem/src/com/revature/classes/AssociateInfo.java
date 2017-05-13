@@ -33,6 +33,13 @@ public class AssociateInfo {
 	 */	
 	public AssociateInfo(){}
 	
+	public AssociateInfo(String associateName, String status, Set<ClientInfo> clients)
+	{
+		AssociateName = associateName;
+		Status = status;
+		this.clients = clients;
+	}
+	
 	public AssociateInfo(String associateName, String status, BatchInfo batch, Set<ClientInfo> clients)
 	{
 		AssociateName = associateName;
