@@ -1,16 +1,12 @@
 package com.revature.controllers;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.FormParam;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -41,7 +37,7 @@ public class ManipulateDataController {
 	}
 
 	@RequestMapping(value = "/AddAssociate", method = RequestMethod.POST)
-	public String PostService(HttpServletRequest request) throws IOException 
+	public @ResponseBody String PostService(HttpServletRequest request) throws IOException 
 	{
 		// get form data
 		String name = request.getParameter("name");
@@ -58,7 +54,7 @@ public class ManipulateDataController {
 	}
 
 	@RequestMapping(value = "/addBatch", method = RequestMethod.POST)
-	public void addBatch(HttpServletRequest req) {
+	public @ResponseBody void addBatch(HttpServletRequest req) {
 		// get the form input
 		String name = req.getParameter("trainingname");
 		String location = req.getParameter("location");
@@ -76,7 +72,7 @@ public class ManipulateDataController {
 
 	
 	@RequestMapping(value = "/AddClient", method = RequestMethod.POST)
-	public void addClient(HttpServletRequest request) 
+	public @ResponseBody void addClient(HttpServletRequest request) 
 	{
 		// get the form input
 		String name = request.getParameter("clientname");
