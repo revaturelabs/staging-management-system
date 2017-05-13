@@ -17,8 +17,14 @@ import com.revature.classes.DAOService;
 @RestController
 public class ManipulateDataController {
 
+<<<<<<< HEAD
 	static ApplicationContext ctx = new ClassPathXmlApplicationContext("springmvc-servlet.xml");
 	static DAOService daoserv = (DAOService) ctx.getBean("DAOImpl");
+=======
+	static ApplicationContext ctx = new ClassPathXmlApplicationContext("appContext.xml");
+	static DAOService daoserv = (DAOService) ctx.getBean("DAOImpl");
+
+>>>>>>> cbe8b3ddcec37c380ba94b0d537a105ff5a7c485
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String login(@FormParam("username") String username, @FormParam("password") String password) {
@@ -36,12 +42,14 @@ public class ManipulateDataController {
 		}
 	}
 
-	@RequestMapping(value = "/AddAssociate", method = RequestMethod.POST)
+	@RequestMapping(value = "/addAssociate", method = RequestMethod.POST)
 	public @ResponseBody String PostService(HttpServletRequest request) throws IOException 
 	{
 		// get form data
 		String name = request.getParameter("name");
 		String status = request.getParameter("associatestatus");
+		
+		System.out.println(name + " :: " + status);
 
 		
 		// initialize an Associate object 
@@ -62,6 +70,8 @@ public class ManipulateDataController {
 		String startDate = req.getParameter("startdate");
 		String endDate = req.getParameter("enddate");
 		String type = req.getParameter("batchtype");
+		
+		
 	
 		// initialize a batch object 
 		// Batch batch = new Batch(name, location, trainer, startDate, endDate, type);
@@ -71,7 +81,7 @@ public class ManipulateDataController {
 		}
 
 	
-	@RequestMapping(value = "/AddClient", method = RequestMethod.POST)
+	@RequestMapping(value = "/addClient", method = RequestMethod.POST)
 	public @ResponseBody void addClient(HttpServletRequest request) 
 	{
 		// get the form input
