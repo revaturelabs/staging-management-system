@@ -17,8 +17,8 @@ import com.revature.classes.DAOService;
 @RestController
 public class ManipulateDataController {
 
-	ApplicationContext ctx = new ClassPathXmlApplicationContext("springmvc-servlet.xml");
-	DAOService daoserv = (DAOService) ctx.getBean("DAOImpl");
+	static ApplicationContext ctx = new ClassPathXmlApplicationContext("springmvc-servlet.xml");
+	static DAOService daoserv = (DAOService) ctx.getBean("DAOImpl");
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String login(@FormParam("username") String username, @FormParam("password") String password) {
