@@ -31,6 +31,23 @@ public class AssociateInfo {
 	/*
 	 * Begin Constructor Methods
 	 */	
+	public AssociateInfo(){}
+	
+	public AssociateInfo(String associateName, String status, Set<ClientInfo> clients)
+	{
+		AssociateName = associateName;
+		Status = status;
+		this.clients = clients;
+	}
+	
+	public AssociateInfo(String associateName, String status, BatchInfo batch, Set<ClientInfo> clients)
+	{
+		AssociateName = associateName;
+		Status = status;
+		this.batch = batch;
+		this.clients = clients;
+	}
+	
 	public AssociateInfo(long associateID, String associateName, String status, BatchInfo batch,
 			Set<ClientInfo> clients) {
 		super();
@@ -79,9 +96,6 @@ public class AssociateInfo {
 
 	public void setClients(Set<ClientInfo> clients) {
 		this.clients = clients;
-	}
-
-	public AssociateInfo() {
 	}
 
 	public long getAssociateID() {
