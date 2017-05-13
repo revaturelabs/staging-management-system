@@ -24,8 +24,6 @@
 		<property name="suffix" value=".jsp" />
 	</bean>
 
-<<<<<<< HEAD
-
 	<!-- BasicData Source Bean Definition -->
 
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
@@ -72,6 +70,4 @@
 	</bean>
 
 	<tx:annotation-driven />
-=======
->>>>>>> branch 'master' of https://bbruesch@gitlab.com/ankitgarg/StagingManagementSystem.git
 </beans>
