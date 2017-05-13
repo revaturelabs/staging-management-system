@@ -30,6 +30,11 @@ public class ClientInfo {
 	 */
 	public ClientInfo() {
 	}
+	
+	public ClientInfo(String name, String location){
+		Name = name;
+		Location = location;
+	}
 
 	public ClientInfo(long clientID, String name, String location) {
 		super();
