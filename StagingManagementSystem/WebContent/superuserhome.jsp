@@ -73,7 +73,7 @@ src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></scr
 	function myfunc(){
 		myfunc.preventDefault();
 		
-		var app = angular.module('sample', ["ngRoute"]);
+		var app = angular.module('sample', []);
 		app.controller('sampleController', function($scope, $http)
 		{
 			$scope.submit = function()
