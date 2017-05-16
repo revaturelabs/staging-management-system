@@ -61,6 +61,32 @@
 
 		</div>
 	</nav>
+	
+	
+	
+	<!-- Display the sample data read from get -->
+	<script>
+		var app = angular.module('sample', []);
+		app.controller('sampleController', function($scope, $http)
+		{
+			$scope.submit = function()
+			{
+				$http
+				({
+					method: 'POST', url : '/getTableData'
+				}).then(function(response)
+					{
+						$scope.sampledata = response.data
+					});
+			}
+		});
+	</script>
+		
+	<div ng-app="sample" ng-controller = "sampleController" id = "sample" align = "center" ng-bind="">{{sampledata}}
+	<form ng-submit = submit()>
+		<input type="submit"></input>
+	 </form> 
+	</div>
 </body>
 </html>
 

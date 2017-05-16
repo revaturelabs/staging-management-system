@@ -1,10 +1,6 @@
 package com.revature.classes;
 
-<<<<<<< HEAD
-public class DAOImpl implements DAOService
-{
-	
-=======
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -161,5 +157,5 @@ public class DAOImpl implements DAOService {
 		
 	}
 
->>>>>>> 8718bb0c86a1176298a9096716bfb06eb0377d66
+
 }

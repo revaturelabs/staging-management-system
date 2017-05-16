@@ -20,41 +20,17 @@ import com.revature.classes.DAOService;
 
 @RestController
 public class ManipulateDataController {
-
-	ApplicationContext ctx = new ClassPathXmlApplicationContext("appContext.xml");
-	DAOService daoserv = (DAOService) ctx.getBean("DAOImpl");
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-=======
-	@RequestMapping(value="/login", method=RequestMethod.POST)	
-	public String login(@FormParam("username") String username, @FormParam("password") String password)
-	{
-		// try to get a single result from the database
-		// if a single result cannot be returned from the database
-		// return the user to the login page and display a notification alert
-		// else, send the user to the main page
-		try 
-		{
-			// daoserv.login(username, password);
-			return "Welcome, " + username;
-		} catch(Exception e)
-		{
-			System.out.println("Error: username or password not found.");
-			String msg = "Username or Password not found";
-			return msg;
-		}	
-	}
-}
-=======
->>>>>>> 590f6f687330de9846548501675c374918b3d020
+ 
 	static ApplicationContext ctx = new ClassPathXmlApplicationContext("appContext.xml");
 	static DAOService daoserv = (DAOService) ctx.getBean("DAOImpl");
 
+	@RequestMapping(value = "/getTableData", method = RequestMethod.POST)
+	public String getTableData()
+	{
+		return "holy shit this actually fucking worked???";
+	}
+	
 
-=======
->>>>>>> 8718bb0c86a1176298a9096716bfb06eb0377d66
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String login(@FormParam("username") String username, @FormParam("password") String password) {
 		// try to get a single result from the database
@@ -71,8 +47,9 @@ public class ManipulateDataController {
 		}
 	}
 
-	@RequestMapping(value = "/addAssociate", method = RequestMethod.POST)
-	public @ResponseBody String PostService(HttpServletRequest request) throws IOException {
+	@RequestMapping(value = "/addAssociate")
+	@ResponseBody
+	public  String PostService(HttpServletRequest request) throws IOException {
 		// get form data
 		String name = request.getParameter("name");
 		String status = request.getParameter("associatestatus");
