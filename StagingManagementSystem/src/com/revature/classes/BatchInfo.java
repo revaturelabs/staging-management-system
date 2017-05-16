@@ -65,8 +65,11 @@ public class BatchInfo {
 	@OneToMany(cascade = (CascadeType.ALL))
 	// Link at TrainingName with AssociateInfo Table
 	@JoinColumn(name = "TrainingName")
-	public Set<AssociateInfo> getAssociates() 
-	{
+
+	private Set<AssociateInfo> associates;
+
+	public Set<AssociateInfo> getAssociates() {
+
 		return associates;
 	}
 
@@ -75,7 +78,6 @@ public class BatchInfo {
 		this.associates = associates;
 	}
 
-	private Set<AssociateInfo> associates;
 
 	/*
 	 * End One to Many Relationship

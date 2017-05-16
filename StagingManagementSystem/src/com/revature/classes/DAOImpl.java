@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 @EnableCaching
 public class DAOImpl implements DAOService {
 
-	private SessionFactory sf;
+	SessionFactory sf;
 
 	public void setSf(SessionFactory sf) {
 		this.sf = sf;

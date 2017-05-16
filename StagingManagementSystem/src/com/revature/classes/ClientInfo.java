@@ -23,7 +23,9 @@ public class ClientInfo {
 	@Column(length = 150, nullable = false)
 	private String Location;
 
-	private AssociateInfo associate;
+/*	@ManyToOne
+	@JoinColumn(name = "ClientID", referencedColumnName = "ClientID", insertable = true, updatable = false)
+	private AssociateInfo associate; */
 
 	/*
 	 * Constructor Methods
@@ -79,14 +81,13 @@ public class ClientInfo {
 	 * M2M Relationship mapped by AssociateInfo Line 51: ` private
 	 * Set<ClientInfo> clients; `
 	 */
-	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "clients")
-	public AssociateInfo getAssociate() {
+	/*public AssociateInfo getAssociate() {
 		return associate;
 	}
 
 	public void setAssociate(AssociateInfo associate) {
 		this.associate = associate;
-	}
+	} */
 	/*
 	 * End of M2M Relationship for AssociateInfo::ClientInfo End of
 	 * Getter/Setter Methods

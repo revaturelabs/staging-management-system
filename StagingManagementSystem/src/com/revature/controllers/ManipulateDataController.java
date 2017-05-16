@@ -1,6 +1,8 @@
 package com.revature.controllers;
 
 import javax.ws.rs.FormParam;
+import javax.ws.rs.QueryParam;
+
 import java.io.IOException;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
@@ -66,31 +68,30 @@ public class ManipulateDataController {
 	}
 
 	@RequestMapping(value = "/addBatch", method = RequestMethod.POST)
-	public @ResponseBody void addBatch(HttpServletRequest req) {
+	public void addBatch(HttpServletRequest req) {
 		try {
-			// set date format
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-			// get the form input
 			String name = req.getParameter("trainingname");
 			String location = req.getParameter("location");
 			String trainer = req.getParameter("trainer");
 			String sd = req.getParameter("startdate");
 			String ed = req.getParameter("enddate");
-
-			Date startDate = (Date) sdf.parse(sd);
-			Date endDate = (Date) sdf.parse(sd);
-
 			String type = req.getParameter("batchtype");
+			
+			java.sql.Date startdate = java.sql.Date.valueOf(sd);
+			java.sql.Date enddate = java.sql.Date.valueOf(ed);
 
+			
 			// initialize a batch object
-			BatchInfo batch = new BatchInfo(name, location, trainer, startDate, endDate, type);
+			BatchInfo batch = new BatchInfo(name, location, trainer, startdate, enddate, type);
 			System.out.println(batch.toString());
+			
 			// call the addBatch method for the database
-			// daoserv.AddBatch(batch);
+			daoserv.AddBatch(batch);
+			
+			
 
 		} catch (Exception e) {
-
+			e.printStackTrace();
 		}
 
 	}

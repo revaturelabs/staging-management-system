@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -61,6 +62,7 @@
 
 		</div>
 	</nav>
+
 	
 	
 	
@@ -87,6 +89,89 @@
 		<input type="submit"></input>
 	 </form> 
 	</div>
+
+<script>
+$(document).on("click", "#addBatch", function() {
+
+	$("#addBatchForm").unbind('submit').bind('submit', function(e) {
+		e.preventDefault();
+
+		$.ajax({
+			type : 'POST',
+			url : '/StagingManagementSystem/addBatch',
+			data : $(this).serialize(),
+			success : function(data) {
+				console.log("SUCCESS: ", data);
+			    $('#addBatch').modal('hide');
+
+			},
+			error : function(e) {
+				console.log("ERROR: ", e);
+				display(e);
+			},
+			done : function(e) {
+				console.log("DONE");
+			}
+		});
+	});
+});
+
+
+$(document).on("click", "#addAssociate", function() {
+
+	$("#addAssociateForm").unbind('submit').bind('submit', function(e) {
+		e.preventDefault();
+
+		$.ajax({
+			type : 'POST',
+			url : '/StagingManagementSystem/addAssociate',
+			data : $(this).serialize(),
+			success : function(data) {
+				console.log("SUCCESS: ", data);
+			    $('#addAssociate').modal('hide');
+
+			},
+			error : function(e) {
+				console.log("ERROR: ", e);
+				display(e);
+			},
+			done : function(e) {
+				console.log("DONE");
+			}
+		});
+	});
+});
+
+
+$(document).on("click", "#addClient", function() {
+
+	$("#addClientForm").unbind('submit').bind('submit', function(e) {
+		e.preventDefault();
+
+		$.ajax({
+			type : 'POST',
+			url : '/StagingManagementSystem/addClient',
+			data : $(this).serialize(),
+			success : function(data) {
+				console.log("SUCCESS: ", data);
+			    $('#addClient').modal('hide');
+
+			},
+			error : function(e) {
+				console.log("ERROR: ", e);
+				display(e);
+			},
+			done : function(e) {
+				console.log("DONE");
+			}
+		});
+	});
+});
+
+
+
+</script>
+
 </body>
 </html>
 
@@ -100,20 +185,21 @@
 				<h4 class="modal-title">Add Associate</h4>
 			</div>
 			<div class="modal-body">
-				<form id="addAssociate" action="addAssociate" method="post">
+				<form id="addAssociateForm">
 					<div class="form-group">
 						<label for="name">Full Name:</label> <input type="text"
 							class="form-control" id="name" name="name" required>
 					</div>
 					<div class="form-group">
-						<label for="associatestatus">Associate Status:</label> 
-						<select class="form-control" id="associatestatus" name="associatestatus">
+						<label for="associatestatus">Associate Status:</label> <select
+							class="form-control" id="associatestatus" name="associatestatus">
 							<option>Available</option>
 							<option>Mapped</option>
 							<option>Confirmed</option>
 						</select>
 					</div>
-					<button type="submit" id="addAssociate" class="btn btn-default">Register Associate</button>
+					<button type="submit" id="addAssociate" class="btn btn-default">Register
+						Associate</button>
 					<button type="reset" class="btn btn-default">Clear Form</button>
 				</form>
 			</div>
@@ -135,7 +221,7 @@
 				<h4 class="modal-title">Add Batch</h4>
 			</div>
 			<div class="modal-body">
-				<form id="addBatch" action="addBatch" method="post">
+				<form id="addBatchForm">
 					<div class="form-group">
 						<label for="trainingname">Training Name: </label> <input
 							type="text" class="form-control" id="trainingname"
@@ -151,23 +237,25 @@
 					</div>
 					<div class="form-group">
 						<label for="startdate">Start Date:</label> <input type="date"
-							class="form-control" data-date-format="mm-dd-yyyy" id="startdate" name="startdate" required>
+							class="form-control" data-date-format="mm-dd-yyyy" id="startdate"
+							name="startdate" required>
 					</div>
 					<div class="form-group">
 						<label for="enddate">End Date:</label> <input type="date"
-							class="form-control" data-date-format="mm-dd-yyyy" id="enddate" name="enddate" required>
+							class="form-control" data-date-format="mm-dd-yyyy" id="enddate"
+							name="enddate" required>
 					</div>
 					<div class="form-group">
-						<label for="batchtype">Batch Type:</label> 
-						<select class="form-control" id="batchtype" name="batchtype">
-							<option>Java</option>
-							<option>.NET</option>
-							<option>JTA</option>
+						<label for="batchtype">Batch Type:</label> <select
+							class="form-control" id="batchtype" name="batchtype">
+							<option value="java">Java</option>
+							<option value="net">.NET</option>
+							<option value="jta">JTA</option>
 						</select>
 					</div>
-						<button type="submit" id="addBatch" class="btn btn-default">Create
-							Batch</button>
-						<button type="reset" class="btn btn-default">Clear Form</button>
+					<button type="submit" id="addBatch" class="btn btn-default">Create
+						Batch</button>
+					<button type="reset" class="btn btn-default">Clear Form</button>
 				</form>
 			</div>
 			<div class="modal-footer">
@@ -188,19 +276,18 @@
 				<h4 class="modal-title">Add Client</h4>
 			</div>
 			<div class="modal-body">
-				<form id="addClient" action="addClient" method="post">
+				<form id="addClientForm">
 					<div class="form-group">
-						<label for="clientname">Client Name: </label> <input
-							type="text" class="form-control" id="clientname"
-							name="clientname" required>
+						<label for="clientname">Client Name: </label> <input type="text"
+							class="form-control" id="clientname" name="clientname" required>
 					</div>
 					<div class="form-group">
 						<label for="location">Location: </label> <input type="text"
 							class="form-control" id="location" name="location" required>
 					</div>
-						<button type="submit" id="addClient" class="btn btn-default">Create
-							Batch</button>
-						<button type="reset" class="btn btn-default">Clear Form</button>
+					<button type="submit" id="addClient" class="btn btn-default">Create
+						Batch</button>
+					<button type="reset" class="btn btn-default">Clear Form</button>
 				</form>
 			</div>
 			<div class="modal-footer">
