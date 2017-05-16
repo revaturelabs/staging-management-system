@@ -63,7 +63,6 @@ public class AssociateInfo {
 	 */
 	// Name to refer to on ClientInfo on line 84: `@ManyToMany(fetch =
 	// FetchType.LAZY, mappedBy = "clients")`
-	private Set<ClientInfo> clients;
 
 	// Assign Many to Many
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -72,7 +71,8 @@ public class AssociateInfo {
 	@JoinTable(name = "Associate_Clients", joinColumns = {
 			@JoinColumn(name = "AssociateID", nullable = false, updatable = false) }, inverseJoinColumns = {
 					@JoinColumn(name = "ClientID", nullable = false, updatable = false) })
-	/*
+		private Set<ClientInfo> clients;
+/*
 	 * End Many to Many Relationship
 	 */
 	
