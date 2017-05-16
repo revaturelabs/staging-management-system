@@ -17,12 +17,14 @@
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script
-	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.min.js"></script>
 <script
 	src="/StagingManagementSystem/JavaScripts/AddAssociateControllerScript.js"></script>
+	
 <title>SMS</title>
 </head>
-<body>
+<body ng-app="sample">
 	<nav class="navbar navbar-inverse">
 		<div class="container-fluid">
 			<div class="navbar-header">
@@ -68,7 +70,10 @@
 	
 	<!-- Display the sample data read from get -->
 	<script>
-		var app = angular.module('sample', []);
+	function myfunc(){
+		myfunc.preventDefault();
+		
+		var app = angular.module('sample', ["ngRoute"]);
 		app.controller('sampleController', function($scope, $http)
 		{
 			$scope.submit = function()
@@ -77,15 +82,17 @@
 				({
 					method: 'POST', url : '/getTableData'
 				}).then(function(response)
-					{
+					  {
 						$scope.sampledata = response.data
-					});
+					  });
 			}
-		});
+		})
+		
+					}
 	</script>
 		
-	<div ng-app="sample" ng-controller = "sampleController" id = "sample" align = "center" ng-bind="">{{sampledata}}
-	<form ng-submit = submit()>
+	<div ng-controller = "sampleController" align = "center" ng-bind="">{{sampledata}}
+	<form ng-submit = submit() id="timrandomform">
 		<input type="submit" value="here i am lord, please reach down and cool my burning angular with a drop of luck"></input>
 	 </form> 
 	</div>
