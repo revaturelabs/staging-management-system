@@ -1,29 +1,26 @@
-var app = angular.module('formSubmit', []);
-app
-		.controller(
-				'AddAssociateController',
-				[
-						'$scope',
-						'$http',
-						function($scope, $http) {
+$(document).on("click", "#addBatch", function() {
 
-							$scope.list = [];
-							$scope.headerText = 'AngularJS Post Form Spring MVC example: Submit below form';
-							$scope.submit = function($scope, $http) {
+			$("#addBatchForm").unbind('submit').bind('submit', function(e) {
+				e.preventDefault();
 
-								$http({
-									method : 'POST',
-									url : 'AddAssociateForm',
-									data : $httpParamSerializer(formData), // pass
-								}).success(function(data) {
-									alert(response.data);
-								}).error(
-										function(data) {
-											alert("Exception details: "
-													+ JSON.stringify({
-														data : data
-													}));
-										});
+				$.ajax({
+					type : 'POST',
+					url : '/StagingManagementSystem/addBatch',
+					data : $(this).serialize(),
+					success : function(data) {
+						console.log("SUCCESS: ", data);
+					    $('#addBatch').modal('hide');
 
-							};
-						} ]);
+					},
+					error : function(e) {
+						console.log("ERROR: ", e);
+						display(e);
+					},
+					done : function(e) {
+						console.log("DONE");
+					}
+				});
+			});
+		});
+
+

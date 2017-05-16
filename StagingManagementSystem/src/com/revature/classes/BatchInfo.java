@@ -37,7 +37,9 @@ public class BatchInfo {
 	/*
 	 * Begin Constructor Methods
 	 */
-	public BatchInfo() {
+	public BatchInfo()
+	{
+		
 	}
 
 	public BatchInfo(String trainingName, String location, String trainer, Date startDate, Date endDate, String type) {
@@ -63,25 +65,31 @@ public class BatchInfo {
 	@OneToMany(cascade = (CascadeType.ALL))
 	// Link at TrainingName with AssociateInfo Table
 	@JoinColumn(name = "TrainingName")
+
+	private Set<AssociateInfo> associates;
+
 	public Set<AssociateInfo> getAssociates() {
+
 		return associates;
 	}
 
-	public void setAssociates(Set<AssociateInfo> associates) {
+	public void setAssociates(Set<AssociateInfo> associates) 
+	{
 		this.associates = associates;
 	}
 
-	private Set<AssociateInfo> associates;
 
 	/*
 	 * End One to Many Relationship
 	 */
 
-	public String getTrainingName() {
+	public String getTrainingName() 
+	{
 		return TrainingName;
 	}
 
-	public void setTrainingName(String trainingName) {
+	public void setTrainingName(String trainingName) 
+	{
 		TrainingName = trainingName;
 	}
 
@@ -89,7 +97,8 @@ public class BatchInfo {
 		return Location;
 	}
 
-	public void setLocation(String location) {
+	public void setLocation(String location) 
+	{
 		Location = location;
 	}
 
@@ -97,7 +106,8 @@ public class BatchInfo {
 		return Trainer;
 	}
 
-	public void setTrainer(String trainer) {
+	public void setTrainer(String trainer) 
+	{
 		Trainer = trainer;
 	}
 
@@ -105,15 +115,18 @@ public class BatchInfo {
 		return StartDate;
 	}
 
-	public void setStartDate(Date startDate) {
+	public void setStartDate(Date startDate) 
+	{
 		StartDate = startDate;
 	}
 
-	public Date getEndDate() {
+	public Date getEndDate()
+	{
 		return EndDate;
 	}
 
-	public void setEndDate(Date endDate) {
+	public void setEndDate(Date endDate)
+	{
 		EndDate = endDate;
 	}
 
@@ -132,7 +145,8 @@ public class BatchInfo {
 	 */
 
 	@Override
-	public String toString() {
+	public String toString() 
+	{
 		return "BatchInfo [TrainingName=" + TrainingName + ", Location=" + Location + ", Trainer=" + Trainer
 				+ ", StartDate=" + StartDate + ", EndDate=" + EndDate + ", Type=" + Type + "]";
 	}
