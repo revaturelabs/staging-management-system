@@ -86,7 +86,7 @@
 		
 	<div ng-app="sample" ng-controller = "sampleController" id = "sample" align = "center" ng-bind="">{{sampledata}}
 	<form ng-submit = submit()>
-		<input type="submit"></input>
+		<input type="submit" value="here i am lord, please reach down and cool my burning angular with a drop of luck"></input>
 	 </form> 
 	</div>
 
