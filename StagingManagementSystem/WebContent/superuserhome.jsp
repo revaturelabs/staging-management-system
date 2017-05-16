@@ -78,7 +78,7 @@
 					method: 'POST', url : '/getTableData'
 				}).then(function(response)
 					{
-						$scope.sampledata = response.data
+						$scope.sampledata = response.data;
 					});
 			}
 		});
