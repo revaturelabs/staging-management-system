@@ -78,7 +78,7 @@ public class ManipulateDataController {
 			System.out.println(batch.toString());
 			
 			// call the addBatch method for the database
-			//daoserv.AddBatch(batch);
+			daoserv.AddBatch(batch);
 			
 			
 
@@ -98,6 +98,6 @@ public class ManipulateDataController {
 		ClientInfo client = new ClientInfo(name, location);
 
 		// call the addBatch method for the database
-		//daoserv.AddClient(client);
+		daoserv.AddClient(client);
 	}
 }

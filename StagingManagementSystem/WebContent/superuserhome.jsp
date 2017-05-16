@@ -62,34 +62,87 @@
 
 		</div>
 	</nav>
-	<script>
-		$(document).on("click", "#addBatch", function() {
+<script>
+$(document).on("click", "#addBatch", function() {
 
-			$("#addBatchForm").submit(function(e) {
-				e.preventDefault();
+	$("#addBatchForm").unbind('submit').bind('submit', function(e) {
+		e.preventDefault();
 
-				$.ajax({
-					type : 'POST',
-					url : '/StagingManagementSystem/addBatch',
-					data : $(this).serialize(),
-					success : function(data) {
-						console.log("SUCCESS: ", data);
-						display(data);
-				        $('#addBatchForm').reset();
+		$.ajax({
+			type : 'POST',
+			url : '/StagingManagementSystem/addBatch',
+			data : $(this).serialize(),
+			success : function(data) {
+				console.log("SUCCESS: ", data);
+			    $('#addBatch').modal('hide');
 
-					},
-					error : function(e) {
-						console.log("ERROR: ", e);
-						display(e);
-					},
-					done : function(e) {
-						console.log("DONE");
-					}
-				});
-			});
+			},
+			error : function(e) {
+				console.log("ERROR: ", e);
+				display(e);
+			},
+			done : function(e) {
+				console.log("DONE");
+			}
 		});
-	</script>
+	});
+});
 
+
+$(document).on("click", "#addAssociate", function() {
+
+	$("#addAssociateForm").unbind('submit').bind('submit', function(e) {
+		e.preventDefault();
+
+		$.ajax({
+			type : 'POST',
+			url : '/StagingManagementSystem/addAssociate',
+			data : $(this).serialize(),
+			success : function(data) {
+				console.log("SUCCESS: ", data);
+			    $('#addAssociate').modal('hide');
+
+			},
+			error : function(e) {
+				console.log("ERROR: ", e);
+				display(e);
+			},
+			done : function(e) {
+				console.log("DONE");
+			}
+		});
+	});
+});
+
+
+$(document).on("click", "#addClient", function() {
+
+	$("#addClientForm").unbind('submit').bind('submit', function(e) {
+		e.preventDefault();
+
+		$.ajax({
+			type : 'POST',
+			url : '/StagingManagementSystem/addClient',
+			data : $(this).serialize(),
+			success : function(data) {
+				console.log("SUCCESS: ", data);
+			    $('#addClient').modal('hide');
+
+			},
+			error : function(e) {
+				console.log("ERROR: ", e);
+				display(e);
+			},
+			done : function(e) {
+				console.log("DONE");
+			}
+		});
+	});
+});
+
+
+
+</script>
 </body>
 </html>
 
@@ -103,7 +156,7 @@
 				<h4 class="modal-title">Add Associate</h4>
 			</div>
 			<div class="modal-body">
-				<form id="addAssociate">
+				<form id="addAssociateForm">
 					<div class="form-group">
 						<label for="name">Full Name:</label> <input type="text"
 							class="form-control" id="name" name="name" required>
@@ -194,7 +247,7 @@
 				<h4 class="modal-title">Add Client</h4>
 			</div>
 			<div class="modal-body">
-				<form id="addClient">
+				<form id="addClientForm">
 					<div class="form-group">
 						<label for="clientname">Client Name: </label> <input type="text"
 							class="form-control" id="clientname" name="clientname" required>
