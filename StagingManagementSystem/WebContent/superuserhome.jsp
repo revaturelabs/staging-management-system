@@ -22,12 +22,9 @@
 <!-- Import Javascript Files -->
 <script src="JavaScripts/BatchApp.js"></script>
 <script src="JavaScripts/BatchCtrl.js"></script>
-
-
-
 <title>SMS</title>
 </head>
-<body>
+<body ng-app="sample">
 	<nav class="navbar navbar-inverse">
 		<div class="container-fluid">
 			<div class="navbar-header">
@@ -77,8 +74,10 @@
 				ng-click="getUserDetails()" />
 		</form>
 		{{user}}
-	</div>
-
+	
+	
+	
+	
 
 	<!-- Display the sample data read from get -->
 	<!-- <script>
