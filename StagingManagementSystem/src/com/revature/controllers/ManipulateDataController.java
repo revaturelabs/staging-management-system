@@ -22,9 +22,16 @@ import com.revature.classes.DAOService;
 
 @RestController
 public class ManipulateDataController {
+ 
+	static ApplicationContext ctx = new ClassPathXmlApplicationContext("appContext.xml");
+	static DAOService daoserv = (DAOService) ctx.getBean("DAOImpl");
 
-	ApplicationContext ctx = new ClassPathXmlApplicationContext("appContext.xml");
-	DAOService daoserv = (DAOService) ctx.getBean("DAOImpl");
+	@RequestMapping(value = "/getTableData", method = RequestMethod.POST)
+	public String getTableData()
+	{
+		return "holy shit this actually fucking worked???";
+	}
+	
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String login(@FormParam("username") String username, @FormParam("password") String password) {
@@ -42,8 +49,9 @@ public class ManipulateDataController {
 		}
 	}
 
-	@RequestMapping(value = "/addAssociate", method = RequestMethod.POST)
-	public @ResponseBody String PostService(HttpServletRequest request) throws IOException {
+	@RequestMapping(value = "/addAssociate")
+	@ResponseBody
+	public  String PostService(HttpServletRequest request) throws IOException {
 		// get form data
 		String name = request.getParameter("name");
 		String status = request.getParameter("associatestatus");
