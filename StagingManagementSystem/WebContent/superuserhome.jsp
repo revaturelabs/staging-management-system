@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
-<html ng-app="test">
+<html ng-app="superuser">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 
@@ -20,9 +20,16 @@
 	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
 <script
 	src="/StagingManagementSystem/JavaScripts/AddAssociateControllerScript.js"></script>
+
+<!-- Import Javascript Files -->
+<script src="JavaScripts/BatchApp.js"></script>
+<script src="JavaScripts/BatchCtrl.js"></script>
+
+
+
 <title>SMS</title>
 </head>
-<body ng-controller="DemoCtrl">
+<body>
 	<nav class="navbar navbar-inverse">
 		<div class="container-fluid">
 			<div class="navbar-header">
@@ -42,7 +49,8 @@
 
 							<!-- navbar link add associate -->
 							<li><a href="#addAssociate" id="associates"
-								data-toggle="modal" data-target="#addAssociate"><span
+								data-toggle="modal" data-target="#addAssociate"
+								ng-click="loadBatches()"><span
 									class="glyphicon glyphicon-plus"></span> Add Associate</a></li>
 
 							<!-- navbar link add batch -->
@@ -63,7 +71,7 @@
 		</div>
 	</nav>
 
-	<div ng-controller="sampleController">
+	<!-- <div ng-controller="sampleController">
 
 		<form ng-submit="submit()" id="sample">
 			<input type="submit"
@@ -75,7 +83,7 @@
 
 
 	<!-- Display the sample data read from get -->
-	<script>
+	<!-- <script>
 		function Hello($scope, $http) {
 			$scope.getUserDetails = function() {
 				$http.get('/StagingManagementSystem/getTableData').success(
@@ -84,26 +92,12 @@
 						});
 			}
 		}
-	</script>
+	</script>-->
 
 
 
 
 	<script>
-		// call the controller and return batch data for the associate modal
-		angular.module('test', []).controller('DemoCtrl',
-				function($scope, $http) {
-					$scope.selectClient = null;
-					$scope.clients = [];
-
-					$http({
-						method : 'POST',
-						url : '/StagingManagementSystem/displayBatch'
-					}).success(function(result) {
-						$scope.clients = result;
-					});
-				});
-
 		// when the addBatch button is clicked on the batch modal
 		// serialize the form data and send it to the controller
 		$(document).on("click", "#addBatch", function() {
@@ -188,7 +182,13 @@
 </body>
 </html>
 
-<div id="addAssociate" class="modal slide" role="dialog">
+
+<!-----------------------
+Add associate modal
+ ------------------------->
+
+<div id="addAssociate" class="modal slide" role="dialog"
+	ng-controller="BatchCtrl">
 	<div class="modal-dialog">
 
 		<!-- Modal content-->
@@ -222,11 +222,9 @@
 					- options retrieved from a controller
 					-->
 					<div class="form-group">
-						<label for="client">Associate Status:</label> <select
-							ng-model="selectClient" class="form-control"
-							ng-options="item.TrainingName for item in clients" name="client"
-							id="client">
-							<option value="">Select Account</option>
+						<label for="batchSelector">Batch:</label> <select
+							id="BatchSelector" style="width: 100%;">
+							<option ng-repeat="x in batch" value="{{x.TrainingName}}">{{x.TrainingName}}</option>
 						</select>
 					</div>
 					<!--  
@@ -241,7 +239,7 @@
 				</form>
 			</div>
 			<div class="modal-footer">
-					<!--  
+				<!--  
 					- Input: close the modal
 					-->
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -250,6 +248,10 @@
 
 	</div>
 </div>
+
+<!-----------------------
+Add batch modal
+ ------------------------->
 
 <div id="addBatch" class="modal slide" role="dialog">
 	<div class="modal-dialog">
@@ -263,7 +265,7 @@
 			<div class="modal-body">
 				<form id="addBatchForm">
 					<div class="form-group">
-					<!--  
+						<!--  
 					- Input: text field to get the name of the batch
 					-->
 						<label for="trainingname">Training Name: </label> <input
@@ -333,6 +335,10 @@
 	</div>
 </div>
 
+<!-----------------------
+Add client modal
+ ------------------------->
+
 <div id="addClient" class="modal slide" role="dialog">
 	<div class="modal-dialog">
 
@@ -344,7 +350,7 @@
 			</div>
 			<div class="modal-body">
 				<form id="addClientForm">
-				<!--  
+					<!--  
 				- Input: text field to collect the client name
 				-->
 					<div class="form-group">
@@ -370,7 +376,7 @@
 				</form>
 			</div>
 			<div class="modal-footer">
-					<!--  
+				<!--  
 					- Input: close the button
 					-->
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

@@ -5,13 +5,17 @@ import javax.ws.rs.FormParam;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -21,6 +25,7 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.google.gson.Gson;
 import com.revature.classes.AssociateInfo;
 import com.revature.classes.BatchInfo;
 import com.revature.classes.ClientInfo;
@@ -153,22 +158,29 @@ public class ManipulateDataController {
     	return arrayToJson;
 	}
 	
-	@RequestMapping(value = "/displayBatch", method = RequestMethod.POST)
-	public @ResponseBody String ViewBatch(HttpServletRequest req) throws JsonGenerationException, JsonMappingException, IOException
+	@RequestMapping(value = "/displayBatch", method = RequestMethod.GET)
+	public @ResponseBody void ViewBatch(HttpServletRequest req, HttpServletResponse resp) throws JsonGenerationException, JsonMappingException, IOException
 	{
-		List<BatchInfo> batch;
+		List<BatchInfo> batch = new ArrayList<BatchInfo>();
 		
 		batch = daoserv.GetAllBatchesDB();
 		
 
-    	ObjectMapper objectMapper = new ObjectMapper();
+    	/* ObjectMapper objectMapper = new ObjectMapper();
     	objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
 
 		String arrayToJson = objectMapper.writeValueAsString(batch);
     	System.out.println("1. Convert Array to JSON :");
     	System.out.println(arrayToJson);
     	
-    	return arrayToJson;
+    	return arrayToJson; */
+		
+		String json = new Gson().toJson(batch);
+		System.out.println(json);
+		resp.setContentType("application/json");
+		resp.getWriter().write(json);
+
+
 	}
 
 }
