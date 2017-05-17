@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
-<html ng-app="superuser">
+<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 
@@ -18,8 +18,6 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
-<script
-	src="/StagingManagementSystem/JavaScripts/AddAssociateControllerScript.js"></script>
 
 <!-- Import Javascript Files -->
 <script src="JavaScripts/BatchApp.js"></script>
@@ -186,7 +184,7 @@
 <!-----------------------
 Add associate modal
  ------------------------->
-
+<div ng-app="superuser">
 <div id="addAssociate" class="modal slide" role="dialog"
 	ng-controller="BatchCtrl">
 	<div class="modal-dialog">
@@ -222,8 +220,8 @@ Add associate modal
 					- options retrieved from a controller
 					-->
 					<div class="form-group">
-						<label for="batchSelector">Batch:</label> <select
-							id="BatchSelector" style="width: 100%;">
+						<label for="batchSelector">Batch:</label> 
+						<select id="BatchSelector" style="width: 100%;">
 							<option ng-repeat="x in batch" value="{{x.TrainingName}}">{{x.TrainingName}}</option>
 						</select>
 					</div>
@@ -247,6 +245,7 @@ Add associate modal
 		</div>
 
 	</div>
+</div>
 </div>
 
 <!-----------------------
