@@ -46,7 +46,7 @@
 						<ul class="dropdown-menu dropdown-menu-right" role="menu" style="">
 
 							<!-- navbar link add associate -->
-							<li><a href="#addAssociate" id="associates"
+							<li><a id="associates"
 								data-toggle="modal" data-target="#addAssociate"
 								ng-click="loadBatches()"><span
 									class="glyphicon glyphicon-plus"></span> Add Associate</a></li>
@@ -221,8 +221,8 @@ Add associate modal
 					-->
 					<div class="form-group">
 						<label for="batchSelector">Batch:</label> 
-						<select id="BatchSelector" style="width: 100%;">
-							<option ng-repeat="x in batch" value="{{x.TrainingName}}">{{x.TrainingName}}</option>
+						<select id="BatchSelector" style="width: 100%;" name="batch">
+							<option ng-repeat="x in batch">{{x.TrainingName}}</option>
 						</select>
 					</div>
 					<!--  

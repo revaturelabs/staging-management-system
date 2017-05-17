@@ -41,7 +41,7 @@ public class Driver {
 	    clients.add(client);
 
 	    // create an associate
-		AssociateInfo associate = new AssociateInfo("Bily Bob", "available", clients);
+		AssociateInfo associate = new AssociateInfo("Bily Bob", "available", batch);
 		session.save(associate);
 		
 		/*session.save(associate);

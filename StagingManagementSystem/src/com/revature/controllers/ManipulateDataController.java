@@ -65,16 +65,16 @@ public class ManipulateDataController {
 		// get form data
 		String name = request.getParameter("name");
 		String status = request.getParameter("associatestatus");
-		String client = request.getParameter("client");
-		ClientInfo clientInfo = new ClientInfo();
-		clientInfo.setName(client);
-		Set<ClientInfo> clients = null;
-		clients.add(clientInfo);
+		String b = request.getParameter("batch");
+		BatchInfo batch = new BatchInfo();
+		batch.setTrainingName(b);
+		Set<BatchInfo> batches = null;
+		batches.add(batch);
 
-		System.out.println(name + " :: " + status + " :: " + client);
+		System.out.println(name + " :: " + status + " :: " + batch);
 
 		// initialize an Associate object
-		AssociateInfo associate = new AssociateInfo(name, status, clients);
+		AssociateInfo associate = new AssociateInfo(name, status, batch);
 
 		// call the addBatch method for the database
 		// daoserv.addAssociate(associate);

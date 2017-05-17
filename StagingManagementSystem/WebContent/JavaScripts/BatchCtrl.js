@@ -1,5 +1,5 @@
 /**
- * 
+ * superuserhome.jsp -- retrieve batches to display in the associate modal
  */
 
 app.controller("BatchCtrl", function($scope, $http) {
