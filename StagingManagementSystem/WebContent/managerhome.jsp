@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,6 +20,8 @@
 	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
 <script
 	src="/StagingManagementSystem/JavaScripts/AddAssociateControllerScript.js"></script>
+    
+	
 <title>SMS</title>
 </head>
 <body>
@@ -36,8 +39,43 @@
 							Manager </a>
 				</ul>
 			</div>
-
 		</div>
 	</nav>
+	
+	<div class="mainwrapper column">
+		<br>
+		<div>Level 1 Table</div>
+		<br>
+		<table class="ReqTable update">
+			<tr>
+				<th>Java</th>
+				<th>.NET</th>
+				<th>JST</th>
+			</tr>
+			<c:forEach items="${requesta}" var="item">
+				<tr class="tablerow">
+					<td><input type="text" readonly class="java" value="${item.getReqID()}" placeholder="Java"/></td>
+					<td><input type="text" class="expdate" value="${item.getExpDate()}" placeholder=".NET"/></td>
+					<td><input type="text" class="exptype" value="${item.getExpType()}" placeholder="JST"/></td>
+				</tr>
+			</c:forEach>
+		</table>
+		<br>
+		<br>
+	</div>
+	
 </body>
+<script defer>
+$( document ).ready( function( )//Document is ready
+{
+	$( document ).on( "change",".ReqTable.update .tablerow input",function( e )
+	{
+		var row = $( e.target ).closest( ".tablerow" );
+		var javavar = $( row ).find( ".reqid" ).val( );
+		var dotnetvar = $( row ).find( ".expdate" ).val( );
+		var jtavar = $( row ).find( ".exptype" ).val( );
+		var request = $.ajax( { url: "editRequestAsEmp" , type: "POST" , data: {javasesh : javavar , dotnetsesh : dotnetvar , jtasesh : jtavar , ajax: "true" } } );
+	} );
+	
+</script>
 </html>

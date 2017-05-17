@@ -21,6 +21,21 @@
 <script
 	src="/StagingManagementSystem/JavaScripts/AddAssociateControllerScript.js"></script>
 <title>SMS</title>
+<!-- AngularJs Library -->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<script src="/StagingManagementSystem/angularScripts/AngularScript.js"></script>
+
+<!-- DataTable Library -->
+<link type="text/css" rel="stylesheet"
+	href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
+
+<script type="text/javascript"
+	src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+
+<!-- Associate Information modal style-->
+<link href="css/modalView.css" rel="stylesheet">
+
 </head>
 <body>
 	<nav class="navbar navbar-inverse">
@@ -62,89 +77,171 @@
 
 		</div>
 	</nav>
-<script>
-$(document).on("click", "#addBatch", function() {
+	<script>
+		$(document).on("click", "#addBatch", function() {
 
-	$("#addBatchForm").unbind('submit').bind('submit', function(e) {
-		e.preventDefault();
+			$("#addBatchForm").unbind('submit').bind('submit', function(e) {
+				e.preventDefault();
 
-		$.ajax({
-			type : 'POST',
-			url : '/StagingManagementSystem/addBatch',
-			data : $(this).serialize(),
-			success : function(data) {
-				console.log("SUCCESS: ", data);
-			    $('#addBatch').modal('hide');
+				$.ajax({
+					type : 'POST',
+					url : '/StagingManagementSystem/addBatch',
+					data : $(this).serialize(),
+					success : function(data) {
+						console.log("SUCCESS: ", data);
+						$('#addBatch').modal('hide');
 
-			},
-			error : function(e) {
-				console.log("ERROR: ", e);
-				display(e);
-			},
-			done : function(e) {
-				console.log("DONE");
-			}
+					},
+					error : function(e) {
+						console.log("ERROR: ", e);
+						display(e);
+					},
+					done : function(e) {
+						console.log("DONE");
+					}
+				});
+			});
 		});
-	});
-});
 
+		$(document).on("click", "#addAssociate", function() {
 
-$(document).on("click", "#addAssociate", function() {
+			$("#addAssociateForm").unbind('submit').bind('submit', function(e) {
+				e.preventDefault();
 
-	$("#addAssociateForm").unbind('submit').bind('submit', function(e) {
-		e.preventDefault();
+				$.ajax({
+					type : 'POST',
+					url : '/StagingManagementSystem/addAssociate',
+					data : $(this).serialize(),
+					success : function(data) {
+						console.log("SUCCESS: ", data);
+						$('#addAssociate').modal('hide');
 
-		$.ajax({
-			type : 'POST',
-			url : '/StagingManagementSystem/addAssociate',
-			data : $(this).serialize(),
-			success : function(data) {
-				console.log("SUCCESS: ", data);
-			    $('#addAssociate').modal('hide');
-
-			},
-			error : function(e) {
-				console.log("ERROR: ", e);
-				display(e);
-			},
-			done : function(e) {
-				console.log("DONE");
-			}
+					},
+					error : function(e) {
+						console.log("ERROR: ", e);
+						display(e);
+					},
+					done : function(e) {
+						console.log("DONE");
+					}
+				});
+			});
 		});
-	});
-});
 
+		$(document).on("click", "#addClient", function() {
 
-$(document).on("click", "#addClient", function() {
+			$("#addClientForm").unbind('submit').bind('submit', function(e) {
+				e.preventDefault();
 
-	$("#addClientForm").unbind('submit').bind('submit', function(e) {
-		e.preventDefault();
+				$.ajax({
+					type : 'POST',
+					url : '/StagingManagementSystem/addClient',
+					data : $(this).serialize(),
+					success : function(data) {
+						console.log("SUCCESS: ", data);
+						$('#addClient').modal('hide');
 
-		$.ajax({
-			type : 'POST',
-			url : '/StagingManagementSystem/addClient',
-			data : $(this).serialize(),
-			success : function(data) {
-				console.log("SUCCESS: ", data);
-			    $('#addClient').modal('hide');
-
-			},
-			error : function(e) {
-				console.log("ERROR: ", e);
-				display(e);
-			},
-			done : function(e) {
-				console.log("DONE");
-			}
+					},
+					error : function(e) {
+						console.log("ERROR: ", e);
+						display(e);
+					},
+					done : function(e) {
+						console.log("DONE");
+					}
+				});
+			});
 		});
-	});
-});
+	</script>
+	
+	<div class="row">
+		<!-- left side bar -->
+		<div class="col-sm-2">
+			<button data-toggle="modal" data-target="#AssociateInfo">Modal
+				Test</button>
+		</div>
 
+		<!-- right side bar -->
+		<div class="col-sm-7">
+			<ul class="nav nav-pills">
+				<li class="active"><a data-toggle="pill" href="#current">Current</a></li>
+				<li><a data-toggle="pill" href="#forecast">Forecast</a></li>
+				<li><a data-toggle="pill" href="#history">History</a></li>
+				<li><a data-toggle="pill" href="#solitaire">Solitaire</a></li>
+			</ul>
 
+			<div class="tab-content">
+				<div ng-app="myApp2" ng-controller="formCtrl2" id="current" class="tab-pane fade in active" >
+					<table class="table table-bordered table-striped table-hover">
+						<thead>
+							<tr>
+								<th>Status</th>
+								<th>Java</th>
+								<th>.NET</th>
+								<th>JTA</th>
+								<th>Big Data</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Available</td>
+								<td>
+									<button data-toggle="modal" data-target="#AssociateInfo">{{master.firstName}}</button>
+								</td>
+								<td><button data-toggle="modal"
+										data-target="#AssociateInfo">35</button></td>
+								<td><button data-toggle="modal"
+										data-target="#AssociateInfo">50</button></td>
+								<td><button data-toggle="modal"
+										data-target="#AssociateInfo">55</button></td>
+							</tr>
+							<tr>
+								<td>Mapped</td>
+								<td><button data-toggle="modal"
+										data-target="#AssociateInfo">10</button></td>
+								<td><button data-toggle="modal"
+										data-target="#AssociateInfo">5</button></td>
+								<td><button data-toggle="modal"
+										data-target="#AssociateInfo">15</button></td>
+								<td><button data-toggle="modal"
+										data-target="#AssociateInfo">7</button></td>
+							</tr>
+							<tr>
+								<td>Interviewed</td>
+								<td><button data-toggle="modal"
+										data-target="#AssociateInfo">5</button></td>
+								<td><button data-toggle="modal"
+										data-target="#AssociateInfo">50</button></td>
+								<td><button data-toggle="modal"
+										data-target="#AssociateInfo">10</button></td>
+								<td><button data-toggle="modal"
+										data-target="#AssociateInfo">3</button></td>
+							</tr>
+							<tr>
+								<td>Confirmed</td>
+								<td><button data-toggle="modal"
+										data-target="#AssociateInfo">6</button></td>
+								<td><button data-toggle="modal"
+										data-target="#AssociateInfo">3</button></td>
+								<td><button data-toggle="modal"
+										data-target="#AssociateInfo">1</button></td>
+								<td><button data-toggle="modal"
+										data-target="#AssociateInfo">5</button></td>
+							</tr>
+						</tbody>
+					</table>
 
-</script>
+				</div>
+
+				<div id="forecast" class="tab-pane fade"></div>
+
+				<div id="history" class="tab-pane fade">history</div>
+			</div>
+		</div>
+	</div>
+	<script src="JavaScripts/modalScript.js"></script>
+	
 </body>
-</html>
 
 <div id="addAssociate" class="modal slide" role="dialog">
 	<div class="modal-dialog">
@@ -268,3 +365,203 @@ $(document).on("click", "#addClient", function() {
 
 	</div>
 </div>
+<div id="AssociateInfo" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">
+					<center>Associate Information</center>
+				</h4>
+			</div>
+			<div class="modal-body">
+
+				<form id="insert">
+					<div ng-app="myApp2" ng-controller="formCtrl2">
+						<table id="myTable" class="table table-striped">
+							<thead>
+								<tr>
+									<th>Check to Select</th>
+									<th>Firstname</th>
+									<th>Lastname</th>
+									<th>EmId</th>
+									<th>Status</th>
+									<th>Company</th>
+									<th>Start Date</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><input type="checkbox" value=""></td>
+									<td>John</td>
+									<td>Doe</td>
+									<td>mark@sample.comuyfytdykjrsdjrcdtr</td>
+									<td>John</td>
+									<td>Doe</td>
+									<td>john@example.comutykdfyutdykjidrtyjurdstjurs</td>
+								</tr>
+								<tr>
+									<td><input type="checkbox" value=""></td>
+									<td>Mary</td>
+									<td>Moe</td>
+									<td>mary@example.com</td>
+									<td>John</td>
+									<td>Doe</td>
+									<td>john@example.com</td>
+								</tr>
+								<tr>
+									<td><input type="checkbox" value=""></td>
+									<td>July</td>
+									<td>Dooley</td>
+									<td>july@example.com</td>
+									<td>John</td>
+									<td>Doe</td>
+									<td>john@example.com</td>
+								</tr>
+								<tr>
+									<td><input type="checkbox" value=""></td>
+									<td>John</td>
+									<td>Doe</td>
+									<td>mark@example.comuyfytdykjrsdjrcdtr</td>
+									<td>John</td>
+									<td>Doe</td>
+									<td>john@example.comutykdfyutdykjidrtyjurdstjurs</td>
+								</tr>
+								<tr>
+									<td><input type="checkbox" value=""></td>
+									<td>John</td>
+									<td>Doe</td>
+									<td>john@example.comuyfytdykjrsdjrcdtr</td>
+									<td>John</td>
+									<td>Doe</td>
+									<td>john@example.comutykdfyutdykjidrtyjurdstjurs</td>
+								</tr>
+								<tr>
+									<td><input type="checkbox" value=""></td>
+									<td>John</td>
+									<td>Doe</td>
+									<td>mark@example.comuyfytdykjrsdjrcdtr</td>
+									<td>John</td>
+									<td>Doe</td>
+									<td>john@example.comutykdfyutdykjidrtyjurdstjurs</td>
+								</tr>
+								<tr>
+									<td><input type="checkbox" value=""></td>
+									<td>John</td>
+									<td>Doe</td>
+									<td>john@example.comuyfytdykjrsdjrcdtr</td>
+									<td>John</td>
+									<td>Doe</td>
+									<td>john@example.comutykdfyutdykjidrtyjurdstjurs</td>
+								</tr>
+								<tr>
+									<td><input type="checkbox" value=""></td>
+									<td>John</td>
+									<td>Doe</td>
+									<td>john@example.comuyfytdykjrsdjrcdtr</td>
+									<td>John</td>
+									<td>Doe</td>
+									<td>john@example.comutykdfyutdykjidrtyjurdstjurs</td>
+								</tr>
+								<tr>
+									<td><input type="checkbox" value=""></td>
+									<td>John</td>
+									<td>Doe</td>
+									<td>john@example.comuyfytdykjrsdjrcdtr</td>
+									<td>John</td>
+									<td>Doe</td>
+									<td>john@example.comutykdfyutdykjidrtyjurdstjurs</td>
+								</tr>
+								<tr>
+									<td><input type="checkbox" value=""></td>
+									<td>John</td>
+									<td>Doe</td>
+									<td>john@example.comuyfytdykjrsdjrcdtr</td>
+									<td>John</td>
+									<td>Doe</td>
+									<td>john@example.comutykdfyutdykjidrtyjurdstjurs</td>
+								</tr>
+								<tr>
+									<td><input type="checkbox" value=""></td>
+									<td>John</td>
+									<td>Doe</td>
+									<td>john@example.comuyfytdykjrsdjrcdtr</td>
+									<td>John</td>
+									<td>Doe</td>
+									<td>john@example.comutykdfyutdykjidrtyjurdstjurs</td>
+								</tr>
+								<tr>
+									<td><input type="checkbox" value=""></td>
+									<td>John</td>
+									<td>Doe</td>
+									<td>john@example.comuyfytdykjrsdjrcdtr</td>
+									<td>John</td>
+									<td>Doe</td>
+									<td>john@example.comutykdfyutdykjidrtyjurdstjurs</td>
+								</tr>
+							</tbody>
+
+						</table>
+					</div>
+
+					<script>
+						var app = angular.module('myApp2', []);
+						app.controller('formCtrl2', function($scope) {
+							$scope.master = {
+								firstName : "John",
+								lastName : "Doe"
+							};
+							$scope.reset = function() {
+								$scope.user = angular.copy($scope.master);
+							};
+							$scope.reset();
+						});
+					</script>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<div class=pull-left >
+					<label class="radio-inline">
+						<input type="radio" name="optradio"> 
+						Available
+					</label> 
+					<label class="radio-inline">
+						<input type="radio" name="optradio">
+						Mapped
+					</label> 
+					
+					<label class="radio-inline">
+						<input type="radio" name="optradio">
+						Interviewed
+					</label>
+					<label class="radio-inline">
+						<input type="radio" name="optradio">
+						Confirmed
+					</label>
+				<br>
+				<table>
+				<tr>
+					<td>
+					<select class="form-control" id="sel1">
+	        				<option>Available</option>
+	        				<option>Infosys</option>
+	        				<option>Capital One</option>
+	        				<option>IBM</option>
+	      			</select>
+      				</td>
+      				<td style="padding: 20px">
+					<button type="button">Ok</button>
+					</td>
+				</tr>
+				</table>
+				</div>
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+			</div>
+		</div>
+
+	</div>
+</div>
+</html>
