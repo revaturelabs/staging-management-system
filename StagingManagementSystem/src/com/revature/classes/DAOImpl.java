@@ -97,7 +97,6 @@ public class DAOImpl implements DAOService {
 		return batch;
 	}
 
-
 	@Override
 	public ArrayList<AssociateInfo> GetAllAssociatesDB() {
 		
@@ -116,7 +115,6 @@ public class DAOImpl implements DAOService {
 		return assoList;
 		
 	}
-
 
 	@Override
 	public ArrayList<BatchInfo> GetAllBatchesDB() {

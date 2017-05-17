@@ -6,6 +6,8 @@ import javax.ws.rs.QueryParam;
 import java.io.IOException;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -26,11 +28,15 @@ public class ManipulateDataController {
 	static ApplicationContext ctx = new ClassPathXmlApplicationContext("appContext.xml");
 	static DAOService daoserv = (DAOService) ctx.getBean("DAOImpl");
 
-	@RequestMapping(value = "/getTableData", method = RequestMethod.POST)
-	@ResponseBody
-	public String getTableData()
+	@RequestMapping(value = "/getTableData", method = RequestMethod.GET)
+	public List<String> getTableData()
 	{
-		return "holy shit this actually fucking worked???";
+		System.out.println("hi controller");
+		List<String> bang = new ArrayList<String>();
+		bang.add("holy shit this actually fucking worked???");
+		bang.add("oooooo");
+		bang.add("aaahhhhh");
+		return bang;
 	}
 	
 

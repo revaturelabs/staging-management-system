@@ -24,7 +24,7 @@ src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></scr
 	
 <title>SMS</title>
 </head>
-<body ng-app="sample">
+<body>
 	<nav class="navbar navbar-inverse">
 		<div class="container-fluid">
 			<div class="navbar-header">
@@ -70,33 +70,28 @@ src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></scr
 	
 	<!-- Display the sample data read from get -->
 	<script>
-	function myfunc(){
-		myfunc.preventDefault();
-		
-		var app = angular.module('sample', []);
-		app.controller('sampleController', function($scope, $http)
-		{
-			$scope.submit = function()
-			{
-				$http
-				({
-					method: 'POST', url : '/getTableData'
-				}).then(function(response)
-
-					{
-						$scope.sampledata = response.data;
-					});
-
-			}
-		})
-		
-					}
+	var mainApp = angular.module('sample',[]);
+	
+	// $scope is the application object (the owner of application variables and functions).
+	mainApp.controller("sampleController", function($scope,$http){
+		//makes a 
+		$scope.getUser = [];
+		$http.get("/StagingManagementSystem/getTableData")
+		.then(function(result){
+			$scope.getUser = [result.data];
+			console.log(getUser);
+			console.log(result.data);
+		});
+	});
+	
 	</script>
 		
-	<div ng-controller = "sampleController" align = "center" ng-bind="">{{sampledata}}
-	<form ng-submit = submit() id="timrandomform">
-		<input type="submit" value="here i am lord, please reach down and cool my burning angular with a drop of luck"></input>
-	 </form> 
+	<div ng-app="sample" ng-controller = "sampleController" align = "center">
+	<p> Click <a ng-click="loadBatches()"> here</a> to load data</p>
+	<br/>
+	<h1 ng-repeat="user in getUser">
+	{{user}}
+	</h1>
 	</div>
 
 <script>
@@ -124,7 +119,6 @@ $(document).on("click", "#addBatch", function() {
 		});
 	});
 });
-hello
 
 $(document).on("click", "#addAssociate", function() {
 
