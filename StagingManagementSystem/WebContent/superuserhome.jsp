@@ -124,7 +124,7 @@ $(document).on("click", "#addBatch", function() {
 		});
 	});
 });
-
+hello
 
 $(document).on("click", "#addAssociate", function() {
 
