@@ -27,6 +27,7 @@ public class ManipulateDataController {
 	static DAOService daoserv = (DAOService) ctx.getBean("DAOImpl");
 
 	@RequestMapping(value = "/getTableData", method = RequestMethod.POST)
+	@ResponseBody
 	public String getTableData()
 	{
 		return "holy shit this actually fucking worked???";
