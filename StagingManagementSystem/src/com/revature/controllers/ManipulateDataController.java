@@ -1,11 +1,12 @@
 package com.revature.controllers;
 
 import javax.ws.rs.FormParam;
-import javax.ws.rs.QueryParam;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.sql.Date;
-import java.text.SimpleDateFormat;
+import java.io.OutputStream;
+import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -16,22 +17,27 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.revature.classes.AssociateInfo;
 import com.revature.classes.BatchInfo;
 import com.revature.classes.ClientInfo;
 import com.revature.classes.DAOService;
 
 @RestController
 public class ManipulateDataController {
- 
-	static ApplicationContext ctx = new ClassPathXmlApplicationContext("appContext.xml");
-	static DAOService daoserv = (DAOService) ctx.getBean("DAOImpl");
 
+	ApplicationContext ctx = new ClassPathXmlApplicationContext("appContext.xml");
+	DAOService daoserv = (DAOService) ctx.getBean("DAOImpl");
+	
 	@RequestMapping(value = "/getTableData", method = RequestMethod.POST)
-	public String getTableData()
+	public @ResponseBody String getTableData()
 	{
 		return "holy shit this actually fucking worked???";
 	}
-	
+
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String login(@FormParam("username") String username, @FormParam("password") String password) {
@@ -49,22 +55,24 @@ public class ManipulateDataController {
 		}
 	}
 
-	@RequestMapping(value = "/addAssociate")
-	@ResponseBody
-	public  String PostService(HttpServletRequest request) throws IOException {
+	@RequestMapping(value = "/addAssociate", method = RequestMethod.POST)
+	public void PostService(HttpServletRequest request) throws IOException {
 		// get form data
 		String name = request.getParameter("name");
 		String status = request.getParameter("associatestatus");
+		String client = request.getParameter("client");
+		ClientInfo clientInfo = new ClientInfo();
+		clientInfo.setName(client);
+		Set<ClientInfo> clients = null;
+		clients.add(clientInfo);
 
-		System.out.println(name + " :: " + status);
+		System.out.println(name + " :: " + status + " :: " + client);
 
 		// initialize an Associate object
-		// AssociateInfo associate = new AssociateInfo(name, status);
+		AssociateInfo associate = new AssociateInfo(name, status, clients);
 
 		// call the addBatch method for the database
 		// daoserv.addAssociate(associate);
-
-		return "bless up";
 	}
 
 	@RequestMapping(value = "/addBatch", method = RequestMethod.POST)
@@ -97,7 +105,7 @@ public class ManipulateDataController {
 	}
 
 	@RequestMapping(value = "/addClient", method = RequestMethod.POST)
-	public @ResponseBody void addClient(HttpServletRequest request) {
+	public void addClient(HttpServletRequest request) {
 		// get the form input
 		String name = request.getParameter("clientname");
 		String location = request.getParameter("location");
@@ -108,4 +116,59 @@ public class ManipulateDataController {
 		// call the addBatch method for the database
 		daoserv.AddClient(client);
 	}
+	
+	@RequestMapping(value = "/displayStats", method = RequestMethod.POST)
+	public @ResponseBody String ViewAssociateStats(HttpServletRequest req) throws JsonGenerationException, JsonMappingException, IOException
+	{
+		List<AssociateInfo> associates;
+		
+		associates = daoserv.GetAllAssociatesDB();
+		
+
+    	ObjectMapper objectMapper = new ObjectMapper();
+    	objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+
+		String arrayToJson = objectMapper.writeValueAsString(associates);
+    	System.out.println("1. Convert Array to JSON :");
+    	System.out.println(arrayToJson);
+    	
+    	return arrayToJson;
+	}
+	
+	@RequestMapping(value = "/displayClients", method = RequestMethod.POST)
+	public @ResponseBody String ViewClients(HttpServletRequest req) throws JsonGenerationException, JsonMappingException, IOException
+	{
+		List<ClientInfo> clients;
+		
+		clients = daoserv.GetAllClientsDB();
+		
+
+    	ObjectMapper objectMapper = new ObjectMapper();
+    	objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+
+		String arrayToJson = objectMapper.writeValueAsString(clients);
+    	System.out.println("1. Convert Array to JSON :");
+    	System.out.println(arrayToJson);
+    	
+    	return arrayToJson;
+	}
+	
+	@RequestMapping(value = "/displayBatch", method = RequestMethod.POST)
+	public @ResponseBody String ViewBatch(HttpServletRequest req) throws JsonGenerationException, JsonMappingException, IOException
+	{
+		List<BatchInfo> batch;
+		
+		batch = daoserv.GetAllBatchesDB();
+		
+
+    	ObjectMapper objectMapper = new ObjectMapper();
+    	objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+
+		String arrayToJson = objectMapper.writeValueAsString(batch);
+    	System.out.println("1. Convert Array to JSON :");
+    	System.out.println(arrayToJson);
+    	
+    	return arrayToJson;
+	}
+
 }

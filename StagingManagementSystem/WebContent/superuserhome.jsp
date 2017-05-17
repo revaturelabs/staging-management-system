@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
-<html>
+<html ng-app="test">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 
@@ -22,7 +22,7 @@
 	src="/StagingManagementSystem/JavaScripts/AddAssociateControllerScript.js"></script>
 <title>SMS</title>
 </head>
-<body>
+<body ng-controller="DemoCtrl">
 	<nav class="navbar navbar-inverse">
 		<div class="container-fluid">
 			<div class="navbar-header">
@@ -41,17 +41,17 @@
 						<ul class="dropdown-menu dropdown-menu-right" role="menu" style="">
 
 							<!-- navbar link add associate -->
-							<li><a href="#addAssociate" data-toggle="modal"
-								data-target="#addAssociate"><span
+							<li><a href="#addAssociate" id="associates"
+								data-toggle="modal" data-target="#addAssociate"><span
 									class="glyphicon glyphicon-plus"></span> Add Associate</a></li>
 
 							<!-- navbar link add batch -->
-							<li><a href="#addBatch" data-toggle="modal"
+							<li><a href="#addBatch" data-toggle="modal" id="batches"
 								data-target="#addBatch"><span
 									class="glyphicon glyphicon-plus"></span> Add Batch</a></li>
 
 							<!-- navbar link add client -->
-							<li><a href="#addClient" data-toggle="modal"
+							<li><a href="#addClient" data-toggle="modal" id="clients"
 								data-target="#addClient"><span
 									class="glyphicon glyphicon-plus"></span> Add Client</a></li>
 
@@ -63,115 +63,128 @@
 		</div>
 	</nav>
 
-	
-	
-	
-	<!-- Display the sample data read from get -->
-	<script>
-		var app = angular.module('sample', []);
-		app.controller('sampleController', function($scope, $http)
-		{
-			$scope.submit = function()
-			{
-				$http
-				({
-					method: 'POST', url : '/getTableData'
-				}).then(function(response)
-					{
-						$scope.sampledata = response.data
-					});
-			}
-		});
-	</script>
-		
-	<div ng-app="sample" ng-controller = "sampleController" id = "sample" align = "center" ng-bind="">{{sampledata}}
-	<form ng-submit = submit()>
-		<input type="submit" value="here i am lord, please reach down and cool my burning angular with a drop of luck"></input>
-	 </form> 
+	<div ng-controller="sampleController">
+
+		<form ng-submit="submit()" id="sample">
+			<input type="submit"
+				value="here i am lord, please reach down and cool my burning angular with a drop of luck"
+				ng-click="getUserDetails()" />
+		</form>
+		{{user}}
 	</div>
 
-<script>
-$(document).on("click", "#addBatch", function() {
 
-	$("#addBatchForm").unbind('submit').bind('submit', function(e) {
-		e.preventDefault();
-
-		$.ajax({
-			type : 'POST',
-			url : '/StagingManagementSystem/addBatch',
-			data : $(this).serialize(),
-			success : function(data) {
-				console.log("SUCCESS: ", data);
-			    $('#addBatch').modal('hide');
-
-			},
-			error : function(e) {
-				console.log("ERROR: ", e);
-				display(e);
-			},
-			done : function(e) {
-				console.log("DONE");
+	<!-- Display the sample data read from get -->
+	<script>
+		function Hello($scope, $http) {
+			$scope.getUserDetails = function() {
+				$http.get('/StagingManagementSystem/getTableData').success(
+						function(data) {
+							$scope.user = data;
+						});
 			}
+		}
+	</script>
+
+
+
+
+	<script>
+		// call the controller and return batch data for the associate modal
+		angular.module('test', []).controller('DemoCtrl',
+				function($scope, $http) {
+					$scope.selectClient = null;
+					$scope.clients = [];
+
+					$http({
+						method : 'POST',
+						url : '/StagingManagementSystem/displayBatch'
+					}).success(function(result) {
+						$scope.clients = result;
+					});
+				});
+
+		// when the addBatch button is clicked on the batch modal
+		// serialize the form data and send it to the controller
+		$(document).on("click", "#addBatch", function() {
+
+			$("#addBatchForm").unbind('submit').bind('submit', function(e) {
+				e.preventDefault();
+
+				$.ajax({
+					type : 'POST',
+					url : '/StagingManagementSystem/addBatch',
+					data : $(this).serialize(),
+					success : function(data) {
+						console.log("SUCCESS: ", data);
+						$('#addBatch').modal('hide');
+
+					},
+					error : function(e) {
+						console.log("ERROR: ", e);
+						display(e);
+					},
+					done : function(e) {
+						console.log("DONE");
+					}
+				});
+			});
 		});
-	});
-});
 
+		// when the addAssociate button is clicked on the batch modal
+		// serialize the form data and send it to the controller
+		$(document).on("click", "#addAssociate", function() {
 
-$(document).on("click", "#addAssociate", function() {
+			$("#addAssociateForm").unbind('submit').bind('submit', function(e) {
+				e.preventDefault();
 
-	$("#addAssociateForm").unbind('submit').bind('submit', function(e) {
-		e.preventDefault();
+				$.ajax({
+					type : 'POST',
+					url : '/StagingManagementSystem/addAssociate',
+					data : $(this).serialize(),
+					success : function(data) {
+						console.log("SUCCESS: ", data);
+						$('#addAssociate').modal('hide');
 
-		$.ajax({
-			type : 'POST',
-			url : '/StagingManagementSystem/addAssociate',
-			data : $(this).serialize(),
-			success : function(data) {
-				console.log("SUCCESS: ", data);
-			    $('#addAssociate').modal('hide');
-
-			},
-			error : function(e) {
-				console.log("ERROR: ", e);
-				display(e);
-			},
-			done : function(e) {
-				console.log("DONE");
-			}
+					},
+					error : function(e) {
+						console.log("ERROR: ", e);
+						display(e);
+					},
+					done : function(e) {
+						console.log("DONE");
+					}
+				});
+			});
 		});
-	});
-});
 
+		// when the addClient button is clicked on the batch modal
+		// serialize the form data and send it to the controller
+		$(document).on("click", "#addClient", function() {
 
-$(document).on("click", "#addClient", function() {
+			$("#addClientForm").unbind('submit').bind('submit', function(e) {
+				e.preventDefault();
 
-	$("#addClientForm").unbind('submit').bind('submit', function(e) {
-		e.preventDefault();
+				$.ajax({
+					type : 'POST',
+					url : '/StagingManagementSystem/addClient',
+					data : $(this).serialize(),
+					success : function(data) {
+						console.log("SUCCESS: ", data);
+						$('#addClient').modal('hide');
 
-		$.ajax({
-			type : 'POST',
-			url : '/StagingManagementSystem/addClient',
-			data : $(this).serialize(),
-			success : function(data) {
-				console.log("SUCCESS: ", data);
-			    $('#addClient').modal('hide');
-
-			},
-			error : function(e) {
-				console.log("ERROR: ", e);
-				display(e);
-			},
-			done : function(e) {
-				console.log("DONE");
-			}
+					},
+					error : function(e) {
+						console.log("ERROR: ", e);
+						display(e);
+					},
+					done : function(e) {
+						console.log("DONE");
+					}
+				});
+			});
 		});
-	});
-});
-
-
-
-</script>
-
+	</script>
 </body>
 </html>
 
@@ -186,10 +199,16 @@ $(document).on("click", "#addClient", function() {
 			</div>
 			<div class="modal-body">
 				<form id="addAssociateForm">
+					<!--  
+					- Input: text field for full associate name
+					-->
 					<div class="form-group">
 						<label for="name">Full Name:</label> <input type="text"
 							class="form-control" id="name" name="name" required>
 					</div>
+					<!--  
+					- Input: select statement for collecting the availability status of an associate
+					-->
 					<div class="form-group">
 						<label for="associatestatus">Associate Status:</label> <select
 							class="form-control" id="associatestatus" name="associatestatus">
@@ -198,12 +217,33 @@ $(document).on("click", "#addClient", function() {
 							<option>Confirmed</option>
 						</select>
 					</div>
+					<!--  
+					- Input: select statement for collecting the batch that an associate belongs to
+					- options retrieved from a controller
+					-->
+					<div class="form-group">
+						<label for="client">Associate Status:</label> <select
+							ng-model="selectClient" class="form-control"
+							ng-options="item.TrainingName for item in clients" name="client"
+							id="client">
+							<option value="">Select Account</option>
+						</select>
+					</div>
+					<!--  
+					- Input: submit the form
+					-->
 					<button type="submit" id="addAssociate" class="btn btn-default">Register
 						Associate</button>
+					<!--  
+					- Input: clear the form
+					-->
 					<button type="reset" class="btn btn-default">Clear Form</button>
 				</form>
 			</div>
 			<div class="modal-footer">
+					<!--  
+					- Input: close the modal
+					-->
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 			</div>
 		</div>
@@ -223,28 +263,46 @@ $(document).on("click", "#addClient", function() {
 			<div class="modal-body">
 				<form id="addBatchForm">
 					<div class="form-group">
+					<!--  
+					- Input: text field to get the name of the batch
+					-->
 						<label for="trainingname">Training Name: </label> <input
 							type="text" class="form-control" id="trainingname"
 							name="trainingname" required>
 					</div>
+					<!--  
+					- Input: text field to get the location where the training is being held
+					-->
 					<div class="form-group">
 						<label for="location">Location: </label> <input type="text"
 							class="form-control" id="location" name="location" required>
 					</div>
+					<!--  
+					- Input: text field to get the batch trainer
+					-->
 					<div class="form-group">
 						<label for="trainer">Trainer:</label> <input type="text"
 							class="form-control" id="trainer" name="trainer" required>
 					</div>
+					<!--  
+					- Input: date field to get the start date of the batch
+					-->
 					<div class="form-group">
 						<label for="startdate">Start Date:</label> <input type="date"
 							class="form-control" data-date-format="mm-dd-yyyy" id="startdate"
 							name="startdate" required>
 					</div>
+					<!--  
+					- Input: date field to get the projected end date of the batch
+					-->
 					<div class="form-group">
 						<label for="enddate">End Date:</label> <input type="date"
 							class="form-control" data-date-format="mm-dd-yyyy" id="enddate"
 							name="enddate" required>
 					</div>
+					<!--  
+					- Input: select statement for collecting the type of batch
+					-->
 					<div class="form-group">
 						<label for="batchtype">Batch Type:</label> <select
 							class="form-control" id="batchtype" name="batchtype">
@@ -253,12 +311,21 @@ $(document).on("click", "#addClient", function() {
 							<option value="jta">JTA</option>
 						</select>
 					</div>
+					<!--  
+					- Input: submit the form
+					-->
 					<button type="submit" id="addBatch" class="btn btn-default">Create
 						Batch</button>
+					<!--  
+					- Input: clear the form
+					-->
 					<button type="reset" class="btn btn-default">Clear Form</button>
 				</form>
 			</div>
 			<div class="modal-footer">
+				<!--  
+				- Input: close the form
+				-->
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 			</div>
 		</div>
@@ -277,20 +344,35 @@ $(document).on("click", "#addClient", function() {
 			</div>
 			<div class="modal-body">
 				<form id="addClientForm">
+				<!--  
+				- Input: text field to collect the client name
+				-->
 					<div class="form-group">
 						<label for="clientname">Client Name: </label> <input type="text"
 							class="form-control" id="clientname" name="clientname" required>
 					</div>
+					<!--  
+					- Input: text field to collect the client's location
+					-->
 					<div class="form-group">
 						<label for="location">Location: </label> <input type="text"
 							class="form-control" id="location" name="location" required>
 					</div>
+					<!--  
+					- Input: submit the form
+					-->
 					<button type="submit" id="addClient" class="btn btn-default">Create
 						Batch</button>
+					<!--  
+					- Input: clear the form
+					-->
 					<button type="reset" class="btn btn-default">Clear Form</button>
 				</form>
 			</div>
 			<div class="modal-footer">
+					<!--  
+					- Input: close the button
+					-->
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 			</div>
 		</div>
