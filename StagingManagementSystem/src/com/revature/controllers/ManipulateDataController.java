@@ -149,21 +149,13 @@ public class ManipulateDataController {
 	}
 	
 	@RequestMapping(value = "/displayClients", method = RequestMethod.POST)
-	public @ResponseBody String ViewClients(HttpServletRequest req) throws JsonGenerationException, JsonMappingException, IOException
+	public @ResponseBody List<ClientInfo> ViewClients(HttpServletRequest req) throws JsonGenerationException, JsonMappingException, IOException
 	{
 		List<ClientInfo> clients;
 		
 		clients = daoserv.GetAllClientsDB();
-		
-
-    	ObjectMapper objectMapper = new ObjectMapper();
-    	objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
-
-		String arrayToJson = objectMapper.writeValueAsString(clients);
-    	System.out.println("1. Convert Array to JSON :");
-    	System.out.println(arrayToJson);
     	
-    	return arrayToJson;
+    	return clients;
 	}
 	
 	@RequestMapping(value = "/displayBatch", method = RequestMethod.GET)
@@ -172,16 +164,6 @@ public class ManipulateDataController {
 		List<BatchInfo> batch = new ArrayList<BatchInfo>();
 		
 		batch = daoserv.GetAllBatchesDB();
-		
-
-    	/* ObjectMapper objectMapper = new ObjectMapper();
-    	objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
-
-		String arrayToJson = objectMapper.writeValueAsString(batch);
-    	System.out.println("1. Convert Array to JSON :");
-    	System.out.println(arrayToJson); 
-    	
-    	return arrayToJson; */
 		
 		return batch;
 		

@@ -1,9 +1,11 @@
 /**
  * superuserhome.jsp -- retrieve batches to display in the associate modal
  */
-var app = angular.module('sample', []);
 
-    app.controller('formCtrl', function($scope) {
+    var mainApp = angular.module('superuser', []);
+
+
+    mainApp.controller('formCtrl', function($scope) {
         $scope.master = {
             firstName : "John",
             lastName : "Doe"
@@ -15,7 +17,7 @@ var app = angular.module('sample', []);
     });
                         
 
-    app.controller("sampleController", function($scope,$http){
+    mainApp.controller("sampleController", function($scope,$http){
         //makes a 
          $scope.getUser = [];
         $http.get("/StagingManagementSystem/getTableData")
@@ -50,7 +52,6 @@ var app = angular.module('sample', []);
      **************************************/
 
     
-    var mainApp = angular.module('superuser', []);
 
 // $scope is the application object (the owner of application variables and
 // functions).

@@ -19,6 +19,8 @@
 	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
 <script
 	src="/StagingManagementSystem/JavaScripts/AddAssociateControllerScript.js"></script>
+
+	
 <title>SMS</title>
 </head>
 <body>
@@ -36,8 +38,25 @@
 							Manager </a>
 				</ul>
 			</div>
-
 		</div>
 	</nav>
+	
+
+
+
+	
 </body>
+<script defer>
+$( document ).ready( function( )//Document is ready
+{
+	$( document ).on( "change",".ReqTable.update .tablerow input",function( e )
+	{
+		var row = $( e.target ).closest( ".tablerow" );
+		var javavar = $( row ).find( ".reqid" ).val( );
+		var dotnetvar = $( row ).find( ".expdate" ).val( );
+		var jtavar = $( row ).find( ".exptype" ).val( );
+		var request = $.ajax( { url: "editRequestAsEmp" , type: "POST" , data: {javasesh : javavar , dotnetsesh : dotnetvar , jtasesh : jtavar , ajax: "true" } } );
+	});
+});S
+</script>
 </html>

@@ -16,14 +16,31 @@
 <!-- Latest compiled JavaScript -->
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<title>SMS</title>
+<!-- AngularJs Library -->
 <script
 	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
 
+	<script
+    src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.min.js"></script>
+	
+<!-- DataTable Library -->
+<link type="text/css" rel="stylesheet"
+	href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
+
+<script type="text/javascript"
+	src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+	
+	
+	
 <!-- Import Javascript Files -->
 <script src="JavaScripts/BatchCtrl.js"></script>
-<title>SMS</title>
+	<link rel="stylesheet" href="css/modalView.css" />
+<script src="JavaScripts/AddAssociateControllerScript.js"></script>
 
-</head>
+	
+</head> 
 <body>
 	<nav class="navbar navbar-inverse">
 		<div class="container-fluid">
@@ -64,10 +81,103 @@
 
 		</div>
 	</nav>
+	
+	<div ng-controller="sampleController" align = "center">
+	<p> Click <a ng-click="loadBatches()"> here</a> to load data</p>
+	<br/>
+	<h1 ng-repeat="user in getUser"> 
+	{{user}}
+	</h1>
+	</div>
+
+	<div ng-controller="formCtrl" class="row">
+		<!-- left side bar -->
+		<div class="col-sm-2">
+			<button data-toggle="modal" data-target="#AssociateInfo">Modal
+				Test</button>
+		</div>
+					
+		<!-- right side bar -->
+		<div class="col-sm-7">
+			<ul class="nav nav-pills">
+				<li class="active"><a data-toggle="pill" href="#current">Current</a></li>
+				<li><a data-toggle="pill" href="#forecast">Forecast</a></li>
+				<li><a data-toggle="pill" href="#history">History</a></li>
+				<li><a data-toggle="pill" href="#solitaire">Solitaire</a></li>
+			</ul>
+
+			<div class="tab-content">
+				<div id="current" class="tab-pane fade in active" >
+					<table class="table table-bordered table-striped table-hover">
+						<thead>
+							<tr>
+								<th>Status</th>
+								<th>Java</th>
+								<th>.NET</th>
+								<th>JTA</th>
+								<th>Big Data</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Available</td>
+								<td>
+									<button data-toggle="modal" data-target="#AssociateInfo">{{master}}</button>
+								</td>
+								<td><button data-toggle="modal"
+										data-target="#AssociateInfo">35</button></td>
+								<td><button data-toggle="modal"
+										data-target="#AssociateInfo">50</button></td>
+								<td><button data-toggle="modal"
+										data-target="#AssociateInfo">55</button></td>
+							</tr>
+							<tr>
+								<td>Mapped</td>
+								<td><button data-toggle="modal"
+										data-target="#AssociateInfo">10</button></td>
+								<td><button data-toggle="modal"
+										data-target="#AssociateInfo">5</button></td>
+								<td><button data-toggle="modal"
+										data-target="#AssociateInfo">15</button></td>
+								<td><button data-toggle="modal"
+										data-target="#AssociateInfo">7</button></td>
+							</tr>
+							<tr>
+								<td>Interviewed</td>
+								<td><button data-toggle="modal"
+										data-target="#AssociateInfo">5</button></td>
+								<td><button data-toggle="modal"
+										data-target="#AssociateInfo">50</button></td>
+								<td><button data-toggle="modal"
+										data-target="#AssociateInfo">10</button></td>
+								<td><button data-toggle="modal"
+										data-target="#AssociateInfo">3</button></td>
+							</tr>
+							<tr>
+								<td>Confirmed</td>
+								<td><button data-toggle="modal"
+										data-target="#AssociateInfo">6</button></td>
+								<td><button data-toggle="modal"
+										data-target="#AssociateInfo">3</button></td>
+								<td><button data-toggle="modal"
+										data-target="#AssociateInfo">1</button></td>
+								<td><button data-toggle="modal"
+										data-target="#AssociateInfo">5</button></td>
+							</tr>
+						</tbody>
+					</table>
+
+				</div>
+
+				<div id="forecast" class="tab-pane fade"></div>
+
+				<div id="history" class="tab-pane fade">history</div>
+			</div>
+		</div>
+	</div>
 
 	
 </body>
-</html>
 
 
 <!-----------------------
@@ -99,6 +209,7 @@ Add associate modal
 							class="form-control" id="associatestatus" name="associatestatus">
 							<option>Available</option>
 							<option>Mapped</option>
+							<option>Interviewed</option>
 							<option>Confirmed</option>
 						</select>
 					</div>
@@ -199,6 +310,7 @@ Add batch modal
 							<option value="java">Java</option>
 							<option value="net">.NET</option>
 							<option value="jta">JTA</option>
+							<option value="jta">Big Data</option>
 						</select>
 					</div>
 					<!--  
@@ -273,3 +385,193 @@ Add client modal
 
 	</div>
 </div>
+<div id="AssociateInfo" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">
+					<center>Associate Information</center>
+				</h4>
+			</div>
+			<div class="modal-body">
+
+				<form id="insert">
+					<div ng-app="myApp2" ng-controller="formCtrl2">
+						<table id="myTable" class="table table-striped">
+							<thead>
+								<tr>
+									<th>Check to Select</th>
+									<th>Firstname</th>
+									<th>Lastname</th>
+									<th>EmId</th>
+									<th>Status</th>
+									<th>Company</th>
+									<th>Start Date</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><input type="checkbox" value=""></td>
+									<td>John</td>
+									<td>Doe</td>
+									<td>mark@sample.comuyfytdykjrsdjrcdtr</td>
+									<td>John</td>
+									<td>Doe</td>
+									<td>john@example.comutykdfyutdykjidrtyjurdstjurs</td>
+								</tr>
+								<tr>
+									<td><input type="checkbox" value=""></td>
+									<td>Mary</td>
+									<td>Moe</td>
+									<td>mary@example.com</td>
+									<td>John</td>
+									<td>Doe</td>
+									<td>john@example.com</td>
+								</tr>
+								<tr>
+									<td><input type="checkbox" value=""></td>
+									<td>July</td>
+									<td>Dooley</td>
+									<td>july@example.com</td>
+									<td>John</td>
+									<td>Doe</td>
+									<td>john@example.com</td>
+								</tr>
+								<tr>
+									<td><input type="checkbox" value=""></td>
+									<td>John</td>
+									<td>Doe</td>
+									<td>mark@example.comuyfytdykjrsdjrcdtr</td>
+									<td>John</td>
+									<td>Doe</td>
+									<td>john@example.comutykdfyutdykjidrtyjurdstjurs</td>
+								</tr>
+								<tr>
+									<td><input type="checkbox" value=""></td>
+									<td>John</td>
+									<td>Doe</td>
+									<td>john@example.comuyfytdykjrsdjrcdtr</td>
+									<td>John</td>
+									<td>Doe</td>
+									<td>john@example.comutykdfyutdykjidrtyjurdstjurs</td>
+								</tr>
+								<tr>
+									<td><input type="checkbox" value=""></td>
+									<td>John</td>
+									<td>Doe</td>
+									<td>mark@example.comuyfytdykjrsdjrcdtr</td>
+									<td>John</td>
+									<td>Doe</td>
+									<td>john@example.comutykdfyutdykjidrtyjurdstjurs</td>
+								</tr>
+								<tr>
+									<td><input type="checkbox" value=""></td>
+									<td>John</td>
+									<td>Doe</td>
+									<td>john@example.comuyfytdykjrsdjrcdtr</td>
+									<td>John</td>
+									<td>Doe</td>
+									<td>john@example.comutykdfyutdykjidrtyjurdstjurs</td>
+								</tr>
+								<tr>
+									<td><input type="checkbox" value=""></td>
+									<td>John</td>
+									<td>Doe</td>
+									<td>john@example.comuyfytdykjrsdjrcdtr</td>
+									<td>John</td>
+									<td>Doe</td>
+									<td>john@example.comutykdfyutdykjidrtyjurdstjurs</td>
+								</tr>
+								<tr>
+									<td><input type="checkbox" value=""></td>
+									<td>John</td>
+									<td>Doe</td>
+									<td>john@example.comuyfytdykjrsdjrcdtr</td>
+									<td>John</td>
+									<td>Doe</td>
+									<td>john@example.comutykdfyutdykjidrtyjurdstjurs</td>
+								</tr>
+								<tr>
+									<td><input type="checkbox" value=""></td>
+									<td>John</td>
+									<td>Doe</td>
+									<td>john@example.comuyfytdykjrsdjrcdtr</td>
+									<td>John</td>
+									<td>Doe</td>
+									<td>john@example.comutykdfyutdykjidrtyjurdstjurs</td>
+								</tr>
+								<tr>
+									<td><input type="checkbox" value=""></td>
+									<td>John</td>
+									<td>Doe</td>
+									<td>john@example.comuyfytdykjrsdjrcdtr</td>
+									<td>John</td>
+									<td>Doe</td>
+									<td>john@example.comutykdfyutdykjidrtyjurdstjurs</td>
+								</tr>
+								<tr>
+									<td><input type="checkbox" value=""></td>
+									<td>John</td>
+									<td>Doe</td>
+									<td>john@example.comuyfytdykjrsdjrcdtr</td>
+									<td>John</td>
+									<td>Doe</td>
+									<td>john@example.comutykdfyutdykjidrtyjurdstjurs</td>
+								</tr>
+							</tbody>
+
+						</table>
+					</div>
+					
+					
+					
+					
+				</form>
+			</div>
+			<div class="modal-footer">
+				<div class=pull-left >
+					<label class="radio-inline">
+						<input type="radio" name="optradio"> 
+						Available
+					</label> 
+					<label class="radio-inline">
+						<input type="radio" name="optradio">
+						Mapped
+					</label> 
+					
+					<label class="radio-inline">
+						<input type="radio" name="optradio">
+						Interviewed
+					</label>
+					<label class="radio-inline">
+						<input type="radio" name="optradio">
+						Confirmed
+					</label>
+				<br>
+				<table>
+				<tr>
+					<td>
+					<select class="form-control" id="sel1">
+	        				<option>Available</option>
+	        				<option>Infosys</option>
+	        				<option>Capital One</option>
+	        				<option>IBM</option>
+	      			</select>
+      				</td>
+      				<td style="padding: 20px">
+					<button type="button">Ok</button>
+					</td>
+				</tr>
+				</table>
+				</div>
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+			</div>
+		</div>
+
+	</div>
+</div>
+</html>
