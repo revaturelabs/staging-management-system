@@ -1,5 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
-<%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -42,27 +41,7 @@
 		</div>
 	</nav>
 	
-	<div class="mainwrapper column">
-		<br>
-		<div>Level 1 Table</div>
-		<br>
-		<table class="ReqTable update">
-			<tr>
-				<th>Java</th>
-				<th>.NET</th>
-				<th>JST</th>
-			</tr>
-			<c:forEach items="${requesta}" var="item">
-				<tr class="tablerow">
-					<td><input type="text" readonly class="java" value="${item.getReqID()}" placeholder="Java"/></td>
-					<td><input type="text" class="expdate" value="${item.getExpDate()}" placeholder=".NET"/></td>
-					<td><input type="text" class="exptype" value="${item.getExpType()}" placeholder="JST"/></td>
-				</tr>
-			</c:forEach>
-		</table>
-		<br>
-		<br>
-	</div>
+
 	
 </body>
 <script defer>
