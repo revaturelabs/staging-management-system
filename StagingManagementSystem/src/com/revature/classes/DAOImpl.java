@@ -1,5 +1,6 @@
 package com.revature.classes;
 
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -96,7 +97,6 @@ public class DAOImpl implements DAOService {
 		return batch;
 	}
 
-
 	@Override
 	public ArrayList<AssociateInfo> GetAllAssociatesDB() {
 		
@@ -115,7 +115,6 @@ public class DAOImpl implements DAOService {
 		return assoList;
 		
 	}
-
 
 	@Override
 	public ArrayList<BatchInfo> GetAllBatchesDB() {
@@ -155,5 +154,6 @@ public class DAOImpl implements DAOService {
 		return clientList;
 		
 	}
+
 
 }

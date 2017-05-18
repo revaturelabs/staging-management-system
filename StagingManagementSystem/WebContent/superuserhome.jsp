@@ -17,9 +17,11 @@
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script
-	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.min.js"></script>
 <script
 	src="/StagingManagementSystem/JavaScripts/AddAssociateControllerScript.js"></script>
+	
 <title>SMS</title>
 <!-- AngularJs Library -->
 <script
@@ -77,30 +79,83 @@
 
 		</div>
 	</nav>
+
+	
+	
+	
+	<!-- Display the sample data read from get -->
 	<script>
-		$(document).on("click", "#addBatch", function() {
+	var mainApp = angular.module('sample',[]);
+	
+	// $scope is the application object (the owner of application variables and functions).
+	mainApp.controller("sampleController", function($scope,$http){
+		//makes a 
+		$scope.getUser = [];
+		$http.get("/StagingManagementSystem/getTableData")
+		.then(function(result){
+			$scope.getUser = [result.data];
+			console.log(getUser);
+			console.log(result.data);
+		});
+	});
+	
+	</script>
+		
+	<div ng-app="sample" ng-controller = "sampleController" align = "center">
+	<p> Click <a ng-click="loadBatches()"> here</a> to load data</p>
+	<br/>
+	<h1 ng-repeat="user in getUser">
+	{{user}}
+	</h1>
+	</div>
 
-			$("#addBatchForm").unbind('submit').bind('submit', function(e) {
-				e.preventDefault();
+<script>
+$(document).on("click", "#addBatch", function() {
 
-				$.ajax({
-					type : 'POST',
-					url : '/StagingManagementSystem/addBatch',
-					data : $(this).serialize(),
-					success : function(data) {
-						console.log("SUCCESS: ", data);
-						$('#addBatch').modal('hide');
+	$("#addBatchForm").unbind('submit').bind('submit', function(e) {
+		e.preventDefault();
 
-					},
-					error : function(e) {
-						console.log("ERROR: ", e);
-						display(e);
-					},
-					done : function(e) {
-						console.log("DONE");
-					}
-				});
-			});
+		$.ajax({
+			type : 'POST',
+			url : '/StagingManagementSystem/addBatch',
+			data : $(this).serialize(),
+			success : function(data) {
+				console.log("SUCCESS: ", data);
+			    $('#addBatch').modal('hide');
+
+			},
+			error : function(e) {
+				console.log("ERROR: ", e);
+				display(e);
+			},
+			done : function(e) {
+				console.log("DONE");
+			}
+		});
+	});
+});
+
+$(document).on("click", "#addAssociate", function() {
+
+	$("#addAssociateForm").unbind('submit').bind('submit', function(e) {
+		e.preventDefault();
+
+		$.ajax({
+			type : 'POST',
+			url : '/StagingManagementSystem/addAssociate',
+			data : $(this).serialize(),
+			success : function(data) {
+				console.log("SUCCESS: ", data);
+			    $('#addAssociate').modal('hide');
+
+			},
+			error : function(e) {
+				console.log("ERROR: ", e);
+				display(e);
+			},
+			done : function(e) {
+				console.log("DONE");
+			}
 		});
 
 		$(document).on("click", "#addAssociate", function() {

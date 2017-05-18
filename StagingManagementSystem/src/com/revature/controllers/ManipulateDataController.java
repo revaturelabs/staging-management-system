@@ -6,6 +6,8 @@ import javax.ws.rs.QueryParam;
 import java.io.IOException;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -22,9 +24,21 @@ import com.revature.classes.DAOService;
 
 @RestController
 public class ManipulateDataController {
+ 
+	static ApplicationContext ctx = new ClassPathXmlApplicationContext("appContext.xml");
+	static DAOService daoserv = (DAOService) ctx.getBean("DAOImpl");
 
-	ApplicationContext ctx = new ClassPathXmlApplicationContext("appContext.xml");
-	DAOService daoserv = (DAOService) ctx.getBean("DAOImpl");
+	@RequestMapping(value = "/getTableData", method = RequestMethod.GET)
+	public List<String> getTableData()
+	{
+		System.out.println("hi controller");
+		List<String> bang = new ArrayList<String>();
+		bang.add("holy shit this actually fucking worked???");
+		bang.add("oooooo");
+		bang.add("aaahhhhh");
+		return bang;
+	}
+	
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String login(@FormParam("username") String username, @FormParam("password") String password) {
@@ -42,8 +56,9 @@ public class ManipulateDataController {
 		}
 	}
 
-	@RequestMapping(value = "/addAssociate", method = RequestMethod.POST)
-	public @ResponseBody String PostService(HttpServletRequest request) throws IOException {
+	@RequestMapping(value = "/addAssociate")
+	@ResponseBody
+	public  String PostService(HttpServletRequest request) throws IOException {
 		// get form data
 		String name = request.getParameter("name");
 		String status = request.getParameter("associatestatus");
