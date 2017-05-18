@@ -1,15 +1,41 @@
 $(document).on("click", "#addBatch", function() {
 
-			$("#addBatchForm").unbind('submit').bind('submit', function(e) {
+	$("#addBatchForm").unbind('submit').bind('submit', function(e) {
+		e.preventDefault();
+
+		$.ajax({
+			type : 'POST',
+			url : '/StagingManagementSystem/addBatch',
+			data : $(this).serialize(),
+			success : function(data) {
+				console.log("SUCCESS: ", data);
+			    $('#addBatch').modal('hide');
+
+			},
+			error : function(e) {
+				console.log("ERROR: ", e);
+				display(e);
+			},
+			done : function(e) {
+				console.log("DONE");
+			}
+		});
+	});
+});
+
+
+		$(document).on("click", "#addAssociate", function() {
+
+			$("#addAssociateForm").unbind('submit').bind('submit', function(e) {
 				e.preventDefault();
 
 				$.ajax({
 					type : 'POST',
-					url : '/StagingManagementSystem/addBatch',
+					url : '/StagingManagementSystem/addAssociate',
 					data : $(this).serialize(),
 					success : function(data) {
 						console.log("SUCCESS: ", data);
-					    $('#addBatch').modal('hide');
+						$('#addAssociate').modal('hide');
 
 					},
 					error : function(e) {
@@ -23,4 +49,31 @@ $(document).on("click", "#addBatch", function() {
 			});
 		});
 
+		$(document).on("click", "#addClient", function() {
 
+			$("#addClientForm").unbind('submit').bind('submit', function(e) {
+				e.preventDefault();
+
+				$.ajax({
+					type : 'POST',
+					url : '/StagingManagementSystem/addClient',
+					data : $(this).serialize(),
+					success : function(data) {
+						console.log("SUCCESS: ", data);
+						$('#addClient').modal('hide');
+
+					},
+					error : function(e) {
+						console.log("ERROR: ", e);
+						display(e);
+					},
+					done : function(e) {
+						console.log("DONE");
+					}
+				});
+			});
+		});
+		
+		$(document).ready(function() {
+		    $('#myTable').DataTable();
+		} );
