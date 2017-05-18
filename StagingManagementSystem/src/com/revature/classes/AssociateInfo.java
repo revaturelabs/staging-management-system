@@ -33,11 +33,11 @@ public class AssociateInfo {
 	 */	
 	public AssociateInfo(){}
 	
-	public AssociateInfo(String associateName, String status, Set<ClientInfo> clients)
+	public AssociateInfo(String associateName, String status, BatchInfo batch)
 	{
 		AssociateName = associateName;
 		Status = status;
-		this.clients = clients;
+		this.batch = batch;
 	}
 	
 	public AssociateInfo(String associateName, String status, BatchInfo batch, Set<ClientInfo> clients)
