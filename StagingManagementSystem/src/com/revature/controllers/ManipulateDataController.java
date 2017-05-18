@@ -44,6 +44,8 @@ public class ManipulateDataController {
 	}
 
 
+
+
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String login(@FormParam("username") String username, @FormParam("password") String password) {
 		// try to get a single result from the database
@@ -158,27 +160,27 @@ public class ManipulateDataController {
     	return arrayToJson;
 	}
 	
-	@RequestMapping(value = "/displayBatch", method = RequestMethod.GET)
-	public @ResponseBody void ViewBatch(HttpServletRequest req, HttpServletResponse resp) throws JsonGenerationException, JsonMappingException, IOException
+	@RequestMapping(value = "/displayBatch", method = RequestMethod.POST)
+	public @ResponseBody String ViewBatch(HttpServletRequest req, HttpServletResponse resp) throws JsonGenerationException, JsonMappingException, IOException
 	{
 		List<BatchInfo> batch = new ArrayList<BatchInfo>();
 		
 		batch = daoserv.GetAllBatchesDB();
 		
 
-    	/* ObjectMapper objectMapper = new ObjectMapper();
+    	ObjectMapper objectMapper = new ObjectMapper();
     	objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
 
 		String arrayToJson = objectMapper.writeValueAsString(batch);
     	System.out.println("1. Convert Array to JSON :");
     	System.out.println(arrayToJson);
     	
-    	return arrayToJson; */
+    	return arrayToJson;
 		
-		String json = new Gson().toJson(batch);
+		/*String json = new Gson().toJson(batch);
 		System.out.println(json);
 		resp.setContentType("application/json");
-		resp.getWriter().write(json);
+		resp.getWriter().write(json);*/
 
 
 	}

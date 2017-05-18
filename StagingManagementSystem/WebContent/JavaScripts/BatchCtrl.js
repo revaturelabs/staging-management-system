@@ -1,11 +1,16 @@
 /**
  * superuserhome.jsp -- retrieve batches to display in the associate modal
  */
-
-app.controller("BatchCtrl", function($scope, $http) {
-	$scope.loadBatches = function() {
-		$http.get('displayBatch').then(function(response) {
-			$scope.batch = response.data;
+var mainApp = angular.module('superuser',[]);
+	
+	// $scope is the application object (the owner of application variables and functions).
+	mainApp.controller("BatchCtrl", function($scope,$http){
+		//makes a 
+		$scope.batches = [];
+		$http.get("/StagingManagementSystem/displayBatch")
+		.then(function(result){
+			$scope.batches = [result.data];
+			console.log(batches);
+			console.log(result.data);
 		});
-	};
-});
+	});

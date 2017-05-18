@@ -20,7 +20,6 @@
 	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
 
 <!-- Import Javascript Files -->
-<script src="JavaScripts/BatchApp.js"></script>
 <script src="JavaScripts/BatchCtrl.js"></script>
 <title>SMS</title>
 </head>
@@ -43,9 +42,8 @@
 						<ul class="dropdown-menu dropdown-menu-right" role="menu" style="">
 
 							<!-- navbar link add associate -->
-							<li><a id="associates"
-								data-toggle="modal" data-target="#addAssociate"
-								ng-click="loadBatches()"><span
+							<li><a id="associates" data-toggle="modal"
+								data-target="#addAssociate" ng-click="loadBatches()"><span
 									class="glyphicon glyphicon-plus"></span> Add Associate</a></li>
 
 							<!-- navbar link add batch -->
@@ -65,34 +63,6 @@
 
 		</div>
 	</nav>
-
-	<!-- <div ng-controller="sampleController">
-
-		<form ng-submit="submit()" id="sample">
-			<input type="submit"
-				value="here i am lord, please reach down and cool my burning angular with a drop of luck"
-				ng-click="getUserDetails()" />
-		</form>
-		{{user}}
-	
-	
-	
-	
-
-	<!-- Display the sample data read from get -->
-	<!-- <script>
-		function Hello($scope, $http) {
-			$scope.getUserDetails = function() {
-				$http.get('/StagingManagementSystem/getTableData').success(
-						function(data) {
-							$scope.user = data;
-						});
-			}
-		}
-	</script>-->
-
-
-
 
 	<script>
 		// when the addBatch button is clicked on the batch modal
@@ -183,69 +153,66 @@
 <!-----------------------
 Add associate modal
  ------------------------->
-<div ng-app="superuser">
-<div id="addAssociate" class="modal slide" role="dialog"
-	ng-controller="BatchCtrl">
-	<div class="modal-dialog">
+	<div id="addAssociate" class="modal slide" role="dialog"
+		ng-app="superuser">
+		<div class="modal-dialog">
 
-		<!-- Modal content-->
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
-				<h4 class="modal-title">Add Associate</h4>
-			</div>
-			<div class="modal-body">
-				<form id="addAssociateForm">
-					<!--  
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Add Associate</h4>
+				</div>
+				<div class="modal-body">
+					<form id="addAssociateForm">
+						<!--  
 					- Input: text field for full associate name
 					-->
-					<div class="form-group">
-						<label for="name">Full Name:</label> <input type="text"
-							class="form-control" id="name" name="name" required>
-					</div>
-					<!--  
+						<div class="form-group">
+							<label for="name">Full Name:</label> <input type="text"
+								class="form-control" id="name" name="name" required>
+						</div>
+						<!--  
 					- Input: select statement for collecting the availability status of an associate
 					-->
-					<div class="form-group">
-						<label for="associatestatus">Associate Status:</label> <select
-							class="form-control" id="associatestatus" name="associatestatus">
-							<option>Available</option>
-							<option>Mapped</option>
-							<option>Confirmed</option>
-						</select>
-					</div>
-					<!--  
+						<div class="form-group">
+							<label for="associatestatus">Associate Status:</label> <select
+								class="form-control" id="associatestatus" name="associatestatus">
+								<option>Available</option>
+								<option>Mapped</option>
+								<option>Confirmed</option>
+							</select>
+						</div>
+						<!--  
 					- Input: select statement for collecting the batch that an associate belongs to
 					- options retrieved from a controller
 					-->
-					<div class="form-group">
-						<label for="batchSelector">Batch:</label> 
-						<select id="BatchSelector" style="width: 100%;" name="batch">
-							<option ng-repeat="x in batch">{{x.TrainingName}}</option>
-						</select>
-					</div>
-					<!--  
+						<div class="form-group" ng-controller="BatchCtrl">
+							<label for="batchSelector">Batch:</label> 
+							<select id="BatchSelector" style="width: 100%;" name="batch"
+								ng-options="b.TrainingName for b in batches"></select>
+						</div>
+						<!--  
 					- Input: submit the form
 					-->
-					<button type="submit" id="addAssociate" class="btn btn-default">Register
-						Associate</button>
-					<!--  
+						<button type="submit" id="addAssociate" class="btn btn-default">Register
+							Associate</button>
+						<!--  
 					- Input: clear the form
 					-->
-					<button type="reset" class="btn btn-default">Clear Form</button>
-				</form>
-			</div>
-			<div class="modal-footer">
-				<!--  
+						<button type="reset" class="btn btn-default">Clear Form</button>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<!--  
 					- Input: close the modal
 					-->
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
 			</div>
-		</div>
 
+		</div>
 	</div>
-</div>
-</div>
 
 <!-----------------------
 Add batch modal
