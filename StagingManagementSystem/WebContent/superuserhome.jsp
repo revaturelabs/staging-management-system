@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
-<html>
+<html ng-app="sample">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 
@@ -16,18 +16,18 @@
 <!-- Latest compiled JavaScript -->
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script
-src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.min.js"></script>
-<script
-	src="/StagingManagementSystem/JavaScripts/AddAssociateControllerScript.js"></script>
-	
+
 <title>SMS</title>
 <!-- AngularJs Library -->
 <script
 	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
 <script src="/StagingManagementSystem/angularScripts/AngularScript.js"></script>
-
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.min.js"></script>
+<script
+	src="/StagingManagementSystem/JavaScripts/BatchCtrl.js"></script>
+	
+<script
+	src="/StagingManagementSystem/JavaScripts/AddAssociateControllerScript.js"></script>
 <!-- DataTable Library -->
 <link type="text/css" rel="stylesheet"
 	href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
@@ -79,143 +79,22 @@ src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></scr
 
 		</div>
 	</nav>
-
 	
-	
-	
-	<!-- Display the sample data read from get -->
-	<script>
-	var mainApp = angular.module('sample',[]);
-	
-	// $scope is the application object (the owner of application variables and functions).
-	mainApp.controller("sampleController", function($scope,$http){
-		//makes a 
-		$scope.getUser = [];
-		$http.get("/StagingManagementSystem/getTableData")
-		.then(function(result){
-			$scope.getUser = [result.data];
-			console.log(getUser);
-			console.log(result.data);
-		});
-	});
-	
-	</script>
-		
-	<div ng-app="sample" ng-controller = "sampleController" align = "center">
+	<div ng-controller="sampleController" align = "center">
 	<p> Click <a ng-click="loadBatches()"> here</a> to load data</p>
 	<br/>
-	<h1 ng-repeat="user in getUser">
+	<h1 ng-repeat="user in getUser"> 
 	{{user}}
 	</h1>
 	</div>
 
-<script>
-$(document).on("click", "#addBatch", function() {
-
-	$("#addBatchForm").unbind('submit').bind('submit', function(e) {
-		e.preventDefault();
-
-		$.ajax({
-			type : 'POST',
-			url : '/StagingManagementSystem/addBatch',
-			data : $(this).serialize(),
-			success : function(data) {
-				console.log("SUCCESS: ", data);
-			    $('#addBatch').modal('hide');
-
-			},
-			error : function(e) {
-				console.log("ERROR: ", e);
-				display(e);
-			},
-			done : function(e) {
-				console.log("DONE");
-			}
-		});
-	});
-});
-
-$(document).on("click", "#addAssociate", function() {
-
-	$("#addAssociateForm").unbind('submit').bind('submit', function(e) {
-		e.preventDefault();
-
-		$.ajax({
-			type : 'POST',
-			url : '/StagingManagementSystem/addAssociate',
-			data : $(this).serialize(),
-			success : function(data) {
-				console.log("SUCCESS: ", data);
-			    $('#addAssociate').modal('hide');
-
-			},
-			error : function(e) {
-				console.log("ERROR: ", e);
-				display(e);
-			},
-			done : function(e) {
-				console.log("DONE");
-			}
-		});
-
-		$(document).on("click", "#addAssociate", function() {
-
-			$("#addAssociateForm").unbind('submit').bind('submit', function(e) {
-				e.preventDefault();
-
-				$.ajax({
-					type : 'POST',
-					url : '/StagingManagementSystem/addAssociate',
-					data : $(this).serialize(),
-					success : function(data) {
-						console.log("SUCCESS: ", data);
-						$('#addAssociate').modal('hide');
-
-					},
-					error : function(e) {
-						console.log("ERROR: ", e);
-						display(e);
-					},
-					done : function(e) {
-						console.log("DONE");
-					}
-				});
-			});
-		});
-
-		$(document).on("click", "#addClient", function() {
-
-			$("#addClientForm").unbind('submit').bind('submit', function(e) {
-				e.preventDefault();
-
-				$.ajax({
-					type : 'POST',
-					url : '/StagingManagementSystem/addClient',
-					data : $(this).serialize(),
-					success : function(data) {
-						console.log("SUCCESS: ", data);
-						$('#addClient').modal('hide');
-
-					},
-					error : function(e) {
-						console.log("ERROR: ", e);
-						display(e);
-					},
-					done : function(e) {
-						console.log("DONE");
-					}
-				});
-			});
-		});
-	</script>
-	
-	<div class="row">
+	<div ng-controller="formCtrl" class="row">
 		<!-- left side bar -->
 		<div class="col-sm-2">
 			<button data-toggle="modal" data-target="#AssociateInfo">Modal
 				Test</button>
 		</div>
-
+					
 		<!-- right side bar -->
 		<div class="col-sm-7">
 			<ul class="nav nav-pills">
@@ -226,7 +105,7 @@ $(document).on("click", "#addAssociate", function() {
 			</ul>
 
 			<div class="tab-content">
-				<div ng-app="myApp2" ng-controller="formCtrl2" id="current" class="tab-pane fade in active" >
+				<div id="current" class="tab-pane fade in active" >
 					<table class="table table-bordered table-striped table-hover">
 						<thead>
 							<tr>
@@ -241,7 +120,7 @@ $(document).on("click", "#addAssociate", function() {
 							<tr>
 								<td>Available</td>
 								<td>
-									<button data-toggle="modal" data-target="#AssociateInfo">{{master.firstName}}</button>
+									<button data-toggle="modal" data-target="#AssociateInfo">{{master}}</button>
 								</td>
 								<td><button data-toggle="modal"
 										data-target="#AssociateInfo">35</button></td>
@@ -294,7 +173,6 @@ $(document).on("click", "#addAssociate", function() {
 			</div>
 		</div>
 	</div>
-	<script src="JavaScripts/modalScript.js"></script>
 	
 </body>
 
@@ -318,6 +196,7 @@ $(document).on("click", "#addAssociate", function() {
 							class="form-control" id="associatestatus" name="associatestatus">
 							<option>Available</option>
 							<option>Mapped</option>
+							<option>Interviewed</option>
 							<option>Confirmed</option>
 						</select>
 					</div>
@@ -374,6 +253,7 @@ $(document).on("click", "#addAssociate", function() {
 							<option value="java">Java</option>
 							<option value="net">.NET</option>
 							<option value="jta">JTA</option>
+							<option value="jta">Big Data</option>
 						</select>
 					</div>
 					<button type="submit" id="addBatch" class="btn btn-default">Create
@@ -560,20 +440,10 @@ $(document).on("click", "#addAssociate", function() {
 
 						</table>
 					</div>
-
-					<script>
-						var app = angular.module('myApp2', []);
-						app.controller('formCtrl2', function($scope) {
-							$scope.master = {
-								firstName : "John",
-								lastName : "Doe"
-							};
-							$scope.reset = function() {
-								$scope.user = angular.copy($scope.master);
-							};
-							$scope.reset();
-						});
-					</script>
+					
+					
+					
+					
 				</form>
 			</div>
 			<div class="modal-footer">
