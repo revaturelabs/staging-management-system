@@ -98,7 +98,7 @@ public class DAOImpl implements DAOService {
 	}
 
 
-	@Override
+	@Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
 	public ArrayList<AssociateInfo> GetAllAssociatesDB() {
 		
 		ArrayList<AssociateInfo> assoList = new ArrayList<AssociateInfo>();
@@ -118,7 +118,7 @@ public class DAOImpl implements DAOService {
 	}
 
 
-	@Override
+	@Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
 	public ArrayList<BatchInfo> GetAllBatchesDB() {
 		
 		ArrayList<BatchInfo> batchList = new ArrayList<BatchInfo>();
@@ -138,7 +138,7 @@ public class DAOImpl implements DAOService {
 	}
 
 
-	@Override
+	@Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
 	public ArrayList<ClientInfo> GetAllClientsDB() {
 		
 		ArrayList<ClientInfo> clientList = new ArrayList<ClientInfo>();

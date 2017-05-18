@@ -3,6 +3,8 @@ package com.revature.classes;
 import java.sql.Date;
 import java.util.Set;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 /*
  * Created On 5/11/2017
  */
@@ -62,11 +64,10 @@ public class BatchInfo {
 	 * Start One to Many Relationship (1)Batch:(M):Associates
 	 */
 	// Initialize 1:M
-	@OneToMany(cascade = (CascadeType.ALL))
-	// Link at TrainingName with AssociateInfo Table
+	@JsonIgnore
+	@OneToMany(fetch = FetchType.LAZY, cascade = (CascadeType.ALL))
 	@JoinColumn(name = "TrainingName")
-
-	private Set<AssociateInfo> associates;
+	private Set<AssociateInfo> associates; 
 
 	public Set<AssociateInfo> getAssociates() {
 

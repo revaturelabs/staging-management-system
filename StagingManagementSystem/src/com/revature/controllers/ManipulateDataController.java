@@ -6,6 +6,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -37,10 +38,15 @@ public class ManipulateDataController {
 	ApplicationContext ctx = new ClassPathXmlApplicationContext("appContext.xml");
 	DAOService daoserv = (DAOService) ctx.getBean("DAOImpl");
 	
-	@RequestMapping(value = "/getTableData", method = RequestMethod.POST)
-	public @ResponseBody String getTableData()
+	@RequestMapping(value = "/getTableData", method = RequestMethod.GET)
+	public List<String> getTableData()
 	{
-		return "holy shit this actually fucking worked???";
+		System.out.println("hi controller");
+		List<String> bang = new ArrayList<String>();
+		bang.add("holy shit this actually fucking worked???");
+		bang.add("oooooo");
+		bang.add("aaahhhhh");
+		return bang;
 	}
 
 
@@ -70,7 +76,7 @@ public class ManipulateDataController {
 		String b = request.getParameter("batch");
 		BatchInfo batch = new BatchInfo();
 		batch.setTrainingName(b);
-		Set<BatchInfo> batches = null;
+		Set<BatchInfo> batches = new HashSet<BatchInfo>();
 		batches.add(batch);
 
 		System.out.println(name + " :: " + status + " :: " + batch);
@@ -79,7 +85,7 @@ public class ManipulateDataController {
 		AssociateInfo associate = new AssociateInfo(name, status, batch);
 
 		// call the addBatch method for the database
-		// daoserv.addAssociate(associate);
+		daoserv.AddAssociate(associate);
 	}
 
 	@RequestMapping(value = "/addBatch", method = RequestMethod.POST)
@@ -160,29 +166,25 @@ public class ManipulateDataController {
     	return arrayToJson;
 	}
 	
-	@RequestMapping(value = "/displayBatch", method = RequestMethod.POST)
-	public @ResponseBody String ViewBatch(HttpServletRequest req, HttpServletResponse resp) throws JsonGenerationException, JsonMappingException, IOException
+	@RequestMapping(value = "/displayBatch", method = RequestMethod.GET)
+	public @ResponseBody List<BatchInfo> ViewBatch(HttpServletRequest req, HttpServletResponse resp) throws JsonGenerationException, JsonMappingException, IOException
 	{
 		List<BatchInfo> batch = new ArrayList<BatchInfo>();
 		
 		batch = daoserv.GetAllBatchesDB();
 		
 
-    	ObjectMapper objectMapper = new ObjectMapper();
+    	/* ObjectMapper objectMapper = new ObjectMapper();
     	objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
 
 		String arrayToJson = objectMapper.writeValueAsString(batch);
     	System.out.println("1. Convert Array to JSON :");
-    	System.out.println(arrayToJson);
+    	System.out.println(arrayToJson); 
     	
-    	return arrayToJson;
+    	return arrayToJson; */
 		
-		/*String json = new Gson().toJson(batch);
-		System.out.println(json);
-		resp.setContentType("application/json");
-		resp.getWriter().write(json);*/
-
-
+		return batch;
+		
 	}
 
 }
