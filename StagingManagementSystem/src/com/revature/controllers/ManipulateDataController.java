@@ -12,6 +12,7 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -19,8 +20,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -49,11 +52,26 @@ public class ManipulateDataController {
 		return bang;
 	}
 
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public ModelAndView displayLogin(@RequestParam(value = "error", required = false) String error,
+			@RequestParam(value = "logout", required = false) String logout) {
+		ModelAndView model = new ModelAndView();
+		if (error != null) {
+			model.addObject("error", "Invalid username and password!");
+		}
+
+		if (logout != null) {
+			model.addObject("msg", "You've been logged out successfully.");
+		}
+		model.setViewName("login");
+
+		return model;
+	}
 
 
 
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public String login(@FormParam("username") String username, @FormParam("password") String password) {
+	@RequestMapping(value = "/checkLogin", method = RequestMethod.POST)
+	public String CheckLogin(@FormParam("username") String username, @FormParam("password") String password) {
 		// try to get a single result from the database
 		// if a single result cannot be returned from the database
 		// return the user to the login page and display a notification alert
@@ -66,6 +84,22 @@ public class ManipulateDataController {
 			String msg = "Username or Password not found";
 			return msg;
 		}
+	}
+	
+	
+	@RequestMapping(value="/logout", method=RequestMethod.GET)
+	public ModelAndView logout(HttpServletRequest req)
+	{
+		HttpSession session = req.getSession();
+		session.invalidate();
+		
+		ModelAndView model = new ModelAndView();
+		
+		model.setViewName("login");
+
+		return model;
+
+
 	}
 
 	@RequestMapping(value = "/addAssociate", method = RequestMethod.POST)

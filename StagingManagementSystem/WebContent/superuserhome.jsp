@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+<%@page session="true"%>
+
 <!DOCTYPE html>
 <html ng-app="superuser">
 <head>
@@ -22,25 +26,25 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
 
-	<script
-    src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.min.js"></script>
-	
+<script
+	src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.min.js"></script>
+
 <!-- DataTable Library -->
 <link type="text/css" rel="stylesheet"
 	href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
 
 <script type="text/javascript"
 	src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
-	
-	
-	
+
+
+
 <!-- Import Javascript Files -->
 <script src="JavaScripts/BatchCtrl.js"></script>
-	<link rel="stylesheet" href="css/modalView.css" />
+<link rel="stylesheet" href="css/modalView.css" />
 <script src="JavaScripts/AddAssociateControllerScript.js"></script>
 
-	
-</head> 
+
+</head>
 <body>
 	<nav class="navbar navbar-inverse">
 		<div class="container-fluid">
@@ -74,6 +78,23 @@
 								data-target="#addClient"><span
 									class="glyphicon glyphicon-plus"></span> Add Client</a></li>
 
+							<!-- navbar link logout -->
+							<li><a href="javascript:formSubmit()"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+
+							<script>
+								function formSubmit() {
+									document.getElementById("logoutForm")
+											.submit();
+								}
+							</script>
+
+							<!-- csrt for log out-->
+							<form action="logout" method="post" id="logoutForm">
+								<input type="hidden" name="${_csrf.parameterName}"
+									value="${_csrf.token}" />
+							</form>
+
+
 						</ul></li>
 
 				</ul>
@@ -81,13 +102,13 @@
 
 		</div>
 	</nav>
-	
-	<div ng-controller="sampleController" align = "center">
-	<p> Click <a ng-click="loadBatches()"> here</a> to load data</p>
-	<br/>
-	<h1 ng-repeat="user in getUser"> 
-	{{user}}
-	</h1>
+
+	<div ng-controller="sampleController" align="center">
+		<p>
+			Click <a ng-click="loadBatches()"> here</a> to load data
+		</p>
+		<br />
+		<h1 ng-repeat="user in getUser">{{user}}</h1>
 	</div>
 
 	<div ng-controller="formCtrl" class="row">
@@ -96,7 +117,7 @@
 			<button data-toggle="modal" data-target="#AssociateInfo">Modal
 				Test</button>
 		</div>
-					
+
 		<!-- right side bar -->
 		<div class="col-sm-7">
 			<ul class="nav nav-pills">
@@ -107,7 +128,7 @@
 			</ul>
 
 			<div class="tab-content">
-				<div id="current" class="tab-pane fade in active" >
+				<div id="current" class="tab-pane fade in active">
 					<table class="table table-bordered table-striped table-hover">
 						<thead>
 							<tr>
@@ -176,7 +197,7 @@
 		</div>
 	</div>
 
-	
+
 </body>
 
 
@@ -218,13 +239,12 @@ Add associate modal
 					- options retrieved from a controller
 					-->
 					<div class="form-group" ng-controller="BatchCtrl">
-						<label for="batchSelector">Batch:</label> 
-						<select
+						<label for="batchSelector">Batch:</label> <select
 							id="BatchSelector" style="width: 100%;" name="batch"
 							class="form-control">
 							<option ng-repeat="b in batches" value="{{b.trainingName}}">{{b.trainingName}}</option>
 						</select>
-						
+
 					</div>
 					<!--  
 					- Input: submit the form
@@ -525,47 +545,36 @@ Add client modal
 
 						</table>
 					</div>
-					
-					
-					
-					
+
+
+
+
 				</form>
 			</div>
 			<div class="modal-footer">
-				<div class=pull-left >
-					<label class="radio-inline">
-						<input type="radio" name="optradio"> 
-						Available
-					</label> 
-					<label class="radio-inline">
-						<input type="radio" name="optradio">
-						Mapped
-					</label> 
-					
-					<label class="radio-inline">
-						<input type="radio" name="optradio">
-						Interviewed
-					</label>
-					<label class="radio-inline">
-						<input type="radio" name="optradio">
-						Confirmed
-					</label>
-				<br>
-				<table>
-				<tr>
-					<td>
-					<select class="form-control" id="sel1">
-	        				<option>Available</option>
-	        				<option>Infosys</option>
-	        				<option>Capital One</option>
-	        				<option>IBM</option>
-	      			</select>
-      				</td>
-      				<td style="padding: 20px">
-					<button type="button">Ok</button>
-					</td>
-				</tr>
-				</table>
+				<div class=pull-left>
+					<label class="radio-inline"> <input type="radio"
+						name="optradio"> Available
+					</label> <label class="radio-inline"> <input type="radio"
+						name="optradio"> Mapped
+					</label> <label class="radio-inline"> <input type="radio"
+						name="optradio"> Interviewed
+					</label> <label class="radio-inline"> <input type="radio"
+						name="optradio"> Confirmed
+					</label> <br>
+					<table>
+						<tr>
+							<td><select class="form-control" id="sel1">
+									<option>Available</option>
+									<option>Infosys</option>
+									<option>Capital One</option>
+									<option>IBM</option>
+							</select></td>
+							<td style="padding: 20px">
+								<button type="button">Ok</button>
+							</td>
+						</tr>
+					</table>
 				</div>
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 
