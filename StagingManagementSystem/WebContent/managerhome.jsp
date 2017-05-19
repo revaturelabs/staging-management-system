@@ -1,4 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@page session="true"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,8 +15,6 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 <!-- Latest compiled JavaScript -->
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
 <script
@@ -36,6 +36,22 @@
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
 						data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span>
 							Manager </a>
+					<!-- navbar link logout -->
+							<li><a href="javascript:formSubmit()"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+
+							<script>
+								function formSubmit() {
+									document.getElementById("logoutForm")
+											.submit();
+								}
+							</script>
+
+							<!-- csrt for log out-->
+							<form action="logout" method="post" id="logoutForm">
+								<input type="hidden" name="${_csrf.parameterName}"
+									value="${_csrf.token}" />
+							</form>
+
 				</ul>
 			</div>
 		</div>

@@ -63,6 +63,7 @@
 	</bean>
 	
 	
+	<bean id="authSuccessHandler" class="com.revature.security.AuthSuccessHandler" />
 
 	<tx:annotation-driven />
 </beans>
