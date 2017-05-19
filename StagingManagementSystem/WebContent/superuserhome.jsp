@@ -21,13 +21,16 @@
 <!-- AngularJs Library -->
 <script
 	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
-
+<script src="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.js"></script>
 	<script
     src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.min.js"></script>
 	
 <!-- DataTable Library -->
 <link type="text/css" rel="stylesheet"
 	href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
+	
+<!-- Angular Table Library -->	
+<link rel="stylesheet"; href="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.css">
 
 <script type="text/javascript"
 	src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
@@ -38,7 +41,6 @@
 <script src="JavaScripts/BatchCtrl.js"></script>
 	<link rel="stylesheet" href="css/modalView.css" />
 <script src="JavaScripts/AddAssociateControllerScript.js"></script>
-
 	
 </head> 
 <body>
@@ -81,16 +83,8 @@
 
 		</div>
 	</nav>
-	
-	<div ng-controller="sampleController" align = "center">
-	<p> Click <a ng-click="loadBatches()"> here</a> to load data</p>
-	<br/>
-	<h1 ng-repeat="user in getUser"> 
-	{{user}}
-	</h1>
-	</div>
 
-	<div ng-controller="formCtrl" class="row">
+	<div ng-controller="associateTableCtrl" class="row">
 		<!-- left side bar -->
 		<div class="col-sm-2">
 			<button data-toggle="modal" data-target="#AssociateInfo">Modal
@@ -389,7 +383,7 @@ Add client modal
 	<div class="modal-dialog">
 
 		<!-- Modal content-->
-		<div class="modal-content">
+		<div ng-controller="client" class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
 				<h4 class="modal-title">
@@ -399,170 +393,63 @@ Add client modal
 			<div class="modal-body">
 
 				<form id="insert">
-					<div ng-app="myApp2" ng-controller="formCtrl2">
-						<table id="myTable" class="table table-striped">
-							<thead>
-								<tr>
-									<th>Check to Select</th>
-									<th>Firstname</th>
-									<th>Lastname</th>
-									<th>EmId</th>
-									<th>Status</th>
-									<th>Company</th>
-									<th>Start Date</th>
+					<div>
+						<table ng-table="vm.tableParams" show-filter="true" class="table table-striped">
+							 
+								<tr ng-repeat="a in associatesList">
+									<td title="'Check'"><input type="checkbox" value=""></td>
+									<td title="'Name'" filter="{ name: 'text'}" sortable="'name'">{{a.associateName}}</td>
+									<td title="'EmpID'" filter="{ EmpID: 'text'}" sortable="'EmpID'">{{a.associateID}}</td>
+									<td title="'Status'" filter="{ Status: 'text'}" sortable="'Status'">{{a.status}}</td>
+									<td title="'StartDate'" filter="{ StartDate: 'text'}" sortable="'StartDate'">{{a.startDate}}</td>
+									<td title="'EndDate'" filter="{ EndDate: 'text'}" sortable="'EndDate'">{{a.endDate}}</td>
+									<td title="'Company'" filter="{ Company: 'text'}" sortable="'Company'">nothing</td>
 								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td><input type="checkbox" value=""></td>
-									<td>John</td>
-									<td>Doe</td>
-									<td>mark@sample.comuyfytdykjrsdjrcdtr</td>
-									<td>John</td>
-									<td>Doe</td>
-									<td>john@example.comutykdfyutdykjidrtyjurdstjurs</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox" value=""></td>
-									<td>Mary</td>
-									<td>Moe</td>
-									<td>mary@example.com</td>
-									<td>John</td>
-									<td>Doe</td>
-									<td>john@example.com</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox" value=""></td>
-									<td>July</td>
-									<td>Dooley</td>
-									<td>july@example.com</td>
-									<td>John</td>
-									<td>Doe</td>
-									<td>john@example.com</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox" value=""></td>
-									<td>John</td>
-									<td>Doe</td>
-									<td>mark@example.comuyfytdykjrsdjrcdtr</td>
-									<td>John</td>
-									<td>Doe</td>
-									<td>john@example.comutykdfyutdykjidrtyjurdstjurs</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox" value=""></td>
-									<td>John</td>
-									<td>Doe</td>
-									<td>john@example.comuyfytdykjrsdjrcdtr</td>
-									<td>John</td>
-									<td>Doe</td>
-									<td>john@example.comutykdfyutdykjidrtyjurdstjurs</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox" value=""></td>
-									<td>John</td>
-									<td>Doe</td>
-									<td>mark@example.comuyfytdykjrsdjrcdtr</td>
-									<td>John</td>
-									<td>Doe</td>
-									<td>john@example.comutykdfyutdykjidrtyjurdstjurs</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox" value=""></td>
-									<td>John</td>
-									<td>Doe</td>
-									<td>john@example.comuyfytdykjrsdjrcdtr</td>
-									<td>John</td>
-									<td>Doe</td>
-									<td>john@example.comutykdfyutdykjidrtyjurdstjurs</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox" value=""></td>
-									<td>John</td>
-									<td>Doe</td>
-									<td>john@example.comuyfytdykjrsdjrcdtr</td>
-									<td>John</td>
-									<td>Doe</td>
-									<td>john@example.comutykdfyutdykjidrtyjurdstjurs</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox" value=""></td>
-									<td>John</td>
-									<td>Doe</td>
-									<td>john@example.comuyfytdykjrsdjrcdtr</td>
-									<td>John</td>
-									<td>Doe</td>
-									<td>john@example.comutykdfyutdykjidrtyjurdstjurs</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox" value=""></td>
-									<td>John</td>
-									<td>Doe</td>
-									<td>john@example.comuyfytdykjrsdjrcdtr</td>
-									<td>John</td>
-									<td>Doe</td>
-									<td>john@example.comutykdfyutdykjidrtyjurdstjurs</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox" value=""></td>
-									<td>John</td>
-									<td>Doe</td>
-									<td>john@example.comuyfytdykjrsdjrcdtr</td>
-									<td>John</td>
-									<td>Doe</td>
-									<td>john@example.comutykdfyutdykjidrtyjurdstjurs</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox" value=""></td>
-									<td>John</td>
-									<td>Doe</td>
-									<td>john@example.comuyfytdykjrsdjrcdtr</td>
-									<td>John</td>
-									<td>Doe</td>
-									<td>john@example.comutykdfyutdykjidrtyjurdstjurs</td>
-								</tr>
-							</tbody>
-
+							 
 						</table>
 					</div>
-					
-					
-					
 					
 				</form>
 			</div>
 			<div class="modal-footer">
 				<div class=pull-left >
 					<label class="radio-inline">
-						<input type="radio" name="optradio"> 
+						<input type="radio" value="available" name="optradio"> 
 						Available
 					</label> 
 					<label class="radio-inline">
-						<input type="radio" name="optradio">
+						<input type="radio" value="mapped" name="optradio">
 						Mapped
 					</label> 
 					
 					<label class="radio-inline">
-						<input type="radio" name="optradio">
+						<input type="radio" value="interviewed" name="optradio">
 						Interviewed
 					</label>
 					<label class="radio-inline">
-						<input type="radio" name="optradio">
+						<input type="radio" value="confirmed" name="optradio">
 						Confirmed
 					</label>
 				<br>
 				<table>
 				<tr>
 					<td>
-					<select class="form-control" id="sel1">
-	        				<option>Available</option>
-	        				<option>Infosys</option>
-	        				<option>Capital One</option>
-	        				<option>IBM</option>
+					<select class="form-control" id="sel1" name="clients">
+	        				<option ng-repeat="t in clientList" value="{{t.clientID}}">{{t.name}}</option>
+	        				
 	      			</select>
+	      			
+	      			<!--  <div class="form-group" ng-controller="BatchCtrl">
+						<label for="batchSelector">Batch:</label> 
+						<select
+							id="BatchSelector" style="width: 100%;" name="batch"
+							class="form-control">
+							<option ng-repeat="b in batches" value="{{b.trainingName}}">{{b.trainingName}}</option>
+						</select> -->
+	      			
       				</td>
       				<td style="padding: 20px">
-					<button type="button">Ok</button>
+					<button ng-click="updateStatus()" type="button">Ok</button>
 					</td>
 				</tr>
 				</table>

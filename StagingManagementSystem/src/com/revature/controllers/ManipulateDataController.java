@@ -130,26 +130,18 @@ public class ManipulateDataController {
 		daoserv.AddClient(client);
 	}
 	
-	@RequestMapping(value = "/displayStats", method = RequestMethod.POST)
-	public @ResponseBody String ViewAssociateStats(HttpServletRequest req) throws JsonGenerationException, JsonMappingException, IOException
+	@RequestMapping(value = "/displayStats", method = RequestMethod.GET)
+	public @ResponseBody List<AssociateInfo> ViewAssociateStats(HttpServletRequest req,  HttpServletResponse resp) throws JsonGenerationException, JsonMappingException, IOException
 	{
 		List<AssociateInfo> associates;
 		
 		associates = daoserv.GetAllAssociatesDB();
-		
-
-    	ObjectMapper objectMapper = new ObjectMapper();
-    	objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
-
-		String arrayToJson = objectMapper.writeValueAsString(associates);
-    	System.out.println("1. Convert Array to JSON :");
-    	System.out.println(arrayToJson);
     	
-    	return arrayToJson;
+    	return associates;
 	}
 	
-	@RequestMapping(value = "/displayClients", method = RequestMethod.POST)
-	public @ResponseBody List<ClientInfo> ViewClients(HttpServletRequest req) throws JsonGenerationException, JsonMappingException, IOException
+	@RequestMapping(value = "/displayClients", method = RequestMethod.GET)
+	public @ResponseBody List<ClientInfo> ViewClients(HttpServletRequest req, HttpServletResponse resp) throws JsonGenerationException, JsonMappingException, IOException
 	{
 		List<ClientInfo> clients;
 		

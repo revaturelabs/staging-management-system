@@ -45,7 +45,7 @@ public class AssociateInfo {
 		AssociateName = associateName;
 		Status = status;
 		this.batch = batch;
-		this.clients = clients;
+	//	this.clients = clients;
 	}
 	
 	public AssociateInfo(long associateID, String associateName, String status, BatchInfo batch,
@@ -55,7 +55,7 @@ public class AssociateInfo {
 		AssociateName = associateName;
 		Status = status;
 		this.batch = batch;
-		this.clients = clients;
+	//	this.clients = clients;
 	}
 	
 	/*
@@ -71,7 +71,7 @@ public class AssociateInfo {
 	@JoinTable(name = "Associate_Clients", joinColumns = {
 			@JoinColumn(name = "AssociateID", nullable = false, updatable = false) }, inverseJoinColumns = {
 					@JoinColumn(name = "ClientID", nullable = false, updatable = false) })
-		private Set<ClientInfo> clients;
+		// private Set<ClientInfo> clients;
 /*
 	 * End Many to Many Relationship
 	 */
@@ -90,13 +90,13 @@ public class AssociateInfo {
 
 
 
-	public Set<ClientInfo> getClients() {
+/*	public Set<ClientInfo> getClients() {
 		return clients;
 	}
 
 	public void setClients(Set<ClientInfo> clients) {
 		this.clients = clients;
-	}
+	}*/
 
 	public long getAssociateID() {
 		return AssociateID;
@@ -131,7 +131,7 @@ public class AssociateInfo {
 	@Override
 	public String toString() {
 		return "AssociateInfo [AssociateID=" + AssociateID + ", AssociateName=" + AssociateName + ", Status=" + Status
-				+ ", batch=" + batch + ", clients=" + clients + "]";
+				+ ", batch=" + batch + "]";
 	}
 	/*
 	 * End toString
