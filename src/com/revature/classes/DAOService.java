@@ -21,5 +21,8 @@ public interface DAOService {
 	public ArrayList<BatchInfo> GetAllBatchesDB();
 
 	public ArrayList<ClientInfo> GetAllClientsDB();
+	
+	public ArrayList<Week> createWeeks();
+
 
 }

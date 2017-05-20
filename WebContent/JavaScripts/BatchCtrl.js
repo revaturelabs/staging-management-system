@@ -5,7 +5,7 @@
     var mainApp = angular.module('superuser', []);
 
 
-    mainApp.controller('formCtrl', function($scope) {
+    /* mainApp.controller('formCtrl', function($scope) {
         $scope.master = {
             firstName : "John",
             lastName : "Doe"
@@ -26,7 +26,7 @@
             console.log(getUser);
             console.log(result.data);
         });
-    });
+    });*/
     
     
 //  // $scope is the application object (the owner of application variables and functions).
@@ -53,14 +53,28 @@
 
     
 
-// $scope is the application object (the owner of application variables and
-// functions).
+
 mainApp.controller("BatchCtrl", function($scope, $http) {
-	// makes a
 	$http.get("/StagingManagementSystem/displayBatch")
 	.then(function(result) {
 		$scope.batches = result.data;
 		console.log(batches);
+		console.log(result.data);
+	});
+});
+
+mainApp.controller("currentTable", function($scope, $http) {
+	$http.get("/StagingManagementSystem/displayWeeks")
+	.then(function(result) {
+		$scope.weeks = result.data;
+		console.log(weeks);
+		console.log(result.data);
+	});
+	
+	$http.get("/StagingManagementSystem/displayCurrent")
+	.then(function(result) {
+		$scope.current = result.data;
+		console.log(current);
 		console.log(result.data);
 	});
 });
