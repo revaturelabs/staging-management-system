@@ -1,6 +1,7 @@
 package com.revature.classes;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public interface DAOService {
 	
@@ -25,4 +26,9 @@ public interface DAOService {
 	public ArrayList<Week> createWeeks();
 
 
+	public List getCurrentJava();
+	
+	public List getCurrentSDET();
+	
+	public List getCurrentNET();
 }
