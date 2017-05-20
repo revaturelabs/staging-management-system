@@ -115,8 +115,6 @@
 			<ul class="nav nav-pills">
 				<li class="active"><a data-toggle="pill" href="#current">Current</a></li>
 				<li><a data-toggle="pill" href="#forecast">Forecast</a></li>
-				<li><a data-toggle="pill" href="#history">History</a></li>
-				<li><a data-toggle="pill" href="#solitaire">Solitaire</a></li>
 			</ul>
 
 			<div class="tab-content">
@@ -128,12 +126,12 @@
 								<th>Java</th>
 								<th>.NET</th>
 								<th>JTA</th>
-								<th>Big Data</th>
+								<th>Total</th>
 							</tr>
 						</thead>
 						<tbody ng-controller="currentTable">
 							<tr ng-repeat="c in current">
-								<td>Available</td>
+								<td>{{c.daterange}}</td>
 								<td>
 									<button data-toggle="modal" data-target="#AssociateInfo">{{c.javacount}}</button>
 								</td>
@@ -149,9 +147,34 @@
 
 				</div>
 
-				<div id="forecast" class="tab-pane fade"></div>
+				<div id="forecast" class="tab-pane fade">
+				<table class="table table-bordered table-striped table-hover">
+						<thead>
+							<tr>
+								<th>Week</th>
+								<th>Java</th>
+								<th>.NET</th>
+								<th>JTA</th>
+								<th>Total</th>
+							</tr>
+						</thead>
+						<tbody ng-controller="forecastTable">
+							<tr ng-repeat="w in weeks">
+								<td>{{w.daterange}}</td>
+								<td>
+									<button data-toggle="modal" data-target="#AssociateInfo">{{w.javacount}}</button>
+								</td>
+								<td><button data-toggle="modal"
+										data-target="#AssociateInfo">{{w.dotNetCount}}</button></td>
+								<td><button data-toggle="modal"
+										data-target="#AssociateInfo">{{w.sdetcount}}</button></td>
+								<td><button data-toggle="modal"
+										data-target="#AssociateInfo">{{w.javacount + w.dotNetCount + w.sdetcount}}</button></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 
-				<div id="history" class="tab-pane fade">history</div>
 			</div>
 		</div>
 	</div>

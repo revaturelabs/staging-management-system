@@ -198,13 +198,13 @@ public class ManipulateDataController {
 		week.setSdetcount(12);
 		
 		Week week2 = new Week();
-		week2.setDaterange("May 5 - May 13");
+		week2.setDaterange("May 14 - May 20");
 		week2.setDotNetCount(15);
 		week2.setJavacount(12);
 		week2.setSdetcount(19);
 		
 		Week week3 = new Week();
-		week3.setDaterange("May 5 - May 13");
+		week3.setDaterange("May 21 - May 28");
 		week3.setDotNetCount(22);
 		week3.setJavacount(19);
 		week3.setSdetcount(10);
@@ -223,14 +223,29 @@ public class ManipulateDataController {
 	public @ResponseBody List<Week> displayCurrent()
 	{
 		// testing data - remove once actual data is acquired
-		Week week = new Week();
-		week.setDaterange("May 5 - May 13");
-		week.setDotNetCount(25);
-		week.setJavacount(49);
-		week.setSdetcount(12);
+		Week avail = new Week();
+		avail.setDaterange("Available");
+		avail.setDotNetCount(25);
+		avail.setJavacount(49);
+		avail.setSdetcount(12);
+		
+		Week map = new Week();
+		map.setDaterange("Mapped");
+		map.setDotNetCount(17);
+		map.setJavacount(22);
+		map.setSdetcount(18);
+		
+		Week confirm = new Week();
+		confirm.setDaterange("Confirmed");
+		confirm.setDotNetCount(20);
+		confirm.setJavacount(27);
+		confirm.setSdetcount(19);
+
 	
 		List<Week> weeks = new ArrayList<Week>();
-		weeks.add(week);
+		weeks.add(avail);
+		weeks.add(map);
+		weeks.add(confirm);
 		
 		// List<Week> weeks = daoserv.createWeeks();
 		System.out.println(weeks);
