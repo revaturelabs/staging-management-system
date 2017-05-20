@@ -21,5 +21,7 @@ public interface DAOService {
 	public ArrayList<BatchInfo> GetAllBatchesDB();
 
 	public ArrayList<ClientInfo> GetAllClientsDB();
+	
+	public void UpdateStatus(String status, long aID);
 
 }
