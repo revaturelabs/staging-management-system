@@ -163,7 +163,7 @@ public class DAOImpl implements DAOService {
 		
 		Session session = sf.openSession();
 
-		String hqlUpdate = "update AssociateInfo a set a.status = :newStatus where a.AssociateID = :ID";
+		String hqlUpdate = "update AssociateInfo a set a.Status = :newStatus where a.AssociateID = :ID";
 		// or String hqlUpdate = "update Customer set name = :newName where name = :oldName";
 		int updatedEntities = session.createQuery( hqlUpdate )
 		        .setString( "newStatus", status )

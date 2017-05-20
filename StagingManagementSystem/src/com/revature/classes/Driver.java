@@ -18,11 +18,14 @@ public class Driver {
 
 	public static void main(String[] args) {
 				
-		SessionFactory sf = new Configuration().configure().buildSessionFactory();
-		Session session = sf.openSession();
-		Transaction tx = session.beginTransaction();
-
-		Calendar currenttime = Calendar.getInstance();
+		
+		
+		ApplicationContext ctx = new ClassPathXmlApplicationContext("appContext.xml");
+		DAOService daoserv = (DAOService) ctx.getBean("DAOImpl");
+		
+		daoserv.UpdateStatus("Mapped", 2);
+		System.out.println("update called");
+		/*Calendar currenttime = Calendar.getInstance();
 		Date sqldate = new Date((currenttime.getTime()).getTime());
 		
 		
@@ -42,7 +45,7 @@ public class Driver {
 
 	    // create an associate
 		AssociateInfo associate = new AssociateInfo("Bily Bob", "available", batch);
-		session.save(associate);
+		session.save(associate);*/
 		
 		/*session.save(associate);
 		
@@ -50,13 +53,10 @@ public class Driver {
 		session.close();
 		sf.close(); */
 				
-		System.out.println(batch.toString());
-		System.out.println(associate.toString());
-		System.out.println(client.toString());
-		
-		tx.commit();
-		session.close();
-		sf.close();
+		//System.out.println(batch.toString());
+		//System.out.println(associate.toString());
+		//System.out.println(client.toString());
+	
 
 	}
 	
