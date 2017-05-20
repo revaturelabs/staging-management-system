@@ -103,15 +103,7 @@
 		</div>
 	</nav>
 
-	<div ng-controller="sampleController" align="center">
-		<p>
-			Click <a ng-click="loadBatches()"> here</a> to load data
-		</p>
-		<br />
-		<h1 ng-repeat="user in getUser">{{user}}</h1>
-	</div>
-
-	<div ng-controller="formCtrl" class="row">
+	<div class="row">
 		<!-- left side bar -->
 		<div class="col-sm-2">
 			<button data-toggle="modal" data-target="#AssociateInfo">Modal
@@ -123,8 +115,6 @@
 			<ul class="nav nav-pills">
 				<li class="active"><a data-toggle="pill" href="#current">Current</a></li>
 				<li><a data-toggle="pill" href="#forecast">Forecast</a></li>
-				<li><a data-toggle="pill" href="#history">History</a></li>
-				<li><a data-toggle="pill" href="#solitaire">Solitaire</a></li>
 			</ul>
 
 			<div class="tab-content">
@@ -136,63 +126,55 @@
 								<th>Java</th>
 								<th>.NET</th>
 								<th>JTA</th>
-								<th>Big Data</th>
+								<th>Total</th>
 							</tr>
 						</thead>
-						<tbody>
-							<tr>
-								<td>Available</td>
+						<tbody ng-controller="currentTable">
+							<tr ng-repeat="c in current">
+								<td>{{c.daterange}}</td>
 								<td>
-									<button data-toggle="modal" data-target="#AssociateInfo">{{master}}</button>
+									<button data-toggle="modal" data-target="#AssociateInfo">{{c.javacount}}</button>
 								</td>
 								<td><button data-toggle="modal"
-										data-target="#AssociateInfo">35</button></td>
+										data-target="#AssociateInfo">{{c.dotNetCount}}</button></td>
 								<td><button data-toggle="modal"
-										data-target="#AssociateInfo">50</button></td>
+										data-target="#AssociateInfo">{{c.sdetcount}}</button></td>
 								<td><button data-toggle="modal"
-										data-target="#AssociateInfo">55</button></td>
-							</tr>
-							<tr>
-								<td>Mapped</td>
-								<td><button data-toggle="modal"
-										data-target="#AssociateInfo">10</button></td>
-								<td><button data-toggle="modal"
-										data-target="#AssociateInfo">5</button></td>
-								<td><button data-toggle="modal"
-										data-target="#AssociateInfo">15</button></td>
-								<td><button data-toggle="modal"
-										data-target="#AssociateInfo">7</button></td>
-							</tr>
-							<tr>
-								<td>Interviewed</td>
-								<td><button data-toggle="modal"
-										data-target="#AssociateInfo">5</button></td>
-								<td><button data-toggle="modal"
-										data-target="#AssociateInfo">50</button></td>
-								<td><button data-toggle="modal"
-										data-target="#AssociateInfo">10</button></td>
-								<td><button data-toggle="modal"
-										data-target="#AssociateInfo">3</button></td>
-							</tr>
-							<tr>
-								<td>Confirmed</td>
-								<td><button data-toggle="modal"
-										data-target="#AssociateInfo">6</button></td>
-								<td><button data-toggle="modal"
-										data-target="#AssociateInfo">3</button></td>
-								<td><button data-toggle="modal"
-										data-target="#AssociateInfo">1</button></td>
-								<td><button data-toggle="modal"
-										data-target="#AssociateInfo">5</button></td>
+										data-target="#AssociateInfo">{{c.javacount + c.dotNetCount + c.sdetcount}}</button></td>
 							</tr>
 						</tbody>
 					</table>
 
 				</div>
 
-				<div id="forecast" class="tab-pane fade"></div>
+				<div id="forecast" class="tab-pane fade">
+				<table class="table table-bordered table-striped table-hover">
+						<thead>
+							<tr>
+								<th>Week</th>
+								<th>Java</th>
+								<th>.NET</th>
+								<th>JTA</th>
+								<th>Total</th>
+							</tr>
+						</thead>
+						<tbody ng-controller="forecastTable">
+							<tr ng-repeat="w in weeks">
+								<td>{{w.daterange}}</td>
+								<td>
+									<button data-toggle="modal" data-target="#AssociateInfo">{{w.javacount}}</button>
+								</td>
+								<td><button data-toggle="modal"
+										data-target="#AssociateInfo">{{w.dotNetCount}}</button></td>
+								<td><button data-toggle="modal"
+										data-target="#AssociateInfo">{{w.sdetcount}}</button></td>
+								<td><button data-toggle="modal"
+										data-target="#AssociateInfo">{{w.javacount + w.dotNetCount + w.sdetcount}}</button></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 
-				<div id="history" class="tab-pane fade">history</div>
 			</div>
 		</div>
 	</div>
@@ -419,7 +401,7 @@ Add client modal
 			<div class="modal-body">
 
 				<form id="insert">
-					<div ng-app="myApp2" ng-controller="formCtrl2">
+					<div ng-app="myApp2">
 						<table id="myTable" class="table table-striped">
 							<thead>
 								<tr>
