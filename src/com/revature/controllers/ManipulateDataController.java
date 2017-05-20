@@ -190,6 +190,7 @@ public class ManipulateDataController {
 	@RequestMapping(value="/displayWeeks", method = RequestMethod.GET)
 	public @ResponseBody List<Week> displayWeeks()
 	{
+		// testing data - remove once actual data is acquired
 		Week week = new Week();
 		week.setDaterange("May 5 - May 13");
 		week.setDotNetCount(25);
@@ -221,6 +222,7 @@ public class ManipulateDataController {
 	@RequestMapping(value="/displayCurrent", method = RequestMethod.GET)
 	public @ResponseBody List<Week> displayCurrent()
 	{
+		// testing data - remove once actual data is acquired
 		Week week = new Week();
 		week.setDaterange("May 5 - May 13");
 		week.setDotNetCount(25);
