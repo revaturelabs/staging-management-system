@@ -1,5 +1,6 @@
 package com.revature.classes;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,4 +29,7 @@ public interface DAOService {
 	public List getCurrentSDET();
 	
 	public List getCurrentNET();
+	
+	public ArrayList<Week> returnWeeksForGivenMonth(int month) throws ParseException;
+
 }

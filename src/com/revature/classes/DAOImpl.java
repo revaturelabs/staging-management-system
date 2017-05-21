@@ -1,5 +1,6 @@
 package com.revature.classes;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -221,6 +222,8 @@ public class DAOImpl implements DAOService {
 			    //add this week to the overall list 
 			    WeekList.add(currentweek);
 			    */
+			    //STEVENS FUNNY STORED PROCEDURE THING WITH LOGIC WE CAN PROBABLY USE AGAIN 
+			    /*
 			    Session session = sf.getCurrentSession();
 			    java.util.Date utildate = new java.util.Date();
 			    java.sql.Date sqldate = new java.sql.Date(utildate.getTime());
@@ -238,6 +241,7 @@ public class DAOImpl implements DAOService {
 		                Week week = (Week)result.get(j);
 		                WeekList.add(week);
 		            }
+			    */
 			    
 			    //increment relevant external variables
 			    dateIncrement +=7;
@@ -245,6 +249,46 @@ public class DAOImpl implements DAOService {
 			
 			return WeekList;
 		}
+		
+	@Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
+	public ArrayList<Week> returnWeeksForGivenMonth(int month) throws ParseException
+	{
+		ArrayList<Week> WeekList = new ArrayList<Week>();
+		
+		//first get the first week of the month
+		Date mytoday = new Date();//get today's date
+		Calendar mycal = Calendar.getInstance();
+		mycal.setTime(mytoday);
+		int mymonth = mycal.get(Calendar.MONTH);//get the month in number format
+		int myyear = mycal.get(Calendar.YEAR);//get the year in number format
+		if(month < mymonth)//set the year to next year for months that have already passed
+		{
+			myyear = myyear+1;
+		}
+		
+		int maxday = mycal.getMaximum(Calendar.DAY_OF_MONTH);// get the last day of the month
+		
+		String fdatestring = myyear+"-"+mymonth+"-"+"01";//format the dates as strings with previous variables
+		String ldatestring = myyear+"-"+mymonth+"-"+maxday;
+		
+		SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");//give instructions to parse strings to Date
+		
+		Date fdate= fmt.parse(fdatestring);//parse into Dates // This is the first day of the month
+		Date ldate = fmt.parse(ldatestring); //last day of the month
+		
+		Session session = sf.getCurrentSession();
+		
+		Criteria cr = session.createCriteria(Week.class,"wk");
+		
+		cr.createAlias("wk.batch","batch");
+		
+		cr.add(Restrictions.between("enddate", fdate, ldate));
+		
+		WeekList = (ArrayList<Week>) cr.list();
+		
+		return WeekList;
+	}
+
 		
 	@Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
 	public ArrayList returnResources(java.sql.Date date, java.sql.Date startdate, java.sql.Date enddate)
@@ -276,7 +320,7 @@ public class DAOImpl implements DAOService {
 	}
 		
 	@Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
-    public List getCurrentJava()
+    public List getAllCurrentJava()
     {
         Session session = sf.getCurrentSession();
         
@@ -307,7 +351,7 @@ public class DAOImpl implements DAOService {
     }
 	
 	@Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
-    public List getCurrentSDET()
+    public List getAllCurrentSDET()
     {
 //        Session session = sf.getCurrentSession();
 //        //initializes cirteria using the associateInfo pojo
@@ -349,7 +393,7 @@ public class DAOImpl implements DAOService {
     }
 	
 	@Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
-    public List getCurrentNET()
+    public List getAllCurrentNET()
     {
 //        Session session = sf.getCurrentSession();
 //        //initializes cirteria using the associateInfo pojo
@@ -386,9 +430,317 @@ public class DAOImpl implements DAOService {
 	    System.out.println("all people who are did NET ..." + rowBatch);
 	    int count = rowBatch.size();
 	    System.out.println(count);
-	        
+	    
 	    return rowBatch;
     }
 	
-		
+	
+	@Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
+    public List getAvailableCurrentJava()
+    {
+        Session session = sf.getCurrentSession();
+        
+        //initializes criteria using the associateInfo pojo
+        Criteria crit = session.createCriteria(AssociateInfo.class,"ai");
+        
+        //creates an alias for the join between associateInfo and batch that is in the associateInfo pojo
+        crit.createAlias("ai.batch", "batch");
+        
+        //create a current date for today
+        java.util.Date utildate = new java.util.Date();
+	    java.sql.Date sqldate = new java.sql.Date(utildate.getTime()); //today
+        
+	    //search for batch type = java
+        crit.add(Restrictions.eq("batch.Type", "JAVA"));
+        
+        //search for status available
+        crit.add(Restrictions.eq("Status", "Available"));
+        
+        //search for those before the current date
+        crit.add(Restrictions.le("batch.EndDate", sqldate));
+        
+        //put the result into a list 
+        List rowBatch = crit.list();
+        
+        System.out.println("all people who did java" + rowBatch);
+        int count = rowBatch.size();
+        System.out.println(count);
+        
+        return rowBatch;
+    }
+	
+	@Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
+    public List getAvailableCurrentSDET()
+    {
+        Session session = sf.getCurrentSession();
+        
+        //initializes criteria using the associateInfo pojo
+        Criteria crit = session.createCriteria(AssociateInfo.class,"ai");
+        
+        //creates an alias for the join between associateInfo and batch that is in the associateInfo pojo
+        crit.createAlias("ai.batch", "batch");
+        
+        //create a current date for today
+        java.util.Date utildate = new java.util.Date();
+	    java.sql.Date sqldate = new java.sql.Date(utildate.getTime()); //today
+        
+	    //search for batch type = java
+        crit.add(Restrictions.eq("batch.Type", "SDET"));
+        
+        //search for status available
+        crit.add(Restrictions.eq("Status", "Available"));
+        
+        //search for those before the current date
+        crit.add(Restrictions.le("batch.EndDate", sqldate));
+        
+        //put the result into a list 
+        List rowBatch = crit.list();
+        
+        System.out.println("all people who did java" + rowBatch);
+        int count = rowBatch.size();
+        System.out.println(count);
+        
+        return rowBatch;
+    }
+	
+	@Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
+    public List getAvailableCurrentNET()
+    {
+        Session session = sf.getCurrentSession();
+        
+        //initializes criteria using the associateInfo pojo
+        Criteria crit = session.createCriteria(AssociateInfo.class,"ai");
+        
+        //creates an alias for the join between associateInfo and batch that is in the associateInfo pojo
+        crit.createAlias("ai.batch", "batch");
+        
+        //create a current date for today
+        java.util.Date utildate = new java.util.Date();
+	    java.sql.Date sqldate = new java.sql.Date(utildate.getTime()); //today
+        
+	    //search for batch type = java
+        crit.add(Restrictions.eq("batch.Type", "NET"));
+        
+        //search for status available
+        crit.add(Restrictions.eq("Status", "Available"));
+        
+        //search for those before the current date
+        crit.add(Restrictions.le("batch.EndDate", sqldate));
+        
+        //put the result into a list 
+        List rowBatch = crit.list();
+        
+        System.out.println("all people who did java" + rowBatch);
+        int count = rowBatch.size();
+        System.out.println(count);
+        
+        return rowBatch;
+    }
+	
+	
+	@Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
+    public List getMappedCurrentJava()
+    {
+        Session session = sf.getCurrentSession();
+        
+        //initializes criteria using the associateInfo pojo
+        Criteria crit = session.createCriteria(AssociateInfo.class,"ai");
+        
+        //creates an alias for the join between associateInfo and batch that is in the associateInfo pojo
+        crit.createAlias("ai.batch", "batch");
+        
+        //create a current date for today
+        java.util.Date utildate = new java.util.Date();
+	    java.sql.Date sqldate = new java.sql.Date(utildate.getTime()); //today
+        
+	    //search for batch type = java
+        crit.add(Restrictions.eq("batch.Type", "JAVA"));
+        
+        //search for status available
+        crit.add(Restrictions.eq("Status", "Mapped"));
+        
+        //search for those before the current date
+        crit.add(Restrictions.le("batch.EndDate", sqldate));
+        
+        //put the result into a list 
+        List rowBatch = crit.list();
+        
+        System.out.println("all people who did java" + rowBatch);
+        int count = rowBatch.size();
+        System.out.println(count);
+        
+        return rowBatch;
+    }
+	
+	@Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
+    public List getMappedCurrentSDET()
+    {
+        Session session = sf.getCurrentSession();
+        
+        //initializes criteria using the associateInfo pojo
+        Criteria crit = session.createCriteria(AssociateInfo.class,"ai");
+        
+        //creates an alias for the join between associateInfo and batch that is in the associateInfo pojo
+        crit.createAlias("ai.batch", "batch");
+        
+        //create a current date for today
+        java.util.Date utildate = new java.util.Date();
+	    java.sql.Date sqldate = new java.sql.Date(utildate.getTime()); //today
+        
+	    //search for batch type = java
+        crit.add(Restrictions.eq("batch.Type", "SDET"));
+        
+        //search for status available
+        crit.add(Restrictions.eq("Status", "Mapped"));
+        
+        //search for those before the current date
+        crit.add(Restrictions.le("batch.EndDate", sqldate));
+        
+        //put the result into a list 
+        List rowBatch = crit.list();
+        
+        System.out.println("all people who did java" + rowBatch);
+        int count = rowBatch.size();
+        System.out.println(count);
+        
+        return rowBatch;
+    }
+	
+	@Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
+    public List getMappedCurrentNET()
+    {
+        Session session = sf.getCurrentSession();
+        
+        //initializes criteria using the associateInfo pojo
+        Criteria crit = session.createCriteria(AssociateInfo.class,"ai");
+        
+        //creates an alias for the join between associateInfo and batch that is in the associateInfo pojo
+        crit.createAlias("ai.batch", "batch");
+        
+        //create a current date for today
+        java.util.Date utildate = new java.util.Date();
+	    java.sql.Date sqldate = new java.sql.Date(utildate.getTime()); //today
+        
+	    //search for batch type = java
+        crit.add(Restrictions.eq("batch.Type", "NET"));
+        
+        //search for status available
+        crit.add(Restrictions.eq("Status", "Mapped"));
+        
+        //search for those before the current date
+        crit.add(Restrictions.le("batch.EndDate", sqldate));
+        
+        //put the result into a list 
+        List rowBatch = crit.list();
+        
+        System.out.println("all people who did java" + rowBatch);
+        int count = rowBatch.size();
+        System.out.println(count);
+        
+        return rowBatch;
+    }
+	
+	@Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
+    public List getConfirmedCurrentJava()
+    {
+        Session session = sf.getCurrentSession();
+        
+        //initializes criteria using the associateInfo pojo
+        Criteria crit = session.createCriteria(AssociateInfo.class,"ai");
+        
+        //creates an alias for the join between associateInfo and batch that is in the associateInfo pojo
+        crit.createAlias("ai.batch", "batch");
+        
+        //create a current date for today
+        java.util.Date utildate = new java.util.Date();
+	    java.sql.Date sqldate = new java.sql.Date(utildate.getTime()); //today
+        
+	    //search for batch type = java
+        crit.add(Restrictions.eq("batch.Type", "JAVA"));
+        
+        //search for status available
+        crit.add(Restrictions.eq("Status", "Confirmed"));
+        
+        //search for those before the current date
+        crit.add(Restrictions.le("batch.EndDate", sqldate));
+        
+        //put the result into a list 
+        List rowBatch = crit.list();
+        
+        System.out.println("all people who did java" + rowBatch);
+        int count = rowBatch.size();
+        System.out.println(count);
+        
+        return rowBatch;
+    }
+	
+	@Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
+    public List getConfirmedCurrentSDET()
+    {
+        Session session = sf.getCurrentSession();
+        
+        //initializes criteria using the associateInfo pojo
+        Criteria crit = session.createCriteria(AssociateInfo.class,"ai");
+        
+        //creates an alias for the join between associateInfo and batch that is in the associateInfo pojo
+        crit.createAlias("ai.batch", "batch");
+        
+        //create a current date for today
+        java.util.Date utildate = new java.util.Date();
+	    java.sql.Date sqldate = new java.sql.Date(utildate.getTime()); //today
+        
+	    //search for batch type = java
+        crit.add(Restrictions.eq("batch.Type", "SDET"));
+        
+        //search for status available
+        crit.add(Restrictions.eq("Status", "Confirmed"));
+        
+        //search for those before the current date
+        crit.add(Restrictions.le("batch.EndDate", sqldate));
+        
+        //put the result into a list 
+        List rowBatch = crit.list();
+        
+        System.out.println("all people who did java" + rowBatch);
+        int count = rowBatch.size();
+        System.out.println(count);
+        
+        return rowBatch;
+    }
+	
+	@Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
+    public List getConfirmedCurrentNET()
+    {
+        Session session = sf.getCurrentSession();
+        
+        //initializes criteria using the associateInfo pojo
+        Criteria crit = session.createCriteria(AssociateInfo.class,"ai");
+        
+        //creates an alias for the join between associateInfo and batch that is in the associateInfo pojo
+        crit.createAlias("ai.batch", "batch");
+        
+        //create a current date for today
+        java.util.Date utildate = new java.util.Date();
+	    java.sql.Date sqldate = new java.sql.Date(utildate.getTime()); //today
+        
+	    //search for batch type = java
+        crit.add(Restrictions.eq("batch.Type", "NET"));
+        
+        //search for status available
+        crit.add(Restrictions.eq("Status", "Confirmed"));
+        
+        //search for those before the current date
+        crit.add(Restrictions.le("batch.EndDate", sqldate));
+        
+        //put the result into a list 
+        List rowBatch = crit.list();
+        
+        System.out.println("all people who did java" + rowBatch);
+        int count = rowBatch.size();
+        System.out.println(count);
+        
+        return rowBatch;
+    }
+	
+	
 }
