@@ -103,15 +103,9 @@
 		</div>
 	</nav>
 
-	<div class="row">
-		<!-- left side bar -->
-		<div class="col-sm-2">
-			<button data-toggle="modal" data-target="#AssociateInfo">Modal
-				Test</button>
-		</div>
-
+	<div class="row" ng-controller="infoTable">
 		<!-- right side bar -->
-		<div class="col-sm-7">
+		<div class="col-sm-offset-2 col-sm-8">
 			<ul class="nav nav-pills">
 				<li class="active"><a data-toggle="pill" href="#current">Current</a></li>
 				<li><a data-toggle="pill" href="#forecast" ng-click="getForecast()">Forecast</a></li>
@@ -129,7 +123,7 @@
 								<th>Total</th>
 							</tr>
 						</thead>
-						<tbody ng-controller="currentTable">
+						<tbody>
 							<tr ng-repeat="c in current">
 								<td>{{c.daterange}}</td>
 								<td>
@@ -158,7 +152,7 @@
 								<th>Total</th>
 							</tr>
 						</thead>
-						<tbody ng-controller="forecastTable">
+						<tbody>
 							<tr ng-repeat="w in weeks">
 								<td>{{w.daterange}}</td>
 								<td>

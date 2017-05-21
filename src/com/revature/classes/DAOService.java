@@ -31,4 +31,7 @@ public interface DAOService {
 	public List getCurrentSDET();
 	
 	public List getCurrentNET();
+	
+	public void UpdateStatus(String status, long[] aid, int clientId);
+
 }

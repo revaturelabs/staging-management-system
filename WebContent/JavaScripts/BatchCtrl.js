@@ -47,14 +47,13 @@ mainApp.controller("BatchCtrl", function($scope, $http) {
 	//};
 });
 
-mainApp.controller("currentTable", function($scope, $http) {
+mainApp.controller("infoTable", function($scope, $http) {
 	$http.get("/StagingManagementSystem/displayCurrent").then(function(result) {
 		$scope.current = result.data;
 		console.log(current);
 		console.log(result.data);
 	});
-});
-mainApp.controller("forecastTable", function($scope, $http) {
+	
 	$scope.getForecast = function() {
 		$http.get("/StagingManagementSystem/displayWeeks").then(function(result) {
 			$scope.weeks = result.data;

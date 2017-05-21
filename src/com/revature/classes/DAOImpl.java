@@ -390,5 +390,25 @@ public class DAOImpl implements DAOService {
 	    return rowBatch;
     }
 	
+	@Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
+	public void UpdateStatus(String status, long[] aID, int clientId) {
+		
+		Session session = sf.openSession();
+
+		String hqlUpdate = "update AssociateInfo a set a.Status = :newStatus where a.AssociateID = :ID";
+		// or String hqlUpdate = "update Customer set name = :newName where name = :oldName";
+		for(int i = 0; i < aID.length; i++) 
+		{
+			int updatedEntities = session.createQuery( hqlUpdate )
+		        .setString( "newStatus", status )
+		        .setLong( "ID", aID[i] )
+		        .executeUpdate();
+		}
+		
+		session.close();
+		
+	}
+
+	
 		
 }
