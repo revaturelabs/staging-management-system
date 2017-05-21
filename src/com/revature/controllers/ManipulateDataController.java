@@ -222,15 +222,16 @@ public class ManipulateDataController {
 	@RequestMapping(value="/displayCurrent", method = RequestMethod.GET)
 	public @ResponseBody List displayCurrent()
 	{
+		/* System.out.println("made it");
 		// get the current from the database
 		List java = daoserv.getCurrentJava();
 		List sdet = daoserv.getCurrentSDET();
 		List net = daoserv.getCurrentNET();
 
-		/* for(int i = 0; i < java.size(); i++)
+		for(int i = 0; i < java.size(); i++)
 		{
 			
-		} */
+		} 
 		
 		System.out.println(java);
 		System.out.println(sdet);
@@ -239,9 +240,33 @@ public class ManipulateDataController {
 		List all = new ArrayList();
 		all.add(java);
 		all.add(sdet);
-		all.add(net);
+		all.add(net); */
 		
-		return all;
+		// testing data - remove once actual data is acquired
+				Week week = new Week();
+				week.setDaterange("Available");
+				week.setDotNetCount(25);
+				week.setJavacount(49);
+				week.setSdetcount(12);
+				
+				Week week2 = new Week();
+				week2.setDaterange("Mapped");
+				week2.setDotNetCount(15);
+				week2.setJavacount(12);
+				week2.setSdetcount(19);
+				
+				Week week3 = new Week();
+				week3.setDaterange("Confirmed");
+				week3.setDotNetCount(22);
+				week3.setJavacount(19);
+				week3.setSdetcount(10);
+				
+				List<Week> weeks = new ArrayList<Week>();
+				weeks.add(week);
+				weeks.add(week2);
+				weeks.add(week3);
+		
+		return weeks;
 	}
 	
 

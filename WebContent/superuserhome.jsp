@@ -65,7 +65,7 @@
 
 							<!-- navbar link add associate -->
 							<li><a id="associates" data-toggle="modal"
-								data-target="#addAssociate"><span
+								data-target="#addAssociate" ng-click="getBatches()"><span
 									class="glyphicon glyphicon-plus"></span> Add Associate</a></li>
 
 							<!-- navbar link add batch -->
@@ -114,7 +114,7 @@
 		<div class="col-sm-7">
 			<ul class="nav nav-pills">
 				<li class="active"><a data-toggle="pill" href="#current">Current</a></li>
-				<li><a data-toggle="pill" href="#forecast">Forecast</a></li>
+				<li><a data-toggle="pill" href="#forecast" ng-click="getForecast()">Forecast</a></li>
 			</ul>
 
 			<div class="tab-content">
