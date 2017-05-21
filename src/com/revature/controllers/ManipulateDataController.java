@@ -223,25 +223,39 @@ public class ManipulateDataController {
 	@RequestMapping(value="/displayCurrent", method = RequestMethod.GET)
 	public @ResponseBody List displayCurrent()
 	{
-		/* System.out.println("made it");
-		// get the current from the database
-		List java = daoserv.getCurrentJava();
-		List sdet = daoserv.getCurrentSDET();
-		List net = daoserv.getCurrentNET();
-
-		for(int i = 0; i < java.size(); i++)
-		{
-			
-		} 
+		/*
+		// get all of the current confirmed associates
+		List conJava = daoserv.getConfirmedCurrentJava();
+		List conNet = daoserv.getConfirmedCurrentDotNet();
+		List conSdet = daoserv.getConfirmedCurrentSDET();
 		
-		System.out.println(java);
-		System.out.println(sdet);
-		System.out.println(net);
+		// get all of the current mapped associates
+		List mapJava = daoserv.getMappedCurrentJava();
+		List mapNet = daoserv.getMappedCurrentDotNet();
+		List mapSdet = daoserv.getMappedCurrentSDET();
 		
-		List all = new ArrayList();
-		all.add(java);
-		all.add(sdet);
-		all.add(net); */
+		// get all of the current confirmed associates
+		List availJava = daoserv.getAvailableCurrentJava();
+		List availNet = daoserv.getAvailableCurrentDotNet();
+		List availSdet = daoserv.getAvailableCurrentSDET();
+		
+		// get all of the associates
+		List allJava = daoserv.getAllCurrentJava();
+		List allNet = daoserv.getAllCurrentDotNet();
+		List allSdet = daoserv.getAllCurrentSDET();
+		
+		// add all the lists to a list
+		List[] allData = {
+				conJava, conNet, conSdet, 
+				mapJava, mapNet, mapSdet, 
+				availJava, availNet, availSdet,
+				allJava, allNet, allSdet
+		};
+		
+		
+		// return the list containing all of the lists
+		return allData;
+		*/
 		
 		// testing data - remove once actual data is acquired
 				Week week = new Week();
