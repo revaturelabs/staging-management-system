@@ -188,7 +188,7 @@ public class ManipulateDataController {
 	}
 	
 	@RequestMapping(value="/displayWeeks", method = RequestMethod.GET)
-	public @ResponseBody List<Week> displayWeeks()
+	public @ResponseBody List displayWeeks()
 	{
 		// testing data - remove once actual data is acquired
 		Week week = new Week();
@@ -220,36 +220,28 @@ public class ManipulateDataController {
 	}
 	
 	@RequestMapping(value="/displayCurrent", method = RequestMethod.GET)
-	public @ResponseBody List<Week> displayCurrent()
+	public @ResponseBody List displayCurrent()
 	{
-		// testing data - remove once actual data is acquired
-		Week avail = new Week();
-		avail.setDaterange("Available");
-		avail.setDotNetCount(25);
-		avail.setJavacount(49);
-		avail.setSdetcount(12);
-		
-		Week map = new Week();
-		map.setDaterange("Mapped");
-		map.setDotNetCount(17);
-		map.setJavacount(22);
-		map.setSdetcount(18);
-		
-		Week confirm = new Week();
-		confirm.setDaterange("Confirmed");
-		confirm.setDotNetCount(20);
-		confirm.setJavacount(27);
-		confirm.setSdetcount(19);
+		// get the current from the database
+		List java = daoserv.getCurrentJava();
+		List sdet = daoserv.getCurrentSDET();
+		List net = daoserv.getCurrentNET();
 
-	
-		List<Week> weeks = new ArrayList<Week>();
-		weeks.add(avail);
-		weeks.add(map);
-		weeks.add(confirm);
+		/* for(int i = 0; i < java.size(); i++)
+		{
+			
+		} */
 		
-		// List<Week> weeks = daoserv.createWeeks();
-		System.out.println(weeks);
-		return weeks;
+		System.out.println(java);
+		System.out.println(sdet);
+		System.out.println(net);
+		
+		List all = new ArrayList();
+		all.add(java);
+		all.add(sdet);
+		all.add(net);
+		
+		return all;
 	}
 	
 
