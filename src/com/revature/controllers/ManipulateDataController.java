@@ -18,6 +18,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -188,7 +189,7 @@ public class ManipulateDataController {
 	}
 	
 	@RequestMapping(value="/displayWeeks", method = RequestMethod.GET)
-	public @ResponseBody List<Week> displayWeeks()
+	public @ResponseBody List displayWeeks()
 	{
 		// testing data - remove once actual data is acquired
 		Week week = new Week();
@@ -220,36 +221,79 @@ public class ManipulateDataController {
 	}
 	
 	@RequestMapping(value="/displayCurrent", method = RequestMethod.GET)
-	public @ResponseBody List<Week> displayCurrent()
+	public @ResponseBody List[] displayCurrent()
 	{
-		// testing data - remove once actual data is acquired
-		Week avail = new Week();
-		avail.setDaterange("Available");
-		avail.setDotNetCount(25);
-		avail.setJavacount(49);
-		avail.setSdetcount(12);
 		
-		Week map = new Week();
-		map.setDaterange("Mapped");
-		map.setDotNetCount(17);
-		map.setJavacount(22);
-		map.setSdetcount(18);
-		
-		Week confirm = new Week();
-		confirm.setDaterange("Confirmed");
-		confirm.setDotNetCount(20);
-		confirm.setJavacount(27);
-		confirm.setSdetcount(19);
+		// get all of the current confirmed associates
+		List confirmed = new ArrayList();
+		confirmed.add("confirmed");
+		String[] conId = {"confirmed-java", "confirmed-net", "confirmed-sdet"};
+		confirmed.add(conId);
 
-	
-		List<Week> weeks = new ArrayList<Week>();
-		weeks.add(avail);
-		weeks.add(map);
-		weeks.add(confirm);
+		List conJava = daoserv.getConfirmedCurrentJava();
+		List conNet = daoserv.getConfirmedCurrentNET();
+		List conSdet = daoserv.getConfirmedCurrentSDET();
+				
+		confirmed.add(conJava);
+		confirmed.add(conNet);
+		confirmed.add(conSdet);
 		
-		// List<Week> weeks = daoserv.createWeeks();
-		System.out.println(weeks);
-		return weeks;
+		confirmed.add(conJava.size());
+		confirmed.add(conNet.size());
+		confirmed.add(conSdet.size());
+		
+		// get all of the current mapped associates
+		List mapped = new ArrayList();
+		mapped.add("mapped");
+		String[] mapId = {"mapped-java", "mapped-net", "mapped-sdet"};
+		mapped.add(mapId);
+		
+		List mapJava = daoserv.getMappedCurrentJava();
+		List mapNet = daoserv.getMappedCurrentNET();
+		List mapSdet = daoserv.getMappedCurrentSDET();
+		
+		mapped.add(mapJava);
+		mapped.add(mapNet);
+		mapped.add(mapSdet);
+		
+		mapped.add(mapJava.size());
+		mapped.add(mapNet.size());
+		mapped.add(mapSdet.size());
+		
+		// get all of the current confirmed associates
+		List available = new ArrayList();
+		available.add("available");
+		
+		String[] availId = {"available-java", "available-net", "available-sdet"};
+		available.add(availId);
+		
+		List availJava = daoserv.getAvailableCurrentJava();
+		List availNet = daoserv.getAvailableCurrentNET();
+		List availSdet = daoserv.getAvailableCurrentSDET();
+		
+		available.add(availJava);
+		available.add(availNet);
+		available.add(availSdet);
+		
+		available.add(availJava.size());
+		available.add(availNet.size());
+		available.add(availSdet.size());
+		
+		// add all the lists to a list
+		List[] allData = {
+				available, mapped, confirmed
+		};
+		
+		
+		// return the list containing all of the lists
+		return allData;
+
+	}
+	
+	@RequestMapping("/updateAssociate")
+	public void updateAssociates(@RequestBody long[] id, @RequestBody String status, @RequestBody int client)
+	{
+		daoserv.UpdateStatus(status, id, client);
 	}
 	
 

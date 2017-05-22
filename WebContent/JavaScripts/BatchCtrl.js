@@ -30,32 +30,34 @@ var mainApp = angular.module('superuser', []);
 // });
 // };
 // });
-
 /*******************************************************************************
  * 
  * Ariel's Stuff - Don't Touch
  * 
  ******************************************************************************/
 
-mainApp.controller("BatchCtrl", function($scope, $http) {
-	$http.get("/StagingManagementSystem/displayBatch").then(function(result) {
-		$scope.batches = result.data;
-		console.log(batches);
-		console.log(result.data);
-	});
-});
-
-mainApp.controller("currentTable", function($scope, $http) {
+mainApp.controller("infoTable", function($scope, $http) {
 	$http.get("/StagingManagementSystem/displayCurrent").then(function(result) {
 		$scope.current = result.data;
 		console.log(current);
 		console.log(result.data);
 	});
+	
+	$scope.getForecast = function() {
+		$http.get("/StagingManagementSystem/displayWeeks").then(function(result) {
+			$scope.weeks = result.data;
+			console.log(weeks);
+			console.log(result.data);
+		});
+	};
 });
-mainApp.controller("forecastTable", function($scope, $http) {
-	$http.get("/StagingManagementSystem/displayWeeks").then(function(result) {
-		$scope.weeks = result.data;
-		console.log(weeks);
-		console.log(result.data);
-	});
+
+mainApp.controller("BatchCtrl", function($scope, $http) {
+
+		$http.get("/StagingManagementSystem/displayBatch").then(function(result) {
+			$scope.batches = result.data;
+			console.log(batches);
+			console.log(result.data);
+		});
 });
+
