@@ -221,42 +221,68 @@ public class ManipulateDataController {
 	}
 	
 	@RequestMapping(value="/displayCurrent", method = RequestMethod.GET)
-	public @ResponseBody List displayCurrent()
+	public @ResponseBody List[] displayCurrent()
 	{
-		/*
+		
 		// get all of the current confirmed associates
+		List confirmed = new ArrayList();
+		confirmed.add("confirmed");
+		
 		List conJava = daoserv.getConfirmedCurrentJava();
-		List conNet = daoserv.getConfirmedCurrentDotNet();
+		List conNet = daoserv.getConfirmedCurrentNET();
 		List conSdet = daoserv.getConfirmedCurrentSDET();
 		
+		confirmed.add(conJava);
+		confirmed.add(conNet);
+		confirmed.add(conSdet);
+		
+		confirmed.add(conJava.size());
+		confirmed.add(conNet.size());
+		confirmed.add(conSdet.size());
+		
 		// get all of the current mapped associates
+		List mapped = new ArrayList();
+		mapped.add("mapped");
+		
 		List mapJava = daoserv.getMappedCurrentJava();
-		List mapNet = daoserv.getMappedCurrentDotNet();
+		List mapNet = daoserv.getMappedCurrentNET();
 		List mapSdet = daoserv.getMappedCurrentSDET();
 		
+		mapped.add(mapJava);
+		mapped.add(mapNet);
+		mapped.add(mapSdet);
+		
+		mapped.add(mapJava.size());
+		mapped.add(mapNet.size());
+		mapped.add(mapSdet.size());
+		
 		// get all of the current confirmed associates
+		List available = new ArrayList();
+		available.add("available");
+		
 		List availJava = daoserv.getAvailableCurrentJava();
-		List availNet = daoserv.getAvailableCurrentDotNet();
+		List availNet = daoserv.getAvailableCurrentNET();
 		List availSdet = daoserv.getAvailableCurrentSDET();
 		
-		// get all of the associates
-		List allJava = daoserv.getAllCurrentJava();
-		List allNet = daoserv.getAllCurrentDotNet();
-		List allSdet = daoserv.getAllCurrentSDET();
+		available.add(availJava);
+		available.add(availNet);
+		available.add(availSdet);
+		
+		available.add(availJava.size());
+		available.add(availNet.size());
+		available.add(availSdet.size());
 		
 		// add all the lists to a list
 		List[] allData = {
-				conJava, conNet, conSdet, 
-				mapJava, mapNet, mapSdet, 
-				availJava, availNet, availSdet,
-				allJava, allNet, allSdet
+				available, mapped, confirmed
 		};
 		
 		
 		// return the list containing all of the lists
 		return allData;
-		*/
 		
+		
+		/*
 		// testing data - remove once actual data is acquired
 				Week week = new Week();
 				week.setDaterange("Available");
@@ -282,6 +308,7 @@ public class ManipulateDataController {
 				weeks.add(week3);
 		
 		return weeks;
+		*/
 	}
 	
 	@RequestMapping("/updateAssociates")

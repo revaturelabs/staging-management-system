@@ -125,16 +125,16 @@
 						</thead>
 						<tbody>
 							<tr ng-repeat="c in current">
-								<td>{{c.daterange}}</td>
+								<td>{{c[0]}}</td>
 								<td>
-									<button data-toggle="modal" data-target="#AssociateInfo">{{c.javacount}}</button>
+									<button data-toggle="modal" data-target="#AssociateInfo">{{c[4]}}</button>
 								</td>
 								<td><button data-toggle="modal"
-										data-target="#AssociateInfo">{{c.dotNetCount}}</button></td>
+										data-target="#AssociateInfo">{{c[5]}}</button></td>
 								<td><button data-toggle="modal"
-										data-target="#AssociateInfo">{{c.sdetcount}}</button></td>
+										data-target="#AssociateInfo">{{c[6]}}</button></td>
 								<td><button data-toggle="modal"
-										data-target="#AssociateInfo">{{c.javacount + c.dotNetCount + c.sdetcount}}</button></td>
+										data-target="#AssociateInfo">{{c[6] + c[4] + c[5]}}</button></td>
 							</tr>
 						</tbody>
 					</table>
