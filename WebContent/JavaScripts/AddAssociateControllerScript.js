@@ -1,4 +1,4 @@
-$(document).on("click", "#addBatch", function() {
+$(document).on("click", "#addBatchBtn", function() {
 
 	$("#addBatchForm").unbind('submit').bind('submit', function(e) {
 		e.preventDefault();
@@ -14,7 +14,6 @@ $(document).on("click", "#addBatch", function() {
 			},
 			error : function(e) {
 				console.log("ERROR: ", e);
-				display(e);
 			},
 			done : function(e) {
 				console.log("DONE");

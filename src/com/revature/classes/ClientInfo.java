@@ -1,6 +1,8 @@
 package com.revature.classes;
 
 import javax.persistence.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /*
  * Created On 5/11/2017

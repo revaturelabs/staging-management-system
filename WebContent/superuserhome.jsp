@@ -221,6 +221,11 @@ Add associate modal
 						</select>
 
 					</div>
+										<!--  
+					- Input: Hidden Token for Spring Security that will allow the administrator to access
+					-->
+					  <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
+					
 					<!--  
 					- Input: submit the form
 					-->
@@ -305,13 +310,18 @@ Add batch modal
 							<option value="java">Java</option>
 							<option value="net">.NET</option>
 							<option value="jta">JTA</option>
-							<option value="jta">Big Data</option>
+							<option value="bigdata">Big Data</option>
 						</select>
 					</div>
+										<!--  
+					- Input: Hidden Token for Spring Security that will allow the administrator to access
+					-->
+					  <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
+					
 					<!--  
 					- Input: submit the form
 					-->
-					<button type="submit" id="addBatch" class="btn btn-default">Create
+					<button type="submit" id="addBatchBtn" class="btn btn-default">Create
 						Batch</button>
 					<!--  
 					- Input: clear the form
@@ -329,6 +339,8 @@ Add batch modal
 
 	</div>
 </div>
+
+
 
 <!-----------------------
 Add client modal
@@ -359,6 +371,12 @@ Add client modal
 						<label for="location">Location: </label> <input type="text"
 							class="form-control" id="location" name="location" required>
 					</div>
+					<!--  
+					- Input: Hidden Token for Spring Security that will allow the administrator to access
+					-->
+					  <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
+					
+					
 					<!--  
 					- Input: submit the form
 					-->
