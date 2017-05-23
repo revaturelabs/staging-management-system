@@ -70,8 +70,6 @@ public class ManipulateDataController {
 		return model;
 	}
 
-
-
 	@RequestMapping(value = "/checkLogin", method = RequestMethod.POST)
 	public String CheckLogin(@FormParam("username") String username, @FormParam("password") String password) {
 		// try to get a single result from the database
@@ -87,8 +85,7 @@ public class ManipulateDataController {
 			return msg;
 		}
 	}
-	
-	
+
 	@RequestMapping(value="/logout", method=RequestMethod.GET)
 	public ModelAndView logout(HttpServletRequest req)
 	{
@@ -166,14 +163,14 @@ public class ManipulateDataController {
 		daoserv.AddClient(client);
 	}
 	
-	@RequestMapping(value = "/displayStats", method = RequestMethod.POST)
+	@RequestMapping(value = "/displayStats", method = RequestMethod.GET)
 	public @ResponseBody ArrayList<AssociateInfo> ViewAssociateStats(HttpServletRequest req) throws JsonGenerationException, JsonMappingException, IOException
 	{
 		ArrayList<AssociateInfo> associates = daoserv.GetAllAssociatesDB();
     	return associates;
 	}
 	
-	@RequestMapping(value = "/displayClients", method = RequestMethod.POST)
+	@RequestMapping(value = "/displayClients", method = RequestMethod.GET)
 	public @ResponseBody ArrayList<ClientInfo> ViewClients(HttpServletRequest req) throws JsonGenerationException, JsonMappingException, IOException
 	{
 		ArrayList<ClientInfo> client = daoserv.GetAllClientsDB();
@@ -223,51 +220,65 @@ public class ManipulateDataController {
 	@RequestMapping(value="/displayCurrent", method = RequestMethod.GET)
 	public @ResponseBody List[] displayCurrent()
 	{
-		
-		// get all of the current confirmed associates
+		// create a list for the confirmed associates
 		List confirmed = new ArrayList();
 		confirmed.add("confirmed");
-		
+		String[] conId = {"confirmed-java", "confirmed-net", "confirmed-sdet"};
+		confirmed.add(conId);
+
+		// get the associates from the database
 		List conJava = daoserv.getConfirmedCurrentJava();
 		List conNet = daoserv.getConfirmedCurrentNET();
 		List conSdet = daoserv.getConfirmedCurrentSDET();
-		
+				
+		// add the associates to the list
 		confirmed.add(conJava);
 		confirmed.add(conNet);
 		confirmed.add(conSdet);
 		
+		// add the number of associates
 		confirmed.add(conJava.size());
 		confirmed.add(conNet.size());
 		confirmed.add(conSdet.size());
 		
-		// get all of the current mapped associates
+		// create a list for the mapped associates
 		List mapped = new ArrayList();
 		mapped.add("mapped");
+		String[] mapId = {"mapped-java", "mapped-net", "mapped-sdet"};
+		mapped.add(mapId);
 		
+		// get the associates from the database
 		List mapJava = daoserv.getMappedCurrentJava();
 		List mapNet = daoserv.getMappedCurrentNET();
 		List mapSdet = daoserv.getMappedCurrentSDET();
 		
+		// add the associates to the list
 		mapped.add(mapJava);
 		mapped.add(mapNet);
 		mapped.add(mapSdet);
 		
+		// add the number of associates
 		mapped.add(mapJava.size());
 		mapped.add(mapNet.size());
 		mapped.add(mapSdet.size());
 		
-		// get all of the current confirmed associates
+		// create a list for the available associates
 		List available = new ArrayList();
 		available.add("available");
+		String[] availId = {"available-java", "available-net", "available-sdet"};
+		available.add(availId);
 		
+		// get the associates from the database
 		List availJava = daoserv.getAvailableCurrentJava();
 		List availNet = daoserv.getAvailableCurrentNET();
 		List availSdet = daoserv.getAvailableCurrentSDET();
 		
+		// add the associates to the list
 		available.add(availJava);
 		available.add(availNet);
 		available.add(availSdet);
 		
+		// add the number of associates
 		available.add(availJava.size());
 		available.add(availNet.size());
 		available.add(availSdet.size());
@@ -277,44 +288,21 @@ public class ManipulateDataController {
 				available, mapped, confirmed
 		};
 		
-		
 		// return the list containing all of the lists
-		return allData;
-		
-		
-		/*
-		// testing data - remove once actual data is acquired
-				Week week = new Week();
-				week.setDaterange("Available");
-				week.setDotNetCount(25);
-				week.setJavacount(49);
-				week.setSdetcount(12);
-				
-				Week week2 = new Week();
-				week2.setDaterange("Mapped");
-				week2.setDotNetCount(15);
-				week2.setJavacount(12);
-				week2.setSdetcount(19);
-				
-				Week week3 = new Week();
-				week3.setDaterange("Confirmed");
-				week3.setDotNetCount(22);
-				week3.setJavacount(19);
-				week3.setSdetcount(10);
-				
-				List<Week> weeks = new ArrayList<Week>();
-				weeks.add(week);
-				weeks.add(week2);
-				weeks.add(week3);
-		
-		return weeks;
-		*/
+		return allData; 
 	}
-	
+
+		
 	@RequestMapping("/updateAssociates")
 	public void updateAssociates(@RequestBody long[] id, @RequestBody String status, @RequestBody int client)
 	{
 		daoserv.UpdateStatus(status, id, client);
+	}
+	
+	@RequestMapping("/getMonth")
+	public void getMonths(@RequestParam("month") String month)
+	{
+		System.out.println(month);
 	}
 	
 

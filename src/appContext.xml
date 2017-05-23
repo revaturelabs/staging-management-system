@@ -17,11 +17,13 @@
 
 	<!-- BasicData Source Bean Definition -->
 
-	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
-		<property name="driverClassName" value="oracle.jdbc.OracleDriver" />
-		<property name="url"
-			value="jdbc:oracle:thin:@sms.cgbbs6xdwjwh.us-west-2.rds.amazonaws.com:1521:SMS" />
-		<property name="username" value="sms" />
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+    <property name="driverClass" value="oracle.jdbc.driver.OracleDriver" />
+		  <!-- <property name="jdbcUrl"
+			value="jdbc:oracle:thin:@sms.cgbbs6xdwjwh.us-west-2.rds.amazonaws.com:1521:SMS" /> -->
+			<property name="jdbcUrl"
+			value="jdbc:oracle:thin:@192.168.60.141:1521:xe" />
+		<property name="user" value="sms" />
 		<property name="password" value="p4ssw0rd" />
 	</bean>
 
@@ -39,9 +41,15 @@
 				<prop key="hibernate.hbm2ddl.auto">update</prop>
 				<prop key="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</prop>
 				<prop key="show_sql">true</prop>
+				<prop key="hibernate.c3p0.min_size">5</prop>
+  <prop key="hibernate.c3p0.max_size">20</prop>
+  <prop key="hibernate.c3p0.timeout">300</prop>
+  <prop key="hibernate.c3p0.max_statements">50</prop>
+  <prop key="hibernate.c3p0.idle_test_period">3000</prop>
+				
 			</props>
 		</property>
-		<property name="dataSource" ref="dataSource"></property>
+		 <property name="dataSource" ref="dataSource"></property> 
 	</bean>
 
 

@@ -1,10 +1,12 @@
-
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html ng-app="superuser">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+	<meta name="_csrf" content="${_csrf.token}"/>
+	<!-- default header name is X-CSRF-TOKEN -->
+	<meta name="_csrf_header" content="${_csrf.headerName}"/>
 
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet"
@@ -64,7 +66,7 @@
 
 							<!-- navbar link add associate -->
 							<li><a id="associates" data-toggle="modal"
-								data-target="#addAssociate"><span
+								data-target="#addAssociate" ng-click="getBatches()"><span
 									class="glyphicon glyphicon-plus"></span> Add Associate</a></li>
 
 							<!-- navbar link add batch -->
@@ -85,20 +87,13 @@
 		</div>
 	</nav>
 
-	<div ng-controller="associateTableCtrl" class="row">
-		<!-- left side bar -->
-		<div class="col-sm-2">
-			<button data-toggle="modal" data-target="#AssociateInfo">Modal
-				Test</button>
-		</div>
-					
+	<div class="row" ng-controller="infoTable">
+			
 		<!-- right side bar -->
-		<div class="col-sm-7">
+		<div class="col-sm-offset-2 col-sm-8">
 			<ul class="nav nav-pills">
 				<li class="active"><a data-toggle="pill" href="#current">Current</a></li>
-				<li><a data-toggle="pill" href="#forecast">Forecast</a></li>
-				<li><a data-toggle="pill" href="#history">History</a></li>
-				<li><a data-toggle="pill" href="#solitaire">Solitaire</a></li>
+				<li><a data-toggle="pill" href="#forecast" ng-click="getForecast()">Forecast</a></li>
 			</ul>
 
 			<div class="tab-content">
@@ -114,52 +109,67 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td>Available</td>
+							<tr ng-repeat="c in current">
+								<td>{{c[0]}}</td>
 								<td>
-									<button id="available" data-toggle="modal" data-target="#AssociateInfo">{{master}}</button>
+									<button data-toggle="modal" data-target="#AssociateInfo" id="{{c[1][0]}}">{{c[5]}}</button>
 								</td>
-								<td><button id="available" data-toggle="modal"
-										data-target="#AssociateInfo">35</button></td>
-								<td><button id="available" data-toggle="modal"
-										data-target="#AssociateInfo">50</button></td>
-								<td><button id="available" data-toggle="modal"
-										data-target="#AssociateInfo">55</button></td>
-							</tr>
-							<tr>
-								<td>Mapped</td>
-								<td><button id="mapped" data-toggle="modal"
-										data-target="#AssociateInfo">10</button></td>
-								<td><button id="mapped" data-toggle="modal"
-										data-target="#AssociateInfo">5</button></td>
-								<td><button id="mapped" data-toggle="modal"
-										data-target="#AssociateInfo">15</button></td>
-								<td><button id="mapped" data-toggle="modal"
-										data-target="#AssociateInfo">7</button></td>
-							</tr>
-							<tr>
-								<td>Confirmed</td>
-								<td><button id="confirmed" data-toggle="modal"
-										data-target="#AssociateInfo">6</button></td>
-								<td><button id="confirmed" data-toggle="modal"
-										data-target="#AssociateInfo">3</button></td>
-								<td><button id="confirmed" data-toggle="modal"
-										data-target="#AssociateInfo">1</button></td>
-								<td><button id="confirmed" data-toggle="modal"
-										data-target="#AssociateInfo">5</button></td>
+								<td><button data-toggle="modal"
+										data-target="#AssociateInfo" id="{{c[1]}}">{{c[6]}}</button></td>
+								<td><button data-toggle="modal"
+										data-target="#AssociateInfo" id="{{c[1]}}">{{c[7]}}</button></td>
+								<td><button data-toggle="modal"
+										data-target="#AssociateInfo" id="all-{{c[0]}}">{{c[5] + c[6] + c[7]}}</button></td>
 							</tr>
 						</tbody>
 					</table>
 				</div>
 
-				<div id="forecast" class="tab-pane fade"></div>
+				<div id="forecast" class="tab-pane fade">
+				<table class="table table-bordered table-striped table-hover">
+				<thead>
+				<thead>
+							<tr>
+								<th>Weeks</th>
+								<th>Java</th>
+								<th>.NET</th>
+								<th>JTA</th>
+								<th>Big Data</th>
+							</tr>
+						</thead>
+				</thead>
+						<tbody>
+							<tr ng-repeat="w in weeks">
+								<td>{{w.daterange}}</td>
+								<td>
+									<button data-toggle="modal" data-target="#AssociateInfo">{{w.javacount}}</button>
+								</td>
+								<td><button data-toggle="modal"
+										data-target="#AssociateInfo">{{w.dotNetCount}}</button></td>
+								<td><button data-toggle="modal"
+										data-target="#AssociateInfo">{{w.sdetcount}}</button></td>
+								<td><button data-toggle="modal"
+										data-target="#AssociateInfo">{{w.javacount + w.dotNetCount + w.sdetcount}}</button></td>
+							</tr>
+						</tbody>
+					</table>
+					<div class="col-md-12">
+						<button class="month" id="june">June</button>
+						<button id="july" class="month">July</button>
+						<button id="august" class="month">August</button>
+						<button id="september" class="month">September</button>
+						<button id="october" class="month">October</button>
+						<button id="november" class="month">November</button>			
+						<button id="december" class="month">December</button>			
+					</div>
+			
+				</div>
 
 				<div id="history" class="tab-pane fade">history</div>
 			</div>
 		</div>
 	</div>
 
-	
 </body>
 
 
@@ -209,6 +219,11 @@ Add associate modal
 						</select>
 						
 					</div>
+										<!--  
+					- Input: Hidden Token for Spring Security that will allow the administrator to access
+					-->
+					  <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
+					
 					<!--  
 					- Input: submit the form
 					-->
@@ -294,13 +309,18 @@ Add batch modal
 							<option value="java">Java</option>
 							<option value="net">.NET</option>
 							<option value="jta">JTA</option>
-							<option value="jta">Big Data</option>
+							<option value="bigdata">Big Data</option>
 						</select>
 					</div>
+										<!--  
+					- Input: Hidden Token for Spring Security that will allow the administrator to access
+					-->
+					  <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
+					
 					<!--  
 					- Input: submit the form
 					-->
-					<button type="submit" id="addBatch" class="btn btn-default">Create
+					<button type="submit" id="addBatchBtn" class="btn btn-default">Create
 						Batch</button>
 					<!--  
 					- Input: clear the form
@@ -318,6 +338,8 @@ Add batch modal
 
 	</div>
 </div>
+
+
 
 <!-----------------------
 Add client modal
@@ -348,6 +370,12 @@ Add client modal
 						<label for="location">Location: </label> <input type="text"
 							class="form-control" id="location" name="location" required>
 					</div>
+					<!--  
+					- Input: Hidden Token for Spring Security that will allow the administrator to access
+					-->
+					  <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
+					
+					
 					<!--  
 					- Input: submit the form
 					-->
