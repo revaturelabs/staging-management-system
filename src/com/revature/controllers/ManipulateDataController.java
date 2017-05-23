@@ -304,6 +304,5 @@ public class ManipulateDataController {
 	{
 		System.out.println(month);
 	}
-	
 
 }

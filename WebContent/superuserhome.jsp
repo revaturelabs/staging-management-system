@@ -154,13 +154,18 @@
 						</tbody>
 					</table>
 					<div class="col-md-12">
-						<button class="month" id="june">June</button>
-						<button id="july" class="month">July</button>
-						<button id="august" class="month">August</button>
-						<button id="september" class="month">September</button>
-						<button id="october" class="month">October</button>
-						<button id="november" class="month">November</button>			
-						<button id="december" class="month">December</button>			
+						<button id="1" class="month">January</button>
+						<button id="2" class="month">February</button>
+						<button id="3" class="month">March</button>
+						<button id="4" class="month">April</button>
+						<button id="5" class="month">May</button>
+						<button id="6" class="month">June</button>
+						<button id="7" class="month">July</button>
+						<button id="8" class="month">August</button>
+						<button id="9" class="month">September</button>
+						<button id="10" class="month">October</button>
+						<button id="11" class="month">November</button>			
+						<button id="12" class="month">December</button>			
 					</div>
 			
 				</div>
