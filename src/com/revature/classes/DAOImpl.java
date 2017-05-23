@@ -2,11 +2,16 @@ package com.revature.classes;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -559,7 +564,7 @@ public class DAOImpl implements DAOService {
 		java.sql.Date sqldate = new java.sql.Date(utildate.getTime()); // today
 
 		// search for batch type = java
-		crit.add(Restrictions.eq("batch.Type", "NET"));
+		crit.add(Restrictions.eq("batch.Type", ".NET"));
 
 		// search for status available
 		crit.add(Restrictions.eq("Status", "Available"));
@@ -661,7 +666,7 @@ public class DAOImpl implements DAOService {
 		java.sql.Date sqldate = new java.sql.Date(utildate.getTime()); // today
 
 		// search for batch type = java
-		crit.add(Restrictions.eq("batch.Type", "NET"));
+		crit.add(Restrictions.eq("batch.Type", ".NET"));
 
 		// search for status available
 		crit.add(Restrictions.eq("Status", "Mapped"));
@@ -763,7 +768,7 @@ public class DAOImpl implements DAOService {
 		java.sql.Date sqldate = new java.sql.Date(utildate.getTime()); // today
 
 		// search for batch type = java
-		crit.add(Restrictions.eq("batch.Type", "NET"));
+		crit.add(Restrictions.eq("batch.Type", ".NET"));
 
 		// search for status available
 		crit.add(Restrictions.eq("Status", "Confirmed"));
@@ -779,5 +784,76 @@ public class DAOImpl implements DAOService {
 		System.out.println(count);
 
 		return rowBatch;
-	}		
+	}	
+	
+	@Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
+	public List returnMonthlyResources(int monthparam)
+	{
+		List returnList = new ArrayList();
+		 
+		//decalre the arrays of the types and the statuses
+		ArrayList<String> statuslist = new ArrayList<String>(Arrays.asList("Available", "Mapped", "Confirmed"));
+		ArrayList<String> typelist = new ArrayList<String>(Arrays.asList("JAVA", ".NET", "SDET"));
+		
+		
+			//call the method to do the looping logic with the right params
+			for(String typeparam : typelist)
+			{
+				for(String statusparam : statuslist)
+				{
+					returnList.add(returnMonthlyResourcesLooping(monthparam, typeparam, statusparam));
+				}
+			}
+		
+		
+		return returnList;
+	}
+	
+	private List returnMonthlyResourcesLooping(int monthparam, String type, String status)
+	{
+		//THIS IS WHERE WE DO THE SEEQUL
+		
+		System.out.println(type + " " + status);
+
+		//HELP ME ITERATION 2 YOURE MY ONLY HOPE! THEYVE KIDNAPPED ME AND MADE ME NOT NOT HARDCODE THE YEAR
+		LocalDate date = LocalDate.now();
+		//int rightMonth = date.getMonthValue();
+		int rightYear = date.getYear();
+		
+		//use these to create a sqldate with the proper parameters
+		LocalDate rightdate = LocalDate.of(rightYear, monthparam, 15);
+		LocalDate leftdate = rightdate.minusMonths(1);
+		java.sql.Date sd = java.sql.Date.valueOf(rightdate);
+		java.sql.Date ed = java.sql.Date.valueOf(leftdate);
+
+		
+		
+		System.out.println(rightdate);
+		System.out.println(leftdate);
+		
+		
+		//use criteria to list the results
+		Session session = sf.getCurrentSession();
+		Criteria critt = session.createCriteria(AssociateInfo.class, "ai");
+		
+		critt.createAlias("ai.batch", "batch");
+		
+		critt.add(Restrictions.eq("batch.Type", type));
+		critt.add(Restrictions.eq("Status", status));
+		critt.add(Restrictions.between("batch.EndDate", sd, ed));
+		
+		List resultList = critt.list();
+		
+		/*for(int i = 0; i < resultList.size(); i++)
+		{
+			returnSet.add((AssociateInfo)resultList.get(i));
+		}*/
+		
+		System.out.println("all people who did java" + resultList);
+		int count = resultList.size();
+		System.out.println(count);
+		return resultList;
+	}
+	
+	
 }

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -65,4 +66,6 @@ public interface DAOService {
 	public void UpdateStatus(String status, long[] id, int client);
 
 	public ArrayList<Week> returnWeeksForGivenMonth(int month) throws ParseException;
+
+	public List returnMonthlyResources(int month);
 }
