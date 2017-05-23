@@ -39,7 +39,6 @@ $(document).on("click", "#addBatchBtn", function() {
 					},
 					error : function(e) {
 						console.log("ERROR: ", e);
-						display(e);
 					},
 					done : function(e) {
 						console.log("DONE");
@@ -64,7 +63,6 @@ $(document).on("click", "#addBatchBtn", function() {
 					},
 					error : function(e) {
 						console.log("ERROR: ", e);
-						display(e);
 					},
 					done : function(e) {
 						console.log("DONE");

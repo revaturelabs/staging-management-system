@@ -402,176 +402,95 @@ Add client modal
 	<div class="modal-dialog">
 
 		<!-- Modal content-->
-		<div class="modal-content">
+		<div ng-controller="client" class="modal-content">
+			
+			<form ng-submit="onSubmit()">
+			
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
-				<h4 class="modal-title">
-					<center>Associate Information</center>
+				<h4 class="modal-title" style="text-align: center">
+					Associate Information
 				</h4>
 			</div>
 			<div class="modal-body">
 
-				<form id="insert">
-					<div ng-app="myApp2">
-						<table id="myTable" class="table table-striped">
-							<thead>
-								<tr>
-									<th>Check to Select</th>
-									<th>Firstname</th>
-									<th>Lastname</th>
-									<th>EmId</th>
-									<th>Status</th>
-									<th>Company</th>
-									<th>Start Date</th>
+					<div>
+						<div class="form-group">
+							<label>Search</label>
+							<input type="text" ng-model="search" placeholder="search">
+						</div>
+						<table ng-table="vm.tableParams" show-filter="true" class="table table-striped">
+							 <thead>
+							 <tr>
+							 	<th>Check</th>
+							 	<th>Name</th>
+							 	<th>EmpID</th>
+							 	<th>Status</th>
+							 	<th>StartDate</th>
+							 	<th>EndDate</th>
+							 	<th>Company</th>
+							 </tr>
+							 </thead>
+							 <tbody>
+								<tr ng-repeat="a in associatesList |filter:search | limitTo:5">
+									<td><input ng-model="associateSelected" type="checkbox" ng-checked="exist(a)" ng-click="toggleSelection(a)" ng-true-value="{{a.associateID}}"></td>
+									<td>{{a.associateName}}</td>
+									<td>{{a.associateID}}</td>
+									<td>{{a.status}}</td>
+									<td>{{a.batch.startDate}}</td>
+									<td>{{a.batch.endDate}}</td>
+									<td>nothing</td>
 								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td><input type="checkbox" value=""></td>
-									<td>John</td>
-									<td>Doe</td>
-									<td>mark@sample.comuyfytdykjrsdjrcdtr</td>
-									<td>John</td>
-									<td>Doe</td>
-									<td>john@example.comutykdfyutdykjidrtyjurdstjurs</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox" value=""></td>
-									<td>Mary</td>
-									<td>Moe</td>
-									<td>mary@example.com</td>
-									<td>John</td>
-									<td>Doe</td>
-									<td>john@example.com</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox" value=""></td>
-									<td>July</td>
-									<td>Dooley</td>
-									<td>july@example.com</td>
-									<td>John</td>
-									<td>Doe</td>
-									<td>john@example.com</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox" value=""></td>
-									<td>John</td>
-									<td>Doe</td>
-									<td>mark@example.comuyfytdykjrsdjrcdtr</td>
-									<td>John</td>
-									<td>Doe</td>
-									<td>john@example.comutykdfyutdykjidrtyjurdstjurs</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox" value=""></td>
-									<td>John</td>
-									<td>Doe</td>
-									<td>john@example.comuyfytdykjrsdjrcdtr</td>
-									<td>John</td>
-									<td>Doe</td>
-									<td>john@example.comutykdfyutdykjidrtyjurdstjurs</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox" value=""></td>
-									<td>John</td>
-									<td>Doe</td>
-									<td>mark@example.comuyfytdykjrsdjrcdtr</td>
-									<td>John</td>
-									<td>Doe</td>
-									<td>john@example.comutykdfyutdykjidrtyjurdstjurs</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox" value=""></td>
-									<td>John</td>
-									<td>Doe</td>
-									<td>john@example.comuyfytdykjrsdjrcdtr</td>
-									<td>John</td>
-									<td>Doe</td>
-									<td>john@example.comutykdfyutdykjidrtyjurdstjurs</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox" value=""></td>
-									<td>John</td>
-									<td>Doe</td>
-									<td>john@example.comuyfytdykjrsdjrcdtr</td>
-									<td>John</td>
-									<td>Doe</td>
-									<td>john@example.comutykdfyutdykjidrtyjurdstjurs</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox" value=""></td>
-									<td>John</td>
-									<td>Doe</td>
-									<td>john@example.comuyfytdykjrsdjrcdtr</td>
-									<td>John</td>
-									<td>Doe</td>
-									<td>john@example.comutykdfyutdykjidrtyjurdstjurs</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox" value=""></td>
-									<td>John</td>
-									<td>Doe</td>
-									<td>john@example.comuyfytdykjrsdjrcdtr</td>
-									<td>John</td>
-									<td>Doe</td>
-									<td>john@example.comutykdfyutdykjidrtyjurdstjurs</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox" value=""></td>
-									<td>John</td>
-									<td>Doe</td>
-									<td>john@example.comuyfytdykjrsdjrcdtr</td>
-									<td>John</td>
-									<td>Doe</td>
-									<td>john@example.comutykdfyutdykjidrtyjurdstjurs</td>
-								</tr>
-								<tr>
-									<td><input type="checkbox" value=""></td>
-									<td>John</td>
-									<td>Doe</td>
-									<td>john@example.comuyfytdykjrsdjrcdtr</td>
-									<td>John</td>
-									<td>Doe</td>
-									<td>john@example.comutykdfyutdykjidrtyjurdstjurs</td>
-								</tr>
-							</tbody>
-
+							 </tbody>
 						</table>
+						<!-- This div below is just to check the data of the associate selected by showing on this div element -->
+						 <div> List: {{associateSelected}}</div>
 					</div>
-
-
-
-
-				</form>
 			</div>
 			<div class="modal-footer">
-				<div class=pull-left>
-					<label class="radio-inline"> <input type="radio"
-						name="optradio"> Available
-					</label> <label class="radio-inline"> <input type="radio"
-						name="optradio"> Mapped
-					</label> <label class="radio-inline"> <input type="radio"
-						name="optradio"> Interviewed
-					</label> <label class="radio-inline"> <input type="radio"
-						name="optradio"> Confirmed
-					</label> <br>
-					<table>
-						<tr>
-							<td><select class="form-control" id="sel1">
-									<option>Available</option>
-									<option>Infosys</option>
-									<option>Capital One</option>
-									<option>IBM</option>
-							</select></td>
-							<td style="padding: 20px">
-								<button type="button">Ok</button>
-							</td>
-						</tr>
-					</table>
+				<div class=pull-left >
+					
+				<br>
+				<!--  The table below is the to how the dropdown button as well as the radio buttons are positioned -->
+				<table>
+				<tr>
+					<td style="text-align: left;">
+					<label> Select Status:</label>
+					</td>
+					<td>
+					<label id="availableRadio" class="radio-inline">
+						<input ng-model="modifyStatus.status" type="radio" value="available" name="optradio" id="test3"> 
+						Available
+					</label>
+					<label id="mappedRadio" class="radio-inline">
+						<input ng-model="modifyStatus.status" type="radio" value="mapped" name="optradio" id="test1">
+						Mapped
+					</label> 
+					<label id="confirmedRadio" class="radio-inline">
+						<input ng-model="modifyStatus.status" type="radio" value="confirmed" name="optradio" id="test2">
+						Confirmed
+					</label>
+					</td>
+
+				</tr>
+				<tr>
+					<td> <label> Select a Client:</label> </td>
+					<td style="padding: 5px">
+						<select ng-model="modifyStatus.clientName" class="form-control" id="sel1" name="clients" required>
+		        				<option ng-repeat="t in clientList" value="{{t.name}}" selected>{{t.name}}</option>		
+		      			</select>
+      				</td>
+      				<td style="padding: 20px" rowspan="2">
+						<button type="submit">Ok</button>
+					</td>
+				</tr>
+				
+				</table>
 				</div>
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 
 			</div>
+			</form>
 		</div>
 
 	</div>

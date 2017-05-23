@@ -70,8 +70,6 @@ public class ManipulateDataController {
 		return model;
 	}
 
-
-
 	@RequestMapping(value = "/checkLogin", method = RequestMethod.POST)
 	public String CheckLogin(@FormParam("username") String username, @FormParam("password") String password) {
 		// try to get a single result from the database
@@ -87,8 +85,7 @@ public class ManipulateDataController {
 			return msg;
 		}
 	}
-	
-	
+
 	@RequestMapping(value="/logout", method=RequestMethod.GET)
 	public ModelAndView logout(HttpServletRequest req)
 	{
@@ -295,7 +292,6 @@ public class ManipulateDataController {
 		return allData; 
 	}
 
-	
 	@RequestMapping("/updateAssociate")
 	public void updateAssociates(@RequestBody long[] id, @RequestBody String status, @RequestBody int client)
 	{
