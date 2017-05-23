@@ -1,6 +1,8 @@
 package com.revature.classes;
 
 import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
@@ -16,48 +18,26 @@ public class Driver {
 	
 
 
-	public static void main(String[] args) {
+	public static void main(String[] args) 
+	{
 				
 		SessionFactory sf = new Configuration().configure().buildSessionFactory();
-		Session session = sf.openSession();
-		Transaction tx = session.beginTransaction();
-
-		Calendar currenttime = Calendar.getInstance();
-		Date sqldate = new Date((currenttime.getTime()).getTime());
 		
+		ApplicationContext ctx = new ClassPathXmlApplicationContext("appContext.xml");
+		DAOService daoserv = (DAOService) ctx.getBean("DAOImpl");
 		
-		// create a batch
-		BatchInfo batch = new BatchInfo("Java 101", "Reston, VA", "Ankit", sqldate, sqldate, "Java");
-		session.save(batch);
-
+		try{
+			ArrayList<Week> weeky = daoserv.returnWeeksForGivenMonth(3);
+			System.out.println(weeky);
+			System.out.println("bang bang");
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 		
-		// create a client
-		ClientInfo client = new ClientInfo("Accenture", "Austin, Texas");
-		//session.save(client);
-		session.save(client);
-		
-		// add client to a list of clients
-	    Set<ClientInfo> clients = new HashSet<ClientInfo>();
-	    clients.add(client);
-
-	    // create an associate
-		AssociateInfo associate = new AssociateInfo("Bily Bob", "available", batch);
-		session.save(associate);
-		
-		/*session.save(associate);
-		
-		tx.commit();
-		session.close();
-		sf.close(); */
-				
-		System.out.println(batch.toString());
-		System.out.println(associate.toString());
-		System.out.println(client.toString());
-		
-		tx.commit();
-		session.close();
 		sf.close();
-
+		
 	}
 	
 }

@@ -6,15 +6,7 @@ import java.util.Date;
 import org.hibernate.annotations.NamedNativeQueries;
 import org.hibernate.annotations.NamedNativeQuery;
 import com.revature.classes.*;
-@NamedNativeQueries
-({
-	@NamedNativeQuery
-	(
-		name = "callGetWeeklyJavaResources",
-		query = "CALL GETWEEKLYJAVARESOURCES(:date,:startdate,:enddate)",
-		resultClass = Week.class
-	)
-})
+
 public class Week implements java.io.Serializable
 {
 	private String daterange;

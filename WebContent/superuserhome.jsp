@@ -1,9 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
-<%@page session="true"%>
-
 <!DOCTYPE html>
 <html ng-app="superuser">
 <head>
@@ -25,26 +21,28 @@
 <!-- AngularJs Library -->
 <script
 	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
-
-<script
-	src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.min.js"></script>
-
+<script src="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.js"></script>
+	<script
+    src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.min.js"></script>
+	
 <!-- DataTable Library -->
 <link type="text/css" rel="stylesheet"
 	href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
+	
+<!-- Angular Table Library -->	
+<link rel="stylesheet" href="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.css">
 
 <script type="text/javascript"
 	src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
-
-
-
+	
+	
+	
 <!-- Import Javascript Files -->
 <script src="JavaScripts/BatchCtrl.js"></script>
-<link rel="stylesheet" href="css/modalView.css" />
+	<link rel="stylesheet" href="css/modalView.css" />
 <script src="JavaScripts/AddAssociateControllerScript.js"></script>
-
-
-</head>
+	
+</head> 
 <body>
 	<nav class="navbar navbar-inverse">
 		<div class="container-fluid">
@@ -78,23 +76,6 @@
 								data-target="#addClient"><span
 									class="glyphicon glyphicon-plus"></span> Add Client</a></li>
 
-							<!-- navbar link logout -->
-							<li><a href="javascript:formSubmit()"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
-
-							<script>
-								function formSubmit() {
-									document.getElementById("logoutForm")
-											.submit();
-								}
-							</script>
-
-							<!-- csrt for log out-->
-							<form action="logout" method="post" id="logoutForm">
-								<input type="hidden" name="${_csrf.parameterName}"
-									value="${_csrf.token}" />
-							</form>
-
-
 						</ul></li>
 
 				</ul>
@@ -104,6 +85,7 @@
 	</nav>
 
 	<div class="row" ng-controller="infoTable">
+			
 		<!-- right side bar -->
 		<div class="col-sm-offset-2 col-sm-8">
 			<ul class="nav nav-pills">
@@ -112,7 +94,7 @@
 			</ul>
 
 			<div class="tab-content">
-				<div id="current" class="tab-pane fade in active">
+				<div id="current" class="tab-pane fade in active" >
 					<table class="table table-bordered table-striped table-hover">
 						<thead>
 							<tr>
@@ -120,7 +102,7 @@
 								<th>Java</th>
 								<th>.NET</th>
 								<th>JTA</th>
-								<th>Total</th>
+								<th>Big Data</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -142,15 +124,17 @@
 
 				<div id="forecast" class="tab-pane fade">
 				<table class="table table-bordered table-striped table-hover">
-						<thead>
+				<thead>
+				<thead>
 							<tr>
-								<th>Week</th>
+								<th>Weeks</th>
 								<th>Java</th>
 								<th>.NET</th>
 								<th>JTA</th>
-								<th>Total</th>
+								<th>Big Data</th>
 							</tr>
 						</thead>
+				</thead>
 						<tbody>
 							<tr ng-repeat="w in weeks">
 								<td>{{w.daterange}}</td>
@@ -168,11 +152,12 @@
 					</table>
 				</div>
 
+				<div id="history" class="tab-pane fade">history</div>
 			</div>
 		</div>
 	</div>
 
-
+	
 </body>
 
 
@@ -214,12 +199,13 @@ Add associate modal
 					- options retrieved from a controller
 					-->
 					<div class="form-group" ng-controller="BatchCtrl">
-						<label for="batchSelector">Batch:</label> <select
+						<label for="batchSelector">Batch:</label> 
+						<select
 							id="BatchSelector" style="width: 100%;" name="batch"
 							class="form-control">
 							<option ng-repeat="b in batches" value="{{b.trainingName}}">{{b.trainingName}}</option>
 						</select>
-
+						
 					</div>
 										<!--  
 					- Input: Hidden Token for Spring Security that will allow the administrator to access
@@ -305,7 +291,8 @@ Add batch modal
 					- Input: select statement for collecting the type of batch
 					-->
 					<div class="form-group">
-						<label for="batchtype">Batch Type:</label> <select
+						<label for="batchtype">Batch Type:</label> 
+						<select
 							class="form-control" id="batchtype" name="batchtype">
 							<option value="java">Java</option>
 							<option value="net">.NET</option>

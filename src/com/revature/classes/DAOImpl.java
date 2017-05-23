@@ -25,7 +25,8 @@ public class DAOImpl implements DAOService {
 
 	SessionFactory sf;
 
-	public void setSf(SessionFactory sf) {
+	public void setSf(SessionFactory sf) 
+	{
 		this.sf = sf;
 	}
 
@@ -253,9 +254,10 @@ public class DAOImpl implements DAOService {
 			 * List result = query.list(); for(int j=0; j<result.size(); j++){
 			 * Week week = (Week)result.get(j); WeekList.add(week); }
 			 */
-
+			//returnWeeksForGivenMonth
+		
 			// increment relevant external variables
-			dateIncrement += 7;
+			//dateIncrement += 7;
 		}
 
 		return WeekList;
@@ -777,6 +779,5 @@ public class DAOImpl implements DAOService {
 		System.out.println(count);
 
 		return rowBatch;
-	}
-
+	}		
 }

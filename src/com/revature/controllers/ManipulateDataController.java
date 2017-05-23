@@ -163,14 +163,14 @@ public class ManipulateDataController {
 		daoserv.AddClient(client);
 	}
 	
-	@RequestMapping(value = "/displayStats", method = RequestMethod.POST)
+	@RequestMapping(value = "/displayStats", method = RequestMethod.GET)
 	public @ResponseBody ArrayList<AssociateInfo> ViewAssociateStats(HttpServletRequest req) throws JsonGenerationException, JsonMappingException, IOException
 	{
 		ArrayList<AssociateInfo> associates = daoserv.GetAllAssociatesDB();
     	return associates;
 	}
 	
-	@RequestMapping(value = "/displayClients", method = RequestMethod.POST)
+	@RequestMapping(value = "/displayClients", method = RequestMethod.GET)
 	public @ResponseBody ArrayList<ClientInfo> ViewClients(HttpServletRequest req) throws JsonGenerationException, JsonMappingException, IOException
 	{
 		ArrayList<ClientInfo> client = daoserv.GetAllClientsDB();
@@ -292,7 +292,8 @@ public class ManipulateDataController {
 		return allData; 
 	}
 
-	@RequestMapping("/updateAssociate")
+		
+	@RequestMapping("/updateAssociates")
 	public void updateAssociates(@RequestBody long[] id, @RequestBody String status, @RequestBody int client)
 	{
 		daoserv.UpdateStatus(status, id, client);
