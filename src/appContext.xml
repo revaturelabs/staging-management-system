@@ -68,6 +68,13 @@
 
 	</bean>
 	
+
+	<!-- DAO IMPL Bean Definition -->
+
+	<bean id="Driver" class="com.revature.classes.Driver" autowire="byName">
+
+	</bean>
+	
 	
 	<bean id="authSuccessHandler" class="com.revature.security.AuthSuccessHandler" />
 
