@@ -4,6 +4,9 @@
 <html ng-app="superuser">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+	<meta name="_csrf" content="${_csrf.token}"/>
+	<!-- default header name is X-CSRF-TOKEN -->
+	<meta name="_csrf_header" content="${_csrf.headerName}"/>
 
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet"
@@ -150,6 +153,16 @@
 							</tr>
 						</tbody>
 					</table>
+					<div class="col-md-12">
+						<button class="month" id="june">June</button>
+						<button id="july" class="month">July</button>
+						<button id="august" class="month">August</button>
+						<button id="september" class="month">September</button>
+						<button id="october" class="month">October</button>
+						<button id="november" class="month">November</button>			
+						<button id="december" class="month">December</button>			
+					</div>
+			
 				</div>
 
 				<div id="history" class="tab-pane fade">history</div>
@@ -157,7 +170,6 @@
 		</div>
 	</div>
 
-	
 </body>
 
 
