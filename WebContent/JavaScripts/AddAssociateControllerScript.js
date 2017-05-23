@@ -48,7 +48,6 @@ $(document).on("click", "#addBatch", function() {
 			},
 			error : function(e) {
 				console.log("ERROR: ", e);
-				display(e);
 			},
 			done : function(e) {
 				console.log("DONE");
@@ -74,7 +73,6 @@ $(document).on("click", "#addBatch", function() {
 					},
 					error : function(e) {
 						console.log("ERROR: ", e);
-						display(e);
 					},
 					done : function(e) {
 						console.log("DONE");
@@ -99,7 +97,6 @@ $(document).on("click", "#addBatch", function() {
 					},
 					error : function(e) {
 						console.log("ERROR: ", e);
-						display(e);
 					},
 					done : function(e) {
 						console.log("DONE");
@@ -111,4 +108,3 @@ $(document).on("click", "#addBatch", function() {
 		$(document).ready(function() {
 		    $('#myTable').DataTable();
 		} );
-		
