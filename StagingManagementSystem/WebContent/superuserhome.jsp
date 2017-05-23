@@ -30,7 +30,7 @@
 	href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
 	
 <!-- Angular Table Library -->	
-<link rel="stylesheet"; href="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.css">
+<link rel="stylesheet" href="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.css">
 
 <script type="text/javascript"
 	src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
@@ -116,51 +116,39 @@
 							<tr>
 								<td>Available</td>
 								<td>
-									<button data-toggle="modal" data-target="#AssociateInfo">{{master}}</button>
+									<button id="available" data-toggle="modal" data-target="#AssociateInfo">{{master}}</button>
 								</td>
-								<td><button data-toggle="modal"
+								<td><button id="available" data-toggle="modal"
 										data-target="#AssociateInfo">35</button></td>
-								<td><button data-toggle="modal"
+								<td><button id="available" data-toggle="modal"
 										data-target="#AssociateInfo">50</button></td>
-								<td><button data-toggle="modal"
+								<td><button id="available" data-toggle="modal"
 										data-target="#AssociateInfo">55</button></td>
 							</tr>
 							<tr>
 								<td>Mapped</td>
-								<td><button data-toggle="modal"
+								<td><button id="mapped" data-toggle="modal"
 										data-target="#AssociateInfo">10</button></td>
-								<td><button data-toggle="modal"
+								<td><button id="mapped" data-toggle="modal"
 										data-target="#AssociateInfo">5</button></td>
-								<td><button data-toggle="modal"
+								<td><button id="mapped" data-toggle="modal"
 										data-target="#AssociateInfo">15</button></td>
-								<td><button data-toggle="modal"
+								<td><button id="mapped" data-toggle="modal"
 										data-target="#AssociateInfo">7</button></td>
 							</tr>
 							<tr>
-								<td>Interviewed</td>
-								<td><button data-toggle="modal"
-										data-target="#AssociateInfo">5</button></td>
-								<td><button data-toggle="modal"
-										data-target="#AssociateInfo">50</button></td>
-								<td><button data-toggle="modal"
-										data-target="#AssociateInfo">10</button></td>
-								<td><button data-toggle="modal"
-										data-target="#AssociateInfo">3</button></td>
-							</tr>
-							<tr>
 								<td>Confirmed</td>
-								<td><button data-toggle="modal"
+								<td><button id="confirmed" data-toggle="modal"
 										data-target="#AssociateInfo">6</button></td>
-								<td><button data-toggle="modal"
+								<td><button id="confirmed" data-toggle="modal"
 										data-target="#AssociateInfo">3</button></td>
-								<td><button data-toggle="modal"
+								<td><button id="confirmed" data-toggle="modal"
 										data-target="#AssociateInfo">1</button></td>
-								<td><button data-toggle="modal"
+								<td><button id="confirmed" data-toggle="modal"
 										data-target="#AssociateInfo">5</button></td>
 							</tr>
 						</tbody>
 					</table>
-
 				</div>
 
 				<div id="forecast" class="tab-pane fade"></div>
@@ -299,7 +287,8 @@ Add batch modal
 					- Input: select statement for collecting the type of batch
 					-->
 					<div class="form-group">
-						<label for="batchtype">Batch Type:</label> <select
+						<label for="batchtype">Batch Type:</label> 
+						<select
 							class="form-control" id="batchtype" name="batchtype">
 							<option value="java">Java</option>
 							<option value="net">.NET</option>
@@ -384,79 +373,94 @@ Add client modal
 
 		<!-- Modal content-->
 		<div ng-controller="client" class="modal-content">
+			
+			<form ng-submit="onSubmit()">
+			
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
-				<h4 class="modal-title">
-					<center>Associate Information</center>
+				<h4 class="modal-title" style="text-align: center">
+					Associate Information
 				</h4>
 			</div>
 			<div class="modal-body">
 
-				<form id="insert">
 					<div>
+						<div class="form-group">
+							<label>Search</label>
+							<input type="text" ng-model="search" placeholder="search">
+						</div>
 						<table ng-table="vm.tableParams" show-filter="true" class="table table-striped">
-							 
-								<tr ng-repeat="a in associatesList">
-									<td title="'Check'"><input type="checkbox" value=""></td>
-									<td title="'Name'" filter="{ name: 'text'}" sortable="'name'">{{a.associateName}}</td>
-									<td title="'EmpID'" filter="{ EmpID: 'text'}" sortable="'EmpID'">{{a.associateID}}</td>
-									<td title="'Status'" filter="{ Status: 'text'}" sortable="'Status'">{{a.status}}</td>
-									<td title="'StartDate'" filter="{ StartDate: 'text'}" sortable="'StartDate'">{{a.startDate}}</td>
-									<td title="'EndDate'" filter="{ EndDate: 'text'}" sortable="'EndDate'">{{a.endDate}}</td>
-									<td title="'Company'" filter="{ Company: 'text'}" sortable="'Company'">nothing</td>
+							 <thead>
+							 <tr>
+							 	<th>Check</th>
+							 	<th>Name</th>
+							 	<th>EmpID</th>
+							 	<th>Status</th>
+							 	<th>StartDate</th>
+							 	<th>EndDate</th>
+							 	<th>Company</th>
+							 </tr>
+							 </thead>
+							 <tbody>
+								<tr ng-repeat="a in associatesList |filter:search | limitTo:5">
+									<td><input ng-model="associateSelected" type="checkbox" ng-checked="exist(a)" ng-click="toggleSelection(a)" ng-true-value="{{a.associateID}}"></td>
+									<td>{{a.associateName}}</td>
+									<td>{{a.associateID}}</td>
+									<td>{{a.status}}</td>
+									<td>{{a.batch.startDate}}</td>
+									<td>{{a.batch.endDate}}</td>
+									<td>nothing</td>
 								</tr>
-							 
+							 </tbody>
 						</table>
+						<!-- This div below is just to check the data of the associate selected by showing on this div element -->
+						 <div> List: {{associateSelected}}</div>
 					</div>
-					
-				</form>
 			</div>
 			<div class="modal-footer">
 				<div class=pull-left >
-					<label class="radio-inline">
-						<input type="radio" value="available" name="optradio"> 
-						Available
-					</label> 
-					<label class="radio-inline">
-						<input type="radio" value="mapped" name="optradio">
-						Mapped
-					</label> 
 					
-					<label class="radio-inline">
-						<input type="radio" value="interviewed" name="optradio">
-						Interviewed
-					</label>
-					<label class="radio-inline">
-						<input type="radio" value="confirmed" name="optradio">
-						Confirmed
-					</label>
 				<br>
+				<!--  The table below is the to how the dropdown button as well as the radio buttons are positioned -->
 				<table>
 				<tr>
+					<td style="text-align: left;">
+					<label> Select Status:</label>
+					</td>
 					<td>
-					<select class="form-control" id="sel1" name="clients">
-	        				<option ng-repeat="t in clientList" value="{{t.clientID}}">{{t.name}}</option>
-	        				
-	      			</select>
-	      			
-	      			<!--  <div class="form-group" ng-controller="BatchCtrl">
-						<label for="batchSelector">Batch:</label> 
-						<select
-							id="BatchSelector" style="width: 100%;" name="batch"
-							class="form-control">
-							<option ng-repeat="b in batches" value="{{b.trainingName}}">{{b.trainingName}}</option>
-						</select> -->
-	      			
+					<label id="availableRadio" class="radio-inline">
+						<input ng-model="modifyStatus.status" type="radio" value="available" name="optradio" id="test3"> 
+						Available
+					</label>
+					<label id="mappedRadio" class="radio-inline">
+						<input ng-model="modifyStatus.status" type="radio" value="mapped" name="optradio" id="test1">
+						Mapped
+					</label> 
+					<label id="confirmedRadio" class="radio-inline">
+						<input ng-model="modifyStatus.status" type="radio" value="confirmed" name="optradio" id="test2">
+						Confirmed
+					</label>
+					</td>
+
+				</tr>
+				<tr>
+					<td> <label> Select a Client:</label> </td>
+					<td style="padding: 5px">
+						<select ng-model="modifyStatus.clientName" class="form-control" id="sel1" name="clients" required>
+		        				<option ng-repeat="t in clientList" value="{{t.name}}" selected>{{t.name}}</option>		
+		      			</select>
       				</td>
-      				<td style="padding: 20px">
-					<button ng-click="updateStatus()" type="button">Ok</button>
+      				<td style="padding: 20px" rowspan="2">
+						<button type="submit">Ok</button>
 					</td>
 				</tr>
+				
 				</table>
 				</div>
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 
 			</div>
+			</form>
 		</div>
 
 	</div>

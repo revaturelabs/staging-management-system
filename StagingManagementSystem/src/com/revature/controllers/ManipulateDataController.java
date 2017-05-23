@@ -160,5 +160,10 @@ public class ManipulateDataController {
 		return batch;
 		
 	}
+	@RequestMapping(value = "/changeStatus", method = RequestMethod.POST)
+	public void changeStatus(HttpServletRequest request) {
+		// get the form input
+		System.out.println("Status Changed!!!!!" +request.getParameter("submittedData"));
+	}
 
 }
