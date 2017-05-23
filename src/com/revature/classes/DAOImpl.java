@@ -815,7 +815,7 @@ public class DAOImpl implements DAOService {
 		//THIS IS WHERE WE DO THE SEEQUL
 		
 		
-
+		
 		//HELP ME ITERATION 2 YOURE MY ONLY HOPE! THEYVE KIDNAPPED ME AND MADE ME NOT NOT HARDCODE THE YEAR
 		LocalDate date = LocalDate.now();
 		//int rightMonth = date.getMonthValue();
@@ -825,10 +825,9 @@ public class DAOImpl implements DAOService {
 		LocalDate rightdate = LocalDate.of(rightYear, monthparam, 15);
 		LocalDate leftdate = rightdate.minusMonths(1);
 		
-		
-		
-		System.out.println(rightdate);
-		System.out.println(leftdate);
+		java.sql.Date rightdatesql = java.sql.Date.valueOf(rightdate);
+		java.sql.Date leftdatesql = java.sql.Date.valueOf(leftdate);
+	
 		
 		
 		//use criteria to list the results
@@ -839,7 +838,7 @@ public class DAOImpl implements DAOService {
 		
 		critt.add(Restrictions.eq("batch.Type", type));
 		critt.add(Restrictions.eq("Status", status));
-		critt.add(Restrictions.between("batch.EndDate", leftdate, rightdate));
+		critt.add(Restrictions.between("batch.EndDate", leftdatesql, rightdatesql));
 		
 		List resultList = critt.list();
 		
