@@ -300,9 +300,9 @@ public class ManipulateDataController {
 	}
 	
 	@RequestMapping("/getMonth")
-	public void getMonths(@RequestParam("month") int month)
+	public @ResponseBody List getMonths(@RequestParam("month") int month)
 	{
 		List MonthlyInfo = daoserv.returnMonthlyResources(month);
-		System.out.println(month);
+		return MonthlyInfo;
 	}
 }

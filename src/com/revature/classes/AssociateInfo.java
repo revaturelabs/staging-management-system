@@ -10,6 +10,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  */
 @Entity
 @Table(name = "ASSOCIATEINFO")
+@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 public class AssociateInfo {
 	/*
 	 * PK: ASSOCIATEID (Auto Generated) FK/Reference: BatchInfo.TrainingName
