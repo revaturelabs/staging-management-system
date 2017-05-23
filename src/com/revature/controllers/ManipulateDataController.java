@@ -299,5 +299,11 @@ public class ManipulateDataController {
 		daoserv.UpdateStatus(status, id, client);
 	}
 	
+	@RequestMapping("/getMonth")
+	public void getMonths(@RequestParam("month") String month)
+	{
+		System.out.println(month);
+	}
+	
 
 }

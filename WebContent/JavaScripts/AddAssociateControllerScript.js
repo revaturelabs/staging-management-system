@@ -32,6 +32,49 @@ $(document).on("click", "#confirmed", function() {
 	
 });
 
+/*
+ * set the token - important for spring security
+ * can't pass months without a token
+ */
+var token = $("meta[name='_csrf']").attr("content");
+$.ajaxSetup({
+    beforeSend: function(xhr) {
+        xhr.setRequestHeader('X-CSRF-TOKEN', token);
+    }
+});
+
+/*
+ * post a month on click to the controller
+ */
+$(document).ready(function() {
+	
+	$(".month").on("click", function(e) {
+
+		var subm = e.target.id;
+
+		e.preventDefault();
+
+		// make the ajax call
+		$.ajax({
+			type : 'POST',
+			url : '/StagingManagementSystem/getMonth',
+			data : { month: subm },
+			success : function(data) {
+				console.log("SUCCESS: ", data);
+
+			},
+			error : function(e) {
+				console.log("ERROR: ", e);
+			},
+			done : function(e) {
+				console.log("DONE");
+			}
+		});
+	});
+});
+
+
+// submit the add batch form
 $(document).on("click", "#addBatch", function() {
 
 	$("#addBatchForm").unbind('submit').bind('submit', function(e) {
@@ -56,7 +99,7 @@ $(document).on("click", "#addBatch", function() {
 	});
 });
 
-
+// submit the add associate form
 		$(document).on("click", "#addAssociate", function() {
 
 			$("#addAssociateForm").unbind('submit').bind('submit', function(e) {
@@ -81,6 +124,7 @@ $(document).on("click", "#addBatch", function() {
 			});
 		});
 
+		// submit the add client form
 		$(document).on("click", "#addClient", function() {
 
 			$("#addClientForm").unbind('submit').bind('submit', function(e) {
@@ -105,6 +149,7 @@ $(document).on("click", "#addBatch", function() {
 			});
 		});
 		
+		// do datatable things
 		$(document).ready(function() {
 		    $('#myTable').DataTable();
 		} );
