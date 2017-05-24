@@ -50,6 +50,7 @@
 	
 </head> 
 <body>
+<jsp:include page="ForecastModals.jsp" />
 	<nav class="navbar navbar-inverse">
 		<div class="container-fluid">
 			<div class="navbar-header">
@@ -141,14 +142,14 @@
 							</tr>
 						</thead>
 				</thead>
-						<tbody  class="forecast">
+						<tbody>
 							<tr>
 								<td>Available</td>
 								<td>
 									<button data-toggle="modal" data-target="#AssociateInfo">{{month[0]}}</button>
 								</td>
 								<td><button data-toggle="modal"
-										data-target="#AssociateInfo">{{month[1]}}</button></td>
+										data-target="#ForecastAvailableJava">{{month[1]}}</button></td>
 								<td><button data-toggle="modal"
 										data-target="#AssociateInfo">{{month[2]}}</button></td>
 								<td><button data-toggle="modal"
