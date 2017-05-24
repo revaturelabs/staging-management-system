@@ -130,7 +130,7 @@
 				<thead>
 				<thead>
 							<tr>
-								<th>Weeks</th>
+								<th>Status</th>
 								<th>Java</th>
 								<th>.NET</th>
 								<th>JTA</th>
@@ -139,17 +139,17 @@
 						</thead>
 				</thead>
 						<tbody>
-							<tr ng-repeat="w in weeks">
-								<td>{{w.daterange}}</td>
+							<tr ng-repeat="ml in monthlist">
+								<td ng-repeat="s in statuslist">{{ml[0]}}</td>
 								<td>
-									<button data-toggle="modal" data-target="#AssociateInfo">{{w.javacount}}</button>
+									<button data-toggle="modal" data-target="#AssociateInfo">{{m.javacount}}</button>
 								</td>
 								<td><button data-toggle="modal"
-										data-target="#AssociateInfo">{{w.dotNetCount}}</button></td>
+										data-target="#AssociateInfo">{{m.dotNetCount}}</button></td>
 								<td><button data-toggle="modal"
-										data-target="#AssociateInfo">{{w.sdetcount}}</button></td>
+										data-target="#AssociateInfo">{{m.sdetcount}}</button></td>
 								<td><button data-toggle="modal"
-										data-target="#AssociateInfo">{{w.javacount + w.dotNetCount + w.sdetcount}}</button></td>
+										data-target="#AssociateInfo">{{m.javacount + m.dotNetCount + m.sdetcount}}</button></td>
 							</tr>
 						</tbody>
 					</table>

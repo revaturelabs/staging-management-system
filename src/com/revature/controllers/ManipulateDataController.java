@@ -299,10 +299,87 @@ public class ManipulateDataController {
 		daoserv.UpdateStatus(status, id, client);
 	}
 	
-	@RequestMapping("/getMonth")
-	public void getMonths(@RequestParam("month") int month)
+	@RequestMapping(value="/displayForecast", method = RequestMethod.GET)
+	public @ResponseBody List[] displayForecast()
 	{
-		List MonthlyInfo = daoserv.returnMonthlyResources(month);
+		// create a list for the confirmed associates
+		List confirmed = new ArrayList();
+		confirmed.add("confirmed");
+		String[] conId = {"confirmed-java", "confirmed-net", "confirmed-sdet"};
+		confirmed.add(conId);
+
+		// get the associates from the database
+		List conJava = daoserv.getConfirmedCurrentJava();
+		List conNet = daoserv.getConfirmedCurrentNET();
+		List conSdet = daoserv.getConfirmedCurrentSDET();
+				
+		// add the associates to the list
+		confirmed.add(conJava);
+		confirmed.add(conNet);
+		confirmed.add(conSdet);
+		
+		// add the number of associates
+		confirmed.add(conJava.size());
+		confirmed.add(conNet.size());
+		confirmed.add(conSdet.size());
+		
+		// create a list for the mapped associates
+		List mapped = new ArrayList();
+		mapped.add("mapped");
+		String[] mapId = {"mapped-java", "mapped-net", "mapped-sdet"};
+		mapped.add(mapId);
+		
+		// get the associates from the database
+		List mapJava = daoserv.getMappedCurrentJava();
+		List mapNet = daoserv.getMappedCurrentNET();
+		List mapSdet = daoserv.getMappedCurrentSDET();
+		
+		// add the associates to the list
+		mapped.add(mapJava);
+		mapped.add(mapNet);
+		mapped.add(mapSdet);
+		
+		// add the number of associates
+		mapped.add(mapJava.size());
+		mapped.add(mapNet.size());
+		mapped.add(mapSdet.size());
+		
+		// create a list for the available associates
+		List available = new ArrayList();
+		available.add("available");
+		String[] availId = {"available-java", "available-net", "available-sdet"};
+		available.add(availId);
+		
+		// get the associates from the database
+		List availJava = daoserv.getAvailableCurrentJava();
+		List availNet = daoserv.getAvailableCurrentNET();
+		List availSdet = daoserv.getAvailableCurrentSDET();
+		
+		// add the associates to the list
+		available.add(availJava);
+		available.add(availNet);
+		available.add(availSdet);
+		
+		// add the number of associates
+		available.add(availJava.size());
+		available.add(availNet.size());
+		available.add(availSdet.size());
+		
+		// add all the lists to a list
+		List[] allData = {
+				available, mapped, confirmed
+		};
+		
+		// return the list containing all of the lists
+		return allData; 
+	}
+	
+	@RequestMapping("/getMonth")
+	public @ResponseBody List<AssociateInfo> getMonths(@RequestParam("month") int month)
+	{
+		List<AssociateInfo> MonthlyInfo = daoserv.returnMonthlyResources(month);
 		System.out.println(month);
+		
+		return MonthlyInfo;
 	}
 }

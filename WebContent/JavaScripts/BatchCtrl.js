@@ -100,15 +100,6 @@ mainApp.controller("infoTable", function($scope, $http) {
 		console.log(current);
 		console.log(result.data);
 	});
-
-	$scope.getForecast = function() {
-		$http.get("/StagingManagementSystem/displayWeeks").then(
-				function(result) {
-					$scope.weeks = result.data;
-					console.log(weeks);
-					console.log(result.data);
-				});
-	};
 });
 
 mainApp.controller("BatchCtrl", function($scope, $http) {
@@ -116,6 +107,20 @@ mainApp.controller("BatchCtrl", function($scope, $http) {
 	$http.get("/StagingManagementSystem/displayBatch").then(function(result) {
 		$scope.batches = result.data;
 		console.log(batches);
+		console.log(result.data);
+	});
+});
+
+/*******************************************************************************
+ * 
+ * Other Stuff - Can Touch
+ * 
+ ******************************************************************************/
+
+mainApp.controller("forcastTable", function($scope, $http) {
+	$http.get("/StagingManagementSystem/displayForecast").then(function(result) {
+		$scope.current = result.data;
+		console.log(current);
 		console.log(result.data);
 	});
 });
