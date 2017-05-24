@@ -71,6 +71,13 @@ $(document).ready(function() {
 			}
 		});
 	});
+	
+		$http.post("/StagingManagementSystem/getMonth").then(
+				function(result) {
+					$scope.month = result.data;
+					console.log(month);
+					console.log(result.data);
+		});
 });
 
 

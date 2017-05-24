@@ -19,7 +19,8 @@
 	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
 <script
 	src="/StagingManagementSystem/JavaScripts/AddAssociateControllerScript.js"></script>
-
+<!-- custom css file -->
+	<link href="css/login.css" rel="stylesheet">
 	
 <title>SMS</title>
 </head>

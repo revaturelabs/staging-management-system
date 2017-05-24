@@ -11,6 +11,9 @@
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/modalView.css" />
+	
+<link rel="stylesheet" href="css/login.css" />
 
 <!-- jQuery library -->
 <script
@@ -42,8 +45,8 @@
 	
 <!-- Import Javascript Files -->
 <script src="JavaScripts/BatchCtrl.js"></script>
-	<link rel="stylesheet" href="css/modalView.css" />
 <script src="JavaScripts/AddAssociateControllerScript.js"></script>
+
 	
 </head> 
 <body>
@@ -130,7 +133,7 @@
 				<thead>
 				<thead>
 							<tr>
-								<th>Weeks</th>
+								<th>Status</th>
 								<th>Java</th>
 								<th>.NET</th>
 								<th>JTA</th>
@@ -138,18 +141,42 @@
 							</tr>
 						</thead>
 				</thead>
-						<tbody>
-							<tr ng-repeat="w in weeks">
-								<td>{{w.daterange}}</td>
+						<tbody  class="forecast">
+							<tr>
+								<td>Available</td>
 								<td>
-									<button data-toggle="modal" data-target="#AssociateInfo">{{w.javacount}}</button>
+									<button data-toggle="modal" data-target="#AssociateInfo">{{month[0]}}</button>
 								</td>
 								<td><button data-toggle="modal"
-										data-target="#AssociateInfo">{{w.dotNetCount}}</button></td>
+										data-target="#AssociateInfo">{{month[1]}}</button></td>
 								<td><button data-toggle="modal"
-										data-target="#AssociateInfo">{{w.sdetcount}}</button></td>
+										data-target="#AssociateInfo">{{month[2]}}</button></td>
 								<td><button data-toggle="modal"
-										data-target="#AssociateInfo">{{w.javacount + w.dotNetCount + w.sdetcount}}</button></td>
+										data-target="#AssociateInfo">{{month[0] + month[1] + month[2]}}</button></td>
+							</tr>
+							<tr>
+								<td>Mapped</td>
+								<td>
+									<button data-toggle="modal" data-target="#AssociateInfo">{{month[3]}}</button>
+								</td>
+								<td><button data-toggle="modal"
+										data-target="#AssociateInfo">{{month[4]}}</button></td>
+								<td><button data-toggle="modal"
+										data-target="#AssociateInfo">{{month[5]}}</button></td>
+								<td><button data-toggle="modal"
+										data-target="#AssociateInfo">{{month[3] + month[4] + month[5]}}</button></td>
+							</tr>
+							<tr>
+								<td>Confirmed</td>
+								<td>
+									<button data-toggle="modal" data-target="#AssociateInfo">{{month[6]}}</button>
+								</td>
+								<td><button data-toggle="modal"
+										data-target="#AssociateInfo">{{month[7]}}</button></td>
+								<td><button data-toggle="modal"
+										data-target="#AssociateInfo">{{month[8]}}</button></td>
+								<td><button data-toggle="modal"
+										data-target="#AssociateInfo">{{month[6] + month[7] + month[8]}}</button></td>
 							</tr>
 						</tbody>
 					</table>

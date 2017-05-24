@@ -789,8 +789,10 @@ public class DAOImpl implements DAOService {
 	@Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
 	public List returnMonthlyResources(int monthparam)
 	{
-		List returnList = new ArrayList();
-		 
+		List<AssociateInfo> returnList = new ArrayList();
+		List returnNumbers = new ArrayList();
+		ArrayList list = new ArrayList();
+
 		//decalre the arrays of the types and the statuses
 		ArrayList<String> statuslist = new ArrayList<String>(Arrays.asList("Available", "Mapped", "Confirmed"));
 		ArrayList<String> typelist = new ArrayList<String>(Arrays.asList("JAVA", ".NET", "SDET"));
@@ -801,12 +803,15 @@ public class DAOImpl implements DAOService {
 			{
 				for(String statusparam : statuslist)
 				{
-					returnList.add(returnMonthlyResourcesLooping(monthparam, typeparam, statusparam));
+					returnList.addAll(returnMonthlyResourcesLooping(monthparam, typeparam, statusparam));
+					int num = returnMonthlyResourcesLooping(monthparam, typeparam, statusparam).size();
+					returnNumbers.add(num);
 				}
 			}
 		
-		
-		return returnList;
+		list.addAll(returnNumbers);
+		list.addAll(returnList);
+		return list;
 	}
 	
 	private List returnMonthlyResourcesLooping(int monthparam, String type, String status)
@@ -836,7 +841,7 @@ public class DAOImpl implements DAOService {
 		critt.add(Restrictions.eq("Status", status));
 		critt.add(Restrictions.between("batch.EndDate", leftdatesql, rightdatesql));
 		
-		List resultList = critt.list();
+		List<AssociateInfo> resultList = critt.list();
 		
 		/*for(int i = 0; i < resultList.size(); i++)
 		{

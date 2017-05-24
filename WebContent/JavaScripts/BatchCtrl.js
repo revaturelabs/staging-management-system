@@ -4,6 +4,13 @@
 
 var mainApp = angular.module('superuser', []);
 
+var token = $("meta[name='_csrf']").attr("content");
+var header = $("meta[name='_csrf_header']").attr("content");
+ 
+$(document).ajaxSend(function(e, xhr, options) {
+    xhr.setRequestHeader(header, token);
+});
+
 mainApp.controller("client", function($scope, $http) {
 	// making a call to get data for the dropdown button.
 	$http.get("/StagingManagementSystem/displayClients").then(function(result) {
@@ -100,17 +107,16 @@ mainApp.controller("infoTable", function($scope, $http) {
 		console.log(current);
 		console.log(result.data);
 	});
-
-	$scope.getForecast = function() {
-		$http.get("/StagingManagementSystem/displayWeeks").then(
-				function(result) {
-					$scope.weeks = result.data;
-					console.log(weeks);
-					console.log(result.data);
-				});
-	};
 	
 	$(".month").on("click", function(e) {
+		var subm = e.target.id;
+
+		$http.get("/StagingManagementSystem/getMonth?month=" + subm).then(
+			function(result) {
+				$scope.month = result.data;
+				console.log(month);
+				console.log(result.data);
+			});
 
 	});
 });
@@ -120,6 +126,20 @@ mainApp.controller("BatchCtrl", function($scope, $http) {
 	$http.get("/StagingManagementSystem/displayBatch").then(function(result) {
 		$scope.batches = result.data;
 		console.log(batches);
+		console.log(result.data);
+	});
+});
+
+/*******************************************************************************
+ * 
+ * Other Stuff - Can Touch
+ * 
+ ******************************************************************************/
+
+mainApp.controller("forcastTable", function($scope, $http) {
+	$http.get("/StagingManagementSystem/displayForecast").then(function(result) {
+		$scope.current = result.data;
+		console.log(current);
 		console.log(result.data);
 	});
 });
