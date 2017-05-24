@@ -25,7 +25,25 @@
 			</plugin>
 		</plugins>
 	</build>
+	
+	<properties>
+		<spring.version>4.1.6.RELEASE</spring.version>
+		<log4j.version>1.2.17</log4j.version>
+	</properties>
+	
 	<dependencies>
+	<dependency>
+            <groupId>commons-dbcp</groupId>
+            <artifactId>commons-dbcp</artifactId>
+            <version>1.4</version>
+        </dependency>
+	
+	<!-- https://mvnrepository.com/artifact/log4j/log4j -->
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.17</version>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-beans</artifactId>

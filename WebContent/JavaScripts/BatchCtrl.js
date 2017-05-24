@@ -1,10 +1,115 @@
 /**
- * superuserhome.jsp -- retrieve batches to display in the associate modal
+ * the token for spring security
  */
 
 var mainApp = angular.module('superuser', []);
 
-mainApp.controller("client", function($scope, $http) {
+
+
+/*******************************************************************************
+ * 
+ * All the controllers
+ * 
+ ******************************************************************************/
+
+mainApp.controller("infoTable", function($scope, $http) {
+	/*
+	 * All the following is for the current tab.
+	 * Return the number of Available associate
+	 */
+	$http.get("/StagingManagementSystem/displayCurrentJavaAvailable").then(function(result) {
+		$scope.javaAvailable = result.data;
+	});
+	$http.get("/StagingManagementSystem/displayCurrentNETAvailable").then(function(result) {
+		$scope.netAvailable = result.data;
+	});	
+	$http.get("/StagingManagementSystem/displayCurrentSDETAvailable").then(function(result) {
+		$scope.sdetAvailable = result.data;
+	});
+	
+	/*
+	 * Return the number of Mapped associate
+	 */
+	$http.get("/StagingManagementSystem/displayCurrentJavaMapped").then(function(result) {
+		$scope.javaMapped = result.data;
+	});
+	$http.get("/StagingManagementSystem/displayCurrentNETMapped").then(function(result) {
+		$scope.netMapped = result.data;
+	});	
+	$http.get("/StagingManagementSystem/displayCurrentSDETMapped").then(function(result) {
+		$scope.sdetMapped = result.data;
+	});
+	
+	/*
+	 * Return the number of Confirmed associate
+	 */
+	$http.get("/StagingManagementSystem/displayCurrentJavaConfirmed").then(function(result) {
+		$scope.javaConfirmed = result.data;
+	});
+	$http.get("/StagingManagementSystem/displayCurrentNETConfirmed").then(function(result) {
+		$scope.netConfirmed = result.data;
+	});	
+	$http.get("/StagingManagementSystem/displayCurrentSDETConfirmed").then(function(result) {
+		$scope.sdetConfirmed = result.data;
+	});
+	
+	/*
+	 * Return the List of Available associate
+	 */
+	
+	$http.get("/StagingManagementSystem/displayCurrentJavaAvailableList").then(function(result) {
+		$scope.javaAvailableList = result.data;
+	});
+	$http.get("/StagingManagementSystem/displayCurrentNETAvailableList").then(function(result) {
+		$scope.netAvailableList = result.data;
+	});	
+	$http.get("/StagingManagementSystem/displayCurrentSDETAvailableList").then(function(result) {
+		$scope.sdetAvailableList = result.data;
+	});
+	/*
+	 * Return the List of Mapped associate
+	 */
+	$http.get("/StagingManagementSystem/displayCurrentJavaMappedList").then(function(result) {
+		$scope.javaMappedList = result.data;
+	});
+	$http.get("/StagingManagementSystem/displayCurrentNETMappedList").then(function(result) {
+		$scope.netMappedList = result.data;
+	});	
+	$http.get("/StagingManagementSystem/displayCurrentSDETMappedList").then(function(result) {
+		$scope.sdetMappedList = result.data;
+	});
+	
+	/*
+	 * Return the List of Confirmed associate
+	 */
+	$http.get("/StagingManagementSystem/displayCurrentJavaConfirmedList").then(function(result) {
+		$scope.javaConfirmedList = result.data;
+	});
+	$http.get("/StagingManagementSystem/displayCurrentNETConfirmedList").then(function(result) {
+		$scope.netConfirmedList = result.data;
+	});	
+	$http.get("/StagingManagementSystem/displayCurrentSDETConfirmedList").then(function(result) {
+		$scope.sdetConfirmedList = result.data;
+	});
+	
+	
+	
+/*	$http.get("/StagingManagementSystem/displayCurrent").then(function(result) {
+		$scope.current = result.data;
+	});*/
+
+	
+	$scope.getForecast = function() {
+		$http.get("/StagingManagementSystem/displayWeeks").then(
+				function(result) {
+					$scope.weeks = result.data;
+					console.log(weeks);
+					console.log(result.data);
+				});
+	};
+	
+	
+	
 	// making a call to get data for the dropdown button.
 	$http.get("/StagingManagementSystem/displayClients").then(function(result) {
 		$scope.clientList = result.data;
@@ -15,12 +120,6 @@ mainApp.controller("client", function($scope, $http) {
 		// value.
 		$scope.clientList.push($scope.lastItem);
 		console.log($scope.clientList);
-	});
-
-	$http.get("/StagingManagementSystem/displayStats").then(function(result) {
-		$scope.associatesList = result.data;
-		console.log($scope.associatesList);
-
 	});
 
 	$scope.associateSelected = [];
@@ -39,21 +138,14 @@ mainApp.controller("client", function($scope, $http) {
 		}
 	}
 	// submit the associates to be mapped.
-	$scope.onSubmit = function() {
-		// validation the make sure the select a radio button.
-		var m = document.getElementById('test1').checked;
-		var c = document.getElementById('test2').checked;
-		var a = document.getElementById('test3').checked;
-		var clientName = document.getElementById('sel1').value;
+	$scope.onSubmitAvailable = function() {
 
-		if (m || c || a) {
 			// validate to check if a client and an associate was selected.
-			if (clientName != "Select Client"
-					&& $scope.associateSelected.length != "0") {
+		if(	$scope.associateSelected.length != "0") {
+			if (clientName != "Select Client"){
 				var associateIds = [];
 				// add the status and the client to the list of item to send to
 				// the rest-Controller
-				associateIds.push($scope.modifyStatus.status);
 				associateIds.push($scope.modifyStatus.clientName);
 				// this add only the Ids of the associates selected.
 				angular.forEach($scope.associateSelected,
@@ -70,8 +162,53 @@ mainApp.controller("client", function($scope, $http) {
 				var submittedData = JSON.stringify(data);
 				// make a call to the Rest-controller to send the array full of
 				// data
-				$http.post("/StagingManagementSystem/updateAssociates",
-						"submittedData").success(function(data) {
+				var test = " hello submittedData";
+				$http.post("/StagingManagementSystem/updateAssociates", test ).success(function(data) {
+					// on success, reset the modal values.
+					$scope.associateSelected = [];
+					$scope.modifyStatus.status = "";
+					$scope.modifyStatus.clientName = "Select Client";
+					alert("Associate(s) Successfully Updated");
+				}).error(function(data) {
+					alert("Associate(s) did not Update Successfully");
+				});
+				
+			}else alert("Please select a Client!");
+	} else
+				alert("Please select an associate");
+	};
+	
+	$scope.onSubmitMapped = function() {
+		// validation the make sure the select a radio button.
+		var c = document.getElementById('test2').checked;
+		var a = document.getElementById('test3').checked;
+		var clientName = document.getElementById('sel1').value;
+
+		if($scope.associateSelected.length != "0") {
+		if ( c || a) {
+			// validate to check if a client and an associate was selected.
+				var associateIds = [];
+				// add the status and the client to the list of item to send to
+				// the rest-Controller
+				associateIds.push($scope.modifyStatus.status);
+				// this add only the Ids of the associates selected.
+				angular.forEach($scope.associateSelected,
+						function(value, index) {
+							associateIds.push(value.associateID);
+						});
+				// this add a label to the array created.
+				var data = {
+					associateId : associateIds
+				};
+
+				console.log(JSON.stringify(data));
+				// convert into a JSON object ( which is a String ).
+				var submittedData = JSON.stringify(data);
+				// make a call to the Rest-controller to send the array full of
+				// data
+				var test = " hello submittedData";
+				$http.post("/StagingManagementSystem/updateAssociates", submittedData )
+				.success(function(data) {
 					// on success, reset the modal values.
 					$scope.associateSelected = [];
 					$scope.modifyStatus.status = "";
@@ -81,34 +218,69 @@ mainApp.controller("client", function($scope, $http) {
 					alert("Associate(s) did not Update Successfully");
 				});
 			} else
-				alert("Please select an associate as well as a Client!");
+				alert("Please select a status!");
 		} else
-			alert("Please select a status!");
+			alert("Please select an associate!");
 
 	};
-});
+	$scope.onSubmitConfirmed = function() {
+		if(	$scope.associateSelected.length != "0") {
+				var associateIds = [];
 
-/*******************************************************************************
- * 
- * Ariel's Stuff - Don't Touch
- * 
- ******************************************************************************/
+				// this add only the Ids of the associates selected.
+				angular.forEach($scope.associateSelected,
+						function(value, index) {
+							associateIds.push(value.associateID);
+						});
+				// this add a label to the array created.
+				var data = {
+					associateId : associateIds
+				};
 
-mainApp.controller("infoTable", function($scope, $http) {
-	$http.get("/StagingManagementSystem/displayCurrent").then(function(result) {
-		$scope.current = result.data;
-		console.log(current);
-		console.log(result.data);
-	});
+				console.log(JSON.stringify(data));
+				// convert into a JSON object ( which is a String ).
+				var submittedData = JSON.stringify(data);
+				// make a call to the Rest-controller to send the array full of
+				// data
+				$http.post("/StagingManagementSystem/updateAssociates", submittedData ).success(function(data) {
+					// on success, reset the modal values.
+					$scope.associateSelected = [];
+					$scope.modifyStatus.status = "";
+					$scope.modifyStatus.clientName = "Select Client";
+					alert("Associate(s) Successfully Updated");
+				}).error(function(data) {
+					alert("Associate(s) did not Update Successfully");
+				});
+			} else
+				alert("Please select an associate!");
 
-	$scope.getForecast = function() {
-		$http.get("/StagingManagementSystem/displayWeeks").then(
+	};
+
+	
+	$(".month").on("click", function(e) {
+		var subm = e.target.id;
+
+		$http.get("/StagingManagementSystem/getMonth?month=" + subm).then(
+			function(result) {
+				$scope.month = result.data;
+				console.log(month);
+				console.log(result.data);
+			});
+		
+		$(".associateBtn").on("click", function(e) {
+			var status = e.target.id;
+			var type = e.target.name;
+
+			$http.get("/StagingManagementSystem/getAssociates?month=" + subm + "&status=" + status + "&type=" + type).then(
 				function(result) {
-					$scope.weeks = result.data;
-					console.log(weeks);
+					$scope.associates = result.data;
+					console.log(associates);
 					console.log(result.data);
 				});
-	};
+
+		});
+
+	});
 });
 
 mainApp.controller("BatchCtrl", function($scope, $http) {
@@ -116,6 +288,20 @@ mainApp.controller("BatchCtrl", function($scope, $http) {
 	$http.get("/StagingManagementSystem/displayBatch").then(function(result) {
 		$scope.batches = result.data;
 		console.log(batches);
+		console.log(result.data);
+	});
+});
+
+/*******************************************************************************
+ * 
+ * Other Stuff - Can Touch
+ * 
+ ******************************************************************************/
+
+mainApp.controller("forcastTable", function($scope, $http) {
+	$http.get("/StagingManagementSystem/displayForecast").then(function(result) {
+		$scope.current = result.data;
+		console.log(current);
 		console.log(result.data);
 	});
 });
