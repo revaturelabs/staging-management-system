@@ -4,13 +4,14 @@
 <html ng-app="superuser">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-	<meta name="_csrf" content="${_csrf.token}"/>
-	<!-- default header name is X-CSRF-TOKEN -->
-	<meta name="_csrf_header" content="${_csrf.headerName}"/>
+
 
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/modalView.css" />
+	
+<link rel="stylesheet" href="css/login.css" />
 
 <!-- jQuery library -->
 <script
@@ -42,11 +43,12 @@
 	
 <!-- Import Javascript Files -->
 <script src="JavaScripts/BatchCtrl.js"></script>
-	<link rel="stylesheet" href="css/modalView.css" />
 <script src="JavaScripts/AddAssociateControllerScript.js"></script>
+
 	
 </head> 
 <body>
+<jsp:include page="ForecastModals.jsp" />
 	<nav class="navbar navbar-inverse">
 		<div class="container-fluid">
 			<div class="navbar-header">
@@ -130,7 +132,7 @@
 				<thead>
 				<thead>
 							<tr>
-								<th>Weeks</th>
+								<th>Status</th>
 								<th>Java</th>
 								<th>.NET</th>
 								<th>JTA</th>
@@ -139,17 +141,41 @@
 						</thead>
 				</thead>
 						<tbody>
-							<tr ng-repeat="w in weeks">
-								<td>{{w.daterange}}</td>
+							<tr>
+								<td>Available</td>
 								<td>
-									<button data-toggle="modal" data-target="#AssociateInfo">{{w.javacount}}</button>
+									<button data-toggle="modal" class="associateBtn" id="Available" name="JAVA" data-target="#ForecastModal">{{month[0]}}</button>
 								</td>
-								<td><button data-toggle="modal"
-										data-target="#AssociateInfo">{{w.dotNetCount}}</button></td>
-								<td><button data-toggle="modal"
-										data-target="#AssociateInfo">{{w.sdetcount}}</button></td>
-								<td><button data-toggle="modal"
-										data-target="#AssociateInfo">{{w.javacount + w.dotNetCount + w.sdetcount}}</button></td>
+								<td><button data-toggle="modal" class="associateBtn" id="Available" name=".NET"
+										data-target="#ForecastModal">{{month[1]}}</button></td>
+								<td><button data-toggle="modal" class="associateBtn" id="Available" name="SDET"
+										data-target="#ForecastModal">{{month[2]}}</button></td>
+								<td><button data-toggle="modal" class="associateBtn" id="Available"
+										data-target="#ForecastModal">{{month[0] + month[1] + month[2]}}</button></td>
+							</tr>
+							<tr>
+								<td>Mapped</td>
+								<td>
+									<button data-toggle="modal" class="associateBtn" id="Mapped" name="JAVA" data-target="#ForecastModal">{{month[3]}}</button>
+								</td>
+								<td><button data-toggle="modal" class="associateBtn" id="Mapped" name=".NET"
+										data-target="#ForecastModal">{{month[4]}}</button></td>
+								<td><button data-toggle="modal" class="associateBtn" id="Mapped" name="SDET"
+										data-target="#ForecastModal">{{month[5]}}</button></td>
+								<td><button data-toggle="modal" class="associateBtn" id="Mapped"
+										data-target="#ForecastModal">{{month[3] + month[4] + month[5]}}</button></td>
+							</tr>
+							<tr>
+								<td>Confirmed</td>
+								<td>
+									<button data-toggle="modal" class="associateBtn" id="Confirmed" name="JAVA" data-target="#ForecastModal">{{month[6]}}</button>
+								</td>
+								<td><button data-toggle="modal" class="associateBtn" id="Confirmed" name=".NET"
+										data-target="#ForecastModal">{{month[7]}}</button></td>
+								<td><button data-toggle="modal" class="associateBtn" id="Confirmed" name="SDET"
+										data-target="#ForecastModal">{{month[8]}}</button></td>
+								<td><button data-toggle="modal" class="associateBtn" id="Confirmed"
+										data-target="#ForecastModal">{{month[6] + month[7] + month[8]}}</button></td>
 							</tr>
 						</tbody>
 					</table>

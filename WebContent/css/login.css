@@ -1,22 +1,57 @@
 body {
-	background: #eee !important;	
+	background: #fff !important;	
 }
 
 .wrapper {	
-	margin-top: 80px;
-  margin-bottom: 80px;
+  width: 20%;
+  margin: 20% auto;
+  padding-top: 5%;
 }
 
+	.nav-pills {
+	background-color: #474c55;
+	}
+	
+	.nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover {
+	background-color: #b9b9ba;
+	color: #474c55;
+	font-weight: bold;
+	}
+	
+	.nav-pills>li>a:hover {
+	background-color: #474c55;
+	text-decoration: underline;
+	}
+	
+	.nav>li>a {
+	color: #fff;
+	}
+	
+	
+	
+	.navbar-inverse {
+	background-color: #f26925;
+	border: 1px solid #f26925;
+	}
+	
+	.navbar-inverse .navbar-brand {
+	color: #fff;
+	}
+	
+	.navbar-inverse .navbar-nav>li>a {
+	color: #fff;
+	}
+
 .form-signin {
-  max-width: 380px;
-  padding: 15px 35px 45px;
-  margin: 0 auto;
+  max-width: 100%;
+  padding: 1% 3% 5%;
+  margin: 5% auto;
   background-color: #fff;
-  border: 1px solid rgba(0,0,0,0.1);  
+  border: 1px solid #474c55;  
 
   .form-signin-heading,
 	.checkbox {
-	  margin-bottom: 30px;
+	  margin-bottom: 5%;
 	}
 
 	.checkbox {

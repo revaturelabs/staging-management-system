@@ -1,11 +1,24 @@
 /**
- * superuserhome.jsp -- retrieve batches to display in the associate modal
+ * the token for spring security
  */
 
 var mainApp = angular.module('superuser', []);
 
-mainApp.controller("client", function($scope, $http) {
-	// making a call to get data for the dropdown button.
+
+
+/*******************************************************************************
+ * 
+ * All the controllers
+ * 
+ ******************************************************************************/
+
+mainApp.controller("infoTable", function($scope, $http) {
+	$http.get("/StagingManagementSystem/displayCurrent").then(function(result) {
+		$scope.current = result.data;
+		console.log(current);
+		console.log(result.data);
+	});
+	
 	$http.get("/StagingManagementSystem/displayClients").then(function(result) {
 		$scope.clientList = result.data;
 		$scope.lastItem = {
@@ -16,13 +29,7 @@ mainApp.controller("client", function($scope, $http) {
 		$scope.clientList.push($scope.lastItem);
 		console.log($scope.clientList);
 	});
-
-	$http.get("/StagingManagementSystem/displayStats").then(function(result) {
-		$scope.associatesList = result.data;
-		console.log($scope.associatesList);
-
-	});
-
+	
 	$scope.associateSelected = [];
 
 	$scope.exist = function(item) {
@@ -38,17 +45,24 @@ mainApp.controller("client", function($scope, $http) {
 			$scope.associateSelected.push(item);
 		}
 	}
-	// submit the associates to be mapped.
-	$scope.onSubmit = function() {
-		// validation the make sure the select a radio button.
-		var m = document.getElementById('test1').checked;
-		var c = document.getElementById('test2').checked;
-		var a = document.getElementById('test3').checked;
-		var clientName = document.getElementById('sel1').value;
+	
+	$http.get("/StagingManagementSystem/displayStats").then(function(result) {
+		$scope.associatesList = result.data;
+		console.log($scope.associatesList);
 
-		if (m || c || a) {
+	});
+	
+	// submit the associates to be mapped.
+	$scope.SubmitAssociates = function() {
+		// validation the make sure the select a radio button.
+		// var m = document.getElementById('test1').checked;
+		// var c = document.getElementById('test2').checked;
+		// var a = document.getElementById('test3').checked;
+		// var clientName = document.getElementById('sel1').value;
+
+		// if (m || c || a) {
 			// validate to check if a client and an associate was selected.
-			if (clientName != "Select Client"
+			if ($scope.modifyStatus.clientName != "Select Client"
 					&& $scope.associateSelected.length != "0") {
 				var associateIds = [];
 				// add the status and the client to the list of item to send to
@@ -71,7 +85,7 @@ mainApp.controller("client", function($scope, $http) {
 				// make a call to the Rest-controller to send the array full of
 				// data
 				$http.post("/StagingManagementSystem/updateAssociates",
-						"submittedData").success(function(data) {
+						submittedData).success(function(data) {
 					// on success, reset the modal values.
 					$scope.associateSelected = [];
 					$scope.modifyStatus.status = "";
@@ -82,33 +96,35 @@ mainApp.controller("client", function($scope, $http) {
 				});
 			} else
 				alert("Please select an associate as well as a Client!");
-		} else
-			alert("Please select a status!");
+		//} else
+			//alert("Please select a status!");
 
 	};
-});
+	
+	$(".month").on("click", function(e) {
+		var subm = e.target.id;
 
-/*******************************************************************************
- * 
- * Ariel's Stuff - Don't Touch
- * 
- ******************************************************************************/
+		$http.get("/StagingManagementSystem/getMonth?month=" + subm).then(
+			function(result) {
+				$scope.month = result.data;
+				console.log(month);
+				console.log(result.data);
+			});
+		
+		$(".associateBtn").on("click", function(e) {
+			var status = e.target.id;
+			var type = e.target.name;
 
-mainApp.controller("infoTable", function($scope, $http) {
-	$http.get("/StagingManagementSystem/displayCurrent").then(function(result) {
-		$scope.current = result.data;
-		console.log(current);
-		console.log(result.data);
-	});
-
-	$scope.getForecast = function() {
-		$http.get("/StagingManagementSystem/displayWeeks").then(
+			$http.get("/StagingManagementSystem/getAssociates?month=" + subm + "&status=" + status + "&type=" + type).then(
 				function(result) {
-					$scope.weeks = result.data;
-					console.log(weeks);
+					$scope.associates = result.data;
+					console.log(associates);
 					console.log(result.data);
 				});
-	};
+
+		});
+
+	});
 });
 
 mainApp.controller("BatchCtrl", function($scope, $http) {
@@ -116,6 +132,20 @@ mainApp.controller("BatchCtrl", function($scope, $http) {
 	$http.get("/StagingManagementSystem/displayBatch").then(function(result) {
 		$scope.batches = result.data;
 		console.log(batches);
+		console.log(result.data);
+	});
+});
+
+/*******************************************************************************
+ * 
+ * Other Stuff - Can Touch
+ * 
+ ******************************************************************************/
+
+mainApp.controller("forcastTable", function($scope, $http) {
+	$http.get("/StagingManagementSystem/displayForecast").then(function(result) {
+		$scope.current = result.data;
+		console.log(current);
 		console.log(result.data);
 	});
 });

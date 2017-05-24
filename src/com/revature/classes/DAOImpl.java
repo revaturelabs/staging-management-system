@@ -785,31 +785,9 @@ public class DAOImpl implements DAOService {
 
 		return rowBatch;
 	}	
-	
+
 	@Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
-	public List returnMonthlyResources(int monthparam)
-	{
-		List returnList = new ArrayList();
-		 
-		//decalre the arrays of the types and the statuses
-		ArrayList<String> statuslist = new ArrayList<String>(Arrays.asList("Available", "Mapped", "Confirmed"));
-		ArrayList<String> typelist = new ArrayList<String>(Arrays.asList("JAVA", ".NET", "SDET"));
-		
-		
-			//call the method to do the looping logic with the right params
-			for(String typeparam : typelist)
-			{
-				for(String statusparam : statuslist)
-				{
-					returnList.add(returnMonthlyResourcesLooping(monthparam, typeparam, statusparam));
-				}
-			}
-		
-		
-		return returnList;
-	}
-	
-	private List returnMonthlyResourcesLooping(int monthparam, String type, String status)
+	public List returnMonthlyResourcesLooping(int monthparam, String type, String status)
 	{
 		//THIS IS WHERE WE DO THE SEEQUL
 		
@@ -836,14 +814,14 @@ public class DAOImpl implements DAOService {
 		critt.add(Restrictions.eq("Status", status));
 		critt.add(Restrictions.between("batch.EndDate", leftdatesql, rightdatesql));
 		
-		List resultList = critt.list();
+		List<AssociateInfo> resultList = critt.list();
 		
 		/*for(int i = 0; i < resultList.size(); i++)
 		{
 			returnSet.add((AssociateInfo)resultList.get(i));
 		}*/
 		
-		System.out.println("all people who did java" + resultList);
+		System.out.println("all people who did" + status + " and " + type + " : " + resultList);
 		int count = resultList.size();
 		System.out.println(count);
 		return resultList;
