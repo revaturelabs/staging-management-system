@@ -109,6 +109,10 @@ mainApp.controller("infoTable", function($scope, $http) {
 					console.log(result.data);
 				});
 	};
+	
+	$(".month").on("click", function(e) {
+
+	});
 });
 
 mainApp.controller("BatchCtrl", function($scope, $http) {
