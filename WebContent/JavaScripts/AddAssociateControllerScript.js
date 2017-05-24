@@ -46,39 +46,6 @@ $.ajaxSetup({
 /*
  * post a month on click to the controller
  */
-$(document).ready(function() {
-	
-	$(".month").on("click", function(e) {
-
-		var subm = e.target.id;
-
-		e.preventDefault();
-
-		// make the ajax call
-		$.ajax({
-			type : 'POST',
-			url : '/StagingManagementSystem/getMonth',
-			data : { month: subm },
-			success : function(data) {
-				console.log("SUCCESS: ", data);
-
-			},
-			error : function(e) {
-				console.log("ERROR: ", e);
-			},
-			done : function(e) {
-				console.log("DONE");
-			}
-		});
-	});
-	
-		$http.post("/StagingManagementSystem/getMonth").then(
-				function(result) {
-					$scope.month = result.data;
-					console.log(month);
-					console.log(result.data);
-		});
-});
 
 
 // submit the add batch form

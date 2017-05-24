@@ -1,5 +1,6 @@
 package com.revature.classes;
 
+import java.io.ByteArrayOutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -67,5 +68,5 @@ public interface DAOService {
 
 	public ArrayList<Week> returnWeeksForGivenMonth(int month) throws ParseException;
 
-	public List returnMonthlyResources(int month);
+	public List returnMonthlyResourcesLooping(int month, String type, String status);
 }

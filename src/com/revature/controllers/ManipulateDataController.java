@@ -6,6 +6,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -43,16 +44,6 @@ public class ManipulateDataController {
 	ApplicationContext ctx = new ClassPathXmlApplicationContext("appContext.xml");
 	DAOService daoserv = (DAOService) ctx.getBean("DAOImpl");
 	
-	@RequestMapping(value = "/getTableData", method = RequestMethod.GET)
-	public List<String> getTableData()
-	{
-		System.out.println("hi controller");
-		List<String> bang = new ArrayList<String>();
-		bang.add("holy shit this actually fucking worked???");
-		bang.add("oooooo");
-		bang.add("aaahhhhh");
-		return bang;
-	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public ModelAndView displayLogin(@RequestParam(value = "error", required = false) String error,
@@ -70,21 +61,6 @@ public class ManipulateDataController {
 		return model;
 	}
 
-	@RequestMapping(value = "/checkLogin", method = RequestMethod.POST)
-	public String CheckLogin(@FormParam("username") String username, @FormParam("password") String password) {
-		// try to get a single result from the database
-		// if a single result cannot be returned from the database
-		// return the user to the login page and display a notification alert
-		// else, send the user to the main page
-		try {
-			// daoserv.login(username, password);
-			return "Welcome, " + username;
-		} catch (Exception e) {
-			System.out.println("Error: username or password not found.");
-			String msg = "Username or Password not found";
-			return msg;
-		}
-	}
 
 	@RequestMapping(value="/logout", method=RequestMethod.GET)
 	public ModelAndView logout(HttpServletRequest req)
@@ -185,37 +161,6 @@ public class ManipulateDataController {
 		
 	}
 	
-	@RequestMapping(value="/displayWeeks", method = RequestMethod.GET)
-	public @ResponseBody List displayWeeks()
-	{
-		// testing data - remove once actual data is acquired
-		Week week = new Week();
-		week.setDaterange("May 5 - May 13");
-		week.setDotNetCount(25);
-		week.setJavacount(49);
-		week.setSdetcount(12);
-		
-		Week week2 = new Week();
-		week2.setDaterange("May 14 - May 20");
-		week2.setDotNetCount(15);
-		week2.setJavacount(12);
-		week2.setSdetcount(19);
-		
-		Week week3 = new Week();
-		week3.setDaterange("May 21 - May 28");
-		week3.setDotNetCount(22);
-		week3.setJavacount(19);
-		week3.setSdetcount(10);
-		
-		List<Week> weeks = new ArrayList<Week>();
-		weeks.add(week);
-		weeks.add(week2);
-		weeks.add(week3);
-		
-		// List<Week> weeks = daoserv.createWeeks();
-		System.out.println(weeks);
-		return weeks;
-	}
 	
 	@RequestMapping(value="/displayCurrent", method = RequestMethod.GET)
 	public @ResponseBody List[] displayCurrent()
@@ -299,87 +244,33 @@ public class ManipulateDataController {
 		daoserv.UpdateStatus(status, id, client);
 	}
 	
-	@RequestMapping(value="/displayForecast", method = RequestMethod.GET)
-	public @ResponseBody List[] displayForecast()
-	{
-		// create a list for the confirmed associates
-		List confirmed = new ArrayList();
-		confirmed.add("confirmed");
-		String[] conId = {"confirmed-java", "confirmed-net", "confirmed-sdet"};
-		confirmed.add(conId);
 
-		// get the associates from the database
-		List conJava = daoserv.getConfirmedCurrentJava();
-		List conNet = daoserv.getConfirmedCurrentNET();
-		List conSdet = daoserv.getConfirmedCurrentSDET();
-				
-		// add the associates to the list
-		confirmed.add(conJava);
-		confirmed.add(conNet);
-		confirmed.add(conSdet);
-		
-		// add the number of associates
-		confirmed.add(conJava.size());
-		confirmed.add(conNet.size());
-		confirmed.add(conSdet.size());
-		
-		// create a list for the mapped associates
-		List mapped = new ArrayList();
-		mapped.add("mapped");
-		String[] mapId = {"mapped-java", "mapped-net", "mapped-sdet"};
-		mapped.add(mapId);
-		
-		// get the associates from the database
-		List mapJava = daoserv.getMappedCurrentJava();
-		List mapNet = daoserv.getMappedCurrentNET();
-		List mapSdet = daoserv.getMappedCurrentSDET();
-		
-		// add the associates to the list
-		mapped.add(mapJava);
-		mapped.add(mapNet);
-		mapped.add(mapSdet);
-		
-		// add the number of associates
-		mapped.add(mapJava.size());
-		mapped.add(mapNet.size());
-		mapped.add(mapSdet.size());
-		
-		// create a list for the available associates
-		List available = new ArrayList();
-		available.add("available");
-		String[] availId = {"available-java", "available-net", "available-sdet"};
-		available.add(availId);
-		
-		// get the associates from the database
-		List availJava = daoserv.getAvailableCurrentJava();
-		List availNet = daoserv.getAvailableCurrentNET();
-		List availSdet = daoserv.getAvailableCurrentSDET();
-		
-		// add the associates to the list
-		available.add(availJava);
-		available.add(availNet);
-		available.add(availSdet);
-		
-		// add the number of associates
-		available.add(availJava.size());
-		available.add(availNet.size());
-		available.add(availSdet.size());
-		
-		// add all the lists to a list
-		List[] allData = {
-				available, mapped, confirmed
-		};
-		
-		// return the list containing all of the lists
-		return allData; 
-	}
 	
 	@RequestMapping("/getMonth")
 	public @ResponseBody List getMonths(@RequestParam("month") int month)
 	{
-		List<AssociateInfo> MonthlyInfo = daoserv.returnMonthlyResources(month);
-		System.out.println(month);
+		ArrayList<String> statuslist = new ArrayList<String>(Arrays.asList("Available", "Mapped", "Confirmed"));
+		ArrayList<String> typelist = new ArrayList<String>(Arrays.asList("JAVA", ".NET", "SDET"));
+		List returnNumbers = new ArrayList();
+
+		for(String statusparam : statuslist)
+		{
+			for(String typeparam : typelist)
+			{
+				int num = daoserv.returnMonthlyResourcesLooping(month, typeparam, statusparam).size();
+				returnNumbers.add(num);
+			}
+		}
 		
-		return MonthlyInfo;
+		
+		return returnNumbers;
+	}
+	
+	@RequestMapping("/getAssociates")
+	public @ResponseBody List getResources(@RequestParam("month") int month, @RequestParam("type") String type, @RequestParam("status") String status)
+	{		
+		List<AssociateInfo> associates = daoserv.returnMonthlyResourcesLooping(month, type, status);
+		
+		return associates;
 	}
 }

@@ -4,9 +4,7 @@
 <html ng-app="superuser">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-	<meta name="_csrf" content="${_csrf.token}"/>
-	<!-- default header name is X-CSRF-TOKEN -->
-	<meta name="_csrf_header" content="${_csrf.headerName}"/>
+
 
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet"
@@ -146,38 +144,38 @@
 							<tr>
 								<td>Available</td>
 								<td>
-									<button data-toggle="modal" data-target="#AssociateInfo">{{month[0]}}</button>
+									<button data-toggle="modal" class="associateBtn" id="Available" name="JAVA" data-target="#ForecastModal">{{month[0]}}</button>
 								</td>
-								<td><button data-toggle="modal"
-										data-target="#ForecastAvailableJava">{{month[1]}}</button></td>
-								<td><button data-toggle="modal"
-										data-target="#AssociateInfo">{{month[2]}}</button></td>
-								<td><button data-toggle="modal"
-										data-target="#AssociateInfo">{{month[0] + month[1] + month[2]}}</button></td>
+								<td><button data-toggle="modal" class="associateBtn" id="Available" name=".NET"
+										data-target="#ForecastModal">{{month[1]}}</button></td>
+								<td><button data-toggle="modal" class="associateBtn" id="Available" name="SDET"
+										data-target="#ForecastModal">{{month[2]}}</button></td>
+								<td><button data-toggle="modal" class="associateBtn" id="Available"
+										data-target="#ForecastModal">{{month[0] + month[1] + month[2]}}</button></td>
 							</tr>
 							<tr>
 								<td>Mapped</td>
 								<td>
-									<button data-toggle="modal" data-target="#AssociateInfo">{{month[3]}}</button>
+									<button data-toggle="modal" class="associateBtn" id="Mapped" name="JAVA" data-target="#ForecastModal">{{month[3]}}</button>
 								</td>
-								<td><button data-toggle="modal"
-										data-target="#AssociateInfo">{{month[4]}}</button></td>
-								<td><button data-toggle="modal"
-										data-target="#AssociateInfo">{{month[5]}}</button></td>
-								<td><button data-toggle="modal"
-										data-target="#AssociateInfo">{{month[3] + month[4] + month[5]}}</button></td>
+								<td><button data-toggle="modal" class="associateBtn" id="Mapped" name=".NET"
+										data-target="#ForecastModal">{{month[4]}}</button></td>
+								<td><button data-toggle="modal" class="associateBtn" id="Mapped" name="SDET"
+										data-target="#ForecastModal">{{month[5]}}</button></td>
+								<td><button data-toggle="modal" class="associateBtn" id="Mapped"
+										data-target="#ForecastModal">{{month[3] + month[4] + month[5]}}</button></td>
 							</tr>
 							<tr>
 								<td>Confirmed</td>
 								<td>
-									<button data-toggle="modal" data-target="#AssociateInfo">{{month[6]}}</button>
+									<button data-toggle="modal" class="associateBtn" id="Confirmed" name="JAVA" data-target="#ForecastModal">{{month[6]}}</button>
 								</td>
-								<td><button data-toggle="modal"
-										data-target="#AssociateInfo">{{month[7]}}</button></td>
-								<td><button data-toggle="modal"
-										data-target="#AssociateInfo">{{month[8]}}</button></td>
-								<td><button data-toggle="modal"
-										data-target="#AssociateInfo">{{month[6] + month[7] + month[8]}}</button></td>
+								<td><button data-toggle="modal" class="associateBtn" id="Confirmed" name=".NET"
+										data-target="#ForecastModal">{{month[7]}}</button></td>
+								<td><button data-toggle="modal" class="associateBtn" id="Confirmed" name="SDET"
+										data-target="#ForecastModal">{{month[8]}}</button></td>
+								<td><button data-toggle="modal" class="associateBtn" id="Confirmed"
+										data-target="#ForecastModal">{{month[6] + month[7] + month[8]}}</button></td>
 							</tr>
 						</tbody>
 					</table>

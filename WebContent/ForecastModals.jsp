@@ -2,7 +2,7 @@
 	 Forecasting Available Java Associates
  ------------------------->
  <div ng-controller="infoTable">
-<div id="ForecastAvailableJava" class="modal fade" role="dialog">
+<div id="ForecastModal" class="modal fade" role="dialog">
 	<div class="modal-dialog">
 
 		<!-- Modal content-->
@@ -36,13 +36,13 @@
 							 </tr>
 							 </thead>
 							 <tbody>
-								<tr ng-repeat="m in month |filter:search">
-									<td><input ng-model="associateSelected" type="checkbox" ng-checked="exist(a)" ng-click="toggleSelection(a)" ng-true-value="{{m[9].associateID}}"></td>
-									<td>{{m[9].associateName}}</td>
-									<td>{{month[9].associateID}}</td>
-									<td>{{month[9].status}}</td>
-									<td>{{month[9].batch.startDate}}</td>
-									<td>{{month[9].batch.endDate}}</td>
+								<tr ng-repeat="m in associates |filter:search">
+									<td><input ng-model="associateSelected" type="checkbox" ng-checked="exist(m)" ng-click="toggleSelection(m)" ng-true-value="{{m.associateID}}"></td>
+									<td>{{m.associateName}}</td>
+									<td>{{m.associateID}}</td>
+									<td>{{m.status}}</td>
+									<td>{{m.batch.startDate}}</td>
+									<td>{{m.batch.endDate}}</td>
 									<td>none</td>
 								</tr>
 							 </tbody>
