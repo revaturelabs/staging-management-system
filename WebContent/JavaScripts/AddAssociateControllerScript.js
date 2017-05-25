@@ -6,16 +6,16 @@
  * this hide the available radio button in the show associates modal
  * and show the mapped and confirmed radio button.
 */
-$(document).on("click", "#available", function() {
+$(document).on("click", "#Available", function() {
 	$("#availableRadio").hide();
 	$("#mappedRadio").show();
-	$("#confirmedRadio").show();
+	$("#confirmedRadio").hide();
 });
 /* 
  * this hide the mapped radio button in the show associates modal
  * and show the available and confirmed radio button.
 */
-$(document).on("click", "#mapped", function() {
+$(document).on("click", "#Mapped", function() {
 	$("#availableRadio").show();
 	$("#mappedRadio").hide();
 	$("#confirmedRadio").show();
@@ -25,22 +25,11 @@ $(document).on("click", "#mapped", function() {
  * this hide the confirmed radio button in the show associates modal
  * and show the available and mapped radio button.
 */
-$(document).on("click", "#confirmed", function() {
+$(document).on("click", "#Confirmed", function() {
 	$("#availableRadio").show();
-	$("#mappedRadio").show();
+	$("#mappedRadio").hide();
 	$("#confirmedRadio").hide();
 	
-});
-
-/*
- * set the token - important for spring security
- * can't pass months without a token
- */
-var token = $("meta[name='_csrf']").attr("content");
-$.ajaxSetup({
-    beforeSend: function(xhr) {
-        xhr.setRequestHeader('X-CSRF-TOKEN', token);
-    }
 });
 
 /*

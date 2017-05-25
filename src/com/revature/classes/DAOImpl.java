@@ -30,8 +30,7 @@ public class DAOImpl implements DAOService {
 
 	SessionFactory sf;
 
-	public void setSf(SessionFactory sf) 
-	{
+	public void setSf(SessionFactory sf) {
 		this.sf = sf;
 	}
 
@@ -114,7 +113,6 @@ public class DAOImpl implements DAOService {
 
 		Session session = sf.getCurrentSession();
 		Criteria cr = session.createCriteria(AssociateInfo.class);
-
 
 		List<AssociateInfo> list = cr.list();
 
@@ -259,10 +257,10 @@ public class DAOImpl implements DAOService {
 			 * List result = query.list(); for(int j=0; j<result.size(); j++){
 			 * Week week = (Week)result.get(j); WeekList.add(week); }
 			 */
-			//returnWeeksForGivenMonth
-		
+			// returnWeeksForGivenMonth
+
 			// increment relevant external variables
-			//dateIncrement += 7;
+			// dateIncrement += 7;
 		}
 
 		return WeekList;
@@ -464,17 +462,20 @@ public class DAOImpl implements DAOService {
 	}
 
 	@Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
-	public void UpdateStatus(String status, long[] aID, int clientId) {
+	public void UpdateStatus(String status, int aID, long clientId) {
 
 		Session session = sf.openSession();
 
+		// update the associate's availability status
 		String hqlUpdate = "update AssociateInfo a set a.Status = :newStatus where a.AssociateID = :ID";
-		// or String hqlUpdate = "update Customer set name = :newName where name
-		// = :oldName";
-		for (int i = 0; i < aID.length; i++) {
-			int updatedEntities = session.createQuery(hqlUpdate).setString("newStatus", status).setLong("ID", aID[i])
-					.executeUpdate();
-		}
+
+		int updatedEntities = session.createQuery(hqlUpdate).setString("newStatus", status).setInteger("ID", aID)
+				.executeUpdate();
+
+		// associate an associate to a client in the associate-client table
+		// future iterations can use that table to prevent an associate
+		// from being mapped to the same client after being rejected
+
 
 		session.close();
 
@@ -784,48 +785,45 @@ public class DAOImpl implements DAOService {
 		System.out.println(count);
 
 		return rowBatch;
-	}	
+	}
 
 	@Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
-	public List returnMonthlyResourcesLooping(int monthparam, String type, String status)
-	{
-		//THIS IS WHERE WE DO THE SEEQUL
-		
-		//HELP ME ITERATION 2 YOURE MY ONLY HOPE! THEYVE KIDNAPPED ME AND MADE ME NOT NOT HARDCODE THE YEAR
+	public List returnMonthlyResourcesLooping(int monthparam, String type, String status) {
+		// THIS IS WHERE WE DO THE SEEQUL
+
+		// HELP ME ITERATION 2 YOURE MY ONLY HOPE! THEYVE KIDNAPPED ME AND MADE
+		// ME NOT NOT HARDCODE THE YEAR
 		LocalDate date = LocalDate.now();
-		//int rightMonth = date.getMonthValue();
+		// int rightMonth = date.getMonthValue();
 		int rightYear = date.getYear();
-		
-		//use these to create a sqldate with the proper parameters
+
+		// use these to create a sqldate with the proper parameters
 		LocalDate rightdate = LocalDate.of(rightYear, monthparam, 15);
 		LocalDate leftdate = rightdate.minusMonths(1);
 		java.sql.Date rightdatesql = java.sql.Date.valueOf(rightdate);
 		java.sql.Date leftdatesql = java.sql.Date.valueOf(leftdate);
-	
-		
-		
-		//use criteria to list the results
+
+		// use criteria to list the results
 		Session session = sf.getCurrentSession();
 		Criteria critt = session.createCriteria(AssociateInfo.class, "ai");
-		
+
 		critt.createAlias("ai.batch", "batch");
-		
+
 		critt.add(Restrictions.eq("batch.Type", type));
 		critt.add(Restrictions.eq("Status", status));
 		critt.add(Restrictions.between("batch.EndDate", leftdatesql, rightdatesql));
-		
+
 		List<AssociateInfo> resultList = critt.list();
-		
-		/*for(int i = 0; i < resultList.size(); i++)
-		{
-			returnSet.add((AssociateInfo)resultList.get(i));
-		}*/
-		
+
+		/*
+		 * for(int i = 0; i < resultList.size(); i++) {
+		 * returnSet.add((AssociateInfo)resultList.get(i)); }
+		 */
+
 		System.out.println("all people who did" + status + " and " + type + " : " + resultList);
 		int count = resultList.size();
 		System.out.println(count);
 		return resultList;
 	}
-	
-	
+
 }

@@ -8,7 +8,7 @@
 		<!-- Modal content-->
 		<div class="modal-content">
 			
-			<form ng-submit="SubmitAssociates()">
+			<form ng-submit="submitAssociates()">
 			
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -48,7 +48,6 @@
 							 </tbody>
 						</table>
 						<!-- This div below is just to check the data of the associate selected by showing on this div element -->
-						 <div> List: {{associateSelected}}</div>
 					</div>
 			</div>
 			<div class="modal-footer">
@@ -58,8 +57,24 @@
 				<!--  The table below is the to how the dropdown button as well as the radio buttons are positioned -->
 				<table>
 				<tr>
+				<td>
+				<label id="availableRadio" class="radio-inline">
+						<input ng-model="modifyStatus.status" type="radio" value="Available" name="optradio" id="available"> 
+						Available
+					</label>
+					<label id="confirmedRadio" class="radio-inline">
+						<input ng-model="modifyStatus.status" type="radio" value="Confirmed" name="optradio" id="confirmed">
+						Confirmed
+					</label>
+					<label id="mappedRadio" class="radio-inline">
+						<input ng-model="modifyStatus.status" type="radio" value="Mapped" name="optradio" id="mapped">
+						Confirmed
+					</label>
+				</td>
 					<td> <label> Select a Client:</label> </td>
 					<td style="padding: 5px">
+
+					
 						<select ng-model="modifyStatus.clientName" class="form-control" id="sel1" name="clients" required>
 		        				<option ng-repeat="t in clientList" value="{{t.name}}" selected>{{t.name}}</option>		
 		      			</select>

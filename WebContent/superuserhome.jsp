@@ -66,6 +66,10 @@
 
 						<ul class="dropdown-menu dropdown-menu-right" role="menu" style="">
 
+							<!-- documentation link -->
+							<li><a href="/Documentation/Frameset.html" id="clients"
+								data-target="#addClient"><span
+									class="glyphicon glyphicon-plus"></span> Documentation</a></li>
 							<!-- navbar link add associate -->
 							<li><a id="associates" data-toggle="modal"
 								data-target="#addAssociate" ng-click="getBatches()"><span
@@ -80,6 +84,7 @@
 							<li><a href="#addClient" data-toggle="modal" id="clients"
 								data-target="#addClient"><span
 									class="glyphicon glyphicon-plus"></span> Add Client</a></li>
+									
 
 						</ul></li>
 
@@ -150,8 +155,7 @@
 										data-target="#ForecastModal">{{month[1]}}</button></td>
 								<td><button data-toggle="modal" class="associateBtn" id="Available" name="SDET"
 										data-target="#ForecastModal">{{month[2]}}</button></td>
-								<td><button data-toggle="modal" class="associateBtn" id="Available"
-										data-target="#ForecastModal">{{month[0] + month[1] + month[2]}}</button></td>
+						
 							</tr>
 							<tr>
 								<td>Mapped</td>
@@ -162,8 +166,7 @@
 										data-target="#ForecastModal">{{month[4]}}</button></td>
 								<td><button data-toggle="modal" class="associateBtn" id="Mapped" name="SDET"
 										data-target="#ForecastModal">{{month[5]}}</button></td>
-								<td><button data-toggle="modal" class="associateBtn" id="Mapped"
-										data-target="#ForecastModal">{{month[3] + month[4] + month[5]}}</button></td>
+						
 							</tr>
 							<tr>
 								<td>Confirmed</td>
@@ -174,8 +177,7 @@
 										data-target="#ForecastModal">{{month[7]}}</button></td>
 								<td><button data-toggle="modal" class="associateBtn" id="Confirmed" name="SDET"
 										data-target="#ForecastModal">{{month[8]}}</button></td>
-								<td><button data-toggle="modal" class="associateBtn" id="Confirmed"
-										data-target="#ForecastModal">{{month[6] + month[7] + month[8]}}</button></td>
+			
 							</tr>
 						</tbody>
 					</table>

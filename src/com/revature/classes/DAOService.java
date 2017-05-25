@@ -64,7 +64,7 @@ public interface DAOService {
 	
 	public List getConfirmedCurrentNET();
 
-	public void UpdateStatus(String status, long[] id, int client);
+	public void UpdateStatus(String status, int id, long client);
 
 	public ArrayList<Week> returnWeeksForGivenMonth(int month) throws ParseException;
 
