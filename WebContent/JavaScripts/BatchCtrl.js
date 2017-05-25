@@ -13,6 +13,9 @@ var mainApp = angular.module('superuser', []);
  ******************************************************************************/
 
 mainApp.controller("infoTable", function($scope, $http) {
+	
+	var subm;
+	
 	$http.get("/StagingManagementSystem/displayCurrent").then(function(result) {
 		$scope.current = result.data;
 		console.log(current);
@@ -53,56 +56,27 @@ mainApp.controller("infoTable", function($scope, $http) {
 	});
 	
 	// submit the associates to be mapped.
-	$scope.SubmitAssociates = function() {
-		// validation the make sure the select a radio button.
-		// var m = document.getElementById('test1').checked;
-		// var c = document.getElementById('test2').checked;
-		// var a = document.getElementById('test3').checked;
-		// var clientName = document.getElementById('sel1').value;
+	$scope.associateSelected = [];
 
-		// if (m || c || a) {
-			// validate to check if a client and an associate was selected.
-			if ($scope.modifyStatus.clientName != "Select Client"
-					&& $scope.associateSelected.length != "0") {
-				var associateIds = [];
-				// add the status and the client to the list of item to send to
-				// the rest-Controller
-				associateIds.push($scope.modifyStatus.status);
-				associateIds.push($scope.modifyStatus.clientName);
-				// this add only the Ids of the associates selected.
-				angular.forEach($scope.associateSelected,
-						function(value, index) {
-							associateIds.push(value.associateID);
-						});
-				// this add a label to the array created.
-				var data = {
-					associateId : associateIds
-				};
+	$scope.exist = function(item) {
+		return $scope.associateSelected.indexOf(item) > -1;
+	}
+	// de-select and select associate accordingly.
+	$scope.toggleSelection = function(item) {
+		var idx = $scope.associateSelected.indexOf(item);
 
-				console.log(JSON.stringify(data));
-				// convert into a JSON object ( which is a String ).
-				var submittedData = JSON.stringify(data);
-				// make a call to the Rest-controller to send the array full of
-				// data
-				$http.post("/StagingManagementSystem/updateAssociates",
-						submittedData).success(function(data) {
-					// on success, reset the modal values.
-					$scope.associateSelected = [];
-					$scope.modifyStatus.status = "";
-					$scope.modifyStatus.clientName = "Select Client";
-					alert("Associate(s) Successfully Updated");
-				}).error(function(data) {
-					alert("Associate(s) did not Update Successfully");
-				});
-			} else
-				alert("Please select an associate as well as a Client!");
-		//} else
-			//alert("Please select a status!");
-
-	};
+		if (idx > -1) {
+			$scope.associateSelected.splice(idx, 1);
+		} else {
+			$scope.associateSelected.push(item);
+		}
+	}
+	// submit the associates to be mapped.
 	
+	$(".associateBtn").hide();
+
 	$(".month").on("click", function(e) {
-		var subm = e.target.id;
+		subm = e.target.id;
 
 		$http.get("/StagingManagementSystem/getMonth?month=" + subm).then(
 			function(result) {
@@ -121,10 +95,67 @@ mainApp.controller("infoTable", function($scope, $http) {
 					console.log(associates);
 					console.log(result.data);
 				});
+			
+			$(".statusheader").html(status);
+			$(".typeheader").html(type);
+			var stat = $("#status").val(status);
 
 		});
+		
+		$(".associateBtn").show();
+
 
 	});
+	
+
+	
+	$scope.submitAssociates = function() {
+		// validation the make sure the select a radio button.
+		var status = $scope.modifyStatus.status;
+		var clientName;
+		
+		if($scope.associateSelected.length != "0") {
+			// validate to check if a client and an associate was selected.
+				var associateIds = [];
+				// add the status and the client to the list of item to send to
+				// the rest-Controller
+			if(status == "Available") {
+				clientName = document.getElementById('sel1').value;
+			}
+				// this add only the Ids of the associates selected.
+				angular.forEach($scope.associateSelected,
+						function(value, index) {
+							associateIds.push(value.associateID);
+						});
+				// this add a label to the array created.
+				var data = {
+					associateId : associateIds,
+					status: status
+				};
+				
+				// convert into a JSON object ( which is a String ).
+				var submittedData = JSON.stringify(data);
+				console.log(submittedData);
+				// make a call to the controller to send the array full of
+				// data
+				$http.post("/StagingManagementSystem/updateAssociates", submittedData )
+				.success(function(data) {
+					// on success, reset the modal values.
+					$scope.associateSelected = [];
+					$scope.modifyStatus.status = "";
+					alert("Associate(s) Successfully Updated");
+					// close the modal
+				    $('#ForecastModal').modal('hide');
+
+					// refresh the table
+					
+				}).error(function(data) {
+					alert("Associate(s) did not Update Successfully");
+				});
+		} else
+			alert("Please select an associate!");
+
+	};
 });
 
 mainApp.controller("BatchCtrl", function($scope, $http) {

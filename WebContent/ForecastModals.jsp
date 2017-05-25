@@ -8,12 +8,12 @@
 		<!-- Modal content-->
 		<div class="modal-content">
 			
-			<form ng-submit="SubmitAssociates()">
+			<form ng-submit="submitAssociates()">
 			
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
 				<h4 class="modal-title" style="text-align: center">
-					Available Associates
+					<span class="statusheader"></span> <span class="typeheader"></span> Associates
 				</h4>
 			</div>
 			<div class="modal-body">
@@ -48,7 +48,6 @@
 							 </tbody>
 						</table>
 						<!-- This div below is just to check the data of the associate selected by showing on this div element -->
-						 <div> List: {{associateSelected}}</div>
 					</div>
 			</div>
 			<div class="modal-footer">
@@ -58,14 +57,33 @@
 				<!--  The table below is the to how the dropdown button as well as the radio buttons are positioned -->
 				<table>
 				<tr>
-					<td> <label> Select a Client:</label> </td>
+				<td>
+				<label id="availableRadio" class="radio-inline">
+						<input ng-model="modifyStatus.status" type="radio" value="Available" name="optradio" id="available"> 
+						Make Available
+					</label>
+					<label id="confirmedRadio" class="radio-inline">
+						<input ng-model="modifyStatus.status" type="radio" value="Confirmed" name="optradio" id="confirmed">
+						Confirm for Client
+					</label>
+					<label id="mappedRadio" class="radio-inline">
+						<input ng-model="modifyStatus.status" type="radio" value="Mapped" name="optradio" id="mapped">
+						Map to Client
+					</label>
+				</td>
+				</tr>
+				<tr>
 					<td style="padding: 5px">
+
+					
 						<select ng-model="modifyStatus.clientName" class="form-control" id="sel1" name="clients" required>
-		        				<option ng-repeat="t in clientList" value="{{t.name}}" selected>{{t.name}}</option>		
+		        				<option ng-repeat="t in clientList" value="{{t.name}}" selected>{{t.name}}</option>	
+	
 		      			</select>
       				</td>
       				<td style="padding: 20px" rowspan="2">
-						<button type="submit">Ok</button>
+						<button type="submit" class="btn btn-primary btn-xs">Submit</button>
+
 					</td>
 				</tr>
 				

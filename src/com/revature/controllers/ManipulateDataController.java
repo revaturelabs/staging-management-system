@@ -36,6 +36,7 @@ import com.revature.classes.AssociateInfo;
 import com.revature.classes.BatchInfo;
 import com.revature.classes.ClientInfo;
 import com.revature.classes.DAOService;
+import com.revature.classes.MappedAssociate;
 import com.revature.classes.Week;
 
 @RestController
@@ -238,11 +239,23 @@ public class ManipulateDataController {
 	}
 
 		
-	@RequestMapping("/updateAssociates")
-	public void updateAssociates(@RequestBody long[] id, @RequestBody String status, @RequestBody int client)
-	{
-		daoserv.UpdateStatus(status, id, client);
+	@RequestMapping(value="/updateAssociates" , method = RequestMethod.POST, consumes ={"application/json"})
+	public void updateAssociates(@RequestBody MappedAssociate associates) {
+		List<Integer> id = associates.getAssociateId();
+		long clientId = associates.getClientId();
+		String status = associates.getStatus();
+		
+		for(int associateId : id)
+		{
+			daoserv.UpdateStatus(status, associateId, clientId);
+		}
+		System.out.println("Updating!!!!!!!!!!!!!!!!!!!!");
+		System.out.println(associates);
+		System.out.println("status " + associates.getStatus());
+		
 	}
+	
+	
 	
 
 	
