@@ -1,16 +1,18 @@
-
 package com.revature.classes;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
-import org.apache.log4j.Logger;
-import org.apache.log4j.xml.DOMConfigurator;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -22,26 +24,19 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.revature.controllers.ManipulateDataController;
-import com.revature.logger.LoggerTest;
-
 @Configuration
 @EnableCaching
 public class DAOImpl implements DAOService {
-	final Logger logger = Logger.getLogger( DAOImpl.class );
-	
+
 	SessionFactory sf;
 
-	public void setSf(SessionFactory sf) 
-	{
+	public void setSf(SessionFactory sf) {
 		this.sf = sf;
 	}
 
 	@Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
 	public void AddClient(ClientInfo ci) {
-		// Log4J
-		logger.info( "inside AddClient( )" );
-		
+
 		// create session object
 		Session session = sf.getCurrentSession();
 		// add client to db
@@ -53,9 +48,7 @@ public class DAOImpl implements DAOService {
 
 	@Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
 	public void AddAssociate(AssociateInfo ai) {
-		// Log4J
-		logger.info( "inside AddAssociate( )" );
-		
+
 		// create session object
 		Session session = sf.getCurrentSession();
 		// add client to db
@@ -67,9 +60,6 @@ public class DAOImpl implements DAOService {
 
 	@Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
 	public void AddBatch(BatchInfo bi) {
-		// Log4J
-		logger.info( "inside AddBatch( )" );
-		
 		// create session object
 		Session session = sf.getCurrentSession();
 		// add client to db
@@ -80,9 +70,6 @@ public class DAOImpl implements DAOService {
 
 	@Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
 	public ClientInfo GetClientFromDB(long id) {
-		// Log4J
-		logger.info( "inside GetClientFromDB( )" );
-		
 		ClientInfo client = null;
 
 		Session session = sf.getCurrentSession();
@@ -95,8 +82,7 @@ public class DAOImpl implements DAOService {
 
 	@Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
 	public AssociateInfo GetAssociateFromDB(long id) {
-		// Log4J
-		logger.info( "inside GetAssociateFromDB( )" );
+
 		AssociateInfo associate = null;
 
 		Session session = sf.getCurrentSession();
@@ -109,9 +95,6 @@ public class DAOImpl implements DAOService {
 
 	@Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
 	public BatchInfo GetBatchFromDB(String id) {
-		// Log4J
-		logger.info( "inside GetBatchFromDB( )" );
-		
 		BatchInfo batch = null;
 
 		Session session = sf.getCurrentSession();
@@ -125,13 +108,11 @@ public class DAOImpl implements DAOService {
 
 	@Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
 	public ArrayList<AssociateInfo> GetAllAssociatesDB() {
-		logger.info( "inside GetAllAssociatesDB( )" );
-		
+
 		ArrayList<AssociateInfo> assoList = new ArrayList<AssociateInfo>();
 
 		Session session = sf.getCurrentSession();
 		Criteria cr = session.createCriteria(AssociateInfo.class);
-
 
 		List<AssociateInfo> list = cr.list();
 
@@ -146,8 +127,7 @@ public class DAOImpl implements DAOService {
 
 	@Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
 	public ArrayList<BatchInfo> GetAllBatchesDB() {
-		logger.info( "inside GetAllBatchesDB( )" );
-		
+
 		ArrayList<BatchInfo> batchList = new ArrayList<BatchInfo>();
 
 		Session session = sf.getCurrentSession();
@@ -170,9 +150,7 @@ public class DAOImpl implements DAOService {
 
 	@Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
 	public ArrayList<ClientInfo> GetAllClientsDB() {
-		// Log4J
-		logger.info( "inside GetAllClientsDB( )" );
-		
+
 		ArrayList<ClientInfo> clientList = new ArrayList<ClientInfo>();
 
 		Session session = sf.getCurrentSession();
@@ -196,6 +174,11 @@ public class DAOImpl implements DAOService {
 
 		int dateIncrement = 1;
 		for (int weekcounter = 0; weekcounter < 52; weekcounter++) // currently
+																	// we always
+																	// want a 52
+																	// week
+																	// overalll
+																	// outlook
 		{
 			// populate the week object with the proper datestring
 			Week currentweek = new Week();
@@ -274,10 +257,10 @@ public class DAOImpl implements DAOService {
 			 * List result = query.list(); for(int j=0; j<result.size(); j++){
 			 * Week week = (Week)result.get(j); WeekList.add(week); }
 			 */
-			//returnWeeksForGivenMonth
-		
+			// returnWeeksForGivenMonth
+
 			// increment relevant external variables
-			//dateIncrement += 7;
+			// dateIncrement += 7;
 		}
 
 		return WeekList;
@@ -385,9 +368,9 @@ public class DAOImpl implements DAOService {
 		// put the result into a list
 		List rowBatch = crit.list();
 
-		// Log4J
-		logger.info( "Java batch" + rowBatch );
-		logger.info( "Java batch size = " + rowBatch.size( ) );
+		System.out.println("all people who did java" + rowBatch);
+		int count = rowBatch.size();
+		System.out.println(count);
 
 		return rowBatch;
 	}
@@ -395,7 +378,7 @@ public class DAOImpl implements DAOService {
 	@Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
 	public List getAllCurrentSDET() {
 		// Session session = sf.getCurrentSession();
-		// //initializes criteria using the associateInfo pojo
+		// //initializes cirteria using the associateInfo pojo
 		// Criteria crit = session.createCriteria(AssociateInfo.class,"ai");
 		// //creates an alias for the join between associateInfo and batch that
 		// is in the associateInfo pojo
@@ -427,10 +410,10 @@ public class DAOImpl implements DAOService {
 
 		// put the result into a list
 		List rowBatch = crit.list();
-		
-		// Log4J
-		logger.info( "SDET batch " + rowBatch );
-		logger.info( "SDET batch size = " + rowBatch.size( ) );
+
+		System.out.println("all people who are did SDET ..." + rowBatch);
+		int count = rowBatch.size();
+		System.out.println(count);
 
 		return rowBatch;
 	}
@@ -438,7 +421,7 @@ public class DAOImpl implements DAOService {
 	@Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
 	public List getAllCurrentNET() {
 		// Session session = sf.getCurrentSession();
-		// //initializes criteria using the associateInfo pojo
+		// //initializes cirteria using the associateInfo pojo
 		// Criteria crit = session.createCriteria(AssociateInfo.class,"ai");
 		// //creates an alias for the join between associateInfo and batch that
 		// is in the associateInfo pojo
@@ -471,71 +454,63 @@ public class DAOImpl implements DAOService {
 		// put the result into a list
 		List rowBatch = crit.list();
 
-		// Log4J
-		logger.info( ".NET batch " + rowBatch );
-		logger.info( ".NET batch size = " + rowBatch.size( ) );
+		System.out.println("all people who are did NET ..." + rowBatch);
+		int count = rowBatch.size();
+		System.out.println(count);
 
 		return rowBatch;
 	}
 
 	@Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
-	public void UpdateStatus(String status, long[] aID, int clientId) {
-		// Log4J
-		logger.info( "inside UpdateStatus( )" );
-				
+	public void UpdateStatus(String status, int aID, long clientId) {
+
 		Session session = sf.openSession();
 
-		try
-		{
-			String hqlUpdate = "update AssociateInfo a set a.Status = :newStatus where a.AssociateID = :ID";
-			// or String hqlUpdate = "update Customer set name = :newName where name
-			// = :oldName";
-			for (int i = 0; i < aID.length; i++) {
-				int updatedEntities = session.createQuery(hqlUpdate).setString("newStatus", status).setLong("ID", aID[i])
-						.executeUpdate();
-			}
-		}
-		
-		catch( Exception e )
-		{
-			e.printStackTrace( );
-			
-			// Log4J
-			logger.error( "Unsuccessful attempt to update session with HQL" );
-		}
+		// update the associate's availability status
+		String hqlUpdate = "update AssociateInfo a set a.Status = :newStatus where a.AssociateID = :ID";
+
+		int updatedEntities = session.createQuery(hqlUpdate).setString("newStatus", status).setInteger("ID", aID)
+				.executeUpdate();
+
+		// associate an associate to a client in the associate-client table
+		// future iterations can use that table to prevent an associate
+		// from being mapped to the same client after being rejected
+
+
+		session.close();
+
 	}
 
 	@Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
 	public List getAvailableCurrentJava() {
 		Session session = sf.getCurrentSession();
 
-			// initializes criteria using the associateInfo pojo
-		
-			Criteria crit = session.createCriteria(AssociateInfo.class, "ai");
-	
-			// creates an alias for the join between associateInfo and batch that is
-			// in the associateInfo pojo
-			crit.createAlias("ai.batch", "batch");
-	
-			// create a current date for today
-			java.util.Date utildate = new java.util.Date();
-			java.sql.Date sqldate = new java.sql.Date(utildate.getTime()); // today
-	
-			// search for batch type = java
-			crit.add(Restrictions.eq("batch.Type", "JAVA"));
-	
-			// search for status available
-			crit.add(Restrictions.eq("Status", "Available"));
-	
-			// search for those before the current date
-			crit.add(Restrictions.le("batch.EndDate", sqldate));
-	
-			// put the result into a list
-			List rowBatch = crit.list();
-		
-		// Log4J
-		logger.info( "Available Java " + rowBatch );
-		logger.info( "Available Java batch size = " + rowBatch.size( ) );
+		// initializes criteria using the associateInfo pojo
+		Criteria crit = session.createCriteria(AssociateInfo.class, "ai");
+
+		// creates an alias for the join between associateInfo and batch that is
+		// in the associateInfo pojo
+		crit.createAlias("ai.batch", "batch");
+
+		// create a current date for today
+		java.util.Date utildate = new java.util.Date();
+		java.sql.Date sqldate = new java.sql.Date(utildate.getTime()); // today
+
+		// search for batch type = java
+		crit.add(Restrictions.eq("batch.Type", "JAVA"));
+
+		// search for status available
+		crit.add(Restrictions.eq("Status", "Available"));
+
+		// search for those before the current date
+		crit.add(Restrictions.le("batch.EndDate", sqldate));
+
+		// put the result into a list
+		List rowBatch = crit.list();
+
+		System.out.println("all people who did java" + rowBatch);
+		int count = rowBatch.size();
+		System.out.println(count);
 
 		return rowBatch;
 	}
@@ -567,9 +542,9 @@ public class DAOImpl implements DAOService {
 		// put the result into a list
 		List rowBatch = crit.list();
 
-		// Log4J
-		logger.info( "Available SDET " + rowBatch );
-		logger.info( "Available SDET batch size = " + rowBatch.size( ) );
+		System.out.println("all people who did java" + rowBatch);
+		int count = rowBatch.size();
+		System.out.println(count);
 
 		return rowBatch;
 	}
@@ -590,7 +565,7 @@ public class DAOImpl implements DAOService {
 		java.sql.Date sqldate = new java.sql.Date(utildate.getTime()); // today
 
 		// search for batch type = java
-		crit.add(Restrictions.eq("batch.Type", "NET"));
+		crit.add(Restrictions.eq("batch.Type", ".NET"));
 
 		// search for status available
 		crit.add(Restrictions.eq("Status", "Available"));
@@ -601,9 +576,9 @@ public class DAOImpl implements DAOService {
 		// put the result into a list
 		List rowBatch = crit.list();
 
-		// Log4J
-		logger.info( "Available .NET " + rowBatch );
-		logger.info( "Available .NET batch size = " + rowBatch.size( ) );
+		System.out.println("all people who did java" + rowBatch);
+		int count = rowBatch.size();
+		System.out.println(count);
 
 		return rowBatch;
 	}
@@ -635,9 +610,9 @@ public class DAOImpl implements DAOService {
 		// put the result into a list
 		List rowBatch = crit.list();
 
-		// Log4J
-		logger.info( "Mapped Java " + rowBatch );
-		logger.info( "Mapped Java batch size = " + rowBatch.size( ) );
+		System.out.println("all people who did java" + rowBatch);
+		int count = rowBatch.size();
+		System.out.println(count);
 
 		return rowBatch;
 	}
@@ -669,9 +644,9 @@ public class DAOImpl implements DAOService {
 		// put the result into a list
 		List rowBatch = crit.list();
 
-		// Log4J
-		logger.info( "Mapped SDET " + rowBatch );
-		logger.info( "Mapped SDET batch size = " + rowBatch.size( ) );
+		System.out.println("all people who did java" + rowBatch);
+		int count = rowBatch.size();
+		System.out.println(count);
 
 		return rowBatch;
 	}
@@ -703,16 +678,15 @@ public class DAOImpl implements DAOService {
 		// put the result into a list
 		List rowBatch = crit.list();
 
-		// Log4J
-		logger.info( "Mapped .NET " + rowBatch );
-		logger.info( "Mapped .NET batch size = " + rowBatch.size( ) );
+		System.out.println("all people who did java" + rowBatch);
+		int count = rowBatch.size();
+		System.out.println(count);
 
 		return rowBatch;
 	}
 
 	@Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
 	public List getConfirmedCurrentJava() {
-		
 		Session session = sf.getCurrentSession();
 
 		// initializes criteria using the associateInfo pojo
@@ -738,9 +712,9 @@ public class DAOImpl implements DAOService {
 		// put the result into a list
 		List rowBatch = crit.list();
 
-		// Log4J
-		logger.info( "Confirmed Java " + rowBatch );
-		logger.info( "Confirmed Java batch size = " + rowBatch.size( ) );
+		System.out.println("all people who did java" + rowBatch);
+		int count = rowBatch.size();
+		System.out.println(count);
 
 		return rowBatch;
 	}
@@ -772,9 +746,9 @@ public class DAOImpl implements DAOService {
 		// put the result into a list
 		List rowBatch = crit.list();
 
-		// Log4J
-		logger.info( "Confirmed SDET " + rowBatch );
-		logger.info( "Confirmed SDET batch size = " + rowBatch.size( ) );
+		System.out.println("all people who did java" + rowBatch);
+		int count = rowBatch.size();
+		System.out.println(count);
 
 		return rowBatch;
 	}
@@ -795,7 +769,7 @@ public class DAOImpl implements DAOService {
 		java.sql.Date sqldate = new java.sql.Date(utildate.getTime()); // today
 
 		// search for batch type = java
-		crit.add(Restrictions.eq("batch.Type", "NET"));
+		crit.add(Restrictions.eq("batch.Type", ".NET"));
 
 		// search for status available
 		crit.add(Restrictions.eq("Status", "Confirmed"));
@@ -806,10 +780,50 @@ public class DAOImpl implements DAOService {
 		// put the result into a list
 		List rowBatch = crit.list();
 
-		// Log4J
-		logger.info( "Confirmed .NET " + rowBatch );
-		logger.info( "Confirmed .NET batch size = " + rowBatch.size( ) );
+		System.out.println("all people who did java" + rowBatch);
+		int count = rowBatch.size();
+		System.out.println(count);
 
 		return rowBatch;
-	}		
+	}
+
+	@Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
+	public List returnMonthlyResourcesLooping(int monthparam, String type, String status) {
+		// THIS IS WHERE WE DO THE SEEQUL
+
+		// HELP ME ITERATION 2 YOURE MY ONLY HOPE! THEYVE KIDNAPPED ME AND MADE
+		// ME NOT NOT HARDCODE THE YEAR
+		LocalDate date = LocalDate.now();
+		// int rightMonth = date.getMonthValue();
+		int rightYear = date.getYear();
+
+		// use these to create a sqldate with the proper parameters
+		LocalDate rightdate = LocalDate.of(rightYear, monthparam, 15);
+		LocalDate leftdate = rightdate.minusMonths(1);
+		java.sql.Date rightdatesql = java.sql.Date.valueOf(rightdate);
+		java.sql.Date leftdatesql = java.sql.Date.valueOf(leftdate);
+
+		// use criteria to list the results
+		Session session = sf.getCurrentSession();
+		Criteria critt = session.createCriteria(AssociateInfo.class, "ai");
+
+		critt.createAlias("ai.batch", "batch");
+
+		critt.add(Restrictions.eq("batch.Type", type));
+		critt.add(Restrictions.eq("Status", status));
+		critt.add(Restrictions.between("batch.EndDate", leftdatesql, rightdatesql));
+
+		List<AssociateInfo> resultList = critt.list();
+
+		/*
+		 * for(int i = 0; i < resultList.size(); i++) {
+		 * returnSet.add((AssociateInfo)resultList.get(i)); }
+		 */
+
+		System.out.println("all people who did" + status + " and " + type + " : " + resultList);
+		int count = resultList.size();
+		System.out.println(count);
+		return resultList;
+	}
+
 }
