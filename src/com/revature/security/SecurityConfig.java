@@ -1,4 +1,3 @@
-
 package com.revature.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,4 +41,3 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 }
-
