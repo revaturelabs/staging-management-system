@@ -1,3 +1,4 @@
+
 /**
  * the token for spring security
  */
@@ -180,3 +181,4 @@ mainApp.controller("forcastTable", function($scope, $http) {
 				console.log(result.data);
 			});
 });
+
