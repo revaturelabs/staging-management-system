@@ -1,4 +1,3 @@
-
 package com.revature.classes;
 
 import java.text.ParseException;
@@ -811,5 +810,17 @@ public class DAOImpl implements DAOService {
 		logger.info( "Confirmed .NET batch size = " + rowBatch.size( ) );
 
 		return rowBatch;
+	}
+
+	@Override
+	public void UpdateStatus(String status, int id, long client) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List returnMonthlyResourcesLooping(int month, String type, String status) {
+		// TODO Auto-generated method stub
+		return null;
 	}		
 }
