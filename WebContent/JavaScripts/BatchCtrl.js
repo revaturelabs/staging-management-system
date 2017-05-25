@@ -73,7 +73,8 @@ mainApp.controller("infoTable", function($scope, $http) {
 	}
 	// submit the associates to be mapped.
 	
-	
+	$(".associateBtn").hide();
+
 	$(".month").on("click", function(e) {
 		subm = e.target.id;
 
@@ -95,24 +96,32 @@ mainApp.controller("infoTable", function($scope, $http) {
 					console.log(result.data);
 				});
 			
-			$("#status").val(status);
+			$(".statusheader").html(status);
+			$(".typeheader").html(type);
 			var stat = $("#status").val(status);
 
 		});
+		
+		$(".associateBtn").show();
+
 
 	});
 	
+
+	
 	$scope.submitAssociates = function() {
 		// validation the make sure the select a radio button.
-		var status;
-		var clientName = document.getElementById('sel1').value;
-
+		var status = $scope.modifyStatus.status;
+		var clientName;
+		
 		if($scope.associateSelected.length != "0") {
 			// validate to check if a client and an associate was selected.
 				var associateIds = [];
 				// add the status and the client to the list of item to send to
 				// the rest-Controller
-				status = $scope.modifyStatus.status;
+			if(status == "Available") {
+				clientName = document.getElementById('sel1').value;
+			}
 				// this add only the Ids of the associates selected.
 				angular.forEach($scope.associateSelected,
 						function(value, index) {
@@ -136,7 +145,7 @@ mainApp.controller("infoTable", function($scope, $http) {
 					$scope.modifyStatus.status = "";
 					alert("Associate(s) Successfully Updated");
 					// close the modal
-				    $('#addBatch').modal('hide');
+				    $('#ForecastModal').modal('hide');
 
 					// refresh the table
 					

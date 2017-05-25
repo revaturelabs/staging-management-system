@@ -9,8 +9,8 @@
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<link rel="stylesheet" href="css/modalView.css" />
-	
+<link rel="stylesheet" href="css/modalView.css" />
+
 <link rel="stylesheet" href="css/login.css" />
 
 <!-- jQuery library -->
@@ -26,34 +26,35 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
 <script src="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.js"></script>
-	<script
-    src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.min.js"></script>
-	
+<script
+	src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.min.js"></script>
+
 <!-- DataTable Library -->
 <link type="text/css" rel="stylesheet"
 	href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
-	
-<!-- Angular Table Library -->	
-<link rel="stylesheet" href="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.css">
+
+<!-- Angular Table Library -->
+<link rel="stylesheet"
+	href="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.css">
 
 <script type="text/javascript"
 	src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
-	
-	
-	
+
+
+
 <!-- Import Javascript Files -->
 <script src="JavaScripts/BatchCtrl.js"></script>
 <script src="JavaScripts/AddAssociateControllerScript.js"></script>
 
-	
-</head> 
+
+</head>
 <body>
-<jsp:include page="ForecastModals.jsp" />
+	<jsp:include page="ForecastModals.jsp" />
 	<nav class="navbar navbar-inverse">
 		<div class="container-fluid">
 			<div class="navbar-header">
-				<a class="navbar-brand"><span class="glyphicon glyphicon-globe"></span>
-					Staging Management System</a>
+				<a class="navbar-brand">
+				<img src="https://files.slack.com/files-pri/T1CTFL5A7-F5J52GGJ2/logo_1.png" alt="Revature" width="10%" /></a>
 			</div>
 			<div id="navbar" class="navbar-collapse collapse">
 
@@ -84,7 +85,7 @@
 							<li><a href="#addClient" data-toggle="modal" id="clients"
 								data-target="#addClient"><span
 									class="glyphicon glyphicon-plus"></span> Add Client</a></li>
-									
+
 
 						</ul></li>
 
@@ -95,16 +96,17 @@
 	</nav>
 
 	<div class="row" ng-controller="infoTable">
-			
+
 		<!-- right side bar -->
 		<div class="col-sm-offset-2 col-sm-8">
-			<ul class="nav nav-pills">
-				<li class="active"><a data-toggle="pill" href="#current">Current</a></li>
-				<li><a data-toggle="pill" href="#forecast" ng-click="getForecast()">Forecast</a></li>
+			<ul class="nav nav-tabs nav-justified">
+				<li class="active"><a data-toggle="tab" href="#current">Current</a></li>
+				<li><a data-toggle="tab" href="#forecast"
+					ng-click="getForecast()">Forecast</a></li>
 			</ul>
 
 			<div class="tab-content">
-				<div id="current" class="tab-pane fade in active" >
+				<div id="current" class="tab-pane fade in active">
 					<table class="table table-bordered table-striped table-hover">
 						<thead>
 							<tr>
@@ -119,83 +121,94 @@
 							<tr ng-repeat="c in current">
 								<td>{{c[0]}}</td>
 								<td>
-									<button data-toggle="modal" data-target="#AssociateInfo" id="{{c[1][0]}}">{{c[5]}}</button>
+									<button data-toggle="modal" data-target="#AssociateInfo"
+										id="{{c[1][0]}}">{{c[5]}}</button>
 								</td>
 								<td><button data-toggle="modal"
 										data-target="#AssociateInfo" id="{{c[1]}}">{{c[6]}}</button></td>
 								<td><button data-toggle="modal"
 										data-target="#AssociateInfo" id="{{c[1]}}">{{c[7]}}</button></td>
 								<td><button data-toggle="modal"
-										data-target="#AssociateInfo" id="all-{{c[0]}}">{{c[5] + c[6] + c[7]}}</button></td>
+										data-target="#AssociateInfo" id="all-{{c[0]}}">{{c[5]
+										+ c[6] + c[7]}}</button></td>
 							</tr>
 						</tbody>
 					</table>
 				</div>
 
 				<div id="forecast" class="tab-pane fade">
-				<table class="table table-bordered table-striped table-hover">
-				<thead>
-				<thead>
+					<table class="table table-bordered table-striped table-hover">
+						<thead>
+						<thead>
 							<tr>
 								<th>Status</th>
 								<th>Java</th>
 								<th>.NET</th>
 								<th>JTA</th>
-								<th>Big Data</th>
 							</tr>
 						</thead>
-				</thead>
-						<tbody>
+						</thead>
+						<tbody id="showForecast">
 							<tr>
 								<td>Available</td>
 								<td>
-									<button data-toggle="modal" class="associateBtn" id="Available" name="JAVA" data-target="#ForecastModal">{{month[0]}}</button>
+									<button data-toggle="modal" class="associateBtn btn btn-xs"
+										id="Available" name="JAVA" data-target="#ForecastModal">{{month[0]}}</button>
 								</td>
-								<td><button data-toggle="modal" class="associateBtn" id="Available" name=".NET"
+								<td><button data-toggle="modal"
+										class="associateBtn btn btn-xs" id="Available" name=".NET"
 										data-target="#ForecastModal">{{month[1]}}</button></td>
-								<td><button data-toggle="modal" class="associateBtn" id="Available" name="SDET"
+								<td><button data-toggle="modal"
+										class="associateBtn btn btn-xs" id="Available" name="SDET"
 										data-target="#ForecastModal">{{month[2]}}</button></td>
-						
+
 							</tr>
 							<tr>
 								<td>Mapped</td>
 								<td>
-									<button data-toggle="modal" class="associateBtn" id="Mapped" name="JAVA" data-target="#ForecastModal">{{month[3]}}</button>
+									<button data-toggle="modal" class="associateBtn btn btn-xs"
+										id="Mapped" name="JAVA" data-target="#ForecastModal">{{month[3]}}</button>
 								</td>
-								<td><button data-toggle="modal" class="associateBtn" id="Mapped" name=".NET"
+								<td><button data-toggle="modal"
+										class="associateBtn btn btn-xs" id="Mapped" name=".NET"
 										data-target="#ForecastModal">{{month[4]}}</button></td>
-								<td><button data-toggle="modal" class="associateBtn" id="Mapped" name="SDET"
+								<td><button data-toggle="modal"
+										class="associateBtn btn btn-xs" id="Mapped" name="SDET"
 										data-target="#ForecastModal">{{month[5]}}</button></td>
-						
+
 							</tr>
 							<tr>
 								<td>Confirmed</td>
 								<td>
-									<button data-toggle="modal" class="associateBtn" id="Confirmed" name="JAVA" data-target="#ForecastModal">{{month[6]}}</button>
+									<button data-toggle="modal" class="associateBtn btn btn-xs"
+										id="Confirmed" name="JAVA" data-target="#ForecastModal">{{month[6]}}</button>
 								</td>
-								<td><button data-toggle="modal" class="associateBtn" id="Confirmed" name=".NET"
+								<td><button data-toggle="modal"
+										class="associateBtn btn btn-xs" id="Confirmed" name=".NET"
 										data-target="#ForecastModal">{{month[7]}}</button></td>
-								<td><button data-toggle="modal" class="associateBtn" id="Confirmed" name="SDET"
+								<td><button data-toggle="modal"
+										class="associateBtn btn btn-xs" id="Confirmed" name="SDET"
 										data-target="#ForecastModal">{{month[8]}}</button></td>
-			
+
 							</tr>
 						</tbody>
 					</table>
-					<div class="col-md-12">
-						<button id="1" class="month">January</button>
-						<button id="2" class="month">February</button>
-						<button id="3" class="month">March</button>
-						<button id="4" class="month">April</button>
-						<button id="5" class="month">May</button>
-						<button id="6" class="month">June</button>
-						<button id="7" class="month">July</button>
-						<button id="8" class="month">August</button>
-						<button id="9" class="month">September</button>
-						<button id="10" class="month">October</button>
-						<button id="11" class="month">November</button>			
-						<button id="12" class="month">December</button>			
-					</div>
-			
+					<ul class="nav nav-pills" style="background-color: #474c55;">
+						<center><div class="btn-group">
+							<button id="1" class="month btn btn-primary">January</button>
+							<button id="2" class="month btn btn-primary">February</button>
+							<button id="3" class="month btn btn-primary">March</button>
+							<button id="4" class="month btn btn-primary">April</button>
+							<button id="5" class="month btn btn-primary">May</button>
+							<button id="6" class="month btn btn-primary">June</button>
+							<button id="7" class="month btn btn-primary">July</button>
+							<button id="8" class="month btn btn-primary">August</button>
+							<button id="9" class="month btn btn-primary">September</button>
+							<button id="10" class="month btn btn-primary">October</button>
+							<button id="11" class="month btn btn-primary">November</button>
+							<button id="12" class="month btn btn-primary">December</button>
+						</div></center>
+					</ul>
 				</div>
 
 				<div id="history" class="tab-pane fade">history</div>
@@ -244,19 +257,19 @@ Add associate modal
 					- options retrieved from a controller
 					-->
 					<div class="form-group" ng-controller="BatchCtrl">
-						<label for="batchSelector">Batch:</label> 
-						<select
+						<label for="batchSelector">Batch:</label> <select
 							id="BatchSelector" style="width: 100%;" name="batch"
 							class="form-control">
 							<option ng-repeat="b in batches" value="{{b.trainingName}}">{{b.trainingName}}</option>
 						</select>
-						
+
 					</div>
-										<!--  
+					<!--  
 					- Input: Hidden Token for Spring Security that will allow the administrator to access
 					-->
-					  <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
-					
+					<input type="hidden" name="${_csrf.parameterName}"
+						value="${_csrf.token}" />
+
 					<!--  
 					- Input: submit the form
 					-->
@@ -336,8 +349,7 @@ Add batch modal
 					- Input: select statement for collecting the type of batch
 					-->
 					<div class="form-group">
-						<label for="batchtype">Batch Type:</label> 
-						<select
+						<label for="batchtype">Batch Type:</label> <select
 							class="form-control" id="batchtype" name="batchtype">
 							<option value="java">Java</option>
 							<option value="net">.NET</option>
@@ -345,11 +357,12 @@ Add batch modal
 							<option value="bigdata">Big Data</option>
 						</select>
 					</div>
-										<!--  
+					<!--  
 					- Input: Hidden Token for Spring Security that will allow the administrator to access
 					-->
-					  <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
-					
+					<input type="hidden" name="${_csrf.parameterName}"
+						value="${_csrf.token}" />
+
 					<!--  
 					- Input: submit the form
 					-->
@@ -406,9 +419,10 @@ Add client modal
 					<!--  
 					- Input: Hidden Token for Spring Security that will allow the administrator to access
 					-->
-					  <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
-					
-					
+					<input type="hidden" name="${_csrf.parameterName}"
+						value="${_csrf.token}" />
+
+
 					<!--  
 					- Input: submit the form
 					-->
@@ -435,37 +449,39 @@ Add client modal
 
 		<!-- Modal content-->
 		<div ng-controller="client" class="modal-content">
-			
+
 			<form ng-submit="onSubmit()">
-			
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
-				<h4 class="modal-title" style="text-align: center">
-					Associate Information
-				</h4>
-			</div>
-			<div class="modal-body">
+
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title" style="text-align: center">Associate
+						Information</h4>
+				</div>
+				<div class="modal-body">
 
 					<div>
 						<div class="form-group">
-							<label>Search</label>
-							<input type="text" ng-model="search" placeholder="search">
+							<label>Search</label> <input type="text" ng-model="search"
+								placeholder="search">
 						</div>
-						<table ng-table="vm.tableParams" show-filter="true" class="table table-striped">
-							 <thead>
-							 <tr>
-							 	<th>Check</th>
-							 	<th>Name</th>
-							 	<th>EmpID</th>
-							 	<th>Status</th>
-							 	<th>StartDate</th>
-							 	<th>EndDate</th>
-							 	<th>Company</th>
-							 </tr>
-							 </thead>
-							 <tbody>
+						<table ng-table="vm.tableParams" show-filter="true"
+							class="table table-striped">
+							<thead>
+								<tr>
+									<th>Check</th>
+									<th>Name</th>
+									<th>EmpID</th>
+									<th>Status</th>
+									<th>StartDate</th>
+									<th>EndDate</th>
+									<th>Company</th>
+								</tr>
+							</thead>
+							<tbody>
 								<tr ng-repeat="a in associatesList |filter:search | limitTo:5">
-									<td><input ng-model="associateSelected" type="checkbox" ng-checked="exist(a)" ng-click="toggleSelection(a)" ng-true-value="{{a.associateID}}"></td>
+									<td><input ng-model="associateSelected" type="checkbox"
+										ng-checked="exist(a)" ng-click="toggleSelection(a)"
+										ng-true-value="{{a.associateID}}"></td>
 									<td>{{a.associateName}}</td>
 									<td>{{a.associateID}}</td>
 									<td>{{a.status}}</td>
@@ -473,55 +489,52 @@ Add client modal
 									<td>{{a.batch.endDate}}</td>
 									<td>nothing</td>
 								</tr>
-							 </tbody>
+							</tbody>
 						</table>
 						<!-- This div below is just to check the data of the associate selected by showing on this div element -->
-						 <div> List: {{associateSelected}}</div>
+						<div>List: {{associateSelected}}</div>
 					</div>
-			</div>
-			<div class="modal-footer">
-				<div class=pull-left >
-					
-				<br>
-				<!--  The table below is the to how the dropdown button as well as the radio buttons are positioned -->
-				<table>
-				<tr>
-					<td style="text-align: left;">
-					<label> Select Status:</label>
-					</td>
-					<td>
-					<label id="availableRadio" class="radio-inline">
-						<input ng-model="modifyStatus.status" type="radio" value="available" name="optradio" id="test3"> 
-						Available
-					</label>
-					<label id="mappedRadio" class="radio-inline">
-						<input ng-model="modifyStatus.status" type="radio" value="mapped" name="optradio" id="test1">
-						Mapped
-					</label> 
-					<label id="confirmedRadio" class="radio-inline">
-						<input ng-model="modifyStatus.status" type="radio" value="confirmed" name="optradio" id="test2">
-						Confirmed
-					</label>
-					</td>
-
-				</tr>
-				<tr>
-					<td> <label> Select a Client:</label> </td>
-					<td style="padding: 5px">
-						<select ng-model="modifyStatus.clientName" class="form-control" id="sel1" name="clients" required>
-		        				<option ng-repeat="t in clientList" value="{{t.name}}" selected>{{t.name}}</option>		
-		      			</select>
-      				</td>
-      				<td style="padding: 20px" rowspan="2">
-						<button type="submit">Ok</button>
-					</td>
-				</tr>
-				
-				</table>
 				</div>
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<div class="modal-footer">
+					<div class=pull-left>
 
-			</div>
+						<br>
+						<!--  The table below is the to how the dropdown button as well as the radio buttons are positioned -->
+						<table>
+							<tr>
+								<td style="text-align: left;"><label> Select
+										Status:</label></td>
+								<td><label id="availableRadio" class="radio-inline">
+										<input ng-model="modifyStatus.status" type="radio"
+										value="available" name="optradio" id="test3">
+										Available
+								</label> <label id="mappedRadio" class="radio-inline"> <input
+										ng-model="modifyStatus.status" type="radio" value="mapped"
+										name="optradio" id="test1"> Mapped
+								</label> <label id="confirmedRadio" class="radio-inline"> <input
+										ng-model="modifyStatus.status" type="radio" value="confirmed"
+										name="optradio" id="test2"> Confirmed
+								</label></td>
+
+							</tr>
+							<tr>
+								<td><label> Select a Client:</label></td>
+								<td style="padding: 5px"><select
+									ng-model="modifyStatus.clientName" class="form-control"
+									id="sel1" name="clients" required>
+										<option ng-repeat="t in clientList" value="{{t.name}}"
+											selected>{{t.name}}</option>
+								</select></td>
+								<td style="padding: 20px" rowspan="2">
+									<button type="submit">Ok</button>
+								</td>
+							</tr>
+
+						</table>
+					</div>
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+				</div>
 			</form>
 		</div>
 

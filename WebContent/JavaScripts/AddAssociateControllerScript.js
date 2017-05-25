@@ -9,6 +9,7 @@
 $(document).on("click", "#Available", function() {
 	$("#availableRadio").hide();
 	$("#mappedRadio").show();
+	$("#sel1").show();
 	$("#confirmedRadio").hide();
 });
 /* 
@@ -18,6 +19,7 @@ $(document).on("click", "#Available", function() {
 $(document).on("click", "#Mapped", function() {
 	$("#availableRadio").show();
 	$("#mappedRadio").hide();
+	$("#sel1").hide();
 	$("#confirmedRadio").show();
 	
 });
@@ -28,6 +30,7 @@ $(document).on("click", "#Mapped", function() {
 $(document).on("click", "#Confirmed", function() {
 	$("#availableRadio").show();
 	$("#mappedRadio").hide();
+	$("#sel1").hide();
 	$("#confirmedRadio").hide();
 	
 });
@@ -35,7 +38,6 @@ $(document).on("click", "#Confirmed", function() {
 /*
  * post a month on click to the controller
  */
-
 
 // submit the add batch form
 $(document).on("click", "#addBatch", function() {

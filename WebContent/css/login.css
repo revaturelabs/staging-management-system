@@ -8,30 +8,45 @@ body {
   padding-top: 5%;
 }
 
-	.nav-pills {
+.btn-primary {
 	background-color: #474c55;
+	border: none;
+}
+
+.btn-primary:hover {
+	background-color: #f26925;
+}
+
+.modal-header {
+	background-color: #f26925;
+}
+
+	.nav-pills {
+	background-color: #f26925;
 	}
 	
-	.nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover {
-	background-color: #b9b9ba;
+	.nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
 	color: #474c55;
 	font-weight: bold;
+	border: 1px solid #f26925;
+	background-color: #f26925;
 	}
 	
-	.nav-pills>li>a:hover {
-	background-color: #474c55;
+	.nav-tabs>li>a:hover {
+	color: #474c55;
 	text-decoration: underline;
+	background-color: #fff;
 	}
 	
 	.nav>li>a {
-	color: #fff;
+	color: #f26925;
 	}
 	
 	
 	
 	.navbar-inverse {
-	background-color: #f26925;
-	border: 1px solid #f26925;
+	background-color: #b9b9ba;
+	border: 1px solid #b9b9ba;
 	}
 	
 	.navbar-inverse .navbar-brand {

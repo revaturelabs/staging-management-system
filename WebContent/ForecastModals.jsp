@@ -13,7 +13,7 @@
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
 				<h4 class="modal-title" style="text-align: center">
-					Available Associates
+					<span class="statusheader"></span> <span class="typeheader"></span> Associates
 				</h4>
 			</div>
 			<div class="modal-body">
@@ -60,27 +60,30 @@
 				<td>
 				<label id="availableRadio" class="radio-inline">
 						<input ng-model="modifyStatus.status" type="radio" value="Available" name="optradio" id="available"> 
-						Available
+						Make Available
 					</label>
 					<label id="confirmedRadio" class="radio-inline">
 						<input ng-model="modifyStatus.status" type="radio" value="Confirmed" name="optradio" id="confirmed">
-						Confirmed
+						Confirm for Client
 					</label>
 					<label id="mappedRadio" class="radio-inline">
 						<input ng-model="modifyStatus.status" type="radio" value="Mapped" name="optradio" id="mapped">
-						Confirmed
+						Map to Client
 					</label>
 				</td>
-					<td> <label> Select a Client:</label> </td>
+				</tr>
+				<tr>
 					<td style="padding: 5px">
 
 					
 						<select ng-model="modifyStatus.clientName" class="form-control" id="sel1" name="clients" required>
-		        				<option ng-repeat="t in clientList" value="{{t.name}}" selected>{{t.name}}</option>		
+		        				<option ng-repeat="t in clientList" value="{{t.name}}" selected>{{t.name}}</option>	
+	
 		      			</select>
       				</td>
       				<td style="padding: 20px" rowspan="2">
-						<button type="submit">Ok</button>
+						<button type="submit" class="btn btn-primary btn-xs">Submit</button>
+
 					</td>
 				</tr>
 				
