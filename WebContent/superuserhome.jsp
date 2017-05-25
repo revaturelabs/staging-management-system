@@ -71,7 +71,7 @@
 							<!-- documentation link -->
 							<li><a href="/Documentation/Frameset.html" id="clients"
 								data-target="#addClient"><span
-									class="glyphicon glyphicon-plus"></span> Documentation</a></li>
+									class="glyphicon glyphicon-file"></span> Documentation</a></li>
 							<!-- navbar link add associate -->
 							<li><a id="associates" data-toggle="modal"
 								data-target="#addAssociate" ng-click="getBatches()"><span
@@ -87,7 +87,21 @@
 								data-target="#addClient"><span
 									class="glyphicon glyphicon-plus"></span> Add Client</a></li>
 
+<li><a href="javascript:formSubmit()"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
 
+							<script>
+								function formSubmit() {
+									document.getElementById("logoutForm")
+											.submit();
+								}
+							</script>
+
+							<!-- csrt for log out-->
+							<form action="logout" method="post" id="logoutForm">
+								<input type="hidden" name="${_csrf.parameterName}"
+									value="${_csrf.token}" />
+							</form>
+							
 						</ul></li>
 
 				</ul>
