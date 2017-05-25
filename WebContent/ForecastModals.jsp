@@ -32,7 +32,10 @@
 							 	<th>Status</th>
 							 	<th>StartDate</th>
 							 	<th>EndDate</th>
-							 	<!-- uncomment once you get the company mapping to actually work -->
+							 	<!-- 
+							 		 uncomment once you get the company mapping to actually work 
+							 		 currently not able to associate an associate to a client 
+							 	-->
 							 	<!-- <th>Company</th> -->
 							 </tr>
 							 </thead>
@@ -44,8 +47,11 @@
 									<td>{{m.status}}</td>
 									<td>{{m.batch.startDate}}</td>
 									<td>{{m.batch.endDate}}</td>
-									<!-- uncomment once you get the company mapping to actually work -->
-									<!-- <td>none</td> -->
+								<!-- 
+							 		 uncomment once you get the company mapping to actually work 
+							 		 currently not able to associate an associate to a client 
+							 	-->									
+							 	<!-- <td>none</td> -->
 								</tr>
 							 </tbody>
 						</table>
