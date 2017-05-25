@@ -11,6 +11,7 @@ $(document).on("click", "#Available", function() {
 	$("#mappedRadio").show();
 	$("#sel1").show();
 	$("#confirmedRadio").hide();
+	$('#availablecolumn').hide();
 });
 /* 
  * this hide the mapped radio button in the show associates modal
@@ -21,7 +22,8 @@ $(document).on("click", "#Mapped", function() {
 	$("#mappedRadio").hide();
 	$("#sel1").hide();
 	$("#confirmedRadio").show();
-	
+	$('#availablecolumn').show();
+
 });
 /* 
  * this hide the confirmed radio button in the show associates modal
@@ -32,6 +34,7 @@ $(document).on("click", "#Confirmed", function() {
 	$("#mappedRadio").hide();
 	$("#sel1").hide();
 	$("#confirmedRadio").hide();
+	$('#availablecolumn').show();
 	
 });
 
@@ -113,6 +116,7 @@ $(document).on("click", "#addBatch", function() {
 				});
 			});
 		});
+		
 		
 		// do datatable things
 		$(document).ready(function() {
