@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
@@ -5,9 +6,13 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 
+<title>Superuser Home</title>
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="css/modalView.css" />
+
+<link rel="stylesheet" href="css/login.css" />
 
 <!-- jQuery library -->
 <script
@@ -22,33 +27,36 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
 <script src="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.js"></script>
-	<script
-    src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.min.js"></script>
-	
+<script
+	src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.min.js"></script>
+
 <!-- DataTable Library -->
 <link type="text/css" rel="stylesheet"
 	href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
-	
-<!-- Angular Table Library -->	
-<link rel="stylesheet" href="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.css">
+
+<!-- Angular Table Library -->
+<link rel="stylesheet"
+	href="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.css">
 
 <script type="text/javascript"
 	src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
-	
-	
-	
+
+
+
 <!-- Import Javascript Files -->
 <script src="JavaScripts/BatchCtrl.js"></script>
-	<link rel="stylesheet" href="css/modalView.css" />
 <script src="JavaScripts/AddAssociateControllerScript.js"></script>
-	
-</head> 
+
+
+</head>
 <body>
+	<jsp:include page="ForecastModals.jsp" />
 	<nav class="navbar navbar-inverse">
 		<div class="container-fluid">
 			<div class="navbar-header">
-				<a class="navbar-brand"><span class="glyphicon glyphicon-globe"></span>
-					Staging Management System</a>
+				<a href="#" class="navbar-brand">
+					<img src="https://files.slack.com/files-pri/T1CTFL5A7-F5J52GGJ2/logo_1.png" alt="Revature" width="10%" />
+				</a>
 			</div>
 			<div id="navbar" class="navbar-collapse collapse">
 
@@ -61,6 +69,10 @@
 
 						<ul class="dropdown-menu dropdown-menu-right" role="menu" style="">
 
+							<!-- documentation link -->
+							<li><a href="/Documentation/Frameset.html" id="clients"
+								data-target="#addClient"><span
+									class="glyphicon glyphicon-plus"></span> Documentation</a></li>
 							<!-- navbar link add associate -->
 							<li><a id="associates" data-toggle="modal"
 								data-target="#addAssociate" ng-click="getBatches()"><span
@@ -76,6 +88,7 @@
 								data-target="#addClient"><span
 									class="glyphicon glyphicon-plus"></span> Add Client</a></li>
 
+
 						</ul></li>
 
 				</ul>
@@ -85,16 +98,17 @@
 	</nav>
 
 	<div class="row" ng-controller="infoTable">
-			
+
 		<!-- right side bar -->
 		<div class="col-sm-offset-2 col-sm-8">
-			<ul class="nav nav-pills">
-				<li class="active"><a data-toggle="pill" href="#current">Current</a></li>
-				<li><a data-toggle="pill" href="#forecast" ng-click="getForecast()">Forecast</a></li>
+			<ul class="nav nav-tabs nav-justified">
+				<li class="active"><a data-toggle="tab" href="#current">Current</a></li>
+				<li><a data-toggle="tab" href="#forecast"
+					ng-click="getForecast()">Forecast</a></li>
 			</ul>
 
 			<div class="tab-content">
-				<div id="current" class="tab-pane fade in active" >
+				<div id="current" class="tab-pane fade in active">
 					<table class="table table-bordered table-striped table-hover">
 						<thead>
 							<tr>
@@ -102,83 +116,104 @@
 								<th>Java</th>
 								<th>.NET</th>
 								<th>JTA</th>
-								
-								<!-- Not currently available. 
-								<th>Big Data</th> -->
+								<th>Big Data</th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td>Available</td>
+							<tr ng-repeat="c in current">
+								<td>{{c[0]}}</td>
 								<td>
-									<button id="available" data-toggle="modal" data-target="#AvailableJavaAssociateInfo">{{javaAvailable}}</button>
+									<button data-toggle="modal" data-target="#AssociateInfo"
+										id="{{c[1][0]}}">{{c[5]}}</button>
 								</td>
-								<td><button id="available" data-toggle="modal"
-										data-target="#AvailableNetAssociateInfo">{{netAvailable}}</button></td>
-								<td><button id="available" data-toggle="modal"
-										data-target="#AvailableSDETAssociateInfo">{{sdetAvailable}}</button></td>
-								
-								<!-- Not currently available.
-								<td><button id="available" data-toggle="modal"
-										data-target="#AssociateInfo">{{bigDataAvailable}}</button></td> -->
+								<td><button data-toggle="modal"
+										data-target="#AssociateInfo" id="{{c[1]}}">{{c[6]}}</button></td>
+								<td><button data-toggle="modal"
+										data-target="#AssociateInfo" id="{{c[1]}}">{{c[7]}}</button></td>
+								<td><button data-toggle="modal"
+										data-target="#AssociateInfo" id="all-{{c[0]}}">{{c[5]
+										+ c[6] + c[7]}}</button></td>
 							</tr>
-							<tr>
-								<td>Mapped</td>
-								<td><button id="mapped" data-toggle="modal"
-										data-target="#MappedJavaAssociateInfo">{{javaMapped}}</button></td>
-								<td><button id="mapped" data-toggle="modal"
-										data-target="#MappedNetAssociateInfo">{{netMapped}}</button></td>
-								<td><button id="mapped" data-toggle="modal"
-										data-target="#MappedSDETAssociateInfo">{{sdetMapped}}</button></td>
-										
-								<!-- Not currently available. 
-								<td><button id="mapped" data-toggle="modal"
-										data-target="#AssociateInfo">{{bigDataMapped}}</button></td> -->
-							</tr>
-							<tr>
-								<td>Confirmed</td>
-								<td><button id="confirmed" data-toggle="modal"
-										data-target="#ConfirmedJavaAssociateInfo">{{javaConfirmed}}</button></td>
-								<td><button id="confirmed" data-toggle="modal"
-										data-target="#ConfirmedNetAssociateInfo">{{netConfirmed}}</button></td>
-								<td><button id="confirmed" data-toggle="modal"
-										data-target="#ConfirmedSDETAssociateInfo">{{sdetConfirmed}}</button></td>
-										
-								<!-- Not currently available.
-								<td><button id="confirmed" data-toggle="modal"
-										data-target="#AssociateInfo">{{bigDataConfirmed}}</button></td> -->
-							</tr>
-
 						</tbody>
 					</table>
 				</div>
 
 				<div id="forecast" class="tab-pane fade">
-				<table class="table table-bordered table-striped table-hover">
+					<table class="table table-bordered table-striped table-hover">
+						<thead>
 						<thead>
 							<tr>
-								<th>Weeks</th>
+								<th>Status</th>
 								<th>Java</th>
 								<th>.NET</th>
 								<th>JTA</th>
-								<th>Big Data</th>
 							</tr>
 						</thead>
-						<tbody>
-							<tr ng-repeat="w in weeks">
-								<td>{{w.daterange}}</td>
+						</thead>
+						<tbody id="showForecast">
+						
+							<tr>
+								<td>Available</td>
 								<td>
-									<button data-toggle="modal" data-target="#AssociateInfo">{{w.javacount}}</button>
+									<button data-toggle="modal" class="associateBtn btn btn-xs"
+										id="Available" name="JAVA" data-target="#ForecastModal">{{month[0]}}</button>
 								</td>
 								<td><button data-toggle="modal"
-										data-target="#AssociateInfo">{{w.dotNetCount}}</button></td>
+										class="associateBtn btn btn-xs" id="Available" name=".NET"
+										data-target="#ForecastModal">{{month[1]}}</button></td>
 								<td><button data-toggle="modal"
-										data-target="#AssociateInfo">{{w.sdetcount}}</button></td>
+										class="associateBtn btn btn-xs" id="Available" name="SDET"
+										data-target="#ForecastModal">{{month[2]}}</button></td>
+
+							</tr>
+							<tr>
+								<td>Mapped</td>
+								<td>
+									<button data-toggle="modal" class="associateBtn btn btn-xs"
+										id="Mapped" name="JAVA" data-target="#ForecastModal">{{month[3]}}</button>
+								</td>
 								<td><button data-toggle="modal"
-										data-target="#AssociateInfo">{{w.javacount + w.dotNetCount + w.sdetcount}}</button></td>
+										class="associateBtn btn btn-xs" id="Mapped" name=".NET"
+										data-target="#ForecastModal">{{month[4]}}</button></td>
+								<td><button data-toggle="modal"
+										class="associateBtn btn btn-xs" id="Mapped" name="SDET"
+										data-target="#ForecastModal">{{month[5]}}</button></td>
+
+							</tr>
+							<tr>
+								<td>Confirmed</td>
+								<td>
+									<button data-toggle="modal" class="associateBtn btn btn-xs"
+										id="Confirmed" name="JAVA" data-target="#ForecastModal">{{month[6]}}</button>
+								</td>
+								<td><button data-toggle="modal"
+										class="associateBtn btn btn-xs" id="Confirmed" name=".NET"
+										data-target="#ForecastModal">{{month[7]}}</button></td>
+								<td><button data-toggle="modal"
+										class="associateBtn btn btn-xs" id="Confirmed" name="SDET"
+										data-target="#ForecastModal">{{month[8]}}</button></td>
+
 							</tr>
 						</tbody>
 					</table>
+					<ul class="nav nav-pills" style="background-color: #474c55;">
+						<center><div class="btn-group">
+							<button id="1" class="month btn btn-primary">January</button>
+							<button id="2" class="month btn btn-primary">February</button>
+							<button id="3" class="month btn btn-primary">March</button>
+							<button id="4" class="month btn btn-primary">April</button>
+							<button id="5" class="month btn btn-primary">May</button>
+							<button id="6" class="month btn btn-primary">June</button>
+							<button id="7" class="month btn btn-primary">July</button>
+							<button id="8" class="month btn btn-primary">August</button>
+							<button id="9" class="month btn btn-primary">September</button>
+							<button id="10" class="month btn btn-primary">October</button>
+							<button id="11" class="month btn btn-primary">November</button>
+							<button id="12" class="month btn btn-primary">December</button>
+						</div></center>
+					</ul>
+					
+					{{selMonth}}
 				</div>
 
 				<div id="history" class="tab-pane fade">history</div>
@@ -186,7 +221,6 @@
 		</div>
 	</div>
 
-	
 </body>
 
 
@@ -228,19 +262,19 @@ Add associate modal
 					- options retrieved from a controller
 					-->
 					<div class="form-group" ng-controller="BatchCtrl">
-						<label for="batchSelector">Batch:</label> 
-						<select
+						<label for="batchSelector">Batch:</label> <select
 							id="BatchSelector" style="width: 100%;" name="batch"
 							class="form-control">
 							<option ng-repeat="b in batches" value="{{b.trainingName}}">{{b.trainingName}}</option>
 						</select>
-						
+
 					</div>
-										<!--  
+					<!--  
 					- Input: Hidden Token for Spring Security that will allow the administrator to access
 					-->
-					  <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
-					
+					<input type="hidden" name="${_csrf.parameterName}"
+						value="${_csrf.token}" />
+
 					<!--  
 					- Input: submit the form
 					-->
@@ -320,8 +354,7 @@ Add batch modal
 					- Input: select statement for collecting the type of batch
 					-->
 					<div class="form-group">
-						<label for="batchtype">Batch Type:</label> 
-						<select
+						<label for="batchtype">Batch Type:</label> <select
 							class="form-control" id="batchtype" name="batchtype">
 							<option value="java">Java</option>
 							<option value="net">.NET</option>
@@ -329,11 +362,12 @@ Add batch modal
 							<option value="bigdata">Big Data</option>
 						</select>
 					</div>
-										<!--  
+					<!--  
 					- Input: Hidden Token for Spring Security that will allow the administrator to access
 					-->
-					  <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
-					
+					<input type="hidden" name="${_csrf.parameterName}"
+						value="${_csrf.token}" />
+
 					<!--  
 					- Input: submit the form
 					-->
@@ -390,9 +424,10 @@ Add client modal
 					<!--  
 					- Input: Hidden Token for Spring Security that will allow the administrator to access
 					-->
-					  <input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
-					
-					
+					<input type="hidden" name="${_csrf.parameterName}"
+						value="${_csrf.token}" />
+
+
 					<!--  
 					- Input: submit the form
 					-->
@@ -416,127 +451,44 @@ Add client modal
 </div>
 
 
-<!-----------------------
-	 Available Java associates modal
- ------------------------->
- <div ng-controller="infoTable">
-<div id="AvailableJavaAssociateInfo" class="modal fade" role="dialog">
+<div id="AssociateInfo" class="modal fade" role="dialog">
 	<div class="modal-dialog">
 
 		<!-- Modal content-->
-		<div class="modal-content">
-			
-			<form ng-submit="onSubmitAvailable()">
-			
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
-				<h4 class="modal-title" style="text-align: center">
-					Available Associates
-				</h4>
-			</div>
-			<div class="modal-body">
+		<div ng-controller="client" class="modal-content">
 
-					<div>
-						<div class="form-group">
-							<label>Search</label>
-							<input type="text" ng-model="search" placeholder="search">
-						</div>
-						<table ng-table="vm.tableParams" show-filter="true" class="table table-striped">
-							 <thead>
-							 <tr>
-							 	<th>Check</th>
-							 	<th>Name</th>
-							 	<th>EmpID</th>
-							 	<th>Status</th>
-							 	<th>StartDate</th>
-							 	<th>EndDate</th>
-							 	<th>Company</th>
-							 </tr>
-							 </thead>
-							 <tbody>
-								<tr ng-repeat="a in javaAvailableList |filter:search">
-									<td><input ng-model="associateSelected" type="checkbox" ng-checked="exist(a)" ng-click="toggleSelection(a)" ng-true-value="{{a.associateID}}"></td>
-									<td>{{a.associateName}}</td>
-									<td>{{a.associateID}}</td>
-									<td>{{a.status}}</td>
-									<td>{{a.batch.startDate}}</td>
-									<td>{{a.batch.endDate}}</td>
-									<td>none</td>
-								</tr>
-							 </tbody>
-						</table>
-						<!-- This div below is just to check the data of the associate selected by showing on this div element -->
-						 <div> List: {{associateSelected}}</div>
-					</div>
-			</div>
-			<div class="modal-footer">
-				<div class=pull-left >
-					
-				<br>
-				<!--  The table below is the to how the dropdown button as well as the radio buttons are positioned -->
-				<table>
-				<tr>
-					<td> <label> Select a Client:</label> </td>
-					<td style="padding: 5px">
-						<select ng-model="modifyStatus.clientName" class="form-control" id="sel1" name="clients" required>
-		        				<option ng-repeat="t in clientList" value="{{t.name}}" selected>{{t.name}}</option>		
-		      			</select>
-      				</td>
-      				<td style="padding: 20px" rowspan="2">
-						<button type="submit">Ok</button>
-					</td>
-				</tr>
-				
-				</table>
+			<form ng-submit="onSubmit()">
+
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title" style="text-align: center">Associate
+						Information</h4>
 				</div>
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-
-			</div>
-			</form>
-		</div>
-
-	</div>
-</div>
-
-<!-----------------------
-	 Mapped Java associates modal
- ------------------------->
-<div id="MappedJavaAssociateInfo" class="modal fade" role="dialog">
-	<div class="modal-dialog">
-
-		<!-- Modal content-->
-		<div class="modal-content">
-			
-			<form ng-submit="onSubmitMapped()">
-			
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
-				<h4 class="modal-title" style="text-align: center">
-					Mapped Associates
-				</h4>
-			</div>
-			<div class="modal-body">
+				<div class="modal-body">
 
 					<div>
 						<div class="form-group">
-							<label>Search</label>
-							<input type="text" ng-model="search" placeholder="search">
+							<label>Search</label> <input type="text" ng-model="search"
+								placeholder="search">
 						</div>
-						<table ng-table="vm.tableParams" show-filter="true" class="table table-striped">
-							 <thead>
-							 <tr>
-							 	<th>Check</th>
-							 	<th>Name</th>
-							 	<th>EmpID</th>
-							 	<th>Status</th>
-							 	<th>StartDate</th>
-							 	<th>EndDate</th>
-							 	<th>Company</th>
-							 </tr>
-							 </thead>
-							 <tbody>
-								<tr ng-repeat="a in javaMappedList |filter:search">
-									<td><input ng-model="associateSelected" type="checkbox" ng-checked="exist(a)" ng-click="toggleSelection(a)" ng-true-value="{{a.associateID}}"></td>
+						<table ng-table="vm.tableParams" show-filter="true"
+							class="table table-striped">
+							<thead>
+								<tr>
+									<th>Check</th>
+									<th>Name</th>
+									<th>EmpID</th>
+									<th>Status</th>
+									<th>StartDate</th>
+									<th>EndDate</th>
+									<th>Company</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="a in associatesList |filter:search | limitTo:5">
+									<td><input ng-model="associateSelected" type="checkbox"
+										ng-checked="exist(a)" ng-click="toggleSelection(a)"
+										ng-true-value="{{a.associateID}}"></td>
 									<td>{{a.associateName}}</td>
 									<td>{{a.associateID}}</td>
 									<td>{{a.status}}</td>
@@ -544,579 +496,56 @@ Add client modal
 									<td>{{a.batch.endDate}}</td>
 									<td>nothing</td>
 								</tr>
-							 </tbody>
+							</tbody>
 						</table>
 						<!-- This div below is just to check the data of the associate selected by showing on this div element -->
-						 <div> List: {{associateSelected}}</div>
+						<div>List: {{associateSelected}}</div>
 					</div>
-			</div>
-			<div class="modal-footer">
-				<div class=pull-left >
-					
-				<br>
-				<!--  The table below is the to how the dropdown button as well as the radio buttons are positioned -->
-				<table>
-				<tr>
-					<td style="text-align: left;">
-					<label> Select Status:</label>
-					</td>
-					<td>
-					<label id="availableRadio" class="radio-inline">
-						<input ng-model="modifyStatus.status" type="radio" value="available" name="optradio" id="test3"> 
-						Available
-					</label>
-					<label id="confirmedRadio" class="radio-inline">
-						<input ng-model="modifyStatus.status" type="radio" value="confirmed" name="optradio" id="test2">
-						Confirmed
-					</label>
-					</td>
-      				<td style="padding: 20px" rowspan="2">
-						<button type="submit">Submit</button>
-					</td>
-				</tr>
-				</table>
 				</div>
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<div class="modal-footer">
+					<div class=pull-left>
 
-			</div>
+						<br>
+						<!--  The table below is the to how the dropdown button as well as the radio buttons are positioned -->
+						<table>
+							<tr>
+								<td style="text-align: left;"><label> Select
+										Status:</label></td>
+								<td><label id="availableRadio" class="radio-inline">
+										<input ng-model="modifyStatus.status" type="radio"
+										value="available" name="optradio" id="test3">
+										Available
+								</label> <label id="mappedRadio" class="radio-inline"> <input
+										ng-model="modifyStatus.status" type="radio" value="mapped"
+										name="optradio" id="test1"> Mapped
+								</label> <label id="confirmedRadio" class="radio-inline"> <input
+										ng-model="modifyStatus.status" type="radio" value="confirmed"
+										name="optradio" id="test2"> Confirmed
+								</label></td>
+
+							</tr>
+							<tr>
+								<td><label> Select a Client:</label></td>
+								<td style="padding: 5px"><select
+									ng-model="modifyStatus.clientName" class="form-control"
+									id="sel1" name="clients" required>
+										<option ng-repeat="t in clientList" value="{{t.name}}"
+											selected>{{t.name}}</option>
+								</select></td>
+								<td style="padding: 20px" rowspan="2">
+									<button type="submit">Ok</button>
+								</td>
+							</tr>
+
+						</table>
+					</div>
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+				</div>
 			</form>
 		</div>
 
 	</div>
 </div>
-<!-----------------------
-	 Confirmed Java associates modal
- ------------------------->
-<div id="ConfirmedJavaAssociateInfo" class="modal fade" role="dialog">
-	<div class="modal-dialog">
-
-		<!-- Modal content-->
-		<div class="modal-content">
-			
-			<form ng-submit="onSubmitConfirmed()">
-			
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
-				<h4 class="modal-title" style="text-align: center">
-					Confirmed Associates
-				</h4>
-			</div>
-			<div class="modal-body">
-
-					<div>
-						<div class="form-group">
-							<label>Search</label>
-							<input type="text" ng-model="search" placeholder="search">
-						</div>
-						<table ng-table="vm.tableParams" show-filter="true" class="table table-striped">
-							 <thead>
-							 <tr>
-							 	<th>Check</th>
-							 	<th>Name</th>
-							 	<th>EmpID</th>
-							 	<th>Status</th>
-							 	<th>StartDate</th>
-							 	<th>EndDate</th>
-							 	<th>Company</th>
-							 </tr>
-							 </thead>
-							 <tbody>
-								<tr ng-repeat="a in javaConfirmedList |filter:search">
-									<td><input ng-model="associateSelected" type="checkbox" ng-checked="exist(a)" ng-click="toggleSelection(a)" ng-true-value="{{a.associateID}}"></td>
-									<td>{{a.associateName}}</td>
-									<td>{{a.associateID}}</td>
-									<td>{{a.status}}</td>
-									<td>{{a.batch.startDate}}</td>
-									<td>{{a.batch.endDate}}</td>
-									<td>nothing</td>
-								</tr>
-							 </tbody>
-						</table>
-						<!-- This div below is just to check the data of the associate selected by showing on this div element -->
-						 <div> List: {{associateSelected}}</div>
-					</div>
-			</div>
-			<div class="modal-footer">
-				<div class=pull-left >
-					
-				<br>
-						<button type="submit">Submit</button>
-				</div>
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-
-			</div>
-			</form>
-		</div>
-
-	</div>
-</div>
-<!-----------------------
-	 Available .Net associates modal
- ------------------------->
-<div id="AvailableNetAssociateInfo" class="modal fade" role="dialog">
-	<div class="modal-dialog">
-
-		<!-- Modal content-->
-		<div class="modal-content">
-			
-			<form ng-submit="onSubmitAvailable()">
-			
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
-				<h4 class="modal-title" style="text-align: center">
-					Available Associates
-				</h4>
-			</div>
-			<div class="modal-body">
-
-					<div>
-						<div class="form-group">
-							<label>Search</label>
-							<input type="text" ng-model="search" placeholder="search">
-						</div>
-						<table ng-table="vm.tableParams" show-filter="true" class="table table-striped">
-							 <thead>
-							 <tr>
-							 	<th>Check</th>
-							 	<th>Name</th>
-							 	<th>EmpID</th>
-							 	<th>Status</th>
-							 	<th>StartDate</th>
-							 	<th>EndDate</th>
-							 	<th>Company</th>
-							 </tr>
-							 </thead>
-							 <tbody>
-								<tr ng-repeat="a in netAvailableList |filter:search">
-									<td><input ng-model="associateSelected" type="checkbox" ng-checked="exist(a)" ng-click="toggleSelection(a)" ng-true-value="{{a.associateID}}"></td>
-									<td>{{a.associateName}}</td>
-									<td>{{a.associateID}}</td>
-									<td>{{a.status}}</td>
-									<td>{{a.batch.startDate}}</td>
-									<td>{{a.batch.endDate}}</td>
-									<td>nothing</td>
-								</tr>
-							 </tbody>
-						</table>
-						<!-- This div below is just to check the data of the associate selected by showing on this div element -->
-						 <div> List: {{associateSelected}}</div>
-					</div>
-			</div>
-			<div class="modal-footer">
-				<div class=pull-left >
-					
-				<br>
-				<!--  The table below is the to how the dropdown button as well as the radio buttons are positioned -->
-				<table>
-				<tr>
-					<td> <label> Select a Client:</label> </td>
-					<td style="padding: 5px">
-						<select ng-model="modifyStatus.clientName" class="form-control" id="sel1" name="clients" required>
-		        				<option ng-repeat="t in clientList" value="{{t.name}}" selected>{{t.name}}</option>		
-		      			</select>
-      				</td>
-      				<td style="padding: 20px" rowspan="2">
-						<button type="submit">Ok</button>
-					</td>
-				</tr>
-				
-				</table>
-				</div>
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-
-			</div>
-			</form>
-		</div>
-
-	</div>
-</div>
-
-<!-----------------------
-	 Mapped .Net associates modal
- ------------------------->
-<div id="MappedNetAssociateInfo" class="modal fade" role="dialog">
-	<div class="modal-dialog">
-
-		<!-- Modal content-->
-		<div class="modal-content">
-			
-			<form ng-submit="onSubmitMapped()">
-			
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
-				<h4 class="modal-title" style="text-align: center">
-					Mapped Associates
-				</h4>
-			</div>
-			<div class="modal-body">
-
-					<div>
-						<div class="form-group">
-							<label>Search</label>
-							<input type="text" ng-model="search" placeholder="search">
-						</div>
-						<table ng-table="vm.tableParams" show-filter="true" class="table table-striped">
-							 <thead>
-							 <tr>
-							 	<th>Check</th>
-							 	<th>Name</th>
-							 	<th>EmpID</th>
-							 	<th>Status</th>
-							 	<th>StartDate</th>
-							 	<th>EndDate</th>
-							 	<th>Company</th>
-							 </tr>
-							 </thead>
-							 <tbody>
-								<tr ng-repeat="a in netMappedList |filter:search">
-									<td><input ng-model="associateSelected" type="checkbox" ng-checked="exist(a)" ng-click="toggleSelection(a)" ng-true-value="{{a.associateID}}"></td>
-									<td>{{a.associateName}}</td>
-									<td>{{a.associateID}}</td>
-									<td>{{a.status}}</td>
-									<td>{{a.batch.startDate}}</td>
-									<td>{{a.batch.endDate}}</td>
-									<td>nothing</td>
-								</tr>
-							 </tbody>
-						</table>
-						<!-- This div below is just to check the data of the associate selected by showing on this div element -->
-						 <div> List: {{associateSelected}}</div>
-					</div>
-			</div>
-			<div class="modal-footer">
-				<div class=pull-left >
-					
-				<br>
-				<!--  The table below is the to how the dropdown button as well as the radio buttons are positioned -->
-				<table>
-				<tr>
-					<td style="text-align: left;">
-					<label> Select Status:</label>
-					</td>
-					<td>
-					<label id="availableRadio" class="radio-inline">
-						<input ng-model="modifyStatus.status" type="radio" value="available" name="optradio" id="test3"> 
-						Available
-					</label>
-					<label id="confirmedRadio" class="radio-inline">
-						<input ng-model="modifyStatus.status" type="radio" value="confirmed" name="optradio" id="test2">
-						Confirmed
-					</label>
-					</td>
-      				<td style="padding: 20px" rowspan="2">
-						<button type="submit">Submit</button>
-					</td>
-				</tr>
-				</table>
-				</div>
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-
-			</div>
-			</form>
-		</div>
-
-	</div>
-</div>
-<!-----------------------
-	 Confirmed .Net associates modal
- ------------------------->
-<div id="ConfirmedNetAssociateInfo" class="modal fade" role="dialog">
-	<div class="modal-dialog">
-
-		<!-- Modal content-->
-		<div class="modal-content">
-			
-			<form ng-submit="onSubmitConfirmed()">
-			
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
-				<h4 class="modal-title" style="text-align: center">
-					Confirmed Associates
-				</h4>
-			</div>
-			<div class="modal-body">
-
-					<div>
-						<div class="form-group">
-							<label>Search</label>
-							<input type="text" ng-model="search" placeholder="search">
-						</div>
-						<table ng-table="vm.tableParams" show-filter="true" class="table table-striped">
-							 <thead>
-							 <tr>
-							 	<th>Check</th>
-							 	<th>Name</th>
-							 	<th>EmpID</th>
-							 	<th>Status</th>
-							 	<th>StartDate</th>
-							 	<th>EndDate</th>
-							 	<th>Company</th>
-							 </tr>
-							 </thead>
-							 <tbody>
-								<tr ng-repeat="a in netConfirmedList |filter:search">
-									<td><input ng-model="associateSelected" type="checkbox" ng-checked="exist(a)" ng-click="toggleSelection(a)" ng-true-value="{{a.associateID}}"></td>
-									<td>{{a.associateName}}</td>
-									<td>{{a.associateID}}</td>
-									<td>{{a.status}}</td>
-									<td>{{a.batch.startDate}}</td>
-									<td>{{a.batch.endDate}}</td>
-									<td>nothing</td>
-								</tr>
-							 </tbody>
-						</table>
-						<!-- This div below is just to check the data of the associate selected by showing on this div element -->
-						 <div> List: {{associateSelected}}</div>
-					</div>
-			</div>
-						<div class="modal-footer">
-				<div class=pull-left >
-					
-				<br>
-						<button type="submit">Submit</button>
-				</div>
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-
-			</div>
-			</form>
-		</div>
-
-	</div>
-</div>
-<!-----------------------
-	 Available SDet associates modal
- ------------------------->
-<div id="AvailableSDETAssociateInfo" class="modal fade" role="dialog">
-	<div class="modal-dialog">
-
-		<!-- Modal content-->
-		<div class="modal-content">
-			
-			<form ng-submit="onSubmitAvailable()">
-			
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
-				<h4 class="modal-title" style="text-align: center">
-					Available Associates
-				</h4>
-			</div>
-			<div class="modal-body">
-
-					<div>
-						<div class="form-group">
-							<label>Search</label>
-							<input type="text" ng-model="search" placeholder="search">
-						</div>
-						<table ng-table="vm.tableParams" show-filter="true" class="table table-striped">
-							 <thead>
-							 <tr>
-							 	<th>Check</th>
-							 	<th>Name</th>
-							 	<th>EmpID</th>
-							 	<th>Status</th>
-							 	<th>StartDate</th>
-							 	<th>EndDate</th>
-							 	<th>Company</th>
-							 </tr>
-							 </thead>
-							 <tbody>
-								<tr ng-repeat="a in sdetAvailableList |filter:search">
-									<td><input ng-model="associateSelected" type="checkbox" ng-checked="exist(a)" ng-click="toggleSelection(a)" ng-true-value="{{a.associateID}}"></td>
-									<td>{{a.associateName}}</td>
-									<td>{{a.associateID}}</td>
-									<td>{{a.status}}</td>
-									<td>{{a.batch.startDate}}</td>
-									<td>{{a.batch.endDate}}</td>
-									<td>nothing</td>
-								</tr>
-							 </tbody>
-						</table>
-						<!-- This div below is just to check the data of the associate selected by showing on this div element -->
-						 <div> List: {{associateSelected}}</div>
-					</div>
-			</div>
-			<div class="modal-footer">
-				<div class=pull-left >
-					
-				<br>
-				<!--  The table below is the to how the dropdown button as well as the radio buttons are positioned -->
-				<table>
-				<tr>
-					<td> <label> Select a Client:</label> </td>
-					<td style="padding: 5px">
-						<select ng-model="modifyStatus.clientName" class="form-control" id="sel1" name="clients" required>
-		        				<option ng-repeat="t in clientList" value="{{t.name}}" selected>{{t.name}}</option>		
-		      			</select>
-      				</td>
-      				<td style="padding: 20px" rowspan="2">
-						<button type="submit">Ok</button>
-					</td>
-				</tr>
-				
-				</table>
-				</div>
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-
-			</div>
-			</form>
-		</div>
-
-	</div>
-</div>
-
-<!-----------------------
-	 Mapped SDet associates modal
- ------------------------->
-<div id="MappedSDETAssociateInfo" class="modal fade" role="dialog">
-	<div class="modal-dialog">
-
-		<!-- Modal content-->
-		<div class="modal-content">
-			
-			<form ng-submit="onSubmitMapped()">
-			
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
-				<h4 class="modal-title" style="text-align: center">
-					Mapped Associates
-				</h4>
-			</div>
-			<div class="modal-body">
-
-					<div>
-						<div class="form-group">
-							<label>Search</label>
-							<input type="text" ng-model="search" placeholder="search">
-						</div>
-						<table ng-table="vm.tableParams" show-filter="true" class="table table-striped">
-							 <thead>
-							 <tr>
-							 	<th>Check</th>
-							 	<th>Name</th>
-							 	<th>EmpID</th>
-							 	<th>Status</th>
-							 	<th>StartDate</th>
-							 	<th>EndDate</th>
-							 	<th>Company</th>
-							 </tr>
-							 </thead>
-							 <tbody>
-								<tr ng-repeat="a in sdetMappedList |filter:search">
-									<td><input ng-model="associateSelected" type="checkbox" ng-checked="exist(a)" ng-click="toggleSelection(a)" ng-true-value="{{a.associateID}}"></td>
-									<td>{{a.associateName}}</td>
-									<td>{{a.associateID}}</td>
-									<td>{{a.status}}</td>
-									<td>{{a.batch.startDate}}</td>
-									<td>{{a.batch.endDate}}</td>
-									<td>nothing</td>
-								</tr>
-							 </tbody>
-						</table>
-						<!-- This div below is just to check the data of the associate selected by showing on this div element -->
-						 <div> List: {{associateSelected}}</div>
-					</div>
-			</div>
-			<div class="modal-footer">
-				<div class=pull-left >
-					
-				<br>
-				<!--  The table below is the to how the dropdown button as well as the radio buttons are positioned -->
-				<table>
-				<tr>
-					<td style="text-align: left;">
-					<label> Select Status:</label>
-					</td>
-					<td>
-					<label id="availableRadio" class="radio-inline">
-						<input ng-model="modifyStatus.status" type="radio" value="available" name="optradio" id="test3"> 
-						Available
-					</label>
-					<label id="confirmedRadio" class="radio-inline">
-						<input ng-model="modifyStatus.status" type="radio" value="confirmed" name="optradio" id="test2">
-						Confirmed
-					</label>
-					</td>
-      				<td style="padding: 20px" rowspan="2">
-						<button type="submit">Submit</button>
-					</td>
-				</tr>
-				
-				</table>
-				</div>
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-
-			</div>
-			</form>
-		</div>
-
-	</div>
-</div>
-<!-----------------------
-	 Confirmed SDet associates modal
- ------------------------->
-<div id="ConfirmedSDETAssociateInfo" class="modal fade" role="dialog">
-	<div class="modal-dialog">
-
-		<!-- Modal content-->
-		<div class="modal-content">
-			
-			<form ng-submit="onSubmitConfirmed()">
-			
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
-				<h4 class="modal-title" style="text-align: center">
-					Confirmed Associates
-				</h4>
-			</div>
-			<div class="modal-body">
-
-					<div>
-						<div class="form-group">
-							<label>Search</label>
-							<input type="text" ng-model="search" placeholder="search">
-						</div>
-						<table ng-table="vm.tableParams" show-filter="true" class="table table-striped">
-							 <thead>
-							 <tr>
-							 	<th>Check</th>
-							 	<th>Name</th>
-							 	<th>EmpID</th>
-							 	<th>Status</th>
-							 	<th>StartDate</th>
-							 	<th>EndDate</th>
-							 	<th>Company</th>
-							 </tr>
-							 </thead>
-							 <tbody>
-								<tr ng-repeat="a in sdetConfirmedList |filter:search">
-									<td><input ng-model="associateSelected" type="checkbox" ng-checked="exist(a)" ng-click="toggleSelection(a)" ng-true-value="{{a.associateID}}"></td>
-									<td>{{a.associateName}}</td>
-									<td>{{a.associateID}}</td>
-									<td>{{a.status}}</td>
-									<td>{{a.batch.startDate}}</td>
-									<td>{{a.batch.endDate}}</td>
-									<td>nothing</td>
-								</tr>
-							 </tbody>
-						</table>
-						<!-- This div below is just to check the data of the associate selected by showing on this div element -->
-						 <div> List: {{associateSelected}}</div>
-					</div>
-			</div>
-			<div class="modal-footer">
-				<div class=pull-left >
-					
-				<br>
-						<button type="submit">Submit</button>
-				</div>
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-
-			</div>
-			</form>
-		</div>
-
-	</div>
-</div>
-</div>
-
 </html>
+	

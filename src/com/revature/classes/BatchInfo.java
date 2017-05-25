@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  */
 @Entity
 @Table(name = "BATCHINFO")
+@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 public class BatchInfo {
 	/*
 	 * PK: TrainingName TRAININGNAME VARCHAR(30) CONSTRAINTS: NOT NULL LOCATION

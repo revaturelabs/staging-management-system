@@ -9,6 +9,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  */
 @Entity
 @Table(name = "CLIENTINFO")
+@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 public class ClientInfo {
 	/*
 	 * PK: ClientID (Auto Generated) ClientID NUMBER CONSTRAINTS: NOT NULL NAME

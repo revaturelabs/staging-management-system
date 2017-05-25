@@ -1,3 +1,4 @@
+
 package com.revature.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,11 +32,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		antMatchers("/superuserhome**").
 		access("hasRole('ROLE_ADMIN')")
 		.antMatchers("/managerhome**").
-		access("hasRole('ROLE_MANAGER')").and().csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-		.and().formLogin()
+		access("hasRole('ROLE_MANAGER')")
+		.and()
+        .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+       	.and().formLogin()
 		.loginPage("/login")
 		.successHandler(auth);
 
 	}
 
 }
+

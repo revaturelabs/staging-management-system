@@ -10,6 +10,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  */
 @Entity
 @Table(name = "ASSOCIATEINFO")
+@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 public class AssociateInfo {
 	/*
 	 * PK: ASSOCIATEID (Auto Generated) FK/Reference: BatchInfo.TrainingName
@@ -58,13 +59,13 @@ public class AssociateInfo {
 	// FetchType.LAZY, mappedBy = "clients")`
 
 	// Assign Many to Many
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	// Create Additional Table populated from AssociateInfo with name
 	// "Associate_Clients", link foreign key wiith inverseJoinColumns
 	@JoinTable(name = "Associate_Clients", joinColumns = {
 			@JoinColumn(name = "AssociateID", nullable = false, updatable = false) }, inverseJoinColumns = {
 					@JoinColumn(name = "ClientID", nullable = false, updatable = false) })
-		//private Set<ClientInfo> clients;
+		private Set<ClientInfo> clients;
 /*
 	 * End Many to Many Relationship
 	 */
@@ -83,13 +84,13 @@ public class AssociateInfo {
 
 
 
-	/*public Set<ClientInfo> getClients() {
+	public Set<ClientInfo> getClients() {
 		return clients;
 	}
 
 	public void setClients(Set<ClientInfo> clients) {
 		this.clients = clients;
-	}*/
+	}
 
 	public long getAssociateID() {
 		return AssociateID;

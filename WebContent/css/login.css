@@ -1,22 +1,72 @@
 body {
-	background: #eee !important;	
+	background: #fff !important;	
 }
 
 .wrapper {	
-	margin-top: 80px;
-  margin-bottom: 80px;
+  width: 20%;
+  margin: 20% auto;
+  padding-top: 5%;
 }
 
+.btn-primary {
+	background-color: #474c55;
+	border: none;
+}
+
+.btn-primary:hover {
+	background-color: #f26925;
+}
+
+.modal-header {
+	background-color: #f26925;
+}
+
+	.nav-pills {
+	background-color: #f26925;
+	}
+	
+	.nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
+	color: #474c55;
+	font-weight: bold;
+	border: 1px solid #f26925;
+	background-color: #f26925;
+	}
+	
+	.nav-tabs>li>a:hover {
+	color: #474c55;
+	text-decoration: underline;
+	background-color: #fff;
+	}
+	
+	.nav>li>a {
+	color: #f26925;
+	}
+	
+	
+	
+	.navbar-inverse {
+	background-color: #b9b9ba;
+	border: 1px solid #b9b9ba;
+	}
+	
+	.navbar-inverse .navbar-brand {
+	color: #fff;
+	}
+	
+	.navbar-inverse .navbar-nav>li>a {
+	color: #fff;
+	}
+
 .form-signin {
-  max-width: 380px;
-  padding: 15px 35px 45px;
-  margin: 0 auto;
+  max-width: 100%;
+  padding: 1% 3% 5%;
+  margin: 5% auto;
   background-color: #fff;
-  border: 1px solid rgba(0,0,0,0.1);  
+  border: 1px solid #474c55;  
 
   .form-signin-heading,
 	.checkbox {
-	  margin-bottom: 30px;
+	  margin-bottom: 5%;
 	}
 
 	.checkbox {
