@@ -69,7 +69,7 @@
 						<ul class="dropdown-menu dropdown-menu-right" role="menu" style="">
 
 							<!-- documentation link -->
-							<li><a href="/Documentation/Frameset.html" id="clients"
+							<li><a href="Documentation/index.html" id="clients"
 								data-target="#addClient"><span
 									class="glyphicon glyphicon-file"></span> Documentation</a></li>
 							<!-- navbar link add associate -->
@@ -138,11 +138,11 @@
 							<tr>
 								<td>Available</td>
 								<td>
-									<button id="available" data-toggle="modal" data-target="#AvailableJavaAssociateInfo">{{javaAvailable}}</button>
+									<button id="available" data-toggle="modal" class="btn btn-xs" data-target="#AvailableJavaAssociateInfo">{{javaAvailable}}</button>
 								</td>
-								<td><button id="available" data-toggle="modal"
+								<td><button id="available" data-toggle="modal" class="btn btn-xs"
 										data-target="#AvailableNetAssociateInfo">{{netAvailable}}</button></td>
-								<td><button id="available" data-toggle="modal"
+								<td><button id="available" data-toggle="modal" class="btn btn-xs"
 										data-target="#AvailableSDETAssociateInfo">{{sdetAvailable}}</button></td>
 								
 								<!-- Not currently available.
@@ -151,11 +151,11 @@
 							</tr>
 							<tr>
 								<td>Mapped</td>
-								<td><button id="mapped" data-toggle="modal"
+								<td><button id="mapped" data-toggle="modal" class="btn btn-xs"
 										data-target="#MappedJavaAssociateInfo">{{javaMapped}}</button></td>
-								<td><button id="mapped" data-toggle="modal"
+								<td><button id="mapped" data-toggle="modal" class="btn btn-xs"
 										data-target="#MappedNetAssociateInfo">{{netMapped}}</button></td>
-								<td><button id="mapped" data-toggle="modal"
+								<td><button id="mapped" data-toggle="modal" class="btn btn-xs"
 										data-target="#MappedSDETAssociateInfo">{{sdetMapped}}</button></td>
 										
 								<!-- Not currently available. 
@@ -164,11 +164,11 @@
 							</tr>
 							<tr>
 								<td>Confirmed</td>
-								<td><button id="confirmed" data-toggle="modal"
+								<td><button id="confirmed" data-toggle="modal" class="btn btn-xs"
 										data-target="#ConfirmedJavaAssociateInfo">{{javaConfirmed}}</button></td>
-								<td><button id="confirmed" data-toggle="modal"
+								<td><button id="confirmed" data-toggle="modal" class="btn btn-xs"
 										data-target="#ConfirmedNetAssociateInfo">{{netConfirmed}}</button></td>
-								<td><button id="confirmed" data-toggle="modal"
+								<td><button id="confirmed" data-toggle="modal" class="btn btn-xs"
 										data-target="#ConfirmedSDETAssociateInfo">{{sdetConfirmed}}</button></td>
 										
 								<!-- Not currently available.
