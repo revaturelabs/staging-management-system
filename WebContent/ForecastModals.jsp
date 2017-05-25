@@ -32,7 +32,8 @@
 							 	<th>Status</th>
 							 	<th>StartDate</th>
 							 	<th>EndDate</th>
-							 	<th>Company</th>
+							 	<!-- uncomment once you get the company mapping to actually work -->
+							 	<!-- <th>Company</th> -->
 							 </tr>
 							 </thead>
 							 <tbody>
@@ -43,7 +44,8 @@
 									<td>{{m.status}}</td>
 									<td>{{m.batch.startDate}}</td>
 									<td>{{m.batch.endDate}}</td>
-									<td>none</td>
+									<!-- uncomment once you get the company mapping to actually work -->
+									<!-- <td>none</td> -->
 								</tr>
 							 </tbody>
 						</table>
@@ -77,7 +79,7 @@
 
 					
 						<select ng-model="modifyStatus.clientName" class="form-control" id="sel1" name="clients" required>
-		        				<option ng-repeat="t in clientList" value="{{t.name}}" selected>{{t.name}}</option>	
+		        				<option ng-repeat="t in clientList" value="{{t.clientID}}" selected>{{t.name}}</option>	
 	
 		      			</select>
       				</td>

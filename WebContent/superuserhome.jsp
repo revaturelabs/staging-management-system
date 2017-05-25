@@ -5,7 +5,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 
-
+<title>Superuser Home</title>
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -53,8 +53,9 @@
 	<nav class="navbar navbar-inverse">
 		<div class="container-fluid">
 			<div class="navbar-header">
-				<a class="navbar-brand">
-				<img src="https://files.slack.com/files-pri/T1CTFL5A7-F5J52GGJ2/logo_1.png" alt="Revature" width="10%" /></a>
+				<a href="#" class="navbar-brand">
+					<img src="https://files.slack.com/files-pri/T1CTFL5A7-F5J52GGJ2/logo_1.png" alt="Revature" width="10%" />
+				</a>
 			</div>
 			<div id="navbar" class="navbar-collapse collapse">
 
@@ -149,6 +150,7 @@
 						</thead>
 						</thead>
 						<tbody id="showForecast">
+						
 							<tr>
 								<td>Available</td>
 								<td>
@@ -209,6 +211,8 @@
 							<button id="12" class="month btn btn-primary">December</button>
 						</div></center>
 					</ul>
+					
+					{{selMonth}}
 				</div>
 
 				<div id="history" class="tab-pane fade">history</div>
@@ -444,6 +448,8 @@ Add client modal
 
 	</div>
 </div>
+
+
 <div id="AssociateInfo" class="modal fade" role="dialog">
 	<div class="modal-dialog">
 
@@ -541,3 +547,4 @@ Add client modal
 	</div>
 </div>
 </html>
+	
