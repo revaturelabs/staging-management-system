@@ -19,10 +19,10 @@
 
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
     <property name="driverClass" value="oracle.jdbc.driver.OracleDriver" />
-		  <!-- <property name="jdbcUrl"
-			value="jdbc:oracle:thin:@sms.cgbbs6xdwjwh.us-west-2.rds.amazonaws.com:1521:SMS" /> -->
-		  <property name="jdbcUrl"
-			value="jdbc:oracle:thin:@192.168.60.141:1521:xe" /> 
+		   <property name="jdbcUrl"
+			value="jdbc:oracle:thin:@sms.cgbbs6xdwjwh.us-west-2.rds.amazonaws.com:1521:SMS" /> 
+		 <!--  <property name="jdbcUrl"
+			value="jdbc:oracle:thin:@192.168.60.141:1521:xe" /> -->
 		<property name="user" value="sms" />
 		<property name="password" value="p4ssw0rd" />
 	</bean>
