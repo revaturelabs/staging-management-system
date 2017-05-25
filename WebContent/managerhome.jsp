@@ -607,11 +607,11 @@ Add client modal
 					</td>
 					<td>
 					<label id="availableRadio" class="radio-inline">
-						<input ng-model="modifyStatus.status" type="radio" value="available" name="optradio" id="test3"> 
+						<input ng-model="modifyStatus.status" type="radio" value="Available" name="optradio" id="test3"> 
 						Available
 					</label>
 					<label id="confirmedRadio" class="radio-inline">
-						<input ng-model="modifyStatus.status" type="radio" value="confirmed" name="optradio" id="test2">
+						<input ng-model="modifyStatus.status" type="radio" value="Confirmed" name="optradio" id="test2">
 						Confirmed
 					</label>
 					</td>
@@ -832,11 +832,11 @@ Add client modal
 					</td>
 					<td>
 					<label id="availableRadio" class="radio-inline">
-						<input ng-model="modifyStatus.status" type="radio" value="available" name="optradio" id="test3"> 
+						<input ng-model="modifyStatus.status" type="radio" value="Available" name="optradio" id="test3"> 
 						Available
 					</label>
 					<label id="confirmedRadio" class="radio-inline">
-						<input ng-model="modifyStatus.status" type="radio" value="confirmed" name="optradio" id="test2">
+						<input ng-model="modifyStatus.status" type="radio" value="Confirmed" name="optradio" id="test2">
 						Confirmed
 					</label>
 					</td>
@@ -1057,11 +1057,11 @@ Add client modal
 					</td>
 					<td>
 					<label id="availableRadio" class="radio-inline">
-						<input ng-model="modifyStatus.status" type="radio" value="available" name="optradio" id="test3"> 
+						<input ng-model="modifyStatus.status" type="radio" value="Available" name="optradio" id="test3"> 
 						Available
 					</label>
 					<label id="confirmedRadio" class="radio-inline">
-						<input ng-model="modifyStatus.status" type="radio" value="confirmed" name="optradio" id="test2">
+						<input ng-model="modifyStatus.status" type="radio" value="Confirmed" name="optradio" id="test2">
 						Confirmed
 					</label>
 					</td>

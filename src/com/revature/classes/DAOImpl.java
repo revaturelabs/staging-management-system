@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -28,6 +29,8 @@ import org.springframework.transaction.annotation.Transactional;
 @EnableCaching
 public class DAOImpl implements DAOService {
 
+	final Logger logger = Logger.getLogger( DAOImpl.class );
+
 	SessionFactory sf;
 
 	public void setSf(SessionFactory sf) {
@@ -42,7 +45,7 @@ public class DAOImpl implements DAOService {
 		// add client to db
 		session.saveOrUpdate(ci);
 
-		// System.out.println("done inserting client");
+		// logger.info("done inserting client");
 
 	}
 
@@ -54,7 +57,7 @@ public class DAOImpl implements DAOService {
 		// add client to db
 		session.saveOrUpdate(ai);
 
-		// System.out.println("done inserting asso");
+		// logger.info("done inserting asso");
 
 	}
 
@@ -65,7 +68,7 @@ public class DAOImpl implements DAOService {
 		// add client to db
 		session.saveOrUpdate(bi);
 
-		// System.out.println("done inserting batch");
+		// logger.info("done inserting batch");
 	}
 
 	@Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
@@ -118,7 +121,7 @@ public class DAOImpl implements DAOService {
 
 		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 			AssociateInfo asso = (AssociateInfo) iterator.next();
-			// System.out.println(asso);
+			// logger.info(asso);
 			assoList.add(asso);
 		}
 		return assoList;
@@ -141,7 +144,7 @@ public class DAOImpl implements DAOService {
 
 		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 			BatchInfo batch = (BatchInfo) iterator.next();
-			// System.out.println(asso);
+			// logger.info(asso);
 			batchList.add(batch);
 		}
 		return batchList;
@@ -160,7 +163,7 @@ public class DAOImpl implements DAOService {
 
 		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 			ClientInfo client = (ClientInfo) iterator.next();
-			// System.out.println(asso);
+			// logger.info(asso);
 			clientList.add(client);
 		}
 		return clientList;
@@ -350,6 +353,8 @@ public class DAOImpl implements DAOService {
 	public void updateMappedAssociates(List associateId, String status) {
 
 		Session session = sf.openSession();
+		System.out.println("HERE!!!!");
+		System.out.println(status);
 		if(status.equals("confirmed")){
 			String hqlUpdate = "update AssociateInfo set Status = :status where AssociateID = :associateId";
 			
@@ -358,19 +363,17 @@ public class DAOImpl implements DAOService {
 			query.setString("status", status);
 			query.setParameter("associateId", associateId.get(i));
 			int result = query.executeUpdate();
-			System.out.println(result);
 			}
 		}
-		else if (status.equals("available"))
+		else
 		{
-			String hqlUpdate = "update AssociateInfo set ClientID = :client where AssociateID = :associateId";
+			String hqlUpdate = "update AssociateInfo set Status = :status where AssociateID = :associateId";
 					
 					for (int i = 0; i < associateId.size(); i++) {
 					Query query = session.createQuery(hqlUpdate);
-					query.setParameter("client", null);
+					query.setString("status", status);
 					query.setParameter("associateId", associateId.get(i));
 					int result = query.executeUpdate();
-					System.out.println(result);
 					}
 			String hqlClientUpdate = "update AssociateClient set ClientID = :client where AssociateID =:associateId";
 			
@@ -411,6 +414,7 @@ public class DAOImpl implements DAOService {
 		session.close();
 
 	}
+
 
 
 	@Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
@@ -502,7 +506,7 @@ public class DAOImpl implements DAOService {
 		// crit.add(Restrictions.eq("batch.Type", "SDET"));
 		// List rowBatch = crit.list();
 		// int count = rowBatch.size();
-		// System.out.println(count);
+		// logger.info(count);
 		// return count;
 		Session session = sf.getCurrentSession();
 
@@ -541,7 +545,7 @@ public class DAOImpl implements DAOService {
 		// crit.add(Restrictions.eq("batch.Type", "NET"));
 		// List rowBatch = crit.list();
 		// int count = rowBatch.size();
-		// System.out.println(count);
+		// logger.info(count);
 		// return count;
 		Session session = sf.getCurrentSession();
 
@@ -715,9 +719,9 @@ public class DAOImpl implements DAOService {
 		// put the result into a list
 		List rowBatch = crit.list();
 
-		System.out.println("all people who did java" + rowBatch);
+		logger.info("all people who did java" + rowBatch);
 		int count = rowBatch.size();
-		System.out.println(count);
+		logger.info(count);
 
 		return rowBatch;
 	}
@@ -877,9 +881,9 @@ public class DAOImpl implements DAOService {
 		 * returnSet.add((AssociateInfo)resultList.get(i)); }
 		 */
 
-		System.out.println("all people who did" + status + " and " + type + " : " + resultList);
+		logger.info("all people who did" + status + " and " + type + " : " + resultList);
 		int count = resultList.size();
-		System.out.println(count);
+		logger.info(count);
 		return resultList;
 	}
 

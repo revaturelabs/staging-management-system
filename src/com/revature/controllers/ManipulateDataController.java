@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.http.HttpStatus;
@@ -37,12 +38,16 @@ import com.revature.classes.AvailableAssociate;
 import com.revature.classes.BatchInfo;
 import com.revature.classes.ClientInfo;
 import com.revature.classes.ConfirmedAssociate;
+import com.revature.classes.DAOImpl;
 import com.revature.classes.DAOService;
 import com.revature.classes.MappedAssociate;
 import com.revature.classes.Week;
 
 @RestController
 public class ManipulateDataController {
+
+	final Logger logger = Logger.getLogger( DAOImpl.class );
+
 
 	ApplicationContext ctx = new ClassPathXmlApplicationContext("appContext.xml");
 	DAOService daoserv = (DAOService) ctx.getBean("DAOImpl");
@@ -91,7 +96,7 @@ public class ManipulateDataController {
 		Set<BatchInfo> batches = new HashSet<BatchInfo>();
 		batches.add(batch);
 
-		System.out.println(name + " :: " + status + " :: " + batch);
+		logger.info(name + " :: " + status + " :: " + batch);
 
 		// initialize an Associate object
 		AssociateInfo associate = new AssociateInfo(name, status, batch);
@@ -116,7 +121,7 @@ public class ManipulateDataController {
 			
 			// initialize a batch object
 			BatchInfo batch = new BatchInfo(name, location, trainer, startdate, enddate, type);
-			System.out.println(batch.toString());
+			logger.info(batch.toString());
 			
 			// call the addBatch method for the database
 			daoserv.AddBatch(batch);
@@ -251,9 +256,9 @@ public class ManipulateDataController {
 		{
 			daoserv.UpdateStatus(status, associateId, clientId);
 		}
-		System.out.println("Updating!!!!!!!!!!!!!!!!!!!!");
-		System.out.println(associates);
-		System.out.println("status " + associates.getStatus());
+		logger.info("Updating!!!!!!!!!!!!!!!!!!!!");
+		logger.info(associates);
+		logger.info("status " + associates.getStatus());
 		
 	}
 	
@@ -297,7 +302,7 @@ public class ManipulateDataController {
 		@RequestMapping(value = "/displayCurrentJavaMapped", method = RequestMethod.GET)
 		public @ResponseBody int displayCurrentJavaMapped() {
 			int mappedJava = daoserv.getMappedCurrentJava().size();
-			System.out.println("Mapped Java Count: "+ mappedJava);
+			logger.info("Mapped Java Count: "+ mappedJava);
 			return mappedJava;
 
 		}
@@ -306,7 +311,7 @@ public class ManipulateDataController {
 		@RequestMapping(value = "/displayCurrentJavaMappedList", method = RequestMethod.GET)
 		public @ResponseBody List displayCurrentJavaMappedList() {
 			List mappedJavaList = daoserv.getMappedCurrentJava();
-			System.out.println("Mapped Java List: "+ mappedJavaList);
+			logger.info("Mapped Java List: "+ mappedJavaList);
 			return mappedJavaList;
 
 		}
@@ -315,7 +320,7 @@ public class ManipulateDataController {
 		@RequestMapping(value = "/displayCurrentJavaConfirmed", method = RequestMethod.GET)
 		public @ResponseBody int displayCurrentJavaConfirmed() {
 			int confirmedJava = daoserv.getConfirmedCurrentJava().size();
-			System.out.println("Confirmed Java Count: "+ confirmedJava);
+			logger.info("Confirmed Java Count: "+ confirmedJava);
 			return confirmedJava;
 
 		}
@@ -324,7 +329,7 @@ public class ManipulateDataController {
 		@RequestMapping(value = "/displayCurrentJavaConfirmedList", method = RequestMethod.GET)
 		public @ResponseBody List displayCurrentJavaConfirmedList() {
 			List confirmedJavaList = daoserv.getConfirmedCurrentJava();
-			System.out.println("Confirmed Java List: "+ confirmedJavaList);
+			logger.info("Confirmed Java List: "+ confirmedJavaList);
 			return confirmedJavaList;
 
 		}
@@ -333,7 +338,7 @@ public class ManipulateDataController {
 		@RequestMapping(value = "/displayCurrentJavaAvailable", method = RequestMethod.GET)
 		public @ResponseBody int displayCurrentJavaAvailable() {
 			int availableJava = daoserv.getAvailableCurrentJava().size();
-			System.out.println("Avaiable Java Count: "+ availableJava);
+			logger.info("Avaiable Java Count: "+ availableJava);
 			return availableJava;
 
 		}
@@ -342,7 +347,7 @@ public class ManipulateDataController {
 		@RequestMapping(value = "/displayCurrentJavaAvailableList", method = RequestMethod.GET)
 		public @ResponseBody List displayCurrentJavaAvailableList() {
 			List availableJavaList = daoserv.getAvailableCurrentJava();
-			System.out.println("Available Java List: "+ availableJavaList);
+			logger.info("Available Java List: "+ availableJavaList);
 			return availableJavaList;
 
 		}
@@ -355,7 +360,7 @@ public class ManipulateDataController {
 		@RequestMapping(value = "/displayCurrentSDETMapped", method = RequestMethod.GET)
 		public @ResponseBody int displayCurrentSDETMapped() {
 			int mappedSDET = daoserv.getMappedCurrentSDET().size();
-			System.out.println("Mapped SDET Count: "+ mappedSDET);
+			logger.info("Mapped SDET Count: "+ mappedSDET);
 			return mappedSDET;
 		}
 
@@ -363,7 +368,7 @@ public class ManipulateDataController {
 		@RequestMapping(value = "/displayCurrentSDETMappedList", method = RequestMethod.GET)
 		public @ResponseBody List displayCurrentSDETMappedList() {
 			List mappedSDETList = daoserv.getMappedCurrentSDET();
-			System.out.println("Mapped SDET List: "+ mappedSDETList);
+			logger.info("Mapped SDET List: "+ mappedSDETList);
 			return mappedSDETList;
 		}
 
@@ -371,7 +376,7 @@ public class ManipulateDataController {
 		@RequestMapping(value = "/displayCurrentSDETConfirmed", method = RequestMethod.GET)
 		public @ResponseBody int displayCurrentSDETConfirmed() {
 			int confirmedSDET = daoserv.getConfirmedCurrentSDET().size();
-			System.out.println("Confirmed SDET Count: "+ confirmedSDET);
+			logger.info("Confirmed SDET Count: "+ confirmedSDET);
 			return confirmedSDET;
 		}
 
@@ -379,7 +384,7 @@ public class ManipulateDataController {
 		@RequestMapping(value = "/displayCurrentSDETConfirmedList", method = RequestMethod.GET)
 		public @ResponseBody List displayCurrentSDETConfirmedList() {
 			List confirmedSDETList = daoserv.getConfirmedCurrentSDET();
-			System.out.println("Confirmed SDET List: "+ confirmedSDETList);
+			logger.info("Confirmed SDET List: "+ confirmedSDETList);
 			return confirmedSDETList;
 		}
 
@@ -387,7 +392,7 @@ public class ManipulateDataController {
 		@RequestMapping(value = "/displayCurrentSDETAvailable", method = RequestMethod.GET)
 		public @ResponseBody int displayCurrentSDETAvailable() {
 			int availableSDET = daoserv.getAvailableCurrentSDET().size();
-			System.out.println("Available SDET Count: "+ availableSDET);
+			logger.info("Available SDET Count: "+ availableSDET);
 			return availableSDET;
 		}
 
@@ -395,7 +400,7 @@ public class ManipulateDataController {
 		@RequestMapping(value = "/displayCurrentSDETAvailableList", method = RequestMethod.GET)
 		public @ResponseBody List displayCurrentSDETAvailableList() {
 			List availableSDETList = daoserv.getAvailableCurrentSDET();
-			System.out.println("Available SDET Count: "+ availableSDETList);
+			logger.info("Available SDET Count: "+ availableSDETList);
 			return availableSDETList;
 		}
 
@@ -407,7 +412,7 @@ public class ManipulateDataController {
 		@RequestMapping(value = "/displayCurrentNETMapped", method = RequestMethod.GET)
 		public @ResponseBody int displayCurrentNETMapped() {
 			int mappedNET = daoserv.getMappedCurrentNET().size();
-			System.out.println("Mapped .NET Count: "+ mappedNET);
+			logger.info("Mapped .NET Count: "+ mappedNET);
 			return mappedNET;
 		}
 
@@ -415,7 +420,7 @@ public class ManipulateDataController {
 		@RequestMapping(value = "/displayCurrentNETMappedList", method = RequestMethod.GET)
 		public @ResponseBody List displayCurrentNETMappedList() {
 			List mappedNETList = daoserv.getMappedCurrentNET();
-			System.out.println("Mapped .NET List: "+ mappedNETList);
+			logger.info("Mapped .NET List: "+ mappedNETList);
 			return mappedNETList;
 		}
 
@@ -423,7 +428,7 @@ public class ManipulateDataController {
 		@RequestMapping(value = "/displayCurrentNETConfirmed", method = RequestMethod.GET)
 		public @ResponseBody int displayCurrentNETConfirmed() {
 			int confirmedNET = daoserv.getConfirmedCurrentNET().size();
-			System.out.println("Confirmed .NET Count: "+ confirmedNET);
+			logger.info("Confirmed .NET Count: "+ confirmedNET);
 			return confirmedNET;
 		}
 
@@ -431,7 +436,7 @@ public class ManipulateDataController {
 		@RequestMapping(value = "/displayCurrentNETConfirmedList", method = RequestMethod.GET)
 		public @ResponseBody List displayCurrentNETConfirmedList() {
 			List confirmedNETList = daoserv.getConfirmedCurrentNET();
-			System.out.println("Confirmed .NET List: "+ confirmedNETList);
+			logger.info("Confirmed .NET List: "+ confirmedNETList);
 			return confirmedNETList;
 		}
 
@@ -439,7 +444,7 @@ public class ManipulateDataController {
 		@RequestMapping(value = "/displayCurrentNETAvailable", method = RequestMethod.GET)
 		public @ResponseBody int displayCurrentNETAvailable() {
 			int availableNET = daoserv.getAvailableCurrentNET().size();
-			System.out.println("Available .NET Count: "+ availableNET);
+			logger.info("Available .NET Count: "+ availableNET);
 			return availableNET;
 		}
 
@@ -447,15 +452,15 @@ public class ManipulateDataController {
 		@RequestMapping(value = "/displayCurrentNETAvailableList", method = RequestMethod.GET)
 		public @ResponseBody List displayCurrentNETAvailableList() {
 			List availableNETList = daoserv.getAvailableCurrentNET();
-			System.out.println("Available .NET List: "+ availableNETList);
+			logger.info("Available .NET List: "+ availableNETList);
 			return availableNETList;
 		}
 
 		@RequestMapping(value="/updateAvailableAssociates" , method = RequestMethod.POST, consumes ={"application/json"})
 		public void updateAvailableAssociates(@RequestBody AvailableAssociate associates) {
 			
-			System.out.println("Updating!!!!!!!!!!!!!!!!!!!!!");
-			System.out.println(associates);
+			logger.info("Updating!!!!!!!!!!!!!!!!!!!!!");
+			logger.info(associates);
 			long client = associates.getClient();
 			List associateList = associates.getAssociateId();
 			daoserv.updateAvailableAssociates(associateList, client);
@@ -464,8 +469,8 @@ public class ManipulateDataController {
 		@RequestMapping(value="/updateMappedAssociates" , method = RequestMethod.POST, consumes ={"application/json"})
 		public void updateMappedAssociates(@RequestBody MappedAssociate associates) {
 			
-			System.out.println("Updating!!!!!!!!!!!!!!!!!!!!");
-			System.out.println(associates);
+			logger.info("Updating!!!!!!!!!!!!!!!!!!!!");
+			logger.info(associates);
 			String status = associates.getStatus();
 			List associateList = associates.getAssociateId();
 			daoserv.updateMappedAssociates(associateList, status);
@@ -474,8 +479,8 @@ public class ManipulateDataController {
 		@RequestMapping(value="/updateConfirmedAssociates" , method = RequestMethod.POST, consumes ={"application/json"})
 		public void updateConfirmedAssociates(@RequestBody ConfirmedAssociate associates) {
 			//daoserv.UpdateStatus(status, id, client);
-			System.out.println("Updating!!!!!!!!!!!!!!!!!!!!");
-			System.out.println(associates);
+			logger.info("Updating!!!!!!!!!!!!!!!!!!!!");
+			logger.info(associates);
 			List associateList = associates.getAssociateId();
 			daoserv.updateConfirmedAssociates(associateList);
 		}

@@ -553,7 +553,7 @@ Add client modal
 					<td> <label> Select a Client:</label> </td>
 					<td style="padding: 5px">
 						<select ng-model="modifyStatus.clientName" class="form-control" id="sel1" name="clients" required>
-		        				<option ng-repeat="t in clientList" value="{{t.clientid}}" selected>{{t.name}}, {{t.location}}</option>		
+		        				<option ng-repeat="t in clientList" value="{{t.clientID}}" selected>{{t.name}} {{t.location}}</option>		
 		      			</select>
       				</td>
       				<td style="padding: 20px" rowspan="2">
@@ -563,7 +563,7 @@ Add client modal
 				
 				</table>
 				</div>
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="infoTable.refresh()">Close</button>
 
 			</div>
 			</form>
@@ -605,7 +605,6 @@ Add client modal
 							 	<th>Status</th>
 							 	<th>Start Date</th>
 							 	<th>End Date</th>
-							 	<th>Company</th>
 							 </tr>
 							 </thead>
 							 <tbody>
@@ -616,7 +615,6 @@ Add client modal
 									<td>{{a.status}}</td>
 									<td>{{a.batch.startDate}}</td>
 									<td>{{a.batch.endDate}}</td>
-									<td>{{}}</td>
 								</tr>
 							 </tbody>
 						</table>
@@ -634,11 +632,11 @@ Add client modal
 					</td>
 					<td>
 					<label id="availableRadio" class="radio-inline">
-						<input ng-model="modifyStatus.status" type="radio" value="available" name="optradio" id="test3"> 
+						<input ng-model="modifyStatus.status" type="radio" value="Available" name="optradio" id="test3"> 
 						Available
 					</label>
 					<label id="confirmedRadio" class="radio-inline">
-						<input ng-model="modifyStatus.status" type="radio" value="confirmed" name="optradio" id="test2">
+						<input ng-model="modifyStatus.status" type="radio" value="Confirmed" name="optradio" id="test2">
 						Confirmed
 					</label>
 					</td>
@@ -648,7 +646,7 @@ Add client modal
 				</tr>
 				</table>
 				</div>
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="infoTable.refresh()">Close</button>
 
 			</div>
 			</form>
@@ -689,7 +687,6 @@ Add client modal
 							 	<th>Status</th>
 							 	<th>Start Date</th>
 							 	<th>End Date</th>
-							 	<th>Company</th>
 							 </tr>
 							 </thead>
 							 <tbody>
@@ -700,7 +697,6 @@ Add client modal
 									<td>{{a.status}}</td>
 									<td>{{a.batch.startDate}}</td>
 									<td>{{a.batch.endDate}}</td>
-									<td>{{}}</td>
 								</tr>
 							 </tbody>
 						</table>
@@ -712,7 +708,7 @@ Add client modal
 				<br>
 						<button type="submit">Submit</button>
 				</div>
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="infoTable.refresh()">Close</button>
 
 			</div>
 			</form>
@@ -778,7 +774,7 @@ Add client modal
 					<td> <label> Select a Client:</label> </td>
 					<td style="padding: 5px">
 						<select ng-model="modifyStatus.clientName" class="form-control" id="sel1" name="clients" required>
-		        				<option ng-repeat="t in clientList" value="{{t.clientid}}" selected>{{t.name}}, {{t.location}}</option>		
+		        				<option ng-repeat="t in clientList" value="{{t.clientid}}" selected>{{t.name}} {{t.location}}</option>		
 		      			</select>
       				</td>
       				<td style="padding: 20px" rowspan="2">
@@ -788,7 +784,7 @@ Add client modal
 				
 				</table>
 				</div>
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="infoTable.refresh()">Close</button>
 
 			</div>
 			</form>
@@ -830,7 +826,6 @@ Add client modal
 							 	<th>Status</th>
 							 	<th>Start Date</th>
 							 	<th>End Date</th>
-							 	<th>Company</th>
 							 </tr>
 							 </thead>
 							 <tbody>
@@ -841,7 +836,6 @@ Add client modal
 									<td>{{a.status}}</td>
 									<td>{{a.batch.startDate}}</td>
 									<td>{{a.batch.endDate}}</td>
-									<td>{{}}</td>
 								</tr>
 							 </tbody>
 						</table>
@@ -859,11 +853,11 @@ Add client modal
 					</td>
 					<td>
 					<label id="availableRadio" class="radio-inline">
-						<input ng-model="modifyStatus.status" type="radio" value="available" name="optradio" id="test3"> 
+						<input ng-model="modifyStatus.status" type="radio" value="Available" name="optradio" id="test3"> 
 						Available
 					</label>
 					<label id="confirmedRadio" class="radio-inline">
-						<input ng-model="modifyStatus.status" type="radio" value="confirmed" name="optradio" id="test2">
+						<input ng-model="modifyStatus.status" type="radio" value="Confirmed" name="optradio" id="test2">
 						Confirmed
 					</label>
 					</td>
@@ -873,7 +867,7 @@ Add client modal
 				</tr>
 				</table>
 				</div>
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="infoTable.refresh()">Close</button>
 
 			</div>
 			</form>
@@ -914,7 +908,6 @@ Add client modal
 							 	<th>Status</th>
 							 	<th>Start Date</th>
 							 	<th>End Date</th>
-							 	<th>Company</th>
 							 </tr>
 							 </thead>
 							 <tbody>
@@ -925,7 +918,6 @@ Add client modal
 									<td>{{a.status}}</td>
 									<td>{{a.batch.startDate}}</td>
 									<td>{{a.batch.endDate}}</td>
-									<td>{{}}</td>
 								</tr>
 							 </tbody>
 						</table>
@@ -937,7 +929,7 @@ Add client modal
 				<br>
 						<button type="submit">Submit</button>
 				</div>
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="infoTable.refresh()">Close</button>
 
 			</div>
 			</form>
@@ -1003,7 +995,7 @@ Add client modal
 					<td> <label> Select a Client:</label> </td>
 					<td style="padding: 5px">
 						<select ng-model="modifyStatus.clientName" class="form-control" id="sel1" name="clients" required>
-		        				<option ng-repeat="t in clientList" value="{{t.clientid}}" selected>{{t.name}}, {{t.location}}</option>		
+		        				<option ng-repeat="t in clientList" value="{{t.clientid}}" selected>{{t.name}} {{t.location}}</option>		
 		      			</select>
       				</td>
       				<td style="padding: 20px" rowspan="2">
@@ -1013,7 +1005,7 @@ Add client modal
 				
 				</table>
 				</div>
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="infoTable.refresh()">Close</button>
 
 			</div>
 			</form>
@@ -1055,7 +1047,6 @@ Add client modal
 							 	<th>Status</th>
 							 	<th>Start Date</th>
 							 	<th>End Date</th>
-							 	<th>Company</th>
 							 </tr>
 							 </thead>
 							 <tbody>
@@ -1066,7 +1057,6 @@ Add client modal
 									<td>{{a.status}}</td>
 									<td>{{a.batch.startDate}}</td>
 									<td>{{a.batch.endDate}}</td>
-									<td>{{}}</td>
 								</tr>
 							 </tbody>
 						</table>
@@ -1084,11 +1074,11 @@ Add client modal
 					</td>
 					<td>
 					<label id="availableRadio" class="radio-inline">
-						<input ng-model="modifyStatus.status" type="radio" value="available" name="optradio" id="test3"> 
+						<input ng-model="modifyStatus.status" type="radio" value="Available" name="optradio" id="test3"> 
 						Available
 					</label>
 					<label id="confirmedRadio" class="radio-inline">
-						<input ng-model="modifyStatus.status" type="radio" value="confirmed" name="optradio" id="test2">
+						<input ng-model="modifyStatus.status" type="radio" value="Confirmed" name="optradio" id="test2">
 						Confirmed
 					</label>
 					</td>
@@ -1099,7 +1089,7 @@ Add client modal
 				
 				</table>
 				</div>
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="infoTable.refresh()">Close</button>
 
 			</div>
 			</form>
@@ -1140,7 +1130,6 @@ Add client modal
 							 	<th>Status</th>
 							 	<th>Start Date</th>
 							 	<th>End Date</th>
-							 	<th>Company</th>
 							 </tr>
 							 </thead>
 							 <tbody>
@@ -1151,7 +1140,6 @@ Add client modal
 									<td>{{a.status}}</td>
 									<td>{{a.batch.startDate}}</td>
 									<td>{{a.batch.endDate}}</td>
-									<td>{{}}</td>
 								</tr>
 							 </tbody>
 						</table>
@@ -1163,7 +1151,7 @@ Add client modal
 				<br>
 						<button type="submit">Submit</button>
 				</div>
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="infoTable.refresh()">Close</button>
 
 			</div>
 			</form>

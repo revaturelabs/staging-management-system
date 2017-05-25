@@ -52,24 +52,6 @@ public class AssociateInfo {
 	}
 	
 	/*
-	 * Create Many to Many Relationship with ClientInfo table
-	 */
-	// Name to refer to on ClientInfo on line 84: `@ManyToMany(fetch =
-	// FetchType.LAZY, mappedBy = "clients")`
-
-	// Assign Many to Many
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	// Create Additional Table populated from AssociateInfo with name
-	// "Associate_Clients", link foreign key wiith inverseJoinColumns
-	@JoinTable(name = "Associate_Clients", joinColumns = {
-			@JoinColumn(name = "AssociateID", nullable = false, updatable = false) }, inverseJoinColumns = {
-					@JoinColumn(name = "ClientID", nullable = false, updatable = false) })
-		//private Set<ClientInfo> clients;
-/*
-	 * End Many to Many Relationship
-	 */
-	
-	/*
 	 * Begin Setter/Getter Methods
 	 */
 
