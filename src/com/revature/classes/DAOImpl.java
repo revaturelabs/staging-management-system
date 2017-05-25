@@ -316,6 +316,102 @@ public class DAOImpl implements DAOService {
 
 		return WeekList;
 	}
+	
+	@Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
+	public void updateAvailableAssociates(List associateId, long client) {
+
+		Session session = sf.openSession();
+
+		String hqlUpdate = "update AssociateInfo "
+		+ "set Status = :status where AssociateID = :associateId";
+		
+		for (int i = 0; i < associateId.size(); i++) {
+			session.createQuery(hqlUpdate)
+					.setString("status", "Mapped")
+					.setParameter("associateId", associateId.get(i))
+					.executeUpdate();
+		}
+		
+		String hqlClientUpdate = "update AssociateClient "
+				+ "set ClientID = :client where AssociateID = :associateId";
+				
+				for (int i = 0; i < associateId.size(); i++) {
+					session.createQuery(hqlClientUpdate)
+							.setLong("client", client)
+							.setParameter("associateId", associateId.get(i))
+							.executeUpdate();
+				}
+
+		session.close();
+
+	}
+	
+	@Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
+	public void updateMappedAssociates(List associateId, String status) {
+
+		Session session = sf.openSession();
+		if(status.equals("confirmed")){
+			String hqlUpdate = "update AssociateInfo set Status = :status where AssociateID = :associateId";
+			
+			for (int i = 0; i < associateId.size(); i++) {
+			Query query = session.createQuery(hqlUpdate);
+			query.setString("status", status);
+			query.setParameter("associateId", associateId.get(i));
+			int result = query.executeUpdate();
+			System.out.println(result);
+			}
+		}
+		else if (status.equals("available"))
+		{
+			String hqlUpdate = "update AssociateInfo set ClientID = :client where AssociateID = :associateId";
+					
+					for (int i = 0; i < associateId.size(); i++) {
+					Query query = session.createQuery(hqlUpdate);
+					query.setParameter("client", null);
+					query.setParameter("associateId", associateId.get(i));
+					int result = query.executeUpdate();
+					System.out.println(result);
+					}
+			String hqlClientUpdate = "update AssociateClient set ClientID = :client where AssociateID =:associateId";
+			
+			for (int i = 0; i < associateId.size(); i++) {
+				session.createQuery(hqlClientUpdate)
+						.setParameter("client", null)
+						.setParameter("associateId", associateId.get(i))
+						.executeUpdate();
+			}
+		}
+		session.close();
+
+	}
+	
+	@Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
+	public void updateConfirmedAssociates(List associateId) {
+
+		Session session = sf.openSession();
+
+		String hqlUpdate = "update AssociateInfo set Status = :status where AssociateID = :associateId";
+		
+		for (int i = 0; i < associateId.size(); i++) {
+			session.createQuery(hqlUpdate)
+					.setParameter("status", "Available")
+					.setParameter("associateId", associateId.get(i))
+					.executeUpdate();
+		}
+		
+		String hqlClientUpdate = "update AssociateClient set ClientID = :client where AssociateID =:associateId";
+		
+		for (int i = 0; i < associateId.size(); i++) {
+			session.createQuery(hqlClientUpdate)
+					.setParameter("client", null)
+					.setParameter("associateId", associateId.get(i))
+					.executeUpdate();
+		}
+
+		session.close();
+
+	}
+
 
 	@Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
 	public ArrayList returnResources(java.sql.Date date, java.sql.Date startdate, java.sql.Date enddate) {
@@ -344,6 +440,28 @@ public class DAOImpl implements DAOService {
 
 	}
 
+	
+	@Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
+	public void UpdateStatus(String status, int aID, long clientId) {
+
+		Session session = sf.openSession();
+
+		// update the associate's availability status
+		String hqlUpdate = "update AssociateInfo a set a.Status = :newStatus where a.AssociateID = :ID";
+
+		int updatedEntities = session.createQuery(hqlUpdate).setString("newStatus", status).setInteger("ID", aID)
+				.executeUpdate();
+
+		// associate an associate to a client in the associate-client table
+		// future iterations can use that table to prevent an associate
+		// from being mapped to the same client after being rejected
+
+
+		session.close();
+
+	}
+
+	
 	@Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
 	public List getAllCurrentJava() {
 		Session session = sf.getCurrentSession();
@@ -367,10 +485,7 @@ public class DAOImpl implements DAOService {
 
 		// put the result into a list
 		List rowBatch = crit.list();
-
-		System.out.println("all people who did java" + rowBatch);
 		int count = rowBatch.size();
-		System.out.println(count);
 
 		return rowBatch;
 	}
@@ -411,10 +526,6 @@ public class DAOImpl implements DAOService {
 		// put the result into a list
 		List rowBatch = crit.list();
 
-		System.out.println("all people who are did SDET ..." + rowBatch);
-		int count = rowBatch.size();
-		System.out.println(count);
-
 		return rowBatch;
 	}
 
@@ -454,31 +565,7 @@ public class DAOImpl implements DAOService {
 		// put the result into a list
 		List rowBatch = crit.list();
 
-		System.out.println("all people who are did NET ..." + rowBatch);
-		int count = rowBatch.size();
-		System.out.println(count);
-
 		return rowBatch;
-	}
-
-	@Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
-	public void UpdateStatus(String status, int aID, long clientId) {
-
-		Session session = sf.openSession();
-
-		// update the associate's availability status
-		String hqlUpdate = "update AssociateInfo a set a.Status = :newStatus where a.AssociateID = :ID";
-
-		int updatedEntities = session.createQuery(hqlUpdate).setString("newStatus", status).setInteger("ID", aID)
-				.executeUpdate();
-
-		// associate an associate to a client in the associate-client table
-		// future iterations can use that table to prevent an associate
-		// from being mapped to the same client after being rejected
-
-
-		session.close();
-
 	}
 
 	@Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
@@ -507,10 +594,6 @@ public class DAOImpl implements DAOService {
 
 		// put the result into a list
 		List rowBatch = crit.list();
-
-		System.out.println("all people who did java" + rowBatch);
-		int count = rowBatch.size();
-		System.out.println(count);
 
 		return rowBatch;
 	}
@@ -542,10 +625,6 @@ public class DAOImpl implements DAOService {
 		// put the result into a list
 		List rowBatch = crit.list();
 
-		System.out.println("all people who did java" + rowBatch);
-		int count = rowBatch.size();
-		System.out.println(count);
-
 		return rowBatch;
 	}
 
@@ -565,7 +644,7 @@ public class DAOImpl implements DAOService {
 		java.sql.Date sqldate = new java.sql.Date(utildate.getTime()); // today
 
 		// search for batch type = java
-		crit.add(Restrictions.eq("batch.Type", ".NET"));
+		crit.add(Restrictions.eq("batch.Type", "NET"));
 
 		// search for status available
 		crit.add(Restrictions.eq("Status", "Available"));
@@ -575,10 +654,6 @@ public class DAOImpl implements DAOService {
 
 		// put the result into a list
 		List rowBatch = crit.list();
-
-		System.out.println("all people who did java" + rowBatch);
-		int count = rowBatch.size();
-		System.out.println(count);
 
 		return rowBatch;
 	}
@@ -609,10 +684,6 @@ public class DAOImpl implements DAOService {
 
 		// put the result into a list
 		List rowBatch = crit.list();
-
-		System.out.println("all people who did java" + rowBatch);
-		int count = rowBatch.size();
-		System.out.println(count);
 
 		return rowBatch;
 	}
@@ -678,10 +749,6 @@ public class DAOImpl implements DAOService {
 		// put the result into a list
 		List rowBatch = crit.list();
 
-		System.out.println("all people who did java" + rowBatch);
-		int count = rowBatch.size();
-		System.out.println(count);
-
 		return rowBatch;
 	}
 
@@ -711,10 +778,6 @@ public class DAOImpl implements DAOService {
 
 		// put the result into a list
 		List rowBatch = crit.list();
-
-		System.out.println("all people who did java" + rowBatch);
-		int count = rowBatch.size();
-		System.out.println(count);
 
 		return rowBatch;
 	}
@@ -746,10 +809,6 @@ public class DAOImpl implements DAOService {
 		// put the result into a list
 		List rowBatch = crit.list();
 
-		System.out.println("all people who did java" + rowBatch);
-		int count = rowBatch.size();
-		System.out.println(count);
-
 		return rowBatch;
 	}
 
@@ -769,7 +828,7 @@ public class DAOImpl implements DAOService {
 		java.sql.Date sqldate = new java.sql.Date(utildate.getTime()); // today
 
 		// search for batch type = java
-		crit.add(Restrictions.eq("batch.Type", ".NET"));
+		crit.add(Restrictions.eq("batch.Type", "NET"));
 
 		// search for status available
 		crit.add(Restrictions.eq("Status", "Confirmed"));
@@ -780,12 +839,10 @@ public class DAOImpl implements DAOService {
 		// put the result into a list
 		List rowBatch = crit.list();
 
-		System.out.println("all people who did java" + rowBatch);
-		int count = rowBatch.size();
-		System.out.println(count);
-
 		return rowBatch;
 	}
+
+	
 
 	@Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
 	public List returnMonthlyResourcesLooping(int monthparam, String type, String status) {

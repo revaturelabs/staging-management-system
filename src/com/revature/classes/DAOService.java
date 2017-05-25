@@ -69,4 +69,12 @@ public interface DAOService {
 	public ArrayList<Week> returnWeeksForGivenMonth(int month) throws ParseException;
 
 	public List returnMonthlyResourcesLooping(int month, String type, String status);
+	
+	public void updateConfirmedAssociates(List associateId);
+	
+	public void updateMappedAssociates(List associateId, String status);
+	
+	public void updateAvailableAssociates(List associateId, long client);
+
+
 }
