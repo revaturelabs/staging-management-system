@@ -54,7 +54,7 @@
 		<div class="container-fluid">
 			<div class="navbar-header">
 				<a href="#" class="navbar-brand">
-					<img src="https://files.slack.com/files-pri/T1CTFL5A7-F5J52GGJ2/logo_1.png" alt="Revature" width="10%" />
+					<img src="http://i.imgur.com/WTYxaWk.png" alt="Revature" width="10%" />
 				</a>
 			</div>
 			<div id="navbar" class="navbar-collapse collapse">

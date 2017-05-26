@@ -21,7 +21,7 @@
 <body>
 
 	<div class="wrapper">
-					<img src="https://files.slack.com/files-pri/T1CTFL5A7-F5J52GGJ2/logo_1.png" alt="Revature" /></a>
+					<img src="http://i.imgur.com/WTYxaWk.png" alt="Revature" /></a>
 	
 		
 	
