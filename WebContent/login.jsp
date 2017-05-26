@@ -23,15 +23,17 @@
 	<div class="wrapper">
 					<img src="https://files.slack.com/files-pri/T1CTFL5A7-F5J52GGJ2/logo_1.png" alt="Revature" /></a>
 	
-		<c:if test="${not empty error}">
+		
+	
+		<form action="login" method="post" class="form-signin">
+			<h2 class="form-signin-heading" style="text-align: center;">Login</h2>
+			<hr />
+			<c:if test="${not empty error}">
 			<div class="error">${error}</div>
 		</c:if>
 		<c:if test="${not empty msg}">
 			<div class="msg">${msg}</div>
 		</c:if>
-	
-		<form action="login" method="post" class="form-signin">
-			<h2 class="form-signin-heading" style="text-align: center;">Login</h2>
 			<hr />
 			<input type="text" class="form-control" name="username"
 				placeholder="Username" required="" autofocus="" /> <input
