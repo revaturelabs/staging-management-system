@@ -211,6 +211,8 @@ mainApp.controller("infoTable", function($scope, $http) {
 							// on success, reset the modal values.
 							$scope.associateSelected = [];
 							$scope.modifyStatus.status = "";
+							alert("Associate(s) Successfully Updated");
+
 							// close the modal
 							$('#ForecastModal').modal('hide');
 							
