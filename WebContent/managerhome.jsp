@@ -523,14 +523,15 @@ Add client modal
 				<!--  The table below is the to how the dropdown button as well as the radio buttons are positioned -->
 				<table>
 				<tr>
-					<td> <label> Select a Client:</label> </td>
 					<td style="padding: 5px">
+						<label> Select a Client:</label> 
+					
 						<select ng-model="modifyStatus.clientName" class="form-control" id="sel1" name="clients" required>
 		        				<option ng-repeat="t in clientList" value="{{t.clientid}}" selected>{{t.name}}, {{t.location}}</option>		
 		      			</select>
       				</td>
       				<td style="padding: 20px" rowspan="2">
-						<button type="submit">Ok</button>
+						<button type="submit" class="btn btn-primary btn-xs">Map Associates</button>
 					</td>
 				</tr>
 				
@@ -604,8 +605,7 @@ Add client modal
 				<tr>
 					<td style="text-align: left;">
 					<label> Select Status:</label>
-					</td>
-					<td>
+					
 					<label id="availableRadio" class="radio-inline">
 						<input ng-model="modifyStatus.status" type="radio" value="Available" name="optradio" id="test3"> 
 						Available
@@ -616,7 +616,7 @@ Add client modal
 					</label>
 					</td>
       				<td style="padding: 20px" rowspan="2">
-						<button type="submit">Submit</button>
+						<button type="submit" class="btn btn-primary btn-xs">Change Status</button>
 					</td>
 				</tr>
 				</table>
@@ -683,7 +683,7 @@ Add client modal
 				<div class=pull-left >
 					
 				<br>
-						<button type="submit">Submit</button>
+						<button type="submit" class="btn btn-primary btn-xs">Move to Available</button>
 				</div>
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 
@@ -755,7 +755,7 @@ Add client modal
 		      			</select>
       				</td>
       				<td style="padding: 20px" rowspan="2">
-						<button type="submit">Ok</button>
+						<button type="submit" class="btn btn-primary btn-xs">Map Associates</button>
 					</td>
 				</tr>
 				
@@ -841,7 +841,7 @@ Add client modal
 					</label>
 					</td>
       				<td style="padding: 20px" rowspan="2">
-						<button type="submit">Submit</button>
+						<button type="submit" class="btn btn-primary btn-xs">Change Status</button>
 					</td>
 				</tr>
 				</table>
@@ -908,7 +908,7 @@ Add client modal
 				<div class=pull-left >
 					
 				<br>
-						<button type="submit">Submit</button>
+						<button type="submit" class="btn btn-primary btn-xs">Move to Available</button>
 				</div>
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 
@@ -980,7 +980,7 @@ Add client modal
 		      			</select>
       				</td>
       				<td style="padding: 20px" rowspan="2">
-						<button type="submit">Ok</button>
+						<button type="submit" class="btn btn-primary btn-xs">Map Associate</button>
 					</td>
 				</tr>
 				
@@ -1066,7 +1066,7 @@ Add client modal
 					</label>
 					</td>
       				<td style="padding: 20px" rowspan="2">
-						<button type="submit">Submit</button>
+						<button type="submit" class="btn btn-primary btn-xs">Change Status</button>
 					</td>
 				</tr>
 				
@@ -1134,7 +1134,7 @@ Add client modal
 				<div class=pull-left >
 					
 				<br>
-						<button type="submit">Submit</button>
+						<button type="submit" class="btn btn-primary btn-xs">Move to Available</button>
 				</div>
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 
