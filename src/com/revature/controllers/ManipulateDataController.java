@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.http.HttpStatus;
@@ -33,14 +34,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.gson.Gson;
 import com.revature.classes.AssociateInfo;
+import com.revature.classes.AvailableAssociate;
 import com.revature.classes.BatchInfo;
 import com.revature.classes.ClientInfo;
+import com.revature.classes.ConfirmedAssociate;
+import com.revature.classes.DAOImpl;
 import com.revature.classes.DAOService;
 import com.revature.classes.MappedAssociate;
 import com.revature.classes.Week;
 
 @RestController
 public class ManipulateDataController {
+
+	final Logger logger = Logger.getLogger( DAOImpl.class );
+
 
 	ApplicationContext ctx = new ClassPathXmlApplicationContext("appContext.xml");
 	DAOService daoserv = (DAOService) ctx.getBean("DAOImpl");
@@ -89,7 +96,7 @@ public class ManipulateDataController {
 		Set<BatchInfo> batches = new HashSet<BatchInfo>();
 		batches.add(batch);
 
-		System.out.println(name + " :: " + status + " :: " + batch);
+		logger.info(name + " :: " + status + " :: " + batch);
 
 		// initialize an Associate object
 		AssociateInfo associate = new AssociateInfo(name, status, batch);
@@ -114,7 +121,7 @@ public class ManipulateDataController {
 			
 			// initialize a batch object
 			BatchInfo batch = new BatchInfo(name, location, trainer, startdate, enddate, type);
-			System.out.println(batch.toString());
+			logger.info(batch.toString());
 			
 			// call the addBatch method for the database
 			daoserv.AddBatch(batch);
@@ -140,6 +147,7 @@ public class ManipulateDataController {
 		daoserv.AddClient(client);
 	}
 	
+	// not sure if actually using
 	@RequestMapping(value = "/displayStats", method = RequestMethod.GET)
 	public @ResponseBody ArrayList<AssociateInfo> ViewAssociateStats(HttpServletRequest req) throws JsonGenerationException, JsonMappingException, IOException
 	{
@@ -163,81 +171,7 @@ public class ManipulateDataController {
 	}
 	
 	
-	@RequestMapping(value="/displayCurrent", method = RequestMethod.GET)
-	public @ResponseBody List[] displayCurrent()
-	{
-		// create a list for the confirmed associates
-		List confirmed = new ArrayList();
-		confirmed.add("confirmed");
-		String[] conId = {"confirmed-java", "confirmed-net", "confirmed-sdet"};
-		confirmed.add(conId);
-
-		// get the associates from the database
-		List conJava = daoserv.getConfirmedCurrentJava();
-		List conNet = daoserv.getConfirmedCurrentNET();
-		List conSdet = daoserv.getConfirmedCurrentSDET();
-				
-		// add the associates to the list
-		confirmed.add(conJava);
-		confirmed.add(conNet);
-		confirmed.add(conSdet);
-		
-		// add the number of associates
-		confirmed.add(conJava.size());
-		confirmed.add(conNet.size());
-		confirmed.add(conSdet.size());
-		
-		// create a list for the mapped associates
-		List mapped = new ArrayList();
-		mapped.add("mapped");
-		String[] mapId = {"mapped-java", "mapped-net", "mapped-sdet"};
-		mapped.add(mapId);
-		
-		// get the associates from the database
-		List mapJava = daoserv.getMappedCurrentJava();
-		List mapNet = daoserv.getMappedCurrentNET();
-		List mapSdet = daoserv.getMappedCurrentSDET();
-		
-		// add the associates to the list
-		mapped.add(mapJava);
-		mapped.add(mapNet);
-		mapped.add(mapSdet);
-		
-		// add the number of associates
-		mapped.add(mapJava.size());
-		mapped.add(mapNet.size());
-		mapped.add(mapSdet.size());
-		
-		// create a list for the available associates
-		List available = new ArrayList();
-		available.add("available");
-		String[] availId = {"available-java", "available-net", "available-sdet"};
-		available.add(availId);
-		
-		// get the associates from the database
-		List availJava = daoserv.getAvailableCurrentJava();
-		List availNet = daoserv.getAvailableCurrentNET();
-		List availSdet = daoserv.getAvailableCurrentSDET();
-		
-		// add the associates to the list
-		available.add(availJava);
-		available.add(availNet);
-		available.add(availSdet);
-		
-		// add the number of associates
-		available.add(availJava.size());
-		available.add(availNet.size());
-		available.add(availSdet.size());
-		
-		// add all the lists to a list
-		List[] allData = {
-				available, mapped, confirmed
-		};
-		
-		// return the list containing all of the lists
-		return allData; 
-	}
-
+	
 		
 	@RequestMapping(value="/updateAssociates" , method = RequestMethod.POST, consumes ={"application/json"})
 	public void updateAssociates(@RequestBody MappedAssociate associates) {
@@ -249,9 +183,9 @@ public class ManipulateDataController {
 		{
 			daoserv.UpdateStatus(status, associateId, clientId);
 		}
-		System.out.println("Updating!!!!!!!!!!!!!!!!!!!!");
-		System.out.println(associates);
-		System.out.println("status " + associates.getStatus());
+		logger.info("Updating!!!!!!!!!!!!!!!!!!!!");
+		logger.info(associates);
+		logger.info("status " + associates.getStatus());
 		
 	}
 	
@@ -286,4 +220,196 @@ public class ManipulateDataController {
 		
 		return associates;
 	}
+	
+	// --------------------------------------------------------------------------------//
+		// ------------------------------- JAVA
+		// --------------------------------------------------------------------------------//
+
+		// Mapped Java Number
+		@RequestMapping(value = "/displayCurrentJavaMapped", method = RequestMethod.GET)
+		public @ResponseBody int displayCurrentJavaMapped() {
+			int mappedJava = daoserv.getMappedCurrentJava().size();
+			logger.info("Mapped Java Count: "+ mappedJava);
+			return mappedJava;
+
+		}
+
+		// Mapped Java List
+		@RequestMapping(value = "/displayCurrentJavaMappedList", method = RequestMethod.GET)
+		public @ResponseBody List displayCurrentJavaMappedList() {
+			List mappedJavaList = daoserv.getMappedCurrentJava();
+			logger.info("Mapped Java List: "+ mappedJavaList);
+			return mappedJavaList;
+
+		}
+
+		// Confirmed Java Number
+		@RequestMapping(value = "/displayCurrentJavaConfirmed", method = RequestMethod.GET)
+		public @ResponseBody int displayCurrentJavaConfirmed() {
+			int confirmedJava = daoserv.getConfirmedCurrentJava().size();
+			logger.info("Confirmed Java Count: "+ confirmedJava);
+			return confirmedJava;
+
+		}
+
+		// Confirmed Java List
+		@RequestMapping(value = "/displayCurrentJavaConfirmedList", method = RequestMethod.GET)
+		public @ResponseBody List displayCurrentJavaConfirmedList() {
+			List confirmedJavaList = daoserv.getConfirmedCurrentJava();
+			logger.info("Confirmed Java List: "+ confirmedJavaList);
+			return confirmedJavaList;
+
+		}
+
+		// Available Java Number
+		@RequestMapping(value = "/displayCurrentJavaAvailable", method = RequestMethod.GET)
+		public @ResponseBody int displayCurrentJavaAvailable() {
+			int availableJava = daoserv.getAvailableCurrentJava().size();
+			logger.info("Avaiable Java Count: "+ availableJava);
+			return availableJava;
+
+		}
+
+		// Available Java List
+		@RequestMapping(value = "/displayCurrentJavaAvailableList", method = RequestMethod.GET)
+		public @ResponseBody List displayCurrentJavaAvailableList() {
+			List availableJavaList = daoserv.getAvailableCurrentJava();
+			logger.info("Available Java List: "+ availableJavaList);
+			return availableJavaList;
+
+		}
+
+		// --------------------------------------------------------------------------------//
+		// ------------------------------- SDET
+		// --------------------------------------------------------------------------------//
+
+		// Mapped SDET Number
+		@RequestMapping(value = "/displayCurrentSDETMapped", method = RequestMethod.GET)
+		public @ResponseBody int displayCurrentSDETMapped() {
+			int mappedSDET = daoserv.getMappedCurrentSDET().size();
+			logger.info("Mapped SDET Count: "+ mappedSDET);
+			return mappedSDET;
+		}
+
+		// Mapped SDET List
+		@RequestMapping(value = "/displayCurrentSDETMappedList", method = RequestMethod.GET)
+		public @ResponseBody List displayCurrentSDETMappedList() {
+			List mappedSDETList = daoserv.getMappedCurrentSDET();
+			logger.info("Mapped SDET List: "+ mappedSDETList);
+			return mappedSDETList;
+		}
+
+		// Confirmed SDET Number
+		@RequestMapping(value = "/displayCurrentSDETConfirmed", method = RequestMethod.GET)
+		public @ResponseBody int displayCurrentSDETConfirmed() {
+			int confirmedSDET = daoserv.getConfirmedCurrentSDET().size();
+			logger.info("Confirmed SDET Count: "+ confirmedSDET);
+			return confirmedSDET;
+		}
+
+		// Confirmed SDET List
+		@RequestMapping(value = "/displayCurrentSDETConfirmedList", method = RequestMethod.GET)
+		public @ResponseBody List displayCurrentSDETConfirmedList() {
+			List confirmedSDETList = daoserv.getConfirmedCurrentSDET();
+			logger.info("Confirmed SDET List: "+ confirmedSDETList);
+			return confirmedSDETList;
+		}
+
+		// Available SDET Number
+		@RequestMapping(value = "/displayCurrentSDETAvailable", method = RequestMethod.GET)
+		public @ResponseBody int displayCurrentSDETAvailable() {
+			int availableSDET = daoserv.getAvailableCurrentSDET().size();
+			logger.info("Available SDET Count: "+ availableSDET);
+			return availableSDET;
+		}
+
+		// Available SDET List
+		@RequestMapping(value = "/displayCurrentSDETAvailableList", method = RequestMethod.GET)
+		public @ResponseBody List displayCurrentSDETAvailableList() {
+			List availableSDETList = daoserv.getAvailableCurrentSDET();
+			logger.info("Available SDET Count: "+ availableSDETList);
+			return availableSDETList;
+		}
+
+		// --------------------------------------------------------------------------------//
+		// ------------------------------- .NET
+		// --------------------------------------------------------------------------------//
+
+		// Mapped NET Number
+		@RequestMapping(value = "/displayCurrentNETMapped", method = RequestMethod.GET)
+		public @ResponseBody int displayCurrentNETMapped() {
+			int mappedNET = daoserv.getMappedCurrentNET().size();
+			logger.info("Mapped .NET Count: "+ mappedNET);
+			return mappedNET;
+		}
+
+		// Mapped NET List
+		@RequestMapping(value = "/displayCurrentNETMappedList", method = RequestMethod.GET)
+		public @ResponseBody List displayCurrentNETMappedList() {
+			List mappedNETList = daoserv.getMappedCurrentNET();
+			logger.info("Mapped .NET List: "+ mappedNETList);
+			return mappedNETList;
+		}
+
+		// Confirmed NET Number
+		@RequestMapping(value = "/displayCurrentNETConfirmed", method = RequestMethod.GET)
+		public @ResponseBody int displayCurrentNETConfirmed() {
+			int confirmedNET = daoserv.getConfirmedCurrentNET().size();
+			logger.info("Confirmed .NET Count: "+ confirmedNET);
+			return confirmedNET;
+		}
+
+		// Confirmed NET Number
+		@RequestMapping(value = "/displayCurrentNETConfirmedList", method = RequestMethod.GET)
+		public @ResponseBody List displayCurrentNETConfirmedList() {
+			List confirmedNETList = daoserv.getConfirmedCurrentNET();
+			logger.info("Confirmed .NET List: "+ confirmedNETList);
+			return confirmedNETList;
+		}
+
+		// Available NET Number
+		@RequestMapping(value = "/displayCurrentNETAvailable", method = RequestMethod.GET)
+		public @ResponseBody int displayCurrentNETAvailable() {
+			int availableNET = daoserv.getAvailableCurrentNET().size();
+			logger.info("Available .NET Count: "+ availableNET);
+			return availableNET;
+		}
+
+		// Available NET Number
+		@RequestMapping(value = "/displayCurrentNETAvailableList", method = RequestMethod.GET)
+		public @ResponseBody List displayCurrentNETAvailableList() {
+			List availableNETList = daoserv.getAvailableCurrentNET();
+			logger.info("Available .NET List: "+ availableNETList);
+			return availableNETList;
+		}
+
+		@RequestMapping(value="/updateAvailableAssociates" , method = RequestMethod.POST, consumes ={"application/json"})
+		public void updateAvailableAssociates(@RequestBody AvailableAssociate associates) {
+			
+			logger.info("Updating!!!!!!!!!!!!!!!!!!!!!");
+			logger.info(associates);
+			long client = associates.getClient();
+			List associateList = associates.getAssociateId();
+			daoserv.updateAvailableAssociates(associateList, client);
+		}
+
+		@RequestMapping(value="/updateMappedAssociates" , method = RequestMethod.POST, consumes ={"application/json"})
+		public void updateMappedAssociates(@RequestBody MappedAssociate associates) {
+			
+			logger.info("Updating!!!!!!!!!!!!!!!!!!!!");
+			logger.info(associates);
+			String status = associates.getStatus();
+			List associateList = associates.getAssociateId();
+			daoserv.updateMappedAssociates(associateList, status);
+		}
+		
+		@RequestMapping(value="/updateConfirmedAssociates" , method = RequestMethod.POST, consumes ={"application/json"})
+		public void updateConfirmedAssociates(@RequestBody ConfirmedAssociate associates) {
+			//daoserv.UpdateStatus(status, id, client);
+			logger.info("Updating!!!!!!!!!!!!!!!!!!!!");
+			logger.info(associates);
+			List associateList = associates.getAssociateId();
+			daoserv.updateConfirmedAssociates(associateList);
+		}
+
 }

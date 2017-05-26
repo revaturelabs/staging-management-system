@@ -10,7 +10,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  */
 @Entity
 @Table(name = "ASSOCIATEINFO")
-@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 public class AssociateInfo {
 	/*
 	 * PK: ASSOCIATEID (Auto Generated) FK/Reference: BatchInfo.TrainingName
@@ -19,7 +18,7 @@ public class AssociateInfo {
 	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long AssociateID;
+	private int AssociateID;
 
 	@Column(length = 30, nullable = false)
 	private String AssociateName;
@@ -44,31 +43,13 @@ public class AssociateInfo {
 	}
 	
 	
-	public AssociateInfo(long associateID, String associateName, String status, BatchInfo batch) {
+	public AssociateInfo(int associateID, String associateName, String status, BatchInfo batch) {
 		super();
 		AssociateID = associateID;
 		AssociateName = associateName;
 		Status = status;
 		this.batch = batch;
 	}
-	
-	/*
-	 * Create Many to Many Relationship with ClientInfo table
-	 */
-	// Name to refer to on ClientInfo on line 84: `@ManyToMany(fetch =
-	// FetchType.LAZY, mappedBy = "clients")`
-
-	// Assign Many to Many
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	// Create Additional Table populated from AssociateInfo with name
-	// "Associate_Clients", link foreign key wiith inverseJoinColumns
-	@JoinTable(name = "Associate_Clients", joinColumns = {
-			@JoinColumn(name = "AssociateID", nullable = false, updatable = false) }, inverseJoinColumns = {
-					@JoinColumn(name = "ClientID", nullable = false, updatable = false) })
-		private Set<ClientInfo> clients;
-/*
-	 * End Many to Many Relationship
-	 */
 	
 	/*
 	 * Begin Setter/Getter Methods
@@ -84,19 +65,19 @@ public class AssociateInfo {
 
 
 
-	public Set<ClientInfo> getClients() {
+	/*public Set<ClientInfo> getClients() {
 		return clients;
 	}
 
 	public void setClients(Set<ClientInfo> clients) {
 		this.clients = clients;
-	}
+	}*/
 
-	public long getAssociateID() {
+	public int getAssociateID() {
 		return AssociateID;
 	}
 
-	public void setAssociateID(long associateID) {
+	public void setAssociateID(int associateID) {
 		AssociateID = associateID;
 	}
 

@@ -90,7 +90,7 @@
 		      			</select>
       				</td>
       				<td style="padding: 20px" rowspan="2">
-						<button type="submit" class="btn btn-primary btn-xs">Submit</button>
+						<button type="submit" class="btn btn-primary btn-xs">Change Status</button>
 
 					</td>
 				</tr>

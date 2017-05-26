@@ -20,8 +20,9 @@
 
 <body>
 
-	<div class="wrapper" style="width: 400px; margin: auto;">
-	<img src="https://files.slack.com/files-pri/T1CTFL5A7-F5HC8E3DJ/logo.png" style="width: 100%;" alt="Revature" />
+	<div class="wrapper">
+					<img src="https://files.slack.com/files-pri/T1CTFL5A7-F5J52GGJ2/logo_1.png" alt="Revature" /></a>
+	
 		<c:if test="${not empty error}">
 			<div class="error">${error}</div>
 		</c:if>
@@ -30,13 +31,14 @@
 		</c:if>
 	
 		<form action="login" method="post" class="form-signin">
-			<h2 class="form-signin-heading">Please login</h2>
+			<h2 class="form-signin-heading" style="text-align: center;">Login</h2>
+			<hr />
 			<input type="text" class="form-control" name="username"
 				placeholder="Username" required="" autofocus="" /> <input
 				type="password" class="form-control" name="password"
 				placeholder="Password" required="" />
 				</br>
-			<button class="btn btn-lg btn-primary btn-block" style="background-color: #f26925;" type="submit">Login</button>
+			<button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
 			<input type="hidden" name="${_csrf.parameterName}"
 			value="${_csrf.token}" />
 			
