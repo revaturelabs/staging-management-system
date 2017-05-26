@@ -4,8 +4,12 @@ body {
 
 .wrapper {	
   width: 20%;
-  margin: 20% auto;
+  margin: 10% auto;
   padding-top: 5%;
+}
+
+.wrapper img {
+	width: 100%;
 }
 
 .btn-primary {

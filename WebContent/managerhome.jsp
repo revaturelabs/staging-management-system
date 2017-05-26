@@ -530,13 +530,12 @@ Add client modal
 		        				<option ng-repeat="t in clientList" value="{{t.clientid}}" selected>{{t.name}}, {{t.location}}</option>		
 		      			</select>
       				</td>
-      				<td style="padding: 20px" rowspan="2">
-						<button type="submit" class="btn btn-primary btn-xs">Map Associates</button>
-					</td>
-				</tr>
-				
+
+			
 				</table>
 				</div>
+				<button type="submit" class="btn btn-primary btn-xs">Map Associates</button>
+				
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 
 			</div>
@@ -604,7 +603,6 @@ Add client modal
 				<table>
 				<tr>
 					<td style="text-align: left;">
-					<label> Select Status:</label>
 					
 					<label id="availableRadio" class="radio-inline">
 						<input ng-model="modifyStatus.status" type="radio" value="Available" name="optradio" id="test3"> 
@@ -615,7 +613,7 @@ Add client modal
 						Confirmed
 					</label>
 					</td>
-      				<td style="padding: 20px" rowspan="2">
+      				<td rowspan="2">
 						<button type="submit" class="btn btn-primary btn-xs">Change Status</button>
 					</td>
 				</tr>
@@ -680,11 +678,9 @@ Add client modal
 					</div>
 			</div>
 			<div class="modal-footer">
-				<div class=pull-left >
 					
 				<br>
 						<button type="submit" class="btn btn-primary btn-xs">Move to Available</button>
-				</div>
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 
 			</div>
@@ -748,13 +744,13 @@ Add client modal
 				<!--  The table below is the to how the dropdown button as well as the radio buttons are positioned -->
 				<table>
 				<tr>
-					<td> <label> Select a Client:</label> </td>
+
 					<td style="padding: 5px">
 						<select ng-model="modifyStatus.clientName" class="form-control" id="sel1" name="clients" required>
 		        				<option ng-repeat="t in clientList" value="{{t.clientid}}" selected>{{t.name}}, {{t.location}}</option>		
 		      			</select>
       				</td>
-      				<td style="padding: 20px" rowspan="2">
+      				<td rowspan="2">
 						<button type="submit" class="btn btn-primary btn-xs">Map Associates</button>
 					</td>
 				</tr>
@@ -827,9 +823,7 @@ Add client modal
 				<!--  The table below is the to how the dropdown button as well as the radio buttons are positioned -->
 				<table>
 				<tr>
-					<td style="text-align: left;">
-					<label> Select Status:</label>
-					</td>
+			
 					<td>
 					<label id="availableRadio" class="radio-inline">
 						<input ng-model="modifyStatus.status" type="radio" value="Available" name="optradio" id="test3"> 
@@ -840,7 +834,7 @@ Add client modal
 						Confirmed
 					</label>
 					</td>
-      				<td style="padding: 20px" rowspan="2">
+      				<td rowspan="2">
 						<button type="submit" class="btn btn-primary btn-xs">Change Status</button>
 					</td>
 				</tr>
@@ -973,21 +967,21 @@ Add client modal
 				<!--  The table below is the to how the dropdown button as well as the radio buttons are positioned -->
 				<table>
 				<tr>
-					<td> <label> Select a Client:</label> </td>
 					<td style="padding: 5px">
 						<select ng-model="modifyStatus.clientName" class="form-control" id="sel1" name="clients" required>
 		        				<option ng-repeat="t in clientList" value="{{t.clientid}}" selected>{{t.name}}, {{t.location}}</option>		
 		      			</select>
       				</td>
-      				<td style="padding: 20px" rowspan="2">
+      				<td rowspan="2">
 						<button type="submit" class="btn btn-primary btn-xs">Map Associate</button>
 					</td>
 				</tr>
-				
+				<tr>
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					
+				</tr>
 				</table>
 				</div>
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-
 			</div>
 			</form>
 		</div>
@@ -1053,9 +1047,9 @@ Add client modal
 				<table>
 				<tr>
 					<td style="text-align: left;">
-					<label> Select Status:</label>
-					</td>
+
 					<td>
+					
 					<label id="availableRadio" class="radio-inline">
 						<input ng-model="modifyStatus.status" type="radio" value="Available" name="optradio" id="test3"> 
 						Available
@@ -1065,7 +1059,7 @@ Add client modal
 						Confirmed
 					</label>
 					</td>
-      				<td style="padding: 20px" rowspan="2">
+      				<td rowspan="2">
 						<button type="submit" class="btn btn-primary btn-xs">Change Status</button>
 					</td>
 				</tr>
@@ -1131,11 +1125,8 @@ Add client modal
 					</div>
 			</div>
 			<div class="modal-footer">
-				<div class=pull-left >
-					
-				<br>
-						<button type="submit" class="btn btn-primary btn-xs">Move to Available</button>
-				</div>
+				<button type="submit" class="btn btn-primary btn-xs">Move to Available</button>
+				
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 
 			</div>

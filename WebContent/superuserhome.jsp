@@ -399,10 +399,10 @@ Add batch modal
 					<div class="form-group">
 						<label for="batchtype">Batch Type:</label> <select
 							class="form-control" id="batchtype" name="batchtype">
-							<option value="java">Java</option>
-							<option value="net">.NET</option>
-							<option value="jta">JTA</option>
-							<option value="bigdata">Big Data</option>
+							<option value="JAVA">Java</option>
+							<option value=".NET">.NET</option>
+							<option value="SDET">JTA</option>
+							<option value="BIGDATA">Big Data</option>
 						</select>
 					</div>
 					<!--  
@@ -475,7 +475,7 @@ Add client modal
 					- Input: submit the form
 					-->
 					<button type="submit" id="addClient" class="btn btn-default">Create
-						Batch</button>
+						Client</button>
 					<!--  
 					- Input: clear the form
 					-->

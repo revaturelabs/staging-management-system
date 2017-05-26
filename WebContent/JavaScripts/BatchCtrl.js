@@ -1,14 +1,9 @@
-/**
- * the token for spring security
- */
-
-var mainApp = angular.module('superuser', []);
-
 /*******************************************************************************
  * 
  * All the controllers
  * 
  ******************************************************************************/
+var mainApp = angular.module('superuser', []);
 
 mainApp.controller("infoTable", function($scope, $http) {
 
@@ -93,13 +88,6 @@ mainApp.controller("infoTable", function($scope, $http) {
 				$scope.sdetConfirmedList = result.data;
 			});
 	//	}
-
-
-	$http.get("/StagingManagementSystem/displayCurrent").then(function(result) {
-		$scope.current = result.data;
-		console.log(current);
-		console.log(result.data);
-	});
 
 	$http.get("/StagingManagementSystem/displayClients").then(function(result) {
 		$scope.clientList = result.data;
@@ -445,19 +433,4 @@ mainApp.controller("BatchCtrl", function($scope, $http) {
 		console.log(batches);
 		console.log(result.data);
 	});
-});
-
-/*******************************************************************************
- * 
- * Other Stuff - Can Touch
- * 
- ******************************************************************************/
-
-mainApp.controller("forcastTable", function($scope, $http) {
-	$http.get("/StagingManagementSystem/displayForecast").then(
-			function(result) {
-				$scope.current = result.data;
-				console.log(current);
-				console.log(result.data);
-			});
 });
