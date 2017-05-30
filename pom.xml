@@ -25,20 +25,20 @@
 			</plugin>
 		</plugins>
 	</build>
-	
+
 	<properties>
 		<spring.version>4.1.6.RELEASE</spring.version>
 		<log4j.version>1.2.17</log4j.version>
 	</properties>
-	
+
 	<dependencies>
-	<dependency>
-            <groupId>commons-dbcp</groupId>
-            <artifactId>commons-dbcp</artifactId>
-            <version>1.4</version>
-        </dependency>
-	
-	<!-- https://mvnrepository.com/artifact/log4j/log4j -->
+		<dependency>
+			<groupId>commons-dbcp</groupId>
+			<artifactId>commons-dbcp</artifactId>
+			<version>1.4</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/log4j/log4j -->
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
@@ -141,19 +141,19 @@
 			<artifactId>hibernate-ehcache</artifactId>
 			<version>3.6.10.Final</version>
 		</dependency>
-			<!-- Hibernate c3p0 connection pool -->
+		<!-- Hibernate c3p0 connection pool -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-c3p0</artifactId>
 			<version>4.3.11.Final</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/com.mchange/mchange-commons-java -->
-<dependency>
-    <groupId>com.mchange</groupId>
-    <artifactId>mchange-commons-java</artifactId>
-    <version>0.2.11</version>
-</dependency>
-		
+		<dependency>
+			<groupId>com.mchange</groupId>
+			<artifactId>mchange-commons-java</artifactId>
+			<version>0.2.11</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-simple</artifactId>
@@ -185,15 +185,15 @@
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/javax.servlet/servlet-api -->
 		<dependency>
-		    <groupId>javax.servlet</groupId>
-		    <artifactId>servlet-api</artifactId>
-		    <version>2.5</version>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/javax.servlet.jsp.jstl/javax.servlet.jsp.jstl-api -->
 		<dependency>
-		    <groupId>javax.servlet.jsp.jstl</groupId>
-		    <artifactId>javax.servlet.jsp.jstl-api</artifactId>
-		    <version>1.2.1</version>
+			<groupId>javax.servlet.jsp.jstl</groupId>
+			<artifactId>javax.servlet.jsp.jstl-api</artifactId>
+			<version>1.2.1</version>
 		</dependency>
 
 		<dependency>
@@ -207,5 +207,13 @@
 			<artifactId>commons-io</artifactId>
 			<version>2.4</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.tomcat/tomcat-catalina -->
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-catalina</artifactId>
+			<version>8.5.15</version>
+		</dependency>
+
+
 	</dependencies>
 </project>
