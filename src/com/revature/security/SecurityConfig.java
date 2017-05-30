@@ -14,8 +14,8 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
-	ApplicationContext ctx = new ClassPathXmlApplicationContext("appContext.xml");
-	AuthSuccessHandler auth = (AuthSuccessHandler) ctx.getBean("authSuccessHandler");
+	@Autowired
+	AuthSuccessHandler auth;
 
 
 	@Autowired
