@@ -8,6 +8,8 @@
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 */.project
+.tern-project
+.springbeans
 
 # Package Files #
 *.jar
