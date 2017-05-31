@@ -2,17 +2,23 @@ package com.revature.classes;
 
 import java.sql.Date;
 import java.util.Set;
-import javax.persistence.*;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /*
  * Created On 5/11/2017
  */
 @Entity
 @Table(name = "BATCHINFO")
-@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 public class BatchInfo {
 	/*
 	 * PK: TrainingName TRAININGNAME VARCHAR(30) CONSTRAINTS: NOT NULL LOCATION
@@ -42,9 +48,8 @@ public class BatchInfo {
 	/*
 	 * Begin Constructor Methods
 	 */
-	public BatchInfo()
-	{
-		
+	public BatchInfo() {
+
 	}
 
 	public BatchInfo(String trainingName, String location, String trainer, Date startDate, Date endDate, String type) {
@@ -70,30 +75,26 @@ public class BatchInfo {
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, cascade = (CascadeType.ALL))
 	@JoinColumn(name = "TrainingName")
-	private Set<AssociateInfo> associates; 
+	private Set<AssociateInfo> associates;
 
 	public Set<AssociateInfo> getAssociates() {
 
 		return associates;
 	}
 
-	public void setAssociates(Set<AssociateInfo> associates) 
-	{
+	public void setAssociates(Set<AssociateInfo> associates) {
 		this.associates = associates;
 	}
-
 
 	/*
 	 * End One to Many Relationship
 	 */
 
-	public String getTrainingName() 
-	{
+	public String getTrainingName() {
 		return TrainingName;
 	}
 
-	public void setTrainingName(String trainingName) 
-	{
+	public void setTrainingName(String trainingName) {
 		TrainingName = trainingName;
 	}
 
@@ -101,8 +102,7 @@ public class BatchInfo {
 		return Location;
 	}
 
-	public void setLocation(String location) 
-	{
+	public void setLocation(String location) {
 		Location = location;
 	}
 
@@ -110,8 +110,7 @@ public class BatchInfo {
 		return Trainer;
 	}
 
-	public void setTrainer(String trainer) 
-	{
+	public void setTrainer(String trainer) {
 		Trainer = trainer;
 	}
 
@@ -119,18 +118,15 @@ public class BatchInfo {
 		return StartDate;
 	}
 
-	public void setStartDate(Date startDate) 
-	{
+	public void setStartDate(Date startDate) {
 		StartDate = startDate;
 	}
 
-	public Date getEndDate()
-	{
+	public Date getEndDate() {
 		return EndDate;
 	}
 
-	public void setEndDate(Date endDate)
-	{
+	public void setEndDate(Date endDate) {
 		EndDate = endDate;
 	}
 
@@ -149,8 +145,7 @@ public class BatchInfo {
 	 */
 
 	@Override
-	public String toString() 
-	{
+	public String toString() {
 		return "BatchInfo [TrainingName=" + TrainingName + ", Location=" + Location + ", Trainer=" + Trainer
 				+ ", StartDate=" + StartDate + ", EndDate=" + EndDate + ", Type=" + Type + "]";
 	}
