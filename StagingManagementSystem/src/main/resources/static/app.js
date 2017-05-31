@@ -1,17 +1,17 @@
-var routerApp = angular.module('routerApp', ['ui.router']);
+var routerApp = angular.module('routerApp', ['ui.router', 'ui.bootstrap', 'ngMaterial']);
 
 routerApp.config(function($stateProvider, $urlRouterProvider) {
-    
+
     $urlRouterProvider.otherwise('/home');
-    
+
     $stateProvider
-        
+
         // HOME STATES AND NESTED VIEWS ========================================
         .state('home', {
             url: '/home',
             templateUrl: 'partial-home.html'
         })
-        
+
         // nested list with custom controller
         .state('home.list', {
             url: '/list',
@@ -20,33 +20,39 @@ routerApp.config(function($stateProvider, $urlRouterProvider) {
                 $scope.dogs = ['Bernese', 'Husky', 'Goldendoodle'];
             }
         })
-        
+
         // nested list with just some random string data
         .state('home.paragraph', {
             url: '/paragraph',
             template: 'I could sure use a drink right now.'
         })
-        
+
         // ABOUT PAGE AND MULTIPLE NAMED VIEWS =================================
         .state('about', {
             url: '/about',
             views: {
                 '': { templateUrl: 'partial-about.html' },
                 'columnOne@about': { template: 'Look I am a column!' },
-                'columnTwo@about': { 
+                'columnTwo@about': {
                     templateUrl: 'table-data.html',
                     controller: 'scotchController'
                 }
             }
-            
+
         });
-        
+
 });
 
-routerApp.controller('scotchController', function($scope) {
-    
+routerApp.controller('appController', function($scope) {
+
+    $scope.openMenu = function($mdOpenMenu, ev) {
+        console.log("here")
+      originatorEv = ev;
+      $mdOpenMenu(ev);
+    };
+
     $scope.message = 'test';
-   
+
     $scope.scotches = [
         {
             name: 'Macallan 12',
@@ -61,5 +67,5 @@ routerApp.controller('scotchController', function($scope) {
             price: 20000
         }
     ];
-    
+
 });

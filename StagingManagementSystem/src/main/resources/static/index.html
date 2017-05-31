@@ -2,81 +2,81 @@
 <html>
 <head>
 
-    <!-- CSS (load bootstrap) -->
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
     <style>
         .navbar { border-radius:0; }
     </style>
 
     <!-- JS (load angular, ui-router, and our custom js file) -->
-    <script src="http://code.angularjs.org/1.2.13/angular.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.8/angular-ui-router.min.js"></script>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.5.0.js"></script>
+
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
+
+    <!-- Angular Material Library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
+
     <script src="app.js"></script>
+    <link rel="stylesheet" href="app.css">
 </head>
 
 <!-- apply our angular app to our site -->
 <body ng-app="routerApp">
-
+<div ng-controller="appController">
 <!-- NAVIGATION -->
-<nav class="navbar navbar-inverse">
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<a href="#" class="navbar-brand">
-					<img src="http://i.imgur.com/WTYxaWk.png" alt="Revature" width="10%" />
-				</a>
-			</div>
-			<div id="navbar" class="navbar-collapse collapse">
-
-				<ul class="nav navbar-nav navbar-right text-uppercase">
-
-					<!-- Employee dropdown-->
-					<li class="dropdown"><a href="#" class="dropdown-toggle"
-						data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span>
-							Employees </a>
-
-						<ul class="dropdown-menu dropdown-menu-right" role="menu" style="">
-
-							<!-- documentation link -->
-							<li><a href="Documentation/index.html" id="clients"
-								data-target="#addClient"><span
-									class="glyphicon glyphicon-file"></span> Documentation</a></li>
-							<!-- navbar link add associate -->
-							<li><a id="associates" data-toggle="modal"
-								data-target="#addAssociate" ng-click="getBatches()"><span
-									class="glyphicon glyphicon-plus"></span> Add Associate</a></li>
-
-							<!-- navbar link add batch -->
-							<li><a href="#addBatch" data-toggle="modal" id="batches"
-								data-target="#addBatch"><span
-									class="glyphicon glyphicon-plus"></span> Add Batch</a></li>
-
-							<!-- navbar link add client -->
-							<li><a href="#addClient" data-toggle="modal" id="clients"
-								data-target="#addClient"><span
-									class="glyphicon glyphicon-plus"></span> Add Client</a></li>
-
-<li><a href="javascript:formSubmit()"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
-
-							<script>
-								function formSubmit() {
-									document.getElementById("logoutForm")
-											.submit();
-								}
-							</script>
-
-							<!-- csrt for log out-->
-							<form action="logout" method="post" id="logoutForm">
-								<input type="hidden" name="${_csrf.parameterName}"
-									value="${_csrf.token}" />
-							</form>
-							
-						</ul></li>
-
-				</ul>
-			</div>
-
-		</div>
-	</nav>
+<md-nav-bar
+      md-selected-nav-item="currentNavItem"
+      nav-bar-aria-label="navigation links">
+      <md-nav-item md-nav-click="goto('page1')" name="page1">
+        Page One
+      </md-nav-item>
+      <md-nav-item md-nav-click="goto('page2')" name="page2">
+        Page Two
+      </md-nav-item>
+      <md-nav-item md-nav-click="goto('page3')" name="page3">
+        Page Three
+      </md-nav-item>
+      <span flex> </span>
+      <md-nav-item>
+      <md-menu class="nav-menu">
+        <md-button aria-label="Open phone interactions menu" class="md-icon-button" ng-click="openMenu($mdOpenMenu, $event)">
+          Menu
+        </md-button>
+        <md-menu-content width="4">
+            <md-menu-item>
+              <md-button ng-click="ctrl.redial($event)">
+                Redial
+              </md-button>
+            </md-menu-item>
+            <md-menu-item>
+              <md-button disabled="disabled" ng-click="ctrl.checkVoicemail()">
+                Check voicemail
+              </md-button>
+            </md-menu-item>
+            <md-menu-divider></md-menu-divider>
+            <md-menu-item>
+              <md-button ng-click="ctrl.toggleNotifications()">
+                {{ctrl.notificationsEnabled ? 'Disable' : 'Enable' }} notifications
+              </md-button>
+            </md-menu-item>
+        </md-menu-content>
+      </md-menu>
+      </md-nav-item>
+      <!-- these require actual routing with ui-router or ng-route, so they
+      won't work in the demo
+      <md-nav-item md-nav-href="#page4" name="page5">Page Four</md-nav-item>
+      <md-nav-item md-nav-sref="app.page5" name="page4">Page Five</md-nav-item>
+      You can also add options for the <code>ui-sref-opts</code> attribute.
+      <md-nav-item md-nav-sref="page6" sref-opts="{reload:true, notify:true}">
+        Page Six
+      </md-nav-item>
+      -->
+    </md-nav-bar>
 
 <!-- MAIN CONTENT -->
 <!-- THIS IS WHERE WE WILL INJECT OUR CONTENT ============================== -->
@@ -88,6 +88,6 @@
     <p>A tutorial by <a href="http://scotch.io" target="_blank">scotch.io</a></p>
     <p>View the tutorial: <a href="http://scotch.io/tutorials/javascript/angular-routing-using-ui-router" target="_blank">AngularJS Routing using UI-Router</a></p>
 </div>
-
+</div>
 </body>
 </html>
