@@ -2,13 +2,26 @@ package com.revature.entities;
 
 import java.util.List;
 import java.util.Set;
-
 import javax.persistence.*;
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.revature.classes.ClientInfo;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.*;
 import com.revature.classes.ClientInfo;
 
 @Entity
 @Table(name = "Clients")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Client {
 
 	@Id

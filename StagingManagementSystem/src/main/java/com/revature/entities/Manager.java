@@ -17,8 +17,11 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "MANAGERS")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Manager {
 
 	@Id
