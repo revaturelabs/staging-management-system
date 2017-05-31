@@ -3,6 +3,9 @@ package com.revature.entities;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -34,7 +37,7 @@ public class Batch {
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "BATCH_TRAINER", joinColumns = @JoinColumn(name="BATCH_ID"), inverseJoinColumns = @JoinColumn(name="TRAINER_ID"))
-	private Trainer trainer;
+	private Set<Trainer> trainer;
 
 	@OneToMany(mappedBy = "BATCH_ID")
 	private Set<Associate> associates;
@@ -43,7 +46,7 @@ public class Batch {
 		//  //
 	}
 
-	public Batch(Long id, BatchType batchType, LocalDate startDate, LocalDate endDate, Trainer trainer, Set<Associate> associates) {
+	public Batch(Long id, BatchType batchType, LocalDate startDate, LocalDate endDate, Set<Trainer> trainer, Set<Associate> associates) {
 		this.id = id;
 		this.batchType = batchType;
 		this.startDate = startDate;
@@ -110,11 +113,11 @@ public class Batch {
 		this.endDate = endDate;
 	}
 
-	public Trainer getTrainer() {
+	public Set<Trainer> getTrainers() {
 		return trainer;
 	}
 
-	public void setTrainer(Trainer trainer) {
+	public void setTrainers(Set<Trainer> trainer) {
 		this.trainer = trainer;
 	}
 

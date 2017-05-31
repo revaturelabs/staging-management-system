@@ -9,8 +9,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
-@Entity 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@Entity
+@Table(name="CLIENT_QUESTIONS")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class ClientQ {
 	@Id
 	@Column(name="CLIENT_QUESTION_ID")
