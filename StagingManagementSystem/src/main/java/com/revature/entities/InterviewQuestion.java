@@ -1,5 +1,7 @@
 package com.revature.entities;
 
+import java.util.Collection;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -8,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -19,14 +22,17 @@ public class InterviewQuestion {
 	@SequenceGenerator(name="INTERVIEW_QUESTION_ID_SEQ", sequenceName="INTERVIEW_QUESTION_ID_SEQ")
     @GeneratedValue(generator="INTERVIEW_QUESTION_ID_SEQ", strategy=GenerationType.AUTO)
 	private long id;
-	
+
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="BATCH_TYPE_ID")
 	private BatchType batchType;
-	
+
 	@Column
 	private String question;
 	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="interviewQ")
+	private Collection<ClientQ> clientQuestions;
+
 	public InterviewQuestion() {
 		super();
 	}
@@ -60,6 +66,14 @@ public class InterviewQuestion {
 
 	public void setQuestion(String question) {
 		this.question = question;
+	}
+
+	public Collection<ClientQ> getClientQuestions() {
+		return clientQuestions;
+	}
+
+	public void setClientQuestions(Collection<ClientQ> clientQuestions) {
+		this.clientQuestions = clientQuestions;
 	}
 
 	@Override
