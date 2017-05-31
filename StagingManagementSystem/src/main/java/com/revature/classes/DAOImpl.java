@@ -4,14 +4,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
@@ -19,17 +15,15 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-@Configuration
-@EnableCaching
+@Repository
 public class DAOImpl implements DAOService {
 
-	final Logger logger = Logger.getLogger( DAOImpl.class );
+	final Logger logger = Logger.getRootLogger();
 
 	SessionFactory sf;
 
@@ -319,103 +313,87 @@ public class DAOImpl implements DAOService {
 
 		return WeekList;
 	}
-	
+
 	@Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
 	public void updateAvailableAssociates(List associateId, long client) {
 
 		Session session = sf.openSession();
 
-		String hqlUpdate = "update AssociateInfo "
-		+ "set Status = :status where AssociateID = :associateId";
-		
+		String hqlUpdate = "update AssociateInfo " + "set Status = :status where AssociateID = :associateId";
+
 		for (int i = 0; i < associateId.size(); i++) {
-			session.createQuery(hqlUpdate)
-					.setString("status", "Mapped")
-					.setParameter("associateId", associateId.get(i))
+			session.createQuery(hqlUpdate).setString("status", "Mapped").setParameter("associateId", associateId.get(i))
 					.executeUpdate();
 		}
-		
-		String hqlClientUpdate = "update AssociateClient "
-				+ "set ClientID = :client where AssociateID = :associateId";
-				
-				for (int i = 0; i < associateId.size(); i++) {
-					session.createQuery(hqlClientUpdate)
-							.setLong("client", client)
-							.setParameter("associateId", associateId.get(i))
-							.executeUpdate();
-				}
+
+		String hqlClientUpdate = "update AssociateClient " + "set ClientID = :client where AssociateID = :associateId";
+
+		for (int i = 0; i < associateId.size(); i++) {
+			session.createQuery(hqlClientUpdate).setLong("client", client)
+					.setParameter("associateId", associateId.get(i)).executeUpdate();
+		}
 
 		session.close();
 
 	}
-	
+
 	@Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
 	public void updateMappedAssociates(List associateId, String status) {
 
 		Session session = sf.openSession();
 		System.out.println("HERE!!!!");
 		System.out.println(status);
-		if(status.equals("confirmed")){
+		if (status.equals("confirmed")) {
 			String hqlUpdate = "update AssociateInfo set Status = :status where AssociateID = :associateId";
-			
+
 			for (int i = 0; i < associateId.size(); i++) {
-			Query query = session.createQuery(hqlUpdate);
-			query.setString("status", status);
-			query.setParameter("associateId", associateId.get(i));
-			int result = query.executeUpdate();
+				Query query = session.createQuery(hqlUpdate);
+				query.setString("status", status);
+				query.setParameter("associateId", associateId.get(i));
+				int result = query.executeUpdate();
 			}
-		}
-		else
-		{
+		} else {
 			String hqlUpdate = "update AssociateInfo set Status = :status where AssociateID = :associateId";
-					
-					for (int i = 0; i < associateId.size(); i++) {
-					Query query = session.createQuery(hqlUpdate);
-					query.setString("status", status);
-					query.setParameter("associateId", associateId.get(i));
-					int result = query.executeUpdate();
-					}
-			String hqlClientUpdate = "update AssociateClient set ClientID = :client where AssociateID =:associateId";
-			
+
 			for (int i = 0; i < associateId.size(); i++) {
-				session.createQuery(hqlClientUpdate)
-						.setParameter("client", null)
-						.setParameter("associateId", associateId.get(i))
-						.executeUpdate();
+				Query query = session.createQuery(hqlUpdate);
+				query.setString("status", status);
+				query.setParameter("associateId", associateId.get(i));
+				int result = query.executeUpdate();
+			}
+			String hqlClientUpdate = "update AssociateClient set ClientID = :client where AssociateID =:associateId";
+
+			for (int i = 0; i < associateId.size(); i++) {
+				session.createQuery(hqlClientUpdate).setParameter("client", null)
+						.setParameter("associateId", associateId.get(i)).executeUpdate();
 			}
 		}
 		session.close();
 
 	}
-	
+
 	@Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
 	public void updateConfirmedAssociates(List associateId) {
 
 		Session session = sf.openSession();
 
 		String hqlUpdate = "update AssociateInfo set Status = :status where AssociateID = :associateId";
-		
+
 		for (int i = 0; i < associateId.size(); i++) {
-			session.createQuery(hqlUpdate)
-					.setParameter("status", "Available")
-					.setParameter("associateId", associateId.get(i))
-					.executeUpdate();
+			session.createQuery(hqlUpdate).setParameter("status", "Available")
+					.setParameter("associateId", associateId.get(i)).executeUpdate();
 		}
-		
+
 		String hqlClientUpdate = "update AssociateClient set ClientID = :client where AssociateID =:associateId";
-		
+
 		for (int i = 0; i < associateId.size(); i++) {
-			session.createQuery(hqlClientUpdate)
-					.setParameter("client", null)
-					.setParameter("associateId", associateId.get(i))
-					.executeUpdate();
+			session.createQuery(hqlClientUpdate).setParameter("client", null)
+					.setParameter("associateId", associateId.get(i)).executeUpdate();
 		}
 
 		session.close();
 
 	}
-
-
 
 	@Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
 	public ArrayList returnResources(java.sql.Date date, java.sql.Date startdate, java.sql.Date enddate) {
@@ -444,7 +422,6 @@ public class DAOImpl implements DAOService {
 
 	}
 
-	
 	@Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
 	public void UpdateStatus(String status, int aID, long clientId) {
 
@@ -460,12 +437,10 @@ public class DAOImpl implements DAOService {
 		// future iterations can use that table to prevent an associate
 		// from being mapped to the same client after being rejected
 
-
 		session.close();
 
 	}
 
-	
 	@Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
 	public List getAllCurrentJava() {
 		Session session = sf.getCurrentSession();
@@ -845,8 +820,6 @@ public class DAOImpl implements DAOService {
 
 		return rowBatch;
 	}
-
-	
 
 	@Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
 	public List returnMonthlyResourcesLooping(int monthparam, String type, String status) {

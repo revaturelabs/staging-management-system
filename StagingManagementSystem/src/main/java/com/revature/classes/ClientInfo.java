@@ -1,15 +1,17 @@
 package com.revature.classes;
 
-import javax.persistence.*;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /*
  * Created On 5/11/2017
  */
 @Entity
 @Table(name = "CLIENTINFO")
-@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 public class ClientInfo {
 	/*
 	 * PK: ClientID (Auto Generated) ClientID NUMBER CONSTRAINTS: NOT NULL NAME
@@ -26,17 +28,20 @@ public class ClientInfo {
 	@Column(length = 150, nullable = false)
 	private String Location;
 
-/*	@ManyToOne
-	@JoinColumn(name = "ClientID", referencedColumnName = "ClientID", insertable = true, updatable = false)
-	private AssociateInfo associate; */
+	/*
+	 * @ManyToOne
+	 * 
+	 * @JoinColumn(name = "ClientID", referencedColumnName = "ClientID",
+	 * insertable = true, updatable = false) private AssociateInfo associate;
+	 */
 
 	/*
 	 * Constructor Methods
 	 */
 	public ClientInfo() {
 	}
-	
-	public ClientInfo(String name, String location){
+
+	public ClientInfo(String name, String location) {
 		Name = name;
 		Location = location;
 	}
@@ -84,13 +89,12 @@ public class ClientInfo {
 	 * M2M Relationship mapped by AssociateInfo Line 51: ` private
 	 * Set<ClientInfo> clients; `
 	 */
-	/*public AssociateInfo getAssociate() {
-		return associate;
-	}
-
-	public void setAssociate(AssociateInfo associate) {
-		this.associate = associate;
-	} */
+	/*
+	 * public AssociateInfo getAssociate() { return associate; }
+	 * 
+	 * public void setAssociate(AssociateInfo associate) { this.associate =
+	 * associate; }
+	 */
 	/*
 	 * End of M2M Relationship for AssociateInfo::ClientInfo End of
 	 * Getter/Setter Methods
