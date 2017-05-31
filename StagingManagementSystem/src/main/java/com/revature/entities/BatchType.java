@@ -1,5 +1,7 @@
 package com.revature.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 
 /**
@@ -7,6 +9,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "BATCH_TYPES")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class BatchType {
     @Id
     @Column(name="BATCH_TYPE_ID")
