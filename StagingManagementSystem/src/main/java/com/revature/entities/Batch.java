@@ -1,5 +1,7 @@
 package com.revature.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -7,6 +9,7 @@ import java.util.List;
 
 @Entity
 @Table(name="BATCHES")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Batch {
 
 	@Id
