@@ -30,16 +30,17 @@ public class Checkin {
 	@Column(name = "CHECKOUT_TIME")
 	private LocalDateTime checkoutTime;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "manager_id", cascade = { CascadeType.MERGE })
+	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
 	@Column(name = "APPROVED_BY")
+	@JoinColumn(name = "MANAGER_ID")
 	private Long approvedBy;
 	
 	@Column(name = "APPROVE_TIME")
 	private LocalDateTime approveTime;
 	
 	@OneToOne
-	@JoinColumn(name = "ASSOCIATES")
 	@Column(name = "ASSOCIATE_ID")
+	@JoinColumn(name = "ASSOCIATES_ID")
 	private Long associateId;
 
 	public Checkin() {
