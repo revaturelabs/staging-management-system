@@ -5,13 +5,14 @@ import java.util.Set;
 
 import javax.persistence.*;
 
-import com.revature.bean.GeneratedValue;
-import com.revature.bean.SequenceGenerator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.revature.classes.ClientInfo;
 
 
 
 @Entity
 @Table(name="Client")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Client {
 	
 	@SequenceGenerator(name="CLIENT_ID_SEQ", sequenceName="CLIENT_ID_SEQ")

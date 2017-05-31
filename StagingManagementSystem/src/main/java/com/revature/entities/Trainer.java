@@ -2,11 +2,14 @@ package com.revature.entities;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * Created by mnikitin on 5/31/17.
  */
 @Entity
 @Table(name="TRAINERS")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Trainer {
     @Id
     @Column(name="TRAINER_ID")
