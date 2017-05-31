@@ -2,7 +2,10 @@ package com.revature.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -15,6 +18,8 @@ public class Location
 
 	@Id
 	@Column(name="LOCATION_ID")
+	@SequenceGenerator(name = "locations_seq", sequenceName = "locations_seq")
+	@GeneratedValue(generator = "locations_seq", strategy = GenerationType.AUTO)
 	long id;
 	
 	@Column
