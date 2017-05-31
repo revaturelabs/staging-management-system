@@ -6,6 +6,8 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.util.Set;
+
 /**
  * Created by mnikitin on 5/31/17.
  */
@@ -21,6 +23,9 @@ public class BatchType {
 
     @Column(name="BATCH_TYPE")
     private String type;
+
+    @OneToMany(mappedBy = "batchType")
+    private Set<InterviewQuestion> interviewQuestions;
 
     public BatchType(){
         // Default constructor of uselessness.

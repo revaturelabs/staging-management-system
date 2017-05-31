@@ -1,6 +1,3 @@
-/StagingManagementSystem/StagingManagementSystem/src/main/resources/application.properties
-/StagingManagementSystem/StagingManagementSystem/pom.xml
-
 /target/
 *.class
 .classpath
@@ -35,6 +32,9 @@ hs_err_pid*
 */target/
 /RemoteSystemsTempFiles/
 /External Files/
+
+*pom.xml
+*/application.properties
 
 .idea
 *.idea
