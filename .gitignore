@@ -1,3 +1,6 @@
+/StagingManagementSystem/StagingManagementSystem/src/main/resources/application.properties
+/StagingManagementSystem/StagingManagementSystem/pom.xml
+
 /target/
 *.class
 .classpath
