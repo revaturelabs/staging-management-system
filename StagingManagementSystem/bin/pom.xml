@@ -44,13 +44,8 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
-		<dependency>
-            <groupId>com.oracle.ojdbc</groupId>
-            <artifactId>ojdbc</artifactId>
-            <version>12.1.0.1</version>
-		</dependency>
 	</dependencies>
+
 	<build>
 		<plugins>
 			<plugin>
