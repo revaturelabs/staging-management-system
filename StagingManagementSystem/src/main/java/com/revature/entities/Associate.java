@@ -1,12 +1,22 @@
 package com.revature.entities;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "ASSOCIATES")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Associate {
 
 	@Id
@@ -15,7 +25,7 @@ public class Associate {
 	@SequenceGenerator(name = "ASSOCIATE_ID_SEQ", sequenceName = "ASSOCIATE_ID_SEQ")
 	private Long id;
 
-	@OneToOne(fetch=FetchType.EAGER)
+	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "CREDENTIAL_ID")
 	private Credential credential;
 
@@ -25,9 +35,9 @@ public class Associate {
 	@Column(name = "PORTFOLIO_LINK")
 	private String portfolioLink;
 
-	 @ManyToOne
-	 @JoinColumn(name = "BATCH_ID")
-	 private Batch batch;
+	@ManyToOne
+	@JoinColumn(name = "BATCH_ID")
+	private Batch batch;
 
 	public Associate() {
 		super();
