@@ -51,10 +51,7 @@ routerApp.controller('appController', function($scope) {
       $mdOpenMenu(ev);
     };
 
-});
-
-
-routerApp.controller('scotchController', function($scope) {
+    $scope.message = 'test';
 
     $scope.scotches = [
         {
@@ -70,7 +67,5 @@ routerApp.controller('scotchController', function($scope) {
             price: 20000
         }
     ];
-    
-    console.log("scotches loaded");
 
 });
