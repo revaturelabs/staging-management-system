@@ -41,7 +41,7 @@ public class Manager {
 	@JoinColumn(name="PERMISSION_ID")
 	private Permission permission;
 	
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="approvedBy")
+	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL , mappedBy="approvedBy")
 	private Set<Checkin> approved;
 
 	public Manager(Long id, String name, Credential credential, Permission permission, Set<Checkin> approved) {
