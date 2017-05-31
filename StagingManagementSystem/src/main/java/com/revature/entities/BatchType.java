@@ -1,9 +1,6 @@
 package com.revature.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * Created by mnikitin on 5/31/17.
@@ -13,6 +10,8 @@ import javax.persistence.Table;
 public class BatchType {
     @Id
     @Column(name="BATCH_TYPE_ID")
+    @SequenceGenerator(name="BATCH_TYPE_ID_SEQ", sequenceName="BATCH_TYPE_ID_SEQ")
+    @GeneratedValue(generator="BATCH_TYPE_ID_SEQ", strategy=GenerationType.SEQUENCE)
     private long id;
 
     @Column(name="BATCH_TYPE")

@@ -11,6 +11,8 @@ public class Batch {
 
 	@Id
 	@Column(name="BATCH_ID")
+	@SequenceGenerator(name="BATCH_ID_SEQ", sequenceName="BATCH_ID_SEQ")
+	@GeneratedValue(generator="BATCH_ID_SEQ", strategy=GenerationType.SEQUENCE)
 	private Long id;
 
 	@ManyToOne
