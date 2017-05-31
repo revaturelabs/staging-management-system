@@ -15,8 +15,11 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "CHECKINS")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Checkin {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CHECKIN_SEQ")
@@ -30,7 +33,7 @@ public class Checkin {
 	@Column(name = "CHECKOUT_TIME")
 	private LocalDateTime checkoutTime;
 	
-	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
+	@OneToMany(fetch = FetchType.EAGER)
 	@Column(name = "APPROVED_BY")
 	@JoinColumn(name = "MANAGER_ID")
 	private Long approvedBy;
