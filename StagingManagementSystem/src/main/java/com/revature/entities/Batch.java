@@ -4,8 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name="BATCHES")
@@ -38,13 +37,13 @@ public class Batch {
 	private Trainer trainer;
 
 	@OneToMany(mappedBy = "BATCH_ID")
-	private List<Associate> associates;
+	private Set<Associate> associates;
 
 	public Batch(){
 		//  //
 	}
 
-	public Batch(Long id, BatchType batchType, LocalDate startDate, LocalDate endDate, Trainer trainer, List<Associate> associates) {
+	public Batch(Long id, BatchType batchType, LocalDate startDate, LocalDate endDate, Trainer trainer, Set<Associate> associates) {
 		this.id = id;
 		this.batchType = batchType;
 		this.startDate = startDate;
@@ -119,11 +118,11 @@ public class Batch {
 		this.trainer = trainer;
 	}
 
-	public List<Associate> getAssociates() {
+	public Set<Associate> getAssociates() {
 		return associates;
 	}
 
-	public void setAssociates(List<Associate> associates) {
+	public void setAssociates(Set<Associate> associates) {
 		this.associates = associates;
 	}
 }
