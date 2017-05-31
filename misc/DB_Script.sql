@@ -1,3 +1,23 @@
+drop user sms cascade;
+
+create user sms
+identified by swordfish
+default tablespace users
+temporary tablespace temp
+quota 10m on users;
+
+grant connect to sms;
+grant resource to sms;
+grant create session to sms;
+grant create table to sms;
+grant create view to sms;
+grant create trigger to sms;
+grant create sequence to sms;
+
+connect sms/swordfish
+
+///////////////////////////////////////
+
 CREATE TABLE CREDENTIALS (
   CREDENTIAL_ID NUMBER PRIMARY KEY,
   USERNAME VARCHAR2(64),
