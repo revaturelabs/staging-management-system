@@ -10,8 +10,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -20,22 +18,23 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class Interviews {
 	@Id
 	@Column
-	@SequenceGenerator(name="interviews_seq", sequenceName="interviews_seq")
-	@GeneratedValue(generator="interviews_seq", strategy=GenerationType.AUTO)
+	@SequenceGenerator(name = "interviews_seq", sequenceName = "interviews_seq")
+	@GeneratedValue(generator = "interviews_seq", strategy = GenerationType.AUTO)
 	private long interview_id;
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="associate_Id")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "associate_Id")
 	private Associate associate;
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="client_Id")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "client_Id")
 	private Client client;
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="status_Id")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "status_Id")
 	private InterviewStatus status;
-	
+
 	public Interviews() {
 		super();
 	}
+
 	public Interviews(long interview_id, Associate associate, Client client, InterviewStatus status) {
 		super();
 		this.interview_id = interview_id;
@@ -43,10 +42,12 @@ public class Interviews {
 		this.client = client;
 		this.status = status;
 	}
+
 	@Override
 	public String toString() {
 		return "Interviews [interview_id=" + interview_id + ", associate=" + associate + "]";
 	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -55,6 +56,7 @@ public class Interviews {
 		result = prime * result + (int) (interview_id ^ (interview_id >>> 32));
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -73,31 +75,37 @@ public class Interviews {
 			return false;
 		return true;
 	}
+
 	public long getInterview_id() {
 		return interview_id;
 	}
+
 	public void setInterview_id(long interview_id) {
 		this.interview_id = interview_id;
 	}
+
 	public Associate getAssociate() {
 		return associate;
 	}
+
 	public void setAssociate(Associate associate) {
 		this.associate = associate;
 	}
+
 	public Client getClient() {
 		return client;
 	}
+
 	public void setClient(Client client) {
 		this.client = client;
 	}
+
 	public InterviewStatus getStatus() {
 		return status;
 	}
+
 	public void setStatus(InterviewStatus status) {
 		this.status = status;
 	}
-	
-	
-		
+
 }
