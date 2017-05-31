@@ -1,7 +1,5 @@
 package com.revature.services;
 
-import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,11 +20,6 @@ public class BatchServiceImpl implements BatchService {
 	@Override
 	public void add(Batch batch) {
 		batchRepo.saveAndFlush(batch);
-	}
-
-	@Override
-	public Set<Batch> findByInstructor(String name) {
-		return batchRepo.findByInstructor(name);
 	}
 
 }
