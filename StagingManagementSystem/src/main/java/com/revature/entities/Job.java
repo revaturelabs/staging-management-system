@@ -31,7 +31,6 @@ public class Job {
 	@JoinColumn(name="ASSOCIATE_ID")
 	private long associateId;
 
-	@Column(name="CLIENT_ID")
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="CLIENT_ID")
 	private long clientId;
