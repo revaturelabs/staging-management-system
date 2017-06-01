@@ -42,7 +42,7 @@ public class Associate {
 	@JoinColumn(name = "BATCH_ID")
 	private Batch batch;
 
-	@OneToMany(mappedBy = "ASSOCIATE_ID")
+	@OneToMany(mappedBy = "associate")
 	private Set<Interviews> interviews;
 
 	public Associate() {
