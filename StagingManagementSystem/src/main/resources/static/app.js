@@ -1,9 +1,13 @@
 import {currentCtrl, forecastCtrl} from "./manager/manager";
 
 console.log(currentCtrl);
+
+const hello = { poop: 32 };
+
 var routerApp = angular.module('routerApp', ['ui.router']);
 
 routerApp.config(function($stateProvider, $urlRouterProvider) {
+
 
     $urlRouterProvider.otherwise('/login');
 

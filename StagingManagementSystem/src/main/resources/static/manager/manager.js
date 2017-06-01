@@ -5,4 +5,4 @@ let currentCtrl = function($scope) {
 let forecastCtrl = function($scope) {
 
 }
-// export { currentCtrl, forecastCtrl }
+export { currentCtrl, forecastCtrl }
