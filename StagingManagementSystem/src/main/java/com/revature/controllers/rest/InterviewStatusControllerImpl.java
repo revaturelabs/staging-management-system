@@ -20,28 +20,29 @@ import com.revature.services.InterviewStatusService;
 public class InterviewStatusControllerImpl {
 	@Autowired
 	private InterviewStatusService interviewStatusService;
-	
+
 	public InterviewStatusControllerImpl(InterviewStatusService interviewStatusService) {
 		super();
 		this.interviewStatusService = interviewStatusService;
 	}
+
 	@PostMapping
 	public void add(@RequestBody InterviewStatus interviewStatus) {
 		interviewStatusService.add(interviewStatus);
 	}
 
 	@GetMapping("/{id}")
-	public InterviewStatus findById(@PathVariable long id) {		
+	public InterviewStatus findById(@PathVariable long id) {
 		return interviewStatusService.findById(id);
 	}
-	
+
 	@GetMapping("/{}")
-	public InterviewStatus findByInterviews() {		
+	public InterviewStatus findByInterviews() {
 		return interviewStatusService.findByInterviews();
 	}
-	
+
 	@GetMapping("/{status}")
-	public InterviewStatus findByStatus(@PathVariable String status) {		
+	public InterviewStatus findByStatus(@PathVariable String status) {
 		return interviewStatusService.findByStatus(status);
 	}
 

@@ -24,7 +24,7 @@ public class InterviewStatusServiceImpl implements InterviewStatusService {
 
 	@Override
 	public InterviewStatus findById(long id) {
-		return interviewStatusRepo.findById(id);
+		return interviewStatusRepo.getOne(id);
 	}
 
 	@Override
@@ -41,14 +41,26 @@ public class InterviewStatusServiceImpl implements InterviewStatusService {
 	public void delete(InterviewStatus interviewStatus) {
 		interviewStatusRepo.delete(interviewStatus);
 	}
+	//
+	// @Override
+	// public InterviewStatus findByInterviews() {
+	// return interviewStatusRepo.findByInterviews();
+	// }
+	//
+	// @Override
+	// public InterviewStatus findByStatus(String status) {
+	// return interviewStatusRepo.findByStatus(status);
+	// }
 
 	@Override
 	public InterviewStatus findByInterviews() {
-		return interviewStatusRepo.findByInterviews();
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
 	public InterviewStatus findByStatus(String status) {
-		return interviewStatusRepo.findByStatus(status);
-	}	
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

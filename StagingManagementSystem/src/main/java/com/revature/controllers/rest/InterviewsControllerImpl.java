@@ -19,45 +19,45 @@ import com.revature.services.InterviewsService;
 @RestController
 @RequestMapping("interviews")
 public class InterviewsControllerImpl {
-	
+
 	@Autowired
 	private InterviewsService interviewsService;
-	
+
 	public InterviewsControllerImpl(InterviewsService interviewsService) {
 		super();
 		this.interviewsService = interviewsService;
 	}
-	
+
 	@PostMapping
 	public void add(@RequestBody Interviews interviews) {
 		interviewsService.add(interviews);
 	}
 
 	@GetMapping("/{id}")
-	public Interviews findById(@PathVariable long id) {		
+	public Interviews findById(@PathVariable long id) {
 		return interviewsService.findById(id);
 	}
-	
-	@GetMapping("/{}")
-	public Interviews findByAssociate() {		
-		return interviewsService.findByAssociate();
-	}
-	
-	@GetMapping("/{}")
-	public Interviews findByClient() {		
-		return interviewsService.findByClient();
-	}
-	
-	@GetMapping("/{}")
-	public Interviews findByStatus() {		
-		return interviewsService.findByStatus();
-	}
-	
+
+	// @GetMapping("/{}")
+	// public Interviews findByAssociate() {
+	// return interviewsService.findByAssociate();
+	// }
+	//
+	// @GetMapping("/{}")
+	// public Interviews findByClient() {
+	// return interviewsService.findByClient();
+	// }
+	//
+	// @GetMapping("/{}")
+	// public Interviews findByStatus() {
+	// return interviewsService.findByStatus();
+	// }
+
 	@GetMapping("/{dateandtime}")
-	public Interviews findByScheduled(@PathVariable LocalDateTime dateandtime) {		
+	public Interviews findByScheduled(@PathVariable LocalDateTime dateandtime) {
 		return interviewsService.findByScheduled(dateandtime);
 	}
-	
+
 	@GetMapping("/all")
 	public List<Interviews> findById() {
 		return interviewsService.getAll();
