@@ -1,5 +1,7 @@
 package com.revature.entities;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,36 +18,46 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Table(name="interviews")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Interviews {
+	
 	@Id
-	@Column
+	@Column(name="interview_Id")
 	@SequenceGenerator(name = "interviews_seq", sequenceName = "interviews_seq")
 	@GeneratedValue(generator = "interviews_seq", strategy = GenerationType.AUTO)
-	private long interview_id;
+	private long id;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "associate_Id")
 	private Associate associate;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "client_Id")
 	private Client client;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "status_Id")
 	private InterviewStatus status;
+	
+	@Column(name = "SCHEDULED_TIME")
+	private LocalDateTime scheduled;
 
 	public Interviews() {
 		super();
+		// TODO Auto-generated constructor stub
 	}
 
-	public Interviews(long interview_id, Associate associate, Client client, InterviewStatus status) {
+	public Interviews(long id, Associate associate, Client client, InterviewStatus status, LocalDateTime scheduled) {
 		super();
-		this.interview_id = interview_id;
+		this.id = id;
 		this.associate = associate;
 		this.client = client;
 		this.status = status;
+		this.scheduled = scheduled;
 	}
 
 	@Override
 	public String toString() {
-		return "Interviews [interview_id=" + interview_id + ", associate=" + associate + "]";
+		return "Interviews [id=" + id + ", associate=" + associate + ", client=" + client + ", status=" + status
+				+ ", scheduled=" + scheduled + "]";
 	}
 
 	@Override
@@ -53,7 +65,10 @@ public class Interviews {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((associate == null) ? 0 : associate.hashCode());
-		result = prime * result + (int) (interview_id ^ (interview_id >>> 32));
+		result = prime * result + ((client == null) ? 0 : client.hashCode());
+		result = prime * result + (int) (id ^ (id >>> 32));
+		result = prime * result + ((scheduled == null) ? 0 : scheduled.hashCode());
+		result = prime * result + ((status == null) ? 0 : status.hashCode());
 		return result;
 	}
 
@@ -71,17 +86,32 @@ public class Interviews {
 				return false;
 		} else if (!associate.equals(other.associate))
 			return false;
-		if (interview_id != other.interview_id)
+		if (client == null) {
+			if (other.client != null)
+				return false;
+		} else if (!client.equals(other.client))
+			return false;
+		if (id != other.id)
+			return false;
+		if (scheduled == null) {
+			if (other.scheduled != null)
+				return false;
+		} else if (!scheduled.equals(other.scheduled))
+			return false;
+		if (status == null) {
+			if (other.status != null)
+				return false;
+		} else if (!status.equals(other.status))
 			return false;
 		return true;
 	}
 
-	public long getInterview_id() {
-		return interview_id;
+	public long getId() {
+		return id;
 	}
 
-	public void setInterview_id(long interview_id) {
-		this.interview_id = interview_id;
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public Associate getAssociate() {
@@ -108,4 +138,13 @@ public class Interviews {
 		this.status = status;
 	}
 
+	public LocalDateTime getScheduled() {
+		return scheduled;
+	}
+
+	public void setScheduled(LocalDateTime scheduled) {
+		this.scheduled = scheduled;
+	}
+
+	
 }
