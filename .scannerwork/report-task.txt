@@ -1,0 +1,5 @@
+projectKey=stagingmanagementsystem:project
+serverUrl=http://localhost:9000
+dashboardUrl=http://localhost:9000/dashboard/index/stagingmanagementsystem:project
+ceTaskId=AVxBrpc1GXigkn6UpoCf
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AVxBrpc1GXigkn6UpoCf
