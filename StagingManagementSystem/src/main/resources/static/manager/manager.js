@@ -1,8 +1,9 @@
-let currentCtrl = function($scope) {
-    $scope.test = "test"
-}
+const currentCtrl = ($scope) => {
+  $scope.test = 'test';
+};
 
-let forecastCtrl = function($scope) {
+const forecastCtrl = ($scope) => {
 
-}
-export { currentCtrl, forecastCtrl }
+};
+
+export { currentCtrl, forecastCtrl };
