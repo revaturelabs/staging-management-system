@@ -42,6 +42,13 @@ public class InterviewStatusServiceImpl implements InterviewStatusService {
 		interviewStatusRepo.delete(interviewStatus);
 	}
 
-	
-	
+	@Override
+	public InterviewStatus findByInterviews() {
+		return interviewStatusRepo.findByInterviews();
+	}
+
+	@Override
+	public InterviewStatus findByStatus(String status) {
+		return interviewStatusRepo.findByStatus(status);
+	}	
 }

@@ -34,6 +34,16 @@ public class InterviewStatusControllerImpl {
 	public InterviewStatus findById(@PathVariable long id) {		
 		return interviewStatusService.findById(id);
 	}
+	
+	@GetMapping("/{}")
+	public InterviewStatus findByInterviews() {		
+		return interviewStatusService.findByInterviews();
+	}
+	
+	@GetMapping("/{status}")
+	public InterviewStatus findByStatus(@PathVariable String status) {		
+		return interviewStatusService.findByStatus(status);
+	}
 
 	@GetMapping("/all")
 	public List<InterviewStatus> findById() {

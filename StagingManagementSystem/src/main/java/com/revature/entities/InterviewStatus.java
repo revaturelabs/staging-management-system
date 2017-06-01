@@ -28,7 +28,6 @@ public class InterviewStatus {
 	private Collection<Interviews> interviews;
 	public InterviewStatus() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	public InterviewStatus(long id, String status, Collection<Interviews> interviews) {
 		super();

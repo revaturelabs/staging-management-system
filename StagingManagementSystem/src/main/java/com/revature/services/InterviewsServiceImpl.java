@@ -1,5 +1,6 @@
 package com.revature.services;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,5 +43,25 @@ public class InterviewsServiceImpl implements InterviewsService{
 	@Override
 	public void delete(Interviews interviews) {
 		interviewsRepo.delete(interviews);
+	}
+
+	@Override
+	public Interviews findByAssociate() {
+		return interviewsRepo.findByAssociate();
+	}
+
+	@Override
+	public Interviews findByClient() {
+		return interviewsRepo.findByClient();
+	}
+
+	@Override
+	public Interviews findByStatus() {
+		return interviewsRepo.findByStatus();
+	}
+
+	@Override
+	public Interviews findByScheduled(LocalDateTime dateandtime) {
+		return interviewsRepo.findByScheduled(dateandtime);
 	}
 }

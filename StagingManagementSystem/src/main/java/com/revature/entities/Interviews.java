@@ -42,7 +42,6 @@ public class Interviews {
 
 	public Interviews() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public Interviews(long id, Associate associate, Client client, InterviewStatus status, LocalDateTime scheduled) {

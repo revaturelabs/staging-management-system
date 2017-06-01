@@ -11,6 +11,8 @@ public interface InterviewStatusService {
 	//R
 	public InterviewStatus findById(long id);
 	public List<InterviewStatus> getAll();
+	public InterviewStatus findByInterviews();
+	public InterviewStatus findByStatus(String status);
 	//U
 	public void update(InterviewStatus interviewstatus);
 	//D
