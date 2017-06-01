@@ -36,23 +36,23 @@ public class Checkin {
 	@OneToMany(fetch = FetchType.EAGER)
 	@Column(name = "APPROVED_BY")
 	@JoinColumn(name = "MANAGER_ID")
-	private Long approvedBy;
+	private Manager approvedBy;
 	
 	@Column(name = "APPROVE_TIME")
 	private LocalDateTime approveTime;
 	
-	@OneToOne
+	@OneToOne(mappedBy = "Associates")
 	@Column(name = "ASSOCIATE_ID")
 	@JoinColumn(name = "ASSOCIATES_ID")
-	private Long associateId;
+	private Associate associateId;
 
 	public Checkin() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Checkin(Long id, LocalDateTime checkinTime, LocalDateTime checkoutTime, Long approvedBy,
-			LocalDateTime approveTime, Long associateId) {
+	public Checkin(Long id, LocalDateTime checkinTime, LocalDateTime checkoutTime, Manager approvedBy,
+			LocalDateTime approveTime, Associate associateId) {
 		super();
 		this.id = id;
 		this.checkinTime = checkinTime;
@@ -86,11 +86,11 @@ public class Checkin {
 		this.checkoutTime = checkoutTime;
 	}
 
-	public Long getApprovedBy() {
+	public Manager getApprovedBy() {
 		return approvedBy;
 	}
 
-	public void setApprovedBy(Long approvedBy) {
+	public void setApprovedBy(Manager approvedBy) {
 		this.approvedBy = approvedBy;
 	}
 
@@ -102,11 +102,11 @@ public class Checkin {
 		this.approveTime = approveTime;
 	}
 
-	public Long getAssociateId() {
+	public Associate getAssociateId() {
 		return associateId;
 	}
 
-	public void setAssociateId(Long associateId) {
+	public void setAssociateId(Associate associateId) {
 		this.associateId = associateId;
 	}
 	
