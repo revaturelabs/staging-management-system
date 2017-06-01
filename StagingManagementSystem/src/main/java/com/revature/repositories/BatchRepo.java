@@ -9,6 +9,6 @@ import java.time.LocalDate;
 import java.util.Set;
 
 public interface BatchRepo extends JpaRepository<Batch, Long> {
-    Batch findByStartDate(LocalDate startDate);
-    Set<Batch> findAllByBatchType(BatchType batchType);
+    Batch getByStartDate(LocalDate startDate);
+    Set<Batch> getAllByBatchType(BatchType batchType);
 }
