@@ -39,10 +39,11 @@ public class Client {
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Job> jobs;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,
+			mappedBy="interviews")
 	private List<Interviews> interviews;
 
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy="questions")
 	private List<ClientQ> clientQuestions;
 
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
