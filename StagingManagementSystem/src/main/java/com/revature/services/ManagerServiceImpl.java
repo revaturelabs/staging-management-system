@@ -34,7 +34,7 @@ public class ManagerServiceImpl implements ManagerService {
 	public void add(Manager manager) throws SMSCustomException{
 		Credential credentials = manager.getCredential();
 		if(credentialRepo.findByUsernameAndPassword(credentials.getUsername(), credentials.getPassword())!=null){
-			throw new NonUniqueException("Credentials already exist");
+			throw new NonUniqueException("Credential combination already exists.");
 		}
 		credentialRepo.save(credentials);
 		managerRepo.saveAndFlush(manager);

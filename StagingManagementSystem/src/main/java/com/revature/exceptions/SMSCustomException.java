@@ -1,3 +1,4 @@
+//Parent custom exception class of all custom exceptions within this application.
 package com.revature.exceptions;
 
 public class SMSCustomException extends Exception{
