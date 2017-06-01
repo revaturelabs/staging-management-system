@@ -40,10 +40,10 @@ public class Client {
 	private List<Job> jobs;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,
-			mappedBy="interviews")
+			mappedBy="client")
 	private List<Interviews> interviews;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy="questions")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy="client")
 	private List<ClientQ> clientQuestions;
 
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
