@@ -48,7 +48,6 @@ public class Checkin {
 
 	public Checkin() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public Checkin(Long id, LocalDateTime checkinTime, LocalDateTime checkoutTime, Manager approvedBy,
