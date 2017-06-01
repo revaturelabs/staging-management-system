@@ -1,7 +1,6 @@
 package com.revature.entities;
 
 import java.time.LocalDateTime;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -23,9 +23,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Checkin {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CHECKIN_SEQ")
-	@SequenceGenerator(name = "CHECKIN_SEQ", sequenceName = "SEQUENCE_CHECKIN_ID_SEQ")
-	@Column
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CHECKIN_ID_SEQ")
+	@SequenceGenerator(name = "CHECKIN_ID_SEQ", sequenceName = "CHECKIN_ID_SEQ")
+	@Column(name = "CHECKIN_ID")
 	private Long id;
 	
 	@Column(name = "CHECKIN_TIME")
@@ -41,7 +41,8 @@ public class Checkin {
 	@Column(name = "APPROVE_TIME")
 	private LocalDateTime approveTime;
 	
-	@OneToOne
+
+	@ManyToOne
 	@JoinColumn(name = "ASSOCIATE_ID")
 	private Associate associate;
 
@@ -50,14 +51,14 @@ public class Checkin {
 	}
 
 	public Checkin(Long id, LocalDateTime checkinTime, LocalDateTime checkoutTime, Manager approvedBy,
-			LocalDateTime approveTime, Associate associateId) {
+			LocalDateTime approveTime, Associate associate) {
 		super();
 		this.id = id;
 		this.checkinTime = checkinTime;
 		this.checkoutTime = checkoutTime;
 		this.approvedBy = approvedBy;
 		this.approveTime = approveTime;
-		this.associate = associateId;
+		this.associate = associate;
 	}
 
 	public Long getId() {
@@ -104,8 +105,12 @@ public class Checkin {
 		return associate;
 	}
 
-	public void setAssociateId(Associate associateId) {
-		this.associate = associateId;
+	public Associate getAssociate() {
+		return associate;
+	}
+
+	public void setAssociate(Associate associate) {
+		this.associate = associate;
 	}
 	
 	
@@ -168,7 +173,7 @@ public class Checkin {
 	@Override
 	public String toString() {
 		return "Checkin [id=" + id + ", checkinTime=" + checkinTime + ", checkoutTime=" + checkoutTime + ", approvedBy="
-				+ approvedBy + ", approveTime=" + approveTime + ", associateId=" + associate + "]";
+				+ approvedBy + ", approveTime=" + approveTime + ", associate=" + associate + "]";
 	}
 	
 	

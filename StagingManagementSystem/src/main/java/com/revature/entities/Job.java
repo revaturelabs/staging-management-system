@@ -29,11 +29,11 @@ public class Job {
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="ASSOCIATE_ID")
-	private Associate associateId;
+	private Associate associate;
 
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="CLIENT_ID")
-	private Client clientId;
+	private Client client;
 	
 	@Column(name="START_DATE")
 	private Date startDate;
@@ -51,8 +51,8 @@ public class Job {
 			Date buyoutDate) {
 		super();
 		this.id = id;
-		this.associateId = associateId;
-		this.clientId = clientId;
+		this.associate = associate;
+		this.client = clientId;
 		this.startDate = startDate;
 		this.projectedEndDate = projectedEndDate;
 		this.endDate = endDate;
@@ -71,20 +71,20 @@ public class Job {
 		this.id = id;
 	}
 
-	public Associate getAssociateId() {
-		return associateId;
+	public Associate getAssociate() {
+		return associate;
 	}
 
-	public void setAssociateId(Associate associateId) {
-		this.associateId = associateId;
+	public void setAssociate(Associate associate) {
+		this.associate = associate;
 	}
 
-	public Client getClientId() {
-		return clientId;
+	public Client getClient() {
+		return client;
 	}
 
-	public void setClientId(Client clientId) {
-		this.clientId = clientId;
+	public void setClient(Client client) {
+		this.client = client;
 	}
 
 	public Date getStartDate() {
@@ -122,7 +122,7 @@ public class Job {
 
 	@Override
 	public String toString() {
-		return "Job [id=" + id + ", associateId=" + associateId + ", clientId=" + clientId + ", startDate=" + startDate
+		return "Job [id=" + id + ", associate=" + associate + ", client=" + client + ", startDate=" + startDate
 				+ ", projectedEndDate=" + projectedEndDate + ", endDate=" + endDate + ", buyoutDate=" + buyoutDate
 				+ "]";
 	}
