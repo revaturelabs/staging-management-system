@@ -24,7 +24,7 @@ public class InterviewStatus {
 	@GeneratedValue(generator="interview_statuses_seq", strategy=GenerationType.AUTO)
 	private long id;
 	private String status;
-	@OneToMany(fetch=FetchType.EAGER, mappedBy="status_Id")
+	@OneToMany(fetch=FetchType.EAGER, mappedBy="status")
 	private Collection<Interviews> interviews;
 	public InterviewStatus() {
 		super();

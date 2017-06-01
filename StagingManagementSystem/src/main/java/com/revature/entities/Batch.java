@@ -39,7 +39,7 @@ public class Batch {
 	@JoinTable(name = "BATCH_TRAINER", joinColumns = @JoinColumn(name="BATCH_ID"), inverseJoinColumns = @JoinColumn(name="TRAINER_ID"))
 	private Set<Trainer> trainer;
 
-	@OneToMany(mappedBy = "BATCH_ID")
+	@OneToMany(mappedBy = "batch")
 	private Set<Associate> associates;
 
 	public Batch(){
