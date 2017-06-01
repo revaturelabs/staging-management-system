@@ -19,10 +19,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class InterviewStatus {
 	@Id
-	@Column
+	@Column(name="interview_Status_Id")
 	@SequenceGenerator(name="interview_statuses_seq", sequenceName="interview_statuses_seq")
 	@GeneratedValue(generator="interview_statuses_seq", strategy=GenerationType.AUTO)
-	private long status_Id;
+	private long id;
 	private String status;
 	@OneToMany(fetch=FetchType.EAGER, mappedBy="status_Id")
 	private Collection<Interviews> interviews;
@@ -30,23 +30,23 @@ public class InterviewStatus {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public InterviewStatus(long status_Id, String status, Collection<Interviews> interviews) {
+	public InterviewStatus(long id, String status, Collection<Interviews> interviews) {
 		super();
-		this.status_Id = status_Id;
+		this.id = id;
 		this.status = status;
 		this.interviews = interviews;
 	}
 	@Override
 	public String toString() {
-		return "InterviewStatus [status_Id=" + status_Id + ", status=" + status + ", interviews=" + interviews + "]";
+		return "InterviewStatus [id=" + id + ", status=" + status + ", interviews=" + interviews + "]";
 	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + (int) (id ^ (id >>> 32));
 		result = prime * result + ((interviews == null) ? 0 : interviews.hashCode());
 		result = prime * result + ((status == null) ? 0 : status.hashCode());
-		result = prime * result + (int) (status_Id ^ (status_Id >>> 32));
 		return result;
 	}
 	@Override
@@ -58,6 +58,8 @@ public class InterviewStatus {
 		if (getClass() != obj.getClass())
 			return false;
 		InterviewStatus other = (InterviewStatus) obj;
+		if (id != other.id)
+			return false;
 		if (interviews == null) {
 			if (other.interviews != null)
 				return false;
@@ -68,15 +70,13 @@ public class InterviewStatus {
 				return false;
 		} else if (!status.equals(other.status))
 			return false;
-		if (status_Id != other.status_Id)
-			return false;
 		return true;
 	}
-	public long getStatus_Id() {
-		return status_Id;
+	public long getId() {
+		return id;
 	}
-	public void setStatus_Id(long status_Id) {
-		this.status_Id = status_Id;
+	public void setId(long id) {
+		this.id = id;
 	}
 	public String getStatus() {
 		return status;
@@ -90,6 +90,7 @@ public class InterviewStatus {
 	public void setInterviews(Collection<Interviews> interviews) {
 		this.interviews = interviews;
 	}
+	
 	
 	
 	

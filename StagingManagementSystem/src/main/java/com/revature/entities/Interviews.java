@@ -20,10 +20,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class Interviews {
 	
 	@Id
-	@Column
+	@Column(name="interview_Id")
 	@SequenceGenerator(name = "interviews_seq", sequenceName = "interviews_seq")
 	@GeneratedValue(generator = "interviews_seq", strategy = GenerationType.AUTO)
-	private long interview_id;
+	private long id;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "associate_Id")
@@ -40,26 +40,78 @@ public class Interviews {
 	@Column(name = "SCHEDULED_TIME")
 	private LocalDateTime scheduled;
 
-	public Interviews(long interview_id, Associate associate, Client client, InterviewStatus status,
-			LocalDateTime scheduled) {
+	public Interviews() {
 		super();
-		this.interview_id = interview_id;
+		// TODO Auto-generated constructor stub
+	}
+
+	public Interviews(long id, Associate associate, Client client, InterviewStatus status, LocalDateTime scheduled) {
+		super();
+		this.id = id;
 		this.associate = associate;
 		this.client = client;
 		this.status = status;
 		this.scheduled = scheduled;
 	}
 
-	public Interviews() {
-		super();
+	@Override
+	public String toString() {
+		return "Interviews [id=" + id + ", associate=" + associate + ", client=" + client + ", status=" + status
+				+ ", scheduled=" + scheduled + "]";
 	}
 
-	public long getInterview_id() {
-		return interview_id;
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((associate == null) ? 0 : associate.hashCode());
+		result = prime * result + ((client == null) ? 0 : client.hashCode());
+		result = prime * result + (int) (id ^ (id >>> 32));
+		result = prime * result + ((scheduled == null) ? 0 : scheduled.hashCode());
+		result = prime * result + ((status == null) ? 0 : status.hashCode());
+		return result;
 	}
 
-	public void setInterview_id(long interview_id) {
-		this.interview_id = interview_id;
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Interviews other = (Interviews) obj;
+		if (associate == null) {
+			if (other.associate != null)
+				return false;
+		} else if (!associate.equals(other.associate))
+			return false;
+		if (client == null) {
+			if (other.client != null)
+				return false;
+		} else if (!client.equals(other.client))
+			return false;
+		if (id != other.id)
+			return false;
+		if (scheduled == null) {
+			if (other.scheduled != null)
+				return false;
+		} else if (!scheduled.equals(other.scheduled))
+			return false;
+		if (status == null) {
+			if (other.status != null)
+				return false;
+		} else if (!status.equals(other.status))
+			return false;
+		return true;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public Associate getAssociate() {
@@ -92,58 +144,6 @@ public class Interviews {
 
 	public void setScheduled(LocalDateTime scheduled) {
 		this.scheduled = scheduled;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((associate == null) ? 0 : associate.hashCode());
-		result = prime * result + ((client == null) ? 0 : client.hashCode());
-		result = prime * result + (int) (interview_id ^ (interview_id >>> 32));
-		result = prime * result + ((scheduled == null) ? 0 : scheduled.hashCode());
-		result = prime * result + ((status == null) ? 0 : status.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Interviews other = (Interviews) obj;
-		if (associate == null) {
-			if (other.associate != null)
-				return false;
-		} else if (!associate.equals(other.associate))
-			return false;
-		if (client == null) {
-			if (other.client != null)
-				return false;
-		} else if (!client.equals(other.client))
-			return false;
-		if (interview_id != other.interview_id)
-			return false;
-		if (scheduled == null) {
-			if (other.scheduled != null)
-				return false;
-		} else if (!scheduled.equals(other.scheduled))
-			return false;
-		if (status == null) {
-			if (other.status != null)
-				return false;
-		} else if (!status.equals(other.status))
-			return false;
-		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "Interviews [interview_id=" + interview_id + ", associate=" + associate + ", client=" + client
-				+ ", status=" + status + ", scheduled=" + scheduled + "]";
 	}
 
 	
