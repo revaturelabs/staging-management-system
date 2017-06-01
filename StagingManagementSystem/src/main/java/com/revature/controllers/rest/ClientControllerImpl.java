@@ -13,7 +13,7 @@ import com.revature.entities.Client;
 import com.revature.services.ClientService;
 
 @RestController
-@RequestMapping
+@RequestMapping("client")
 public class ClientControllerImpl {
 	
 	Logger log = Logger.getRootLogger();
