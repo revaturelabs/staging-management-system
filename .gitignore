@@ -1,2 +1,45 @@
 /target/
-/StagingManagementSystem/
+*.class
+.classpath
+.project
+.gitignore
+.idea/
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+*/.project
+.tern-project
+.springbeans
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+.metadata
+*.metadata
+.settings
+*.settings
+*.idea/
+*.idea/workspace*
+.recommenders
+*logs/
+*.iml
+/bin/
+/Servers/
+/target/
+*/target/
+/RemoteSystemsTempFiles/
+/External Files/
+
+*pom.xml
+*/application.properties
+
+.idea
+*.idea
+*.iml
+logs/*
+
+# OS X
+*.DS_Store
