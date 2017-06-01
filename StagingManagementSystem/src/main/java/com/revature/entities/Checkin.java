@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
@@ -33,18 +34,16 @@ public class Checkin {
 	@Column(name = "CHECKOUT_TIME")
 	private LocalDateTime checkoutTime;
 	
-	@OneToMany(fetch = FetchType.EAGER)
-	@Column(name = "APPROVED_BY")
-	@JoinColumn(name = "MANAGER_ID")
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "APPROVED_BY")
 	private Manager approvedBy;
 	
 	@Column(name = "APPROVE_TIME")
 	private LocalDateTime approveTime;
 	
-	@OneToOne(mappedBy = "Associates")
-	@Column(name = "ASSOCIATE_ID")
-	@JoinColumn(name = "ASSOCIATES_ID")
-	private Associate associateId;
+	@OneToOne
+	@JoinColumn(name = "ASSOCIATE_ID")
+	private Associate associate;
 
 	public Checkin() {
 		super();
@@ -58,7 +57,7 @@ public class Checkin {
 		this.checkoutTime = checkoutTime;
 		this.approvedBy = approvedBy;
 		this.approveTime = approveTime;
-		this.associateId = associateId;
+		this.associate = associateId;
 	}
 
 	public Long getId() {
@@ -102,11 +101,11 @@ public class Checkin {
 	}
 
 	public Associate getAssociateId() {
-		return associateId;
+		return associate;
 	}
 
 	public void setAssociateId(Associate associateId) {
-		this.associateId = associateId;
+		this.associate = associateId;
 	}
 	
 	
@@ -117,7 +116,7 @@ public class Checkin {
 		int result = 1;
 		result = prime * result + ((approveTime == null) ? 0 : approveTime.hashCode());
 		result = prime * result + ((approvedBy == null) ? 0 : approvedBy.hashCode());
-		result = prime * result + ((associateId == null) ? 0 : associateId.hashCode());
+		result = prime * result + ((associate == null) ? 0 : associate.hashCode());
 		result = prime * result + ((checkinTime == null) ? 0 : checkinTime.hashCode());
 		result = prime * result + ((checkoutTime == null) ? 0 : checkoutTime.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
@@ -143,10 +142,10 @@ public class Checkin {
 				return false;
 		} else if (!approvedBy.equals(other.approvedBy))
 			return false;
-		if (associateId == null) {
-			if (other.associateId != null)
+		if (associate == null) {
+			if (other.associate != null)
 				return false;
-		} else if (!associateId.equals(other.associateId))
+		} else if (!associate.equals(other.associate))
 			return false;
 		if (checkinTime == null) {
 			if (other.checkinTime != null)
@@ -169,7 +168,7 @@ public class Checkin {
 	@Override
 	public String toString() {
 		return "Checkin [id=" + id + ", checkinTime=" + checkinTime + ", checkoutTime=" + checkoutTime + ", approvedBy="
-				+ approvedBy + ", approveTime=" + approveTime + ", associateId=" + associateId + "]";
+				+ approvedBy + ", approveTime=" + approveTime + ", associateId=" + associate + "]";
 	}
 	
 	

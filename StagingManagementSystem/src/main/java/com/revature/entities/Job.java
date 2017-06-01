@@ -29,11 +29,11 @@ public class Job {
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="ASSOCIATE_ID")
-	private long associateId;
+	private Associate associateId;
 
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="CLIENT_ID")
-	private long clientId;
+	private Client clientId;
 	
 	@Column(name="START_DATE")
 	private Date startDate;
@@ -47,7 +47,7 @@ public class Job {
 	@Column(name="BUYOUT_DATE")
 	private Date buyoutDate;
 
-	public Job(long id, long associateId, long clientId, Date startDate, Date projectedEndDate, Date endDate,
+	public Job(long id, Associate associateId, Client clientId, Date startDate, Date projectedEndDate, Date endDate,
 			Date buyoutDate) {
 		super();
 		this.id = id;
@@ -71,19 +71,19 @@ public class Job {
 		this.id = id;
 	}
 
-	public long getAssociateId() {
+	public Associate getAssociateId() {
 		return associateId;
 	}
 
-	public void setAssociateId(long associateId) {
+	public void setAssociateId(Associate associateId) {
 		this.associateId = associateId;
 	}
 
-	public long getClientId() {
+	public Client getClientId() {
 		return clientId;
 	}
 
-	public void setClientId(long clientId) {
+	public void setClientId(Client clientId) {
 		this.clientId = clientId;
 	}
 
