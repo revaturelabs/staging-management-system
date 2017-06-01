@@ -1,49 +1,65 @@
-var routerApp = angular.module('routerApp', ['ui.router', 'ui.bootstrap', 'ngMaterial']);
+import {currentCtrl, forecastCtrl} from "./manager/manager";
+
+console.log(currentCtrl);
+var routerApp = angular.module('routerApp', ['ui.router']);
 
 routerApp.config(function($stateProvider, $urlRouterProvider) {
 
-    $urlRouterProvider.otherwise('/home');
+    $urlRouterProvider.otherwise('/login');
 
     $stateProvider
 
         // HOME STATES AND NESTED VIEWS ========================================
-        .state('home', {
-            url: '/home',
-            templateUrl: 'partial-home.html'
+        .state('login', {
+            url: '/login',
+            templateUrl: 'login/login.html'
         })
+
+        .state('manager', {
+            url: '/manager',
+            templateUrl: 'manager/manager.html'
+        })
+
+        .state('manager.current', {
+            url: '/current',
+            templateUrl: 'manager/current.html',
+            controller: currentCtrl
+        });
+
+
 
         // nested list with custom controller
-        .state('home.list', {
-            url: '/list',
-            templateUrl: 'partial-home-list.html',
-            controller: function($scope) {
-                $scope.dogs = ['Bernese', 'Husky', 'Goldendoodle'];
-            }
-        })
+        // .state('home.list', {
+        //     url: '/list',
+        //     templateUrl: 'partial-home-list.html',
+        //     controller: function($scope) {
+        //         $scope.dogs = ['Bernese', 'Husky', 'Goldendoodle'];
+        //     }
+        // })
 
         // nested list with just some random string data
-        .state('home.paragraph', {
-            url: '/paragraph',
-            template: 'I could sure use a drink right now.'
-        })
+        // .state('home.paragraph', {
+        //     url: '/paragraph',
+        //     template: 'I could sure use a drink right now.'
+        // })
 
         // ABOUT PAGE AND MULTIPLE NAMED VIEWS =================================
-        .state('about', {
-            url: '/about',
-            views: {
-                '': { templateUrl: 'partial-about.html' },
-                'columnOne@about': { template: 'Look I am a column!' },
-                'columnTwo@about': {
-                    templateUrl: 'table-data.html',
-                    controller: 'scotchController'
-                }
-            }
-
-        });
+        // .state('about', {
+        //     url: '/about',
+        //     views: {
+        //         '': { templateUrl: 'partial-about.html' },
+        //         'columnOne@about': { template: 'Look I am a column!' },
+        //         'columnTwo@about': {
+        //             templateUrl: 'table-data.html',
+        //             controller: 'scotchController'
+        //         }
+        //     }
+        //
+        // });
 
 });
 
-routerApp.controller('appController', function($scope) {
+routerApp.controller('navController', function($scope) {
 
     $scope.openMenu = function($mdOpenMenu, ev) {
         console.log("here")
@@ -70,7 +86,7 @@ routerApp.controller('scotchController', function($scope) {
             price: 20000
         }
     ];
-    
+
     console.log("scotches loaded");
 
 });
