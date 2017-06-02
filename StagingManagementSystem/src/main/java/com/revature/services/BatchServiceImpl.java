@@ -1,5 +1,6 @@
 package com.revature.services;
 
+import com.revature.entities.Associate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +19,16 @@ public class BatchServiceImpl implements BatchService {
 	}
 
 	@Override
+	public void addAssociateToBatch(Batch batch, Associate associate){
+		batch.getAssociates().add(associate);
+		batchRepo.saveAndFlush(batch);
+	}
+
+	@Override
 	public void add(Batch batch) {
 		batchRepo.saveAndFlush(batch);
 	}
+
+
 
 }
