@@ -13,6 +13,7 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationFa
 
 /**
  * Created by Mykola Nikitin on 6/2/17.
+ * Configuration class to get Spring Security to function.
  */
 @Configuration
 @EnableWebSecurity
@@ -27,24 +28,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService)
-        .passwordEncoder(new BCryptPasswordEncoder());
+        .passwordEncoder(new BCryptPasswordEncoder()); // We need a password encoder, for which we use BCrypt.
     }
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception{//TODO un-break this
         httpSecurity
-                .csrf().disable()
-                .formLogin()
-                    .successHandler(authenticationSuccessHandler)
-                    .failureHandler(new SimpleUrlAuthenticationFailureHandler())
+                .csrf().disable() // Disable cross site request forgery
+                .formLogin() // We want to use form-based authentication.
+                    .successHandler(authenticationSuccessHandler) // Use the monstrosity of a class we have to handle successes.
+                    .failureHandler(new SimpleUrlAuthenticationFailureHandler()) // Handle failures with a 401.
                     .and()
-                .logout()
+                .logout() // Let anyone log out.
                     .permitAll()
                     .and()
                 .authorizeRequests()
-                    .antMatchers("/","/static/**").permitAll()
-                    .antMatchers("/profile","/checkin","/checkout").hasRole("ASSOCIATE")
-                    .antMatchers("/checkin/approve","/**").hasAnyRole("MANAGER","ADMIN")
+                    .antMatchers("/","/static/**").permitAll() // Let anyone access static content, and root.
+                    .antMatchers("/profile","/checkin","/checkout").hasRole("ASSOCIATE") // Let associates look at their profile, and check in/out.
+                    .antMatchers("/checkin/approve","/**").hasAnyRole("MANAGER","ADMIN") // Let managers and admins approve checkins, and do anything.
                     .anyRequest().authenticated();
     }
 }
