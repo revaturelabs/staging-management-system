@@ -6,7 +6,8 @@
     "import"
   ],
   "rules": {
-    "react/no-unused-prop-types": [2, { "skipShapeProps": true }]
+    "react/no-unused-prop-types": [2, { "skipShapeProps": true }],
+    "linebreak-style": 0
   },
   "env": {
     "browser": true,
