@@ -17,19 +17,24 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Entity
 @Table(name="interview_statuses")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class InterviewStatus {
+public class InterviewStatuses {
+	
 	@Id
 	@Column(name="interview_Status_Id")
 	@SequenceGenerator(name="interview_statuses_seq", sequenceName="interview_statuses_seq")
 	@GeneratedValue(generator="interview_statuses_seq", strategy=GenerationType.AUTO)
 	private long id;
+	
+	@Column
 	private String status;
-	@OneToMany(fetch=FetchType.EAGER, mappedBy="status")
+	
+	@OneToMany(fetch=FetchType.EAGER, mappedBy="interviewStatus")
 	private Collection<Interviews> interviews;
-	public InterviewStatus() {
+	
+	public InterviewStatuses() {
 		super();
 	}
-	public InterviewStatus(long id, String status, Collection<Interviews> interviews) {
+	public InterviewStatuses(long id, String status, Collection<Interviews> interviews) {
 		super();
 		this.id = id;
 		this.status = status;
@@ -56,7 +61,7 @@ public class InterviewStatus {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		InterviewStatus other = (InterviewStatus) obj;
+		InterviewStatuses other = (InterviewStatuses) obj;
 		if (id != other.id)
 			return false;
 		if (interviews == null) {

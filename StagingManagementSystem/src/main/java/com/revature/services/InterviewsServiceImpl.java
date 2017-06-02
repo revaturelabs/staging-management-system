@@ -1,6 +1,5 @@
 package com.revature.services;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -21,10 +20,6 @@ public class InterviewsServiceImpl implements InterviewsService {
 		super();
 		this.interviewsRepo = interviewsRepo;
 	}
-
-	// public InterviewsServiceImpl() {
-	// super();
-	// }
 
 	@Override
 	@Transactional
@@ -53,43 +48,19 @@ public class InterviewsServiceImpl implements InterviewsService {
 	}
 
 	@Override
-	public Interviews findByAssociate() {
-		// TODO Auto-generated method stub
-		return null;
+	public Interviews findByAssociateId(long id) {
+		return interviewsRepo.findByAssociateId(id);
 	}
 
-	@Override
-	public Interviews findByClient() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Interviews findByStatus() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Interviews findByScheduled(LocalDateTime dateandtime) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	// @Override
-	// public Interviews findByAssociate() {
-	// return interviewsRepo.findByAssociate();
-	// }
-	//
-	// @Override
-	// public Interviews findByClient() {
-	// return interviewsRepo.findByClient();
-	// }
-	//
-	// @Override
-	// public Interviews findByStatus() {
-	// return interviewsRepo.findByStatus();
-	// }
+	/*@Override
+	public Interviews findByClientId(long id) {
+		return interviewsRepo.findByClientId(id);
+	}*/
+	
+	 @Override
+	 public Interviews findByInterviewStatus(long id) {
+		 return interviewsRepo.findByInterviewStatusId(id);
+	 }
 	//
 	// @Override
 	// public Interviews findByScheduled(LocalDateTime dateandtime) {

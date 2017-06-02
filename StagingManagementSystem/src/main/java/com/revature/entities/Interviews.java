@@ -34,116 +34,12 @@ public class Interviews {
 	private Client client;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "status_Id")
-	private InterviewStatus status;
+	@JoinColumn(name = "interview_Status_Id")
+	private InterviewStatuses interviewStatus;
 	
 	@Column(name = "SCHEDULED_TIME")
 	private LocalDateTime scheduled;
 
-	public Interviews() {
-		super();
-	}
-
-	public Interviews(long id, Associate associate, Client client, InterviewStatus status, LocalDateTime scheduled) {
-		super();
-		this.id = id;
-		this.associate = associate;
-		this.client = client;
-		this.status = status;
-		this.scheduled = scheduled;
-	}
-
-	@Override
-	public String toString() {
-		return "Interviews [id=" + id + ", associate=" + associate + ", client=" + client + ", status=" + status
-				+ ", scheduled=" + scheduled + "]";
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((associate == null) ? 0 : associate.hashCode());
-		result = prime * result + ((client == null) ? 0 : client.hashCode());
-		result = prime * result + (int) (id ^ (id >>> 32));
-		result = prime * result + ((scheduled == null) ? 0 : scheduled.hashCode());
-		result = prime * result + ((status == null) ? 0 : status.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Interviews other = (Interviews) obj;
-		if (associate == null) {
-			if (other.associate != null)
-				return false;
-		} else if (!associate.equals(other.associate))
-			return false;
-		if (client == null) {
-			if (other.client != null)
-				return false;
-		} else if (!client.equals(other.client))
-			return false;
-		if (id != other.id)
-			return false;
-		if (scheduled == null) {
-			if (other.scheduled != null)
-				return false;
-		} else if (!scheduled.equals(other.scheduled))
-			return false;
-		if (status == null) {
-			if (other.status != null)
-				return false;
-		} else if (!status.equals(other.status))
-			return false;
-		return true;
-	}
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public Associate getAssociate() {
-		return associate;
-	}
-
-	public void setAssociate(Associate associate) {
-		this.associate = associate;
-	}
-
-	public Client getClient() {
-		return client;
-	}
-
-	public void setClient(Client client) {
-		this.client = client;
-	}
-
-	public InterviewStatus getStatus() {
-		return status;
-	}
-
-	public void setStatus(InterviewStatus status) {
-		this.status = status;
-	}
-
-	public LocalDateTime getScheduled() {
-		return scheduled;
-	}
-
-	public void setScheduled(LocalDateTime scheduled) {
-		this.scheduled = scheduled;
-	}
-
+	
 	
 }

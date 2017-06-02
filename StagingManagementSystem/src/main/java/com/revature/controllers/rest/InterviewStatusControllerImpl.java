@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.revature.entities.InterviewStatus;
+import com.revature.entities.InterviewStatuses;
 import com.revature.services.InterviewStatusService;
 
 @RestController
@@ -27,37 +27,37 @@ public class InterviewStatusControllerImpl {
 	}
 
 	@PostMapping
-	public void add(@RequestBody InterviewStatus interviewStatus) {
+	public void add(@RequestBody InterviewStatuses interviewStatus) {
 		interviewStatusService.add(interviewStatus);
 	}
 
 	@GetMapping("/{id}")
-	public InterviewStatus findById(@PathVariable long id) {
+	public InterviewStatuses findById(@PathVariable long id) {
 		return interviewStatusService.findById(id);
 	}
 
 	@GetMapping("/{}")
-	public InterviewStatus findByInterviews() {
+	public InterviewStatuses findByInterviews() {
 		return interviewStatusService.findByInterviews();
 	}
 
 	@GetMapping("/{status}")
-	public InterviewStatus findByStatus(@PathVariable String status) {
+	public InterviewStatuses findByStatus(@PathVariable String status) {
 		return interviewStatusService.findByStatus(status);
 	}
 
 	@GetMapping("/all")
-	public List<InterviewStatus> findById() {
+	public List<InterviewStatuses> findById() {
 		return interviewStatusService.getAll();
 	}
 
 	@PutMapping
-	public void update(@RequestBody InterviewStatus interviewStatus) {
+	public void update(@RequestBody InterviewStatuses interviewStatus) {
 		interviewStatusService.update(interviewStatus);
 	}
 
 	@DeleteMapping
-	public void delete(@RequestBody InterviewStatus interviewStatus) {
+	public void delete(@RequestBody InterviewStatuses interviewStatus) {
 		interviewStatusService.delete(interviewStatus);
 	}
 }
