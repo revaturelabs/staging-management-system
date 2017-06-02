@@ -10,6 +10,7 @@
 .tern-project
 .springbeans
 node_modules/
+*.log
 
 # Package Files #
 *.jar
