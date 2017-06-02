@@ -2,21 +2,21 @@ package com.revature.entities;
 
 import java.util.List;
 import java.util.Set;
-import javax.persistence.*;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.revature.classes.ClientInfo;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.revature.classes.ClientInfo;
 
 @Entity
@@ -28,7 +28,7 @@ public class Client {
 	@Column(name="CLIENT_ID")
 	@SequenceGenerator(name = "CLIENT_ID_SEQ", sequenceName = "CLIENT_ID_SEQ")
 	@GeneratedValue(generator = "CLIENT_ID_SEQ", strategy = GenerationType.AUTO)
-	private long clientId;
+	private long id;
 
 	@Column(name = "client_name")
 	private String name;
@@ -57,7 +57,7 @@ public class Client {
 	public Client(long clientId, String name, ClientInfo clientInfo, List<Job> jobs, List<Interviews> interviews,
 			List<ClientQ> clientQuestions, Set<Associate> associates) {
 		super();
-		this.clientId = clientId;
+		this.id = clientId;
 		this.name = name;
 		this.clientInfo = clientInfo;
 		this.jobs = jobs;
@@ -66,12 +66,12 @@ public class Client {
 		this.associates = associates;
 	}
 
-	public long getClientId() {
-		return clientId;
+	public long getId() {
+		return id;
 	}
 
-	public void setClientId(long clientId) {
-		this.clientId = clientId;
+	public void setId(long clientId) {
+		this.id = clientId;
 	}
 
 	public String getName() {
@@ -127,7 +127,7 @@ public class Client {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((associates == null) ? 0 : associates.hashCode());
-		result = prime * result + (int) (clientId ^ (clientId >>> 32));
+		result = prime * result + (int) (id ^ (id >>> 32));
 		result = prime * result + ((clientInfo == null) ? 0 : clientInfo.hashCode());
 		result = prime * result + ((clientQuestions == null) ? 0 : clientQuestions.hashCode());
 		result = prime * result + ((interviews == null) ? 0 : interviews.hashCode());
@@ -150,7 +150,7 @@ public class Client {
 				return false;
 		} else if (!associates.equals(other.associates))
 			return false;
-		if (clientId != other.clientId)
+		if (id != other.id)
 			return false;
 		if (clientInfo == null) {
 			if (other.clientInfo != null)
@@ -182,7 +182,7 @@ public class Client {
 
 	@Override
 	public String toString() {
-		return "Client [clientId=" + clientId + ", name=" + name + ", clientInfo=" + clientInfo + ", jobs=" + jobs
+		return "Client [id=" + id + ", name=" + name + ", clientInfo=" + clientInfo + ", jobs=" + jobs
 				+ ", interviews=" + interviews + ", clientQuestions=" + clientQuestions + ", associates=" + associates
 				+ "]";
 	}
