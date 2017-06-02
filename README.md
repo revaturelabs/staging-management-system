@@ -39,7 +39,7 @@ this will install all of the dependencies that have been laid out in the package
 
 4. Once all of the dependencies have been installed you can have web pack watch
 your code to do this type
-    npm run watch
+    webpack --watch
 
 What this does is allows Webpack and Babel to bundle and transpile all of the
 javascript code and it's required dependencies into one js file.
