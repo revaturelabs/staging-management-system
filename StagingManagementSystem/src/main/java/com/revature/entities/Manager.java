@@ -30,7 +30,7 @@ public class Manager {
 	@GeneratedValue(generator="MANAGER_ID_SEQ", strategy=GenerationType.AUTO)
 	private Long id;
 	
-	@Column(name = "MANAGER_NAME")
+	@Column(name = "NAME")
 	private String name;
 	
 	@OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
