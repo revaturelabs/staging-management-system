@@ -47,7 +47,7 @@ So even though you are working in your individual js files it will all be
 bundled into bundle.js
 
 Why is this a good thing?
-Our server now only has to serve up one js file for out javascript application
+Our server now only has to serve up one js file for our entire application
 and Bable transpiles it into an older version of JavaScript 
 that runs on browsers that don't support the newest standard of JavaScript
 
