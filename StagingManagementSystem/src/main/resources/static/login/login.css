@@ -1,0 +1,11 @@
+
+.colorgraph {
+  height: 5px;
+  border-top: 0;
+  background: rgba(242, 105, 38, 1);
+}
+
+
+#center {
+	text-align: center;
+}
