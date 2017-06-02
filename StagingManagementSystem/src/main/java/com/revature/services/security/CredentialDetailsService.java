@@ -20,10 +20,7 @@ import java.util.List;
 
 /**
  * Created by Mykola Nikitin on 6/2/17.
- * Roles provided:
- *   ASSOCIATE, for associates
- *   MANAGER, for managers
- *   ADMIN, for admins
+ * Loads a user from the database, and gives them their role in Spring Security.
  */
 @Service("userDetailsService")
 public class CredentialDetailsService implements UserDetailsService {
