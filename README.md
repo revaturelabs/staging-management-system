@@ -30,7 +30,8 @@ other business clients.
 If there is any uncertainty here is a guide to downloading it
 http://blog.teamtreehouse.com/install-node-js-npm-windows
 
-2. Navigate to the directory with package.json. It should be in the root folder of the repository.
+2. Open up Git Bash, the command prompt or whatever else you typically use. Note that if you had this open before installing node
+    you will have to reopen it. Navigate to the directory with package.json. It should be in the root folder of the repository.
 
 3. In your command line type: <br />
     npm install <br />
