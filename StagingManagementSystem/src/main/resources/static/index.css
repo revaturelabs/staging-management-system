@@ -1,0 +1,20 @@
+@CHARSET "ISO-8859-1";
+
+footer {
+    width: 90%;
+}
+
+.footer-line { 
+    width: 90%;
+    border-color: rgba(55, 71, 79, 0.75);
+}
+#footer-wrapper {
+	text-align: center;
+	position: fixed;
+    bottom: 0px;
+    width: 100%;
+}
+
+#body {
+	margin-bottom: 101px;
+}
