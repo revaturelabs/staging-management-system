@@ -36,9 +36,9 @@ public class InterviewStatusControllerImpl {
 		return interviewStatusService.findById(id);
 	}
 
-	@GetMapping("/{}")
-	public InterviewStatuses findByInterviews() {
-		return interviewStatusService.findByInterviews();
+	@GetMapping("/{interviews_Id}")
+	public InterviewStatuses findByInterviews(long id) {
+		return interviewStatusService.findByInterviewsId(id);
 	}
 
 	@GetMapping("/{status}")

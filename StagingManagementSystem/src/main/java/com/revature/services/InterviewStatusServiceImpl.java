@@ -41,26 +41,16 @@ public class InterviewStatusServiceImpl implements InterviewStatusService {
 	public void delete(InterviewStatuses interviewStatus) {
 		interviewStatusRepo.delete(interviewStatus);
 	}
-	//
-	// @Override
-	// public InterviewStatus findByInterviews() {
-	// return interviewStatusRepo.findByInterviews();
-	// }
-	//
-	// @Override
-	// public InterviewStatus findByStatus(String status) {
-	// return interviewStatusRepo.findByStatus(status);
-	// }
-
+	
 	@Override
-	public InterviewStatuses findByInterviews() {
-		// TODO Auto-generated method stub
-		return null;
+	public InterviewStatuses findByInterviewsId(long id) {
+		return interviewStatusRepo.findByInterviewsId(id);
 	}
-
+	
 	@Override
 	public InterviewStatuses findByStatus(String status) {
-		// TODO Auto-generated method stub
-		return null;
+		 return interviewStatusRepo.findByStatus(status);
 	}
+
+
 }

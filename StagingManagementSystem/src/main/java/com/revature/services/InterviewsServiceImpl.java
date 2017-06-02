@@ -1,5 +1,6 @@
 package com.revature.services;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -52,18 +53,18 @@ public class InterviewsServiceImpl implements InterviewsService {
 		return interviewsRepo.findByAssociateId(id);
 	}
 
-	/*@Override
+	@Override
 	public Interviews findByClientId(long id) {
 		return interviewsRepo.findByClientId(id);
-	}*/
+	}
 	
 	 @Override
 	 public Interviews findByInterviewStatus(long id) {
 		 return interviewsRepo.findByInterviewStatusId(id);
 	 }
-	//
-	// @Override
-	// public Interviews findByScheduled(LocalDateTime dateandtime) {
-	// return interviewsRepo.findByScheduled(dateandtime);
-	// }
+	
+	 @Override
+	 public Interviews findByScheduled(LocalDateTime dateandtime) {
+	 return interviewsRepo.findByScheduled(dateandtime);
+	 }
 }

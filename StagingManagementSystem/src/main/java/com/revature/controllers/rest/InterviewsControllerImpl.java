@@ -1,5 +1,6 @@
 package com.revature.controllers.rest;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,20 +43,20 @@ public class InterviewsControllerImpl {
 		return interviewsService.findByAssociateId(id);
 	}
 	
-	/*@GetMapping("/{client_Id}")
+	@GetMapping("/{client_Id}")
 	public Interviews findByClientId(long id) {
 		return interviewsService.findByClientId(id);
-	}*/
+	}
 	
-	@GetMapping("/{}")
+	@GetMapping("/{interview_Status_Id}")
 	public Interviews findByInterviewStatusId(long id) {
 		return interviewsService.findByInterviewStatus(id);
 	}
 
-//	@GetMapping("/{dateandtime}")
-//	public Interviews findByScheduled(@PathVariable LocalDateTime dateandtime) {
-//		return interviewsService.findByScheduled(dateandtime);
-//	}
+	@GetMapping("/{dateandtime}")
+	public Interviews findByScheduled(@PathVariable LocalDateTime dateandtime) {
+		return interviewsService.findByScheduled(dateandtime);
+	}
 
 	@GetMapping("/all")
 	public List<Interviews> findById() {
