@@ -1,5 +1,27 @@
 # Staging Management System
 
+## Overview
+
+### Mission and Scope
+
+#### What problem does this project address?
+This application addresses the complexities of managing human 
+resources that are currently in staging and awaiting placement with clients. 
+Additionally, the task of planning the allocation of future resources is also addressed.
+
+
+#### What is the goal of this project?
+The goal of this project is to provide a simple and concise system of 
+managing the status of associates as they move from training to staging to placement with 
+clients. Additionally, this project seeks to ease the burden of long-term planning. 
+By offering a resource forecasting functionality, more strategic planning of future resources will be attained.
+
+
+#### What is the scope of this project?
+The original concept behind this application was to give a Superuser the means to Add/View/Manage 
+human resources and a Manager user to be able to View/Manage said data. Its purpose is to aid in processing business 
+client requests for staffing and ensuring that associates that are mapped to clients are not accidentally placed with 
+other business clients.
 
 ## Setup
 
