@@ -1,7 +1,7 @@
-#Staging Management System
+# Staging Management System
 
 
-##Setup
+## Setup
 
 1. Download node from https://nodejs.org/en/download/
 If there is any uncertainty here is a guide to downloading it 
