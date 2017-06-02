@@ -36,6 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         httpSecurity
                 .csrf().disable() // Disable cross site request forgery
                 .formLogin() // We want to use form-based authentication.
+                .loginPage("/")
                     .successHandler(authenticationSuccessHandler) // Use the monstrosity of a class we have to handle successes.
                     .failureHandler(new SimpleUrlAuthenticationFailureHandler()) // Handle failures with a 401.
                     .and()
@@ -43,9 +44,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                     .permitAll()
                     .and()
                 .authorizeRequests()
-                    .antMatchers("/","/static/**").permitAll() // Let anyone access static content, and root.
+                    .antMatchers("/","/home","/static/**","/**").permitAll() // Let anyone access static content, and root.
                     .antMatchers("/profile","/checkin","/checkout").hasRole("ASSOCIATE") // Let associates look at their profile, and check in/out.
-                    .antMatchers("/checkin/approve","/**").hasAnyRole("MANAGER","ADMIN") // Let managers and admins approve checkins, and do anything.
+                    .antMatchers("/checkin/approve").hasAnyRole("MANAGER","ADMIN") // Let managers and admins approve checkins, and do anything.
                     .anyRequest().authenticated();
     }
 }
