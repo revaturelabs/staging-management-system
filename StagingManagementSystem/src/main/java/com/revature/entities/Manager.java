@@ -18,12 +18,19 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.revature.config.SmsSettings;
+import com.revature.exceptions.InvalidFieldException;
+import com.revature.exceptions.NullReferenceException;
+import com.revature.exceptions.SMSCustomException;
+import com.revature.markers.SmsValidatable;
 
 @Entity
 @Table(name = "MANAGERS")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Manager {
-
+public class Manager implements SmsValidatable{
+	
+	private SmsSettings settings = SmsSettings.getInstance();
+	
 	@Id
 	@Column(name = "MANAGER_ID")
 	@SequenceGenerator(name="MANAGER_ID_SEQ", sequenceName="MANAGER_ID_SEQ")
@@ -43,6 +50,7 @@ public class Manager {
 	
 	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL , mappedBy="approvedBy")
 	private Set<Checkin> approved;
+	
 
 	public Manager(Long id, String name, Credential credential, Permission permission, Set<Checkin> approved) {
 		super();
@@ -145,7 +153,16 @@ public class Manager {
 	public String toString() {
 		return "Manager [id=" + id + ", name=" + name + ", credential=" + credential + ", permission=" + permission
 				+ "]";
-	} 
+	}
 
-	
+	@Override
+	public void validate() throws SMSCustomException {
+		if(this.name==null){
+			throw new NullReferenceException("Manager name is null.");
+		}
+		this.name = this.name.replaceAll("([^a-zA-Z0-9]+)", "");
+		if(this.name.length()<Integer.parseInt(settings.get("length_min_manager_name"))){
+			throw new InvalidFieldException("Manager name is too short.");
+		}
+	}	
 }

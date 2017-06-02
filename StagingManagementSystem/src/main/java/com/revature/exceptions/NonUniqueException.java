@@ -1,6 +1,4 @@
-package com.revature.exceptions.entities;
-
-import com.revature.exceptions.SMSCustomException;
+package com.revature.exceptions;
 
 public class NonUniqueException extends SMSCustomException{
 

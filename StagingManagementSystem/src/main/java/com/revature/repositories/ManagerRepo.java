@@ -5,5 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.revature.entities.Manager;
 
 public interface ManagerRepo extends JpaRepository<Manager, Long> {
-	Manager getById(long id);
+	
+	Manager findByCredentialUsernameAndCredentialPassword(String username,String password);
+	
 }
