@@ -61,7 +61,7 @@ these. To do this follow the steps below.
 4. Select Exclude All option.
 5. Select Folders option.
 6. In File and Folder Attributes the first dropdown should have Name and the 
-    second should have matches. Type "node_modules" in the input box. (Withot the quotes of course).
+    second should have matches. Type "node_modules" in the input box. (Without the quotes of course).
 7. Select OK and then OK again.
 8. Navigate to src/main/resources/static and node_modules should no longer appear there.
 9. Note this folder is also in the .gitignore so it will not be pushed to the repository
