@@ -1,10 +1,10 @@
 const path = require('path');
 
 const config = {
-  context: __dirname,
+  context: path.join(__dirname, './StagingManagementSystem/src/main/resources/static'),
   entry: './app',
   output: {
-    // path: path.join(__dirname, ''),
+    path: path.join(__dirname, './StagingManagementSystem/src/main/resources/static'),
     filename: 'bundle.js'
   },
   resolve: {
