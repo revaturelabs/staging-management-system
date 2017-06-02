@@ -20,7 +20,8 @@ import java.time.LocalTime;
 import java.util.Set;
 
 /**
- * Created by mnikitin on 6/1/17.
+ * Created by Mykola Nikitin on 6/1/17.
+ * An implementation of the CheckinService.
  */
 public class CheckinServiceImpl implements CheckinService {
 
@@ -32,6 +33,7 @@ public class CheckinServiceImpl implements CheckinService {
         checkin.setApprovedBy(approvingManager);
         checkin.setApproveTime(LocalDateTime.now());
         checkinRepo.save(checkin);
+        checkinRepo.flush();
     }
 
     @Override
@@ -45,18 +47,21 @@ public class CheckinServiceImpl implements CheckinService {
     }
 
     @Override
-    public void checkIn(Associate associate) throws AlreadyCheckedInException {
+    public void checkIn(Associate associate, LocalDateTime when) throws AlreadyCheckedInException {
         // Have we already checked in today?
-        Set<Checkin> checkins = checkinRepo.getAllByCheckinTimeBetween(
-                LocalDateTime.of(
-                        LocalDate.now(), LocalTime.MIDNIGHT
-                ), LocalDateTime.now()
-        );
-        if(checkins != null && checkins.size() != 0)
-            throw new AlreadyCheckedInException();
+        if(when == null) {
+            Set<Checkin> checkins = checkinRepo.getAllByCheckinTimeBetween(
+                    LocalDateTime.of(
+                            LocalDate.now(), LocalTime.MIDNIGHT
+                    ), LocalDateTime.now()
+            );
+            if (checkins != null && checkins.size() != 0)
+                throw new AlreadyCheckedInException();
+            when = LocalDateTime.now();
+        }
         Checkin checkin = new Checkin();
         checkin.setAssociate(associate);
-        checkin.setCheckinTime(LocalDateTime.now());
+        checkin.setCheckinTime(when);
         checkinRepo.save(checkin);
     }
 
@@ -75,5 +80,11 @@ public class CheckinServiceImpl implements CheckinService {
             checkin.setCheckoutTime(LocalDateTime.now());
         }
         checkinRepo.save(checkins);
+    }
+
+    @Override
+    public void checkOut(Checkin checkin, LocalDateTime when){
+        checkin.setCheckoutTime(when);
+        checkinRepo.save(checkin);
     }
 }
