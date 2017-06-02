@@ -21,8 +21,9 @@ import java.util.List;
 /**
  * Created by Mykola Nikitin on 6/2/17.
  * Roles provided:
- *   ROLE_ASSOCIATE, for associates
- *   ROLE_[], for managers
+ *   ASSOCIATE, for associates
+ *   MANAGER, for managers
+ *   ADMIN, for admins
  */
 @Service("userDetailsService")
 public class CredentialDetailsService implements UserDetailsService {
@@ -43,11 +44,11 @@ public class CredentialDetailsService implements UserDetailsService {
         Credential credential = null;
         List<String> auths = new ArrayList<>();
         if(associate != null) {
-            auths.add("ROLE_ASSOCIATE");
+            auths.add("ASSOCIATE");
             credential = associate.getCredential();
         }
         if(manager != null) {
-            auths.add("ROLE_" + manager.getPermission().getLevel());
+            auths.add(manager.getPermission().getLevel());
             credential = manager.getCredential();
         }
         if(credential == null)
