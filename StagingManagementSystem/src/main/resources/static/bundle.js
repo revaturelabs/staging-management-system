@@ -60,6 +60,12 @@
 
 	var _manager = __webpack_require__(90);
 
+	var _batch = __webpack_require__(91);
+
+	var _client = __webpack_require__(92);
+
+	var _user = __webpack_require__(93);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var routerApp = _angular2.default.module('routerApp', [_angularUiRouter2.default, _angularBootstrapNpm2.default]);
@@ -74,11 +80,31 @@
 	  }).state('manager', {
 	    url: '/manager',
 	    templateUrl: 'manager/manager.html'
-	  }).state('manager.current', {
-	    url: '/current',
-	    templateUrl: 'manager/current.html',
-	    controller: _manager.currentCtrl
-	  });
+	  }).state('manager.create', {
+	    url: '/create',
+	    templateUrl: 'manager/create/create.html'
+	  }).state('manager.create.batch', {
+	    url: '/batch',
+	    templateUrl: 'manager/create/batch.html',
+	    controller: _batch.batchCtrl
+	  }).state('manager.create.user', {
+	    url: '/user',
+	    templateUrl: 'manager/create/user.html',
+	    controller: _user.userCtrl
+
+	  }).state('manager.create.client', {
+	    url: '/client',
+	    templateUrl: 'manager/create/client.html',
+	    controller: _client.clientCtrl
+	  }
+
+	  // views: {
+	  //   '': { templateUrl: 'manager/manager.html' },
+	  //   'top': { templateUrl: 'manager/top.html' },
+	  //   'bottom': { templateUrl: 'manager/schedule.html'}
+	  //   }
+	  // }
+
 
 	  // nested list with custom controller
 	  // .state('home.list', {
@@ -108,6 +134,7 @@
 	  //     }
 	  //
 	  // });
+	  );
 	});
 
 	routerApp.controller('navController', function ($scope) {
@@ -52917,6 +52944,54 @@
 
 	exports.currentCtrl = currentCtrl;
 	exports.forecastCtrl = forecastCtrl;
+
+/***/ }),
+/* 91 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var batchCtrl = function batchCtrl($scope) {
+	  $scope.batch = {};
+	  $scope.batch.name = 'batch name';
+	};
+
+	exports.batchCtrl = batchCtrl;
+
+/***/ }),
+/* 92 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var clientCtrl = function clientCtrl($scope) {
+	  $scope.client = {};
+	  $scope.client.name = 'client name';
+	};
+
+	exports.clientCtrl = clientCtrl;
+
+/***/ }),
+/* 93 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var userCtrl = function userCtrl($scope) {
+	  $scope.user = {};
+	  $scope.user.name = 'user name';
+	};
+
+	exports.userCtrl = userCtrl;
 
 /***/ })
 /******/ ]);
