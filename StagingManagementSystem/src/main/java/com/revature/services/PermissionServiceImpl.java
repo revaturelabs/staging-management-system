@@ -6,9 +6,9 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.revature.entities.Permission;
-import com.revature.exceptions.NonUniqueException;
-import com.revature.exceptions.NullReferenceException;
-import com.revature.exceptions.SMSCustomException;
+import com.revature.exceptions.SmsCustomException;
+import com.revature.exceptions.badrequests.NonUniqueException;
+import com.revature.exceptions.badrequests.NullReferenceException;
 import com.revature.repositories.PermissionRepo;
 
 public class PermissionServiceImpl implements PermissionService {
@@ -17,7 +17,7 @@ public class PermissionServiceImpl implements PermissionService {
 	private PermissionRepo permissionRepo;
 
 	@Override
-	public void add(Permission permission) throws SMSCustomException {
+	public void add(Permission permission) throws SmsCustomException {
 		if (permission == null) {
 			throw new NullReferenceException("Permission is null.");
 		}
@@ -30,7 +30,7 @@ public class PermissionServiceImpl implements PermissionService {
 	}
 
 	@Override
-	public Permission getById(long id) throws SMSCustomException {
+	public Permission getById(long id) throws SmsCustomException {
 		Permission permission = permissionRepo.findOne(id);
 		if (permission == null) {
 			throw new NullReferenceException("Permission ID could not be found.");
@@ -39,7 +39,7 @@ public class PermissionServiceImpl implements PermissionService {
 	}
 
 	@Override
-	public Permission getByLevel(String level) throws SMSCustomException {
+	public Permission getByLevel(String level) throws SmsCustomException {
 		if (level == null) {
 			throw new NullReferenceException("Passed in level argument is null.");
 		}
@@ -58,9 +58,9 @@ public class PermissionServiceImpl implements PermissionService {
 	}
 
 	@Override
-	public void update(Permission permission) throws SMSCustomException{
+	public void update(Permission permission) throws SmsCustomException{
 		if(permission == null){
-			throw new NullReferenceException("Passed in permission is null.");
+			throw new NullReferenceException("Permission is null.");
 		}
 		permission.validate();
 		permission = permissionRepo.save(permission);
@@ -68,9 +68,9 @@ public class PermissionServiceImpl implements PermissionService {
 	}
 
 	@Override
-	public void remove(Permission permission) throws SMSCustomException {
+	public void remove(Permission permission) throws SmsCustomException {
 		if(permission == null){
-			throw new NullReferenceException("Passed in permission is null.");
+			throw new NullReferenceException("Permission is null.");
 		}
 		permissionRepo.delete(permission);
 

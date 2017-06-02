@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.revature.entities.Credential;
 import com.revature.entities.Manager;
-import com.revature.exceptions.NonUniqueException;
-import com.revature.exceptions.NullReferenceException;
-import com.revature.exceptions.SMSCustomException;
+import com.revature.exceptions.SmsCustomException;
+import com.revature.exceptions.badrequests.NonUniqueException;
+import com.revature.exceptions.badrequests.NullReferenceException;
 import com.revature.repositories.CredentialRepo;
 import com.revature.repositories.ManagerRepo;
 
@@ -33,7 +33,7 @@ public class ManagerServiceImpl implements ManagerService {
 
 	// c
 	@Override
-	public void add(Manager manager) throws SMSCustomException {
+	public void add(Manager manager) throws SmsCustomException {
 
 		if (manager == null) {
 			throw new NullReferenceException("Manager is null.");
@@ -63,7 +63,7 @@ public class ManagerServiceImpl implements ManagerService {
 
 	// r
 	@Override
-	public Manager getById(long id) throws SMSCustomException {
+	public Manager getById(long id) throws SmsCustomException {
 
 		Manager manager = managerRepo.getOne(id);
 
@@ -75,7 +75,7 @@ public class ManagerServiceImpl implements ManagerService {
 	}
 
 	@Override
-	public Manager getByCredential(Credential credential) throws SMSCustomException {
+	public Manager getByCredential(Credential credential) throws SmsCustomException {
 
 		if (credential == null) {
 			throw new NullReferenceException("Passed in credential argument is null.");
@@ -100,7 +100,7 @@ public class ManagerServiceImpl implements ManagerService {
 
 	// u
 	@Override
-	public void update(Manager manager) throws SMSCustomException {
+	public void update(Manager manager) throws SmsCustomException {
 
 		if (manager == null) {
 			throw new NullReferenceException("Manager is null.");
@@ -126,7 +126,7 @@ public class ManagerServiceImpl implements ManagerService {
 
 	// d
 	@Override
-	public void remove(Manager manager) throws SMSCustomException {
+	public void remove(Manager manager) throws SmsCustomException {
 
 		if (manager == null) {
 			throw new NullReferenceException("Manager is null.");

@@ -1,8 +1,8 @@
 package com.revature.markers;
 
-import com.revature.exceptions.SMSCustomException;
+import com.revature.exceptions.SmsCustomException;
 
 public interface SmsValidatable {
 
-	void validate() throws SMSCustomException;
+	void validate() throws SmsCustomException;
 }

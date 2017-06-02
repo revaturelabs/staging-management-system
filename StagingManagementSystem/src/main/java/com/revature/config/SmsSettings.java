@@ -32,18 +32,26 @@ public final class SmsSettings extends HashMap<String,String>{
 
 	public static SmsSettings getInstance(){
 		if(settings == null){
-			settings = new SmsSettings();
-			Properties prop = new Properties();
-			try {
-				prop.load(SmsSettings.class.getResourceAsStream("/sms.properties"));
-				for(String key : prop.stringPropertyNames()){
-					settings.put(key, prop.getProperty(key));
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			load();
 		}
 		return settings;
+	}
+	
+	public static void reload(){
+		load();
+	}
+	
+	private static void load(){
+		settings = new SmsSettings();
+		Properties prop = new Properties();
+		try {
+			prop.load(SmsSettings.class.getResourceAsStream("/sms.properties"));
+			for(String key : prop.stringPropertyNames()){
+				settings.put(key, prop.getProperty(key));
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 }

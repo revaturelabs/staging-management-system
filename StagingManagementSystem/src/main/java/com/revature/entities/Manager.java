@@ -19,9 +19,9 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.revature.config.SmsSettings;
-import com.revature.exceptions.InvalidFieldException;
-import com.revature.exceptions.NullReferenceException;
-import com.revature.exceptions.SMSCustomException;
+import com.revature.exceptions.SmsCustomException;
+import com.revature.exceptions.badrequests.InvalidFieldException;
+import com.revature.exceptions.badrequests.NullReferenceException;
 import com.revature.markers.SmsValidatable;
 
 @Entity
@@ -155,15 +155,23 @@ public class Manager implements SmsValidatable {
 	}
 
 	@Override
-	public void validate() throws SMSCustomException {
+	public void validate() throws SmsCustomException {
 		if (this.name == null) {
 			throw new NullReferenceException("Manager name is null.");
 		}
-		if(this.name.matches("[^a-zA-Z0-9]+)")){
-			throw new InvalidFieldException("Manager name contains illegal characters. Only alphanumeric characters are allowed.");
+		if (this.name == "") {
+			throw new InvalidFieldException("Manager name is empty.");
 		}
-		if (this.name.length() < Integer.parseInt(settings.get("length_min_manager_name"))) {
-			throw new InvalidFieldException("Manager name is too short.");
+		if (this.name.matches(settings.get("illegal_manager_name"))) {
+			throw new InvalidFieldException("Manager name contains illegal characters.");
+		}
+		int min = Integer.parseInt(settings.get("length_min_manager_name"));
+		int max = Integer.parseInt(settings.get("length_max_manager_name"));
+		if (this.name.length() < min) {
+			throw new InvalidFieldException("Manager name requires " + min + " characters.");
+		}
+		if (this.name.length() > max) {
+			throw new InvalidFieldException("Manager name is limited to " + max + " characters.");
 		}
 	}
 }

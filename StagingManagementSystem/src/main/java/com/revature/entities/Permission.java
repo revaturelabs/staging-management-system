@@ -10,16 +10,16 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.revature.config.SmsSettings;
-import com.revature.exceptions.InvalidFieldException;
-import com.revature.exceptions.NullReferenceException;
-import com.revature.exceptions.SMSCustomException;
+import com.revature.exceptions.SmsCustomException;
+import com.revature.exceptions.badrequests.InvalidFieldException;
+import com.revature.exceptions.badrequests.NullReferenceException;
 import com.revature.markers.SmsValidatable;
 
 @Entity
 @Table(name = "PERMISSIONS")
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-public class Permission implements SmsValidatable{
-	
+public class Permission implements SmsValidatable {
+
 	private SmsSettings settings = SmsSettings.getInstance();
 
 	@Id
@@ -91,15 +91,23 @@ public class Permission implements SmsValidatable{
 	}
 
 	@Override
-	public void validate() throws SMSCustomException {
-		if(this.level == null){
+	public void validate() throws SmsCustomException {
+		if (this.level == null) {
 			throw new NullReferenceException("Permission level is null.");
 		}
-		if(this.level.matches("[^a-zA-Z]+)")){
-			throw new InvalidFieldException("Permission level contains illegal characters. Only alphabetic characters are allowed.");
+		if (this.level == "") {
+			throw new InvalidFieldException("Permission level is empty.");
 		}
-		if (this.level.length() < Integer.parseInt(settings.get("length_min_permission_level"))) {
-			throw new InvalidFieldException("Permission level is too short.");
+		if (this.level.matches(settings.get("illegal_permission_level"))) {
+			throw new InvalidFieldException("Permission level contains illegal characters.");
+		}
+		int min = Integer.parseInt(settings.get("length_min_permission_level"));
+		int max = Integer.parseInt(settings.get("length_max_permission_level"));
+		if (this.level.length() < min) {
+			throw new InvalidFieldException("Permission level requires " + min + " characters.");
+		}
+		if (this.level.length() > max) {
+			throw new InvalidFieldException("Permission level is limited to " + max + "characters.");
 		}
 	}
 
