@@ -32,13 +32,12 @@ http://blog.teamtreehouse.com/install-node-js-npm-windows
 
 2. Navigate to the directory with package.json
 
-3. In your command line type,
-    npm install
-
+3. In your command line type: <br />
+    npm install <br />
 this will install all of the dependencies that have been laid out in the package.json
 
 4. Once all of the dependencies have been installed you can have web pack watch
-your code to do this type
+your code to do this type: <br />
     webpack --watch
 
 What this does is allows Webpack and Babel to bundle and transpile all of the
