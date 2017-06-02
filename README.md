@@ -5,49 +5,49 @@
 ### Mission and Scope
 
 #### What problem does this project address?
-This application addresses the complexities of managing human 
-resources that are currently in staging and awaiting placement with clients. 
+This application addresses the complexities of managing human
+resources that are currently in staging and awaiting placement with clients.
 Additionally, the task of planning the allocation of future resources is also addressed.
 
 
 #### What is the goal of this project?
-The goal of this project is to provide a simple and concise system of 
-managing the status of associates as they move from training to staging to placement with 
-clients. Additionally, this project seeks to ease the burden of long-term planning. 
+The goal of this project is to provide a simple and concise system of
+managing the status of associates as they move from training to staging to placement with
+clients. Additionally, this project seeks to ease the burden of long-term planning.
 By offering a resource forecasting functionality, more strategic planning of future resources will be attained.
 
 
 #### What is the scope of this project?
-The original concept behind this application was to give a Superuser the means to Add/View/Manage 
-human resources and a Manager user to be able to View/Manage said data. Its purpose is to aid in processing business 
-client requests for staffing and ensuring that associates that are mapped to clients are not accidentally placed with 
+The original concept behind this application was to give a Superuser the means to Add/View/Manage
+human resources and a Manager user to be able to View/Manage said data. Its purpose is to aid in processing business
+client requests for staffing and ensuring that associates that are mapped to clients are not accidentally placed with
 other business clients.
 
 ## Setup
 
 ### Node, Webpack, and Babel
 1. Download node from https://nodejs.org/en/download/
-If there is any uncertainty here is a guide to downloading it 
+If there is any uncertainty here is a guide to downloading it
 http://blog.teamtreehouse.com/install-node-js-npm-windows
 
 2. Navigate to the directory with package.json
 
-3. In your command line type, 
+3. In your command line type,
     npm install
 
 this will install all of the dependencies that have been laid out in the package.json
 
-4. Once all of the dependencies have been installed you can have web pack watch 
+4. Once all of the dependencies have been installed you can have web pack watch
 your code to do this type
-    webpack --watch
+    npm run watch
 
-What this does is allows Webpack and Babel to bundle and transpile all of the 
+What this does is allows Webpack and Babel to bundle and transpile all of the
 javascript code and it's required dependencies into one js file.
-So even though you are working in your individual js files it will all be 
+So even though you are working in your individual js files it will all be
 bundled into bundle.js
 
 Why is this a good thing?
-Our server now only has to serve up one js file for out javascript application 
+Our server now only has to serve up one js file for out javascript application
 and Bable transpiles it into an older version of JavaScript 
 that runs on browsers that don't support the newest standard of JavaScript
 
@@ -55,12 +55,12 @@ that runs on browsers that don't support the newest standard of JavaScript
 All of the node modules will now be in your project. This can cause performance
 issues when building your project. However Eclipse does not need to worry about
 these. To do this follow the steps below.
-1. Go to Project -> Preferences. This will pop up a dialogue box. 
+1. Go to Project -> Preferences. This will pop up a dialogue box.
 2. Expand the Resource tab and select Resource Filters.
 3. Select Add Filter on the right.
 4. Select Exclude All option.
 5. Select Folders option.
-6. In File and Folder Attributes the first dropdown should have Name and the 
+6. In File and Folder Attributes the first dropdown should have Name and the
     second should have matches. Type "node_modules" in the input box. (Without the quotes of course).
 7. Select OK and then OK again.
 8. Navigate to src/main/resources/static and node_modules should no longer appear there.
