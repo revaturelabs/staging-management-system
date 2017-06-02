@@ -15,6 +15,7 @@ import java.io.IOException;
 
 /**
  * Created by Mykola Nikitin on 6/2/17.
+ * A duplicate of SavedRequestAwareAuthenticationSuccessHandler, but it returns HTTP 200 instead of HTTP 301.
  */
 @Component
 public class RestSavedRequestAwareAuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
