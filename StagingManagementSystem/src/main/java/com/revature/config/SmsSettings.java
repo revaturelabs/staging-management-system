@@ -40,7 +40,6 @@ public final class SmsSettings extends HashMap<String,String>{
 					settings.put(key, prop.getProperty(key));
 				}
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

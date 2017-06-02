@@ -26,31 +26,30 @@ import com.revature.markers.SmsValidatable;
 
 @Entity
 @Table(name = "MANAGERS")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Manager implements SmsValidatable{
-	
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+public class Manager implements SmsValidatable {
+
 	private SmsSettings settings = SmsSettings.getInstance();
-	
+
 	@Id
 	@Column(name = "MANAGER_ID")
-	@SequenceGenerator(name="MANAGER_ID_SEQ", sequenceName="MANAGER_ID_SEQ")
-	@GeneratedValue(generator="MANAGER_ID_SEQ", strategy=GenerationType.AUTO)
+	@SequenceGenerator(name = "MANAGER_ID_SEQ", sequenceName = "MANAGER_ID_SEQ")
+	@GeneratedValue(generator = "MANAGER_ID_SEQ", strategy = GenerationType.AUTO)
 	private Long id;
-	
+
 	@Column(name = "MANAGER_NAME")
 	private String name;
-	
-	@OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
-	@JoinColumn(name="CREDENTIAL_ID")
+
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "CREDENTIAL_ID")
 	private Credential credential;
-	
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="PERMISSION_ID")
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "PERMISSION_ID")
 	private Permission permission;
-	
-	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL , mappedBy="approvedBy")
+
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "approvedBy")
 	private Set<Checkin> approved;
-	
 
 	public Manager(Long id, String name, Credential credential, Permission permission, Set<Checkin> approved) {
 		super();
@@ -157,12 +156,14 @@ public class Manager implements SmsValidatable{
 
 	@Override
 	public void validate() throws SMSCustomException {
-		if(this.name==null){
+		if (this.name == null) {
 			throw new NullReferenceException("Manager name is null.");
 		}
-		this.name = this.name.replaceAll("([^a-zA-Z0-9]+)", "");
-		if(this.name.length()<Integer.parseInt(settings.get("length_min_manager_name"))){
+		if(this.name.matches("[^a-zA-Z0-9]+)")){
+			throw new InvalidFieldException("Manager name contains illegal characters. Only alphanumeric characters are allowed.");
+		}
+		if (this.name.length() < Integer.parseInt(settings.get("length_min_manager_name"))) {
 			throw new InvalidFieldException("Manager name is too short.");
 		}
-	}	
+	}
 }

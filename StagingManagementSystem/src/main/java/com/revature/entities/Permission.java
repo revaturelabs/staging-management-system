@@ -9,18 +9,25 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.revature.config.SmsSettings;
+import com.revature.exceptions.InvalidFieldException;
+import com.revature.exceptions.NullReferenceException;
+import com.revature.exceptions.SMSCustomException;
+import com.revature.markers.SmsValidatable;
 
 @Entity
 @Table(name = "PERMISSIONS")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Permission {
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+public class Permission implements SmsValidatable{
 	
+	private SmsSettings settings = SmsSettings.getInstance();
+
 	@Id
 	@Column(name = "PERMISSION_ID")
-	@SequenceGenerator(name="PERMISSION_ID_SEQ", sequenceName="PERMISSION_ID_SEQ")
-	@GeneratedValue(generator="PERMISSION_ID_SEQ", strategy=GenerationType.AUTO)
+	@SequenceGenerator(name = "PERMISSION_ID_SEQ", sequenceName = "PERMISSION_ID_SEQ")
+	@GeneratedValue(generator = "PERMISSION_ID_SEQ", strategy = GenerationType.AUTO)
 	private long id;
-	
+
 	@Column(name = "PERMISSION_LEVEL")
 	private String level;
 
@@ -82,7 +89,18 @@ public class Permission {
 	public String toString() {
 		return "Permission [id=" + id + ", level=" + level + "]";
 	}
-	
-	
-	
+
+	@Override
+	public void validate() throws SMSCustomException {
+		if(this.level == null){
+			throw new NullReferenceException("Permission level is null.");
+		}
+		if(this.level.matches("[^a-zA-Z]+)")){
+			throw new InvalidFieldException("Permission level contains illegal characters. Only alphabetic characters are allowed.");
+		}
+		if (this.level.length() < Integer.parseInt(settings.get("length_min_permission_level"))) {
+			throw new InvalidFieldException("Permission level is too short.");
+		}
+	}
+
 }
