@@ -43,7 +43,8 @@ your code to do this type: <br />
 What this does is allows Webpack and Babel to bundle and transpile all of the
 javascript code and it's required dependencies into one js file.
 So even though you are working in your individual js files it will all be
-bundled into bundle.js
+bundled into bundle.js. Note everytime you make changes in a js file if webpack is not
+watching the code it will not update the bundle.js and the changes will not be reflected.
 
 Why is this a good thing?
 Our server now only has to serve up one js file for our entire application
