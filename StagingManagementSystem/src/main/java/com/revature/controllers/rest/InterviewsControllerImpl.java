@@ -1,5 +1,6 @@
 package com.revature.controllers.rest;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,23 +19,43 @@ import com.revature.services.InterviewsService;
 @RestController
 @RequestMapping("interviews")
 public class InterviewsControllerImpl {
-	
+
 	@Autowired
 	private InterviewsService interviewsService;
-	
+
 	public InterviewsControllerImpl(InterviewsService interviewsService) {
 		super();
 		this.interviewsService = interviewsService;
 	}
-	
+
 	@PostMapping
 	public void add(@RequestBody Interviews interviews) {
 		interviewsService.add(interviews);
 	}
 
 	@GetMapping("/{id}")
-	public Interviews findById(@PathVariable long id) {		
+	public Interviews findById(@PathVariable long id) {
 		return interviewsService.findById(id);
+	}
+
+	@GetMapping("/{associate_Id}")
+	public Interviews findByAssociate(long id) {
+		return interviewsService.findByAssociateId(id);
+	}
+	
+	@GetMapping("/{client_Id}")
+	public Interviews findByClientId(long id) {
+		return interviewsService.findByClientId(id);
+	}
+	
+	@GetMapping("/{interview_Status_Id}")
+	public Interviews findByInterviewStatusId(long id) {
+		return interviewsService.findByInterviewStatus(id);
+	}
+
+	@GetMapping("/{dateandtime}")
+	public Interviews findByScheduled(@PathVariable LocalDateTime dateandtime) {
+		return interviewsService.findByScheduled(dateandtime);
 	}
 
 	@GetMapping("/all")
