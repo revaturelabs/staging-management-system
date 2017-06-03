@@ -2,6 +2,9 @@ import angular from 'angular';
 import uiRouter from 'angular-ui-router';
 import angularBootstrap from 'angular-bootstrap-npm';
 
+var FusionCharts = require("fusioncharts");
+require("fusioncharts/fusioncharts.charts")(FusionCharts);
+
 import { currentCtrl } from './manager/manager';
 import { batchCtrl } from './manager/create/batch';
 import { clientCtrl } from './manager/create/client';
@@ -45,6 +48,7 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
     .state('reports', {
     	url: '/reports',
     	templateUrl: 'reports/reports.html',
+    	controller: reportCtrl,
     })
 
 
@@ -93,6 +97,3 @@ routerApp.controller('navController', ($scope) => {
   // };
 });
 
-routerApp.controller('reportController', ($scope) => {
-	$scope.greeting = 'hello world';
-});

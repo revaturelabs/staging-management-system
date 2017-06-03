@@ -1,6 +1,15 @@
 
-<div ng-controller="reportController">
+<div >
 	<a ui-sref="reports">view</a>
+	
+	<fusioncharts 
+    width="600" 
+    height="400"
+    type="column2d"
+    datasource="{{myDataSource}}"
+	></fusioncharts>
+	
+	<div id="chartContainer">my chart container</div>
 	
 	<p>Testing: {{greeting}}</p>
 	
