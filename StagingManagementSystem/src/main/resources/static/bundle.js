@@ -66,6 +66,8 @@
 
 	var _user = __webpack_require__(93);
 
+	var _reports = __webpack_require__(94);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var routerApp = _angular2.default.module('routerApp', [_angularUiRouter2.default, _angularBootstrapNpm2.default]);
@@ -96,6 +98,9 @@
 	    url: '/client',
 	    templateUrl: 'manager/create/client.html',
 	    controller: _client.clientCtrl
+	  }).state('reports', {
+	    url: '/reports',
+	    templateUrl: 'reports/reports.html'
 	  }
 
 	  // views: {
@@ -141,6 +146,10 @@
 	  // $scope.openMenu = ($mdOpenMenu, ev) => {
 	  //   $mdOpenMenu(ev);
 	  // };
+	});
+
+	routerApp.controller('reportController', function ($scope) {
+	  $scope.greeting = 'hello world';
 	});
 
 /***/ }),
@@ -52992,6 +53001,25 @@
 	};
 
 	exports.userCtrl = userCtrl;
+
+/***/ }),
+/* 94 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var reportsCtrl = function reportsCtrl($scope) {
+	  $scope.test = 'test';
+	};
+
+	var forecastCtrl = function forecastCtrl($scope) {};
+
+	exports.reportsCtrl = reportsCtrl;
+	exports.forecastCtrl = forecastCtrl;
 
 /***/ })
 /******/ ]);

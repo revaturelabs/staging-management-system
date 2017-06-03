@@ -6,6 +6,7 @@ import { currentCtrl } from './manager/manager';
 import { batchCtrl } from './manager/create/batch';
 import { clientCtrl } from './manager/create/client';
 import { userCtrl } from './manager/create/user';
+import { reportCtrl } from './reports/reports';
 
 const routerApp = angular.module('routerApp', [uiRouter, angularBootstrap]);
 
@@ -40,6 +41,10 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       url: '/client',
       templateUrl: 'manager/create/client.html',
       controller: clientCtrl,
+    })
+    .state('reports', {
+    	url: '/reports',
+    	templateUrl: 'reports/reports.html',
     })
 
 
@@ -86,4 +91,8 @@ routerApp.controller('navController', ($scope) => {
   // $scope.openMenu = ($mdOpenMenu, ev) => {
   //   $mdOpenMenu(ev);
   // };
+});
+
+routerApp.controller('reportController', ($scope) => {
+	$scope.greeting = 'hello world';
 });
