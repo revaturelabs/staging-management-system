@@ -10,6 +10,8 @@ import { batchCtrl } from './manager/create/batch';
 import { clientCtrl } from './manager/create/client';
 import { userCtrl } from './manager/create/user';
 import { reportCtrl } from './reports/reports';
+import { nestedCtrl } from './reports/nestedGraph';
+
 
 const routerApp = angular.module('routerApp', [uiRouter, angularBootstrap]);
 
@@ -49,6 +51,11 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
     	url: '/reports',
     	templateUrl: 'reports/reports.html',
     	controller: reportCtrl,
+    })
+    .state('reports.nestedGraph', {
+      url: '/nestedGraph',
+      templateUrl: 'reports/nestedGraph.html',
+      controller: nestedCtrl,
     })
 
 
