@@ -18,8 +18,8 @@ public class Location
 
 	@Id
 	@Column(name="LOCATION_ID")
-	@SequenceGenerator(name = "locations_seq", sequenceName = "locations_seq")
-	@GeneratedValue(generator = "locations_seq", strategy = GenerationType.AUTO)
+	@SequenceGenerator(name = "LOCATION_ID_SEQ", sequenceName = "LOCATION_ID_SEQ")
+	@GeneratedValue(generator = "LOCATION_ID_SEQ", strategy = GenerationType.AUTO)
 	long id;
 	
 	@Column
@@ -32,7 +32,16 @@ public class Location
 	String name;
 	
 	public Location(){}
-	
+
+	public String getName()
+	{
+		return name;
+	}
+
+	public void setName(String name)
+	{
+		this.name = name;
+	}
 	public long getId() {
 		return id;
 	}

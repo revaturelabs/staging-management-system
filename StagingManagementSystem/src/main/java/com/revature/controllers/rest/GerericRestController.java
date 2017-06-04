@@ -9,35 +9,31 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-import com.revature.entities.Location;
-import com.revature.services.LocationService;
+import com.revature.entities.Permission;
+import com.revature.entities.SmsEntities;
+import com.revature.services.GenericService;
 
-
-@RestController
-@RequestMapping("location")
-public class LocationControllerImpl {
-
+public class GerericRestController <V extends SmsEntities, T extends GenericService<V>>
+{
 	@Autowired
-	private LocationService locationService;
+	private T service;
 	
-	public LocationControllerImpl(LocationService locationService)
+	public GerericRestController(T service)
 	{
 		super();
-		this.locationService = locationService;
+		this.service = service;
 	}
 	
 	/**
-	 * When called this will always persist a unique location in the database.
+	 * When called this will always persist as a unique column in the database.
 	 * 
 	 * @param location - location to be persisted.
 	 */
 	@PostMapping
-	public void addLocation(@RequestBody Location location) {
-		location.setId(0);
-		locationService.add(location);
+	public void addPermission(@RequestBody V obj) {
+		obj.setId(0);
+		service.add(obj);
 	}
 	
 	/**
@@ -46,8 +42,8 @@ public class LocationControllerImpl {
 	 * @param location - holds the id to be deleted
 	 */
 	@DeleteMapping
-	public void deleteLocation(@RequestBody Location location) {
-		locationService.delete(location);
+	public void deletePermission(@RequestBody V obj) {
+		service.delete(obj);
 	}
 	
 	/**
@@ -57,8 +53,8 @@ public class LocationControllerImpl {
 	 * @param location - data to be persisted.
 	 */
 	@PutMapping
-	public void updateLocation(@RequestBody Location location) {
-		locationService.update(location);
+	public void updatePermission(@RequestBody V obj) {
+		service.update(obj);
 	}
 
 	/**
@@ -68,8 +64,8 @@ public class LocationControllerImpl {
 	 * @return location object from dataBase.
 	 */
 	@GetMapping("/{id}")
-	public Location findById(@PathVariable long id) {
-		return locationService.findById(id);
+	public V findById(@PathVariable long id) {
+		return service.findById(id);
 	}
 	
 	/**
@@ -79,7 +75,7 @@ public class LocationControllerImpl {
 	 * @return all location objects from dataBase.
 	 */
 	@GetMapping("/all")
-	public List<Location> findAll() {
-		return locationService.getAll();
+	public List<V> findById() {
+		return service.getAll();
 	}
 }

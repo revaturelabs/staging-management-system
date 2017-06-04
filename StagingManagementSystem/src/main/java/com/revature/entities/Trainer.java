@@ -1,8 +1,12 @@
 package com.revature.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -12,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Entity
 @Table(name="TRAINERS")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Trainer {
+public class Trainer implements SmsEntities{
     @Id
     @Column(name="TRAINER_ID")
     @SequenceGenerator(name="TRAINER_ID_SEQ", sequenceName="TRAINER_ID_SEQ")
@@ -65,3 +69,6 @@ public class Trainer {
         this.name = name;
     }
 }
+
+
+
