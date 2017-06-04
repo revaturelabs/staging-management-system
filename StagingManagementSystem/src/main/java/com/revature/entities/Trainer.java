@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Entity
 @Table(name="TRAINERS")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Trainer implements SmsEntities{
+public class Trainer {
     @Id
     @Column(name="TRAINER_ID")
     @SequenceGenerator(name="TRAINER_ID_SEQ", sequenceName="TRAINER_ID_SEQ")
