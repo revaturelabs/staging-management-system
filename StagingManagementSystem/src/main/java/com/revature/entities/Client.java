@@ -33,45 +33,37 @@ public class Client {
 	@Column(name = "client_name")
 	private String name;
 
-	@OneToOne(cascade = CascadeType.ALL)
-	private ClientInfo clientInfo;
-
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<Job> jobs;
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,
+			mappedBy="client")
+	private Set<Job> jobs;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,
 			mappedBy="client")
-	private List<Interviews> interviews;
+	private Set<Interviews> interviews;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy="client")
 	private List<ClientQ> clientQuestions;
-
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private Set<Associate> associates;
 
 	public Client() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Client(long clientId, String name, ClientInfo clientInfo, List<Job> jobs, List<Interviews> interviews,
-			List<ClientQ> clientQuestions, Set<Associate> associates) {
+	public Client(long id, String name, Set<Job> jobs, Set<Interviews> interviews, List<ClientQ> clientQuestions) {
 		super();
-		this.id = clientId;
+		this.id = id;
 		this.name = name;
-		this.clientInfo = clientInfo;
 		this.jobs = jobs;
 		this.interviews = interviews;
 		this.clientQuestions = clientQuestions;
-		this.associates = associates;
 	}
 
 	public long getId() {
 		return id;
 	}
 
-	public void setId(long clientId) {
-		this.id = clientId;
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -82,27 +74,19 @@ public class Client {
 		this.name = name;
 	}
 
-	public ClientInfo getClientInfo() {
-		return clientInfo;
-	}
-
-	public void setClientInfo(ClientInfo clientInfo) {
-		this.clientInfo = clientInfo;
-	}
-
-	public List<Job> getJobs() {
+	public Set<Job> getJobs() {
 		return jobs;
 	}
 
-	public void setJobs(List<Job> jobs) {
+	public void setJobs(Set<Job> jobs) {
 		this.jobs = jobs;
 	}
 
-	public List<Interviews> getInterviews() {
+	public Set<Interviews> getInterviews() {
 		return interviews;
 	}
 
-	public void setInterviews(List<Interviews> interviews) {
+	public void setInterviews(Set<Interviews> interviews) {
 		this.interviews = interviews;
 	}
 
@@ -114,22 +98,12 @@ public class Client {
 		this.clientQuestions = clientQuestions;
 	}
 
-	public Set<Associate> getAssociates() {
-		return associates;
-	}
-
-	public void setAssociates(Set<Associate> associates) {
-		this.associates = associates;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((associates == null) ? 0 : associates.hashCode());
-		result = prime * result + (int) (id ^ (id >>> 32));
-		result = prime * result + ((clientInfo == null) ? 0 : clientInfo.hashCode());
 		result = prime * result + ((clientQuestions == null) ? 0 : clientQuestions.hashCode());
+		result = prime * result + (int) (id ^ (id >>> 32));
 		result = prime * result + ((interviews == null) ? 0 : interviews.hashCode());
 		result = prime * result + ((jobs == null) ? 0 : jobs.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
@@ -142,25 +116,15 @@ public class Client {
 			return true;
 		if (obj == null)
 			return false;
-		if (!(obj instanceof Client))
+		if (getClass() != obj.getClass())
 			return false;
 		Client other = (Client) obj;
-		if (associates == null) {
-			if (other.associates != null)
-				return false;
-		} else if (!associates.equals(other.associates))
-			return false;
-		if (id != other.id)
-			return false;
-		if (clientInfo == null) {
-			if (other.clientInfo != null)
-				return false;
-		} else if (!clientInfo.equals(other.clientInfo))
-			return false;
 		if (clientQuestions == null) {
 			if (other.clientQuestions != null)
 				return false;
 		} else if (!clientQuestions.equals(other.clientQuestions))
+			return false;
+		if (id != other.id)
 			return false;
 		if (interviews == null) {
 			if (other.interviews != null)
@@ -182,9 +146,11 @@ public class Client {
 
 	@Override
 	public String toString() {
-		return "Client [id=" + id + ", name=" + name + ", clientInfo=" + clientInfo + ", jobs=" + jobs
-				+ ", interviews=" + interviews + ", clientQuestions=" + clientQuestions + ", associates=" + associates
-				+ "]";
+		return "Client [id=" + id + ", name=" + name + ", jobs=" + jobs + ", interviews=" + interviews
+				+ ", clientQuestions=" + clientQuestions + "]";
 	}
+
+
+	
 
 }
