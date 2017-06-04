@@ -25,9 +25,6 @@ public class Client {
 	@Column(name = "client_name")
 	private String name;
 
-	@Column
-	private String Location;
-
 	public Client() {
 		super();
 		// TODO Auto-generated constructor stub
