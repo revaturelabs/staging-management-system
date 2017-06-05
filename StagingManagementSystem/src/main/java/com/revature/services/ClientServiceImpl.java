@@ -32,7 +32,36 @@ public class ClientServiceImpl implements ClientService {
 		return clientRepo.findAll();
 	}
 
+	@Override
+	public Client getClientbyId(long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void addMultiple(Set<Client> clients) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void delete(Client client) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void update(Client client) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Client findById(long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 	}
 
-}
