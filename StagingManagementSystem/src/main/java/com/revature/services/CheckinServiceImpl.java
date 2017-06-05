@@ -6,9 +6,14 @@ import com.revature.entities.Manager;
 import com.revature.exceptions.AlreadyCheckedInException;
 import com.revature.exceptions.AlreadyCheckedOutException;
 import com.revature.exceptions.NotCheckedInException;
+import com.revature.exceptions.NotLoggedInException;
 import com.revature.repositories.AssociateRepo;
 import com.revature.repositories.CheckinRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -19,6 +24,7 @@ import java.util.Set;
  * Created by Mykola Nikitin on 6/1/17.
  * An implementation of the CheckinService.
  */
+@Component
 public class CheckinServiceImpl implements CheckinService {
 
     @Autowired
@@ -46,6 +52,13 @@ public class CheckinServiceImpl implements CheckinService {
     }
 
     @Override
+    public boolean hasCheckedInToday(){
+        User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Associate associate = associateRepo.getByCredential_Username(user.getUsername());
+        return hasCheckedInToday(associate);
+    }
+
+    @Override
     public void checkIn(Associate associate, LocalDateTime when) throws AlreadyCheckedInException {
         // Have we already checked in today?
         if(when == null) {
@@ -64,6 +77,16 @@ public class CheckinServiceImpl implements CheckinService {
         checkinRepo.save(checkin);
     }
 
+    @Override
+    public void checkIn() throws AlreadyCheckedInException, NotLoggedInException {
+        User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(user == null)
+            throw new NotLoggedInException();
+        Associate associate = associateRepo.getByCredential_Username(user.getUsername());
+        if(associate == null)
+            throw new NotLoggedInException();
+        checkIn(associate, LocalDateTime.now());
+    }
     @Override
     public void checkOut(Associate associate) throws AlreadyCheckedOutException, NotCheckedInException {
         Set<Checkin> checkins = checkinRepo.getAllByCheckinTimeBetween(

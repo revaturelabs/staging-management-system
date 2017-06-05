@@ -6,6 +6,7 @@ import com.revature.entities.Manager;
 import com.revature.exceptions.AlreadyCheckedInException;
 import com.revature.exceptions.AlreadyCheckedOutException;
 import com.revature.exceptions.NotCheckedInException;
+import com.revature.exceptions.NotLoggedInException;
 
 import java.time.LocalDateTime;
 
@@ -29,6 +30,12 @@ public interface CheckinService {
     public boolean hasCheckedInToday(Associate associate);
 
     /**
+     * Checks to see whether or not the current associate has checked in between midnight and now.
+     * @return Returns whether or not the current user has checked in between midnight and now.
+     */
+    public boolean hasCheckedInToday() throws NotLoggedInException;
+
+    /**
      * Records a checkin attempt for a user. Intended for both manager and end user, is fairly safe. 
      * @param associate The associate to be checked in.
      * @param when The time to mark the checkin for. If null, assumes LocalDateTime.now(), and verifies to be sure no existing checkin has occurred today.
@@ -36,6 +43,11 @@ public interface CheckinService {
      */
     public void checkIn(Associate associate, LocalDateTime when) throws AlreadyCheckedInException;
 
+    /**
+     * Records a checkin attempt for a user.
+     * @throws AlreadyCheckedInException
+     */
+    public void checkIn() throws AlreadyCheckedInException, NotLoggedInException;
     /**
      * A safe version of checkOut. Accesses today's existing checkin, marking the time it was checked out.
      * @param associateId The ID of the user to mark as having checked out.
