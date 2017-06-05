@@ -1,8 +1,7 @@
 const clientCtrl = ($scope) => {
-  $scope.client = {};
-  $scope.client.name = 'client name';
   $scope.submit = () => {
-  	alert('Yay!');
+  	let item = JSON.stringify($scope.client);
+  	alert(item);
   }
 };
 
