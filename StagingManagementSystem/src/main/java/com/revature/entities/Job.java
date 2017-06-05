@@ -27,7 +27,6 @@ public class Job {
 	@Column(name="JOB_ID")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "JOB_ID_SEQ")
 	@SequenceGenerator(name = "JOB_ID_SEQ", sequenceName = "JOB_ID_SEQ")
-
 	private long id;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
