@@ -1,14 +1,14 @@
 package com.revature.services;
 
+import java.time.LocalDateTime;
+import java.util.Set;
+
 import com.revature.entities.Associate;
-import com.revature.entities.Checkin;
 import com.revature.entities.Checkin;
 import com.revature.entities.Manager;
 import com.revature.exceptions.AlreadyCheckedInException;
 import com.revature.exceptions.AlreadyCheckedOutException;
 import com.revature.exceptions.NotCheckedInException;
-
-import java.time.LocalDateTime;
 
 /**
  * Created by Mykola Nikitin on 6/1/17.
@@ -60,4 +60,35 @@ public interface CheckinService {
      * @param when The time to mark the checkout with.
      */
     public void checkOut(Checkin checkin, LocalDateTime when);
+
+    /**
+     * Creates or updates all checkins.
+     * @param checkins - ids corresponding to values, to be created or updated.
+     */
+    public void addcheckins(Set<Checkin> checkins);
+
+    /**
+     * Fetches a Set of all checkins.
+     * @return - Set of all checkins.
+     */
+    public Set<Checkin> getAll();
+
+    /**
+     * Finds checkin by id.
+     * @param id 
+     * @return - Checkin with id.
+     */
+    public Checkin findById(long id);
+
+    /**
+     * Creates or updates checkin.
+     * @param checkins - id and values to be created or updated.
+     */
+    public void update(Checkin checkin);
+
+    /**
+     * Creates or updates checkin.
+     * @param checkins - id and values to be created or updated.
+     */
+    public void add(Checkin checkin);
 }

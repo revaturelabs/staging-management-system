@@ -1,10 +1,14 @@
 package com.revature.services;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.revature.entities.Checkin;
-import com.revature.repositories.CheckinRepo;
 import com.revature.entities.Associate;
 import com.revature.entities.Checkin;
 import com.revature.entities.Manager;
@@ -13,17 +17,12 @@ import com.revature.exceptions.AlreadyCheckedOutException;
 import com.revature.exceptions.NotCheckedInException;
 import com.revature.repositories.AssociateRepo;
 import com.revature.repositories.CheckinRepo;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.Set;
 
 /**
  * Created by Mykola Nikitin on 6/1/17.
  * An implementation of the CheckinService.
  */
+@Service
 public class CheckinServiceImpl implements CheckinService {
 
     @Autowired
@@ -96,5 +95,32 @@ public class CheckinServiceImpl implements CheckinService {
     public void checkOut(long associateId) throws AlreadyCheckedOutException, NotCheckedInException {
         Associate associate = associateRepo.getOne(associateId);
         checkOut(associate);
+    }
+
+    @Override
+    public void addcheckins(Set<Checkin> checkins) {
+      // TODO Auto-generated method stub
+      
+    }
+
+    @Override
+    public Set<Checkin> getAll() {
+      Set<Checkin> checkin = new HashSet<Checkin>(checkinRepo.findAll());
+      return checkin;
+    }
+
+    @Override
+    public Checkin findById(long id) {
+      return checkinRepo.getOne(id);
+    }
+
+    @Override
+    public void update(Checkin checkin) {
+      checkinRepo.saveAndFlush(checkin);
+    }
+
+    @Override
+    public void add(Checkin checkin) {
+      checkinRepo.saveAndFlush(checkin);
     }
 }
