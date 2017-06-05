@@ -4,6 +4,8 @@ import java.util.Set;
 
 import com.revature.entities.Client;
 
+import java.util.List;
+
 public interface ClientService {
 
 	Client getClientbyId(long id);
