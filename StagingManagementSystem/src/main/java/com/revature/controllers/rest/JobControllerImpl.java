@@ -1,6 +1,6 @@
 package com.revature.controllers.rest;
 
-import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -81,7 +81,7 @@ public class JobControllerImpl {
 	 * @return all job objects from dataBase.
 	 */
 	@GetMapping("/all")
-	public List<Job> findAll() {
+	public Set<Job> findAll() {
 		return jobService.getAll();
 	}
 }
