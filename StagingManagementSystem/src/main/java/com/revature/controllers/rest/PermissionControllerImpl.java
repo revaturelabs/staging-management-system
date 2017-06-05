@@ -17,11 +17,11 @@ import com.revature.services.PermissionService;
 
 @RestController
 @RequestMapping("permission")
-public class PermissionController {
+public class PermissionControllerImpl {
 	@Autowired
 	private PermissionService permissionService;
 
-	public PermissionController(PermissionService permissionService) {
+	public PermissionControllerImpl(PermissionService permissionService) {
 		super();
 		this.permissionService = permissionService;
 	}

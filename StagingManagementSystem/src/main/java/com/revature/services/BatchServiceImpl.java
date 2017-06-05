@@ -129,4 +129,24 @@ public class BatchServiceImpl implements BatchService {
 
 	}
 
+	@Override
+	public void delete(Batch batch) {
+		batchRepo.delete(batch);
+	}
+
+	@Override
+	public void update(Batch batch) {
+		batchRepo.saveAndFlush(batch);
+	}
+
+	@Override
+	public List<Batch> getAll() {
+		return batchRepo.findAll();
+	}
+
+	@Override
+	public Batch findById(long id) {	
+		return batchRepo.getOne(id);
+	}
+
 }
