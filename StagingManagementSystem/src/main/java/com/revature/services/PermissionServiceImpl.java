@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.revature.entities.Permission;
 import com.revature.exceptions.SmsCustomException;
@@ -11,6 +12,7 @@ import com.revature.exceptions.badrequests.NonUniqueException;
 import com.revature.exceptions.badrequests.NullReferenceException;
 import com.revature.repositories.PermissionRepo;
 
+@Service
 public class PermissionServiceImpl implements PermissionService {
 
 	@Autowired

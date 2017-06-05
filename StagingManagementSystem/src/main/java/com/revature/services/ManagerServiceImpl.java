@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.revature.entities.Credential;
 import com.revature.entities.Manager;
@@ -13,6 +14,7 @@ import com.revature.exceptions.badrequests.NullReferenceException;
 import com.revature.repositories.CredentialRepo;
 import com.revature.repositories.ManagerRepo;
 
+@Service
 public class ManagerServiceImpl implements ManagerService {
 
 	@Autowired
