@@ -1,1 +1,43 @@
-<div> Login </div>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+
+<link rel="stylesheet" href="./login/login.css"/>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<title>Login</title>
+</head>
+<body>
+<div class="container login">
+
+<div class="row" style="margin-top:7em">
+    <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
+    	<form role="form">
+			<fieldset>
+				<div id="center">
+					<img src="./images/revature-logo.png" alt="Revature" id="center">
+					<h2>Staging Management System</h2>
+				</div>	
+				<hr class="colorgraph">
+				<div class="form-group">
+                    <input type="username" name="username" id="username" class="form-control input-lg" placeholder="Username" required="required">
+				</div>
+				<div class="form-group">
+                    <input type="password" name="password" id="password" class="form-control input-lg" placeholder="Password" required="required">
+				</div>
+				<hr class="colorgraph">
+				<div class="alert alert-danger" role="alert" id="error-msg" hidden>
+				  Error Message will go here.
+				</div>
+				<div class="form-group">
+                        <button type="submit" id="login" class="btn btn-lg btn-default btn-block" >Log In</button>
+				</div>
+			</fieldset>
+		</form>
+	</div>
+</div>
+	
+</div>
+</body>
+</html>
