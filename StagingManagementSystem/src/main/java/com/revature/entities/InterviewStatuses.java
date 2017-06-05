@@ -22,7 +22,7 @@ public class InterviewStatuses implements SmsValidatable {
 	@Id
 	@Column(name = "INTERVIEW_STATUS_ID")
 	@SequenceGenerator(name = "INTERVIEW_STATUS_ID_SEQ", sequenceName = "INTERVIEW_STATUS_ID_SEQ")
-	@GeneratedValue(generator = "INTERVIEW_STATUS_ID_SEQ", strategy = GenerationType.AUTO)
+	@GeneratedValue(generator = "INTERVIEW_STATUS_ID_SEQ", strategy = GenerationType.SEQUENCE)
 	private long id;
 
 	@Column(name = "INTERVIEW_STATUS")

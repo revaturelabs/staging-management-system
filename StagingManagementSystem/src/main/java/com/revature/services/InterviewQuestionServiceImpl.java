@@ -1,6 +1,7 @@
 package com.revature.services;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,12 +14,12 @@ public class InterviewQuestionServiceImpl implements InterviewQuestionService {
 
 	@Autowired
 	InterviewQuestionRepo interviewQuestionRepo;
-	
+
 	public InterviewQuestionServiceImpl(InterviewQuestionRepo interviewQuestionRepo) {
 		super();
 		this.interviewQuestionRepo = interviewQuestionRepo;
 	}
-	
+
 	@Override
 	public void add(InterviewQuestion interviewQ) {
 		interviewQuestionRepo.saveAndFlush(interviewQ);
@@ -40,8 +41,8 @@ public class InterviewQuestionServiceImpl implements InterviewQuestionService {
 	}
 
 	@Override
-	public List<InterviewQuestion> getAll() {
-		return interviewQuestionRepo.findAll();
+	public Set<InterviewQuestion> getAll() {
+		return new HashSet<InterviewQuestion>(interviewQuestionRepo.findAll());
 	}
 
 }

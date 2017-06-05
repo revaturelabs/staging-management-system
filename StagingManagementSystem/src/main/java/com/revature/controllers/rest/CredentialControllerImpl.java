@@ -1,6 +1,6 @@
 package com.revature.controllers.rest;
 
-import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,46 +15,47 @@ import org.springframework.web.bind.annotation.RestController;
 import com.revature.entities.Credential;
 import com.revature.services.CredentialService;
 
-
 @RestController
 @RequestMapping("credential")
 public class CredentialControllerImpl {
 
 	@Autowired
 	private CredentialService credentialService;
-	
-	public CredentialControllerImpl(CredentialService credentialService)
-	{
+
+	public CredentialControllerImpl(CredentialService credentialService) {
 		super();
 		this.credentialService = credentialService;
 	}
-	
+
 	/**
 	 * When called this will always persist a unique credential in the database.
 	 * 
-	 * @param credential - credential to be persisted.
+	 * @param credential
+	 *            - credential to be persisted.
 	 */
 	@PostMapping
 	public void addcredential(@RequestBody Credential credential) {
 		credential.setId(0l);
 		credentialService.add(credential);
 	}
-	
+
 	/**
 	 * Deletes credential with credential.id
 	 * 
-	 * @param credential - holds the id to be deleted
+	 * @param credential
+	 *            - holds the id to be deleted
 	 */
 	@DeleteMapping
 	public void deletecredential(@RequestBody Credential credential) {
 		credentialService.delete(credential);
 	}
-	
+
 	/**
-	 * If the id exists, updates information.
-	 * else creates a new row with genrated id.
+	 * If the id exists, updates information. else creates a new row with
+	 * genrated id.
 	 * 
-	 * @param credential - data to be persisted.
+	 * @param credential
+	 *            - data to be persisted.
 	 */
 	@PutMapping
 	public void updatecredential(@RequestBody Credential credential) {
@@ -64,14 +65,15 @@ public class CredentialControllerImpl {
 	/**
 	 * Gets a credential with id.
 	 * 
-	 * @param id - id of credential to be retrieved.
+	 * @param id
+	 *            - id of credential to be retrieved.
 	 * @return credential object from dataBase.
 	 */
 	@GetMapping("/{id}")
 	public Credential findById(@PathVariable long id) {
 		return credentialService.findById(id);
 	}
-	
+
 	/**
 	 * Gets all credentials.
 	 * 
@@ -79,7 +81,7 @@ public class CredentialControllerImpl {
 	 * @return all credential objects from dataBase.
 	 */
 	@GetMapping("/all")
-	public List<Credential> findAll() {
+	public Set<Credential> findAll() {
 		return credentialService.getAll();
 	}
 }

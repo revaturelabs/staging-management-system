@@ -1,6 +1,5 @@
 package com.revature.services;
 
-import java.util.List;
 import java.util.Set;
 
 import com.revature.entities.Trainer;
@@ -14,7 +13,7 @@ public interface TrainerService {
 
 	public Trainer findById(long id);
 
-	public List<Trainer> getAll();
+	public Set<Trainer> getAll();
 
 	void addTrainers(Set<Trainer> trainers);
 }

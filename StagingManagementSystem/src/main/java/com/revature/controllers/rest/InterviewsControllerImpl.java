@@ -1,7 +1,7 @@
 package com.revature.controllers.rest;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -42,12 +42,12 @@ public class InterviewsControllerImpl {
 	public Interviews findByAssociate(long id) {
 		return interviewsService.findByAssociateId(id);
 	}
-	
+
 	@GetMapping("/client/{client_Id}")
 	public Interviews findByClientId(long id) {
 		return interviewsService.findByClientId(id);
 	}
-	
+
 	@GetMapping("/status/{interview_Status_Id}")
 	public Interviews findByInterviewStatusId(long id) {
 		return interviewsService.findByInterviewStatus(id);
@@ -59,7 +59,7 @@ public class InterviewsControllerImpl {
 	}
 
 	@GetMapping("/all")
-	public List<Interviews> findById() {
+	public Set<Interviews> findById() {
 		return interviewsService.getAll();
 	}
 

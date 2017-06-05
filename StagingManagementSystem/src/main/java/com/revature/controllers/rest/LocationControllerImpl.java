@@ -1,6 +1,6 @@
 package com.revature.controllers.rest;
 
-import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -81,7 +81,7 @@ public class LocationControllerImpl {
 	 * @return all location objects from dataBase.
 	 */
 	@GetMapping("/all")
-	public List<Location> findAll() {
+	public Set<Location> findAll() {
 		return locationService.getAll();
 	}
 }
