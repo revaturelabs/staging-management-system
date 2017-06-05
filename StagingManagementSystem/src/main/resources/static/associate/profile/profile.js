@@ -1,6 +1,7 @@
 const profileCtrl = ($scope) => {
   $scope.name = 'Yushi Canastra';
   $scope.batchType = 'Java';
+  $scope.portfolioUrl = 'http://www.example-portfolio.com/';
   $scope.skills = ['Java', 'Spring', 'Hibernate', 'Servlets', 'JSP'];
   $scope.additionalSkills = ['hello', 'poop'];
   $scope.additionalSkillsInput = '';
