@@ -48,7 +48,6 @@ public class Associate implements SmsValidatable {
 
 	public Associate() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public Associate(Long id, Credential credential, String name, String portfolioLink, Batch batch,

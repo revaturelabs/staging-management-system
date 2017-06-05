@@ -18,6 +18,15 @@ public class PermissionServiceImpl implements PermissionService {
 	@Autowired
 	private PermissionRepo permissionRepo;
 
+	public PermissionServiceImpl() {
+		super();
+	}
+
+	public PermissionServiceImpl(PermissionRepo permissionRepo) {
+		super();
+		this.permissionRepo = permissionRepo;
+	}
+
 	@Override
 	public void add(Permission permission) throws SmsCustomException {
 		if (permission == null) {
@@ -55,7 +64,6 @@ public class PermissionServiceImpl implements PermissionService {
 	@Override
 	public Set<Permission> getAll() {
 		Set<Permission> permissions = new HashSet<Permission>(permissionRepo.findAll());
-
 		return permissions;
 	}
 
@@ -66,7 +74,6 @@ public class PermissionServiceImpl implements PermissionService {
 		}
 		permission.validate();
 		permission = permissionRepo.save(permission);
-
 	}
 
 	@Override
@@ -75,6 +82,5 @@ public class PermissionServiceImpl implements PermissionService {
 			throw new NullReferenceException("Permission is null.");
 		}
 		permissionRepo.delete(permission);
-
 	}
 }

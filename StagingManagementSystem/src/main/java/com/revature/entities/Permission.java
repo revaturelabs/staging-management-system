@@ -20,12 +20,12 @@ import com.revature.markers.SmsValidatable;
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Permission implements SmsValidatable {
 
-	private SmsSettings settings = SmsSettings.getInstance();
+	private transient SmsSettings settings = SmsSettings.getInstance();
 
 	@Id
 	@Column(name = "PERMISSION_ID")
 	@SequenceGenerator(name = "PERMISSION_ID_SEQ", sequenceName = "PERMISSION_ID_SEQ")
-	@GeneratedValue(generator = "PERMISSION_ID_SEQ", strategy = GenerationType.AUTO)
+	@GeneratedValue(generator = "PERMISSION_ID_SEQ", strategy = GenerationType.SEQUENCE)
 	private long id;
 
 	@Column(name = "PERMISSION_LEVEL")

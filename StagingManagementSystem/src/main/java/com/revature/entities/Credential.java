@@ -38,7 +38,6 @@ public class Credential implements SmsValidatable {
 
 	public Credential() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public Long getId() {

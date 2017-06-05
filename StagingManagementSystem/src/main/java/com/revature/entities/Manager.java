@@ -1,7 +1,5 @@
 package com.revature.entities;
 
-import java.util.Set;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -27,12 +25,12 @@ import com.revature.markers.SmsValidatable;
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Manager implements SmsValidatable {
 
-	private SmsSettings settings = SmsSettings.getInstance();
+	private transient SmsSettings settings = SmsSettings.getInstance();
 
 	@Id
 	@Column(name = "MANAGER_ID")
 	@SequenceGenerator(name = "MANAGER_ID_SEQ", sequenceName = "MANAGER_ID_SEQ")
-	@GeneratedValue(generator = "MANAGER_ID_SEQ", strategy = GenerationType.AUTO)
+	@GeneratedValue(generator = "MANAGER_ID_SEQ", strategy = GenerationType.SEQUENCE)
 	private Long id;
 	
 	@Column(name = "MANAGER_NAME")
@@ -46,7 +44,7 @@ public class Manager implements SmsValidatable {
 	@JoinColumn(name = "PERMISSION_ID")
 	private Permission permission;
 
-	public Manager(Long id, String name, Credential credential, Permission permission, Set<Checkin> approved) {
+	public Manager(Long id, String name, Credential credential, Permission permission) {
 		super();
 		this.id = id;
 		this.name = name;
