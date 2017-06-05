@@ -16,49 +16,51 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.revature.exceptions.SmsCustomException;
+import com.revature.markers.SmsValidatable;
 import com.revature.util.LocalDateTimeConverter;
 
 @Entity
-@Table(name="JOBS")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Job {
+@Table(name = "JOBS")
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+public class Job implements SmsValidatable {
 
 	@Id
-	@Column(name="JOB_ID")
+	@Column(name = "JOB_ID")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "JOB_ID_SEQ")
 	@SequenceGenerator(name = "JOB_ID_SEQ", sequenceName = "JOB_ID_SEQ")
 	private long id;
-	
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="ASSOCIATE_ID")
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "ASSOCIATE_ID")
 	private Associate associate;
 
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="CLIENT_ID")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "CLIENT_ID")
 	private Client client;
-	
-	@Column(name="START_DATE")
+
+	@Column(name = "START_DATE")
 	@Convert(converter = LocalDateTimeConverter.class)
 	private LocalDateTime startDate;
-	
-	@Column(name="PROJECTED_END_DATE")
+
+	@Column(name = "PROJECTED_END_DATE")
 	@Convert(converter = LocalDateTimeConverter.class)
 	private LocalDateTime projectedEndDate;
-	
-	@Column(name="ACTUAL_END_DATE")
+
+	@Column(name = "ACTUAL_END_DATE")
 	@Convert(converter = LocalDateTimeConverter.class)
 	private LocalDateTime endDate;
-	
-	@Column(name="BUYOUT_DATE")
+
+	@Column(name = "BUYOUT_DATE")
 	@Convert(converter = LocalDateTimeConverter.class)
 	private LocalDateTime buyoutDate;
-	
-	@Column(name="CONFIRMED_DATE")
+
+	@Column(name = "CONFIRMED_DATE")
 	@Convert(converter = LocalDateTimeConverter.class)
 	private LocalDateTime confirmedDate;
 
-	public Job(long id, Associate associateId, Client clientId, LocalDateTime startDate, LocalDateTime projectedEndDate, LocalDateTime endDate,
-			LocalDateTime buyoutDate) {
+	public Job(long id, Associate associate, Client clientId, LocalDateTime startDate, LocalDateTime projectedEndDate,
+			LocalDateTime endDate, LocalDateTime buyoutDate) {
 		super();
 		this.id = id;
 		this.associate = associate;
@@ -129,11 +131,16 @@ public class Job {
 		this.buyoutDate = buyoutDate;
 	}
 
-
 	@Override
 	public String toString() {
 		return "Job [id=" + id + ", associate=" + associate + ", client=" + client + ", startDate=" + startDate
 				+ ", projectedEndDate=" + projectedEndDate + ", endDate=" + endDate + ", buyoutDate=" + buyoutDate
 				+ "]";
+	}
+
+	@Override
+	public void validate() throws SmsCustomException {
+		// TODO Validate your members.
+
 	}
 }
