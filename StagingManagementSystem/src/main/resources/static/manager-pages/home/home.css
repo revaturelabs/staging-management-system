@@ -1,0 +1,10 @@
+.manager-home {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.home-view-1, .home-view-2 {
+  display: flex;
+  flex-direction: column;
+}
