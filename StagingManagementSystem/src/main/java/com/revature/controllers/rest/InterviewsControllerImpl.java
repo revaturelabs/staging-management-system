@@ -53,7 +53,7 @@ public class InterviewsControllerImpl {
 		return interviewsService.findByInterviewStatus(id);
 	}
 
-	@GetMapping("/datetime/{dateandtime}")
+	@GetMapping("/date/{dateandtime}")
 	public Interviews findByScheduled(@PathVariable LocalDateTime dateandtime) {
 		return interviewsService.findByScheduled(dateandtime);
 	}
