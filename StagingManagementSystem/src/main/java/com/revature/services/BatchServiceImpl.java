@@ -14,11 +14,13 @@ import org.springframework.stereotype.Service;
 import com.revature.entities.Associate;
 import com.revature.entities.Batch;
 import com.revature.entities.BatchType;
+import com.revature.entities.Location;
 import com.revature.entities.Trainer;
 import com.revature.repositories.AssociateRepo;
 import com.revature.repositories.BatchRepo;
 import com.revature.repositories.BatchTypeRepo;
 import com.revature.repositories.CredentialRepo;
+import com.revature.repositories.LocationRepo;
 import com.revature.repositories.TrainerRepo;
 
 @Service
@@ -39,14 +41,18 @@ public class BatchServiceImpl implements BatchService {
 	@Autowired
 	CredentialRepo credentialRepo;
 
+	@Autowired
+	LocationRepo locationRepo;
+
 	public BatchServiceImpl(BatchRepo batchRepo, BatchTypeRepo batchTypeRepo, TrainerRepo trainerRepo,
-			AssociateRepo associateRepo, CredentialRepo credentialRepo) {
+			AssociateRepo associateRepo, CredentialRepo credentialRepo, LocationRepo locationRepo) {
 		super();
 		this.batchRepo = batchRepo;
 		this.batchTypeRepo = batchTypeRepo;
 		this.trainerRepo = trainerRepo;
 		this.associateRepo = associateRepo;
 		this.credentialRepo = credentialRepo;
+		this.locationRepo = locationRepo;
 	}
 
 	@Override
@@ -72,6 +78,8 @@ public class BatchServiceImpl implements BatchService {
 		List<Trainer> trainers = trainerRepo.findAll();
 		int trainerIndex = 0;
 		List<BatchType> batchTypes = batchTypeRepo.findAll();
+
+		Location revature = locationRepo.findByName("Revature");
 
 		// Initialize a date to being the first monday of 2017
 		int week = 1;
@@ -106,12 +114,16 @@ public class BatchServiceImpl implements BatchService {
 
 			batch.getAssociates().forEach((Associate associate) -> {
 				String portfolio = associate.getPortfolioLink();
-				if (portfolio.length() > 256) {
-					associate.setPortfolioLink(portfolio.substring(0, 256));
+				if (portfolio.length() > 128) {
+					associate.setPortfolioLink(portfolio.substring(0, 128));
 				}
 				associate.setCredential(credentialRepo.saveAndFlush(associate.getCredential()));
 				associate = associateRepo.saveAndFlush(associate);
 			});
+
+			// Set batch location to revature
+			batch.setLocation(revature);
+
 			batchRepo.saveAndFlush(batch);
 		}
 

@@ -10,22 +10,19 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.revature.classes.ClientInfo;
 
 @Entity
 @Table(name = "Clients")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Client {
 
 	@Id
-	@Column(name="CLIENT_ID")
+	@Column(name = "CLIENT_ID")
 	@SequenceGenerator(name = "CLIENT_ID_SEQ", sequenceName = "CLIENT_ID_SEQ")
 	@GeneratedValue(generator = "CLIENT_ID_SEQ", strategy = GenerationType.AUTO)
 	private long id;
@@ -33,15 +30,13 @@ public class Client {
 	@Column(name = "client_name")
 	private String name;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,
-			mappedBy="client")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "client")
 	private Set<Job> jobs;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,
-			mappedBy="client")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "client")
 	private Set<Interviews> interviews;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy="client")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "client")
 	private List<ClientQ> clientQuestions;
 
 	public Client() {
@@ -149,8 +144,5 @@ public class Client {
 		return "Client [id=" + id + ", name=" + name + ", jobs=" + jobs + ", interviews=" + interviews
 				+ ", clientQuestions=" + clientQuestions + "]";
 	}
-
-
-	
 
 }

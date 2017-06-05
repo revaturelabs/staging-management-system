@@ -11,17 +11,16 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
-@Table(name="LOCATIONS")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Location 
-{
+@Table(name = "LOCATIONS")
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+public class Location {
 
 	@Id
-	@Column(name="LOCATION_ID")
-	@SequenceGenerator(name = "locations_seq", sequenceName = "locations_seq")
-	@GeneratedValue(generator = "locations_seq", strategy = GenerationType.AUTO)
+	@Column(name = "LOCATION_ID")
+	@SequenceGenerator(name = "LOCATION_ID_SEQ", sequenceName = "LOCATION_ID_SEQ")
+	@GeneratedValue(generator = "LOCATION_ID_SEQ", strategy = GenerationType.SEQUENCE)
 	long id;
-	
+
 	@Column
 	String country;
 	@Column
@@ -30,54 +29,80 @@ public class Location
 	String city;
 	@Column
 	String name;
-	
-	public Location(){}
-	
+
+	public Location() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public Location(long id, String country, String state, String city, String name) {
+		super();
+		this.id = id;
+		this.country = country;
+		this.state = state;
+		this.city = city;
+		this.name = name;
+	}
+
 	public long getId() {
 		return id;
 	}
+
 	public void setId(long id) {
 		this.id = id;
 	}
+
 	public String getCountry() {
 		return country;
 	}
+
 	public void setCountry(String country) {
 		this.country = country;
 	}
+
 	public String getState() {
 		return state;
 	}
+
 	public void setState(String state) {
 		this.state = state;
 	}
+
 	public String getCity() {
 		return city;
 	}
+
 	public void setCity(String city) {
 		this.city = city;
 	}
-	@Override
-	public String toString() {
-		return "Location [id=" + id + ", country=" + country + ", state=" + state + ", city=" + city + "]";
+
+	public String getName() {
+		return name;
 	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((city == null) ? 0 : city.hashCode());
 		result = prime * result + ((country == null) ? 0 : country.hashCode());
-		result = (int) (prime * result + ((id == 0) ? 0 : id));
+		result = prime * result + (int) (id ^ (id >>> 32));
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((state == null) ? 0 : state.hashCode());
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
 			return false;
-		if (getClass() != obj.getClass())
+		if (!(obj instanceof Location))
 			return false;
 		Location other = (Location) obj;
 		if (city == null) {
@@ -90,9 +115,13 @@ public class Location
 				return false;
 		} else if (!country.equals(other.country))
 			return false;
-		if (id != other.id) {
+		if (id != other.id)
+			return false;
+		if (name == null) {
+			if (other.name != null)
 				return false;
-		} 
+		} else if (!name.equals(other.name))
+			return false;
 		if (state == null) {
 			if (other.state != null)
 				return false;
@@ -100,5 +129,11 @@ public class Location
 			return false;
 		return true;
 	}
-		
+
+	@Override
+	public String toString() {
+		return "Location [id=" + id + ", country=" + country + ", state=" + state + ", city=" + city + ", name=" + name
+				+ "]";
+	}
+
 }

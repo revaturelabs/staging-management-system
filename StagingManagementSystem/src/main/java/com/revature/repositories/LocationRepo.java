@@ -4,6 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.revature.entities.Location;
 
-public interface LocationRepo extends JpaRepository<Location, Long>{
+public interface LocationRepo extends JpaRepository<Location, Long> {
 	Location findById(long id);
+
+	Location findByName(String name);
 }

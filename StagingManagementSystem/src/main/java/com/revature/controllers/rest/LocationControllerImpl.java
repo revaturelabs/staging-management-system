@@ -15,30 +15,28 @@ import org.springframework.web.bind.annotation.RestController;
 import com.revature.entities.Location;
 import com.revature.services.LocationService;
 
-
 @RestController
 @RequestMapping("location")
 public class LocationControllerImpl {
 
 	@Autowired
 	private LocationService locationService;
-	
-	public LocationControllerImpl(LocationService locationService)
-	{
+
+	public LocationControllerImpl(LocationService locationService) {
 		super();
 		this.locationService = locationService;
 	}
-	
+
 	@PostMapping
 	public void addLocation(@RequestBody Location location) {
 		locationService.add(location);
 	}
-	
+
 	@DeleteMapping
 	public void deleteLocation(@RequestBody Location location) {
 		locationService.delete(location);
 	}
-	
+
 	@PutMapping
 	public void updateLocation(@RequestBody Location location) {
 		locationService.update(location);
@@ -48,7 +46,7 @@ public class LocationControllerImpl {
 	public Location findById(@PathVariable long id) {
 		return locationService.findById(id);
 	}
-	
+
 	@GetMapping("/all")
 	public List<Location> findById() {
 		return locationService.getAll();
