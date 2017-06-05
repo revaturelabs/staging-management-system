@@ -1,5 +1,6 @@
 package com.revature.services;
 
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +21,23 @@ public class ClientServiceImpl implements ClientService {
 	}
 
 	@Override
-	public Client getClientbyId(long id) {
-		return clientRepo.findOne(id);
+	public void add(Client location) {
+		clientRepo.saveAndFlush(location);
 	}
 
 	@Override
-	public void add(Client client) {
-		clientRepo.saveAndFlush(client);
+	public List<Client> getAll() {
+		return clientRepo.findAll();
+	}
 
+	@Override
+	public Client findById(long id) {
+		return clientRepo.getOne(id);
+	}
+
+	@Override
+	public void delete(Client location) {
+		clientRepo.delete(location);
 	}
 
 	@Override
@@ -35,6 +45,16 @@ public class ClientServiceImpl implements ClientService {
 		clients.forEach((Client client) -> {
 			clientRepo.saveAndFlush(client);
 		});
+
+	}
+
+	public void update(Client location) {
+		clientRepo.saveAndFlush(location);
+	}
+
+	@Override
+	public Client getClientbyId(long id) {
+		return clientRepo.getOne(id);
 	}
 
 }

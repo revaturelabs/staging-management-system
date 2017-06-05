@@ -11,4 +11,5 @@ import java.util.Set;
 public interface BatchRepo extends JpaRepository<Batch, Long> {
     Batch getByStartDate(LocalDate startDate);
     Set<Batch> getAllByBatchType(BatchType batchType);
+    
 }

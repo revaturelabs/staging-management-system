@@ -1,16 +1,10 @@
 package com.revature.entities;
 
-import java.util.List;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -30,27 +24,15 @@ public class Client {
 	@Column(name = "client_name")
 	private String name;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "client")
-	private Set<Job> jobs;
-
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "client")
-	private Set<Interviews> interviews;
-
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "client")
-	private List<ClientQ> clientQuestions;
+	public Client(long id, String name) {
+		super();
+		this.id = id;
+		this.name = name;
+	}
 
 	public Client() {
 		super();
 		// TODO Auto-generated constructor stub
-	}
-
-	public Client(long id, String name, Set<Job> jobs, Set<Interviews> interviews, List<ClientQ> clientQuestions) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.jobs = jobs;
-		this.interviews = interviews;
-		this.clientQuestions = clientQuestions;
 	}
 
 	public long getId() {
@@ -69,38 +51,11 @@ public class Client {
 		this.name = name;
 	}
 
-	public Set<Job> getJobs() {
-		return jobs;
-	}
-
-	public void setJobs(Set<Job> jobs) {
-		this.jobs = jobs;
-	}
-
-	public Set<Interviews> getInterviews() {
-		return interviews;
-	}
-
-	public void setInterviews(Set<Interviews> interviews) {
-		this.interviews = interviews;
-	}
-
-	public List<ClientQ> getClientQuestions() {
-		return clientQuestions;
-	}
-
-	public void setClientQuestions(List<ClientQ> clientQuestions) {
-		this.clientQuestions = clientQuestions;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((clientQuestions == null) ? 0 : clientQuestions.hashCode());
 		result = prime * result + (int) (id ^ (id >>> 32));
-		result = prime * result + ((interviews == null) ? 0 : interviews.hashCode());
-		result = prime * result + ((jobs == null) ? 0 : jobs.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
 	}
@@ -114,22 +69,7 @@ public class Client {
 		if (getClass() != obj.getClass())
 			return false;
 		Client other = (Client) obj;
-		if (clientQuestions == null) {
-			if (other.clientQuestions != null)
-				return false;
-		} else if (!clientQuestions.equals(other.clientQuestions))
-			return false;
 		if (id != other.id)
-			return false;
-		if (interviews == null) {
-			if (other.interviews != null)
-				return false;
-		} else if (!interviews.equals(other.interviews))
-			return false;
-		if (jobs == null) {
-			if (other.jobs != null)
-				return false;
-		} else if (!jobs.equals(other.jobs))
 			return false;
 		if (name == null) {
 			if (other.name != null)
@@ -141,8 +81,7 @@ public class Client {
 
 	@Override
 	public String toString() {
-		return "Client [id=" + id + ", name=" + name + ", jobs=" + jobs + ", interviews=" + interviews
-				+ ", clientQuestions=" + clientQuestions + "]";
+		return "Client [id=" + id + ", name=" + name + "]";
 	}
 
 }
