@@ -1,6 +1,7 @@
 package com.revature.services;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
@@ -60,7 +61,7 @@ public class AssociateServiceImpl implements AssociateService {
 	}
 
 	@Override
-	public List<Associate> getAll() {
-		return associateRepo.findAll();
+	public Set<Associate> getAll() {
+		return new HashSet<Associate>(associateRepo.findAll());
 	}
 }

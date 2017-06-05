@@ -1,6 +1,7 @@
 package com.revature.services;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,8 +25,8 @@ public class CredentialServiceImpl implements CredentialService {
 	}
 
 	@Override
-	public List<Credential> getAll() {
-		return credentialRepo.findAll();
+	public Set<Credential> getAll() {
+		return new HashSet<Credential>(credentialRepo.findAll());
 	}
 
 	@Override
@@ -35,7 +36,7 @@ public class CredentialServiceImpl implements CredentialService {
 
 	@Override
 	public void delete(Credential location) {
-		credentialRepo.delete(location);		
+		credentialRepo.delete(location);
 	}
 
 	@Override
