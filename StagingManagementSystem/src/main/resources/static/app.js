@@ -11,9 +11,9 @@ import { currentCtrl } from './manager/manager';
 import { batchCtrl } from './manager/create/batch';
 import { clientCtrl } from './manager/create/client';
 import { userCtrl } from './manager/create/user';
+import { profileCtrl } from './associate/profile/profile';
 import { reportCtrl } from './reports/reports';
 import { nestedCtrl } from './reports/nestedGraph';
-
 
 const routerApp = angular.module('routerApp', [uiRouter, angularBootstrap]);
 
@@ -48,6 +48,15 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       url: '/client',
       templateUrl: 'manager/create/client.html',
       controller: clientCtrl,
+    })
+    .state('associate', {
+      url: '/associate',
+      templateUrl: 'associate/associate.html',
+    })
+    .state('associate.profile', {
+      url: '/profile',
+      templateUrl: 'associate/profile/profile.html',
+      controller: profileCtrl,
     })
     .state('reports', {
     	url: '/reports',
@@ -105,4 +114,3 @@ routerApp.controller('navController', ($scope) => {
   //   $mdOpenMenu(ev);
   // };
 });
-
