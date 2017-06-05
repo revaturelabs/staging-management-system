@@ -19,26 +19,26 @@ import com.revature.markers.SmsValidatable;
 import com.revature.util.LocalDateTimeConverter;
 
 @Entity
-@Table(name = "interviews")
+@Table(name = "INTERVIEWS")
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Interviews implements SmsValidatable {
 
 	@Id
-	@Column(name = "interview_Id")
-	@SequenceGenerator(name = "interviews_seq", sequenceName = "interviews_seq")
-	@GeneratedValue(generator = "interviews_seq", strategy = GenerationType.AUTO)
+	@Column(name = "INTERVIEW_ID")
+	@SequenceGenerator(name = "INTERVIEW_ID_SEQ", sequenceName = "INTERVIEW_ID_SEQ")
+	@GeneratedValue(generator = "INTERVIEW_ID_SEQ", strategy = GenerationType.SEQUENCE)
 	private long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "associate_Id")
+	@JoinColumn(name = "ASSOCIATE_ID")
 	private Associate associate;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "client_Id")
+	@JoinColumn(name = "CLIENT_ID")
 	private Client client;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "interview_Status_Id")
+	@JoinColumn(name = "INTERVIEW_STATUS_ID")
 	private InterviewStatuses interviewStatus;
 
 	@Column(name = "SCHEDULED_TIME")

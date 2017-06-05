@@ -20,7 +20,7 @@ public class Client implements SmsValidatable {
 	@Id
 	@Column(name = "CLIENT_ID")
 	@SequenceGenerator(name = "CLIENT_ID_SEQ", sequenceName = "CLIENT_ID_SEQ")
-	@GeneratedValue(generator = "CLIENT_ID_SEQ", strategy = GenerationType.AUTO)
+	@GeneratedValue(generator = "CLIENT_ID_SEQ", strategy = GenerationType.SEQUENCE)
 	private long id;
 
 	@Column(name = "client_name")
