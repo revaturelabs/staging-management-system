@@ -11,7 +11,7 @@ import { managerCtrl } from './manager-pages/manager';
 import { batchCtrl } from './manager-pages/create/batch';
 import { clientCtrl } from './manager-pages/create/client';
 import { userCtrl } from './manager-pages/create/user';
-import { profileCtrl } from './associate/profile/profile';
+import { profileCtrl } from './associate-pages/profile/profile';
 import { reportCtrl } from './reports/reports';
 import { nestedCtrl } from './reports/nestedGraph';
 import { loginCtrl } from './login/login';
@@ -54,11 +54,11 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
     })
     .state('associate', {
       url: '/associate',
-      templateUrl: 'associate/associate.html',
+      templateUrl: 'associate-pages/associate.html',
     })
     .state('associate.profile', {
       url: '/profile',
-      templateUrl: 'associate/profile/profile.html',
+      templateUrl: 'associate-pages/profile/profile.html',
       controller: profileCtrl,
     })
     .state('reports', {
