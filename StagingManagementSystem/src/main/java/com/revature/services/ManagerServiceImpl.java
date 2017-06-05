@@ -3,20 +3,22 @@ package com.revature.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.revature.entities.Manager;
 import com.revature.repositories.ManagerRepo;
 
+@Service
 public class ManagerServiceImpl implements ManagerService {
 
 	@Autowired
 	ManagerRepo managerRepo;
-	
-	public ManagerServiceImpl(ManagerRepo managerRepo){
+
+	public ManagerServiceImpl(ManagerRepo managerRepo) {
 		super();
-		this.managerRepo = managerRepo;		
+		this.managerRepo = managerRepo;
 	}
-	
+
 	@Override
 	public void add(Manager manager) {
 		managerRepo.saveAndFlush(manager);
@@ -41,6 +43,5 @@ public class ManagerServiceImpl implements ManagerService {
 	public List<Manager> getAll() {
 		return managerRepo.findAll();
 	}
-
 
 }

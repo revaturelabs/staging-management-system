@@ -48,6 +48,46 @@
 			"response": []
 		},
 		{
+			"name": "Add multiple clients",
+			"request": {
+				"url": "http://localhost:8080/client/multiple",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[{\n  \"name\": \"Wordify\",\n  \"priority\": \"false\"\n}, {\n  \"name\": \"Kazio\",\n  \"priority\": \"false\"\n}, {\n  \"name\": \"Fliptune\",\n  \"priority\": \"false\"\n}, {\n  \"name\": \"Twinder\",\n  \"priority\": \"false\"\n}, {\n  \"name\": \"Rhyzio\",\n  \"priority\": \"false\"\n}, {\n  \"name\": \"Skinder\",\n  \"priority\": \"false\"\n}, {\n  \"name\": \"Jetpulse\",\n  \"priority\": \"false\"\n}, {\n  \"name\": \"Quinu\",\n  \"priority\": \"false\"\n}, {\n  \"name\": \"Flashset\",\n  \"priority\": \"false\"\n}, {\n  \"name\": \"Voomm\",\n  \"priority\": \"false\"\n}, {\n  \"name\": \"Minyx\",\n  \"priority\": \"false\"\n}, {\n  \"name\": \"Vipe\",\n  \"priority\": \"false\"\n}, {\n  \"name\": \"Realfire\",\n  \"priority\": \"false\"\n}, {\n  \"name\": \"Yotz\",\n  \"priority\": \"false\"\n}, {\n  \"name\": \"Blogtag\",\n  \"priority\": \"false\"\n}, {\n  \"name\": \"Eazzy\",\n  \"priority\": \"false\"\n}, {\n  \"name\": \"Innojam\",\n  \"priority\": \"false\"\n}, {\n  \"name\": \"Skippad\",\n  \"priority\": \"false\"\n}, {\n  \"name\": \"Eire\",\n  \"priority\": \"false\"\n}]"
+				},
+				"description": "Uses mock data to add multiple clients\n"
+			},
+			"response": []
+		},
+		{
+			"name": "Add multiple priority clients",
+			"request": {
+				"url": "http://localhost:8080/client/multiple",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[{\n  \"name\": \"Capital One\",\n  \"priority\": \"true\"\n}, {\n  \"name\": \"Infosys\",\n  \"priority\": \"true\"\n}]"
+				},
+				"description": "Uses mock data to add multiple priority clients\n"
+			},
+			"response": []
+		},
+		{
 			"name": "add revature as a location",
 			"request": {
 				"url": "http://localhost:8080/location",
@@ -64,26 +104,6 @@
 					"raw": "{\n\t\"name\": \"Revature\",\n\t\"country\": \"United States\",\n\t\"state\": \"Virginia\",\n\t\"city\": \"Reston\"\n}"
 				},
 				"description": ""
-			},
-			"response": []
-		},
-		{
-			"name": "Add multiple clients",
-			"request": {
-				"url": "http://localhost:8080/client/multiple",
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"description": ""
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "[{\r\n  \"name\": \"Wordify\"\r\n}, {\r\n  \"name\": \"Kazio\"\r\n}, {\r\n  \"name\": \"Fliptune\"\r\n}, {\r\n  \"name\": \"Twinder\"\r\n}, {\r\n  \"name\": \"Rhyzio\"\r\n}, {\r\n  \"name\": \"Skinder\"\r\n}, {\r\n  \"name\": \"Jetpulse\"\r\n}, {\r\n  \"name\": \"Quinu\"\r\n}, {\r\n  \"name\": \"Flashset\"\r\n}, {\r\n  \"name\": \"Voomm\"\r\n}, {\r\n  \"name\": \"Minyx\"\r\n}, {\r\n  \"name\": \"Vipe\"\r\n}, {\r\n  \"name\": \"Realfire\"\r\n}, {\r\n  \"name\": \"Yotz\"\r\n}, {\r\n  \"name\": \"Blogtag\"\r\n}, {\r\n  \"name\": \"Eazzy\"\r\n}, {\r\n  \"name\": \"Innojam\"\r\n}, {\r\n  \"name\": \"Skippad\"\r\n}, {\r\n  \"name\": \"Eire\"\r\n}]"
-				},
-				"description": "Uses mock data to add multiple clients\n"
 			},
 			"response": []
 		},
