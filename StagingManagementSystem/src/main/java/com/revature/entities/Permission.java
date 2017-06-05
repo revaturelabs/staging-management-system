@@ -9,18 +9,25 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.revature.config.SmsSettings;
+import com.revature.exceptions.SmsCustomException;
+import com.revature.exceptions.badrequests.InvalidFieldException;
+import com.revature.exceptions.badrequests.NullReferenceException;
+import com.revature.markers.SmsValidatable;
 
 @Entity
 @Table(name = "PERMISSIONS")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Permission {
-	
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+public class Permission implements SmsValidatable {
+
+	private SmsSettings settings = SmsSettings.getInstance();
+
 	@Id
 	@Column(name = "PERMISSION_ID")
-	@SequenceGenerator(name="PERMISSION_ID_SEQ", sequenceName="PERMISSION_ID_SEQ")
-	@GeneratedValue(generator="PERMISSION_ID_SEQ", strategy=GenerationType.AUTO)
+	@SequenceGenerator(name = "PERMISSION_ID_SEQ", sequenceName = "PERMISSION_ID_SEQ")
+	@GeneratedValue(generator = "PERMISSION_ID_SEQ", strategy = GenerationType.AUTO)
 	private long id;
-	
+
 	@Column(name = "PERMISSION_LEVEL")
 	private String level;
 
@@ -82,7 +89,26 @@ public class Permission {
 	public String toString() {
 		return "Permission [id=" + id + ", level=" + level + "]";
 	}
-	
-	
-	
+
+	@Override
+	public void validate() throws SmsCustomException {
+		if (this.level == null) {
+			throw new NullReferenceException("Permission level is null.");
+		}
+		if (this.level == "") {
+			throw new InvalidFieldException("Permission level is empty.");
+		}
+		if (this.level.matches(settings.get("illegal_permission_level"))) {
+			throw new InvalidFieldException("Permission level contains illegal characters.");
+		}
+		int min = Integer.parseInt(settings.get("length_min_permission_level"));
+		int max = Integer.parseInt(settings.get("length_max_permission_level"));
+		if (this.level.length() < min) {
+			throw new InvalidFieldException("Permission level requires " + min + " characters.");
+		}
+		if (this.level.length() > max) {
+			throw new InvalidFieldException("Permission level is limited to " + max + "characters.");
+		}
+	}
+
 }
