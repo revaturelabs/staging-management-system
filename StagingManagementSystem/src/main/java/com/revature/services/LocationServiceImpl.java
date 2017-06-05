@@ -1,6 +1,7 @@
 package com.revature.services;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,8 +25,8 @@ public class LocationServiceImpl implements LocationService {
 	}
 
 	@Override
-	public List<Location> getAll() {
-		return locationRepo.findAll();
+	public Set<Location> getAll() {
+		return new HashSet<Location>(locationRepo.findAll());
 	}
 
 	@Override
@@ -35,7 +36,7 @@ public class LocationServiceImpl implements LocationService {
 
 	@Override
 	public void delete(Location location) {
-		locationRepo.delete(location);		
+		locationRepo.delete(location);
 	}
 
 	@Override
