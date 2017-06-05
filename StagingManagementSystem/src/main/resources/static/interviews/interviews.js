@@ -1,11 +1,8 @@
-
-
 /**
  * Created by colts on 6/4/2017.
  */
-/**
- * Created by colts on 6/4/2017.
- */
+
+
 var app = angular.module('interviews', []);
 
 app.controller('interviewsCtrl', function($scope){
@@ -48,4 +45,4 @@ app.controller('interviewsCtrl', function($scope){
             scheduled_time: '6-15-2017'
         }];
 
-})
+});
