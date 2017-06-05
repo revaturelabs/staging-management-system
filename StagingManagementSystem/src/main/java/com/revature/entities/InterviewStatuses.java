@@ -11,33 +11,38 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.revature.exceptions.SmsCustomException;
+import com.revature.markers.SmsValidatable;
 
 @Entity
-@Table(name="interview_statuses")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class InterviewStatuses {
-	
+@Table(name = "interview_statuses")
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+public class InterviewStatuses implements SmsValidatable {
+
 	@Id
-	@Column(name="INTERVIEW_STATUS_ID")
-	@SequenceGenerator(name="INTERVIEW_STATUS_ID_SEQ", sequenceName="INTERVIEW_STATUS_ID_SEQ")
-	@GeneratedValue(generator="INTERVIEW_STATUS_ID_SEQ", strategy=GenerationType.AUTO)
+	@Column(name = "INTERVIEW_STATUS_ID")
+	@SequenceGenerator(name = "INTERVIEW_STATUS_ID_SEQ", sequenceName = "INTERVIEW_STATUS_ID_SEQ")
+	@GeneratedValue(generator = "INTERVIEW_STATUS_ID_SEQ", strategy = GenerationType.AUTO)
 	private long id;
-	
-	@Column(name="INTERVIEW_STATUS")
+
+	@Column(name = "INTERVIEW_STATUS")
 	private String status;
-	
+
 	public InterviewStatuses() {
 		super();
 	}
+
 	public InterviewStatuses(long id, String status, Collection<Interviews> interviews) {
 		super();
 		this.id = id;
 		this.status = status;
 	}
+
 	@Override
 	public String toString() {
 		return "InterviewStatus [id=" + id + ", status=" + status + "]";
 	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -46,6 +51,7 @@ public class InterviewStatuses {
 		result = prime * result + ((status == null) ? 0 : status.hashCode());
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -64,21 +70,27 @@ public class InterviewStatuses {
 			return false;
 		return true;
 	}
+
 	public long getId() {
 		return id;
 	}
+
 	public void setId(long id) {
 		this.id = id;
 	}
+
 	public String getStatus() {
 		return status;
 	}
+
 	public void setStatus(String status) {
 		this.status = status;
 	}
 
-	
-	
-	
-	
+	@Override
+	public void validate() throws SmsCustomException {
+		// TODO Validate your members.
+
+	}
+
 }

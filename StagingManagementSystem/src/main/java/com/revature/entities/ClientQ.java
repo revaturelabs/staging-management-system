@@ -11,27 +11,29 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.revature.exceptions.SmsCustomException;
+import com.revature.markers.SmsValidatable;
 
 @Entity
-@Table(name="CLIENT_QUESTIONS")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class ClientQ {
+@Table(name = "CLIENT_QUESTIONS")
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+public class ClientQ implements SmsValidatable {
 	@Id
-	@Column(name="CLIENT_QUESTION_ID")
-	@SequenceGenerator(name="CLIENT_QUESTION_ID_SEQ", sequenceName="CLIENT_QUESTION_ID_SEQ")
-	@GeneratedValue(generator="CLIENT_QUESTION_ID_SEQ", strategy=GenerationType.AUTO)
+	@Column(name = "CLIENT_QUESTION_ID")
+	@SequenceGenerator(name = "CLIENT_QUESTION_ID_SEQ", sequenceName = "CLIENT_QUESTION_ID_SEQ")
+	@GeneratedValue(generator = "CLIENT_QUESTION_ID_SEQ", strategy = GenerationType.AUTO)
 	private long ClientQuestionId;
-	
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="client_Id")
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "client_Id")
 	private Client client;
-	
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="INTERVIEW_QUESTION_ID")
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "INTERVIEW_QUESTION_ID")
 	private InterviewQuestion interviewQ;
-	
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="ASSOCIATE_ID")
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "ASSOCIATE_ID")
 	private Associate associate;
 
 	public ClientQ(long clientQuestionId, Client client, InterviewQuestion interviewQ, Associate associate) {
@@ -122,5 +124,11 @@ public class ClientQ {
 		} else if (!interviewQ.equals(other.interviewQ))
 			return false;
 		return true;
+	}
+
+	@Override
+	public void validate() throws SmsCustomException {
+		// TODO Validate your members.
+
 	}
 }

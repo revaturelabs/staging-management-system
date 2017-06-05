@@ -9,11 +9,13 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.revature.exceptions.SmsCustomException;
+import com.revature.markers.SmsValidatable;
 
 @Entity
 @Table(name = "Clients")
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-public class Client {
+public class Client implements SmsValidatable {
 
 	@Id
 	@Column(name = "CLIENT_ID")
@@ -97,6 +99,12 @@ public class Client {
 	@Override
 	public String toString() {
 		return "Client [id=" + id + ", name=" + name + ", priority=" + priority + "]";
+	}
+
+	@Override
+	public void validate() throws SmsCustomException {
+		// TODO Validate your members.
+
 	}
 
 }
