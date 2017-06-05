@@ -5,5 +5,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.revature.entities.Job;
 
 public interface JobRepo extends JpaRepository<Job, Long>{
-	Job findById(long id);
 }

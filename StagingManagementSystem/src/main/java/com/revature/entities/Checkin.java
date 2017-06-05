@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.revature.util.LocalDateTimeConverter;
 
 @Entity
 @Table(name = "CHECKINS")
@@ -17,9 +18,11 @@ public class Checkin {
 	private Long id;
 	
 	@Column(name = "CHECKIN_TIME")
+	@Convert(converter = LocalDateTimeConverter.class)
 	private LocalDateTime checkinTime;
 	
 	@Column(name = "CHECKOUT_TIME")
+	@Convert(converter = LocalDateTimeConverter.class)
 	private LocalDateTime checkoutTime;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -27,15 +30,16 @@ public class Checkin {
 	private Manager approvedBy;
 	
 	@Column(name = "APPROVE_TIME")
+	@Convert(converter = LocalDateTimeConverter.class)
 	private LocalDateTime approveTime;
 	
+
 	@ManyToOne
 	@JoinColumn(name = "ASSOCIATE_ID")
 	private Associate associate;
 
 	public Checkin() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public Checkin(Long id, LocalDateTime checkinTime, LocalDateTime checkoutTime, Manager approvedBy,
@@ -87,6 +91,10 @@ public class Checkin {
 
 	public void setApproveTime(LocalDateTime approveTime) {
 		this.approveTime = approveTime;
+	}
+
+	public Associate getAssociateId() {
+		return associate;
 	}
 
 	public Associate getAssociate() {
