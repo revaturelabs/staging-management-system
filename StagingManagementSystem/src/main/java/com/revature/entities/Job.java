@@ -46,6 +46,9 @@ public class Job {
 	
 	@Column(name="BUYOUT_DATE")
 	private Date buyoutDate;
+	
+	@Column(name="CONFIRMED_DATE")
+	private Date confirmedDate;
 
 	public Job(long id, Associate associateId, Client clientId, Date startDate, Date projectedEndDate, Date endDate,
 			Date buyoutDate) {

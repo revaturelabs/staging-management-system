@@ -11,6 +11,7 @@ import com.revature.entities.Manager;
 import com.revature.exceptions.AlreadyCheckedInException;
 import com.revature.exceptions.AlreadyCheckedOutException;
 import com.revature.exceptions.NotCheckedInException;
+import com.revature.repositories.AssociateRepo;
 import com.revature.repositories.CheckinRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -27,6 +28,9 @@ public class CheckinServiceImpl implements CheckinService {
 
     @Autowired
     private CheckinRepo checkinRepo;
+
+    @Autowired
+    private AssociateRepo associateRepo;
 
     @Override
     public void approveCheckin(Manager approvingManager, Checkin checkin) {
@@ -86,5 +90,11 @@ public class CheckinServiceImpl implements CheckinService {
     public void checkOut(Checkin checkin, LocalDateTime when){
         checkin.setCheckoutTime(when);
         checkinRepo.save(checkin);
+    }
+
+    @Override
+    public void checkOut(long associateId) throws AlreadyCheckedOutException, NotCheckedInException {
+        Associate associate = associateRepo.getOne(associateId);
+        checkOut(associate);
     }
 }

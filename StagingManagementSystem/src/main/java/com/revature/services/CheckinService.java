@@ -30,7 +30,7 @@ public interface CheckinService {
     public boolean hasCheckedInToday(Associate associate);
 
     /**
-     * Records a checkin attempt for a user. Intended for both manager and
+     * Records a checkin attempt for a user. Intended for both manager and end user, is fairly safe. 
      * @param associate The associate to be checked in.
      * @param when The time to mark the checkin for. If null, assumes LocalDateTime.now(), and verifies to be sure no existing checkin has occurred today.
      * @throws AlreadyCheckedInException If a user has already checked in today, this is thrown.
@@ -38,7 +38,15 @@ public interface CheckinService {
     public void checkIn(Associate associate, LocalDateTime when) throws AlreadyCheckedInException;
 
     /**
-     * Accesses today's existing checkin, marking the time it was checked out.
+     * A safe version of checkOut. Accesses today's existing checkin, marking the time it was checked out.
+     * @param associateId The ID of the user to mark as having checked out.
+     * @throws AlreadyCheckedOutException Thrown when the user has already checked out today.
+     * @throws NotCheckedInException
+     */
+    public void checkOut(long associateId) throws AlreadyCheckedOutException, NotCheckedInException;
+
+    /**
+     * Accesses today's existing checkin, marking the time it was checked out. Unsafe!
      * @param associate The user to mark as having checked out.
      * @throws AlreadyCheckedOutException Thrown when a user has already checked out today.
      * @throws NotCheckedInException Thrown when a user has attempted to check out without first having checked in today.

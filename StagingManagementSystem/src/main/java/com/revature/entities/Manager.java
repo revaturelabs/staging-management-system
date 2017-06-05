@@ -1,6 +1,5 @@
 package com.revature.entities;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -12,7 +11,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -30,7 +28,7 @@ public class Manager {
 	@GeneratedValue(generator="MANAGER_ID_SEQ", strategy=GenerationType.AUTO)
 	private Long id;
 	
-	@Column(name = "MANAGER_NAME")
+	@Column(name = "NAME")
 	private String name;
 	
 	@OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
@@ -40,9 +38,6 @@ public class Manager {
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="PERMISSION_ID")
 	private Permission permission;
-	
-	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL , mappedBy="approvedBy")
-	private Set<Checkin> approved;
 
 	public Manager(Long id, String name, Credential credential, Permission permission, Set<Checkin> approved) {
 		super();
@@ -50,12 +45,10 @@ public class Manager {
 		this.name = name;
 		this.credential = credential;
 		this.permission = permission;
-		this.approved = approved;
 	}
 
 	public Manager() {
 		super();
-		this.approved = new HashSet<Checkin>();
 	}
 
 	public Long getId() {
@@ -88,14 +81,6 @@ public class Manager {
 
 	public void setPermission(Permission permission) {
 		this.permission = permission;
-	}
-
-	public Set<Checkin> getApproved() {
-		return approved;
-	}
-
-	public void setApproved(Set<Checkin> approved) {
-		this.approved = approved;
 	}
 
 	@Override

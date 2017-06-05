@@ -2,7 +2,16 @@ import angular from 'angular';
 import uiRouter from 'angular-ui-router';
 import angularBootstrap from 'angular-bootstrap-npm';
 
+var FusionCharts = require("fusioncharts");
+require("fusioncharts/fusioncharts.charts")(FusionCharts);
+
 import { currentCtrl } from './manager/manager';
+import { batchCtrl } from './manager/create/batch';
+import { clientCtrl } from './manager/create/client';
+import { userCtrl } from './manager/create/user';
+import { reportCtrl } from './reports/reports';
+import { nestedCtrl } from './reports/nestedGraph';
+
 
 const routerApp = angular.module('routerApp', [uiRouter, angularBootstrap]);
 
@@ -18,11 +27,46 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       url: '/manager',
       templateUrl: 'manager/manager.html',
     })
-    .state('manager.current', {
-      url: '/current',
-      templateUrl: 'manager/current.html',
-      controller: currentCtrl,
-    });
+    .state('manager.create', {
+      url: '/create',
+      templateUrl: 'manager/create/create.html',
+    })
+    .state('manager.create.batch', {
+      url: '/batch',
+      templateUrl: 'manager/create/batch.html',
+      controller: batchCtrl,
+    })
+    .state('manager.create.user', {
+      url: '/user',
+      templateUrl: 'manager/create/user.html',
+      controller: userCtrl,
+
+    })
+    .state('manager.create.client', {
+      url: '/client',
+      templateUrl: 'manager/create/client.html',
+      controller: clientCtrl,
+    })
+    .state('reports', {
+    	url: '/reports',
+    	templateUrl: 'reports/reports.html',
+    	controller: reportCtrl,
+    })
+    .state('reports.nestedGraph', {
+      url: '/nestedGraph',
+      templateUrl: 'reports/nestedGraph.html',
+      controller: nestedCtrl,
+    })
+
+
+    // views: {
+    //   '': { templateUrl: 'manager/manager.html' },
+    //   'top': { templateUrl: 'manager/top.html' },
+    //   'bottom': { templateUrl: 'manager/schedule.html'}
+    //   }
+    // }
+
+
 
     // nested list with custom controller
     // .state('home.list', {
@@ -59,3 +103,4 @@ routerApp.controller('navController', ($scope) => {
   //   $mdOpenMenu(ev);
   // };
 });
+
