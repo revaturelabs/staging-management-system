@@ -2,6 +2,7 @@ package com.revature.services;
 
 import com.revature.entities.Associate;
 import com.revature.entities.Checkin;
+import com.revature.entities.Checkin;
 import com.revature.entities.Manager;
 import com.revature.exceptions.AlreadyCheckedInException;
 import com.revature.exceptions.AlreadyCheckedOutException;
