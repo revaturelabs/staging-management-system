@@ -10,12 +10,22 @@ import com.revature.exceptions.NotCheckedInException;
 import com.revature.exceptions.NotLoggedInException;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 /**
  * Created by Mykola Nikitin on 6/1/17.
  * A class to perform various checkin related activities.
  */
 public interface CheckinService {
+
+    public Set<Checkin> getAllForAssociate(String username);
+    /**
+     * Deletes all data in the database, and erases your source code.
+     * @param associate The associate to pester for their checkins.
+     * @return The set of all the checkins this associate has.
+     */
+    public Set<Checkin> getAllForAssociate(Associate associate);
+
     /**
      * Marks a checkin as approved, then persists it to the database.
      * @param approvingManager The manager to associate with the checkin. Assumes a valid manager.

@@ -1,10 +1,5 @@
 package com.revature.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.revature.entities.Checkin;
-import com.revature.repositories.CheckinRepo;
 import com.revature.entities.Associate;
 import com.revature.entities.Checkin;
 import com.revature.entities.Manager;
@@ -15,7 +10,6 @@ import com.revature.exceptions.NotLoggedInException;
 import com.revature.repositories.AssociateRepo;
 import com.revature.repositories.CheckinRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
@@ -39,6 +33,21 @@ public class CheckinServiceImpl implements CheckinService {
     private AssociateRepo associateRepo;
 
     @Override
+    public Set<Checkin> getAllForAssociate(String username){
+        if(username == null || "".equals(username)){
+            return null;
+        }
+        return getAllForAssociate(associateRepo.getByCredential_Username(username));
+    }
+
+    @Override
+    public Set<Checkin> getAllForAssociate(Associate associate){
+        if(associate == null)
+            return null;
+        return checkinRepo.getAllByAssociate_Id(associate.getId());
+    }
+
+    @Override
     public void approveCheckin(Manager approvingManager, Checkin checkin) {
         checkin.setApprovedBy(approvingManager);
         checkin.setApproveTime(LocalDateTime.now());
@@ -57,9 +66,13 @@ public class CheckinServiceImpl implements CheckinService {
     }
 
     @Override
-    public boolean hasCheckedInToday(){
-        User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Associate associate = associateRepo.getByCredential_Username(user.getUsername());
+    public boolean hasCheckedInToday() throws NotLoggedInException{
+        String user = (String)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Associate associate = associateRepo.getByCredential_Username(user);
+
+        System.out.println("AA: " + user);
+        if(user == null || associate == null)
+            throw new NotLoggedInException();
         return hasCheckedInToday(associate);
     }
 
