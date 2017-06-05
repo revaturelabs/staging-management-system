@@ -43,11 +43,6 @@ public class InterviewStatusServiceImpl implements InterviewStatusService {
 	}
 	
 	@Override
-	public InterviewStatuses findByInterviewsId(long id) {
-		return interviewStatusRepo.findByInterviewsId(id);
-	}
-	
-	@Override
 	public InterviewStatuses findByStatus(String status) {
 		 return interviewStatusRepo.findByStatus(status);
 	}

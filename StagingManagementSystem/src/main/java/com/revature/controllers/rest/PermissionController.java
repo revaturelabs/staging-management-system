@@ -12,68 +12,65 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.revature.entities.Location;
-import com.revature.services.LocationService;
+import com.revature.entities.Permission;
+import com.revature.services.PermissionService;
 
 @RestController
-@RequestMapping("location")
-public class LocationControllerImpl {
-
+@RequestMapping("permission")
+public class PermissionController
+{
 	@Autowired
-	private LocationService locationService;
-
-	public LocationControllerImpl(LocationService locationService) {
+	private PermissionService permissionService;
+	
+	public PermissionController(PermissionService permissionService)
+	{
 		super();
-		this.locationService = locationService;
+		this.permissionService = permissionService;
 	}
-
+	
 	/**
 	 * When called this will always persist a unique location in the database.
 	 * 
-	 * @param location
-	 *            - location to be persisted.
+	 * @param location - location to be persisted.
 	 */
 	@PostMapping
-	public void addLocation(@RequestBody Location location) {
+	public void addPermission(@RequestBody Permission location) {
 		location.setId(0);
-		locationService.add(location);
+		permissionService.add(location);
 	}
-
+	
 	/**
 	 * Deletes location with location.id
 	 * 
-	 * @param location
-	 *            - holds the id to be deleted
+	 * @param location - holds the id to be deleted
 	 */
 	@DeleteMapping
-	public void deleteLocation(@RequestBody Location location) {
-		locationService.delete(location);
+	public void deletePermission(@RequestBody Permission location) {
+		permissionService.delete(location);
 	}
-
+	
 	/**
-	 * If the id exists, updates information. else creates a new row with
-	 * genrated id.
+	 * If the id exists, updates information.
+	 * else creates a new row with genrated id.
 	 * 
-	 * @param location
-	 *            - data to be persisted.
+	 * @param location - data to be persisted.
 	 */
 	@PutMapping
-	public void updateLocation(@RequestBody Location location) {
-		locationService.update(location);
+	public void updatePermission(@RequestBody Permission location) {
+		permissionService.update(location);
 	}
 
 	/**
 	 * Gets a location with id.
 	 * 
-	 * @param id
-	 *            - id of location to be retrieved.
+	 * @param id - id of location to be retrieved.
 	 * @return location object from dataBase.
 	 */
 	@GetMapping("/{id}")
-	public Location findById(@PathVariable long id) {
-		return locationService.findById(id);
+	public Permission findById(@PathVariable long id) {
+		return permissionService.findById(id);
 	}
-
+	
 	/**
 	 * Gets all locations.
 	 * 
@@ -81,7 +78,7 @@ public class LocationControllerImpl {
 	 * @return all location objects from dataBase.
 	 */
 	@GetMapping("/all")
-	public List<Location> findAll() {
-		return locationService.getAll();
+	public List<Permission> findById() {
+		return permissionService.getAll();
 	}
 }
