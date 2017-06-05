@@ -1,6 +1,5 @@
 package com.revature.entities;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -12,7 +11,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -36,7 +34,7 @@ public class Manager implements SmsValidatable {
 	@SequenceGenerator(name = "MANAGER_ID_SEQ", sequenceName = "MANAGER_ID_SEQ")
 	@GeneratedValue(generator = "MANAGER_ID_SEQ", strategy = GenerationType.AUTO)
 	private Long id;
-
+	
 	@Column(name = "MANAGER_NAME")
 	private String name;
 
@@ -48,21 +46,16 @@ public class Manager implements SmsValidatable {
 	@JoinColumn(name = "PERMISSION_ID")
 	private Permission permission;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "approvedBy")
-	private Set<Checkin> approved;
-
 	public Manager(Long id, String name, Credential credential, Permission permission, Set<Checkin> approved) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.credential = credential;
 		this.permission = permission;
-		this.approved = approved;
 	}
 
 	public Manager() {
 		super();
-		this.approved = new HashSet<Checkin>();
 	}
 
 	public Long getId() {
@@ -95,14 +88,6 @@ public class Manager implements SmsValidatable {
 
 	public void setPermission(Permission permission) {
 		this.permission = permission;
-	}
-
-	public Set<Checkin> getApproved() {
-		return approved;
-	}
-
-	public void setApproved(Set<Checkin> approved) {
-		this.approved = approved;
 	}
 
 	@Override

@@ -10,7 +10,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -41,9 +40,9 @@ public class Associate {
 	@ManyToOne
 	@JoinColumn(name = "BATCH_ID")
 	private Batch batch;
-
-	@OneToMany(mappedBy = "associate")
-	private Set<Interviews> interviews;
+	
+	@Column
+	private short active;
 
 	public Associate() {
 		super();
@@ -58,7 +57,6 @@ public class Associate {
 		this.name = name;
 		this.portfolioLink = portfolioLink;
 		this.batch = batch;
-		this.interviews = interviews;
 	}
 
 	public Long getId() {
@@ -100,14 +98,22 @@ public class Associate {
 	public void setBatch(Batch batch) {
 		this.batch = batch;
 	}
-
-	public Set<Interviews> getInterviews() {
-		return interviews;
+	
+	public boolean isActive()
+	{
+		return active != 0;
+	}
+	
+	public short getActive()
+	{
+		return active;
 	}
 
-	public void setInterviews(Set<Interviews> interviews) {
-		this.interviews = interviews;
+	public void setActive(short active)
+	{
+		this.active = active;
 	}
+
 
 	@Override
 	public int hashCode() {
@@ -116,7 +122,6 @@ public class Associate {
 		result = prime * result + ((batch == null) ? 0 : batch.hashCode());
 		result = prime * result + ((credential == null) ? 0 : credential.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((interviews == null) ? 0 : interviews.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((portfolioLink == null) ? 0 : portfolioLink.hashCode());
 		return result;
@@ -146,11 +151,6 @@ public class Associate {
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
-		if (interviews == null) {
-			if (other.interviews != null)
-				return false;
-		} else if (!interviews.equals(other.interviews))
-			return false;
 		if (name == null) {
 			if (other.name != null)
 				return false;
@@ -167,7 +167,7 @@ public class Associate {
 	@Override
 	public String toString() {
 		return "Associate [id=" + id + ", credential=" + credential + ", name=" + name + ", portfolioLink="
-				+ portfolioLink + ", batch=" + batch + ", interviews=" + interviews + "]";
+				+ portfolioLink + ", batch=" + batch + "]";
 	}
 
 }

@@ -55,13 +55,13 @@ public class PermissionServiceImpl implements PermissionService {
 	@Override
 	public Set<Permission> getAll() {
 		Set<Permission> permissions = new HashSet<Permission>(permissionRepo.findAll());
-		
+
 		return permissions;
 	}
 
 	@Override
-	public void update(Permission permission) throws SmsCustomException{
-		if(permission == null){
+	public void update(Permission permission) throws SmsCustomException {
+		if (permission == null) {
 			throw new NullReferenceException("Permission is null.");
 		}
 		permission.validate();
@@ -71,11 +71,10 @@ public class PermissionServiceImpl implements PermissionService {
 
 	@Override
 	public void remove(Permission permission) throws SmsCustomException {
-		if(permission == null){
+		if (permission == null) {
 			throw new NullReferenceException("Permission is null.");
 		}
 		permissionRepo.delete(permission);
 
 	}
-
 }

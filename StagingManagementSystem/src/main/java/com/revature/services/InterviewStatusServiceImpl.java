@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.revature.entities.InterviewStatus;
+import com.revature.entities.InterviewStatuses;
 import com.revature.repositories.InterviewStatusRepo;
 @Service
 public class InterviewStatusServiceImpl implements InterviewStatusService {
@@ -18,30 +18,34 @@ public class InterviewStatusServiceImpl implements InterviewStatusService {
 	}
 	
 	@Override
-	public void add(InterviewStatus interviewStatus) {
+	public void add(InterviewStatuses interviewStatus) {
 		interviewStatusRepo.saveAndFlush(interviewStatus);
 	}
 
 	@Override
-	public InterviewStatus findById(long id) {
-		return interviewStatusRepo.findById(id);
+	public InterviewStatuses findById(long id) {
+		return interviewStatusRepo.getOne(id);
 	}
 
 	@Override
-	public List<InterviewStatus> getAll() {
+	public List<InterviewStatuses> getAll() {
 		return interviewStatusRepo.findAll();
 	}
 
 	@Override
-	public void update(InterviewStatus interviewStatus) {
+	public void update(InterviewStatuses interviewStatus) {
 		interviewStatusRepo.saveAndFlush(interviewStatus);
 	}
 
 	@Override
-	public void delete(InterviewStatus interviewStatus) {
+	public void delete(InterviewStatuses interviewStatus) {
 		interviewStatusRepo.delete(interviewStatus);
 	}
+	
+	@Override
+	public InterviewStatuses findByStatus(String status) {
+		 return interviewStatusRepo.findByStatus(status);
+	}
 
-	
-	
+
 }
