@@ -1,5 +1,10 @@
 package com.revature.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.revature.entities.Checkin;
+import com.revature.repositories.CheckinRepo;
 import com.revature.entities.Associate;
 import com.revature.entities.Checkin;
 import com.revature.entities.Manager;

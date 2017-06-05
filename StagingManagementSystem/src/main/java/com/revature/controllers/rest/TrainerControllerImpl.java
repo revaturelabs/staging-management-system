@@ -1,6 +1,7 @@
 package com.revature.controllers.rest;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -80,4 +81,11 @@ public class TrainerControllerImpl
 	public List<Trainer> findAll() {
 		return trainerService.getAll();
 	}
+	
+
+	@PostMapping("/addmultiple")
+	public void addTrainers(@RequestBody Set<Trainer> trainers) {
+		trainerService.addTrainers(trainers);
+	}
+
 }

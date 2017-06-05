@@ -1,5 +1,7 @@
 package com.revature.services;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +28,6 @@ public class AssociateServiceImpl implements AssociateService {
 
 	public AssociateServiceImpl() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -46,4 +47,20 @@ public class AssociateServiceImpl implements AssociateService {
 		associateRepo.saveAndFlush(associate);
 	}
 
+	@Override
+	public void delete(Associate associate) {
+		associateRepo.delete(associate);
+		credentialRepo.delete(associate.getCredential());
+	}
+
+	@Override
+	public void update(Associate associate) {
+		associateRepo.saveAndFlush(associate);
+		credentialRepo.save(associate.getCredential());
+	}
+
+	@Override
+	public List<Associate> getAll() {
+		return associateRepo.findAll();
+	}
 }

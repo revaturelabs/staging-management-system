@@ -38,22 +38,22 @@ public class InterviewsControllerImpl {
 		return interviewsService.findById(id);
 	}
 
-	@GetMapping("/{associate_Id}")
+	@GetMapping("/associate/{associate_Id}")
 	public Interviews findByAssociate(long id) {
 		return interviewsService.findByAssociateId(id);
 	}
 	
-	@GetMapping("/{client_Id}")
+	@GetMapping("/client/{client_Id}")
 	public Interviews findByClientId(long id) {
 		return interviewsService.findByClientId(id);
 	}
 	
-	@GetMapping("/{interview_Status_Id}")
+	@GetMapping("/status/{interview_Status_Id}")
 	public Interviews findByInterviewStatusId(long id) {
 		return interviewsService.findByInterviewStatus(id);
 	}
 
-	@GetMapping("/{dateandtime}")
+	@GetMapping("/date/{dateandtime}")
 	public Interviews findByScheduled(@PathVariable LocalDateTime dateandtime) {
 		return interviewsService.findByScheduled(dateandtime);
 	}

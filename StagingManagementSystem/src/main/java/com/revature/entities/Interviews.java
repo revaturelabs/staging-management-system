@@ -3,6 +3,7 @@ package com.revature.entities;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -13,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.revature.util.LocalDateTimeConverter;
 
 @Entity
 @Table(name="interviews")
@@ -38,6 +40,7 @@ public class Interviews {
 	private InterviewStatuses interviewStatus;
 	
 	@Column(name = "SCHEDULED_TIME")
+	@Convert(converter = LocalDateTimeConverter.class)
 	private LocalDateTime scheduled;
 
 	
