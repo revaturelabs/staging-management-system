@@ -13,6 +13,7 @@ import { clientCtrl } from './manager-pages/create/client';
 import { userCtrl } from './manager-pages/create/user';
 import { reportCtrl } from './reports/reports';
 import { nestedCtrl } from './reports/nestedGraph';
+import { loginCtrl } from './login/login';
 
 
 const routerApp = angular.module('routerApp', [uiRouter, angularBootstrap]);
@@ -24,6 +25,7 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
     .state('login', {
       url: '/login',
       templateUrl: 'login/login.html',
+      controller: loginCtrl,
     })
     .state('manager', {
       url: '/manager',
