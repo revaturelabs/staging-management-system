@@ -1,67 +1,82 @@
 package com.revature.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
-import javax.persistence.*;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.revature.exceptions.SmsCustomException;
+import com.revature.markers.SmsValidatable;
 
 /**
  * Created by mnikitin on 5/31/17.
  */
 @Entity
-@Table(name="TRAINERS")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Trainer {
-    @Id
-    @Column(name="TRAINER_ID")
-    @SequenceGenerator(name="TRAINER_ID_SEQ", sequenceName="TRAINER_ID_SEQ")
-    @GeneratedValue(generator="TRAINER_ID_SEQ", strategy=GenerationType.SEQUENCE)
-    private long id;
+@Table(name = "TRAINERS")
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+public class Trainer implements SmsValidatable {
+	@Id
+	@Column(name = "TRAINER_ID")
+	@SequenceGenerator(name = "TRAINER_ID_SEQ", sequenceName = "TRAINER_ID_SEQ")
+	@GeneratedValue(generator = "TRAINER_ID_SEQ", strategy = GenerationType.SEQUENCE)
+	private long id;
 
-    @Column(name="NAME")
-    private String name;
+	@Column(name = "NAME")
+	private String name;
 
-    public Trainer(){
-        //  //
-    }
+	public Trainer() {
+		// //
+	}
 
-    public Trainer(long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
+	public Trainer(long id, String name) {
+		this.id = id;
+		this.name = name;
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
 
-        Trainer trainer = (Trainer) o;
+		Trainer trainer = (Trainer) o;
 
-        if (id != trainer.id) return false;
-        return name.equals(trainer.name);
-    }
+		if (id != trainer.id)
+			return false;
+		return name.equals(trainer.name);
+	}
 
-    @Override
-    public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + name.hashCode();
-        return result;
-    }
+	@Override
+	public int hashCode() {
+		int result = (int) (id ^ (id >>> 32));
+		result = 31 * result + name.hashCode();
+		return result;
+	}
 
-    public long getId() {
-        return id;
-    }
+	public long getId() {
+		return id;
+	}
 
-    public void setId(long id) {
-        this.id = id;
-    }
+	public void setId(long id) {
+		this.id = id;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	@Override
+	public void validate() throws SmsCustomException {
+		// TODO Validate your members.
+
+	}
 }

@@ -1,7 +1,5 @@
 package com.revature.entities;
 
-import java.util.Collection;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,28 +8,27 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.revature.exceptions.SmsCustomException;
+import com.revature.markers.SmsValidatable;
+
 @Entity
-@Table(name="INTERVIEW_QUESTIONS")
-public class InterviewQuestion {
+@Table(name = "INTERVIEW_QUESTIONS")
+public class InterviewQuestion implements SmsValidatable {
 	@Id
-	@Column(name="INTERVIEW_QUESTION_ID")
-	@SequenceGenerator(name="INTERVIEW_QUESTION_ID_SEQ", sequenceName="INTERVIEW_QUESTION_ID_SEQ")
-    @GeneratedValue(generator="INTERVIEW_QUESTION_ID_SEQ", strategy=GenerationType.AUTO)
+	@Column(name = "INTERVIEW_QUESTION_ID")
+	@SequenceGenerator(name = "INTERVIEW_QUESTION_ID_SEQ", sequenceName = "INTERVIEW_QUESTION_ID_SEQ")
+	@GeneratedValue(generator = "INTERVIEW_QUESTION_ID_SEQ", strategy = GenerationType.AUTO)
 	private long id;
 
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="BATCH_TYPE_ID")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "BATCH_TYPE_ID")
 	private BatchType batchType;
 
 	@Column
 	private String question;
-	
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="interviewQ")
-	private Collection<ClientQ> clientQuestions;
 
 	public InterviewQuestion() {
 		super();
@@ -66,14 +63,6 @@ public class InterviewQuestion {
 
 	public void setQuestion(String question) {
 		this.question = question;
-	}
-
-	public Collection<ClientQ> getClientQuestions() {
-		return clientQuestions;
-	}
-
-	public void setClientQuestions(Collection<ClientQ> clientQuestions) {
-		this.clientQuestions = clientQuestions;
 	}
 
 	@Override
@@ -114,5 +103,11 @@ public class InterviewQuestion {
 	public String toString() {
 		return "InterviewQuestion [id=" + id + ", batchType=" + batchType + ", question=" + question + "]";
 	}
-	
+
+	@Override
+	public void validate() throws SmsCustomException {
+		// TODO Validate your members.
+
+	}
+
 }
