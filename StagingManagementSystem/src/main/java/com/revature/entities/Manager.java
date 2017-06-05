@@ -147,7 +147,7 @@ public class Manager implements SmsValidatable {
 		if (this.name == "") {
 			throw new InvalidFieldException("Manager name is empty.");
 		}
-		if (this.name.matches(settings.get("illegal_manager_name"))) {
+		if (!this.name.matches(settings.get("allowed_manager_name"))) {
 			throw new InvalidFieldException("Manager name contains illegal characters.");
 		}
 		int min = Integer.parseInt(settings.get("length_min_manager_name"));

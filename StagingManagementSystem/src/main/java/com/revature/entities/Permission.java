@@ -98,7 +98,7 @@ public class Permission implements SmsValidatable {
 		if (this.level == "") {
 			throw new InvalidFieldException("Permission level is empty.");
 		}
-		if (this.level.matches(settings.get("illegal_permission_level"))) {
+		if (!this.level.matches(settings.get("allowed_permission_level"))) {
 			throw new InvalidFieldException("Permission level contains illegal characters.");
 		}
 		int min = Integer.parseInt(settings.get("length_min_permission_level"));
