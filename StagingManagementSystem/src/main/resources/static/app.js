@@ -14,7 +14,7 @@ import { userCtrl } from './manager-pages/create/user';
 import profileCtrl from './associate-pages/profile/profile';
 import { reportCtrl } from './reports/reports';
 import { nestedCtrl } from './reports/nestedGraph';
-import { loginCtrl } from './login/login';
+import loginCtrl from './login/login';
 
 const routerApp = angular.module('routerApp', [uiRouter, angularBootstrap]);
 
