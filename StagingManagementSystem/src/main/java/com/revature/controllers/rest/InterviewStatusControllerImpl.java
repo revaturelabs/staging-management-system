@@ -1,6 +1,6 @@
 package com.revature.controllers.rest;
 
-import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,9 +27,11 @@ public class InterviewStatusControllerImpl {
 	}
 
 	/**
-	 * When called this will always persist a unique interviewStatus in the database.
+	 * When called this will always persist a unique interviewStatus in the
+	 * database.
 	 * 
-	 * @param interveiwStatus - interviewStatus to be persisted.
+	 * @param interveiwStatus
+	 *            - interviewStatus to be persisted.
 	 */
 	@PostMapping
 	public void add(@RequestBody InterviewStatuses interviewStatus) {
@@ -40,7 +42,8 @@ public class InterviewStatusControllerImpl {
 	/**
 	 * Gets a interveiwStatus with id.
 	 * 
-	 * @param id - id of interveiwStatus to be retrieved.
+	 * @param id
+	 *            - id of interveiwStatus to be retrieved.
 	 * @return interveiwStatus object from dataBase.
 	 */
 	@GetMapping("/{id}")
@@ -53,17 +56,18 @@ public class InterviewStatusControllerImpl {
 	 * 
 	 * @param all
 	 * @return all interveiwStatus objects from dataBase.
-	 */	
+	 */
 	@GetMapping("/all")
-	public List<InterviewStatuses> findById() {
+	public Set<InterviewStatuses> findById() {
 		return interviewStatusService.getAll();
 	}
 
 	/**
-	 * If the id exists, updates information.
-	 * else creates a new row with genrated id.
+	 * If the id exists, updates information. else creates a new row with
+	 * genrated id.
 	 * 
-	 * @param interveiwStatus - data to be persisted.
+	 * @param interveiwStatus
+	 *            - data to be persisted.
 	 */
 	@PutMapping
 	public void update(@RequestBody InterviewStatuses interviewStatus) {
@@ -73,7 +77,8 @@ public class InterviewStatusControllerImpl {
 	/**
 	 * Deletes interveiwStatus with interveiwStatus.id
 	 * 
-	 * @param interveiwStatus - holds the id to be deleted
+	 * @param interveiwStatus
+	 *            - holds the id to be deleted
 	 */
 	@DeleteMapping
 	public void delete(@RequestBody InterviewStatuses interviewStatus) {

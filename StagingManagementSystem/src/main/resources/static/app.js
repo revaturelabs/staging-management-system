@@ -7,12 +7,13 @@ require("fusioncharts/fusioncharts.charts")(FusionCharts);
 
 console.log();
 
-import { currentCtrl } from './manager/manager';
-import { batchCtrl } from './manager/create/batch';
-import { clientCtrl } from './manager/create/client';
-import { userCtrl } from './manager/create/user';
+import { managerCtrl } from './manager-pages/manager';
+import { batchCtrl } from './manager-pages/create/batch';
+import { clientCtrl } from './manager-pages/create/client';
+import { userCtrl } from './manager-pages/create/user';
 import { reportCtrl } from './reports/reports';
 import { nestedCtrl } from './reports/nestedGraph';
+import { loginCtrl } from './login/login';
 
 
 const routerApp = angular.module('routerApp', [uiRouter, angularBootstrap]);
@@ -24,29 +25,31 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
     .state('login', {
       url: '/login',
       templateUrl: 'login/login.html',
+      controller: loginCtrl,
     })
     .state('manager', {
       url: '/manager',
-      templateUrl: 'manager/manager.html',
+      templateUrl: 'manager-pages/manager.html',
+      controller: managerCtrl,
     })
     .state('manager.create', {
       url: '/create',
-      templateUrl: 'manager/create/create.html',
+      templateUrl: 'manager-pages/create/create.html',
     })
     .state('manager.create.batch', {
       url: '/batch',
-      templateUrl: 'manager/create/batch.html',
+      templateUrl: 'manager-pages/create/batch.html',
       controller: batchCtrl,
     })
     .state('manager.create.user', {
       url: '/user',
-      templateUrl: 'manager/create/user.html',
+      templateUrl: 'manager-pages/create/user.html',
       controller: userCtrl,
 
     })
     .state('manager.create.client', {
       url: '/client',
-      templateUrl: 'manager/create/client.html',
+      templateUrl: 'manager-pages/create/client.html',
       controller: clientCtrl,
     })
     .state('reports', {
@@ -105,4 +108,3 @@ routerApp.controller('navController', ($scope) => {
   //   $mdOpenMenu(ev);
   // };
 });
-
