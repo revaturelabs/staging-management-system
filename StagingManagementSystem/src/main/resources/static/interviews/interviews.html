@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/interviews.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+</head>
+<body ng-app='interviews'>
+<script src="interview.js"></script>
+<table class="table table-striped" ng-controller="interviewsCtrl">
+    <thead>
+    <tr>
+        <th scope="col">Associate</th>
+        <th scope="col">Batch</th>
+        <th scope="col">Client</th>
+        <th scope="col">Scheduled Time</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="interview in interviews">
+        <td ng-bind="interview.associateName"></td>
+        <td ng-bind="interview.batch"></td>
+        <td ng-bind="interview.client"></td>
+        <td ng-bind="interview.scheduled_time"></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

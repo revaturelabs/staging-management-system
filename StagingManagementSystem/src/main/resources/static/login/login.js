@@ -1,4 +1,4 @@
-const loginCtrl = ($scope, $http, $window) => {
+const loginCtrl = ($scope, $http, $state) => {
 	$scope.username = "";
 	$scope.password = "";
 	$scope.errorMsgShow = false;
@@ -17,13 +17,23 @@ const loginCtrl = ($scope, $http, $window) => {
   	else {
   		$http({
     	  method: 'POST',
-    	  url: '/login',
+    	  url: '/login/associate',
     	  data: { username: $scope.username, password: $scope.password },
     	}).then(function successCallback(response) {
-    			$window.location.href = "/manager";
+    			window.user = response;
+    			$state.go('associate')
     	  }, function errorCallback(response) {
-    	    $scope.errorMsg = "Username or Password is incorrect.";
-    	    $scope.errorMsgShow = true;
+    	  	$http({
+        	  method: 'POST',
+        	  url: '/login/manager',
+        	  data: { username: $scope.username, password: $scope.password },
+        	}).then(function successCallback(response) {
+        			window.user = response;
+        			$state.go('manager')
+        	  }, function errorCallback(response) {
+        	    $scope.errorMsg = "Username or Password is incorrect.";
+        	    $scope.errorMsgShow = true;
+        	  });
     	  });
   	}
   }

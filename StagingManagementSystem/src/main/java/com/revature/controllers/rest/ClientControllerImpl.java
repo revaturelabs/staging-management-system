@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.revature.entities.Client;
 import com.revature.services.ClientService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("client")
 public class ClientControllerImpl {
@@ -93,4 +95,5 @@ public class ClientControllerImpl {
 	public Set<Client> findAll() {
 		return clientService.getAll();
 	}
+
 }
