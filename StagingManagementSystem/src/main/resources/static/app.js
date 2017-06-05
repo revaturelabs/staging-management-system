@@ -5,6 +5,8 @@ import angularBootstrap from 'angular-bootstrap-npm';
 var FusionCharts = require("fusioncharts");
 require("fusioncharts/fusioncharts.charts")(FusionCharts);
 
+console.log();
+
 import { currentCtrl } from './manager/manager';
 import { batchCtrl } from './manager/create/batch';
 import { clientCtrl } from './manager/create/client';
