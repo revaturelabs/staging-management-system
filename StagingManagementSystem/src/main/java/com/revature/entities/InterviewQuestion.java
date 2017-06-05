@@ -20,7 +20,7 @@ public class InterviewQuestion implements SmsValidatable {
 	@Id
 	@Column(name = "INTERVIEW_QUESTION_ID")
 	@SequenceGenerator(name = "INTERVIEW_QUESTION_ID_SEQ", sequenceName = "INTERVIEW_QUESTION_ID_SEQ")
-	@GeneratedValue(generator = "INTERVIEW_QUESTION_ID_SEQ", strategy = GenerationType.AUTO)
+	@GeneratedValue(generator = "INTERVIEW_QUESTION_ID_SEQ", strategy = GenerationType.SEQUENCE)
 	private long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)

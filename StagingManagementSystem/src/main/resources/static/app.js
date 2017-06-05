@@ -11,9 +11,10 @@ import { managerCtrl } from './manager-pages/manager';
 import { batchCtrl } from './manager-pages/create/batch';
 import { clientCtrl } from './manager-pages/create/client';
 import { userCtrl } from './manager-pages/create/user';
+import { profileCtrl } from './associate-pages/profile/profile';
 import { reportCtrl } from './reports/reports';
 import { nestedCtrl } from './reports/nestedGraph';
-
+import { loginCtrl } from './login/login';
 
 const routerApp = angular.module('routerApp', [uiRouter, angularBootstrap]);
 
@@ -24,6 +25,7 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
     .state('login', {
       url: '/login',
       templateUrl: 'login/login.html',
+      controller: loginCtrl,
     })
     .state('manager', {
       url: '/manager',
@@ -49,6 +51,15 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       url: '/client',
       templateUrl: 'manager-pages/create/client.html',
       controller: clientCtrl,
+    })
+    .state('associate', {
+      url: '/associate',
+      templateUrl: 'associate-pages/associate.html',
+    })
+    .state('associate.profile', {
+      url: '/profile',
+      templateUrl: 'associate-pages/profile/profile.html',
+      controller: profileCtrl,
     })
     .state('reports', {
     	url: '/reports',
