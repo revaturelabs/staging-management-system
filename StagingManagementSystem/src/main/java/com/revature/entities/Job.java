@@ -1,8 +1,10 @@
 package com.revature.entities;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -14,6 +16,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.revature.util.LocalDateTimeConverter;
 
 @Entity
 @Table(name="JOBS")
@@ -36,22 +39,27 @@ public class Job {
 	private Client client;
 	
 	@Column(name="START_DATE")
-	private Date startDate;
+	@Convert(converter = LocalDateTimeConverter.class)
+	private LocalDateTime startDate;
 	
 	@Column(name="PROJECTED_END_DATE")
-	private Date projectedEndDate;
+	@Convert(converter = LocalDateTimeConverter.class)
+	private LocalDateTime projectedEndDate;
 	
 	@Column(name="ACTUAL_END_DATE")
-	private Date endDate;
+	@Convert(converter = LocalDateTimeConverter.class)
+	private LocalDateTime endDate;
 	
 	@Column(name="BUYOUT_DATE")
-	private Date buyoutDate;
+	@Convert(converter = LocalDateTimeConverter.class)
+	private LocalDateTime buyoutDate;
 	
 	@Column(name="CONFIRMED_DATE")
-	private Date confirmedDate;
+	@Convert(converter = LocalDateTimeConverter.class)
+	private LocalDateTime confirmedDate;
 
-	public Job(long id, Associate associateId, Client clientId, Date startDate, Date projectedEndDate, Date endDate,
-			Date buyoutDate) {
+	public Job(long id, Associate associateId, Client clientId, LocalDateTime startDate, LocalDateTime projectedEndDate, LocalDateTime endDate,
+			LocalDateTime buyoutDate) {
 		super();
 		this.id = id;
 		this.associate = associate;
@@ -90,35 +98,35 @@ public class Job {
 		this.client = client;
 	}
 
-	public Date getStartDate() {
+	public LocalDateTime getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(Date startDate) {
+	public void setStartDate(LocalDateTime startDate) {
 		this.startDate = startDate;
 	}
 
-	public Date getProjectedEndDate() {
+	public LocalDateTime getProjectedEndDate() {
 		return projectedEndDate;
 	}
 
-	public void setProjectedEndDate(Date projectedEndDate) {
+	public void setProjectedEndDate(LocalDateTime projectedEndDate) {
 		this.projectedEndDate = projectedEndDate;
 	}
 
-	public Date getEndDate() {
+	public LocalDateTime getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(Date endDate) {
+	public void setEndDate(LocalDateTime endDate) {
 		this.endDate = endDate;
 	}
 
-	public Date getBuyoutDate() {
+	public LocalDateTime getBuyoutDate() {
 		return buyoutDate;
 	}
 
-	public void setBuyoutDate(Date buyoutDate) {
+	public void setBuyoutDate(LocalDateTime buyoutDate) {
 		this.buyoutDate = buyoutDate;
 	}
 
