@@ -15,11 +15,13 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.revature.exceptions.SmsCustomException;
+import com.revature.markers.SmsValidatable;
 
 @Entity
 @Table(name = "ASSOCIATES")
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-public class Associate {
+public class Associate implements SmsValidatable {
 
 	@Id
 	@Column(name = "ASSOCIATE_ID")
@@ -40,7 +42,7 @@ public class Associate {
 	@ManyToOne
 	@JoinColumn(name = "BATCH_ID")
 	private Batch batch;
-	
+
 	@Column
 	private short active;
 
@@ -98,22 +100,18 @@ public class Associate {
 	public void setBatch(Batch batch) {
 		this.batch = batch;
 	}
-	
-	public boolean isActive()
-	{
+
+	public boolean isActive() {
 		return active != 0;
 	}
-	
-	public short getActive()
-	{
+
+	public short getActive() {
 		return active;
 	}
 
-	public void setActive(short active)
-	{
+	public void setActive(short active) {
 		this.active = active;
 	}
-
 
 	@Override
 	public int hashCode() {
@@ -168,6 +166,11 @@ public class Associate {
 	public String toString() {
 		return "Associate [id=" + id + ", credential=" + credential + ", name=" + name + ", portfolioLink="
 				+ portfolioLink + ", batch=" + batch + "]";
+	}
+
+	@Override
+	public void validate() throws SmsCustomException {
+		// TODO Validate your members.
 	}
 
 }
