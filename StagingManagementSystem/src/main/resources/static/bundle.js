@@ -58,21 +58,25 @@
 
 	var _angularBootstrapNpm2 = _interopRequireDefault(_angularBootstrapNpm);
 
-	var _manager = __webpack_require__(91);
+	var _manager = __webpack_require__(98);
 
-	var _batch = __webpack_require__(94);
+	var _batch = __webpack_require__(99);
 
-	var _client = __webpack_require__(95);
+	var _client = __webpack_require__(100);
 
-	var _user = __webpack_require__(96);
+	var _user = __webpack_require__(101);
+
+	var _profile = __webpack_require__(102);
 
 	var _reports = __webpack_require__(92);
 
 	var _nestedGraph = __webpack_require__(97);
 
+	var _login = __webpack_require__(103);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var FusionCharts = __webpack_require__(90);
+	var FusionCharts = __webpack_require__(91);
 	__webpack_require__(93)(FusionCharts);
 
 	console.log();
@@ -85,26 +89,35 @@
 	  $stateProvider // HOME STATES AND NESTED VIEWS
 	  .state('login', {
 	    url: '/login',
-	    templateUrl: 'login/login.html'
+	    templateUrl: 'login/login.html',
+	    controller: _login.loginCtrl
 	  }).state('manager', {
 	    url: '/manager',
-	    templateUrl: 'manager/manager.html'
+	    templateUrl: 'manager-pages/manager.html',
+	    controller: _manager.managerCtrl
 	  }).state('manager.create', {
 	    url: '/create',
-	    templateUrl: 'manager/create/create.html'
+	    templateUrl: 'manager-pages/create/create.html'
 	  }).state('manager.create.batch', {
 	    url: '/batch',
-	    templateUrl: 'manager/create/batch.html',
+	    templateUrl: 'manager-pages/create/batch.html',
 	    controller: _batch.batchCtrl
 	  }).state('manager.create.user', {
 	    url: '/user',
-	    templateUrl: 'manager/create/user.html',
+	    templateUrl: 'manager-pages/create/user.html',
 	    controller: _user.userCtrl
 
 	  }).state('manager.create.client', {
 	    url: '/client',
-	    templateUrl: 'manager/create/client.html',
+	    templateUrl: 'manager-pages/create/client.html',
 	    controller: _client.clientCtrl
+	  }).state('associate', {
+	    url: '/associate',
+	    templateUrl: 'associate-pages/associate.html'
+	  }).state('associate.profile', {
+	    url: '/profile',
+	    templateUrl: 'associate-pages/profile/profile.html',
+	    controller: _profile.profileCtrl
 	  }).state('reports', {
 	    url: '/reports',
 	    templateUrl: 'reports/reports.html',
@@ -52945,7 +52958,8 @@
 	!angular.$$csp() && angular.element(document).find('head').prepend('<style type="text/css">.ng-animate.item:not(.left):not(.right){-webkit-transition:0s ease-in-out left;transition:0s ease-in-out left}</style>');if(true)module.exports='ui.bootstrap';
 
 /***/ }),
-/* 90 */
+/* 90 */,
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*
@@ -54871,24 +54885,6 @@
 
 
 /***/ }),
-/* 91 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var currentCtrl = function currentCtrl($scope) {
-	  $scope.test = 'test';
-	};
-
-	var forecastCtrl = function forecastCtrl($scope) {};
-
-	exports.currentCtrl = currentCtrl;
-	exports.forecastCtrl = forecastCtrl;
-
-/***/ }),
 /* 92 */
 /***/ (function(module, exports) {
 
@@ -55152,54 +55148,9 @@
 
 
 /***/ }),
-/* 94 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var batchCtrl = function batchCtrl($scope) {
-	  $scope.batch = {};
-	  $scope.batch.name = 'batch name';
-	};
-
-	exports.batchCtrl = batchCtrl;
-
-/***/ }),
-/* 95 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var clientCtrl = function clientCtrl($scope) {
-	  $scope.client = {};
-	  $scope.client.name = 'client name';
-	};
-
-	exports.clientCtrl = clientCtrl;
-
-/***/ }),
-/* 96 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var userCtrl = function userCtrl($scope) {
-	  $scope.user = {};
-	  $scope.user.name = 'user name';
-	};
-
-	exports.userCtrl = userCtrl;
-
-/***/ }),
+/* 94 */,
+/* 95 */,
+/* 96 */,
 /* 97 */
 /***/ (function(module, exports) {
 
@@ -55395,6 +55346,148 @@
 	}
 
 	exports.nestedCtrl = nestedCtrl;
+
+/***/ }),
+/* 98 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var managerCtrl = function managerCtrl($scope) {
+	  $scope.manager = { name: 'Joe' };
+	};
+
+	exports.managerCtrl = managerCtrl;
+
+/***/ }),
+/* 99 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var batchCtrl = function batchCtrl($scope) {
+	  $scope.batch = { name: "New Batch" };
+	};
+
+	exports.batchCtrl = batchCtrl;
+
+/***/ }),
+/* 100 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var clientCtrl = function clientCtrl($scope) {
+	  $scope.client = {};
+	  $scope.client.name = 'client name';
+	};
+
+	exports.clientCtrl = clientCtrl;
+
+/***/ }),
+/* 101 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var userCtrl = function userCtrl($scope) {
+	  $scope.user = {};
+	  $scope.user.name = 'user name';
+	};
+
+	exports.userCtrl = userCtrl;
+
+/***/ }),
+/* 102 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var profileCtrl = function profileCtrl($scope) {
+	  $scope.name = 'Yushi Canastra';
+	  $scope.batchType = 'Java';
+	  $scope.portfolioUrl = 'http://www.example-portfolio.com/';
+	  $scope.portfolioUrlInput = '';
+	  $scope.skills = ['Java', 'Spring', 'Hibernate', 'Servlets', 'JSP'];
+	  $scope.additionalSkills = ['hello', 'poop'];
+	  $scope.additionalSkillsInput = '';
+	  $scope.submit = function () {};
+	  $scope.toggleSkillsModal = function () {
+	    $scope.additionalSkillsInput = $scope.additionalSkills.join(',');
+	    $('#additionalSkillsModal').modal('show');
+	  };
+	  $scope.openPortfolioUrlModal = function () {
+	    $scope.portfolioUrlInput = $scope.portfolioUrl;
+	    $('#portfolioUrlModal').modal('show');
+	  };
+	  $scope.submitPortfolioUrl = function () {
+	    $scope.portfolioUrl = $scope.portfolioUrlInput;
+	    $('#portfolioUrlModal').modal('hide');
+	  };
+	  $scope.submitSkills = function () {
+	    $scope.additionalSkills = $scope.additionalSkillsInput.split(',').filter(function (skill) {
+	      return skill !== '';
+	    });
+	    $('#additionalSkillsModal').modal('hide');
+	  };
+	};
+
+	exports.profileCtrl = profileCtrl;
+
+/***/ }),
+/* 103 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var loginCtrl = function loginCtrl($scope, $http, $window) {
+	  $scope.username = "";
+	  $scope.password = "";
+	  $scope.errorMsgShow = false;
+
+	  $scope.submit = function () {
+	    $scope.errorMsgShow = false;
+
+	    if ($scope.username === "" || $scope.username === undefined) {
+	      $scope.errorMsg = "Please input a Username.";
+	      $scope.errorMsgShow = true;
+	    } else if ($scope.password === "" || $scope.password === undefined) {
+	      $scope.errorMsg = "Please input a Password.";
+	      $scope.errorMsgShow = true;
+	    } else {
+	      $http({
+	        method: 'POST',
+	        url: '/login',
+	        data: { username: $scope.username, password: $scope.password }
+	      }).then(function successCallback(response) {
+	        $window.location.href = "/manager";
+	      }, function errorCallback(response) {
+	        $scope.errorMsg = "Username or Password is incorrect.";
+	        $scope.errorMsgShow = true;
+	      });
+	    }
+	  };
+	};
+
+	exports.loginCtrl = loginCtrl;
 
 /***/ })
 /******/ ]);

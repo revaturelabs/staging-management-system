@@ -11,8 +11,8 @@ import com.revature.exceptions.AlreadyCheckedOutException;
 import com.revature.exceptions.NotCheckedInException;
 
 /**
- * Created by Mykola Nikitin on 6/1/17.
- * A class to perform various checkin related activities.
+ * Created by Mykola Nikitin on 6/1/17. A class to perform various checkin
+ * related activities.
  */
 public interface CheckinService {
     /**
@@ -91,4 +91,13 @@ public interface CheckinService {
      * @param checkins - id and values to be created or updated.
      */
     public void add(Checkin checkin);
+
+	/**
+	 * Marks a checkin as having been checked out. Intended for manager use.
+	 * 
+	 * @param checkin
+	 *            The checkin to mark as having been checked out.
+	 * @param when
+	 *            The time to mark the checkout with.
+	 */
 }
