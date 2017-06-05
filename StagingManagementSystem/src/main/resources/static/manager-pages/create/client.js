@@ -1,8 +1,14 @@
-const clientCtrl = ($scope) => {
+const clientCtrl = ($scope, $http) => {
   $scope.submit = () => {
   	let item = JSON.stringify($scope.client);
-  	alert(item);
-  }
+  	console.log(item);
+  	$http.post('/client', item).then( (response) => {
+  		console.log("success")
+  	}, () => {
+  		console.log("failure")
+  	})
+  };
 };
+
 
 export { clientCtrl };
