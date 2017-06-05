@@ -1,6 +1,6 @@
 package com.revature.services;
 
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +28,8 @@ public class ClientServiceImpl implements ClientService {
 	}
 
 	@Override
-	public List<Client> getAll() {
-		return clientRepo.findAll();
+	public Set<Client> getAll() {
+		return new HashSet<Client>(clientRepo.findAll());
 	}
 
 	@Override

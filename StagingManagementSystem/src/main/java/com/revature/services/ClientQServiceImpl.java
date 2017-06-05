@@ -1,14 +1,13 @@
 package com.revature.services;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.revature.entities.ClientQ;
 import com.revature.repositories.ClientQRepo;
-
-
 
 @Service
 public class ClientQServiceImpl implements ClientQService {
@@ -26,8 +25,8 @@ public class ClientQServiceImpl implements ClientQService {
 	}
 
 	@Override
-	public List<ClientQ> getAll() {
-		return clientQRepo.findAll();
+	public Set<ClientQ> getAll() {
+		return new HashSet<ClientQ>(clientQRepo.findAll());
 	}
 
 	@Override
@@ -37,7 +36,7 @@ public class ClientQServiceImpl implements ClientQService {
 
 	@Override
 	public void delete(ClientQ clientQ) {
-		clientQRepo.delete(clientQ);		
+		clientQRepo.delete(clientQ);
 	}
 
 	@Override

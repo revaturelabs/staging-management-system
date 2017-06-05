@@ -1,6 +1,6 @@
 package com.revature.services;
 
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,20 +14,20 @@ public class TrainerServiceImpl implements TrainerService {
 
 	@Autowired
 	TrainerRepo trainerRepo;
-	
-	public TrainerServiceImpl(TrainerRepo trainerRepo){
+
+	public TrainerServiceImpl(TrainerRepo trainerRepo) {
 		super();
-		this.trainerRepo = trainerRepo;		
+		this.trainerRepo = trainerRepo;
 	}
-	
+
 	@Override
 	public void add(Trainer trainer) {
 		trainerRepo.saveAndFlush(trainer);
 	}
 
 	@Override
-	public List<Trainer> getAll() {
-		return trainerRepo.findAll();
+	public Set<Trainer> getAll() {
+		return new HashSet<Trainer>(trainerRepo.findAll());
 	}
 
 	@Override
@@ -37,7 +37,7 @@ public class TrainerServiceImpl implements TrainerService {
 
 	@Override
 	public void delete(Trainer trainer) {
-		trainerRepo.delete(trainer);		
+		trainerRepo.delete(trainer);
 	}
 
 	@Override

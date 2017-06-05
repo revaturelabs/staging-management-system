@@ -1,6 +1,5 @@
 const batchCtrl = ($scope) => {
-  $scope.batch = {};
-  $scope.batch.name = 'batch name';
+  $scope.batch = { name: "New Batch"};
 };
 
 export { batchCtrl };
