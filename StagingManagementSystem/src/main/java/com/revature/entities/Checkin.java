@@ -5,34 +5,35 @@ import java.time.LocalDateTime;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.revature.exceptions.SmsCustomException;
+import com.revature.markers.SmsValidatable;
 import com.revature.util.LocalDateTimeConverter;
 
 @Entity
 @Table(name = "CHECKINS")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Checkin {
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+public class Checkin implements SmsValidatable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CHECKIN_ID_SEQ")
 	@SequenceGenerator(name = "CHECKIN_ID_SEQ", sequenceName = "CHECKIN_ID_SEQ")
 	@Column(name = "CHECKIN_ID")
 	private Long id;
-	
+
 	@Column(name = "CHECKIN_TIME")
 	@Convert(converter = LocalDateTimeConverter.class)
 	private LocalDateTime checkinTime;
-	
+
 	@Column(name = "CHECKOUT_TIME")
 	@Convert(converter = LocalDateTimeConverter.class)
 	private LocalDateTime checkoutTime;
-	
+
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "APPROVED_BY")
 	private Manager approvedBy;
-	
+
 	@Column(name = "APPROVE_TIME")
 	@Convert(converter = LocalDateTimeConverter.class)
 	private LocalDateTime approveTime;
-	
 
 	@ManyToOne
 	@JoinColumn(name = "ASSOCIATE_ID")
@@ -104,8 +105,6 @@ public class Checkin {
 	public void setAssociate(Associate associate) {
 		this.associate = associate;
 	}
-	
-	
 
 	@Override
 	public int hashCode() {
@@ -167,6 +166,11 @@ public class Checkin {
 		return "Checkin [id=" + id + ", checkinTime=" + checkinTime + ", checkoutTime=" + checkoutTime + ", approvedBy="
 				+ approvedBy + ", approveTime=" + approveTime + ", associate=" + associate + "]";
 	}
-	
-	
+
+	@Override
+	public void validate() throws SmsCustomException {
+		// TODO Validate your members.
+
+	}
+
 }

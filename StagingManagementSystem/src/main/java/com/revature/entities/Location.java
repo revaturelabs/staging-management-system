@@ -9,26 +9,28 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.revature.exceptions.SmsCustomException;
+import com.revature.markers.SmsValidatable;
 
 @Entity
 @Table(name = "LOCATIONS")
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-public class Location {
+public class Location implements SmsValidatable {
 
 	@Id
 	@Column(name = "LOCATION_ID")
 	@SequenceGenerator(name = "LOCATION_ID_SEQ", sequenceName = "LOCATION_ID_SEQ")
 	@GeneratedValue(generator = "LOCATION_ID_SEQ", strategy = GenerationType.SEQUENCE)
-	long id;
+	private long id;
 
 	@Column
-	String country;
+	private String country;
 	@Column
-	String state;
+	private String state;
 	@Column
-	String city;
+	private String city;
 	@Column
-	String name;
+	private String name;
 
 	public Location() {
 		super();
@@ -134,6 +136,12 @@ public class Location {
 	public String toString() {
 		return "Location [id=" + id + ", country=" + country + ", state=" + state + ", city=" + city + ", name=" + name
 				+ "]";
+	}
+
+	@Override
+	public void validate() throws SmsCustomException {
+		// TODO Validate your members.
+
 	}
 
 }

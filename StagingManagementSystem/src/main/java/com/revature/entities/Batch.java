@@ -1,6 +1,7 @@
 package com.revature.entities;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -21,11 +22,13 @@ import javax.persistence.Table;
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters.LocalDateTimeConverter;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.revature.exceptions.SmsCustomException;
+import com.revature.markers.SmsValidatable;
 
 @Entity
 @Table(name = "BATCHES")
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-public class Batch {
+public class Batch implements SmsValidatable {
 
 	@Id
 	@Column(name = "BATCH_ID")
@@ -58,7 +61,8 @@ public class Batch {
 
 	public Batch() {
 		super();
-		// TODO Auto-generated constructor stub
+		this.trainers = new HashSet<Trainer>();
+		this.associates = new HashSet<Associate>();
 	}
 
 	public Batch(Long id, BatchType batchType, LocalDateTime startDate, LocalDateTime endDate, Location location,
@@ -194,6 +198,12 @@ public class Batch {
 	public String toString() {
 		return "Batch [id=" + id + ", batchType=" + batchType + ", startDate=" + startDate + ", endDate=" + endDate
 				+ ", location=" + location + ", trainers=" + trainers + ", associates=" + associates + "]";
+	}
+
+	@Override
+	public void validate() throws SmsCustomException {
+		// TODO Validate your members.
+
 	}
 
 }

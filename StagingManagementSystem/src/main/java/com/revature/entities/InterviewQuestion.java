@@ -11,17 +11,20 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.revature.exceptions.SmsCustomException;
+import com.revature.markers.SmsValidatable;
+
 @Entity
-@Table(name="INTERVIEW_QUESTIONS")
-public class InterviewQuestion {
+@Table(name = "INTERVIEW_QUESTIONS")
+public class InterviewQuestion implements SmsValidatable {
 	@Id
-	@Column(name="INTERVIEW_QUESTION_ID")
-	@SequenceGenerator(name="INTERVIEW_QUESTION_ID_SEQ", sequenceName="INTERVIEW_QUESTION_ID_SEQ")
-    @GeneratedValue(generator="INTERVIEW_QUESTION_ID_SEQ", strategy=GenerationType.AUTO)
+	@Column(name = "INTERVIEW_QUESTION_ID")
+	@SequenceGenerator(name = "INTERVIEW_QUESTION_ID_SEQ", sequenceName = "INTERVIEW_QUESTION_ID_SEQ")
+	@GeneratedValue(generator = "INTERVIEW_QUESTION_ID_SEQ", strategy = GenerationType.AUTO)
 	private long id;
 
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="BATCH_TYPE_ID")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "BATCH_TYPE_ID")
 	private BatchType batchType;
 
 	@Column
@@ -100,5 +103,11 @@ public class InterviewQuestion {
 	public String toString() {
 		return "InterviewQuestion [id=" + id + ", batchType=" + batchType + ", question=" + question + "]";
 	}
-	
+
+	@Override
+	public void validate() throws SmsCustomException {
+		// TODO Validate your members.
+
+	}
+
 }
