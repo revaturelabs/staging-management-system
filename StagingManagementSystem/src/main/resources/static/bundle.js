@@ -58,22 +58,24 @@
 
 	var _angularBootstrapNpm2 = _interopRequireDefault(_angularBootstrapNpm);
 
-	var _manager = __webpack_require__(90);
+	var _manager = __webpack_require__(91);
 
-	var _batch = __webpack_require__(91);
+	var _batch = __webpack_require__(94);
 
-	var _client = __webpack_require__(92);
+	var _client = __webpack_require__(95);
 
-	var _user = __webpack_require__(93);
+	var _user = __webpack_require__(96);
 
-	var _reports = __webpack_require__(94);
+	var _reports = __webpack_require__(92);
 
 	var _nestedGraph = __webpack_require__(97);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var FusionCharts = __webpack_require__(95);
-	__webpack_require__(96)(FusionCharts);
+	var FusionCharts = __webpack_require__(90);
+	__webpack_require__(93)(FusionCharts);
+
+	console.log();
 
 	var routerApp = _angular2.default.module('routerApp', [_angularUiRouter2.default, _angularBootstrapNpm2.default]);
 
@@ -52944,85 +52946,6 @@
 
 /***/ }),
 /* 90 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var currentCtrl = function currentCtrl($scope) {
-	  $scope.test = 'test';
-	};
-
-	var forecastCtrl = function forecastCtrl($scope) {};
-
-	exports.currentCtrl = currentCtrl;
-	exports.forecastCtrl = forecastCtrl;
-
-/***/ }),
-/* 91 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var batchCtrl = function batchCtrl($scope) {
-	  $scope.batch = {};
-	  $scope.batch.name = 'batch name';
-	};
-
-	exports.batchCtrl = batchCtrl;
-
-/***/ }),
-/* 92 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var clientCtrl = function clientCtrl($scope) {
-	  $scope.client = {};
-	  $scope.client.name = 'client name';
-	};
-
-	exports.clientCtrl = clientCtrl;
-
-/***/ }),
-/* 93 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var userCtrl = function userCtrl($scope) {
-	  $scope.user = {};
-	  $scope.user.name = 'user name';
-	};
-
-	exports.userCtrl = userCtrl;
-
-/***/ }),
-/* 94 */
-/***/ (function(module, exports) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var reportCtrl = function reportCtrl($scope) {};
-
-	exports.reportCtrl = reportCtrl;
-
-/***/ }),
-/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*
@@ -54948,7 +54871,38 @@
 
 
 /***/ }),
-/* 96 */
+/* 91 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var currentCtrl = function currentCtrl($scope) {
+	  $scope.test = 'test';
+	};
+
+	var forecastCtrl = function forecastCtrl($scope) {};
+
+	exports.currentCtrl = currentCtrl;
+	exports.forecastCtrl = forecastCtrl;
+
+/***/ }),
+/* 92 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var reportCtrl = function reportCtrl($scope) {};
+
+	exports.reportCtrl = reportCtrl;
+
+/***/ }),
+/* 93 */
 /***/ (function(module, exports) {
 
 	/*
@@ -55196,6 +55150,54 @@
 	c,b){var f=.5*b,k=a-b,h=a+b,l=a-f,m=a+f,n=a+.5,p=n+1,r=n+1.5,t=c-b,u=c+f,v=c-f,f=c+(b-f);return["M",k,t,"L",l,v,l,f,k,u,a-.5,u,a,c+b+.5,n,u,h,u,m,f,m,v,h,t,r,t,r,v,r,f,p,f,p,v,r,v,r,t,"Z"]},zoomOutIcon:function(a,c,b){a-=.2*b;c-=.2*b;var f=.8*b,k=w.rad(43),h=w.rad(48),l=a+f*ya(k),k=c+f*va(k),m=a+f*ya(h),h=c+f*va(h),n=w.rad(45),p=l+b*ya(n),r=k+b*va(n),t=m+b*ya(n);b=h+b*va(n);return["M",l,k,"A",f,f,0,1,0,m,h,"Z","M",l+1,k+1,"L",p,r,t,b,m+1,h+1,"Z","M",a-2,c,"L",a+2,c,"Z"]},resetIcon:function(a,c,b){var f=
 	a-b,k=(da.PI/2+da.PI)/2;a+=b*ya(k);var k=c+b*va(k),h=2*b/3;return["M",f,c,"A",b,b,0,1,1,a,k,"L",a+h,k-1,a+2,k+h-.5,a,k]}})}])});
 
+
+/***/ }),
+/* 94 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var batchCtrl = function batchCtrl($scope) {
+	  $scope.batch = {};
+	  $scope.batch.name = 'batch name';
+	};
+
+	exports.batchCtrl = batchCtrl;
+
+/***/ }),
+/* 95 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var clientCtrl = function clientCtrl($scope) {
+	  $scope.client = {};
+	  $scope.client.name = 'client name';
+	};
+
+	exports.clientCtrl = clientCtrl;
+
+/***/ }),
+/* 96 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var userCtrl = function userCtrl($scope) {
+	  $scope.user = {};
+	  $scope.user.name = 'user name';
+	};
+
+	exports.userCtrl = userCtrl;
 
 /***/ }),
 /* 97 */
