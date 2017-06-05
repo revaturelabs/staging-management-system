@@ -1,6 +1,10 @@
 package com.revature.repositories;
 
-public interface TrainerRepo
-{
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.revature.entities.Trainer;
+
+public interface TrainerRepo extends JpaRepository<Trainer, Long>{
+	Trainer findById(long id);
 
 }
