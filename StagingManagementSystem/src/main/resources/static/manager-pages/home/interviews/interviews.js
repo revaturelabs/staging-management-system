@@ -1,11 +1,4 @@
-/**
- * Created by colts on 6/4/2017.
- */
-
-
-var app = angular.module('interviews', []);
-
-app.controller('interviewsCtrl', function($scope){
+const interviewsCtrl = ($scope) => {
 
     $scope.interviews = [
         {
@@ -44,5 +37,6 @@ app.controller('interviewsCtrl', function($scope){
             client: 'Wells Fargo',
             scheduled_time: '6-15-2017'
         }];
+}
 
-});
+export { interviewsCtrl };
