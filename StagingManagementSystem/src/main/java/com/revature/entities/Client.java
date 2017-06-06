@@ -19,7 +19,7 @@ import com.revature.markers.SmsValidatable;
 public class Client implements SmsValidatable {
 
 	transient private static SmsSettings settings = SmsSettings.getInstance();
-	
+
 	@Id
 	@Column(name = "CLIENT_ID")
 	@SequenceGenerator(name = "CLIENT_ID_SEQ", sequenceName = "CLIENT_ID_SEQ")
@@ -32,15 +32,19 @@ public class Client implements SmsValidatable {
 	@Column(name = "CLIENT_PRIORITY")
 	private Boolean priority;
 
+	@Column(name = "CLIENT_ACTIVE")
+	private Boolean active;
+
 	public Client() {
 		super();
 	}
 
-	public Client(Long id, String name, Boolean priority) {
+	public Client(Long id, String name, Boolean priority, Boolean active) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.priority = priority;
+		this.active = active;
 	}
 
 	public Long getId() {
@@ -67,10 +71,19 @@ public class Client implements SmsValidatable {
 		this.priority = priority;
 	}
 
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((active == null) ? 0 : active.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((priority == null) ? 0 : priority.hashCode());
@@ -86,6 +99,11 @@ public class Client implements SmsValidatable {
 		if (getClass() != obj.getClass())
 			return false;
 		Client other = (Client) obj;
+		if (active == null) {
+			if (other.active != null)
+				return false;
+		} else if (!active.equals(other.active))
+			return false;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -106,7 +124,7 @@ public class Client implements SmsValidatable {
 
 	@Override
 	public String toString() {
-		return "Client [id=" + id + ", name=" + name + ", priority=" + priority + "]";
+		return "Client [id=" + id + ", name=" + name + ", priority=" + priority + ", active=" + active + "]";
 	}
 
 	@Override

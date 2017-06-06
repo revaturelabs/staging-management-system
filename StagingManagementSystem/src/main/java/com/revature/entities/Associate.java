@@ -23,7 +23,7 @@ import com.revature.markers.SmsValidatable;
 public class Associate implements SmsValidatable {
 
 	transient private static SmsSettings settings = SmsSettings.getInstance();
-	
+
 	@Id
 	@Column(name = "ASSOCIATE_ID")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ASSOCIATE_ID_SEQ")
@@ -45,7 +45,7 @@ public class Associate implements SmsValidatable {
 	private Batch batch;
 
 	@Column(name = "ASSOCIATE_ACTIVE")
-	private short active;
+	private Boolean active;
 
 	@Column(name = "CLIENT_ID")
 	private Long lockedTo;
@@ -54,7 +54,7 @@ public class Associate implements SmsValidatable {
 		super();
 	}
 
-	public Associate(Long id, Credential credential, String name, String portfolioLink, Batch batch, short active,
+	public Associate(Long id, Credential credential, String name, String portfolioLink, Batch batch, Boolean active,
 			Long lockedTo) {
 		super();
 		this.id = id;
@@ -106,11 +106,11 @@ public class Associate implements SmsValidatable {
 		this.batch = batch;
 	}
 
-	public short getActive() {
+	public Boolean getActive() {
 		return active;
 	}
 
-	public void setActive(short active) {
+	public void setActive(Boolean active) {
 		this.active = active;
 	}
 
@@ -126,7 +126,7 @@ public class Associate implements SmsValidatable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + active;
+		result = prime * result + ((active == null) ? 0 : active.hashCode());
 		result = prime * result + ((batch == null) ? 0 : batch.hashCode());
 		result = prime * result + ((credential == null) ? 0 : credential.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
@@ -145,7 +145,10 @@ public class Associate implements SmsValidatable {
 		if (getClass() != obj.getClass())
 			return false;
 		Associate other = (Associate) obj;
-		if (active != other.active)
+		if (active == null) {
+			if (other.active != null)
+				return false;
+		} else if (!active.equals(other.active))
 			return false;
 		if (batch == null) {
 			if (other.batch != null)

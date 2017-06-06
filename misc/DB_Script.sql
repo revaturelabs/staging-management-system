@@ -32,6 +32,7 @@ CREATE TABLE MANAGERS (
   MANAGER_NAME VARCHAR2(64),
   CREDENTIAL_ID NUMBER,
   PERMISSION_ID NUMBER,
+  MANAGER_ACTIVE NUMBER(1,0), --Disabled or not (to avoid deleting, because of report forcasting)
   CONSTRAINT FK_ManagerCredential FOREIGN KEY (CREDENTIAL_ID) REFERENCES CREDENTIALS(CREDENTIAL_ID),
   CONSTRAINT FK_ManagerPermission FOREIGN KEY (PERMISSION_ID) REFERENCES PERMISSIONS(PERMISSION_ID)
 );
@@ -69,7 +70,7 @@ CREATE TABLE ASSOCIATES (
   ASSOCIATE_NAME VARCHAR2(64),
   ASSOCIATE_PORTFOLIO_LINK VARCHAR2(128),
   BATCH_ID NUMBER,
-  ASSOCIATE_ACTIVE NUMBER(1,0), --Disabled or not (to avoid deleting associates, because of report forcasting)
+  ASSOCIATE_ACTIVE NUMBER(1,0), --Disabled or not (to avoid deleting, because of report forcasting)
   CLIENT_ID NUMBER, --ID of a priority client. Known as lockedTo to an associate.
   CONSTRAINT FK_AssociateCredential FOREIGN KEY (CREDENTIAL_ID) REFERENCES CREDENTIALS(CREDENTIAL_ID),
   CONSTRAINT FK_AssociateBatch FOREIGN KEY (BATCH_ID) REFERENCES BATCHES(BATCH_ID)
@@ -90,7 +91,8 @@ CREATE SEQUENCE CHECK_ID_SEQ;
 
 CREATE TABLE TRAINERS (
   TRAINER_ID NUMBER PRIMARY KEY,
-  TRAINER_NAME VARCHAR2(64)
+  TRAINER_NAME VARCHAR2(64),
+  TRAINER_ACTIVE NUMBER(1,0), --Disabled or not (to avoid deleting, because of report forcasting)
 );
 CREATE SEQUENCE TRAINER_ID_SEQ;
 
@@ -105,6 +107,7 @@ CREATE TABLE CLIENTS (
   CLIENT_ID NUMBER PRIMARY KEY,
   CLIENT_NAME VARCHAR2(64),
   CLIENT_PRIORITY NUMBER(1,0) --Associates mapped to this client will be locked in to the client.
+  CLIENT_ACTIVE NUMBER(1,0), --Disabled or not (to avoid deleting, because of report forcasting)
 );
 CREATE SEQUENCE CLIENT_ID_SEQ;
 
