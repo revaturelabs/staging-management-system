@@ -39,7 +39,7 @@ public class ManagerServiceImpl implements ManagerService {
 
 	// c
 	@Override
-	public void add(Manager manager) throws SmsCustomException {
+	public Manager add(Manager manager) throws SmsCustomException{
 		if (manager == null) {
 			throw new NullReferenceException("Manager is null.");
 		}
@@ -53,6 +53,7 @@ public class ManagerServiceImpl implements ManagerService {
 		credentialService.add(credential);
 		manager.setCredential(credential);
 		manager = managerRepo.saveAndFlush(manager);
+		return manager;
 	}
 
 	// r
@@ -86,7 +87,7 @@ public class ManagerServiceImpl implements ManagerService {
 
 	// u
 	@Override
-	public void update(Manager manager) throws SmsCustomException {
+	public Manager update(Manager manager) throws SmsCustomException {
 		if (manager == null) {
 			throw new NullReferenceException("Manager is null.");
 		}
@@ -95,6 +96,7 @@ public class ManagerServiceImpl implements ManagerService {
 		credentialService.add(credential);
 		manager.setCredential(credential);
 		manager = managerRepo.saveAndFlush(manager);
+		return manager;
 	}
 
 	// d

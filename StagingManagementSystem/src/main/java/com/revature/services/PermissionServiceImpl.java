@@ -28,7 +28,7 @@ public class PermissionServiceImpl implements PermissionService {
 	}
 
 	@Override
-	public void add(Permission permission) throws SmsCustomException {
+	public Permission add(Permission permission) throws SmsCustomException {
 		if (permission == null) {
 			throw new NullReferenceException("Permission is null.");
 		}
@@ -36,7 +36,8 @@ public class PermissionServiceImpl implements PermissionService {
 		if (permissionRepo.findByLevel(permission.getLevel()) != null) {
 			throw new NonUniqueException("Permission level already exists.");
 		}
-		permission = permissionRepo.save(permission);
+		permission = permissionRepo.saveAndFlush(permission);
+		return permission;
 
 	}
 
@@ -68,12 +69,13 @@ public class PermissionServiceImpl implements PermissionService {
 	}
 
 	@Override
-	public void update(Permission permission) throws SmsCustomException {
+	public Permission update(Permission permission) throws SmsCustomException {
 		if (permission == null) {
 			throw new NullReferenceException("Permission is null.");
 		}
 		permission.validate();
-		permission = permissionRepo.save(permission);
+		permission = permissionRepo.saveAndFlush(permission);
+		return permission;
 	}
 
 	@Override
