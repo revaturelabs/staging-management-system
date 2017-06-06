@@ -1,7 +1,5 @@
 package com.revature.entities;
 
-import java.util.Collection;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,44 +9,58 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.revature.config.SmsSettings;
 import com.revature.exceptions.SmsCustomException;
 import com.revature.markers.SmsValidatable;
 
 @Entity
-@Table(name = "interview_statuses")
+@Table(name = "INTERVIEW_STATUSES")
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class InterviewStatuses implements SmsValidatable {
 
+	transient private static SmsSettings settings = SmsSettings.getInstance();
+	
 	@Id
 	@Column(name = "INTERVIEW_STATUS_ID")
 	@SequenceGenerator(name = "INTERVIEW_STATUS_ID_SEQ", sequenceName = "INTERVIEW_STATUS_ID_SEQ")
 	@GeneratedValue(generator = "INTERVIEW_STATUS_ID_SEQ", strategy = GenerationType.SEQUENCE)
-	private long id;
+	private Long id;
 
-	@Column(name = "INTERVIEW_STATUS")
-	private String status;
+	@Column(name = "INTERVIEW_STATUS_VALUE")
+	private String value;
 
 	public InterviewStatuses() {
 		super();
 	}
 
-	public InterviewStatuses(long id, String status, Collection<Interviews> interviews) {
+	public InterviewStatuses(Long id, String value) {
 		super();
 		this.id = id;
-		this.status = status;
+		this.value = value;
 	}
 
-	@Override
-	public String toString() {
-		return "InterviewStatus [id=" + id + ", status=" + status + "]";
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + (int) (id ^ (id >>> 32));
-		result = prime * result + ((status == null) ? 0 : status.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((value == null) ? 0 : value.hashCode());
 		return result;
 	}
 
@@ -61,30 +73,22 @@ public class InterviewStatuses implements SmsValidatable {
 		if (getClass() != obj.getClass())
 			return false;
 		InterviewStatuses other = (InterviewStatuses) obj;
-		if (id != other.id)
-			return false;
-		if (status == null) {
-			if (other.status != null)
+		if (id == null) {
+			if (other.id != null)
 				return false;
-		} else if (!status.equals(other.status))
+		} else if (!id.equals(other.id))
+			return false;
+		if (value == null) {
+			if (other.value != null)
+				return false;
+		} else if (!value.equals(other.value))
 			return false;
 		return true;
 	}
 
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
+	@Override
+	public String toString() {
+		return "InterviewStatuses [id=" + id + ", value=" + value + "]";
 	}
 
 	@Override

@@ -1,37 +1,33 @@
 //Parent custom exception class of all custom exceptions within this application.
 package com.revature.exceptions;
 
-import java.nio.charset.Charset;
-
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.client.HttpStatusCodeException;
 
-public class SmsCustomException extends HttpStatusCodeException {
+import com.revature.markers.SmsHasMessageAndStatus;
+
+public class SmsCustomException extends Throwable implements SmsHasMessageAndStatus {
 
 	private static final long serialVersionUID = -5013114105102502435L;
 
-	private static final HttpStatus defaultStatus = HttpStatus.I_AM_A_TEAPOT;
+	private HttpStatus status = HttpStatus.I_AM_A_TEAPOT;
 
-	public SmsCustomException(HttpStatus statusCode, String statusText, byte[] responseBody, Charset responseCharset) {
-		super(statusCode, statusText, responseBody, responseCharset);
+	public SmsCustomException(String message, HttpStatus status) {
+		super(message);
+		this.status = status;
 	}
 
-	public SmsCustomException(HttpStatus statusCode, String statusText, HttpHeaders responseHeaders,
-			byte[] responseBody, Charset responseCharset) {
-		super(statusCode, statusText, responseHeaders, responseBody, responseCharset);
+	public SmsCustomException(String message) {
+		super(message);
 	}
 
-	public SmsCustomException(HttpStatus statusCode, String statusText) {
-		super(statusCode, statusText);
+	public SmsCustomException(HttpStatus status) {
+		super();
+		this.status = status;
 	}
 
-	public SmsCustomException(HttpStatus statusCode) {
-		super(statusCode);
-	}
-
-	public SmsCustomException(String statusText) {
-		super(defaultStatus, statusText);
+	@Override
+	public HttpStatus getStatus() {
+		return this.status;
 	}
 
 }

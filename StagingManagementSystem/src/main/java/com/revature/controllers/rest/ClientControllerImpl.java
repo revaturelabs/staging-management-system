@@ -40,7 +40,7 @@ public class ClientControllerImpl {
 	 */
 	@PostMapping
 	public void addLocation(@RequestBody Client location) {
-		location.setId(0);
+		location.setId(0l);
 		clientService.add(location);
 	}
 
