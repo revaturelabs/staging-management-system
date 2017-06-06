@@ -92,7 +92,7 @@ CREATE SEQUENCE CHECK_ID_SEQ;
 CREATE TABLE TRAINERS (
   TRAINER_ID NUMBER PRIMARY KEY,
   TRAINER_NAME VARCHAR2(64),
-  TRAINER_ACTIVE NUMBER(1,0), --Disabled or not (to avoid deleting, because of report forcasting)
+  TRAINER_ACTIVE NUMBER(1,0) --Disabled or not (to avoid deleting, because of report forcasting)
 );
 CREATE SEQUENCE TRAINER_ID_SEQ;
 
@@ -106,8 +106,8 @@ CREATE TABLE BATCH_TRAINER (
 CREATE TABLE CLIENTS (
   CLIENT_ID NUMBER PRIMARY KEY,
   CLIENT_NAME VARCHAR2(64),
-  CLIENT_PRIORITY NUMBER(1,0) --Associates mapped to this client will be locked in to the client.
-  CLIENT_ACTIVE NUMBER(1,0), --Disabled or not (to avoid deleting, because of report forcasting)
+  CLIENT_PRIORITY NUMBER(1,0), --Associates mapped to this client will be locked in to the client.
+  CLIENT_ACTIVE NUMBER(1,0) --Disabled or not (to avoid deleting, because of report forcasting)
 );
 CREATE SEQUENCE CLIENT_ID_SEQ;
 
