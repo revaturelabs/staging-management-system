@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
-    	<a class="navbar-brand" href="home">
+    	<a class="navbar-brand" ui-sref="manager.home">
     	  <img src="./images/revature-logo.png" alt="Revature" width="90" height="30">
     	</a>
     </div>
@@ -11,14 +11,16 @@
         <li class="dropdown">
           <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> Menu <span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a>Home</a></li>
+            <li><a ui-sref="manager.home">Home</a></li>
             <li><a ui-sref="manager.create">Add (user/batch/client)</a></li>
             <li role="separator" class="divider"></li>
-            <li><a href="#">Logout</a></li>
+            <li><a ui-sref="login">Logout</a></li>
           </ul>
         </li>
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
-<div ui-view></div>
+<div class="manager-view">
+  <div ui-view></div>
+</div>

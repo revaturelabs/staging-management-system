@@ -1,6 +1,9 @@
-<div> This will be a selecter </div>
-<a ui-sref="manager.create.batch">batch</a>
-<a ui-sref="manager.create.user">user</a>
-<a ui-sref="manager.create.client">client</a>
+<div class="manager-create-container">
+  <div class="row manager-view-selecter-container">
+    <a class="manager-view-selecter" ui-sref="manager.create.batch">Batch</a>
+    <a class="manager-view-selecter" ui-sref="manager.create.user">User</a>
+    <a class="manager-view-selecter" ui-sref="manager.create.client">Client</a>
+  </div>
 
-<div ui-view></div>
+  <div ui-view></div>
+</div>

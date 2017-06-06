@@ -85,9 +85,6 @@
 
 	var routerApp = _angular2.default.module('routerApp', [_angularUiRouter2.default]);
 
-	//named view controllers
-	routerApp.controller('interviewsCtrl', _interviews.interviewsCtrl);
-
 	routerApp.config(function ($stateProvider, $urlRouterProvider) {
 	  $urlRouterProvider.otherwise('/login');
 
@@ -119,14 +116,17 @@
 	  }).state('manager.home', {
 	    url: '/home',
 	    views: {
-	      '': { templateUrl: 'manager-pages/home/home.html' },
+	      '': {
+	        templateUrl: 'manager-pages/home/home.html',
+	        controller: _home.managerHomeCtrl
+	      },
 	      'available@manager.home': { templateUrl: 'manager-pages/home/available.html' },
 	      'priorityMapped@manager.home': {
 	        templateUrl: 'manager-pages/home/priorityMapped.html'
 	      },
 	      'interviews@manager.home': {
 	        templateUrl: 'manager-pages/home/interviews/interviews.html',
-	        controller: 'interviewsCtrl'
+	        controller: _interviews.interviewsCtrl
 	      },
 	      'checkins@manager.home': {
 	        templateUrl: 'manager-pages/home/checkins.html'
@@ -44474,18 +44474,8 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var managerCtrl = function managerCtrl($scope, $state) {
+	var managerCtrl = function managerCtrl($scope) {
 	  $scope.manager = { name: 'Joe' };
-
-	  //initialize our named views
-	  $scope.view1 = 'available';
-	  $scope.view2 = 'interviews';
-
-	  $scope.$state = $state;
-	  $scope.updateView2 = function (view2) {
-	    $scope.view2 = view2;
-	    $scope.$apply();
-	  };
 	};
 
 	exports.managerCtrl = managerCtrl;
@@ -44500,7 +44490,33 @@
 	  value: true
 	});
 	var managerHomeCtrl = function managerHomeCtrl($scope) {
-	  $scope.manager = { name: 'Joe' };
+	  $scope.view2 = 'interviews';
+	  $scope.selectView1 = function (selectedView) {
+	    if (selectedView === 'available') {
+	      $scope.availableSelecter = { 'background-color': 'gray' };
+	      $scope.prioritySelecter = { 'background-color': '#f8f8f8' };
+	      $scope.view1 = 'available';
+	    } else if (selectedView === 'priority') {
+	      $scope.availableSelecter = { 'background-color': '#f8f8f8' };
+	      $scope.prioritySelecter = { 'background-color': 'gray' };
+	      $scope.view1 = 'priorityMapped';
+	    }
+	  };
+	  $scope.selectView2 = function (selectedView) {
+	    if (selectedView === 'interviews') {
+	      $scope.interviewsSelecter = { 'background-color': 'gray' };
+	      $scope.checkinsSelecter = { 'background-color': '#f8f8f8' };
+	      $scope.view2 = 'interviews';
+	    } else if (selectedView === 'checkins') {
+	      $scope.interviewsSelecter = { 'background-color': '#f8f8f8' };
+	      $scope.checkinsSelecter = { 'background-color': 'gray' };
+	      $scope.view2 = 'checkins';
+	    }
+	  };
+
+	  //initialize our named views
+	  $scope.selectView1('available');
+	  $scope.selectView2('interviews');
 	};
 
 	exports.managerHomeCtrl = managerHomeCtrl;
