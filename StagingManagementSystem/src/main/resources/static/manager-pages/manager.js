@@ -3,6 +3,10 @@ const managerCtrl = ($scope, $state, $location) => {
 			return viewLocation === $location.path();
 	};
 	
+	$scope.logout = function () {
+		alert("logout");
+	};
+	
   $scope.manager = { name:'Joe'};
 
   //initialize our named views
