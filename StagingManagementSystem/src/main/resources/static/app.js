@@ -7,6 +7,7 @@ require("fusioncharts/fusioncharts.charts")(FusionCharts);
 import { managerCtrl } from './manager-pages/manager';
 import { managerHomeCtrl } from './manager-pages/home/home'
 import { interviewsCtrl } from './manager-pages/home/interviews/interviews';
+import managerCreateCtrl from './manager-pages/create/create'
 import { batchCtrl } from './manager-pages/create/batch';
 import { clientCtrl } from './manager-pages/create/client';
 import { userCtrl } from './manager-pages/create/user';
@@ -18,9 +19,6 @@ import { barCtrl } from './reports/barGraph';
 import loginCtrl from './login/login';
 
 const routerApp = angular.module('routerApp', [uiRouter]);
-
-//named view controllers
-routerApp.controller('interviewsCtrl', interviewsCtrl);
 
 routerApp.config(($stateProvider, $urlRouterProvider) => {
   $urlRouterProvider.otherwise('/login');
@@ -39,6 +37,7 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
     .state('manager.create', {
       url: '/create',
       templateUrl: 'manager-pages/create/create.html',
+      controller: managerCreateCtrl,
     })
     .state('manager.create.batch', {
       url: '/batch',
@@ -59,14 +58,17 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
     .state('manager.home', {
       url: '/home',
       views: {
-              '': { templateUrl: 'manager-pages/home/home.html' },
+              '': {
+                templateUrl: 'manager-pages/home/home.html',
+                controller: managerHomeCtrl,
+             },
               'available@manager.home': { templateUrl: 'manager-pages/home/available.html' },
               'priorityMapped@manager.home': {
                   templateUrl: 'manager-pages/home/priorityMapped.html',
               },
               'interviews@manager.home': {
                 templateUrl: 'manager-pages/home/interviews/interviews.html',
-                controller: 'interviewsCtrl',
+                controller: interviewsCtrl,
               },
               'checkins@manager.home': {
                 templateUrl: 'manager-pages/home/checkins.html',
