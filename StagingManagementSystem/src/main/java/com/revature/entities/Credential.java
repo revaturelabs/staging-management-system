@@ -23,10 +23,10 @@ public class Credential implements SmsValidatable {
 	@SequenceGenerator(name = "CREDENTIAL_ID_SEQ", sequenceName = "CREDENTIAL_ID_SEQ")
 	private Long id;
 
-	@Column
+	@Column(name = "CREDENTIAL_USERNAME")
 	private String username;
 
-	@Column
+	@Column(name = "CREDENTIAL_PASSWORD")
 	private String password;
 
 	public Credential(Long id, String username, String password) {

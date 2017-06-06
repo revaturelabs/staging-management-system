@@ -1,6 +1,5 @@
 package com.revature.entities;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -27,61 +26,89 @@ public class BatchType implements SmsValidatable {
 	@Column(name = "BATCH_TYPE_ID")
 	@SequenceGenerator(name = "BATCH_TYPE_ID_SEQ", sequenceName = "BATCH_TYPE_ID_SEQ")
 	@GeneratedValue(generator = "BATCH_TYPE_ID_SEQ", strategy = GenerationType.SEQUENCE)
-	private long id;
+	private Long id;
 
-	@Column(name = "BATCH_TYPE")
-	private String type;
+	@Column(name = "BATCH_TYPE_VALUE")
+	private String value;
 
 	@OneToMany(mappedBy = "batchType")
 	private Set<InterviewQuestion> interviewQuestions;
 
 	public BatchType() {
 		super();
-		this.interviewQuestions = new HashSet<InterviewQuestion>();
 	}
 
-	public BatchType(long id, String type, Set<InterviewQuestion> interviewQuestions) {
+	public BatchType(Long id, String value, Set<InterviewQuestion> interviewQuestions) {
 		super();
 		this.id = id;
-		this.type = type;
+		this.value = value;
+		this.interviewQuestions = interviewQuestions;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
+	}
+
+	public Set<InterviewQuestion> getInterviewQuestions() {
+		return interviewQuestions;
+	}
+
+	public void setInterviewQuestions(Set<InterviewQuestion> interviewQuestions) {
 		this.interviewQuestions = interviewQuestions;
 	}
 
 	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (o == null || getClass() != o.getClass())
-			return false;
-
-		BatchType batchType = (BatchType) o;
-
-		if (id != batchType.id)
-			return false;
-		return type.equals(batchType.type);
-	}
-
-	@Override
 	public int hashCode() {
-		int result = (int) (id ^ (id >>> 32));
-		result = 31 * result + type.hashCode();
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((interviewQuestions == null) ? 0 : interviewQuestions.hashCode());
+		result = prime * result + ((value == null) ? 0 : value.hashCode());
 		return result;
 	}
 
-	public long getId() {
-		return id;
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		BatchType other = (BatchType) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (interviewQuestions == null) {
+			if (other.interviewQuestions != null)
+				return false;
+		} else if (!interviewQuestions.equals(other.interviewQuestions))
+			return false;
+		if (value == null) {
+			if (other.value != null)
+				return false;
+		} else if (!value.equals(other.value))
+			return false;
+		return true;
 	}
 
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
+	@Override
+	public String toString() {
+		return "BatchType [id=" + id + ", value=" + value + ", interviewQuestions=" + interviewQuestions + "]";
 	}
 
 	@Override

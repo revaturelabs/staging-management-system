@@ -3,7 +3,7 @@ package com.revature.services;
 import java.time.LocalDateTime;
 
 import com.revature.entities.Associate;
-import com.revature.entities.Checkin;
+import com.revature.entities.Check;
 import com.revature.entities.Manager;
 import com.revature.exceptions.AlreadyCheckedInException;
 import com.revature.exceptions.AlreadyCheckedOutException;
@@ -23,7 +23,7 @@ public interface CheckinService {
 	 * @param checkin
 	 *            The checkin to be approved.
 	 */
-	public void approveCheckin(Manager approvingManager, Checkin checkin);
+	public void approveCheckin(Manager approvingManager, Check checkin);
 
 	/**
 	 * Checks to see whether or not the associate has checked in between
@@ -85,5 +85,5 @@ public interface CheckinService {
 	 * @param when
 	 *            The time to mark the checkout with.
 	 */
-	public void checkOut(Checkin checkin, LocalDateTime when);
+	public void checkOut(Check checkin, LocalDateTime when);
 }

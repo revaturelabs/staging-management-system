@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.revature.exceptions.SmsCustomException;
 import com.revature.markers.SmsValidatable;
@@ -21,13 +22,13 @@ import com.revature.util.LocalDateTimeConverter;
 @Entity
 @Table(name = "INTERVIEWS")
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-public class Interviews implements SmsValidatable {
+public class Interview implements SmsValidatable {
 
 	@Id
 	@Column(name = "INTERVIEW_ID")
 	@SequenceGenerator(name = "INTERVIEW_ID_SEQ", sequenceName = "INTERVIEW_ID_SEQ")
 	@GeneratedValue(generator = "INTERVIEW_ID_SEQ", strategy = GenerationType.SEQUENCE)
-	private long id;
+	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "ASSOCIATE_ID")
@@ -41,15 +42,15 @@ public class Interviews implements SmsValidatable {
 	@JoinColumn(name = "INTERVIEW_STATUS_ID")
 	private InterviewStatuses interviewStatus;
 
-	@Column(name = "SCHEDULED_TIME")
+	@Column(name = "INTERVIEW_TIME")
 	@Convert(converter = LocalDateTimeConverter.class)
 	private LocalDateTime scheduled;
 
-	public Interviews() {
+	public Interview() {
 		super();
 	}
 
-	public Interviews(long id, Associate associate, Client client, InterviewStatuses interviewStatus,
+	public Interview(Long id, Associate associate, Client client, InterviewStatuses interviewStatus,
 			LocalDateTime scheduled) {
 		super();
 		this.id = id;
@@ -59,11 +60,11 @@ public class Interviews implements SmsValidatable {
 		this.scheduled = scheduled;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -105,7 +106,7 @@ public class Interviews implements SmsValidatable {
 		int result = 1;
 		result = prime * result + ((associate == null) ? 0 : associate.hashCode());
 		result = prime * result + ((client == null) ? 0 : client.hashCode());
-		result = prime * result + (int) (id ^ (id >>> 32));
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((interviewStatus == null) ? 0 : interviewStatus.hashCode());
 		result = prime * result + ((scheduled == null) ? 0 : scheduled.hashCode());
 		return result;
@@ -119,7 +120,7 @@ public class Interviews implements SmsValidatable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Interviews other = (Interviews) obj;
+		Interview other = (Interview) obj;
 		if (associate == null) {
 			if (other.associate != null)
 				return false;
@@ -130,7 +131,10 @@ public class Interviews implements SmsValidatable {
 				return false;
 		} else if (!client.equals(other.client))
 			return false;
-		if (id != other.id)
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
 			return false;
 		if (interviewStatus == null) {
 			if (other.interviewStatus != null)
@@ -147,7 +151,7 @@ public class Interviews implements SmsValidatable {
 
 	@Override
 	public String toString() {
-		return "Interviews [id=" + id + ", associate=" + associate + ", client=" + client + ", interviewStatus="
+		return "Interview [id=" + id + ", associate=" + associate + ", client=" + client + ", interviewStatus="
 				+ interviewStatus + ", scheduled=" + scheduled + "]";
 	}
 

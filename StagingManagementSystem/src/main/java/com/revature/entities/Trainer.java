@@ -23,46 +23,26 @@ public class Trainer implements SmsValidatable {
 	@Column(name = "TRAINER_ID")
 	@SequenceGenerator(name = "TRAINER_ID_SEQ", sequenceName = "TRAINER_ID_SEQ")
 	@GeneratedValue(generator = "TRAINER_ID_SEQ", strategy = GenerationType.SEQUENCE)
-	private long id;
+	private Long id;
 
-	@Column(name = "NAME")
+	@Column(name = "TRAINER_NAME")
 	private String name;
 
 	public Trainer() {
-		// //
+		super();
 	}
 
-	public Trainer(long id, String name) {
+	public Trainer(Long id, String name) {
+		super();
 		this.id = id;
 		this.name = name;
 	}
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (o == null || getClass() != o.getClass())
-			return false;
-
-		Trainer trainer = (Trainer) o;
-
-		if (id != trainer.id)
-			return false;
-		return name.equals(trainer.name);
-	}
-
-	@Override
-	public int hashCode() {
-		int result = (int) (id ^ (id >>> 32));
-		result = 31 * result + name.hashCode();
-		return result;
-	}
-
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -72,6 +52,42 @@ public class Trainer implements SmsValidatable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Trainer other = (Trainer) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Trainer [id=" + id + ", name=" + name + "]";
 	}
 
 	@Override

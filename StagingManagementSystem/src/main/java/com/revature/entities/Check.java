@@ -2,7 +2,17 @@ package com.revature.entities;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.revature.exceptions.SmsCustomException;
@@ -10,28 +20,28 @@ import com.revature.markers.SmsValidatable;
 import com.revature.util.LocalDateTimeConverter;
 
 @Entity
-@Table(name = "CHECKINS")
+@Table(name = "CHECKS")
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-public class Checkin implements SmsValidatable {
+public class Check implements SmsValidatable {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CHECKIN_ID_SEQ")
-	@SequenceGenerator(name = "CHECKIN_ID_SEQ", sequenceName = "CHECKIN_ID_SEQ")
-	@Column(name = "CHECKIN_ID")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CHECK_ID_SEQ")
+	@SequenceGenerator(name = "CHECK_ID_SEQ", sequenceName = "CHECK_ID_SEQ")
+	@Column(name = "CHECK_ID")
 	private Long id;
 
-	@Column(name = "CHECKIN_TIME")
+	@Column(name = "CHECK_IN_TIME")
 	@Convert(converter = LocalDateTimeConverter.class)
 	private LocalDateTime checkinTime;
 
-	@Column(name = "CHECKOUT_TIME")
+	@Column(name = "CHECK_OUT_TIME")
 	@Convert(converter = LocalDateTimeConverter.class)
 	private LocalDateTime checkoutTime;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "APPROVED_BY")
+	@JoinColumn(name = "MANAGER_ID")
 	private Manager approvedBy;
 
-	@Column(name = "APPROVE_TIME")
+	@Column(name = "CHECK_APPROVE_TIME")
 	@Convert(converter = LocalDateTimeConverter.class)
 	private LocalDateTime approveTime;
 
@@ -39,11 +49,15 @@ public class Checkin implements SmsValidatable {
 	@JoinColumn(name = "ASSOCIATE_ID")
 	private Associate associate;
 
-	public Checkin() {
+	public Check() {
 		super();
 	}
 
-	public Checkin(Long id, LocalDateTime checkinTime, LocalDateTime checkoutTime, Manager approvedBy,
+	public Long getId() {
+		return id;
+	}
+
+	public Check(Long id, LocalDateTime checkinTime, LocalDateTime checkoutTime, Manager approvedBy,
 			LocalDateTime approveTime, Associate associate) {
 		super();
 		this.id = id;
@@ -52,10 +66,6 @@ public class Checkin implements SmsValidatable {
 		this.approvedBy = approvedBy;
 		this.approveTime = approveTime;
 		this.associate = associate;
-	}
-
-	public Long getId() {
-		return id;
 	}
 
 	public void setId(Long id) {
@@ -127,7 +137,7 @@ public class Checkin implements SmsValidatable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Checkin other = (Checkin) obj;
+		Check other = (Check) obj;
 		if (approveTime == null) {
 			if (other.approveTime != null)
 				return false;

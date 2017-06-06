@@ -5,12 +5,12 @@ import java.util.ArrayList;
 import com.revature.entities.Associate;
 import com.revature.entities.Batch;
 import com.revature.entities.BatchType;
-import com.revature.entities.Checkin;
+import com.revature.entities.Check;
 import com.revature.entities.Client;
 import com.revature.entities.Credential;
 import com.revature.entities.InterviewQuestion;
 import com.revature.entities.InterviewStatuses;
-import com.revature.entities.Interviews;
+import com.revature.entities.Interview;
 import com.revature.entities.Job;
 import com.revature.entities.Location;
 import com.revature.entities.Manager;
@@ -39,9 +39,9 @@ public class DataGeneration
 	ArrayList<Associate> associate = new ArrayList<Associate>();
 
 	//Stage 4: Dependent Lower Stages
-	ArrayList<Checkin> checkins = new ArrayList<Checkin>();
+	ArrayList<Check> checkins = new ArrayList<Check>();
 	//ArrayList<ClientQ> clientQs = new ArrayList<ClientQ>();	
-	ArrayList<Interviews> interviews = new ArrayList<Interviews>();
+	ArrayList<Interview> interviews = new ArrayList<Interview>();
 	ArrayList<Job> jobs = new ArrayList<Job>();
 	
 	public void generate(){
@@ -123,12 +123,12 @@ public class DataGeneration
 		//TODO: write creation function.
 		return associate;
 	}
-	public ArrayList<Checkin> getCheckins()
+	public ArrayList<Check> getCheckins()
 	{
 		//TODO: write creation function.
 		return checkins;
 	}
-	public ArrayList<Interviews> getInterviews()
+	public ArrayList<Interview> getInterviews()
 	{
 		//TODO: write creation function.
 		return interviews;

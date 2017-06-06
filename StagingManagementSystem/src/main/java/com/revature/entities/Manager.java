@@ -25,14 +25,14 @@ import com.revature.markers.SmsValidatable;
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Manager implements SmsValidatable {
 
-	private transient SmsSettings settings = SmsSettings.getInstance();
+	transient private static SmsSettings settings = SmsSettings.getInstance();
 
 	@Id
 	@Column(name = "MANAGER_ID")
 	@SequenceGenerator(name = "MANAGER_ID_SEQ", sequenceName = "MANAGER_ID_SEQ")
 	@GeneratedValue(generator = "MANAGER_ID_SEQ", strategy = GenerationType.SEQUENCE)
 	private Long id;
-	
+
 	@Column(name = "MANAGER_NAME")
 	private String name;
 
@@ -44,16 +44,16 @@ public class Manager implements SmsValidatable {
 	@JoinColumn(name = "PERMISSION_ID")
 	private Permission permission;
 
+	public Manager() {
+		super();
+	}
+
 	public Manager(Long id, String name, Credential credential, Permission permission) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.credential = credential;
 		this.permission = permission;
-	}
-
-	public Manager() {
-		super();
 	}
 
 	public Long getId() {
