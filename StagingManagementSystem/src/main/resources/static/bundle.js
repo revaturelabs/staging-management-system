@@ -60,28 +60,38 @@
 
 	var _interviews = __webpack_require__(91);
 
-	var _batch = __webpack_require__(92);
+	var _create = __webpack_require__(92);
 
-	var _client = __webpack_require__(93);
+	var _create2 = _interopRequireDefault(_create);
 
-	var _user = __webpack_require__(94);
+	var _batch = __webpack_require__(93);
 
-	var _profile = __webpack_require__(95);
+	var _client = __webpack_require__(94);
+
+	var _user = __webpack_require__(95);
+
+	var _profile = __webpack_require__(96);
 
 	var _profile2 = _interopRequireDefault(_profile);
 
-	var _reports = __webpack_require__(96);
+	var _associate = __webpack_require__(97);
 
-	var _nestedGraph = __webpack_require__(97);
+	var _associate2 = _interopRequireDefault(_associate);
 
-	var _login = __webpack_require__(98);
+	var _reports = __webpack_require__(98);
+
+	var _nestedGraph = __webpack_require__(99);
+
+	var _barGraph = __webpack_require__(100);
+
+	var _login = __webpack_require__(101);
 
 	var _login2 = _interopRequireDefault(_login);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var FusionCharts = __webpack_require__(99);
-	__webpack_require__(100)(FusionCharts);
+	var FusionCharts = __webpack_require__(102);
+	__webpack_require__(103)(FusionCharts);
 
 	var routerApp = _angular2.default.module('routerApp', [_angularUiRouter2.default]);
 
@@ -99,7 +109,8 @@
 	    controller: _manager.managerCtrl
 	  }).state('manager.create', {
 	    url: '/create',
-	    templateUrl: 'manager-pages/create/create.html'
+	    templateUrl: 'manager-pages/create/create.html',
+	    controller: _create2.default
 	  }).state('manager.create.batch', {
 	    url: '/batch',
 	    templateUrl: 'manager-pages/create/batch.html',
@@ -134,7 +145,8 @@
 	    }
 	  }).state('associate', {
 	    url: '/associate',
-	    templateUrl: 'associate-pages/associate.html'
+	    templateUrl: 'associate-pages/associate.html',
+	    controller: _associate2.default
 	  }).state('associate.profile', {
 	    url: '/profile',
 	    templateUrl: 'associate-pages/profile/profile.html',
@@ -147,6 +159,10 @@
 	    url: '/nestedGraph',
 	    templateUrl: 'reports/nestedGraph.html',
 	    controller: _nestedGraph.nestedCtrl
+	  }).state('reports.barGraph', {
+	    url: '/barGraph',
+	    templateUrl: 'reports/barGraph.html',
+	    controller: _barGraph.barCtrl
 	  }
 
 	  // views: {
@@ -44468,13 +44484,17 @@
 /* 89 */
 /***/ (function(module, exports) {
 
-	'use strict';
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+			value: true
 	});
-	var managerCtrl = function managerCtrl($scope) {
-	  $scope.manager = { name: 'Joe' };
+	var managerCtrl = function managerCtrl($scope, $state, $location) {
+			console.log("there");
+			$scope.isActive = function (viewLocation) {
+					return viewLocation === $location.path();
+			};
+			$scope.manager = { name: 'Joe' };
 	};
 
 	exports.managerCtrl = managerCtrl;
@@ -44574,6 +44594,21 @@
 /* 92 */
 /***/ (function(module, exports) {
 
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var managerCreateCtrl = function managerCreateCtrl($scope, $state) {
+	  $scope.$state = $state;
+	};
+
+	exports.default = managerCreateCtrl;
+
+/***/ }),
+/* 93 */
+/***/ (function(module, exports) {
+
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
@@ -44595,7 +44630,7 @@
 	exports.batchCtrl = batchCtrl;
 
 /***/ }),
-/* 93 */
+/* 94 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -44618,7 +44653,7 @@
 	exports.clientCtrl = clientCtrl;
 
 /***/ }),
-/* 94 */
+/* 95 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -44654,7 +44689,7 @@
 	exports.userCtrl = userCtrl;
 
 /***/ }),
-/* 95 */
+/* 96 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -44662,15 +44697,33 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var profileCtrl = function profileCtrl($scope) {
-	  $scope.name = 'Yushi Canastra';
-	  $scope.batchType = 'Java';
-	  $scope.portfolioUrl = 'http://www.example-portfolio.com/';
+	var profileCtrl = function profileCtrl($scope, $http) {
+	  var associateId = 96;
+	  var method = 'GET';
+	  var url = '/associate/' + associateId;
+
+	  $http({
+	    method: method,
+	    url: url
+	  }).then(function (response) {
+	    $scope.name = response.data.name;
+	    $scope.batchType = response.data.batch === null ? 'None' : response.data.batch;
+	    $scope.portfolioUrl = response.data.portfolioLink;
+	  });
+
+	  $scope.name = '';
+	  $scope.batchType = '';
+	  $scope.portfolioUrl = '';
 	  $scope.portfolioUrlInput = '';
 	  $scope.skills = ['Java', 'Spring', 'Hibernate', 'Servlets', 'JSP'];
 	  $scope.additionalSkills = ['hello', 'poop'];
+	  $scope.status = 'Active';
 	  $scope.additionalSkillsInput = '';
-	  $scope.submit = function () {};
+	  $scope.shortenUrl = function (urlToShorten, length) {
+	    return (// used to display portfolioUrl
+	      urlToShorten.substring(0, length) + '...'
+	    );
+	  };
 	  $scope.toggleSkillsModal = function () {
 	    $scope.additionalSkillsInput = $scope.additionalSkills.join(',');
 	    $('#additionalSkillsModal').modal('show');
@@ -44694,7 +44747,31 @@
 	exports.default = profileCtrl;
 
 /***/ }),
-/* 96 */
+/* 97 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	var associateCtrl = function associateCtrl($scope, $location) {
+		$scope.checkInBtn = "Check In";
+		$scope.hasCheckedIn = false;
+		$scope.isActive = function (viewLocation) {
+			return viewLocation === $location.path();
+		};
+
+		$scope.checkIn = function () {
+			$scope.checkInBtn = "Checked In";
+			$scope.hasCheckedIn = true;
+		};
+	};
+
+	exports.default = associateCtrl;
+
+/***/ }),
+/* 98 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -44707,13 +44784,13 @@
 	exports.reportCtrl = reportCtrl;
 
 /***/ }),
-/* 97 */
+/* 99 */
 /***/ (function(module, exports) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 
 	var _chart, _chart2, _chart3, _chart4, _chart5;
@@ -44721,190 +44798,284 @@
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 	var data = [{
-	    "label": "Q1",
-	    "value": "1950000",
-	    "link": "newchart-json-q1"
+	  label: 'Q1',
+	  value: '1950000',
+	  link: 'newchart-json-q1'
 	}, {
-	    "label": "Q2",
-	    "value": "1970000",
-	    "link": "newchart-json-q2"
+	  label: 'Q2',
+	  value: '1970000',
+	  link: 'newchart-json-q2'
 	}, {
-	    "label": "Q3",
-	    "value": "1910000",
-	    "link": "newchart-json-q3"
+	  label: 'Q3',
+	  value: '1910000',
+	  link: 'newchart-json-q3'
 	}, {
-	    "label": "Q4",
-	    "value": "2120000",
-	    "link": "newchart-json-q4"
+	  label: 'Q4',
+	  value: '2120000',
+	  link: 'newchart-json-q4'
 	}];
 
 	var linkedData = [{
-	    "id": "q1",
-	    "linkedchart": {
-	        "chart": (_chart = {
-	            "caption": "Monthly Revenue",
-	            "subcaption": "First Quarter",
-	            "xAxisName": "Month",
-	            "yAxisName": "Amount",
-	            "numberPrefix": "$",
-	            "paletteColors": "#008ee4",
-	            "showBorder": "1",
-	            "borderAlpha": "20",
-	            "divLineAlpha": "50",
-	            "showValues": "0",
-	            "bgAlpha": "0",
-	            "canvasBorderAlpha": "0"
-	        }, _defineProperty(_chart, "showBorder", "0"), _defineProperty(_chart, "plotBorderAlpha", "0"), _defineProperty(_chart, "usePlotGradientColor", "0"), _defineProperty(_chart, "showAlternateHgridcolor", "0"), _chart),
-	        "data": [{
-	            "label": "Jan",
-	            "value": "420000"
-	        }, {
-	            "label": "Feb",
-	            "value": "810000"
-	        }, {
-	            "label": "Mar",
-	            "value": "720000"
-	        }]
-	    }
+	  id: 'q1',
+	  linkedchart: {
+	    chart: (_chart = {
+	      caption: 'Monthly Revenue',
+	      subcaption: 'First Quarter',
+	      xAxisName: 'Month',
+	      yAxisName: 'Amount',
+	      numberPrefix: '$',
+	      paletteColors: '#008ee4',
+	      showBorder: '1',
+	      borderAlpha: '20',
+	      divLineAlpha: '50',
+	      showValues: '0',
+	      bgAlpha: '0',
+	      canvasBorderAlpha: '0'
+	    }, _defineProperty(_chart, 'showBorder', '0'), _defineProperty(_chart, 'plotBorderAlpha', '0'), _defineProperty(_chart, 'usePlotGradientColor', '0'), _defineProperty(_chart, 'showAlternateHgridcolor', '0'), _chart),
+	    data: [{
+	      label: 'Jan',
+	      value: '420000'
+	    }, {
+	      label: 'Feb',
+	      value: '810000'
+	    }, {
+	      label: 'Mar',
+	      value: '720000'
+	    }]
+	  }
 	}, {
-	    "id": "q2",
-	    "linkedchart": {
-	        "chart": (_chart2 = {
-	            "caption": "Monthly Revenue",
-	            "subcaption": "Second Quarter",
-	            "xAxisName": "Month",
-	            "yAxisName": "Amount",
-	            "numberPrefix": "$",
-	            "paletteColors": "#008ee4",
-	            "showBorder": "1",
-	            "borderAlpha": "20",
-	            "divLineAlpha": "50",
-	            "showValues": "0",
-	            "bgAlpha": "0",
-	            "canvasBorderAlpha": "0"
-	        }, _defineProperty(_chart2, "showBorder", "0"), _defineProperty(_chart2, "plotBorderAlpha", "0"), _defineProperty(_chart2, "usePlotGradientColor", "0"), _defineProperty(_chart2, "showAlternateHgridcolor", "0"), _chart2),
-	        "data": [{
-	            "label": "Apr",
-	            "value": "550000"
-	        }, {
-	            "label": "May",
-	            "value": "910000"
-	        }, {
-	            "label": "Jun",
-	            "value": "510000"
-	        }]
-	    }
+	  id: 'q2',
+	  linkedchart: {
+	    chart: (_chart2 = {
+	      caption: 'Monthly Revenue',
+	      subcaption: 'Second Quarter',
+	      xAxisName: 'Month',
+	      yAxisName: 'Amount',
+	      numberPrefix: '$',
+	      paletteColors: '#008ee4',
+	      showBorder: '1',
+	      borderAlpha: '20',
+	      divLineAlpha: '50',
+	      showValues: '0',
+	      bgAlpha: '0',
+	      canvasBorderAlpha: '0'
+	    }, _defineProperty(_chart2, 'showBorder', '0'), _defineProperty(_chart2, 'plotBorderAlpha', '0'), _defineProperty(_chart2, 'usePlotGradientColor', '0'), _defineProperty(_chart2, 'showAlternateHgridcolor', '0'), _chart2),
+	    data: [{
+	      label: 'Apr',
+	      value: '550000'
+	    }, {
+	      label: 'May',
+	      value: '910000'
+	    }, {
+	      label: 'Jun',
+	      value: '510000'
+	    }]
+	  }
 	}, {
-	    "id": "q3",
-	    "linkedchart": {
-	        "chart": (_chart3 = {
-	            "caption": "Monthly Revenue",
-	            "subcaption": "Third Quarter",
-	            "xAxisName": "Month",
-	            "yAxisName": "Amount",
-	            "numberPrefix": "$",
-	            "paletteColors": "#008ee4",
-	            "showBorder": "1",
-	            "borderAlpha": "20",
-	            "divLineAlpha": "50",
-	            "showValues": "0",
-	            "bgAlpha": "0",
-	            "canvasBorderAlpha": "0"
-	        }, _defineProperty(_chart3, "showBorder", "0"), _defineProperty(_chart3, "plotBorderAlpha", "0"), _defineProperty(_chart3, "usePlotGradientColor", "0"), _defineProperty(_chart3, "showAlternateHgridcolor", "0"), _chart3),
-	        "data": [{
-	            "label": "Jul",
-	            "value": "680000"
-	        }, {
-	            "label": "Aug",
-	            "value": "620000"
-	        }, {
-	            "label": "Sep",
-	            "value": "610000"
-	        }]
-	    }
+	  id: 'q3',
+	  linkedchart: {
+	    chart: (_chart3 = {
+	      caption: 'Monthly Revenue',
+	      subcaption: 'Third Quarter',
+	      xAxisName: 'Month',
+	      yAxisName: 'Amount',
+	      numberPrefix: '$',
+	      paletteColors: '#008ee4',
+	      showBorder: '1',
+	      borderAlpha: '20',
+	      divLineAlpha: '50',
+	      showValues: '0',
+	      bgAlpha: '0',
+	      canvasBorderAlpha: '0'
+	    }, _defineProperty(_chart3, 'showBorder', '0'), _defineProperty(_chart3, 'plotBorderAlpha', '0'), _defineProperty(_chart3, 'usePlotGradientColor', '0'), _defineProperty(_chart3, 'showAlternateHgridcolor', '0'), _chart3),
+	    data: [{
+	      label: 'Jul',
+	      value: '680000'
+	    }, {
+	      label: 'Aug',
+	      value: '620000'
+	    }, {
+	      label: 'Sep',
+	      value: '610000'
+	    }]
+	  }
 	}, {
-	    "id": "q4",
-	    "linkedchart": {
-	        "chart": (_chart4 = {
-	            "caption": "Monthly Revenue",
-	            "subcaption": "Fourth Quarter",
-	            "xAxisName": "Month",
-	            "yAxisName": "Amount",
-	            "numberPrefix": "$",
-	            "paletteColors": "#008ee4",
-	            "showBorder": "1",
-	            "borderAlpha": "20",
-	            "divLineAlpha": "50",
-	            "showValues": "0",
-	            "bgAlpha": "0",
-	            "canvasBorderAlpha": "0"
-	        }, _defineProperty(_chart4, "showBorder", "0"), _defineProperty(_chart4, "plotBorderAlpha", "0"), _defineProperty(_chart4, "usePlotGradientColor", "0"), _defineProperty(_chart4, "showAlternateHgridcolor", "0"), _chart4),
-	        "data": [{
-	            "label": "Oct",
-	            "value": "490000"
-	        }, {
-	            "label": "Nov",
-	            "value": "900000"
-	        }, {
-	            "label": "Dec",
-	            "value": "730000"
-	        }]
-	    }
+	  id: 'q4',
+	  linkedchart: {
+	    chart: (_chart4 = {
+	      caption: 'Monthly Revenue',
+	      subcaption: 'Fourth Quarter',
+	      xAxisName: 'Month',
+	      yAxisName: 'Amount',
+	      numberPrefix: '$',
+	      paletteColors: '#008ee4',
+	      showBorder: '1',
+	      borderAlpha: '20',
+	      divLineAlpha: '50',
+	      showValues: '0',
+	      bgAlpha: '0',
+	      canvasBorderAlpha: '0'
+	    }, _defineProperty(_chart4, 'showBorder', '0'), _defineProperty(_chart4, 'plotBorderAlpha', '0'), _defineProperty(_chart4, 'usePlotGradientColor', '0'), _defineProperty(_chart4, 'showAlternateHgridcolor', '0'), _chart4),
+	    data: [{
+	      label: 'Oct',
+	      value: '490000'
+	    }, {
+	      label: 'Nov',
+	      value: '900000'
+	    }, {
+	      label: 'Dec',
+	      value: '730000'
+	    }]
+	  }
 	}];
 
 	var chart = (_chart5 = {
-	    "caption": "Quarterly revenue",
-	    "subCaption": "Last year",
-	    "xAxisName": "Quarter",
-	    "yAxisName": "Amount",
-	    "numberPrefix": "$",
-	    "paletteColors": "#008ee4",
-	    "showBorder": "1",
-	    "borderAlpha": "20",
-	    "divLineAlpha": "50",
-	    "showValues": "0",
-	    "bgAlpha": "0",
-	    "canvasBorderAlpha": "0"
-	}, _defineProperty(_chart5, "showBorder", "0"), _defineProperty(_chart5, "plotBorderAlpha", "0"), _defineProperty(_chart5, "usePlotGradientColor", "0"), _defineProperty(_chart5, "showAlternateHgridcolor", "0"), _chart5);
+	  caption: 'Quarterly revenue',
+	  subCaption: 'Last year',
+	  xAxisName: 'Quarter',
+	  yAxisName: 'Amount',
+	  numberPrefix: '$',
+	  paletteColors: '#008ee4',
+	  showBorder: '1',
+	  borderAlpha: '20',
+	  divLineAlpha: '50',
+	  showValues: '0',
+	  bgAlpha: '0',
+	  canvasBorderAlpha: '0'
+	}, _defineProperty(_chart5, 'showBorder', '0'), _defineProperty(_chart5, 'plotBorderAlpha', '0'), _defineProperty(_chart5, 'usePlotGradientColor', '0'), _defineProperty(_chart5, 'showAlternateHgridcolor', '0'), _chart5);
 
 	var nestedCtrl = function nestedCtrl($scope) {
-
-	    plainBarChart($scope, chart, data, linkedData);
+	  plainBarChart($scope, chart, data, linkedData);
 	};
 
 	function plainBarChart($scope, chartInfo, data, linkedData) {
-	    $scope.greeting = 'test';
-	    var myDataSource = {
-	        chart: chartInfo,
-	        data: data,
-	        linkedData: linkedData
-	    };
-	    console.log("hello console: " + linkedData);
+	  $scope.greeting = 'test';
+	  var myDataSource = {
+	    chart: chartInfo,
+	    data: data,
+	    linkedData: linkedData
+	  };
+	  console.log('hello console: ' + linkedData);
 
-	    var chart = new FusionCharts({
-	        type: 'column2d',
-	        width: '500',
-	        height: '300',
-	        renderAt: 'chartContainer',
-	        dataFormat: 'json',
-	        dataSource: myDataSource
-	    });
+	  var chart = new FusionCharts({
+	    type: 'column2d',
+	    width: '500',
+	    height: '300',
+	    renderAt: 'chartContainer',
+	    dataFormat: 'json',
+	    dataSource: myDataSource
+	  });
 
-	    chart.addEventListener("chartrollover", function () {
-	        $('#slide-in').show('slow');
-	    });
+	  chart.addEventListener('chartrollover', function () {
+	    $('#slide-in').show('slow');
+	  });
 
-	    chart.addEventListener("chartrollout", function () {
-	        $('#slide-in').hide('slow');
-	    });
+	  chart.addEventListener('chartrollout', function () {
+	    $('#slide-in').hide('slow');
+	  });
 
-	    chart.render();
+	  chart.render();
 	}
 
 	exports.nestedCtrl = nestedCtrl;
 
 /***/ }),
-/* 98 */
+/* 100 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	var chart = {
+	    caption: "Product-wise quarterly revenue in current year",
+	    subCaption: "Harry's SuperMart",
+	    xAxisname: "Quarter",
+	    yAxisName: "Revenue (In USD)",
+	    numberPrefix: "$",
+	    paletteColors: "#ff0000,#0075c2",
+	    bgColor: "#ffffff",
+	    borderAlpha: "20",
+	    showCanvasBorder: "0",
+	    usePlotGradientColor: "0",
+	    plotBorderAlpha: "10",
+	    legendBorderAlpha: "0",
+	    legendShadow: "0",
+	    valueFontColor: "#ffffff",
+	    showXAxisLine: "1",
+	    xAxisLineColor: "#999999",
+	    divlineColor: "#999999",
+	    divLineDashed: "1",
+	    showAlternateHGridColor: "0",
+	    subcaptionFontBold: "0",
+	    subcaptionFontSize: "14",
+	    showHoverEffect: "1"
+	};
+
+	var categories = [{
+	    "category": [{
+	        "label": "Q1"
+	    }, {
+	        "label": "Q2"
+	    }, {
+	        "label": "Q3"
+	    }, {
+	        "label": "Q4"
+	    }]
+	}];
+	var dataset = [{
+	    "seriesname": "Food Products",
+	    "data": [{
+	        "value": "121000"
+	    }, {
+	        "value": "135000"
+	    }, {
+	        "value": "123500"
+	    }, {
+	        "value": "145000"
+	    }]
+	}, {
+	    "seriesname": "Non-Food Products",
+	    "data": [{
+	        "value": "131400"
+	    }, {
+	        "value": "154800"
+	    }, {
+	        "value": "98300"
+	    }, {
+	        "value": "131800"
+	    }]
+	}];
+
+	var barCtrl = function barCtrl($scope) {
+	    plainBarChart2($scope, chart, categories, dataset);
+	};
+
+	function plainBarChart2($scope, chartstuff, categories, dataset) {
+	    $scope.greeting = 'test';
+	    var myDataSource = {
+	        chart: chartstuff,
+	        categories: categories,
+	        dataset: dataset
+	    };
+
+	    var chart = new FusionCharts({
+	        type: 'stackedcolumn3d',
+	        renderAt: 'chart-container',
+	        width: '550',
+	        height: '350',
+	        dataFormat: 'json',
+	        dataSource: myDataSource
+	    });
+
+	    chart.render();
+	}
+
+	exports.barCtrl = barCtrl;
+
+/***/ }),
+/* 101 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -44913,19 +45084,26 @@
 	  value: true
 	});
 	var loginCtrl = function loginCtrl($scope, $http, $state) {
+	  var loginBtn = document.getElementById('loginBtn');
 	  $scope.username = '';
 	  $scope.password = '';
 	  $scope.errorMsgShow = false;
 
 	  $scope.submit = function () {
+	    loginBtn.disabled = true;
+	    loginBtn.innerHTML = "Logging in...";
 	    $scope.errorMsgShow = false;
 
 	    if ($scope.username === '' || $scope.username === undefined) {
 	      $scope.errorMsg = 'Please input a Username.';
 	      $scope.errorMsgShow = true;
+	      loginBtn.disabled = false;
+	      loginBtn.innerHTML = "Log In";
 	    } else if ($scope.password === '' || $scope.password === undefined) {
 	      $scope.errorMsg = 'Please input a Password.';
 	      $scope.errorMsgShow = true;
+	      loginBtn.disabled = false;
+	      loginBtn.innerHTML = "Log In";
 	    } else {
 	      $http({
 	        method: 'POST',
@@ -44945,6 +45123,8 @@
 	        }, function () {
 	          $scope.errorMsg = 'Username or Password is incorrect.';
 	          $scope.errorMsgShow = true;
+	          loginBtn.disabled = false;
+	          loginBtn.innerHTML = "Log In";
 	        });
 	      });
 	    }
@@ -44954,7 +45134,7 @@
 	exports.default = loginCtrl;
 
 /***/ }),
-/* 99 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*
@@ -46880,7 +47060,7 @@
 
 
 /***/ }),
-/* 100 */
+/* 103 */
 /***/ (function(module, exports) {
 
 	/*

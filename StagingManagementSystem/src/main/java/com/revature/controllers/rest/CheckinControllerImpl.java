@@ -1,5 +1,6 @@
 package com.revature.controllers.rest;
 
+import com.revature.entities.Associate;
 import com.revature.entities.Checkin;
 import com.revature.exceptions.AlreadyCheckedInException;
 import com.revature.exceptions.NotLoggedInException;
@@ -9,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 /**
@@ -28,21 +31,22 @@ public class CheckinControllerImpl {
 
 
     @GetMapping
-    public ResponseEntity<Boolean> isCheckedIn(){
-        try{
-            return ResponseEntity.ok(service.hasCheckedInToday());
-        }catch (NotLoggedInException e){
+    public ResponseEntity<Boolean> isCheckedIn(HttpSession session){
+        Associate associate = (Associate) session.getAttribute("login_associate");
+        if(associate == null)
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(false);
-        }
+        return ResponseEntity.ok(service.hasCheckedInToday(associate));
+
     }
 
     @PutMapping
-    public ResponseEntity<Boolean> checkIn(){
+    public ResponseEntity<Boolean> checkIn(HttpSession session){
+        Associate associate = (Associate) session.getAttribute("login_associate");
+        if(associate == null)
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(false);
         try{
-            service.checkIn();
+            service.checkIn(associate, LocalDateTime.now());
             return ResponseEntity.ok(true);
-        }catch(NotLoggedInException e){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(false);
         }catch(AlreadyCheckedInException e){
             return ResponseEntity.status(HttpStatus.CONFLICT).body(false);
         }

@@ -28,9 +28,21 @@ public class LoginControllerImpl {
 
 	}
 
+	@PostMapping
+	public ResponseEntity<Object> dualLogin(@RequestBody Credential creds, HttpSession session){
+		Object obj = credService.login(creds);
+		if(obj instanceof Associate){
+			session.setAttribute("login_associate", obj);
+			return ResponseEntity.ok((Associate)obj);
+		}else if(obj instanceof Manager){
+			session.setAttribute("login_manager", obj);
+			return ResponseEntity.ok((Manager)obj);
+		}
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+	}
+
 	@PostMapping("associate")
 	public ResponseEntity<Associate> postAssociate(@RequestBody Credential creds, HttpSession session, HttpServletResponse resp) throws Throwable {
-		System.out.println("Logging in!");
 		Object obj = credService.login(creds);
 		if(obj instanceof Associate){
 			session.setAttribute("login_associate", obj);
