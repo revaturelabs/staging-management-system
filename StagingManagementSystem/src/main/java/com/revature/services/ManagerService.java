@@ -9,7 +9,7 @@ import com.revature.exceptions.SmsCustomException;
 public interface ManagerService {
 
 	// c
-	void add(Manager manager) throws SmsCustomException;
+	Manager add(Manager manager) throws SmsCustomException;
 
 	// r
 	Manager getById(long id) throws SmsCustomException;
@@ -19,7 +19,7 @@ public interface ManagerService {
 	Set<Manager> getAll();
 
 	// u
-	void update(Manager manager) throws SmsCustomException;
+	Manager update(Manager manager) throws SmsCustomException;
 
 	// d
 	void remove(Manager manager) throws SmsCustomException;

@@ -46,7 +46,7 @@ public class InterviewStatusServiceImpl implements InterviewStatusService {
 
 	@Override
 	public InterviewStatuses findByStatus(String status) {
-		return interviewStatusRepo.findByStatus(status);
+		return interviewStatusRepo.findByValue(status);
 	}
 
 }

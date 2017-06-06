@@ -8,7 +8,7 @@ import com.revature.exceptions.SmsCustomException;
 public interface PermissionService {
 
 	// c
-	void add(Permission permission) throws SmsCustomException;
+	Permission add(Permission permission) throws SmsCustomException;
 
 	// r
 	Permission getById(long id) throws SmsCustomException;
@@ -18,7 +18,7 @@ public interface PermissionService {
 	Set<Permission> getAll();
 
 	// u
-	void update(Permission permission) throws SmsCustomException;
+	Permission update(Permission permission) throws SmsCustomException;
 
 	// d
 	void remove(Permission permission) throws SmsCustomException;

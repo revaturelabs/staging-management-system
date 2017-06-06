@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.revature.entities.InterviewStatuses;
 
 public interface InterviewStatusRepo extends JpaRepository<InterviewStatuses, Long> {
-	 InterviewStatuses findByStatus(String status);
+	 InterviewStatuses findByValue(String status);
 }

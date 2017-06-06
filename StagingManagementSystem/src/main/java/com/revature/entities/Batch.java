@@ -19,9 +19,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters.LocalDateTimeConverter;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.revature.config.SmsSettings;
 import com.revature.exceptions.SmsCustomException;
 import com.revature.markers.SmsValidatable;
 
@@ -30,21 +32,23 @@ import com.revature.markers.SmsValidatable;
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Batch implements SmsValidatable {
 
+	transient private static SmsSettings settings = SmsSettings.getInstance();
+	
 	@Id
 	@Column(name = "BATCH_ID")
 	@SequenceGenerator(name = "BATCH_ID_SEQ", sequenceName = "BATCH_ID_SEQ")
 	@GeneratedValue(generator = "BATCH_ID_SEQ", strategy = GenerationType.SEQUENCE)
-	private Long id = 0l;
+	private Long id;
 
 	@ManyToOne
 	@JoinColumn(name = "BATCH_TYPE_ID")
 	private BatchType batchType;
 
-	@Column(name = "START_DATE")
+	@Column(name = "BATCH_START_DATE")
 	@Convert(converter = LocalDateTimeConverter.class)
 	private LocalDateTime startDate;
 
-	@Column(name = "END_DATE")
+	@Column(name = "BATCH_END_DATE")
 	@Convert(converter = LocalDateTimeConverter.class)
 	private LocalDateTime endDate;
 
@@ -56,7 +60,8 @@ public class Batch implements SmsValidatable {
 	@JoinTable(name = "BATCH_TRAINER", joinColumns = @JoinColumn(name = "BATCH_ID"), inverseJoinColumns = @JoinColumn(name = "TRAINER_ID"))
 	private Set<Trainer> trainers;
 
-	@OneToMany(mappedBy = "batch")
+	@JsonIgnore
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "batch")
 	private Set<Associate> associates;
 
 	public Batch() {
@@ -137,7 +142,7 @@ public class Batch implements SmsValidatable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((associates == null) ? 0 : associates.hashCode());
+		//result = prime * result + ((associates == null) ? 0 : associates.hashCode());
 		result = prime * result + ((batchType == null) ? 0 : batchType.hashCode());
 		result = prime * result + ((endDate == null) ? 0 : endDate.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
@@ -156,11 +161,11 @@ public class Batch implements SmsValidatable {
 		if (!(obj instanceof Batch))
 			return false;
 		Batch other = (Batch) obj;
-		if (associates == null) {
+		/*if (associates == null) {
 			if (other.associates != null)
 				return false;
 		} else if (!associates.equals(other.associates))
-			return false;
+			return false;*/
 		if (batchType == null) {
 			if (other.batchType != null)
 				return false;
@@ -197,7 +202,7 @@ public class Batch implements SmsValidatable {
 	@Override
 	public String toString() {
 		return "Batch [id=" + id + ", batchType=" + batchType + ", startDate=" + startDate + ", endDate=" + endDate
-				+ ", location=" + location + ", trainers=" + trainers + ", associates=" + associates + "]";
+				+ ", location=" + location + ", trainers=" + trainers + "]";
 	}
 
 	@Override

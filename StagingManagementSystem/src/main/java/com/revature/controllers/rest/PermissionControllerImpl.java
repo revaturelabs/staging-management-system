@@ -13,15 +13,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.entities.Permission;
+import com.revature.exceptions.SmsCustomException;
 import com.revature.services.PermissionService;
 
 @RestController
 @RequestMapping("permission")
-public class PermissionController {
+public class PermissionControllerImpl {
 	@Autowired
 	private PermissionService permissionService;
 
-	public PermissionController(PermissionService permissionService) {
+	public PermissionControllerImpl(PermissionService permissionService) {
 		super();
 		this.permissionService = permissionService;
 	}
@@ -31,10 +32,11 @@ public class PermissionController {
 	 * 
 	 * @param location
 	 *            - location to be persisted.
+	 * @throws SmsCustomException 
 	 */
 	@PostMapping
-	public void addPermission(@RequestBody Permission location) {
-		location.setId(0);
+	public void addPermission(@RequestBody Permission location) throws SmsCustomException {
+		location.setId(0l);
 		permissionService.add(location);
 	}
 
@@ -43,9 +45,10 @@ public class PermissionController {
 	 * 
 	 * @param location
 	 *            - holds the id to be deleted
+	 * @throws SmsCustomException 
 	 */
 	@DeleteMapping
-	public void removePermission(@RequestBody Permission location) {
+	public void removePermission(@RequestBody Permission location) throws SmsCustomException {
 		permissionService.remove(location);
 	}
 
@@ -55,9 +58,10 @@ public class PermissionController {
 	 * 
 	 * @param location
 	 *            - data to be persisted.
+	 * @throws SmsCustomException 
 	 */
 	@PutMapping
-	public void updatePermission(@RequestBody Permission location) {
+	public void updatePermission(@RequestBody Permission location) throws SmsCustomException {
 		permissionService.update(location);
 	}
 
@@ -67,9 +71,10 @@ public class PermissionController {
 	 * @param id
 	 *            - id of location to be retrieved.
 	 * @return location object from dataBase.
+	 * @throws SmsCustomException 
 	 */
 	@GetMapping("/{id}")
-	public Permission getById(@PathVariable long id) {
+	public Permission getById(@PathVariable long id) throws SmsCustomException {
 		return permissionService.getById(id);
 	}
 

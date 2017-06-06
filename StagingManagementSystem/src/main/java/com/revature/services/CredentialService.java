@@ -6,14 +6,16 @@ import com.revature.entities.Credential;
 
 public interface CredentialService {
 
-	public void add(Credential location);
+	public void add(Credential credential);
 
-	public void delete(Credential location);
+	public void remove(Credential credential);
 
-	public void update(Credential location);
+	public void update(Credential credential);
 
 	public Credential findById(long id);
 
 	public Set<Credential> getAll();
+	
+	public Object login(Credential creds);
 
 }
