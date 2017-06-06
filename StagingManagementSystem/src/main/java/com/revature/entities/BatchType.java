@@ -12,6 +12,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.revature.config.SmsSettings;
 import com.revature.exceptions.SmsCustomException;
 import com.revature.markers.SmsValidatable;
 
@@ -22,6 +23,9 @@ import com.revature.markers.SmsValidatable;
 @Table(name = "BATCH_TYPES")
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class BatchType implements SmsValidatable {
+	
+	transient private static SmsSettings settings = SmsSettings.getInstance();
+	
 	@Id
 	@Column(name = "BATCH_TYPE_ID")
 	@SequenceGenerator(name = "BATCH_TYPE_ID_SEQ", sequenceName = "BATCH_TYPE_ID_SEQ")

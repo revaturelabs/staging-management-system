@@ -34,7 +34,7 @@ public class PermissionControllerImpl {
 	 */
 	@PostMapping
 	public void addPermission(@RequestBody Permission location) {
-		location.setId(0);
+		location.setId(0l);
 		permissionService.add(location);
 	}
 

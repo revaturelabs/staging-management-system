@@ -15,6 +15,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.revature.config.SmsSettings;
 import com.revature.exceptions.SmsCustomException;
 import com.revature.markers.SmsValidatable;
 import com.revature.util.LocalDateTimeConverter;
@@ -24,6 +25,8 @@ import com.revature.util.LocalDateTimeConverter;
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Interview implements SmsValidatable {
 
+	transient private static SmsSettings settings = SmsSettings.getInstance();
+	
 	@Id
 	@Column(name = "INTERVIEW_ID")
 	@SequenceGenerator(name = "INTERVIEW_ID_SEQ", sequenceName = "INTERVIEW_ID_SEQ")
