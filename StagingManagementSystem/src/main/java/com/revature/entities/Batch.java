@@ -19,6 +19,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters.LocalDateTimeConverter;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -59,7 +60,8 @@ public class Batch implements SmsValidatable {
 	@JoinTable(name = "BATCH_TRAINER", joinColumns = @JoinColumn(name = "BATCH_ID"), inverseJoinColumns = @JoinColumn(name = "TRAINER_ID"))
 	private Set<Trainer> trainers;
 
-	@OneToMany(mappedBy = "batch")
+	@JsonIgnore
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "batch")
 	private Set<Associate> associates;
 
 	public Batch() {

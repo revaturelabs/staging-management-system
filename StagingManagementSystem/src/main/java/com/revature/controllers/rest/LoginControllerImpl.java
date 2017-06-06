@@ -6,6 +6,8 @@ import com.revature.entities.Manager;
 import com.revature.exceptions.SmsCustomException;
 import com.revature.services.CredentialService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,27 +29,24 @@ public class LoginControllerImpl {
 	}
 
 	@PostMapping("associate")
-	public Associate postAssociate(@RequestBody Credential creds, HttpSession session, HttpServletResponse resp) throws Throwable {
+	public ResponseEntity<Associate> postAssociate(@RequestBody Credential creds, HttpSession session, HttpServletResponse resp) throws Throwable {
 		System.out.println("Logging in!");
 		Object obj = credService.login(creds);
 		if(obj instanceof Associate){
 			session.setAttribute("login_associate", obj);
-			return (Associate)obj;
+			return ResponseEntity.ok((Associate)obj);
 		}
-		throw new SmsCustomException("Invalid login attempt");
-		
-//		resp.setStatus(401);
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 	}
 	
 	@PostMapping("manager")
-	public Manager postManager(@RequestBody Credential creds,HttpSession session, HttpServletResponse resp) throws Throwable {
+	public ResponseEntity<Manager> postManager(@RequestBody Credential creds,HttpSession session, HttpServletResponse resp) throws Throwable {
 		Object obj = credService.login(creds);
 		if(obj instanceof Manager){
 			session.setAttribute("login_manager", obj);
-			return (Manager)obj;
+			return ResponseEntity.ok((Manager)obj);
 		}
-		throw new SmsCustomException("Invalid login attempt");
-
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 	}
 
 }
