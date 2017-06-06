@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.revature.entities.Associate;
+import com.revature.entities.Credential;
+import com.revature.exceptions.SmsCustomException;
+import com.revature.exceptions.badrequests.NullReferenceException;
 import com.revature.repositories.AssociateRepo;
 import com.revature.repositories.CredentialRepo;
 
@@ -45,18 +48,26 @@ public class AssociateServiceImpl implements AssociateService {
 	public void add(Associate associate) {
 		System.out.println(associate);
 		credentialRepo.save(associate.getCredential());
-		associateRepo.saveAndFlush(associate);
+		associate = associateRepo.saveAndFlush(associate);
 	}
 
 	@Override
-	public void delete(Associate associate) {
+	public void delete(Associate associate) throws SmsCustomException {
+		if(associate == null){
+			throw new NullReferenceException("Manager is null.");
+		}
+		Credential credential = associate.getCredential();
+		
+		if(credential == null){
+			throw new NullReferenceException("Credential is null.");
+		}
 		associateRepo.delete(associate);
 		credentialRepo.delete(associate.getCredential());
 	}
 
 	@Override
-	public void update(Associate associate) {
-		associateRepo.saveAndFlush(associate);
+	public void update(Associate associate){
+		associate = associateRepo.saveAndFlush(associate);
 		credentialRepo.save(associate.getCredential());
 	}
 

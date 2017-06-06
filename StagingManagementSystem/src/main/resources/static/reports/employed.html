@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+<div>
+<a ui-sref="employed">view</a>
+<h1>Employed Vs Bums</h1>
+	<div fusioncharts
+       width="600"
+       height="400"
+       type="column2d"
+       dataSource="{{myDataSource}}" >
+    </div>
+    {{greeting}}
+    <div ui-view></div>
+</div>
+</body>
+</html>

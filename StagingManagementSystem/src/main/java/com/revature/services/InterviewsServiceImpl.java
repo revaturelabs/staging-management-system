@@ -26,7 +26,7 @@ public class InterviewsServiceImpl implements InterviewsService {
 	@Override
 	@Transactional
 	public void add(Interviews interviews) {
-		interviewsRepo.saveAndFlush(interviews);
+		interviews= interviewsRepo.saveAndFlush(interviews);
 	}
 
 	@Override
@@ -41,7 +41,7 @@ public class InterviewsServiceImpl implements InterviewsService {
 
 	@Override
 	public void update(Interviews interviews) {
-		interviewsRepo.saveAndFlush(interviews);
+		interviews = interviewsRepo.saveAndFlush(interviews);
 	}
 
 	@Override

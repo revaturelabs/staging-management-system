@@ -70,10 +70,14 @@
 
 	var _nestedGraph = __webpack_require__(95);
 
+	var _login = __webpack_require__(96);
+
+	var _employed = __webpack_require__(97);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var FusionCharts = __webpack_require__(96);
-	__webpack_require__(97)(FusionCharts);
+	var FusionCharts = __webpack_require__(98);
+	__webpack_require__(99)(FusionCharts);
 
 	console.log();
 
@@ -85,7 +89,8 @@
 	  $stateProvider // HOME STATES AND NESTED VIEWS
 	  .state('login', {
 	    url: '/login',
-	    templateUrl: 'login/login.html'
+	    templateUrl: 'login/login.html',
+	    controller: _login.loginCtrl
 	  }).state('manager', {
 	    url: '/manager',
 	    templateUrl: 'manager-pages/manager.html',
@@ -114,6 +119,10 @@
 	    url: '/nestedGraph',
 	    templateUrl: 'reports/nestedGraph.html',
 	    controller: _nestedGraph.nestedCtrl
+	  }).state('employed', {
+	    url: '/employed',
+	    templateUrl: 'reports/employed.html',
+	    controller: _employed.employedCtrl
 	  }
 
 	  // views: {
@@ -53219,6 +53228,93 @@
 
 /***/ }),
 /* 96 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var loginCtrl = function loginCtrl($scope, $http, $window) {
+	  $scope.username = "";
+	  $scope.password = "";
+	  $scope.errorMsgShow = false;
+
+	  $scope.submit = function () {
+	    $scope.errorMsgShow = false;
+
+	    if ($scope.username === "" || $scope.username === undefined) {
+	      $scope.errorMsg = "Please input a Username.";
+	      $scope.errorMsgShow = true;
+	    } else if ($scope.password === "" || $scope.password === undefined) {
+	      $scope.errorMsg = "Please input a Password.";
+	      $scope.errorMsgShow = true;
+	    } else {
+	      $http({
+	        method: 'POST',
+	        url: '/login',
+	        data: { username: $scope.username, password: $scope.password }
+	      }).then(function successCallback(response) {
+	        $window.location.href = "/manager";
+	      }, function errorCallback(response) {
+	        $scope.errorMsg = "Username or Password is incorrect.";
+	        $scope.errorMsgShow = true;
+	      });
+	    }
+	  };
+	};
+
+	exports.loginCtrl = loginCtrl;
+
+/***/ }),
+/* 97 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	var chart = {
+	    caption: "Age profile of website visitors",
+	    subcaption: "Last Year",
+	    startingangle: "120",
+	    showlabels: "0",
+	    showlegend: "1",
+	    enablemultislicing: "0",
+	    slicingdistance: "15",
+	    showpercentvalues: "1",
+	    showpercentintooltip: "0",
+	    plottooltext: "Age group : $label Total visit : $datavalue",
+	    theme: "fint"
+	};
+
+	var data = [{
+	    label: "Teenage",
+	    value: "1250400"
+	}, {
+	    label: "Adult",
+	    value: "1463300"
+	}, {
+	    label: "Mid-age",
+	    value: "1050700"
+	}, {
+	    label: "Senior",
+	    value: "491000"
+	}];
+
+	function pieChart($scope, data) {
+	    $scope.greeting = 'Success!';
+	    var myDataSource = {
+	        data: data
+	    };
+	    chart.render();
+	}
+
+	exports.employedCtrl = employedCtrl;
+
+/***/ }),
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*
@@ -55144,7 +55240,7 @@
 
 
 /***/ }),
-/* 97 */
+/* 99 */
 /***/ (function(module, exports) {
 
 	/*

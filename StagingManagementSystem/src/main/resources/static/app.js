@@ -14,6 +14,7 @@ import { userCtrl } from './manager-pages/create/user';
 import { reportCtrl } from './reports/reports';
 import { nestedCtrl } from './reports/nestedGraph';
 import { loginCtrl } from './login/login';
+import { employedCtrl } from './reports/employed';
 
 
 const routerApp = angular.module('routerApp', [uiRouter, angularBootstrap]);
@@ -61,6 +62,11 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       url: '/nestedGraph',
       templateUrl: 'reports/nestedGraph.html',
       controller: nestedCtrl,
+    })
+    .state('employed', {
+    	url: '/employed',
+    	templateUrl: 'reports/employed.html',
+    	controller: employedCtrl,
     })
 
 
