@@ -6,7 +6,7 @@
     <dd ng-bind="batchType"></dd>
     <dt>Profile URL</dt>
     <dd>
-      <span ng-bind="portfolioUrl"></span>
+      <span ng-bind="shortenUrl(portfolioUrl, 40)"></span>
       <span style="cursor: pointer;" ng-click="openPortfolioUrlModal()">
         <span class="glyphicon glyphicon-edit"></span>
       </span>
@@ -19,6 +19,8 @@
       </span>
       <input class="form-control" ng-show="profileData.skillsInputShowing" />
     </dd>
+    <dt>Status</dt>
+    <dd ng-bind="status"></dd>
   </dl>
 </div>
 <div class="modal fade" id="additionalSkillsModal" tabindex="-1" role="dialog">
