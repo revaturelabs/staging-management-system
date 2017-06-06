@@ -20,7 +20,11 @@ import com.revature.markers.SmsValidatable;
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Permission implements SmsValidatable {
 
+<<<<<<< HEAD
+	private transient SmsSettings settings = SmsSettings.getInstance();
+=======
 	transient private static SmsSettings settings = SmsSettings.getInstance();
+>>>>>>> 7c3deba117e26faf8ee05f21df2d0679cab31eea
 
 	@Id
 	@Column(name = "PERMISSION_ID")

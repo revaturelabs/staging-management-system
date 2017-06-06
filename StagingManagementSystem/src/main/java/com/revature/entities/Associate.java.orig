@@ -52,15 +52,18 @@ public class Associate implements SmsValidatable {
 
 	public Associate() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	
 	public Associate(Associate other){
-	  this(other.id, other.credential, other.name, other.portfolioLink, other.batch, other.active, other.lockedTo);
+	  this(other.id, other.credential, other.name, other.portfolioLink, other.batch);
 	}
 
+<<<<<<< HEAD
+	public Associate(Long id, Credential credential, String name, String portfolioLink, Batch batch) {
+=======
 	public Associate(Long id, Credential credential, String name, String portfolioLink, Batch batch, Boolean active,
 			Long lockedTo) {
+>>>>>>> 7c3deba117e26faf8ee05f21df2d0679cab31eea
 		super();
 		this.id = id;
 		this.credential = credential;

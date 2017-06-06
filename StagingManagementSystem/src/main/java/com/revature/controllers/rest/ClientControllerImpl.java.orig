@@ -38,9 +38,15 @@ public class ClientControllerImpl {
 	 *            - Client to be persisted.
 	 */
 	@PostMapping
+<<<<<<< HEAD
 	public void addClient(@RequestBody Client Client) {
-		Client.setId(0l);
+		Client.setId(0);
 		clientService.add(Client);
+=======
+	public void addLocation(@RequestBody Client location) {
+		location.setId(0l);
+		clientService.add(location);
+>>>>>>> 7c3deba117e26faf8ee05f21df2d0679cab31eea
 	}
 	
   @PostMapping("/add/all")

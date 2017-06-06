@@ -9,8 +9,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.revature.entities.Associate;
 import com.revature.entities.Checkin;
 import com.revature.entities.Client;
-import com.revature.entities.ClientQuestion;
+<<<<<<< HEAD
+import com.revature.entities.ClientQ;
+import com.revature.entities.Interviews;
+=======
+import com.revature.entities.Credential;
+import com.revature.entities.InterviewQuestion;
+import com.revature.entities.InterviewStatuses;
 import com.revature.entities.Interview;
+>>>>>>> 7c3deba117e26faf8ee05f21df2d0679cab31eea
 import com.revature.entities.Job;
 import com.revature.services.AssociateService;
 import com.revature.services.CheckinService;
@@ -37,8 +44,13 @@ public class DataGeneration
   
 	//Dependent Stages
 	ArrayList<Checkin> checkins = new ArrayList<Checkin>();
-	ArrayList<ClientQuestion> clientQs = new ArrayList<ClientQuestion>();	
+<<<<<<< HEAD
+	ArrayList<ClientQ> clientQs = new ArrayList<ClientQ>();	
+	ArrayList<Interviews> interviews = new ArrayList<Interviews>();
+=======
+	//ArrayList<ClientQ> clientQs = new ArrayList<ClientQ>();	
 	ArrayList<Interview> interviews = new ArrayList<Interview>();
+>>>>>>> 7c3deba117e26faf8ee05f21df2d0679cab31eea
 	ArrayList<Job> jobs = new ArrayList<Job>();
 	
 	ArrayList<Client> priorityClients = new ArrayList<Client>();
@@ -84,7 +96,7 @@ public class DataGeneration
 	   associates.addAll(associateService.getAll());
 	   Set<Client> allClients = clientService.getAll();
 	   for(Client c : allClients){
-	     if(c.getPriority())
+	     if(c.isPriority())
 	       priorityClients.add(c);
 	     else
 	       regularClients.add(c);
@@ -94,7 +106,7 @@ public class DataGeneration
 	
 	public void generate(){
 	  for(Associate a : associates){
-	    if(!a.getActive())      //
+	    if(!a.isActive())      //
 	      a.setActive(true);
 	  }
 	  
@@ -103,20 +115,17 @@ public class DataGeneration
 
 	public ArrayList<Checkin> getCheckins()
 	{
-		//TODO: write creation function.
 		return checkins;
 	}
 	public ArrayList<Interview> getInterviews()
 	{
-		//TODO: write creation function.
 		return interviews;
 	}
 	public ArrayList<Job> getJobs()
 	{
-		//TODO: write creation function.
 		return jobs;
 	}
-  public ArrayList<ClientQuestion> getClientQs() {
+  public ArrayList<ClientQ> getClientQs() {
     return clientQs;
   }
 }

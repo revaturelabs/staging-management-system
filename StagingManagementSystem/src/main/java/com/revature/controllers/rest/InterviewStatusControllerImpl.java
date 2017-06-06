@@ -35,7 +35,7 @@ public class InterviewStatusControllerImpl {
 	 */
 	@PostMapping
 	public void add(@RequestBody InterviewStatuses interviewStatus) {
-		interviewStatus.setId(0);
+		interviewStatus.setId(0l);
 		interviewStatusService.add(interviewStatus);
 	}
 	
