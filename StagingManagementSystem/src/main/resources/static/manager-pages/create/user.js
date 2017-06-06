@@ -1,10 +1,11 @@
 const userCtrl = ($scope, $http) => {
+
   $scope.submit = () => {
   	let item = JSON.stringify($scope.user);
   	//need 2 different post requests for manager and associate
   	console.log(item);
-  	console.log($scope.user.type == 'Associate');
-  	if ($scope.user.type == 'Associate'){
+  	console.log($scope.user.type == 'associate');
+  	if ($scope.user.type == 'associate'){
   		console.log('in associate');
   	$http.post('/associate', item).then( (response) => {
   		console.log("success")
@@ -12,7 +13,7 @@ const userCtrl = ($scope, $http) => {
   		console.log("failure")
   	})
 };
-	if ($scope.user.type == 'Manager'){
+	if ($scope.user.type == 'manager'){
 		console.log('in manager');
   	$http.post('/manager', item).then( (response) => {
   		console.log("success")

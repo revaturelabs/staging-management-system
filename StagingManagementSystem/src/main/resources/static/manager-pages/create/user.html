@@ -1,7 +1,27 @@
-		<div>
-		Username <input ng-model="user.username"> <br> <br>
-		Password: <input ng-model="user.password"> <br> <br>
+<div> Create a User:
+		<select ng-model="user.type">
+			<option value="manager" ng-click="type = 'manager'"">Manager</option>
+			<option value="associate" ng-click="type = 'associate'">Associate</option>
+		</select> <br> <br>
+
+		Username <input ng-model="user.credential.username"> <br> <br>
+		Password: <input ng-model="user.credential.password"> <br> <br>
 		Name: <input ng-model="user.name"> <br> <br>
-		User Type: <input ng-model="user.type"> <br> <br>
+		<div ng-show="type === 'associate'">
+			Portfolio Link: <input  ng-model="user.portfolioLink">
+
 		</div>
+		<div ng-show="type === 'manager'">
+			Permission: <input ng-model="user.permission.level">
+		</div>
+</div>
 <button ng-click="submit()">Submit</button>
+
+
+	<!-- <div> Create a Associate:
+			Username <input ng-model="user.credential.username"> <br> <br>
+			Password: <input ng-model="user.credential.password"> <br> <br>
+			Name: <input ng-model="user.name"> <br> <br>
+			User Type: <input ng-model="user.type"> <br> <br>
+	</div>
+<button ng-click="submit()">Submit</button> -->
