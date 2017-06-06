@@ -1,13 +1,28 @@
-const profileCtrl = ($scope) => {
-  $scope.name = 'Yushi Canastra';
-  $scope.batchType = 'Java';
-  $scope.portfolioUrl = 'http://www.example-portfolio.com/';
+const profileCtrl = ($scope, $http) => {
+  const associateId = 96;
+  const method = 'GET';
+  const url = `/associate/${associateId}`;
+
+  $http({
+    method,
+    url,
+  }).then((response) => {
+    $scope.name = response.data.name;
+    $scope.batchType = (response.data.batch === null) ? 'None' : response.data.batch;
+    $scope.portfolioUrl = response.data.portfolioLink;
+  });
+
+  $scope.name = '';
+  $scope.batchType = '';
+  $scope.portfolioUrl = '';
   $scope.portfolioUrlInput = '';
   $scope.skills = ['Java', 'Spring', 'Hibernate', 'Servlets', 'JSP'];
   $scope.additionalSkills = ['hello', 'poop'];
+  $scope.status = 'Active';
   $scope.additionalSkillsInput = '';
-  $scope.submit = () => {
-  };
+  $scope.shortenUrl = (urlToShorten, length) => ( // used to display portfolioUrl
+    `${urlToShorten.substring(0, length)}...`
+  );
   $scope.toggleSkillsModal = () => {
     $scope.additionalSkillsInput = $scope.additionalSkills.join(',');
     $('#additionalSkillsModal').modal('show');

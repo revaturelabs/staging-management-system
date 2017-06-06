@@ -1,7 +1,5 @@
 package com.revature.entities;
 
-import java.util.Set;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -27,14 +25,14 @@ import com.revature.markers.SmsValidatable;
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Manager implements SmsValidatable {
 
-	private SmsSettings settings = SmsSettings.getInstance();
+	transient private static SmsSettings settings = SmsSettings.getInstance();
 
 	@Id
 	@Column(name = "MANAGER_ID")
 	@SequenceGenerator(name = "MANAGER_ID_SEQ", sequenceName = "MANAGER_ID_SEQ")
-	@GeneratedValue(generator = "MANAGER_ID_SEQ", strategy = GenerationType.AUTO)
+	@GeneratedValue(generator = "MANAGER_ID_SEQ", strategy = GenerationType.SEQUENCE)
 	private Long id;
-	
+
 	@Column(name = "MANAGER_NAME")
 	private String name;
 
@@ -46,16 +44,20 @@ public class Manager implements SmsValidatable {
 	@JoinColumn(name = "PERMISSION_ID")
 	private Permission permission;
 
-	public Manager(Long id, String name, Credential credential, Permission permission, Set<Checkin> approved) {
+	@Column(name = "MANAGER_ACTIVE")
+	private Boolean active;
+
+	public Manager() {
+		super();
+	}
+
+	public Manager(Long id, String name, Credential credential, Permission permission, Boolean active) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.credential = credential;
 		this.permission = permission;
-	}
-
-	public Manager() {
-		super();
+		this.active = active;
 	}
 
 	public Long getId() {
@@ -90,10 +92,19 @@ public class Manager implements SmsValidatable {
 		this.permission = permission;
 	}
 
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((active == null) ? 0 : active.hashCode());
 		result = prime * result + ((credential == null) ? 0 : credential.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
@@ -110,6 +121,11 @@ public class Manager implements SmsValidatable {
 		if (getClass() != obj.getClass())
 			return false;
 		Manager other = (Manager) obj;
+		if (active == null) {
+			if (other.active != null)
+				return false;
+		} else if (!active.equals(other.active))
+			return false;
 		if (credential == null) {
 			if (other.credential != null)
 				return false;
@@ -136,7 +152,7 @@ public class Manager implements SmsValidatable {
 	@Override
 	public String toString() {
 		return "Manager [id=" + id + ", name=" + name + ", credential=" + credential + ", permission=" + permission
-				+ "]";
+				+ ", active=" + active + "]";
 	}
 
 	@Override

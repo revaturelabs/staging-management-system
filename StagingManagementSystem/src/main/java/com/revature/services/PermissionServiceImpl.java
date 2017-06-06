@@ -18,8 +18,17 @@ public class PermissionServiceImpl implements PermissionService {
 	@Autowired
 	private PermissionRepo permissionRepo;
 
+	public PermissionServiceImpl() {
+		super();
+	}
+
+	public PermissionServiceImpl(PermissionRepo permissionRepo) {
+		super();
+		this.permissionRepo = permissionRepo;
+	}
+
 	@Override
-	public void add(Permission permission) throws SmsCustomException {
+	public Permission add(Permission permission) throws SmsCustomException {
 		if (permission == null) {
 			throw new NullReferenceException("Permission is null.");
 		}
@@ -27,7 +36,8 @@ public class PermissionServiceImpl implements PermissionService {
 		if (permissionRepo.findByLevel(permission.getLevel()) != null) {
 			throw new NonUniqueException("Permission level already exists.");
 		}
-		permission = permissionRepo.save(permission);
+		permission = permissionRepo.saveAndFlush(permission);
+		return permission;
 
 	}
 
@@ -55,18 +65,17 @@ public class PermissionServiceImpl implements PermissionService {
 	@Override
 	public Set<Permission> getAll() {
 		Set<Permission> permissions = new HashSet<Permission>(permissionRepo.findAll());
-
 		return permissions;
 	}
 
 	@Override
-	public void update(Permission permission) throws SmsCustomException {
+	public Permission update(Permission permission) throws SmsCustomException {
 		if (permission == null) {
 			throw new NullReferenceException("Permission is null.");
 		}
 		permission.validate();
-		permission = permissionRepo.save(permission);
-
+		permission = permissionRepo.saveAndFlush(permission);
+		return permission;
 	}
 
 	@Override
@@ -75,6 +84,5 @@ public class PermissionServiceImpl implements PermissionService {
 			throw new NullReferenceException("Permission is null.");
 		}
 		permissionRepo.delete(permission);
-
 	}
 }
