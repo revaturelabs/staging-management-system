@@ -18,7 +18,7 @@
 				<li ng-class="{ active: isActive('/manager/create') || isActive('/manager/create/batch')
 						|| isActive('/manager/create/user') || isActive('/manager/create/client')}">
 						<a ui-sref="manager.create">Add (user/batch/client)</a></li>
-				<li><a href="#contact">Logout</a></li>
+				<li ng-click="logout()"><a ui-sref="">Logout</a></li>
 			</ul>
 		</div>
 	</div>

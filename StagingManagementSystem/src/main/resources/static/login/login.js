@@ -20,30 +20,21 @@ const loginCtrl = ($scope, $http, $state) => {
       loginBtn.disabled = false;
     	loginBtn.innerHTML = "Log In";
     } else {
-      $http({
-        method: 'POST',
-        url: '/login/associate',
-        data: { username: $scope.username, password: $scope.password },
-      })
-        .then((response) => {
-          window.user = response;
-          $state.go('associate');
-        }, () => {
-          $http({
-            method: 'POST',
-            url: '/login/manager',
-            data: { username: $scope.username, password: $scope.password },
-          })
-            .then((response) => {
-              window.user = response;
-              $state.go('manager');
-            }, () => {
-              $scope.errorMsg = 'Username or Password is incorrect.';
-              $scope.errorMsgShow = true;
-              loginBtn.disabled = false;
-            	loginBtn.innerHTML = "Log In";
-            });
-        });
+    	$http({
+    		method: 'POST',
+    		url: '/login',
+    		data: { username: $scope.username, password: $scope.password },
+    	}).then((response) => {
+    		if(response.data.permission !== undefined)
+    			$state.go('manager');
+    		else
+    			$state.go('associate');
+    	}, () => {
+        $scope.errorMsg = 'Username or Password is incorrect.';
+        $scope.errorMsgShow = true;
+        loginBtn.disabled = false;
+      	loginBtn.innerHTML = "Log In";
+      });
     }
   };
 };

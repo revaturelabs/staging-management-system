@@ -44484,17 +44484,26 @@
 /* 89 */
 /***/ (function(module, exports) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-			value: true
+		value: true
 	});
-	var managerCtrl = function managerCtrl($scope, $state, $location) {
-			console.log("there");
-			$scope.isActive = function (viewLocation) {
-					return viewLocation === $location.path();
-			};
-			$scope.manager = { name: 'Joe' };
+	var managerCtrl = function managerCtrl($scope, $state, $location, $http) {
+		$scope.isActive = function (viewLocation) {
+			return viewLocation === $location.path();
+		};
+
+		$scope.logout = function () {
+			$http({
+				method: 'GET',
+				url: '/logout/'
+			}).then(function (response) {
+				$state.go('login');
+			});
+		};
+
+		$scope.manager = { name: 'Joe' };
 	};
 
 	exports.managerCtrl = managerCtrl;
@@ -44755,7 +44764,7 @@
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
-	var associateCtrl = function associateCtrl($scope, $location) {
+	var associateCtrl = function associateCtrl($scope, $location, $http, $state) {
 		$scope.checkInBtn = "Check In";
 		$scope.hasCheckedIn = false;
 		$scope.isActive = function (viewLocation) {
@@ -44765,6 +44774,15 @@
 		$scope.checkIn = function () {
 			$scope.checkInBtn = "Checked In";
 			$scope.hasCheckedIn = true;
+		};
+
+		$scope.logout = function () {
+			$http({
+				method: 'GET',
+				url: '/logout/'
+			}).then(function (response) {
+				$state.go('login');
+			});
 		};
 	};
 
@@ -45107,25 +45125,15 @@
 	    } else {
 	      $http({
 	        method: 'POST',
-	        url: '/login/associate',
+	        url: '/login',
 	        data: { username: $scope.username, password: $scope.password }
 	      }).then(function (response) {
-	        window.user = response;
-	        $state.go('associate');
+	        if (response.data.permission !== undefined) $state.go('manager');else $state.go('associate');
 	      }, function () {
-	        $http({
-	          method: 'POST',
-	          url: '/login/manager',
-	          data: { username: $scope.username, password: $scope.password }
-	        }).then(function (response) {
-	          window.user = response;
-	          $state.go('manager');
-	        }, function () {
-	          $scope.errorMsg = 'Username or Password is incorrect.';
-	          $scope.errorMsgShow = true;
-	          loginBtn.disabled = false;
-	          loginBtn.innerHTML = "Log In";
-	        });
+	        $scope.errorMsg = 'Username or Password is incorrect.';
+	        $scope.errorMsgShow = true;
+	        loginBtn.disabled = false;
+	        loginBtn.innerHTML = "Log In";
 	      });
 	    }
 	  };
