@@ -54,21 +54,29 @@
 
 	var _angularUiRouter2 = _interopRequireDefault(_angularUiRouter);
 
-	var _angularBootstrapNpm = __webpack_require__(89);
-
-	var _angularBootstrapNpm2 = _interopRequireDefault(_angularBootstrapNpm);
-
 	var _manager = __webpack_require__(90);
 
-	var _batch = __webpack_require__(91);
+	var _home = __webpack_require__(91);
 
-	var _client = __webpack_require__(92);
+	var _interviews = __webpack_require__(102);
 
-	var _user = __webpack_require__(93);
+	var _batch = __webpack_require__(93);
 
-	var _reports = __webpack_require__(94);
+	var _client = __webpack_require__(94);
 
-	var _nestedGraph = __webpack_require__(95);
+	var _user = __webpack_require__(95);
+
+	var _profile = __webpack_require__(96);
+
+	var _profile2 = _interopRequireDefault(_profile);
+
+	var _reports = __webpack_require__(97);
+
+	var _nestedGraph = __webpack_require__(98);
+
+	var _login = __webpack_require__(99);
+
+	var _login2 = _interopRequireDefault(_login);
 
 	var _login = __webpack_require__(96);
 
@@ -79,9 +87,10 @@
 	var FusionCharts = __webpack_require__(98);
 	__webpack_require__(99)(FusionCharts);
 
-	console.log();
+	var routerApp = _angular2.default.module('routerApp', [_angularUiRouter2.default]);
 
-	var routerApp = _angular2.default.module('routerApp', [_angularUiRouter2.default, _angularBootstrapNpm2.default]);
+	//named view controllers
+	routerApp.controller('interviewsCtrl', _interviews.interviewsCtrl);
 
 	routerApp.config(function ($stateProvider, $urlRouterProvider) {
 	  $urlRouterProvider.otherwise('/login');
@@ -111,6 +120,29 @@
 	    url: '/client',
 	    templateUrl: 'manager-pages/create/client.html',
 	    controller: _client.clientCtrl
+	  }).state('manager.home', {
+	    url: '/home',
+	    views: {
+	      '': { templateUrl: 'manager-pages/home/home.html' },
+	      'available@manager.home': { templateUrl: 'manager-pages/home/available.html' },
+	      'priorityMapped@manager.home': {
+	        templateUrl: 'manager-pages/home/priorityMapped.html'
+	      },
+	      'interviews@manager.home': {
+	        templateUrl: 'manager-pages/home/interviews/interviews.html',
+	        controller: 'interviewsCtrl'
+	      },
+	      'checkins@manager.home': {
+	        templateUrl: 'manager-pages/home/checkins.html'
+	      }
+	    }
+	  }).state('associate', {
+	    url: '/associate',
+	    templateUrl: 'associate-pages/associate.html'
+	  }).state('associate.profile', {
+	    url: '/profile',
+	    templateUrl: 'associate-pages/profile/profile.html',
+	    controller: _profile2.default
 	  }).state('reports', {
 	    url: '/reports',
 	    templateUrl: 'reports/reports.html',
@@ -162,12 +194,6 @@
 	  //
 	  // });
 	  );
-	});
-
-	routerApp.controller('navController', function ($scope) {
-	  // $scope.openMenu = ($mdOpenMenu, ev) => {
-	  //   $mdOpenMenu(ev);
-	  // };
 	});
 
 /***/ }),
@@ -44447,770 +44473,409 @@
 	//# sourceMappingURL=viewScroll.js.map
 
 /***/ }),
-/* 89 */
+/* 89 */,
+/* 90 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var managerCtrl = function managerCtrl($scope, $state) {
+	  $scope.manager = { name: 'Joe' };
+
+	  //initialize our named views
+	  $scope.view1 = 'available';
+	  $scope.view2 = 'interviews';
+
+	  $scope.$state = $state;
+	  $scope.updateView2 = function (view2) {
+	    $scope.view2 = view2;
+	    $scope.$apply();
+	  };
+	};
+
+	exports.managerCtrl = managerCtrl;
+
+/***/ }),
+/* 91 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var managerHomeCtrl = function managerHomeCtrl($scope) {
+	  $scope.manager = { name: 'Joe' };
+	};
+
+	exports.managerHomeCtrl = managerHomeCtrl;
+
+/***/ }),
+/* 92 */,
+/* 93 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var batchCtrl = function batchCtrl($scope) {
+	  $scope.batch = { name: "New Batch" };
+	};
+
+	exports.batchCtrl = batchCtrl;
+
+/***/ }),
+/* 94 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var clientCtrl = function clientCtrl($scope) {
+	  $scope.client = {};
+	  $scope.client.name = 'client name';
+	};
+
+	exports.clientCtrl = clientCtrl;
+
+/***/ }),
+/* 95 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var userCtrl = function userCtrl($scope) {
+	  $scope.user = {};
+	  $scope.user.name = 'user name';
+	};
+
+	exports.userCtrl = userCtrl;
+
+/***/ }),
+/* 96 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var profileCtrl = function profileCtrl($scope) {
+	  $scope.name = 'Yushi Canastra';
+	  $scope.batchType = 'Java';
+	  $scope.portfolioUrl = 'http://www.example-portfolio.com/';
+	  $scope.portfolioUrlInput = '';
+	  $scope.skills = ['Java', 'Spring', 'Hibernate', 'Servlets', 'JSP'];
+	  $scope.additionalSkills = ['hello', 'poop'];
+	  $scope.additionalSkillsInput = '';
+	  $scope.submit = function () {};
+	  $scope.toggleSkillsModal = function () {
+	    $scope.additionalSkillsInput = $scope.additionalSkills.join(',');
+	    $('#additionalSkillsModal').modal('show');
+	  };
+	  $scope.openPortfolioUrlModal = function () {
+	    $scope.portfolioUrlInput = $scope.portfolioUrl;
+	    $('#portfolioUrlModal').modal('show');
+	  };
+	  $scope.submitPortfolioUrl = function () {
+	    $scope.portfolioUrl = $scope.portfolioUrlInput;
+	    $('#portfolioUrlModal').modal('hide');
+	  };
+	  $scope.submitSkills = function () {
+	    $scope.additionalSkills = $scope.additionalSkillsInput.split(',').filter(function (skill) {
+	      return skill !== '';
+	    });
+	    $('#additionalSkillsModal').modal('hide');
+	  };
+	};
+
+	exports.default = profileCtrl;
+
+/***/ }),
+/* 97 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var reportCtrl = function reportCtrl($scope) {};
+
+	exports.reportCtrl = reportCtrl;
+
+/***/ }),
+/* 98 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _chart, _chart2, _chart3, _chart4, _chart5;
+
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+	var data = [{
+	    "label": "Q1",
+	    "value": "1950000",
+	    "link": "newchart-json-q1"
+	}, {
+	    "label": "Q2",
+	    "value": "1970000",
+	    "link": "newchart-json-q2"
+	}, {
+	    "label": "Q3",
+	    "value": "1910000",
+	    "link": "newchart-json-q3"
+	}, {
+	    "label": "Q4",
+	    "value": "2120000",
+	    "link": "newchart-json-q4"
+	}];
+
+	var linkedData = [{
+	    "id": "q1",
+	    "linkedchart": {
+	        "chart": (_chart = {
+	            "caption": "Monthly Revenue",
+	            "subcaption": "First Quarter",
+	            "xAxisName": "Month",
+	            "yAxisName": "Amount",
+	            "numberPrefix": "$",
+	            "paletteColors": "#008ee4",
+	            "showBorder": "1",
+	            "borderAlpha": "20",
+	            "divLineAlpha": "50",
+	            "showValues": "0",
+	            "bgAlpha": "0",
+	            "canvasBorderAlpha": "0"
+	        }, _defineProperty(_chart, "showBorder", "0"), _defineProperty(_chart, "plotBorderAlpha", "0"), _defineProperty(_chart, "usePlotGradientColor", "0"), _defineProperty(_chart, "showAlternateHgridcolor", "0"), _chart),
+	        "data": [{
+	            "label": "Jan",
+	            "value": "420000"
+	        }, {
+	            "label": "Feb",
+	            "value": "810000"
+	        }, {
+	            "label": "Mar",
+	            "value": "720000"
+	        }]
+	    }
+	}, {
+	    "id": "q2",
+	    "linkedchart": {
+	        "chart": (_chart2 = {
+	            "caption": "Monthly Revenue",
+	            "subcaption": "Second Quarter",
+	            "xAxisName": "Month",
+	            "yAxisName": "Amount",
+	            "numberPrefix": "$",
+	            "paletteColors": "#008ee4",
+	            "showBorder": "1",
+	            "borderAlpha": "20",
+	            "divLineAlpha": "50",
+	            "showValues": "0",
+	            "bgAlpha": "0",
+	            "canvasBorderAlpha": "0"
+	        }, _defineProperty(_chart2, "showBorder", "0"), _defineProperty(_chart2, "plotBorderAlpha", "0"), _defineProperty(_chart2, "usePlotGradientColor", "0"), _defineProperty(_chart2, "showAlternateHgridcolor", "0"), _chart2),
+	        "data": [{
+	            "label": "Apr",
+	            "value": "550000"
+	        }, {
+	            "label": "May",
+	            "value": "910000"
+	        }, {
+	            "label": "Jun",
+	            "value": "510000"
+	        }]
+	    }
+	}, {
+	    "id": "q3",
+	    "linkedchart": {
+	        "chart": (_chart3 = {
+	            "caption": "Monthly Revenue",
+	            "subcaption": "Third Quarter",
+	            "xAxisName": "Month",
+	            "yAxisName": "Amount",
+	            "numberPrefix": "$",
+	            "paletteColors": "#008ee4",
+	            "showBorder": "1",
+	            "borderAlpha": "20",
+	            "divLineAlpha": "50",
+	            "showValues": "0",
+	            "bgAlpha": "0",
+	            "canvasBorderAlpha": "0"
+	        }, _defineProperty(_chart3, "showBorder", "0"), _defineProperty(_chart3, "plotBorderAlpha", "0"), _defineProperty(_chart3, "usePlotGradientColor", "0"), _defineProperty(_chart3, "showAlternateHgridcolor", "0"), _chart3),
+	        "data": [{
+	            "label": "Jul",
+	            "value": "680000"
+	        }, {
+	            "label": "Aug",
+	            "value": "620000"
+	        }, {
+	            "label": "Sep",
+	            "value": "610000"
+	        }]
+	    }
+	}, {
+	    "id": "q4",
+	    "linkedchart": {
+	        "chart": (_chart4 = {
+	            "caption": "Monthly Revenue",
+	            "subcaption": "Fourth Quarter",
+	            "xAxisName": "Month",
+	            "yAxisName": "Amount",
+	            "numberPrefix": "$",
+	            "paletteColors": "#008ee4",
+	            "showBorder": "1",
+	            "borderAlpha": "20",
+	            "divLineAlpha": "50",
+	            "showValues": "0",
+	            "bgAlpha": "0",
+	            "canvasBorderAlpha": "0"
+	        }, _defineProperty(_chart4, "showBorder", "0"), _defineProperty(_chart4, "plotBorderAlpha", "0"), _defineProperty(_chart4, "usePlotGradientColor", "0"), _defineProperty(_chart4, "showAlternateHgridcolor", "0"), _chart4),
+	        "data": [{
+	            "label": "Oct",
+	            "value": "490000"
+	        }, {
+	            "label": "Nov",
+	            "value": "900000"
+	        }, {
+	            "label": "Dec",
+	            "value": "730000"
+	        }]
+	    }
+	}];
+
+	var chart = (_chart5 = {
+	    "caption": "Quarterly revenue",
+	    "subCaption": "Last year",
+	    "xAxisName": "Quarter",
+	    "yAxisName": "Amount",
+	    "numberPrefix": "$",
+	    "paletteColors": "#008ee4",
+	    "showBorder": "1",
+	    "borderAlpha": "20",
+	    "divLineAlpha": "50",
+	    "showValues": "0",
+	    "bgAlpha": "0",
+	    "canvasBorderAlpha": "0"
+	}, _defineProperty(_chart5, "showBorder", "0"), _defineProperty(_chart5, "plotBorderAlpha", "0"), _defineProperty(_chart5, "usePlotGradientColor", "0"), _defineProperty(_chart5, "showAlternateHgridcolor", "0"), _chart5);
+
+	var nestedCtrl = function nestedCtrl($scope) {
+
+	    plainBarChart($scope, chart, data, linkedData);
+	};
+
+	function plainBarChart($scope, chartInfo, data, linkedData) {
+	    $scope.greeting = 'test';
+	    var myDataSource = {
+	        chart: chartInfo,
+	        data: data,
+	        linkedData: linkedData
+	    };
+	    console.log("hello console: " + linkedData);
+
+	    var chart = new FusionCharts({
+	        type: 'column2d',
+	        width: '500',
+	        height: '300',
+	        renderAt: 'chartContainer',
+	        dataFormat: 'json',
+	        dataSource: myDataSource
+	    });
+
+	    chart.addEventListener("chartrollover", function () {
+	        $('#slide-in').show('slow');
+	    });
+
+	    chart.addEventListener("chartrollout", function () {
+	        $('#slide-in').hide('slow');
+	    });
+
+	    chart.render();
+	}
+
+	exports.nestedCtrl = nestedCtrl;
+
+/***/ }),
+/* 99 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var loginCtrl = function loginCtrl($scope, $http, $state) {
+	  $scope.username = '';
+	  $scope.password = '';
+	  $scope.errorMsgShow = false;
+
+	  $scope.submit = function () {
+	    $scope.errorMsgShow = false;
+
+	    if ($scope.username === '' || $scope.username === undefined) {
+	      $scope.errorMsg = 'Please input a Username.';
+	      $scope.errorMsgShow = true;
+	    } else if ($scope.password === '' || $scope.password === undefined) {
+	      $scope.errorMsg = 'Please input a Password.';
+	      $scope.errorMsgShow = true;
+	    } else {
+	      $http({
+	        method: 'POST',
+	        url: '/login/associate',
+	        data: { username: $scope.username, password: $scope.password }
+	      }).then(function (response) {
+	        window.user = response;
+	        $state.go('associate');
+	      }, function () {
+	        $http({
+	          method: 'POST',
+	          url: '/login/manager',
+	          data: { username: $scope.username, password: $scope.password }
+	        }).then(function (response) {
+	          window.user = response;
+	          $state.go('manager');
+	        }, function () {
+	          $scope.errorMsg = 'Username or Password is incorrect.';
+	          $scope.errorMsgShow = true;
+	        });
+	      });
+	    }
+	  };
+	};
+
+	exports.default = loginCtrl;
+
+/***/ }),
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*
-	 * angular-ui-bootstrap
-	 * http://angular-ui.github.io/bootstrap/
-
-	 * Version: 0.14.3 - 2015-10-23
-	 * License: MIT
-	 */
-	angular.module("ui.bootstrap", ["ui.bootstrap.tpls", "ui.bootstrap.collapse","ui.bootstrap.accordion","ui.bootstrap.alert","ui.bootstrap.buttons","ui.bootstrap.carousel","ui.bootstrap.dateparser","ui.bootstrap.position","ui.bootstrap.datepicker","ui.bootstrap.dropdown","ui.bootstrap.stackedMap","ui.bootstrap.modal","ui.bootstrap.pagination","ui.bootstrap.tooltip","ui.bootstrap.popover","ui.bootstrap.progressbar","ui.bootstrap.rating","ui.bootstrap.tabs","ui.bootstrap.timepicker","ui.bootstrap.typeahead"]);
-	angular.module("ui.bootstrap.tpls", ["template/accordion/accordion-group.html","template/accordion/accordion.html","template/alert/alert.html","template/carousel/carousel.html","template/carousel/slide.html","template/datepicker/datepicker.html","template/datepicker/day.html","template/datepicker/month.html","template/datepicker/popup.html","template/datepicker/year.html","template/modal/backdrop.html","template/modal/window.html","template/pagination/pager.html","template/pagination/pagination.html","template/tooltip/tooltip-html-popup.html","template/tooltip/tooltip-popup.html","template/tooltip/tooltip-template-popup.html","template/popover/popover-html.html","template/popover/popover-template.html","template/popover/popover.html","template/progressbar/bar.html","template/progressbar/progress.html","template/progressbar/progressbar.html","template/rating/rating.html","template/tabs/tab.html","template/tabs/tabset.html","template/timepicker/timepicker.html","template/typeahead/typeahead-match.html","template/typeahead/typeahead-popup.html"]);
-	angular.module('ui.bootstrap.collapse', [])
-
-	  .directive('uibCollapse', ['$animate', '$injector', function($animate, $injector) {
-	    var $animateCss = $injector.has('$animateCss') ? $injector.get('$animateCss') : null;
-	    return {
-	      link: function(scope, element, attrs) {
-	        function expand() {
-	          element.removeClass('collapse')
-	            .addClass('collapsing')
-	            .attr('aria-expanded', true)
-	            .attr('aria-hidden', false);
-
-	          if ($animateCss) {
-	            $animateCss(element, {
-	              addClass: 'in',
-	              easing: 'ease',
-	              to: { height: element[0].scrollHeight + 'px' }
-	            }).start().finally(expandDone);
-	          } else {
-	            $animate.addClass(element, 'in', {
-	              to: { height: element[0].scrollHeight + 'px' }
-	            }).then(expandDone);
-	          }
-	        }
-
-	        function expandDone() {
-	          element.removeClass('collapsing')
-	            .addClass('collapse')
-	            .css({height: 'auto'});
-	        }
-
-	        function collapse() {
-	          if (!element.hasClass('collapse') && !element.hasClass('in')) {
-	            return collapseDone();
-	          }
-
-	          element
-	            // IMPORTANT: The height must be set before adding "collapsing" class.
-	            // Otherwise, the browser attempts to animate from height 0 (in
-	            // collapsing class) to the given height here.
-	            .css({height: element[0].scrollHeight + 'px'})
-	            // initially all panel collapse have the collapse class, this removal
-	            // prevents the animation from jumping to collapsed state
-	            .removeClass('collapse')
-	            .addClass('collapsing')
-	            .attr('aria-expanded', false)
-	            .attr('aria-hidden', true);
-
-	          if ($animateCss) {
-	            $animateCss(element, {
-	              removeClass: 'in',
-	              to: {height: '0'}
-	            }).start().finally(collapseDone);
-	          } else {
-	            $animate.removeClass(element, 'in', {
-	              to: {height: '0'}
-	            }).then(collapseDone);
-	          }
-	        }
-
-	        function collapseDone() {
-	          element.css({height: '0'}); // Required so that collapse works when animation is disabled
-	          element.removeClass('collapsing')
-	            .addClass('collapse');
-	        }
-
-	        scope.$watch(attrs.uibCollapse, function(shouldCollapse) {
-	          if (shouldCollapse) {
-	            collapse();
-	          } else {
-	            expand();
-	          }
-	        });
-	      }
-	    };
-	  }]);
-
-	/* Deprecated collapse below */
-
-	angular.module('ui.bootstrap.collapse')
-
-	  .value('$collapseSuppressWarning', false)
-
-	  .directive('collapse', ['$animate', '$injector', '$log', '$collapseSuppressWarning', function($animate, $injector, $log, $collapseSuppressWarning) {
-	    var $animateCss = $injector.has('$animateCss') ? $injector.get('$animateCss') : null;
-	    return {
-	      link: function(scope, element, attrs) {
-	        if (!$collapseSuppressWarning) {
-	          $log.warn('collapse is now deprecated. Use uib-collapse instead.');
-	        }
-
-	        function expand() {
-	          element.removeClass('collapse')
-	            .addClass('collapsing')
-	            .attr('aria-expanded', true)
-	            .attr('aria-hidden', false);
-
-	          if ($animateCss) {
-	            $animateCss(element, {
-	              easing: 'ease',
-	              to: { height: element[0].scrollHeight + 'px' }
-	            }).start().done(expandDone);
-	          } else {
-	            $animate.animate(element, {}, {
-	              height: element[0].scrollHeight + 'px'
-	            }).then(expandDone);
-	          }
-	        }
-
-	        function expandDone() {
-	          element.removeClass('collapsing')
-	            .addClass('collapse in')
-	            .css({height: 'auto'});
-	        }
-
-	        function collapse() {
-	          if (!element.hasClass('collapse') && !element.hasClass('in')) {
-	            return collapseDone();
-	          }
-
-	          element
-	            // IMPORTANT: The height must be set before adding "collapsing" class.
-	            // Otherwise, the browser attempts to animate from height 0 (in
-	            // collapsing class) to the given height here.
-	            .css({height: element[0].scrollHeight + 'px'})
-	            // initially all panel collapse have the collapse class, this removal
-	            // prevents the animation from jumping to collapsed state
-	            .removeClass('collapse in')
-	            .addClass('collapsing')
-	            .attr('aria-expanded', false)
-	            .attr('aria-hidden', true);
-
-	          if ($animateCss) {
-	            $animateCss(element, {
-	              to: {height: '0'}
-	            }).start().done(collapseDone);
-	          } else {
-	            $animate.animate(element, {}, {
-	              height: '0'
-	            }).then(collapseDone);
-	          }
-	        }
-
-	        function collapseDone() {
-	          element.css({height: '0'}); // Required so that collapse works when animation is disabled
-	          element.removeClass('collapsing')
-	            .addClass('collapse');
-	        }
-
-	        scope.$watch(attrs.collapse, function(shouldCollapse) {
-	          if (shouldCollapse) {
-	            collapse();
-	          } else {
-	            expand();
-	          }
-	        });
-	      }
-	    };
-	  }]);
-
-	angular.module('ui.bootstrap.accordion', ['ui.bootstrap.collapse'])
-
-	.constant('uibAccordionConfig', {
-	  closeOthers: true
-	})
-
-	.controller('UibAccordionController', ['$scope', '$attrs', 'uibAccordionConfig', function($scope, $attrs, accordionConfig) {
-	  // This array keeps track of the accordion groups
-	  this.groups = [];
-
-	  // Ensure that all the groups in this accordion are closed, unless close-others explicitly says not to
-	  this.closeOthers = function(openGroup) {
-	    var closeOthers = angular.isDefined($attrs.closeOthers) ?
-	      $scope.$eval($attrs.closeOthers) : accordionConfig.closeOthers;
-	    if (closeOthers) {
-	      angular.forEach(this.groups, function(group) {
-	        if (group !== openGroup) {
-	          group.isOpen = false;
-	        }
-	      });
-	    }
-	  };
-
-	  // This is called from the accordion-group directive to add itself to the accordion
-	  this.addGroup = function(groupScope) {
-	    var that = this;
-	    this.groups.push(groupScope);
-
-	    groupScope.$on('$destroy', function(event) {
-	      that.removeGroup(groupScope);
-	    });
-	  };
-
-	  // This is called from the accordion-group directive when to remove itself
-	  this.removeGroup = function(group) {
-	    var index = this.groups.indexOf(group);
-	    if (index !== -1) {
-	      this.groups.splice(index, 1);
-	    }
-	  };
-
-	}])
-
-	// The accordion directive simply sets up the directive controller
-	// and adds an accordion CSS class to itself element.
-	.directive('uibAccordion', function() {
-	  return {
-	    controller: 'UibAccordionController',
-	    controllerAs: 'accordion',
-	    transclude: true,
-	    templateUrl: function(element, attrs) {
-	      return attrs.templateUrl || 'template/accordion/accordion.html';
-	    }
-	  };
-	})
-
-	// The accordion-group directive indicates a block of html that will expand and collapse in an accordion
-	.directive('uibAccordionGroup', function() {
-	  return {
-	    require: '^uibAccordion',         // We need this directive to be inside an accordion
-	    transclude: true,              // It transcludes the contents of the directive into the template
-	    replace: true,                // The element containing the directive will be replaced with the template
-	    templateUrl: function(element, attrs) {
-	      return attrs.templateUrl || 'template/accordion/accordion-group.html';
-	    },
-	    scope: {
-	      heading: '@',               // Interpolate the heading attribute onto this scope
-	      isOpen: '=?',
-	      isDisabled: '=?'
-	    },
-	    controller: function() {
-	      this.setHeading = function(element) {
-	        this.heading = element;
-	      };
-	    },
-	    link: function(scope, element, attrs, accordionCtrl) {
-	      accordionCtrl.addGroup(scope);
-
-	      scope.openClass = attrs.openClass || 'panel-open';
-	      scope.panelClass = attrs.panelClass;
-	      scope.$watch('isOpen', function(value) {
-	        element.toggleClass(scope.openClass, !!value);
-	        if (value) {
-	          accordionCtrl.closeOthers(scope);
-	        }
-	      });
-
-	      scope.toggleOpen = function($event) {
-	        if (!scope.isDisabled) {
-	          if (!$event || $event.which === 32) {
-	            scope.isOpen = !scope.isOpen;
-	          }
-	        }
-	      };
-	    }
-	  };
-	})
-
-	// Use accordion-heading below an accordion-group to provide a heading containing HTML
-	.directive('uibAccordionHeading', function() {
-	  return {
-	    transclude: true,   // Grab the contents to be used as the heading
-	    template: '',       // In effect remove this element!
-	    replace: true,
-	    require: '^uibAccordionGroup',
-	    link: function(scope, element, attrs, accordionGroupCtrl, transclude) {
-	      // Pass the heading to the accordion-group controller
-	      // so that it can be transcluded into the right place in the template
-	      // [The second parameter to transclude causes the elements to be cloned so that they work in ng-repeat]
-	      accordionGroupCtrl.setHeading(transclude(scope, angular.noop));
-	    }
-	  };
-	})
-
-	// Use in the accordion-group template to indicate where you want the heading to be transcluded
-	// You must provide the property on the accordion-group controller that will hold the transcluded element
-	.directive('uibAccordionTransclude', function() {
-	  return {
-	    require: ['?^uibAccordionGroup', '?^accordionGroup'],
-	    link: function(scope, element, attrs, controller) {
-	      controller = controller[0] ? controller[0] : controller[1]; // Delete after we remove deprecation
-	      scope.$watch(function() { return controller[attrs.uibAccordionTransclude]; }, function(heading) {
-	        if (heading) {
-	          element.find('span').html('');
-	          element.find('span').append(heading);
-	        }
-	      });
-	    }
-	  };
-	});
-
-	/* Deprecated accordion below */
-
-	angular.module('ui.bootstrap.accordion')
-
-	  .value('$accordionSuppressWarning', false)
-
-	  .controller('AccordionController', ['$scope', '$attrs', '$controller', '$log', '$accordionSuppressWarning', function($scope, $attrs, $controller, $log, $accordionSuppressWarning) {
-	    if (!$accordionSuppressWarning) {
-	      $log.warn('AccordionController is now deprecated. Use UibAccordionController instead.');
-	    }
-
-	    angular.extend(this, $controller('UibAccordionController', {
-	      $scope: $scope,
-	      $attrs: $attrs
-	    }));
-	  }])
-
-	  .directive('accordion', ['$log', '$accordionSuppressWarning', function($log, $accordionSuppressWarning) {
-	    return {
-	      restrict: 'EA',
-	      controller: 'AccordionController',
-	      controllerAs: 'accordion',
-	      transclude: true,
-	      replace: false,
-	      templateUrl: function(element, attrs) {
-	        return attrs.templateUrl || 'template/accordion/accordion.html';
-	      },
-	      link: function() {
-	        if (!$accordionSuppressWarning) {
-	          $log.warn('accordion is now deprecated. Use uib-accordion instead.');
-	        }
-	      }
-	    };
-	  }])
-
-	  .directive('accordionGroup', ['$log', '$accordionSuppressWarning', function($log, $accordionSuppressWarning) {
-	    return {
-	      require: '^accordion',         // We need this directive to be inside an accordion
-	      restrict: 'EA',
-	      transclude: true,              // It transcludes the contents of the directive into the template
-	      replace: true,                // The element containing the directive will be replaced with the template
-	      templateUrl: function(element, attrs) {
-	        return attrs.templateUrl || 'template/accordion/accordion-group.html';
-	      },
-	      scope: {
-	        heading: '@',               // Interpolate the heading attribute onto this scope
-	        isOpen: '=?',
-	        isDisabled: '=?'
-	      },
-	      controller: function() {
-	        this.setHeading = function(element) {
-	          this.heading = element;
-	        };
-	      },
-	      link: function(scope, element, attrs, accordionCtrl) {
-	        if (!$accordionSuppressWarning) {
-	          $log.warn('accordion-group is now deprecated. Use uib-accordion-group instead.');
-	        }
-
-	        accordionCtrl.addGroup(scope);
-
-	        scope.openClass = attrs.openClass || 'panel-open';
-	        scope.panelClass = attrs.panelClass;
-	        scope.$watch('isOpen', function(value) {
-	          element.toggleClass(scope.openClass, !!value);
-	          if (value) {
-	            accordionCtrl.closeOthers(scope);
-	          }
-	        });
-
-	        scope.toggleOpen = function($event) {
-	          if (!scope.isDisabled) {
-	            if (!$event || $event.which === 32) {
-	              scope.isOpen = !scope.isOpen;
-	            }
-	          }
-	        };
-	      }
-	    };
-	  }])
-
-	  .directive('accordionHeading', ['$log', '$accordionSuppressWarning', function($log, $accordionSuppressWarning) {
-	    return {
-	      restrict: 'EA',
-	      transclude: true,   // Grab the contents to be used as the heading
-	      template: '',       // In effect remove this element!
-	      replace: true,
-	      require: '^accordionGroup',
-	      link: function(scope, element, attr, accordionGroupCtrl, transclude) {
-	        if (!$accordionSuppressWarning) {
-	          $log.warn('accordion-heading is now deprecated. Use uib-accordion-heading instead.');
-	        }
-	        // Pass the heading to the accordion-group controller
-	        // so that it can be transcluded into the right place in the template
-	        // [The second parameter to transclude causes the elements to be cloned so that they work in ng-repeat]
-	        accordionGroupCtrl.setHeading(transclude(scope, angular.noop));
-	      }
-	    };
-	  }])
-
-	  .directive('accordionTransclude', ['$log', '$accordionSuppressWarning', function($log, $accordionSuppressWarning) {
-	    return {
-	      require: '^accordionGroup',
-	      link: function(scope, element, attr, controller) {
-	        if (!$accordionSuppressWarning) {
-	          $log.warn('accordion-transclude is now deprecated. Use uib-accordion-transclude instead.');
-	        }
-
-	        scope.$watch(function() { return controller[attr.accordionTransclude]; }, function(heading) {
-	          if (heading) {
-	            element.find('span').html('');
-	            element.find('span').append(heading);
-	          }
-	        });
-	      }
-	    };
-	  }]);
-
-
-	angular.module('ui.bootstrap.alert', [])
-
-	.controller('UibAlertController', ['$scope', '$attrs', '$interpolate', '$timeout', function($scope, $attrs, $interpolate, $timeout) {
-	  $scope.closeable = !!$attrs.close;
-
-	  var dismissOnTimeout = angular.isDefined($attrs.dismissOnTimeout) ?
-	    $interpolate($attrs.dismissOnTimeout)($scope.$parent) : null;
-
-	  if (dismissOnTimeout) {
-	    $timeout(function() {
-	      $scope.close();
-	    }, parseInt(dismissOnTimeout, 10));
-	  }
-	}])
-
-	.directive('uibAlert', function() {
-	  return {
-	    controller: 'UibAlertController',
-	    controllerAs: 'alert',
-	    templateUrl: function(element, attrs) {
-	      return attrs.templateUrl || 'template/alert/alert.html';
-	    },
-	    transclude: true,
-	    replace: true,
-	    scope: {
-	      type: '@',
-	      close: '&'
-	    }
-	  };
-	});
-
-	/* Deprecated alert below */
-
-	angular.module('ui.bootstrap.alert')
-
-	  .value('$alertSuppressWarning', false)
-
-	  .controller('AlertController', ['$scope', '$attrs', '$controller', '$log', '$alertSuppressWarning', function($scope, $attrs, $controller, $log, $alertSuppressWarning) {
-	    if (!$alertSuppressWarning) {
-	      $log.warn('AlertController is now deprecated. Use UibAlertController instead.');
-	    }
-
-	    angular.extend(this, $controller('UibAlertController', {
-	      $scope: $scope,
-	      $attrs: $attrs
-	    }));
-	  }])
-
-	  .directive('alert', ['$log', '$alertSuppressWarning', function($log, $alertSuppressWarning) {
-	    return {
-	      controller: 'AlertController',
-	      controllerAs: 'alert',
-	      templateUrl: function(element, attrs) {
-	        return attrs.templateUrl || 'template/alert/alert.html';
-	      },
-	      transclude: true,
-	      replace: true,
-	      scope: {
-	        type: '@',
-	        close: '&'
-	      },
-	      link: function() {
-	        if (!$alertSuppressWarning) {
-	          $log.warn('alert is now deprecated. Use uib-alert instead.');
-	        }
-	      }
-	    };
-	  }]);
-
-	angular.module('ui.bootstrap.buttons', [])
-
-	.constant('uibButtonConfig', {
-	  activeClass: 'active',
-	  toggleEvent: 'click'
-	})
-
-	.controller('UibButtonsController', ['uibButtonConfig', function(buttonConfig) {
-	  this.activeClass = buttonConfig.activeClass || 'active';
-	  this.toggleEvent = buttonConfig.toggleEvent || 'click';
-	}])
-
-	.directive('uibBtnRadio', function() {
-	  return {
-	    require: ['uibBtnRadio', 'ngModel'],
-	    controller: 'UibButtonsController',
-	    controllerAs: 'buttons',
-	    link: function(scope, element, attrs, ctrls) {
-	      var buttonsCtrl = ctrls[0], ngModelCtrl = ctrls[1];
-
-	      element.find('input').css({display: 'none'});
-
-	      //model -> UI
-	      ngModelCtrl.$render = function() {
-	        element.toggleClass(buttonsCtrl.activeClass, angular.equals(ngModelCtrl.$modelValue, scope.$eval(attrs.uibBtnRadio)));
-	      };
-
-	      //ui->model
-	      element.on(buttonsCtrl.toggleEvent, function() {
-	        if (attrs.disabled) {
-	          return;
-	        }
-
-	        var isActive = element.hasClass(buttonsCtrl.activeClass);
-
-	        if (!isActive || angular.isDefined(attrs.uncheckable)) {
-	          scope.$apply(function() {
-	            ngModelCtrl.$setViewValue(isActive ? null : scope.$eval(attrs.uibBtnRadio));
-	            ngModelCtrl.$render();
-	          });
-	        }
-	      });
-	    }
-	  };
-	})
-
-	.directive('uibBtnCheckbox', function() {
-	  return {
-	    require: ['uibBtnCheckbox', 'ngModel'],
-	    controller: 'UibButtonsController',
-	    controllerAs: 'button',
-	    link: function(scope, element, attrs, ctrls) {
-	      var buttonsCtrl = ctrls[0], ngModelCtrl = ctrls[1];
-
-	      element.find('input').css({display: 'none'});
-
-	      function getTrueValue() {
-	        return getCheckboxValue(attrs.btnCheckboxTrue, true);
-	      }
-
-	      function getFalseValue() {
-	        return getCheckboxValue(attrs.btnCheckboxFalse, false);
-	      }
-
-	      function getCheckboxValue(attribute, defaultValue) {
-	        return angular.isDefined(attribute) ? scope.$eval(attribute) : defaultValue;
-	      }
-
-	      //model -> UI
-	      ngModelCtrl.$render = function() {
-	        element.toggleClass(buttonsCtrl.activeClass, angular.equals(ngModelCtrl.$modelValue, getTrueValue()));
-	      };
-
-	      //ui->model
-	      element.on(buttonsCtrl.toggleEvent, function() {
-	        if (attrs.disabled) {
-	          return;
-	        }
-
-	        scope.$apply(function() {
-	          ngModelCtrl.$setViewValue(element.hasClass(buttonsCtrl.activeClass) ? getFalseValue() : getTrueValue());
-	          ngModelCtrl.$render();
-	        });
-	      });
-	    }
-	  };
-	});
-
-	/* Deprecated buttons below */
-
-	angular.module('ui.bootstrap.buttons')
-
-	  .value('$buttonsSuppressWarning', false)
-
-	  .controller('ButtonsController', ['$controller', '$log', '$buttonsSuppressWarning', function($controller, $log, $buttonsSuppressWarning) {
-	    if (!$buttonsSuppressWarning) {
-	      $log.warn('ButtonsController is now deprecated. Use UibButtonsController instead.');
-	    }
-
-	    angular.extend(this, $controller('UibButtonsController'));
-	  }])
-
-	  .directive('btnRadio', ['$log', '$buttonsSuppressWarning', function($log, $buttonsSuppressWarning) {
-	    return {
-	      require: ['btnRadio', 'ngModel'],
-	      controller: 'ButtonsController',
-	      controllerAs: 'buttons',
-	      link: function(scope, element, attrs, ctrls) {
-	        if (!$buttonsSuppressWarning) {
-	          $log.warn('btn-radio is now deprecated. Use uib-btn-radio instead.');
-	        }
-
-	        var buttonsCtrl = ctrls[0], ngModelCtrl = ctrls[1];
-
-	        element.find('input').css({display: 'none'});
-
-	        //model -> UI
-	        ngModelCtrl.$render = function() {
-	          element.toggleClass(buttonsCtrl.activeClass, angular.equals(ngModelCtrl.$modelValue, scope.$eval(attrs.btnRadio)));
-	        };
-
-	        //ui->model
-	        element.bind(buttonsCtrl.toggleEvent, function() {
-	          if (attrs.disabled) {
-	            return;
-	          }
-
-	          var isActive = element.hasClass(buttonsCtrl.activeClass);
-
-	          if (!isActive || angular.isDefined(attrs.uncheckable)) {
-	            scope.$apply(function() {
-	              ngModelCtrl.$setViewValue(isActive ? null : scope.$eval(attrs.btnRadio));
-	              ngModelCtrl.$render();
-	            });
-	          }
-	        });
-	      }
-	    };
-	  }])
-
-	  .directive('btnCheckbox', ['$document', '$log', '$buttonsSuppressWarning', function($document, $log, $buttonsSuppressWarning) {
-	    return {
-	      require: ['btnCheckbox', 'ngModel'],
-	      controller: 'ButtonsController',
-	      controllerAs: 'button',
-	      link: function(scope, element, attrs, ctrls) {
-	        if (!$buttonsSuppressWarning) {
-	          $log.warn('btn-checkbox is now deprecated. Use uib-btn-checkbox instead.');
-	        }
-
-	        var buttonsCtrl = ctrls[0], ngModelCtrl = ctrls[1];
-
-	        element.find('input').css({display: 'none'});
-
-	        function getTrueValue() {
-	          return getCheckboxValue(attrs.btnCheckboxTrue, true);
-	        }
-
-	        function getFalseValue() {
-	          return getCheckboxValue(attrs.btnCheckboxFalse, false);
-	        }
-
-	        function getCheckboxValue(attributeValue, defaultValue) {
-	          var val = scope.$eval(attributeValue);
-	          return angular.isDefined(val) ? val : defaultValue;
-	        }
-
-	        //model -> UI
-	        ngModelCtrl.$render = function() {
-	          element.toggleClass(buttonsCtrl.activeClass, angular.equals(ngModelCtrl.$modelValue, getTrueValue()));
-	        };
-
-	        //ui->model
-	        element.bind(buttonsCtrl.toggleEvent, function() {
-	          if (attrs.disabled) {
-	            return;
-	          }
-
-	          scope.$apply(function() {
-	            ngModelCtrl.$setViewValue(element.hasClass(buttonsCtrl.activeClass) ? getFalseValue() : getTrueValue());
-	            ngModelCtrl.$render();
-	          });
-	        });
-
-	        //accessibility
-	        element.on('keypress', function(e) {
-	          if (attrs.disabled || e.which !== 32 || $document[0].activeElement !== element[0]) {
-	            return;
-	          }
-
-	          scope.$apply(function() {
-	            ngModelCtrl.$setViewValue(element.hasClass(buttonsCtrl.activeClass) ? getFalseValue() : getTrueValue());
-	            ngModelCtrl.$render();
-	          });
-	        });
-	      }
-	    };
-	  }]);
-
-
-	/**
-	 * @ngdoc overview
-	 * @name ui.bootstrap.carousel
-	 *
-	 * @description
-	 * AngularJS version of an image carousel.
-	 *
-	 */
-	angular.module('ui.bootstrap.carousel', [])
-
-	.controller('UibCarouselController', ['$scope', '$element', '$interval', '$animate', function($scope, $element, $interval, $animate) {
-	  var self = this,
-	    slides = self.slides = $scope.slides = [],
-	    NEW_ANIMATE = angular.version.minor >= 4,
-	    NO_TRANSITION = 'uib-noTransition',
-	    SLIDE_DIRECTION = 'uib-slideDirection',
-	    currentIndex = -1,
-	    currentInterval, isPlaying;
-	  self.currentSlide = null;
-
-	  var destroyed = false;
-	  /* direction: "prev" or "next" */
-	  self.select = $scope.select = function(nextSlide, direction) {
-	    var nextIndex = $scope.indexOfSlide(nextSlide);
-	    //Decide direction if it's not given
-	    if (direction === undefined) {
-	      direction = nextIndex > self.getCurrentIndex() ? 'next' : 'prev';
-	    }
-	    //Prevent this user-triggered transition from occurring if there is already one in progress
-	    if (nextSlide && nextSlide !== self.currentSlide && !$scope.$currentTransition) {
-	      goNext(nextSlide, nextIndex, direction);
-	    }
-	  };
-
-	  function goNext(slide, index, direction) {
-	    // Scope has been destroyed, stop here.
-	    if (destroyed) { return; }
-
-	    angular.extend(slide, {direction: direction, active: true});
-	    angular.extend(self.currentSlide || {}, {direction: direction, active: false});
-	    if ($animate.enabled() && !$scope.noTransition && !$scope.$currentTransition &&
-	      slide.$element && self.slides.length > 1) {
-	      slide.$element.data(SLIDE_DIRECTION, slide.direction);
-	      if (self.currentSlide && self.currentSlide.$element) {
-	        self.currentSlide.$element.data(SLIDE_DIRECTION, slide.direction);
-	      }
-
-	      $scope.$currentTransition = true;
-	      if (NEW_ANIMATE) {
-	        $animate.on('addClass', slide.$element, function(element, phase) {
-	          if (phase === 'close') {
-	            $scope.$currentTransition = null;
-	            $animate.off('addClass', element);
-	          }
-	        });
-	      } else {
-	        slide.$element.one('$animate:close', function closeFn() {
-	          $scope.$currentTransition = null;
-	        });
-	      }
-	    }
-
-	    self.currentSlide = slide;
-	    currentIndex = index;
-
-	    //every time you change slides, reset the timer
-	    restartTimer();
-	  }
-
-	  $scope.$on('$destroy', function() {
-	    destroyed = true;
-	  });
-
+	 FusionCharts JavaScript Library
+	 Copyright FusionCharts Technologies LLP
+	 License Information at <http://www.fusioncharts.com/license>
+
+	 @version 3.12.0
+	 FusionCharts JavaScript Library
+	 Copyright FusionCharts Technologies LLP
+	 License Information at <http://www.fusioncharts.com/license>
+
+<<<<<<< HEAD
 	  function getSlideByIndex(index) {
 	    if (angular.isUndefined(slides[index].index)) {
 	      return slides[index];
@@ -53327,6 +52992,8 @@
 	 Copyright FusionCharts Technologies LLP
 	 License Information at <http://www.fusioncharts.com/license>
 
+=======
+>>>>>>> 71b79c63211b01d7139e4610c27a05319a86c520
 	 @version 3.12.0
 	 FusionCharts JavaScript Library
 	 Copyright FusionCharts Technologies LLP
@@ -55240,7 +54907,11 @@
 
 
 /***/ }),
+<<<<<<< HEAD
 /* 99 */
+=======
+/* 101 */
+>>>>>>> 71b79c63211b01d7139e4610c27a05319a86c520
 /***/ (function(module, exports) {
 
 	/*
@@ -55488,6 +55159,52 @@
 	c,b){var f=.5*b,k=a-b,h=a+b,l=a-f,m=a+f,n=a+.5,p=n+1,r=n+1.5,t=c-b,u=c+f,v=c-f,f=c+(b-f);return["M",k,t,"L",l,v,l,f,k,u,a-.5,u,a,c+b+.5,n,u,h,u,m,f,m,v,h,t,r,t,r,v,r,f,p,f,p,v,r,v,r,t,"Z"]},zoomOutIcon:function(a,c,b){a-=.2*b;c-=.2*b;var f=.8*b,k=w.rad(43),h=w.rad(48),l=a+f*ya(k),k=c+f*va(k),m=a+f*ya(h),h=c+f*va(h),n=w.rad(45),p=l+b*ya(n),r=k+b*va(n),t=m+b*ya(n);b=h+b*va(n);return["M",l,k,"A",f,f,0,1,0,m,h,"Z","M",l+1,k+1,"L",p,r,t,b,m+1,h+1,"Z","M",a-2,c,"L",a+2,c,"Z"]},resetIcon:function(a,c,b){var f=
 	a-b,k=(da.PI/2+da.PI)/2;a+=b*ya(k);var k=c+b*va(k),h=2*b/3;return["M",f,c,"A",b,b,0,1,1,a,k,"L",a+h,k-1,a+2,k+h-.5,a,k]}})}])});
 
+
+/***/ }),
+/* 102 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	var interviewsCtrl = function interviewsCtrl($scope) {
+
+	    $scope.interviews = [{
+	        associateName: 'Billy',
+	        batch: 'Java',
+	        client: 'Infosys',
+	        scheduled_time: '6-5-2017'
+	    }, {
+	        associateName: 'Bob',
+	        batch: 'Java',
+	        client: 'CapitolOne',
+	        scheduled_time: '6-23-2017'
+	    }, {
+	        associateName: 'Sally',
+	        batch: '.Net',
+	        client: 'BofA',
+	        scheduled_time: '6-10-2017'
+	    }, {
+	        associateName: 'Jim',
+	        batch: 'SDET',
+	        client: 'Oracle',
+	        scheduled_time: '7-2-2017'
+	    }, {
+	        associateName: 'Jimbo',
+	        batch: 'Java',
+	        client: 'CapitalOne',
+	        scheduled_time: '6-23-2017'
+	    }, {
+	        associateName: 'Peter',
+	        batch: 'Java',
+	        client: 'Wells Fargo',
+	        scheduled_time: '6-15-2017'
+	    }];
+	};
+
+	exports.interviewsCtrl = interviewsCtrl;
 
 /***/ })
 /******/ ]);

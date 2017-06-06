@@ -9,4 +9,6 @@ public interface ManagerRepo extends JpaRepository<Manager, Long> {
 	Manager findByCredentialUsernameAndCredentialPassword(String username, String password);
 
 	Manager getByCredential_Username(String username);
+	
+	Manager getByCredential_Id(Long id);
 }
