@@ -1,4 +1,8 @@
-const managerCtrl = ($scope, $state) => {
+const managerCtrl = ($scope, $state, $location) => {
+	$scope.isActive = function (viewLocation) {
+			return viewLocation === $location.path();
+	};
+	
   $scope.manager = { name:'Joe'};
 
   //initialize our named views
