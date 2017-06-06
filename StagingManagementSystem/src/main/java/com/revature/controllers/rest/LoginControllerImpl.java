@@ -1,7 +1,9 @@
 package com.revature.controllers.rest;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import com.revature.exceptions.SmsCustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,31 +21,34 @@ public class LoginControllerImpl {
 	
 	@Autowired
 	CredentialService credService;
-	
+
+	@PostMapping("associate/create")
+	public void createAssociate(){
+
+	}
+
 	@PostMapping("associate")
-	public Associate postAssociate(@RequestBody Credential creds, HttpServletResponse resp) throws Exception {
-		System.out.println("here!");
+	public Associate postAssociate(@RequestBody Credential creds, HttpSession session, HttpServletResponse resp) throws Exception {
+		System.out.println("Logging in!");
 		Object obj = credService.login(creds);
-		if(obj instanceof Manager)
-			System.out.println("Is a Manager");
-		if(obj instanceof Associate)
-			System.out.println("Is a Associate");
-		System.out.println(creds.getUsername());
-		System.out.println(obj);
-		System.out.println(creds.getPassword());
-		throw new Exception();
+		if(obj instanceof Associate){
+			session.setAttribute("login_associate", obj);
+			return (Associate)obj;
+		}
+		throw new SmsCustomException("Invalid login attempt");
 		
 //		resp.setStatus(401);
 	}
 	
 	@PostMapping("manager")
-	public Manager postManager(@RequestBody Credential creds, HttpServletResponse resp) {
-//		System.out.println(creds.getUsername());
-//		System.out.println(creds.getPassword());
-			
-		return new Manager();
-		
-//		resp.setStatus(401);
+	public Manager postManager(@RequestBody Credential creds,HttpSession session, HttpServletResponse resp) {
+		Object obj = credService.login(creds);
+		if(obj instanceof Manager){
+			session.setAttribute("login_manager", obj);
+			return (Manager)obj;
+		}
+		throw new SmsCustomException("Invalid login attempt");
+
 	}
 
 }
