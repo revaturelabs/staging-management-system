@@ -21,23 +21,23 @@ import com.revature.markers.SmsValidatable;
 import com.revature.util.LocalDateTimeConverter;
 
 @Entity
-@Table(name = "CHECKS")
+@Table(name = "CHECKINS")
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-public class Check implements SmsValidatable {
+public class Checkin implements SmsValidatable {
 	
 	transient private static SmsSettings settings = SmsSettings.getInstance();
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CHECK_ID_SEQ")
-	@SequenceGenerator(name = "CHECK_ID_SEQ", sequenceName = "CHECK_ID_SEQ")
-	@Column(name = "CHECK_ID")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CHECKIN_ID_SEQ")
+	@SequenceGenerator(name = "CHECKIN_ID_SEQ", sequenceName = "CHECKIN_ID_SEQ")
+	@Column(name = "CHECKIN_ID")
 	private Long id;
 
-	@Column(name = "CHECK_IN_TIME")
+	@Column(name = "CHECKIN_IN_TIME")
 	@Convert(converter = LocalDateTimeConverter.class)
 	private LocalDateTime checkinTime;
 
-	@Column(name = "CHECK_OUT_TIME")
+	@Column(name = "CHECKIN_OUT_TIME")
 	@Convert(converter = LocalDateTimeConverter.class)
 	private LocalDateTime checkoutTime;
 
@@ -45,7 +45,7 @@ public class Check implements SmsValidatable {
 	@JoinColumn(name = "MANAGER_ID")
 	private Manager approvedBy;
 
-	@Column(name = "CHECK_APPROVE_TIME")
+	@Column(name = "CHECKIN_APPROVE_TIME")
 	@Convert(converter = LocalDateTimeConverter.class)
 	private LocalDateTime approveTime;
 
@@ -53,7 +53,7 @@ public class Check implements SmsValidatable {
 	@JoinColumn(name = "ASSOCIATE_ID")
 	private Associate associate;
 
-	public Check() {
+	public Checkin() {
 		super();
 	}
 
@@ -61,7 +61,7 @@ public class Check implements SmsValidatable {
 		return id;
 	}
 
-	public Check(Long id, LocalDateTime checkinTime, LocalDateTime checkoutTime, Manager approvedBy,
+	public Checkin(Long id, LocalDateTime checkinTime, LocalDateTime checkoutTime, Manager approvedBy,
 			LocalDateTime approveTime, Associate associate) {
 		super();
 		this.id = id;
@@ -141,7 +141,7 @@ public class Check implements SmsValidatable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Check other = (Check) obj;
+		Checkin other = (Checkin) obj;
 		if (approveTime == null) {
 			if (other.approveTime != null)
 				return false;

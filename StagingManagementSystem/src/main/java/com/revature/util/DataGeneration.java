@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import com.revature.entities.Associate;
 import com.revature.entities.Batch;
 import com.revature.entities.BatchType;
-import com.revature.entities.Check;
+import com.revature.entities.Checkin;
 import com.revature.entities.Client;
 import com.revature.entities.Credential;
 import com.revature.entities.InterviewQuestion;
@@ -39,7 +39,7 @@ public class DataGeneration
 	ArrayList<Associate> associate = new ArrayList<Associate>();
 
 	//Stage 4: Dependent Lower Stages
-	ArrayList<Check> checkins = new ArrayList<Check>();
+	ArrayList<Checkin> checkins = new ArrayList<Checkin>();
 	//ArrayList<ClientQ> clientQs = new ArrayList<ClientQ>();	
 	ArrayList<Interview> interviews = new ArrayList<Interview>();
 	ArrayList<Job> jobs = new ArrayList<Job>();
@@ -123,7 +123,7 @@ public class DataGeneration
 		//TODO: write creation function.
 		return associate;
 	}
-	public ArrayList<Check> getCheckins()
+	public ArrayList<Checkin> getCheckins()
 	{
 		//TODO: write creation function.
 		return checkins;
