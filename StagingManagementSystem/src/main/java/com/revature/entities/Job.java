@@ -1,7 +1,6 @@
 package com.revature.entities;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -16,6 +15,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.revature.config.SmsSettings;
 import com.revature.exceptions.SmsCustomException;
 import com.revature.markers.SmsValidatable;
 import com.revature.util.LocalDateTimeConverter;
@@ -25,11 +25,13 @@ import com.revature.util.LocalDateTimeConverter;
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Job implements SmsValidatable {
 
+	transient private static SmsSettings settings = SmsSettings.getInstance();
+	
 	@Id
 	@Column(name = "JOB_ID")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "JOB_ID_SEQ")
 	@SequenceGenerator(name = "JOB_ID_SEQ", sequenceName = "JOB_ID_SEQ")
-	private long id;
+	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "ASSOCIATE_ID")
@@ -39,47 +41,48 @@ public class Job implements SmsValidatable {
 	@JoinColumn(name = "CLIENT_ID")
 	private Client client;
 
-	@Column(name = "START_DATE")
+	@Column(name = "JOB_START_DATE")
 	@Convert(converter = LocalDateTimeConverter.class)
 	private LocalDateTime startDate;
 
-	@Column(name = "PROJECTED_END_DATE")
+	@Column(name = "JOB_PROJECTED_END_DATE")
 	@Convert(converter = LocalDateTimeConverter.class)
 	private LocalDateTime projectedEndDate;
 
-	@Column(name = "ACTUAL_END_DATE")
+	@Column(name = "JOB_ACTUAL_END_DATE")
 	@Convert(converter = LocalDateTimeConverter.class)
 	private LocalDateTime endDate;
 
-	@Column(name = "BUYOUT_DATE")
+	@Column(name = "JOB_BUYOUT_DATE")
 	@Convert(converter = LocalDateTimeConverter.class)
 	private LocalDateTime buyoutDate;
 
-	@Column(name = "CONFIRMED_DATE")
+	@Column(name = "JOB_CONFIRMED_DATE")
 	@Convert(converter = LocalDateTimeConverter.class)
 	private LocalDateTime confirmedDate;
-
-	public Job(long id, Associate associate, Client clientId, LocalDateTime startDate, LocalDateTime projectedEndDate,
-			LocalDateTime endDate, LocalDateTime buyoutDate) {
-		super();
-		this.id = id;
-		this.associate = associate;
-		this.client = clientId;
-		this.startDate = startDate;
-		this.projectedEndDate = projectedEndDate;
-		this.endDate = endDate;
-		this.buyoutDate = buyoutDate;
-	}
 
 	public Job() {
 		super();
 	}
 
-	public long getId() {
+	public Job(Long id, Associate associate, Client client, LocalDateTime startDate, LocalDateTime projectedEndDate,
+			LocalDateTime endDate, LocalDateTime buyoutDate, LocalDateTime confirmedDate) {
+		super();
+		this.id = id;
+		this.associate = associate;
+		this.client = client;
+		this.startDate = startDate;
+		this.projectedEndDate = projectedEndDate;
+		this.endDate = endDate;
+		this.buyoutDate = buyoutDate;
+		this.confirmedDate = confirmedDate;
+	}
+
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -131,11 +134,86 @@ public class Job implements SmsValidatable {
 		this.buyoutDate = buyoutDate;
 	}
 
+	public LocalDateTime getConfirmedDate() {
+		return confirmedDate;
+	}
+
+	public void setConfirmedDate(LocalDateTime confirmedDate) {
+		this.confirmedDate = confirmedDate;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((associate == null) ? 0 : associate.hashCode());
+		result = prime * result + ((buyoutDate == null) ? 0 : buyoutDate.hashCode());
+		result = prime * result + ((client == null) ? 0 : client.hashCode());
+		result = prime * result + ((confirmedDate == null) ? 0 : confirmedDate.hashCode());
+		result = prime * result + ((endDate == null) ? 0 : endDate.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((projectedEndDate == null) ? 0 : projectedEndDate.hashCode());
+		result = prime * result + ((startDate == null) ? 0 : startDate.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Job other = (Job) obj;
+		if (associate == null) {
+			if (other.associate != null)
+				return false;
+		} else if (!associate.equals(other.associate))
+			return false;
+		if (buyoutDate == null) {
+			if (other.buyoutDate != null)
+				return false;
+		} else if (!buyoutDate.equals(other.buyoutDate))
+			return false;
+		if (client == null) {
+			if (other.client != null)
+				return false;
+		} else if (!client.equals(other.client))
+			return false;
+		if (confirmedDate == null) {
+			if (other.confirmedDate != null)
+				return false;
+		} else if (!confirmedDate.equals(other.confirmedDate))
+			return false;
+		if (endDate == null) {
+			if (other.endDate != null)
+				return false;
+		} else if (!endDate.equals(other.endDate))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (projectedEndDate == null) {
+			if (other.projectedEndDate != null)
+				return false;
+		} else if (!projectedEndDate.equals(other.projectedEndDate))
+			return false;
+		if (startDate == null) {
+			if (other.startDate != null)
+				return false;
+		} else if (!startDate.equals(other.startDate))
+			return false;
+		return true;
+	}
+
 	@Override
 	public String toString() {
 		return "Job [id=" + id + ", associate=" + associate + ", client=" + client + ", startDate=" + startDate
 				+ ", projectedEndDate=" + projectedEndDate + ", endDate=" + endDate + ", buyoutDate=" + buyoutDate
-				+ "]";
+				+ ", confirmedDate=" + confirmedDate + "]";
 	}
 
 	@Override

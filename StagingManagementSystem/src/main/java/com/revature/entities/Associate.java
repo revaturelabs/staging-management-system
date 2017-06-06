@@ -1,7 +1,5 @@
 package com.revature.entities;
 
-import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -15,6 +13,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.revature.config.SmsSettings;
 import com.revature.exceptions.SmsCustomException;
 import com.revature.markers.SmsValidatable;
 
@@ -22,6 +21,8 @@ import com.revature.markers.SmsValidatable;
 @Table(name = "ASSOCIATES")
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Associate implements SmsValidatable {
+
+	transient private static SmsSettings settings = SmsSettings.getInstance();
 
 	@Id
 	@Column(name = "ASSOCIATE_ID")
@@ -33,32 +34,36 @@ public class Associate implements SmsValidatable {
 	@JoinColumn(name = "CREDENTIAL_ID")
 	private Credential credential;
 
-	@Column
+	@Column(name = "ASSOCIATE_NAME")
 	private String name;
 
-	@Column(name = "PORTFOLIO_LINK")
+	@Column(name = "ASSOCIATE_PORTFOLIO_LINK")
 	private String portfolioLink;
 
 	@ManyToOne
 	@JoinColumn(name = "BATCH_ID")
 	private Batch batch;
 
-	@Column
-	private short active;
+	@Column(name = "ASSOCIATE_ACTIVE")
+	private Boolean active;
+
+	@Column(name = "CLIENT_ID")
+	private Long lockedTo;
 
 	public Associate() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
-	public Associate(Long id, Credential credential, String name, String portfolioLink, Batch batch,
-			Set<Interviews> interviews) {
+	public Associate(Long id, Credential credential, String name, String portfolioLink, Batch batch, Boolean active,
+			Long lockedTo) {
 		super();
 		this.id = id;
 		this.credential = credential;
 		this.name = name;
 		this.portfolioLink = portfolioLink;
 		this.batch = batch;
+		this.active = active;
+		this.lockedTo = lockedTo;
 	}
 
 	public Long getId() {
@@ -101,25 +106,31 @@ public class Associate implements SmsValidatable {
 		this.batch = batch;
 	}
 
-	public boolean isActive() {
-		return active != 0;
-	}
-
-	public short getActive() {
+	public Boolean getActive() {
 		return active;
 	}
 
-	public void setActive(short active) {
+	public void setActive(Boolean active) {
 		this.active = active;
+	}
+
+	public Long getLockedTo() {
+		return lockedTo;
+	}
+
+	public void setLockedTo(Long lockedTo) {
+		this.lockedTo = lockedTo;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((active == null) ? 0 : active.hashCode());
 		result = prime * result + ((batch == null) ? 0 : batch.hashCode());
 		result = prime * result + ((credential == null) ? 0 : credential.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((lockedTo == null) ? 0 : lockedTo.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((portfolioLink == null) ? 0 : portfolioLink.hashCode());
 		return result;
@@ -131,9 +142,14 @@ public class Associate implements SmsValidatable {
 			return true;
 		if (obj == null)
 			return false;
-		if (!(obj instanceof Associate))
+		if (getClass() != obj.getClass())
 			return false;
 		Associate other = (Associate) obj;
+		if (active == null) {
+			if (other.active != null)
+				return false;
+		} else if (!active.equals(other.active))
+			return false;
 		if (batch == null) {
 			if (other.batch != null)
 				return false;
@@ -148,6 +164,11 @@ public class Associate implements SmsValidatable {
 			if (other.id != null)
 				return false;
 		} else if (!id.equals(other.id))
+			return false;
+		if (lockedTo == null) {
+			if (other.lockedTo != null)
+				return false;
+		} else if (!lockedTo.equals(other.lockedTo))
 			return false;
 		if (name == null) {
 			if (other.name != null)
@@ -165,7 +186,7 @@ public class Associate implements SmsValidatable {
 	@Override
 	public String toString() {
 		return "Associate [id=" + id + ", credential=" + credential + ", name=" + name + ", portfolioLink="
-				+ portfolioLink + ", batch=" + batch + "]";
+				+ portfolioLink + ", batch=" + batch + ", active=" + active + ", lockedTo=" + lockedTo + "]";
 	}
 
 	@Override

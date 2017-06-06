@@ -30,8 +30,8 @@ public class CredentialServiceImpl implements CredentialService {
 	}
 
 	@Override
-	public void add(Credential location) {
-		credentialRepo.saveAndFlush(location);
+	public void add(Credential credential) {
+		credential = credentialRepo.saveAndFlush(credential);
 	}
 
 	@Override
@@ -45,13 +45,13 @@ public class CredentialServiceImpl implements CredentialService {
 	}
 
 	@Override
-	public void delete(Credential location) {
-		credentialRepo.delete(location);
+	public void remove(Credential credential) {
+		credentialRepo.delete(credential);
 	}
 
 	@Override
-	public void update(Credential location) {
-		credentialRepo.saveAndFlush(location);
+	public void update(Credential credential) {
+		credential = credentialRepo.saveAndFlush(credential);
 	}
 
 	@Override
