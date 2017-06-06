@@ -13,38 +13,30 @@ import com.revature.config.SmsSettings;
 import com.revature.exceptions.SmsCustomException;
 import com.revature.markers.SmsValidatable;
 
-/**
- * Created by mnikitin on 5/31/17.
- */
 @Entity
-@Table(name = "TRAINERS")
+@Table(name = "SKILLS")
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-public class Trainer implements SmsValidatable {
+public class Skill implements SmsValidatable{
 
 	transient private static SmsSettings settings = SmsSettings.getInstance();
 
 	@Id
-	@Column(name = "TRAINER_ID")
-	@SequenceGenerator(name = "TRAINER_ID_SEQ", sequenceName = "TRAINER_ID_SEQ")
-	@GeneratedValue(generator = "TRAINER_ID_SEQ", strategy = GenerationType.SEQUENCE)
+	@Column(name = "SKILL_ID")
+	@SequenceGenerator(name = "SKILL_ID_SEQ", sequenceName = "SKILL_ID_SEQ")
+	@GeneratedValue(generator = "SKILL_ID_SEQ", strategy = GenerationType.SEQUENCE)
 	private Long id;
 
-	@Column(name = "TRAINER_NAME")
-	private String name;
+	@Column(name = "SKILL_VALUE")
+	private String value;
 
-	@Column(name = "TRAINER_ACTIVE")
-	private Boolean active;
-
-	public Trainer() {
+	public Skill() {
 		super();
-		this.active=true;
 	}
 
-	public Trainer(Long id, String name, Boolean active) {
+	public Skill(Long id, String value) {
 		super();
 		this.id = id;
-		this.name = name;
-		this.active = active;
+		this.value = value;
 	}
 
 	public Long getId() {
@@ -55,29 +47,20 @@ public class Trainer implements SmsValidatable {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getValue() {
+		return value;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public Boolean getActive() {
-		return active;
-	}
-
-	public void setActive(Boolean active) {
-		this.active = active;
+	public void setValue(String value) {
+		this.value = value;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((active == null) ? 0 : active.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((value == null) ? 0 : value.hashCode());
 		return result;
 	}
 
@@ -89,33 +72,29 @@ public class Trainer implements SmsValidatable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Trainer other = (Trainer) obj;
-		if (active == null) {
-			if (other.active != null)
-				return false;
-		} else if (!active.equals(other.active))
-			return false;
+		Skill other = (Skill) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
-		if (name == null) {
-			if (other.name != null)
+		if (value == null) {
+			if (other.value != null)
 				return false;
-		} else if (!name.equals(other.name))
+		} else if (!value.equals(other.value))
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "Trainer [id=" + id + ", name=" + name + ", active=" + active + "]";
+		return "Skill [id=" + id + ", value=" + value + "]";
 	}
 
 	@Override
 	public void validate() throws SmsCustomException {
 		// TODO Validate your members.
-
+		
 	}
+
 }
