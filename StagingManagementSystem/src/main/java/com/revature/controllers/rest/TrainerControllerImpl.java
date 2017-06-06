@@ -34,7 +34,7 @@ public class TrainerControllerImpl {
 	 */
 	@PostMapping
 	public void addTrainer(@RequestBody Trainer trainer) {
-		trainer.setId(0);
+		trainer.setId(0l);
 		trainerService.add(trainer);
 	}
 

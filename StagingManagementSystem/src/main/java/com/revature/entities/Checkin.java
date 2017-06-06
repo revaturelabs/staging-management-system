@@ -2,9 +2,20 @@ package com.revature.entities;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.revature.config.SmsSettings;
 import com.revature.exceptions.SmsCustomException;
 import com.revature.markers.SmsValidatable;
 import com.revature.util.LocalDateTimeConverter;
@@ -13,25 +24,28 @@ import com.revature.util.LocalDateTimeConverter;
 @Table(name = "CHECKINS")
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Checkin implements SmsValidatable {
+	
+	transient private static SmsSettings settings = SmsSettings.getInstance();
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CHECKIN_ID_SEQ")
 	@SequenceGenerator(name = "CHECKIN_ID_SEQ", sequenceName = "CHECKIN_ID_SEQ")
 	@Column(name = "CHECKIN_ID")
 	private Long id;
 
-	@Column(name = "CHECKIN_TIME")
+	@Column(name = "CHECKIN_IN_TIME")
 	@Convert(converter = LocalDateTimeConverter.class)
 	private LocalDateTime checkinTime;
 
-	@Column(name = "CHECKOUT_TIME")
+	@Column(name = "CHECKIN_OUT_TIME")
 	@Convert(converter = LocalDateTimeConverter.class)
 	private LocalDateTime checkoutTime;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "APPROVED_BY")
+	@JoinColumn(name = "MANAGER_ID")
 	private Manager approvedBy;
 
-	@Column(name = "APPROVE_TIME")
+	@Column(name = "CHECKIN_APPROVE_TIME")
 	@Convert(converter = LocalDateTimeConverter.class)
 	private LocalDateTime approveTime;
 
@@ -43,6 +57,10 @@ public class Checkin implements SmsValidatable {
 		super();
 	}
 
+	public Long getId() {
+		return id;
+	}
+
 	public Checkin(Long id, LocalDateTime checkinTime, LocalDateTime checkoutTime, Manager approvedBy,
 			LocalDateTime approveTime, Associate associate) {
 		super();
@@ -52,10 +70,6 @@ public class Checkin implements SmsValidatable {
 		this.approvedBy = approvedBy;
 		this.approveTime = approveTime;
 		this.associate = associate;
-	}
-
-	public Long getId() {
-		return id;
 	}
 
 	public void setId(Long id) {

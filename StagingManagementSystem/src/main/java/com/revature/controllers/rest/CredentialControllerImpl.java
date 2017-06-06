@@ -47,7 +47,7 @@ public class CredentialControllerImpl {
 	 */
 	@DeleteMapping
 	public void deletecredential(@RequestBody Credential credential) {
-		credentialService.delete(credential);
+		credentialService.remove(credential);
 	}
 
 	/**

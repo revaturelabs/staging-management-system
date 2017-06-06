@@ -2,18 +2,18 @@ package com.revature.services;
 
 import java.util.Set;
 
-import com.revature.entities.ClientQ;
+import com.revature.entities.ClientQuestion;
 
 public interface ClientQService {
 
-	public void add(ClientQ location);
+	public void add(ClientQuestion location);
 
-	public void delete(ClientQ location);
+	public void delete(ClientQuestion location);
 
-	public void update(ClientQ location);
+	public void update(ClientQuestion location);
 
-	public ClientQ findById(long id);
+	public ClientQuestion findById(long id);
 
-	public Set<ClientQ> getAll();
+	public Set<ClientQuestion> getAll();
 
 }

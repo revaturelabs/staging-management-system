@@ -35,7 +35,7 @@ public class BatchTypeControllerImpl {
 	 */
 	@PostMapping
 	public void addBatchType(@RequestBody BatchType batchType) {
-		batchType.setId(0);
+		batchType.setId(0l);
 		batchTypeService.add(batchType);
 	}
 
