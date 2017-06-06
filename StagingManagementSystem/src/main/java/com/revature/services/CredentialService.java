@@ -15,5 +15,7 @@ public interface CredentialService {
 	public Credential findById(long id);
 
 	public Set<Credential> getAll();
+	
+	public Object login(Credential creds);
 
 }

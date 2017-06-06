@@ -27,4 +27,4 @@ const profileCtrl = ($scope) => {
   };
 };
 
-export { profileCtrl };
+export default profileCtrl;
