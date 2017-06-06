@@ -27,46 +27,59 @@ public class PermissionControllerImpl {
 	}
 
 	/**
-	 * When called this will always persist a unique location in the database.
+	 * When called this will always persist a unique permission in the database.
 	 * 
-	 * @param location
-	 *            - location to be persisted.
+	 * @param permission
+	 *            - permission to be persisted.
 	 */
 	@PostMapping
-	public void addPermission(@RequestBody Permission location) {
-		location.setId(0);
-		permissionService.add(location);
+	public void addPermission(@RequestBody Permission permission) {
+		permission.setId(0);
+		permissionService.add(permission);
 	}
+	
+	 /**
+   * When called this will always persist a unique permission in the database.
+   * 
+   * @param permission
+   *            - permission to be persisted.
+   */
+  @PostMapping("/add/all")
+  public void addPermission(@RequestBody Set<Permission> permissions) {
+    for(Permission p : permissions)
+      permissionService.add(p);
+  }
+	
 
 	/**
-	 * Deletes location with location.id
+	 * Deletes permission with permission.id
 	 * 
-	 * @param location
+	 * @param permission
 	 *            - holds the id to be deleted
 	 */
 	@DeleteMapping
-	public void removePermission(@RequestBody Permission location) {
-		permissionService.remove(location);
+	public void removePermission(@RequestBody Permission permission) {
+		permissionService.remove(permission);
 	}
 
 	/**
 	 * If the id exists, updates information. else creates a new row with
 	 * genrated id.
 	 * 
-	 * @param location
+	 * @param permission
 	 *            - data to be persisted.
 	 */
 	@PutMapping
-	public void updatePermission(@RequestBody Permission location) {
-		permissionService.update(location);
+	public void updatePermission(@RequestBody Permission permission) {
+		permissionService.update(permission);
 	}
 
 	/**
-	 * Gets a location with id.
+	 * Gets a permission with id.
 	 * 
 	 * @param id
-	 *            - id of location to be retrieved.
-	 * @return location object from dataBase.
+	 *            - id of permission to be retrieved.
+	 * @return permission object from dataBase.
 	 */
 	@GetMapping("/{id}")
 	public Permission getById(@PathVariable long id) {
@@ -74,10 +87,10 @@ public class PermissionControllerImpl {
 	}
 
 	/**
-	 * Gets all locations.
+	 * Gets all permissions.
 	 * 
 	 * @param all
-	 * @return all location objects from dataBase.
+	 * @return all permission objects from dataBase.
 	 */
 	@GetMapping("/all")
 	public Set<Permission> findById() {
