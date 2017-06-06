@@ -49,6 +49,7 @@ public class Manager implements SmsValidatable {
 
 	public Manager() {
 		super();
+		this.active=true;
 	}
 
 	public Manager(Long id, String name, Credential credential, Permission permission, Boolean active) {
