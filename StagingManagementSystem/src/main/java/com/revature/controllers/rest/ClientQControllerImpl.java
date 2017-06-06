@@ -1,6 +1,6 @@
 package com.revature.controllers.rest;
 
-import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -80,7 +80,7 @@ public class ClientQControllerImpl {
 	 * @return all clientQ objects from dataBase.
 	 */
 	@GetMapping("/all")
-	public List<ClientQ> findAll() {
+	public Set<ClientQ> findAll() {
 		return clientQService.getAll();
 	}
 }

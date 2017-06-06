@@ -30,8 +30,7 @@ public class ManagerControllerImpl {
 	/**
 	 * When called this will always persist a unique manager in the database.
 	 * 
-	 * @param manager
-	 *            - manager to be persisted.
+	 * @param manager - manager to be persisted.
 	 */
 	@PostMapping
 	public void addManager(@RequestBody Manager manager) {
@@ -42,8 +41,7 @@ public class ManagerControllerImpl {
 	/**
 	 * Deletes manager with location.id
 	 * 
-	 * @param manager
-	 *            - holds the id to be deleted
+	 * @param manager - holds the id to be deleted
 	 */
 	@DeleteMapping
 	public void removeManager(@RequestBody Manager manager) {
@@ -54,8 +52,7 @@ public class ManagerControllerImpl {
 	 * If the id exists, updates information. else creates a new row with
 	 * genrated id.
 	 * 
-	 * @param manager
-	 *            - data to be persisted.
+	 * @param manager - data to be persisted.
 	 */
 	@PutMapping
 	public void updateManager(@RequestBody Manager manager) {
@@ -65,8 +62,7 @@ public class ManagerControllerImpl {
 	/**
 	 * Gets a manager with id.
 	 * 
-	 * @param id
-	 *            - id of manager to be retrieved.
+	 * @param id  - id of manager to be retrieved.
 	 * @return manager object from dataBase.
 	 */
 	@GetMapping("/{id}")

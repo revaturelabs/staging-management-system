@@ -1,6 +1,5 @@
 package com.revature.controllers.rest;
 
-import java.util.List;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -16,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.entities.Client;
 import com.revature.services.ClientService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("client")
@@ -91,7 +92,8 @@ public class ClientControllerImpl {
 	 * @return all location objects from dataBase.
 	 */
 	@GetMapping("/all")
-	public List<Client> findAll() {
+	public Set<Client> findAll() {
 		return clientService.getAll();
 	}
+
 }

@@ -1,0 +1,18 @@
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th class="interview-th" scope="col">Associate</th>
+        <th class="interview-th" scope="col">Batch</th>
+        <th class="interview-th" scope="col">Client</th>
+        <th class="interview-th" scope="col">Scheduled Time</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="interview in interviews">
+        <td class="interview-td" ng-bind="interview.associateName"></td>
+        <td class="interview-td" ng-bind="interview.batch"></td>
+        <td class="interview-td" ng-bind="interview.client"></td>
+        <td class="interview-td" ng-bind="interview.scheduled_time"></td>
+    </tr>
+    </tbody>
+</table>

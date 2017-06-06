@@ -1,6 +1,6 @@
 package com.revature.controllers.rest;
 
-import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,18 +26,18 @@ public class AssociateControllerImpl {
 		super();
 		this.associateService = associateService;
 	}
-	
+
 	@PostMapping
 	public void addAssociate(@RequestBody Associate associate) {
 		System.out.println(associate);
 		associateService.add(associate);
 	}
-	
+
 	@DeleteMapping
 	public void deleteAssociate(@RequestBody Associate associate) {
 		associateService.delete(associate);
 	}
-	
+
 	@PutMapping
 	public void updateAssociate(@RequestBody Associate associate) {
 		associateService.update(associate);
@@ -49,7 +49,7 @@ public class AssociateControllerImpl {
 	}
 
 	@GetMapping("/all")
-	public List<Associate> findById() {
+	public Set<Associate> findById() {
 		return associateService.getAll();
 	}
 }
