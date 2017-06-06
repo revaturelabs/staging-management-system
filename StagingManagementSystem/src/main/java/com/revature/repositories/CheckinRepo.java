@@ -14,4 +14,5 @@ import java.util.Set;
  */
 public interface CheckinRepo extends JpaRepository<Checkin, Long> {
     Set<Checkin> getAllByCheckinTimeBetween(LocalDateTime startPoint, LocalDateTime endPoint);
+    Set<Checkin> getAllByAssociate_Id(long id);
 }
