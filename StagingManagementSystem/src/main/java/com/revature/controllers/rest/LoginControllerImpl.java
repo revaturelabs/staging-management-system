@@ -1,17 +1,20 @@
 package com.revature.controllers.rest;
 
-import javax.servlet.http.HttpServletResponse;
-
+import com.revature.entities.Associate;
+import com.revature.entities.Credential;
+import com.revature.entities.Manager;
+import com.revature.exceptions.SmsCustomException;
+import com.revature.services.CredentialService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.revature.entities.Associate;
-import com.revature.entities.Credential;
-import com.revature.entities.Manager;
-import com.revature.services.CredentialService;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("login")
@@ -19,31 +22,43 @@ public class LoginControllerImpl {
 	
 	@Autowired
 	CredentialService credService;
-	
-	@PostMapping("associate")
-	public Associate postAssociate(@RequestBody Credential creds, HttpServletResponse resp) throws Exception {
-		System.out.println("here!");
+
+	@PostMapping("associate/create")
+	public void createAssociate(){
+
+	}
+
+	@PostMapping
+	public ResponseEntity<Object> dualLogin(@RequestBody Credential creds, HttpSession session){
 		Object obj = credService.login(creds);
-		if(obj instanceof Manager)
-			System.out.println("Is a Manager");
-		if(obj instanceof Associate)
-			System.out.println("Is a Associate");
-		System.out.println(creds.getUsername());
-		System.out.println(obj);
-		System.out.println(creds.getPassword());
-		throw new Exception();
-		
-//		resp.setStatus(401);
+		if(obj instanceof Associate){
+			session.setAttribute("login_associate", obj);
+			return ResponseEntity.ok((Associate)obj);
+		}else if(obj instanceof Manager){
+			session.setAttribute("login_manager", obj);
+			return ResponseEntity.ok((Manager)obj);
+		}
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+	}
+
+	@PostMapping("associate")
+	public ResponseEntity<Associate> postAssociate(@RequestBody Credential creds, HttpSession session, HttpServletResponse resp) throws Throwable {
+		Object obj = credService.login(creds);
+		if(obj instanceof Associate){
+			session.setAttribute("login_associate", obj);
+			return ResponseEntity.ok((Associate)obj);
+		}
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 	}
 	
 	@PostMapping("manager")
-	public Manager postManager(@RequestBody Credential creds, HttpServletResponse resp) {
-//		System.out.println(creds.getUsername());
-//		System.out.println(creds.getPassword());
-			
-		return new Manager();
-		
-//		resp.setStatus(401);
+	public ResponseEntity<Manager> postManager(@RequestBody Credential creds,HttpSession session, HttpServletResponse resp) throws Throwable {
+		Object obj = credService.login(creds);
+		if(obj instanceof Manager){
+			session.setAttribute("login_manager", obj);
+			return ResponseEntity.ok((Manager)obj);
+		}
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 	}
 
 }

@@ -1,5 +1,7 @@
 package com.revature.entities;
 
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -49,6 +51,7 @@ public class Manager implements SmsValidatable {
 
 	public Manager() {
 		super();
+		this.active=true;
 	}
 
 	public Manager(Long id, String name, Credential credential, Permission permission, Boolean active) {
