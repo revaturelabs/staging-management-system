@@ -13,10 +13,9 @@ const associateCtrl = ($scope, $location, $http, $state) => {
 	$scope.logout = function () {
 		$http({
 			method: 'GET',
-			url: '/logout',
+			url: '/logout/',
 		})
 		.then((response) => {
-			alert("here")
 			$state.go('login');
 		});
 	};

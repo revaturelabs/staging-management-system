@@ -1,5 +1,7 @@
 package com.revature.controllers.rest;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -8,8 +10,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("logout")
 public class LogoutControllerImpl {
 	
-	@GetMapping("/logout")
-	public void getLogout() {
-		System.out.println("Logout!");
+	@GetMapping
+	public void getLogout(HttpServletRequest req) {
+		if(req.getSession() != null)
+		{
+			req.getSession().invalidate();
+		}
 	}
 }
