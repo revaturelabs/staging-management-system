@@ -30,7 +30,6 @@ public class LoginControllerImpl {
 
 	@PostMapping("associate")
 	public ResponseEntity<Associate> postAssociate(@RequestBody Credential creds, HttpSession session, HttpServletResponse resp) throws Throwable {
-		System.out.println("Logging in!");
 		Object obj = credService.login(creds);
 		if(obj instanceof Associate){
 			session.setAttribute("login_associate", obj);
