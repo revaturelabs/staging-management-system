@@ -1,7 +1,5 @@
 package com.revature.entities;
 
-import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -50,9 +48,12 @@ public class Associate implements SmsValidatable {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
+	public Associate(Associate other){
+	  this(other.id, other.credential, other.name, other.portfolioLink, other.batch);
+	}
 
-	public Associate(Long id, Credential credential, String name, String portfolioLink, Batch batch,
-			Set<Interviews> interviews) {
+	public Associate(Long id, Credential credential, String name, String portfolioLink, Batch batch) {
 		super();
 		this.id = id;
 		this.credential = credential;

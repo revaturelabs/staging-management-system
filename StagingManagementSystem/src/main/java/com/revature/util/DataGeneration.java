@@ -1,141 +1,119 @@
 package com.revature.util;
 
 import java.util.ArrayList;
+import java.util.Random;
+import java.util.Set;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.revature.entities.Associate;
-import com.revature.entities.Batch;
-import com.revature.entities.BatchType;
 import com.revature.entities.Checkin;
 import com.revature.entities.Client;
-import com.revature.entities.Credential;
-import com.revature.entities.InterviewQuestion;
-import com.revature.entities.InterviewStatuses;
+import com.revature.entities.ClientQ;
 import com.revature.entities.Interviews;
 import com.revature.entities.Job;
-import com.revature.entities.Location;
-import com.revature.entities.Manager;
-import com.revature.entities.Permission;
-import com.revature.entities.Trainer;
+import com.revature.services.AssociateService;
+import com.revature.services.CheckinService;
+import com.revature.services.ClientQService;
+import com.revature.services.ClientService;
+import com.revature.services.InterviewsService;
+import com.revature.services.JobService;
 
 public class DataGeneration
 {
-	//Stage 1: Dependent Lower Stages
-	ArrayList<Location> locations = new ArrayList<Location>();
-	ArrayList<Permission> permissions = new ArrayList<Permission>();
-	ArrayList<Trainer> trainers = new ArrayList<Trainer>();
-	ArrayList<InterviewStatuses> interviewStatuses = new ArrayList<InterviewStatuses>();
-	ArrayList<Credential> credentials = new ArrayList<Credential>();
-	ArrayList<BatchType> batchTypes = new ArrayList<BatchType>();
-	ArrayList<Client> clients = new ArrayList<Client>();
-
-	
-	//Stage 2: Dependent Lower Stages
-	ArrayList<Batch> batchs = new ArrayList<Batch>();
-	ArrayList<InterviewQuestion> interviewQuestions = new ArrayList<InterviewQuestion>();
-	ArrayList<Manager> managers = new ArrayList<Manager>();
-
-	
-	//Stage 3: Dependent Lower Stages
-	ArrayList<Associate> associate = new ArrayList<Associate>();
-
-	//Stage 4: Dependent Lower Stages
+  
+  @Autowired
+  CheckinService checkinService;
+  @Autowired 
+  ClientQService clientQService;
+  @Autowired
+  InterviewsService interviewsService;
+  @Autowired
+  JobService jobService;
+  @Autowired
+  ClientService clientService;
+  @Autowired
+  AssociateService associateService;
+  
+	//Dependent Stages
 	ArrayList<Checkin> checkins = new ArrayList<Checkin>();
-	//ArrayList<ClientQ> clientQs = new ArrayList<ClientQ>();	
+	ArrayList<ClientQ> clientQs = new ArrayList<ClientQ>();	
 	ArrayList<Interviews> interviews = new ArrayList<Interviews>();
 	ArrayList<Job> jobs = new ArrayList<Job>();
 	
+	ArrayList<Client> priorityClients = new ArrayList<Client>();
+	ArrayList<Client> regularClients = new ArrayList<Client>();
+	ArrayList<Associate> associates = new ArrayList<Associate>();
+	
+	Random rand = new Random();
+	
+	double probabilityOfPriorityInterview = 60;
+	double probabilityOfRegularInterview = 30;
+	
+	class ClientP extends Client{
+	  double probabilityOfHiring;
+	  double probabilityOfLiking;
+	  double probabilityOfNotInterested;
+	  
+	  public ClientP(Client c){
+	    super(c);
+	    
+	    probabilityOfHiring = rand.nextInt(20) + 60;   //Hiring probability is between 60 and 80.
+	    probabilityOfLiking = rand.nextInt(10);          //Liking probability is between 0 and 10.
+	    probabilityOfNotInterested = 100 - (probabilityOfHiring + probabilityOfLiking);
+	  }
+	}
+	
+	class AssociateP extends Associate{
+	  double clientProbabilityMultiplier;
+	  
+	  public AssociateP(Associate a){
+	    super(a);
+	    int qualityOfAssociate = rand.nextInt(100); 
+	    
+	    if(qualityOfAssociate < 10)
+	      clientProbabilityMultiplier = .5;
+	    else if (qualityOfAssociate > 99)
+	      clientProbabilityMultiplier = .125;
+	    else
+	      clientProbabilityMultiplier = 1;
+	  }
+	}
+	
+	public DataGeneration(){
+	   associates.addAll(associateService.getAll());
+	   Set<Client> allClients = clientService.getAll();
+	   for(Client c : allClients){
+	     if(c.isPriority())
+	       priorityClients.add(c);
+	     else
+	       regularClients.add(c);
+	   }
+	   generate();
+	}
+	
 	public void generate(){
-		stage1();
-		stage2();
-		stage3();
-		stage4();
+	  for(Associate a : associates){
+	    if(!a.isActive())      //
+	      a.setActive(true);
+	  }
+	  
 	}
 	
-	public void stage1(){
-		//TODO: generate stage 1
-	}
-	
-	public void stage2(){
-		//TODO: generate stage 2
-	}
-	
-	public void stage3(){
-		//TODO: generate stage 3
-	}
-	
-	public void stage4(){
-		//TODO: generate stage 4
-	}
-	
-	//TODO: write creation functions within get methods.
-	public ArrayList<Location> getLocations()
-	{
-		//TODO: write creation function.
-		return locations;
-	}
-	public ArrayList<Permission> getPermissions()
-	{
-		//TODO: write creation function.
-		return permissions;
-	}
-	public ArrayList<Trainer> getTrainers()
-	{
-		//TODO: write creation function.
-		return trainers;
-	}
-	public ArrayList<InterviewStatuses> getInterviewStatuses()
-	{
-		//TODO: write creation function.
-		return interviewStatuses;
-	}
-	public ArrayList<Credential> getCredentials()
-	{
-		//TODO: write creation function.
-		return credentials;
-	}
-	public ArrayList<BatchType> getBatchTypes()
-	{
-		//TODO: write creation function.
-		return batchTypes;
-	}
-	public ArrayList<Client> getClients()
-	{
-		//TODO: write creation function.
-		return clients;
-	}
-	public ArrayList<Batch> getBatchs()
-	{
-		//TODO: write creation function.
-		return batchs;
-	}
-	public ArrayList<InterviewQuestion> getInterviewQuestions()
-	{
-		//TODO: write creation function.
-		return interviewQuestions;
-	}
-	public ArrayList<Manager> getManagers()
-	{
-		//TODO: write creation function.
-		return managers;
-	}
-	public ArrayList<Associate> getAssociate()
-	{
-		//TODO: write creation function.
-		return associate;
-	}
+
 	public ArrayList<Checkin> getCheckins()
 	{
-		//TODO: write creation function.
 		return checkins;
 	}
 	public ArrayList<Interviews> getInterviews()
 	{
-		//TODO: write creation function.
 		return interviews;
 	}
 	public ArrayList<Job> getJobs()
 	{
-		//TODO: write creation function.
 		return jobs;
 	}
+  public ArrayList<ClientQ> getClientQs() {
+    return clientQs;
+  }
 }

@@ -46,7 +46,7 @@ public class ManagerControllerImpl {
   @PostMapping("/add/all")
   public void addManagers(@RequestBody Set<Manager> managers) {
     for(Manager m : managers)
-      addManager(m);
+      managerService.add(m);
   }
 
 	/**

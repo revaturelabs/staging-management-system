@@ -33,6 +33,10 @@ public class Client implements SmsValidatable {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
+	public Client(Client other){
+	  this(other.id, other.name, other.priority);
+	}
 
 	public Client(long id, String name, boolean priority) {
 		super();
