@@ -44486,10 +44486,10 @@
 /* 95 */
 /***/ (function(module, exports) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 
 	var _chart, _chart2, _chart3, _chart4, _chart5;
@@ -44497,184 +44497,183 @@
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 	var data = [{
-	    "label": "Q1",
-	    "value": "1950000",
-	    "link": "newchart-json-q1"
+	  label: 'Q1',
+	  value: '1950000',
+	  link: 'newchart-json-q1'
 	}, {
-	    "label": "Q2",
-	    "value": "1970000",
-	    "link": "newchart-json-q2"
+	  label: 'Q2',
+	  value: '1970000',
+	  link: 'newchart-json-q2'
 	}, {
-	    "label": "Q3",
-	    "value": "1910000",
-	    "link": "newchart-json-q3"
+	  label: 'Q3',
+	  value: '1910000',
+	  link: 'newchart-json-q3'
 	}, {
-	    "label": "Q4",
-	    "value": "2120000",
-	    "link": "newchart-json-q4"
+	  label: 'Q4',
+	  value: '2120000',
+	  link: 'newchart-json-q4'
 	}];
 
 	var linkedData = [{
-	    "id": "q1",
-	    "linkedchart": {
-	        "chart": (_chart = {
-	            "caption": "Monthly Revenue",
-	            "subcaption": "First Quarter",
-	            "xAxisName": "Month",
-	            "yAxisName": "Amount",
-	            "numberPrefix": "$",
-	            "paletteColors": "#008ee4",
-	            "showBorder": "1",
-	            "borderAlpha": "20",
-	            "divLineAlpha": "50",
-	            "showValues": "0",
-	            "bgAlpha": "0",
-	            "canvasBorderAlpha": "0"
-	        }, _defineProperty(_chart, "showBorder", "0"), _defineProperty(_chart, "plotBorderAlpha", "0"), _defineProperty(_chart, "usePlotGradientColor", "0"), _defineProperty(_chart, "showAlternateHgridcolor", "0"), _chart),
-	        "data": [{
-	            "label": "Jan",
-	            "value": "420000"
-	        }, {
-	            "label": "Feb",
-	            "value": "810000"
-	        }, {
-	            "label": "Mar",
-	            "value": "720000"
-	        }]
-	    }
+	  id: 'q1',
+	  linkedchart: {
+	    chart: (_chart = {
+	      caption: 'Monthly Revenue',
+	      subcaption: 'First Quarter',
+	      xAxisName: 'Month',
+	      yAxisName: 'Amount',
+	      numberPrefix: '$',
+	      paletteColors: '#008ee4',
+	      showBorder: '1',
+	      borderAlpha: '20',
+	      divLineAlpha: '50',
+	      showValues: '0',
+	      bgAlpha: '0',
+	      canvasBorderAlpha: '0'
+	    }, _defineProperty(_chart, 'showBorder', '0'), _defineProperty(_chart, 'plotBorderAlpha', '0'), _defineProperty(_chart, 'usePlotGradientColor', '0'), _defineProperty(_chart, 'showAlternateHgridcolor', '0'), _chart),
+	    data: [{
+	      label: 'Jan',
+	      value: '420000'
+	    }, {
+	      label: 'Feb',
+	      value: '810000'
+	    }, {
+	      label: 'Mar',
+	      value: '720000'
+	    }]
+	  }
 	}, {
-	    "id": "q2",
-	    "linkedchart": {
-	        "chart": (_chart2 = {
-	            "caption": "Monthly Revenue",
-	            "subcaption": "Second Quarter",
-	            "xAxisName": "Month",
-	            "yAxisName": "Amount",
-	            "numberPrefix": "$",
-	            "paletteColors": "#008ee4",
-	            "showBorder": "1",
-	            "borderAlpha": "20",
-	            "divLineAlpha": "50",
-	            "showValues": "0",
-	            "bgAlpha": "0",
-	            "canvasBorderAlpha": "0"
-	        }, _defineProperty(_chart2, "showBorder", "0"), _defineProperty(_chart2, "plotBorderAlpha", "0"), _defineProperty(_chart2, "usePlotGradientColor", "0"), _defineProperty(_chart2, "showAlternateHgridcolor", "0"), _chart2),
-	        "data": [{
-	            "label": "Apr",
-	            "value": "550000"
-	        }, {
-	            "label": "May",
-	            "value": "910000"
-	        }, {
-	            "label": "Jun",
-	            "value": "510000"
-	        }]
-	    }
+	  id: 'q2',
+	  linkedchart: {
+	    chart: (_chart2 = {
+	      caption: 'Monthly Revenue',
+	      subcaption: 'Second Quarter',
+	      xAxisName: 'Month',
+	      yAxisName: 'Amount',
+	      numberPrefix: '$',
+	      paletteColors: '#008ee4',
+	      showBorder: '1',
+	      borderAlpha: '20',
+	      divLineAlpha: '50',
+	      showValues: '0',
+	      bgAlpha: '0',
+	      canvasBorderAlpha: '0'
+	    }, _defineProperty(_chart2, 'showBorder', '0'), _defineProperty(_chart2, 'plotBorderAlpha', '0'), _defineProperty(_chart2, 'usePlotGradientColor', '0'), _defineProperty(_chart2, 'showAlternateHgridcolor', '0'), _chart2),
+	    data: [{
+	      label: 'Apr',
+	      value: '550000'
+	    }, {
+	      label: 'May',
+	      value: '910000'
+	    }, {
+	      label: 'Jun',
+	      value: '510000'
+	    }]
+	  }
 	}, {
-	    "id": "q3",
-	    "linkedchart": {
-	        "chart": (_chart3 = {
-	            "caption": "Monthly Revenue",
-	            "subcaption": "Third Quarter",
-	            "xAxisName": "Month",
-	            "yAxisName": "Amount",
-	            "numberPrefix": "$",
-	            "paletteColors": "#008ee4",
-	            "showBorder": "1",
-	            "borderAlpha": "20",
-	            "divLineAlpha": "50",
-	            "showValues": "0",
-	            "bgAlpha": "0",
-	            "canvasBorderAlpha": "0"
-	        }, _defineProperty(_chart3, "showBorder", "0"), _defineProperty(_chart3, "plotBorderAlpha", "0"), _defineProperty(_chart3, "usePlotGradientColor", "0"), _defineProperty(_chart3, "showAlternateHgridcolor", "0"), _chart3),
-	        "data": [{
-	            "label": "Jul",
-	            "value": "680000"
-	        }, {
-	            "label": "Aug",
-	            "value": "620000"
-	        }, {
-	            "label": "Sep",
-	            "value": "610000"
-	        }]
-	    }
+	  id: 'q3',
+	  linkedchart: {
+	    chart: (_chart3 = {
+	      caption: 'Monthly Revenue',
+	      subcaption: 'Third Quarter',
+	      xAxisName: 'Month',
+	      yAxisName: 'Amount',
+	      numberPrefix: '$',
+	      paletteColors: '#008ee4',
+	      showBorder: '1',
+	      borderAlpha: '20',
+	      divLineAlpha: '50',
+	      showValues: '0',
+	      bgAlpha: '0',
+	      canvasBorderAlpha: '0'
+	    }, _defineProperty(_chart3, 'showBorder', '0'), _defineProperty(_chart3, 'plotBorderAlpha', '0'), _defineProperty(_chart3, 'usePlotGradientColor', '0'), _defineProperty(_chart3, 'showAlternateHgridcolor', '0'), _chart3),
+	    data: [{
+	      label: 'Jul',
+	      value: '680000'
+	    }, {
+	      label: 'Aug',
+	      value: '620000'
+	    }, {
+	      label: 'Sep',
+	      value: '610000'
+	    }]
+	  }
 	}, {
-	    "id": "q4",
-	    "linkedchart": {
-	        "chart": (_chart4 = {
-	            "caption": "Monthly Revenue",
-	            "subcaption": "Fourth Quarter",
-	            "xAxisName": "Month",
-	            "yAxisName": "Amount",
-	            "numberPrefix": "$",
-	            "paletteColors": "#008ee4",
-	            "showBorder": "1",
-	            "borderAlpha": "20",
-	            "divLineAlpha": "50",
-	            "showValues": "0",
-	            "bgAlpha": "0",
-	            "canvasBorderAlpha": "0"
-	        }, _defineProperty(_chart4, "showBorder", "0"), _defineProperty(_chart4, "plotBorderAlpha", "0"), _defineProperty(_chart4, "usePlotGradientColor", "0"), _defineProperty(_chart4, "showAlternateHgridcolor", "0"), _chart4),
-	        "data": [{
-	            "label": "Oct",
-	            "value": "490000"
-	        }, {
-	            "label": "Nov",
-	            "value": "900000"
-	        }, {
-	            "label": "Dec",
-	            "value": "730000"
-	        }]
-	    }
+	  id: 'q4',
+	  linkedchart: {
+	    chart: (_chart4 = {
+	      caption: 'Monthly Revenue',
+	      subcaption: 'Fourth Quarter',
+	      xAxisName: 'Month',
+	      yAxisName: 'Amount',
+	      numberPrefix: '$',
+	      paletteColors: '#008ee4',
+	      showBorder: '1',
+	      borderAlpha: '20',
+	      divLineAlpha: '50',
+	      showValues: '0',
+	      bgAlpha: '0',
+	      canvasBorderAlpha: '0'
+	    }, _defineProperty(_chart4, 'showBorder', '0'), _defineProperty(_chart4, 'plotBorderAlpha', '0'), _defineProperty(_chart4, 'usePlotGradientColor', '0'), _defineProperty(_chart4, 'showAlternateHgridcolor', '0'), _chart4),
+	    data: [{
+	      label: 'Oct',
+	      value: '490000'
+	    }, {
+	      label: 'Nov',
+	      value: '900000'
+	    }, {
+	      label: 'Dec',
+	      value: '730000'
+	    }]
+	  }
 	}];
 
 	var chart = (_chart5 = {
-	    "caption": "Quarterly revenue",
-	    "subCaption": "Last year",
-	    "xAxisName": "Quarter",
-	    "yAxisName": "Amount",
-	    "numberPrefix": "$",
-	    "paletteColors": "#008ee4",
-	    "showBorder": "1",
-	    "borderAlpha": "20",
-	    "divLineAlpha": "50",
-	    "showValues": "0",
-	    "bgAlpha": "0",
-	    "canvasBorderAlpha": "0"
-	}, _defineProperty(_chart5, "showBorder", "0"), _defineProperty(_chart5, "plotBorderAlpha", "0"), _defineProperty(_chart5, "usePlotGradientColor", "0"), _defineProperty(_chart5, "showAlternateHgridcolor", "0"), _chart5);
+	  caption: 'Quarterly revenue',
+	  subCaption: 'Last year',
+	  xAxisName: 'Quarter',
+	  yAxisName: 'Amount',
+	  numberPrefix: '$',
+	  paletteColors: '#008ee4',
+	  showBorder: '1',
+	  borderAlpha: '20',
+	  divLineAlpha: '50',
+	  showValues: '0',
+	  bgAlpha: '0',
+	  canvasBorderAlpha: '0'
+	}, _defineProperty(_chart5, 'showBorder', '0'), _defineProperty(_chart5, 'plotBorderAlpha', '0'), _defineProperty(_chart5, 'usePlotGradientColor', '0'), _defineProperty(_chart5, 'showAlternateHgridcolor', '0'), _chart5);
 
 	var nestedCtrl = function nestedCtrl($scope) {
-
-	    plainBarChart($scope, chart, data, linkedData);
+	  plainBarChart($scope, chart, data, linkedData);
 	};
 
 	function plainBarChart($scope, chartInfo, data, linkedData) {
-	    $scope.greeting = 'test';
-	    var myDataSource = {
-	        chart: chartInfo,
-	        data: data,
-	        linkedData: linkedData
-	    };
-	    console.log("hello console: " + linkedData);
+	  $scope.greeting = 'test';
+	  var myDataSource = {
+	    chart: chartInfo,
+	    data: data,
+	    linkedData: linkedData
+	  };
+	  console.log('hello console: ' + linkedData);
 
-	    var chart = new FusionCharts({
-	        type: 'column2d',
-	        width: '500',
-	        height: '300',
-	        renderAt: 'chartContainer',
-	        dataFormat: 'json',
-	        dataSource: myDataSource
-	    });
+	  var chart = new FusionCharts({
+	    type: 'column2d',
+	    width: '500',
+	    height: '300',
+	    renderAt: 'chartContainer',
+	    dataFormat: 'json',
+	    dataSource: myDataSource
+	  });
 
-	    chart.addEventListener("chartrollover", function () {
-	        $('#slide-in').show('slow');
-	    });
+	  chart.addEventListener('chartrollover', function () {
+	    $('#slide-in').show('slow');
+	  });
 
-	    chart.addEventListener("chartrollout", function () {
-	        $('#slide-in').hide('slow');
-	    });
+	  chart.addEventListener('chartrollout', function () {
+	    $('#slide-in').hide('slow');
+	  });
 
-	    chart.render();
+	  chart.render();
 	}
 
 	exports.nestedCtrl = nestedCtrl;
@@ -46936,15 +46935,33 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var profileCtrl = function profileCtrl($scope) {
-	  $scope.name = 'Yushi Canastra';
-	  $scope.batchType = 'Java';
-	  $scope.portfolioUrl = 'http://www.example-portfolio.com/';
+	var profileCtrl = function profileCtrl($scope, $http) {
+	  var associateId = 96;
+	  var method = 'GET';
+	  var url = '/associate/' + associateId;
+
+	  $http({
+	    method: method,
+	    url: url
+	  }).then(function (response) {
+	    $scope.name = response.data.name;
+	    $scope.batchType = response.data.batch === null ? 'None' : response.data.batch;
+	    $scope.portfolioUrl = response.data.portfolioLink;
+	  });
+
+	  $scope.name = '';
+	  $scope.batchType = '';
+	  $scope.portfolioUrl = '';
 	  $scope.portfolioUrlInput = '';
 	  $scope.skills = ['Java', 'Spring', 'Hibernate', 'Servlets', 'JSP'];
 	  $scope.additionalSkills = ['hello', 'poop'];
+	  $scope.status = 'Active';
 	  $scope.additionalSkillsInput = '';
-	  $scope.submit = function () {};
+	  $scope.shortenUrl = function (urlToShorten, length) {
+	    return (// used to display portfolioUrl
+	      urlToShorten.substring(0, length) + '...'
+	    );
+	  };
 	  $scope.toggleSkillsModal = function () {
 	    $scope.additionalSkillsInput = $scope.additionalSkills.join(',');
 	    $('#additionalSkillsModal').modal('show');
