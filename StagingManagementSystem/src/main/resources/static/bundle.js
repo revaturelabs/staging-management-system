@@ -54,25 +54,27 @@
 
 	var _angularUiRouter2 = _interopRequireDefault(_angularUiRouter);
 
-	var _manager = __webpack_require__(90);
+	var _manager = __webpack_require__(89);
 
-	var _home = __webpack_require__(91);
+	var _home = __webpack_require__(90);
 
-	var _interviews = __webpack_require__(102);
+	var _interviews = __webpack_require__(91);
 
-	var _batch = __webpack_require__(93);
+	var _batch = __webpack_require__(92);
 
-	var _client = __webpack_require__(94);
+	var _client = __webpack_require__(93);
 
-	var _user = __webpack_require__(95);
+	var _user = __webpack_require__(94);
 
-	var _profile = __webpack_require__(96);
+	var _profile = __webpack_require__(95);
 
 	var _profile2 = _interopRequireDefault(_profile);
 
-	var _reports = __webpack_require__(97);
+	var _reports = __webpack_require__(96);
 
-	var _nestedGraph = __webpack_require__(98);
+	var _nestedGraph = __webpack_require__(97);
+
+	var _barGraph = __webpack_require__(98);
 
 	var _login = __webpack_require__(99);
 
@@ -147,6 +149,10 @@
 	    url: '/nestedGraph',
 	    templateUrl: 'reports/nestedGraph.html',
 	    controller: _nestedGraph.nestedCtrl
+	  }).state('reports.barGraph', {
+	    url: '/barGraph',
+	    templateUrl: 'reports/barGraph.html',
+	    controller: _barGraph.barCtrl
 	  }
 
 	  // views: {
@@ -44465,8 +44471,7 @@
 	//# sourceMappingURL=viewScroll.js.map
 
 /***/ }),
-/* 89 */,
-/* 90 */
+/* 89 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -44491,7 +44496,7 @@
 	exports.managerCtrl = managerCtrl;
 
 /***/ }),
-/* 91 */
+/* 90 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -44506,8 +44511,53 @@
 	exports.managerHomeCtrl = managerHomeCtrl;
 
 /***/ }),
-/* 92 */,
-/* 93 */
+/* 91 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	var interviewsCtrl = function interviewsCtrl($scope) {
+
+	    $scope.interviews = [{
+	        associateName: 'Billy',
+	        batch: 'Java',
+	        client: 'Infosys',
+	        scheduled_time: '6-5-2017'
+	    }, {
+	        associateName: 'Bob',
+	        batch: 'Java',
+	        client: 'CapitolOne',
+	        scheduled_time: '6-23-2017'
+	    }, {
+	        associateName: 'Sally',
+	        batch: '.Net',
+	        client: 'BofA',
+	        scheduled_time: '6-10-2017'
+	    }, {
+	        associateName: 'Jim',
+	        batch: 'SDET',
+	        client: 'Oracle',
+	        scheduled_time: '7-2-2017'
+	    }, {
+	        associateName: 'Jimbo',
+	        batch: 'Java',
+	        client: 'CapitalOne',
+	        scheduled_time: '6-23-2017'
+	    }, {
+	        associateName: 'Peter',
+	        batch: 'Java',
+	        client: 'Wells Fargo',
+	        scheduled_time: '6-15-2017'
+	    }];
+	};
+
+	exports.interviewsCtrl = interviewsCtrl;
+
+/***/ }),
+/* 92 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -44522,7 +44572,7 @@
 	exports.batchCtrl = batchCtrl;
 
 /***/ }),
-/* 94 */
+/* 93 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -44538,7 +44588,7 @@
 	exports.clientCtrl = clientCtrl;
 
 /***/ }),
-/* 95 */
+/* 94 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -44554,7 +44604,7 @@
 	exports.userCtrl = userCtrl;
 
 /***/ }),
-/* 96 */
+/* 95 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -44562,15 +44612,33 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var profileCtrl = function profileCtrl($scope) {
-	  $scope.name = 'Yushi Canastra';
-	  $scope.batchType = 'Java';
-	  $scope.portfolioUrl = 'http://www.example-portfolio.com/';
+	var profileCtrl = function profileCtrl($scope, $http) {
+	  var associateId = 96;
+	  var method = 'GET';
+	  var url = '/associate/' + associateId;
+
+	  $http({
+	    method: method,
+	    url: url
+	  }).then(function (response) {
+	    $scope.name = response.data.name;
+	    $scope.batchType = response.data.batch === null ? 'None' : response.data.batch;
+	    $scope.portfolioUrl = response.data.portfolioLink;
+	  });
+
+	  $scope.name = '';
+	  $scope.batchType = '';
+	  $scope.portfolioUrl = '';
 	  $scope.portfolioUrlInput = '';
 	  $scope.skills = ['Java', 'Spring', 'Hibernate', 'Servlets', 'JSP'];
 	  $scope.additionalSkills = ['hello', 'poop'];
+	  $scope.status = 'Active';
 	  $scope.additionalSkillsInput = '';
-	  $scope.submit = function () {};
+	  $scope.shortenUrl = function (urlToShorten, length) {
+	    return (// used to display portfolioUrl
+	      urlToShorten.substring(0, length) + '...'
+	    );
+	  };
 	  $scope.toggleSkillsModal = function () {
 	    $scope.additionalSkillsInput = $scope.additionalSkills.join(',');
 	    $('#additionalSkillsModal').modal('show');
@@ -44594,7 +44662,7 @@
 	exports.default = profileCtrl;
 
 /***/ }),
-/* 97 */
+/* 96 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -44607,6 +44675,202 @@
 	exports.reportCtrl = reportCtrl;
 
 /***/ }),
+/* 97 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _chart, _chart2, _chart3, _chart4, _chart5;
+
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+	var data = [{
+	  label: 'Q1',
+	  value: '1950000',
+	  link: 'newchart-json-q1'
+	}, {
+	  label: 'Q2',
+	  value: '1970000',
+	  link: 'newchart-json-q2'
+	}, {
+	  label: 'Q3',
+	  value: '1910000',
+	  link: 'newchart-json-q3'
+	}, {
+	  label: 'Q4',
+	  value: '2120000',
+	  link: 'newchart-json-q4'
+	}];
+
+	var linkedData = [{
+	  id: 'q1',
+	  linkedchart: {
+	    chart: (_chart = {
+	      caption: 'Monthly Revenue',
+	      subcaption: 'First Quarter',
+	      xAxisName: 'Month',
+	      yAxisName: 'Amount',
+	      numberPrefix: '$',
+	      paletteColors: '#008ee4',
+	      showBorder: '1',
+	      borderAlpha: '20',
+	      divLineAlpha: '50',
+	      showValues: '0',
+	      bgAlpha: '0',
+	      canvasBorderAlpha: '0'
+	    }, _defineProperty(_chart, 'showBorder', '0'), _defineProperty(_chart, 'plotBorderAlpha', '0'), _defineProperty(_chart, 'usePlotGradientColor', '0'), _defineProperty(_chart, 'showAlternateHgridcolor', '0'), _chart),
+	    data: [{
+	      label: 'Jan',
+	      value: '420000'
+	    }, {
+	      label: 'Feb',
+	      value: '810000'
+	    }, {
+	      label: 'Mar',
+	      value: '720000'
+	    }]
+	  }
+	}, {
+	  id: 'q2',
+	  linkedchart: {
+	    chart: (_chart2 = {
+	      caption: 'Monthly Revenue',
+	      subcaption: 'Second Quarter',
+	      xAxisName: 'Month',
+	      yAxisName: 'Amount',
+	      numberPrefix: '$',
+	      paletteColors: '#008ee4',
+	      showBorder: '1',
+	      borderAlpha: '20',
+	      divLineAlpha: '50',
+	      showValues: '0',
+	      bgAlpha: '0',
+	      canvasBorderAlpha: '0'
+	    }, _defineProperty(_chart2, 'showBorder', '0'), _defineProperty(_chart2, 'plotBorderAlpha', '0'), _defineProperty(_chart2, 'usePlotGradientColor', '0'), _defineProperty(_chart2, 'showAlternateHgridcolor', '0'), _chart2),
+	    data: [{
+	      label: 'Apr',
+	      value: '550000'
+	    }, {
+	      label: 'May',
+	      value: '910000'
+	    }, {
+	      label: 'Jun',
+	      value: '510000'
+	    }]
+	  }
+	}, {
+	  id: 'q3',
+	  linkedchart: {
+	    chart: (_chart3 = {
+	      caption: 'Monthly Revenue',
+	      subcaption: 'Third Quarter',
+	      xAxisName: 'Month',
+	      yAxisName: 'Amount',
+	      numberPrefix: '$',
+	      paletteColors: '#008ee4',
+	      showBorder: '1',
+	      borderAlpha: '20',
+	      divLineAlpha: '50',
+	      showValues: '0',
+	      bgAlpha: '0',
+	      canvasBorderAlpha: '0'
+	    }, _defineProperty(_chart3, 'showBorder', '0'), _defineProperty(_chart3, 'plotBorderAlpha', '0'), _defineProperty(_chart3, 'usePlotGradientColor', '0'), _defineProperty(_chart3, 'showAlternateHgridcolor', '0'), _chart3),
+	    data: [{
+	      label: 'Jul',
+	      value: '680000'
+	    }, {
+	      label: 'Aug',
+	      value: '620000'
+	    }, {
+	      label: 'Sep',
+	      value: '610000'
+	    }]
+	  }
+	}, {
+	  id: 'q4',
+	  linkedchart: {
+	    chart: (_chart4 = {
+	      caption: 'Monthly Revenue',
+	      subcaption: 'Fourth Quarter',
+	      xAxisName: 'Month',
+	      yAxisName: 'Amount',
+	      numberPrefix: '$',
+	      paletteColors: '#008ee4',
+	      showBorder: '1',
+	      borderAlpha: '20',
+	      divLineAlpha: '50',
+	      showValues: '0',
+	      bgAlpha: '0',
+	      canvasBorderAlpha: '0'
+	    }, _defineProperty(_chart4, 'showBorder', '0'), _defineProperty(_chart4, 'plotBorderAlpha', '0'), _defineProperty(_chart4, 'usePlotGradientColor', '0'), _defineProperty(_chart4, 'showAlternateHgridcolor', '0'), _chart4),
+	    data: [{
+	      label: 'Oct',
+	      value: '490000'
+	    }, {
+	      label: 'Nov',
+	      value: '900000'
+	    }, {
+	      label: 'Dec',
+	      value: '730000'
+	    }]
+	  }
+	}];
+
+	var chart = (_chart5 = {
+	  caption: 'Quarterly revenue',
+	  subCaption: 'Last year',
+	  xAxisName: 'Quarter',
+	  yAxisName: 'Amount',
+	  numberPrefix: '$',
+	  paletteColors: '#008ee4',
+	  showBorder: '1',
+	  borderAlpha: '20',
+	  divLineAlpha: '50',
+	  showValues: '0',
+	  bgAlpha: '0',
+	  canvasBorderAlpha: '0'
+	}, _defineProperty(_chart5, 'showBorder', '0'), _defineProperty(_chart5, 'plotBorderAlpha', '0'), _defineProperty(_chart5, 'usePlotGradientColor', '0'), _defineProperty(_chart5, 'showAlternateHgridcolor', '0'), _chart5);
+
+	var nestedCtrl = function nestedCtrl($scope) {
+	  plainBarChart($scope, chart, data, linkedData);
+	};
+
+	function plainBarChart($scope, chartInfo, data, linkedData) {
+	  $scope.greeting = 'test';
+	  var myDataSource = {
+	    chart: chartInfo,
+	    data: data,
+	    linkedData: linkedData
+	  };
+	  console.log('hello console: ' + linkedData);
+
+	  var chart = new FusionCharts({
+	    type: 'column2d',
+	    width: '500',
+	    height: '300',
+	    renderAt: 'chartContainer',
+	    dataFormat: 'json',
+	    dataSource: myDataSource
+	  });
+
+	  chart.addEventListener('chartrollover', function () {
+	    $('#slide-in').show('slow');
+	  });
+
+	  chart.addEventListener('chartrollout', function () {
+	    $('#slide-in').hide('slow');
+	  });
+
+	  chart.render();
+	}
+
+	exports.nestedCtrl = nestedCtrl;
+
+/***/ }),
 /* 98 */
 /***/ (function(module, exports) {
 
@@ -44615,193 +44879,91 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-
-	var _chart, _chart2, _chart3, _chart4, _chart5;
-
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-	var data = [{
-	    "label": "Q1",
-	    "value": "1950000",
-	    "link": "newchart-json-q1"
-	}, {
-	    "label": "Q2",
-	    "value": "1970000",
-	    "link": "newchart-json-q2"
-	}, {
-	    "label": "Q3",
-	    "value": "1910000",
-	    "link": "newchart-json-q3"
-	}, {
-	    "label": "Q4",
-	    "value": "2120000",
-	    "link": "newchart-json-q4"
-	}];
-
-	var linkedData = [{
-	    "id": "q1",
-	    "linkedchart": {
-	        "chart": (_chart = {
-	            "caption": "Monthly Revenue",
-	            "subcaption": "First Quarter",
-	            "xAxisName": "Month",
-	            "yAxisName": "Amount",
-	            "numberPrefix": "$",
-	            "paletteColors": "#008ee4",
-	            "showBorder": "1",
-	            "borderAlpha": "20",
-	            "divLineAlpha": "50",
-	            "showValues": "0",
-	            "bgAlpha": "0",
-	            "canvasBorderAlpha": "0"
-	        }, _defineProperty(_chart, "showBorder", "0"), _defineProperty(_chart, "plotBorderAlpha", "0"), _defineProperty(_chart, "usePlotGradientColor", "0"), _defineProperty(_chart, "showAlternateHgridcolor", "0"), _chart),
-	        "data": [{
-	            "label": "Jan",
-	            "value": "420000"
-	        }, {
-	            "label": "Feb",
-	            "value": "810000"
-	        }, {
-	            "label": "Mar",
-	            "value": "720000"
-	        }]
-	    }
-	}, {
-	    "id": "q2",
-	    "linkedchart": {
-	        "chart": (_chart2 = {
-	            "caption": "Monthly Revenue",
-	            "subcaption": "Second Quarter",
-	            "xAxisName": "Month",
-	            "yAxisName": "Amount",
-	            "numberPrefix": "$",
-	            "paletteColors": "#008ee4",
-	            "showBorder": "1",
-	            "borderAlpha": "20",
-	            "divLineAlpha": "50",
-	            "showValues": "0",
-	            "bgAlpha": "0",
-	            "canvasBorderAlpha": "0"
-	        }, _defineProperty(_chart2, "showBorder", "0"), _defineProperty(_chart2, "plotBorderAlpha", "0"), _defineProperty(_chart2, "usePlotGradientColor", "0"), _defineProperty(_chart2, "showAlternateHgridcolor", "0"), _chart2),
-	        "data": [{
-	            "label": "Apr",
-	            "value": "550000"
-	        }, {
-	            "label": "May",
-	            "value": "910000"
-	        }, {
-	            "label": "Jun",
-	            "value": "510000"
-	        }]
-	    }
-	}, {
-	    "id": "q3",
-	    "linkedchart": {
-	        "chart": (_chart3 = {
-	            "caption": "Monthly Revenue",
-	            "subcaption": "Third Quarter",
-	            "xAxisName": "Month",
-	            "yAxisName": "Amount",
-	            "numberPrefix": "$",
-	            "paletteColors": "#008ee4",
-	            "showBorder": "1",
-	            "borderAlpha": "20",
-	            "divLineAlpha": "50",
-	            "showValues": "0",
-	            "bgAlpha": "0",
-	            "canvasBorderAlpha": "0"
-	        }, _defineProperty(_chart3, "showBorder", "0"), _defineProperty(_chart3, "plotBorderAlpha", "0"), _defineProperty(_chart3, "usePlotGradientColor", "0"), _defineProperty(_chart3, "showAlternateHgridcolor", "0"), _chart3),
-	        "data": [{
-	            "label": "Jul",
-	            "value": "680000"
-	        }, {
-	            "label": "Aug",
-	            "value": "620000"
-	        }, {
-	            "label": "Sep",
-	            "value": "610000"
-	        }]
-	    }
-	}, {
-	    "id": "q4",
-	    "linkedchart": {
-	        "chart": (_chart4 = {
-	            "caption": "Monthly Revenue",
-	            "subcaption": "Fourth Quarter",
-	            "xAxisName": "Month",
-	            "yAxisName": "Amount",
-	            "numberPrefix": "$",
-	            "paletteColors": "#008ee4",
-	            "showBorder": "1",
-	            "borderAlpha": "20",
-	            "divLineAlpha": "50",
-	            "showValues": "0",
-	            "bgAlpha": "0",
-	            "canvasBorderAlpha": "0"
-	        }, _defineProperty(_chart4, "showBorder", "0"), _defineProperty(_chart4, "plotBorderAlpha", "0"), _defineProperty(_chart4, "usePlotGradientColor", "0"), _defineProperty(_chart4, "showAlternateHgridcolor", "0"), _chart4),
-	        "data": [{
-	            "label": "Oct",
-	            "value": "490000"
-	        }, {
-	            "label": "Nov",
-	            "value": "900000"
-	        }, {
-	            "label": "Dec",
-	            "value": "730000"
-	        }]
-	    }
-	}];
-
-	var chart = (_chart5 = {
-	    "caption": "Quarterly revenue",
-	    "subCaption": "Last year",
-	    "xAxisName": "Quarter",
-	    "yAxisName": "Amount",
-	    "numberPrefix": "$",
-	    "paletteColors": "#008ee4",
-	    "showBorder": "1",
-	    "borderAlpha": "20",
-	    "divLineAlpha": "50",
-	    "showValues": "0",
-	    "bgAlpha": "0",
-	    "canvasBorderAlpha": "0"
-	}, _defineProperty(_chart5, "showBorder", "0"), _defineProperty(_chart5, "plotBorderAlpha", "0"), _defineProperty(_chart5, "usePlotGradientColor", "0"), _defineProperty(_chart5, "showAlternateHgridcolor", "0"), _chart5);
-
-	var nestedCtrl = function nestedCtrl($scope) {
-
-	    plainBarChart($scope, chart, data, linkedData);
+	var chart = {
+	    caption: "Product-wise quarterly revenue in current year",
+	    subCaption: "Harry's SuperMart",
+	    xAxisname: "Quarter",
+	    yAxisName: "Revenue (In USD)",
+	    numberPrefix: "$",
+	    paletteColors: "#ff0000,#0075c2",
+	    bgColor: "#ffffff",
+	    borderAlpha: "20",
+	    showCanvasBorder: "0",
+	    usePlotGradientColor: "0",
+	    plotBorderAlpha: "10",
+	    legendBorderAlpha: "0",
+	    legendShadow: "0",
+	    valueFontColor: "#ffffff",
+	    showXAxisLine: "1",
+	    xAxisLineColor: "#999999",
+	    divlineColor: "#999999",
+	    divLineDashed: "1",
+	    showAlternateHGridColor: "0",
+	    subcaptionFontBold: "0",
+	    subcaptionFontSize: "14",
+	    showHoverEffect: "1"
 	};
 
-	function plainBarChart($scope, chartInfo, data, linkedData) {
+	var categories = [{
+	    "category": [{
+	        "label": "Q1"
+	    }, {
+	        "label": "Q2"
+	    }, {
+	        "label": "Q3"
+	    }, {
+	        "label": "Q4"
+	    }]
+	}];
+	var dataset = [{
+	    "seriesname": "Food Products",
+	    "data": [{
+	        "value": "121000"
+	    }, {
+	        "value": "135000"
+	    }, {
+	        "value": "123500"
+	    }, {
+	        "value": "145000"
+	    }]
+	}, {
+	    "seriesname": "Non-Food Products",
+	    "data": [{
+	        "value": "131400"
+	    }, {
+	        "value": "154800"
+	    }, {
+	        "value": "98300"
+	    }, {
+	        "value": "131800"
+	    }]
+	}];
+
+	var barCtrl = function barCtrl($scope) {
+	    plainBarChart2($scope, chart, categories, dataset);
+	};
+
+	function plainBarChart2($scope, chartstuff, categories, dataset) {
 	    $scope.greeting = 'test';
 	    var myDataSource = {
-	        chart: chartInfo,
-	        data: data,
-	        linkedData: linkedData
+	        chart: chartstuff,
+	        categories: categories,
+	        dataset: dataset
 	    };
-	    console.log("hello console: " + linkedData);
 
 	    var chart = new FusionCharts({
-	        type: 'column2d',
-	        width: '500',
-	        height: '300',
-	        renderAt: 'chartContainer',
+	        type: 'stackedcolumn3d',
+	        renderAt: 'chart-container',
+	        width: '550',
+	        height: '350',
 	        dataFormat: 'json',
 	        dataSource: myDataSource
-	    });
-
-	    chart.addEventListener("chartrollover", function () {
-	        $('#slide-in').show('slow');
-	    });
-
-	    chart.addEventListener("chartrollout", function () {
-	        $('#slide-in').hide('slow');
 	    });
 
 	    chart.render();
 	}
 
-	exports.nestedCtrl = nestedCtrl;
+	exports.barCtrl = barCtrl;
 
 /***/ }),
 /* 99 */
@@ -47028,52 +47190,6 @@
 	c,b){var f=.5*b,k=a-b,h=a+b,l=a-f,m=a+f,n=a+.5,p=n+1,r=n+1.5,t=c-b,u=c+f,v=c-f,f=c+(b-f);return["M",k,t,"L",l,v,l,f,k,u,a-.5,u,a,c+b+.5,n,u,h,u,m,f,m,v,h,t,r,t,r,v,r,f,p,f,p,v,r,v,r,t,"Z"]},zoomOutIcon:function(a,c,b){a-=.2*b;c-=.2*b;var f=.8*b,k=w.rad(43),h=w.rad(48),l=a+f*ya(k),k=c+f*va(k),m=a+f*ya(h),h=c+f*va(h),n=w.rad(45),p=l+b*ya(n),r=k+b*va(n),t=m+b*ya(n);b=h+b*va(n);return["M",l,k,"A",f,f,0,1,0,m,h,"Z","M",l+1,k+1,"L",p,r,t,b,m+1,h+1,"Z","M",a-2,c,"L",a+2,c,"Z"]},resetIcon:function(a,c,b){var f=
 	a-b,k=(da.PI/2+da.PI)/2;a+=b*ya(k);var k=c+b*va(k),h=2*b/3;return["M",f,c,"A",b,b,0,1,1,a,k,"L",a+h,k-1,a+2,k+h-.5,a,k]}})}])});
 
-
-/***/ }),
-/* 102 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	var interviewsCtrl = function interviewsCtrl($scope) {
-
-	    $scope.interviews = [{
-	        associateName: 'Billy',
-	        batch: 'Java',
-	        client: 'Infosys',
-	        scheduled_time: '6-5-2017'
-	    }, {
-	        associateName: 'Bob',
-	        batch: 'Java',
-	        client: 'CapitolOne',
-	        scheduled_time: '6-23-2017'
-	    }, {
-	        associateName: 'Sally',
-	        batch: '.Net',
-	        client: 'BofA',
-	        scheduled_time: '6-10-2017'
-	    }, {
-	        associateName: 'Jim',
-	        batch: 'SDET',
-	        client: 'Oracle',
-	        scheduled_time: '7-2-2017'
-	    }, {
-	        associateName: 'Jimbo',
-	        batch: 'Java',
-	        client: 'CapitalOne',
-	        scheduled_time: '6-23-2017'
-	    }, {
-	        associateName: 'Peter',
-	        batch: 'Java',
-	        client: 'Wells Fargo',
-	        scheduled_time: '6-15-2017'
-	    }];
-	};
-
-	exports.interviewsCtrl = interviewsCtrl;
 
 /***/ })
 /******/ ]);
