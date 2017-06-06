@@ -1,13 +1,12 @@
 import angular from 'angular';
 import uiRouter from 'angular-ui-router';
-import angularBootstrap from 'angular-bootstrap-npm';
 
 var FusionCharts = require("fusioncharts");
 require("fusioncharts/fusioncharts.charts")(FusionCharts);
 
-console.log();
-
 import { managerCtrl } from './manager-pages/manager';
+import { managerHomeCtrl } from './manager-pages/home/home'
+import { interviewsCtrl } from './manager-pages/home/interviews/interviews';
 import { batchCtrl } from './manager-pages/create/batch';
 import { clientCtrl } from './manager-pages/create/client';
 import { userCtrl } from './manager-pages/create/user';
@@ -16,7 +15,10 @@ import { reportCtrl } from './reports/reports';
 import { nestedCtrl } from './reports/nestedGraph';
 import loginCtrl from './login/login';
 
-const routerApp = angular.module('routerApp', [uiRouter, angularBootstrap]);
+const routerApp = angular.module('routerApp', [uiRouter]);
+
+//named view controllers
+routerApp.controller('interviewsCtrl', interviewsCtrl);
 
 routerApp.config(($stateProvider, $urlRouterProvider) => {
   $urlRouterProvider.otherwise('/login');
@@ -51,6 +53,23 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       url: '/client',
       templateUrl: 'manager-pages/create/client.html',
       controller: clientCtrl,
+    })
+    .state('manager.home', {
+      url: '/home',
+      views: {
+              '': { templateUrl: 'manager-pages/home/home.html' },
+              'available@manager.home': { templateUrl: 'manager-pages/home/available.html' },
+              'priorityMapped@manager.home': {
+                  templateUrl: 'manager-pages/home/priorityMapped.html',
+              },
+              'interviews@manager.home': {
+                templateUrl: 'manager-pages/home/interviews/interviews.html',
+                controller: 'interviewsCtrl',
+              },
+              'checkins@manager.home': {
+                templateUrl: 'manager-pages/home/checkins.html',
+              }
+          }
     })
     .state('associate', {
       url: '/associate',
@@ -110,10 +129,4 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
     //     }
     //
     // });
-});
-
-routerApp.controller('navController', ($scope) => {
-  // $scope.openMenu = ($mdOpenMenu, ev) => {
-  //   $mdOpenMenu(ev);
-  // };
 });
