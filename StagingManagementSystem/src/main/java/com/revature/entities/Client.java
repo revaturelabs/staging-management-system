@@ -37,6 +37,7 @@ public class Client implements SmsValidatable {
 
 	public Client() {
 		super();
+		this.active=true;
 	}
 	
 	public Client(Client other){

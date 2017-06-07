@@ -37,6 +37,7 @@ public class Trainer implements SmsValidatable {
 
 	public Trainer() {
 		super();
+		this.active=true;
 	}
 
 	public Trainer(Long id, String name, Boolean active) {

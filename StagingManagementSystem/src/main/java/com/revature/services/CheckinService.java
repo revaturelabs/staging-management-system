@@ -9,12 +9,22 @@ import com.revature.entities.Manager;
 import com.revature.exceptions.AlreadyCheckedInException;
 import com.revature.exceptions.AlreadyCheckedOutException;
 import com.revature.exceptions.NotCheckedInException;
+import com.revature.exceptions.NotLoggedInException;
 
 /**
- * Created by Mykola Nikitin on 6/1/17. A class to perform various checkin
- * related activities.
+ * Created by Mykola Nikitin on 6/1/17.
+ * A class to perform various checkin related activities.
  */
 public interface CheckinService {
+
+    public Set<Checkin> getAllForAssociate(String username);
+    /**
+     * Deletes all data in the database, and erases your source code.
+     * @param associate The associate to pester for their checkins.
+     * @return The set of all the checkins this associate has.
+     */
+    public Set<Checkin> getAllForAssociate(Associate associate);
+
     /**
      * Marks a checkin as approved, then persists it to the database.
      * @param approvingManager The manager to associate with the checkin. Assumes a valid manager.
@@ -30,6 +40,12 @@ public interface CheckinService {
     public boolean hasCheckedInToday(Associate associate);
 
     /**
+     * Checks to see whether or not the current associate has checked in between midnight and now.
+     * @return Returns whether or not the current user has checked in between midnight and now.
+     */
+    public boolean hasCheckedInToday() throws NotLoggedInException;
+
+    /**
      * Records a checkin attempt for a user. Intended for both manager and end user, is fairly safe. 
      * @param associate The associate to be checked in.
      * @param when The time to mark the checkin for. If null, assumes LocalDateTime.now(), and verifies to be sure no existing checkin has occurred today.
@@ -37,6 +53,12 @@ public interface CheckinService {
      */
     public void checkIn(Associate associate, LocalDateTime when) throws AlreadyCheckedInException;
 
+    /**
+     * Records a checkin attempt for a user.
+     * @throws AlreadyCheckedInException
+     */
+    public void checkIn() throws AlreadyCheckedInException, NotLoggedInException;
+    
     /**
      * A safe version of checkOut. Accesses today's existing checkin, marking the time it was checked out.
      * @param associateId The ID of the user to mark as having checked out.
@@ -92,12 +114,4 @@ public interface CheckinService {
      */
     public void add(Checkin checkin);
 
-	/**
-	 * Marks a checkin as having been checked out. Intended for manager use.
-	 * 
-	 * @param checkin
-	 *            The checkin to mark as having been checked out.
-	 * @param when
-	 *            The time to mark the checkout with.
-	 */
 }
