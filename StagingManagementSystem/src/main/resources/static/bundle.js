@@ -54,44 +54,44 @@
 
 	var _angularUiRouter2 = _interopRequireDefault(_angularUiRouter);
 
-	var _manager = __webpack_require__(89);
+	var _manager = __webpack_require__(98);
 
-	var _home = __webpack_require__(90);
+	var _home = __webpack_require__(104);
 
-	var _interviews = __webpack_require__(91);
+	var _interviews = __webpack_require__(105);
 
-	var _create = __webpack_require__(92);
+	var _create = __webpack_require__(106);
 
 	var _create2 = _interopRequireDefault(_create);
 
-	var _batch = __webpack_require__(93);
+	var _batch = __webpack_require__(99);
 
-	var _client = __webpack_require__(94);
+	var _client = __webpack_require__(100);
 
-	var _user = __webpack_require__(95);
+	var _user = __webpack_require__(101);
 
-	var _profile = __webpack_require__(96);
+	var _profile = __webpack_require__(102);
 
 	var _profile2 = _interopRequireDefault(_profile);
 
-	var _associate = __webpack_require__(97);
+	var _associate = __webpack_require__(107);
 
 	var _associate2 = _interopRequireDefault(_associate);
 
-	var _reports = __webpack_require__(98);
+	var _reports = __webpack_require__(94);
 
-	var _nestedGraph = __webpack_require__(99);
+	var _nestedGraph = __webpack_require__(95);
 
-	var _barGraph = __webpack_require__(100);
+	var _barGraph = __webpack_require__(108);
 
-	var _login = __webpack_require__(101);
+	var _login = __webpack_require__(103);
 
 	var _login2 = _interopRequireDefault(_login);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var FusionCharts = __webpack_require__(102);
-	__webpack_require__(103)(FusionCharts);
+	var FusionCharts = __webpack_require__(96);
+	__webpack_require__(97)(FusionCharts);
 
 	var routerApp = _angular2.default.module('routerApp', [_angularUiRouter2.default]);
 
@@ -44481,315 +44481,12 @@
 	//# sourceMappingURL=viewScroll.js.map
 
 /***/ }),
-/* 89 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	var managerCtrl = function managerCtrl($scope, $state, $location, $http) {
-		$scope.isActive = function (viewLocation) {
-			return viewLocation === $location.path();
-		};
-
-		$scope.logout = function () {
-			$http({
-				method: 'GET',
-				url: '/logout/'
-			}).then(function (response) {
-				$state.go('login');
-			});
-		};
-
-		$scope.manager = { name: 'Joe' };
-	};
-
-	exports.managerCtrl = managerCtrl;
-
-/***/ }),
-/* 90 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var managerHomeCtrl = function managerHomeCtrl($scope) {
-	  $scope.view2 = 'interviews';
-	  $scope.selectView1 = function (selectedView) {
-	    if (selectedView === 'available') {
-	      $scope.availableSelecter = { 'background-color': 'gray' };
-	      $scope.prioritySelecter = { 'background-color': '#f8f8f8' };
-	      $scope.view1 = 'available';
-	    } else if (selectedView === 'priority') {
-	      $scope.availableSelecter = { 'background-color': '#f8f8f8' };
-	      $scope.prioritySelecter = { 'background-color': 'gray' };
-	      $scope.view1 = 'priorityMapped';
-	    }
-	  };
-	  $scope.selectView2 = function (selectedView) {
-	    if (selectedView === 'interviews') {
-	      $scope.interviewsSelecter = { 'background-color': 'gray' };
-	      $scope.checkinsSelecter = { 'background-color': '#f8f8f8' };
-	      $scope.view2 = 'interviews';
-	    } else if (selectedView === 'checkins') {
-	      $scope.interviewsSelecter = { 'background-color': '#f8f8f8' };
-	      $scope.checkinsSelecter = { 'background-color': 'gray' };
-	      $scope.view2 = 'checkins';
-	    }
-	  };
-
-	  //initialize our named views
-	  $scope.selectView1('available');
-	  $scope.selectView2('interviews');
-	};
-
-	exports.managerHomeCtrl = managerHomeCtrl;
-
-/***/ }),
-/* 91 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	var interviewsCtrl = function interviewsCtrl($scope) {
-
-	    $scope.interviewSelect = function (interview) {
-	        $scope.interviewSideTable = { "interview": interview };
-	    };
-
-	    $scope.interviews = [{
-	        associateName: 'Billy',
-	        batch: 'Java',
-	        client: 'Infosys',
-	        scheduled_time: '6-5-2017'
-	    }, {
-	        associateName: 'Bob',
-	        batch: 'Java',
-	        client: 'CapitolOne',
-	        scheduled_time: '6-23-2017'
-	    }, {
-	        associateName: 'Sally',
-	        batch: '.Net',
-	        client: 'BofA',
-	        scheduled_time: '6-10-2017'
-	    }, {
-	        associateName: 'Jim',
-	        batch: 'SDET',
-	        client: 'Oracle',
-	        scheduled_time: '7-2-2017'
-	    }, {
-	        associateName: 'Jimbo',
-	        batch: 'Java',
-	        client: 'CapitalOne',
-	        scheduled_time: '6-23-2017'
-	    }, {
-	        associateName: 'Peter',
-	        batch: 'Java',
-	        client: 'Wells Fargo',
-	        scheduled_time: '6-15-2017'
-	    }];
-	};
-
-	exports.interviewsCtrl = interviewsCtrl;
-
-/***/ }),
-/* 92 */
-/***/ (function(module, exports) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var managerCreateCtrl = function managerCreateCtrl($scope, $state) {
-	  $scope.$state = $state;
-	};
-
-	exports.default = managerCreateCtrl;
-
-/***/ }),
-/* 93 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var batchCtrl = function batchCtrl($scope, $http) {
-	  console.log('starting');
-	  $scope.submit = function () {
-	    var item = JSON.stringify($scope.batch);
-	    console.log(item);
-	    $http.post('/batch', item).then(function (response) {
-	      console.log("success");
-	    }, function () {
-	      console.log("failure");
-	    });
-	  };
-	};
-
-	exports.batchCtrl = batchCtrl;
-
-/***/ }),
+/* 89 */,
+/* 90 */,
+/* 91 */,
+/* 92 */,
+/* 93 */,
 /* 94 */
-/***/ (function(module, exports) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var clientCtrl = function clientCtrl($scope, $http) {
-	  $scope.submit = function () {
-	    var item = JSON.stringify($scope.client);
-	    console.log(item);
-	    $http.post('/client', item).then(function (response) {
-	      console.log("success");
-	    }, function () {
-	      console.log("failure");
-	    });
-	  };
-	};
-
-	exports.clientCtrl = clientCtrl;
-
-/***/ }),
-/* 95 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var userCtrl = function userCtrl($scope, $http) {
-	  $scope.submit = function () {
-	    var item = JSON.stringify($scope.user);
-	    //need 2 different post requests for manager and associate
-	    console.log(item);
-	    console.log($scope.user.type == 'Associate');
-	    if ($scope.user.type == 'Associate') {
-	      console.log('in associate');
-	      $http.post('/associate', item).then(function (response) {
-	        console.log("success");
-	      }, function () {
-	        console.log("failure");
-	      });
-	    };
-	    if ($scope.user.type == 'Manager') {
-	      console.log('in manager');
-	      $http.post('/manager', item).then(function (response) {
-	        console.log("success");
-	      }, function () {
-	        console.log("failure");
-	      });
-	    };
-	  };
-	};
-
-	exports.userCtrl = userCtrl;
-
-/***/ }),
-/* 96 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var profileCtrl = function profileCtrl($scope, $http) {
-	  var associateId = 96;
-	  var method = 'GET';
-	  var url = '/associate/' + associateId;
-
-	  $http({
-	    method: method,
-	    url: url
-	  }).then(function (response) {
-	    $scope.name = response.data.name;
-	    $scope.batchType = response.data.batch === null ? 'None' : response.data.batch;
-	    $scope.portfolioUrl = response.data.portfolioLink;
-	  });
-
-	  $scope.name = '';
-	  $scope.batchType = '';
-	  $scope.portfolioUrl = '';
-	  $scope.portfolioUrlInput = '';
-	  $scope.skills = ['Java', 'Spring', 'Hibernate', 'Servlets', 'JSP'];
-	  $scope.additionalSkills = ['hello', 'poop'];
-	  $scope.status = 'Active';
-	  $scope.additionalSkillsInput = '';
-	  $scope.shortenUrl = function (urlToShorten, length) {
-	    return (// used to display portfolioUrl
-	      urlToShorten.substring(0, length) + '...'
-	    );
-	  };
-	  $scope.toggleSkillsModal = function () {
-	    $scope.additionalSkillsInput = $scope.additionalSkills.join(',');
-	    $('#additionalSkillsModal').modal('show');
-	  };
-	  $scope.openPortfolioUrlModal = function () {
-	    $scope.portfolioUrlInput = $scope.portfolioUrl;
-	    $('#portfolioUrlModal').modal('show');
-	  };
-	  $scope.submitPortfolioUrl = function () {
-	    $scope.portfolioUrl = $scope.portfolioUrlInput;
-	    $('#portfolioUrlModal').modal('hide');
-	  };
-	  $scope.submitSkills = function () {
-	    $scope.additionalSkills = $scope.additionalSkillsInput.split(',').filter(function (skill) {
-	      return skill !== '';
-	    });
-	    $('#additionalSkillsModal').modal('hide');
-	  };
-	};
-
-	exports.default = profileCtrl;
-
-/***/ }),
-/* 97 */
-/***/ (function(module, exports) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	var associateCtrl = function associateCtrl($scope, $location, $http, $state) {
-		$scope.checkInBtn = "Check In";
-		$scope.hasCheckedIn = false;
-		$scope.isActive = function (viewLocation) {
-			return viewLocation === $location.path();
-		};
-
-		$scope.checkIn = function () {
-			$scope.checkInBtn = "Checked In";
-			$scope.hasCheckedIn = true;
-		};
-
-		$scope.logout = function () {
-			$http({
-				method: 'GET',
-				url: '/logout/'
-			}).then(function (response) {
-				$state.go('login');
-			});
-		};
-	};
-
-	exports.default = associateCtrl;
-
-/***/ }),
-/* 98 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -44802,7 +44499,7 @@
 	exports.reportCtrl = reportCtrl;
 
 /***/ }),
-/* 99 */
+/* 95 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -44998,151 +44695,7 @@
 	exports.nestedCtrl = nestedCtrl;
 
 /***/ }),
-/* 100 */
-/***/ (function(module, exports) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	var chart = {
-	    caption: "Product-wise quarterly revenue in current year",
-	    subCaption: "Harry's SuperMart",
-	    xAxisname: "Quarter",
-	    yAxisName: "Revenue (In USD)",
-	    numberPrefix: "$",
-	    paletteColors: "#ff0000,#0075c2",
-	    bgColor: "#ffffff",
-	    borderAlpha: "20",
-	    showCanvasBorder: "0",
-	    usePlotGradientColor: "0",
-	    plotBorderAlpha: "10",
-	    legendBorderAlpha: "0",
-	    legendShadow: "0",
-	    valueFontColor: "#ffffff",
-	    showXAxisLine: "1",
-	    xAxisLineColor: "#999999",
-	    divlineColor: "#999999",
-	    divLineDashed: "1",
-	    showAlternateHGridColor: "0",
-	    subcaptionFontBold: "0",
-	    subcaptionFontSize: "14",
-	    showHoverEffect: "1"
-	};
-
-	var categories = [{
-	    "category": [{
-	        "label": "Q1"
-	    }, {
-	        "label": "Q2"
-	    }, {
-	        "label": "Q3"
-	    }, {
-	        "label": "Q4"
-	    }]
-	}];
-	var dataset = [{
-	    "seriesname": "Food Products",
-	    "data": [{
-	        "value": "121000"
-	    }, {
-	        "value": "135000"
-	    }, {
-	        "value": "123500"
-	    }, {
-	        "value": "145000"
-	    }]
-	}, {
-	    "seriesname": "Non-Food Products",
-	    "data": [{
-	        "value": "131400"
-	    }, {
-	        "value": "154800"
-	    }, {
-	        "value": "98300"
-	    }, {
-	        "value": "131800"
-	    }]
-	}];
-
-	var barCtrl = function barCtrl($scope) {
-	    plainBarChart2($scope, chart, categories, dataset);
-	};
-
-	function plainBarChart2($scope, chartstuff, categories, dataset) {
-	    $scope.greeting = 'test';
-	    var myDataSource = {
-	        chart: chartstuff,
-	        categories: categories,
-	        dataset: dataset
-	    };
-
-	    var chart = new FusionCharts({
-	        type: 'stackedcolumn3d',
-	        renderAt: 'chart-container',
-	        width: '550',
-	        height: '350',
-	        dataFormat: 'json',
-	        dataSource: myDataSource
-	    });
-
-	    chart.render();
-	}
-
-	exports.barCtrl = barCtrl;
-
-/***/ }),
-/* 101 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var loginCtrl = function loginCtrl($scope, $http, $state) {
-	  var loginBtn = document.getElementById('loginBtn');
-	  $scope.username = '';
-	  $scope.password = '';
-	  $scope.errorMsgShow = false;
-
-	  $scope.submit = function () {
-	    loginBtn.disabled = true;
-	    loginBtn.innerHTML = "Logging in...";
-	    $scope.errorMsgShow = false;
-
-	    if ($scope.username === '' || $scope.username === undefined) {
-	      $scope.errorMsg = 'Please input a Username.';
-	      $scope.errorMsgShow = true;
-	      loginBtn.disabled = false;
-	      loginBtn.innerHTML = "Log In";
-	    } else if ($scope.password === '' || $scope.password === undefined) {
-	      $scope.errorMsg = 'Please input a Password.';
-	      $scope.errorMsgShow = true;
-	      loginBtn.disabled = false;
-	      loginBtn.innerHTML = "Log In";
-	    } else {
-	      $http({
-	        method: 'POST',
-	        url: '/login',
-	        data: { username: $scope.username, password: $scope.password }
-	      }).then(function (response) {
-	        if (response.data.permission !== undefined) $state.go('manager');else $state.go('associate');
-	      }, function () {
-	        $scope.errorMsg = 'Username or Password is incorrect.';
-	        $scope.errorMsgShow = true;
-	        loginBtn.disabled = false;
-	        loginBtn.innerHTML = "Log In";
-	      });
-	    }
-	  };
-	};
-
-	exports.default = loginCtrl;
-
-/***/ }),
-/* 102 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*
@@ -47068,7 +46621,7 @@
 
 
 /***/ }),
-/* 103 */
+/* 97 */
 /***/ (function(module, exports) {
 
 	/*
@@ -47316,6 +46869,458 @@
 	c,b){var f=.5*b,k=a-b,h=a+b,l=a-f,m=a+f,n=a+.5,p=n+1,r=n+1.5,t=c-b,u=c+f,v=c-f,f=c+(b-f);return["M",k,t,"L",l,v,l,f,k,u,a-.5,u,a,c+b+.5,n,u,h,u,m,f,m,v,h,t,r,t,r,v,r,f,p,f,p,v,r,v,r,t,"Z"]},zoomOutIcon:function(a,c,b){a-=.2*b;c-=.2*b;var f=.8*b,k=w.rad(43),h=w.rad(48),l=a+f*ya(k),k=c+f*va(k),m=a+f*ya(h),h=c+f*va(h),n=w.rad(45),p=l+b*ya(n),r=k+b*va(n),t=m+b*ya(n);b=h+b*va(n);return["M",l,k,"A",f,f,0,1,0,m,h,"Z","M",l+1,k+1,"L",p,r,t,b,m+1,h+1,"Z","M",a-2,c,"L",a+2,c,"Z"]},resetIcon:function(a,c,b){var f=
 	a-b,k=(da.PI/2+da.PI)/2;a+=b*ya(k);var k=c+b*va(k),h=2*b/3;return["M",f,c,"A",b,b,0,1,1,a,k,"L",a+h,k-1,a+2,k+h-.5,a,k]}})}])});
 
+
+/***/ }),
+/* 98 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	var managerCtrl = function managerCtrl($scope, $state, $location, $http) {
+		$scope.isActive = function (viewLocation) {
+			return viewLocation === $location.path();
+		};
+
+		$scope.logout = function () {
+			$http({
+				method: 'GET',
+				url: '/logout/'
+			}).then(function (response) {
+				$state.go('login');
+			});
+		};
+
+		$scope.manager = { name: 'Joe' };
+	};
+
+	exports.managerCtrl = managerCtrl;
+
+/***/ }),
+/* 99 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var batchCtrl = function batchCtrl($scope, $http) {
+	  console.log('starting');
+	  $scope.submit = function () {
+	    var item = JSON.stringify($scope.batch);
+	    console.log(item);
+	    $http.post('/batch', item).then(function (response) {
+	      console.log("success");
+	    }, function () {
+	      console.log("failure");
+	    });
+	  };
+	};
+
+	exports.batchCtrl = batchCtrl;
+
+/***/ }),
+/* 100 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var clientCtrl = function clientCtrl($scope, $http) {
+	  $scope.submit = function () {
+	    var item = JSON.stringify($scope.client);
+	    console.log(item);
+	    $http.post('/client', item).then(function (response) {
+	      console.log("success");
+	    }, function () {
+	      console.log("failure");
+	    });
+	  };
+	};
+
+	exports.clientCtrl = clientCtrl;
+
+/***/ }),
+/* 101 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var userCtrl = function userCtrl($scope, $http) {
+	  $scope.submit = function () {
+	    var item = JSON.stringify($scope.user);
+	    //need 2 different post requests for manager and associate
+	    console.log(item);
+	    console.log($scope.user.type == 'Associate');
+	    if ($scope.user.type == 'Associate') {
+	      console.log('in associate');
+	      $http.post('/associate', item).then(function (response) {
+	        console.log("success");
+	      }, function () {
+	        console.log("failure");
+	      });
+	    };
+	    if ($scope.user.type == 'Manager') {
+	      console.log('in manager');
+	      $http.post('/manager', item).then(function (response) {
+	        console.log("success");
+	      }, function () {
+	        console.log("failure");
+	      });
+	    };
+	  };
+	};
+
+	exports.userCtrl = userCtrl;
+
+/***/ }),
+/* 102 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var profileCtrl = function profileCtrl($scope, $http) {
+	  var associateId = 1;
+	  var method = 'GET';
+	  var url = '/associate/' + associateId;
+
+	  $http({
+	    method: method,
+	    url: url
+	  }).then(function (response) {
+	    $scope.name = response.data.name;
+	    $scope.batchType = response.data.batch === null ? 'None' : response.data.batch;
+	    $scope.portfolioUrl = response.data.portfolioLink;
+	  });
+
+	  $scope.name = '';
+	  $scope.batchType = '';
+	  $scope.portfolioUrl = '';
+	  $scope.portfolioUrlInput = '';
+	  $scope.skills = ['Java', 'Spring', 'Hibernate', 'Servlets', 'JSP'];
+	  $scope.additionalSkills = ['hello', 'poop'];
+	  $scope.status = 'Active';
+	  $scope.additionalSkillsInput = '';
+	  $scope.shortenUrl = function (urlToShorten, length) {
+	    return (// used to display portfolioUrl
+	      urlToShorten === '' ? '' : urlToShorten.substring(0, length) + '...'
+	    );
+	  };
+	  $scope.toggleSkillsModal = function () {
+	    $scope.additionalSkillsInput = $scope.additionalSkills.join(',');
+	    $('#additionalSkillsModal').modal('show');
+	  };
+	  $scope.openPortfolioUrlModal = function () {
+	    $scope.portfolioUrlInput = $scope.portfolioUrl;
+	    $('#portfolioUrlModal').modal('show');
+	  };
+	  $scope.submitPortfolioUrl = function () {
+	    $scope.portfolioUrl = $scope.portfolioUrlInput;
+	    $('#portfolioUrlModal').modal('hide');
+	  };
+	  $scope.submitSkills = function () {
+	    $scope.additionalSkills = $scope.additionalSkillsInput.split(',').filter(function (skill) {
+	      return skill !== '';
+	    });
+	    $('#additionalSkillsModal').modal('hide');
+	  };
+	};
+
+	exports.default = profileCtrl;
+
+/***/ }),
+/* 103 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var loginCtrl = function loginCtrl($scope, $http, $state) {
+	  var loginBtn = document.getElementById('loginBtn');
+	  $scope.username = '';
+	  $scope.password = '';
+	  $scope.errorMsgShow = false;
+
+	  $scope.submit = function () {
+	    loginBtn.disabled = true;
+	    loginBtn.innerHTML = "Logging in...";
+	    $scope.errorMsgShow = false;
+
+	    if ($scope.username === '' || $scope.username === undefined) {
+	      $scope.errorMsg = 'Please input a Username.';
+	      $scope.errorMsgShow = true;
+	      loginBtn.disabled = false;
+	      loginBtn.innerHTML = "Log In";
+	    } else if ($scope.password === '' || $scope.password === undefined) {
+	      $scope.errorMsg = 'Please input a Password.';
+	      $scope.errorMsgShow = true;
+	      loginBtn.disabled = false;
+	      loginBtn.innerHTML = "Log In";
+	    } else {
+	      $http({
+	        method: 'POST',
+	        url: '/login',
+	        data: { username: $scope.username, password: $scope.password }
+	      }).then(function (response) {
+	        if (response.data.permission !== undefined) $state.go('manager');else $state.go('associate');
+	      }, function () {
+	        $scope.errorMsg = 'Username or Password is incorrect.';
+	        $scope.errorMsgShow = true;
+	        loginBtn.disabled = false;
+	        loginBtn.innerHTML = "Log In";
+	      });
+	    }
+	  };
+	};
+
+	exports.default = loginCtrl;
+
+/***/ }),
+/* 104 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var managerHomeCtrl = function managerHomeCtrl($scope) {
+	  $scope.view2 = 'interviews';
+	  $scope.selectView1 = function (selectedView) {
+	    if (selectedView === 'available') {
+	      $scope.availableSelecter = { 'background-color': 'gray' };
+	      $scope.prioritySelecter = { 'background-color': '#f8f8f8' };
+	      $scope.view1 = 'available';
+	    } else if (selectedView === 'priority') {
+	      $scope.availableSelecter = { 'background-color': '#f8f8f8' };
+	      $scope.prioritySelecter = { 'background-color': 'gray' };
+	      $scope.view1 = 'priorityMapped';
+	    }
+	  };
+	  $scope.selectView2 = function (selectedView) {
+	    if (selectedView === 'interviews') {
+	      $scope.interviewsSelecter = { 'background-color': 'gray' };
+	      $scope.checkinsSelecter = { 'background-color': '#f8f8f8' };
+	      $scope.view2 = 'interviews';
+	    } else if (selectedView === 'checkins') {
+	      $scope.interviewsSelecter = { 'background-color': '#f8f8f8' };
+	      $scope.checkinsSelecter = { 'background-color': 'gray' };
+	      $scope.view2 = 'checkins';
+	    }
+	  };
+
+	  //initialize our named views
+	  $scope.selectView1('available');
+	  $scope.selectView2('interviews');
+	};
+
+	exports.managerHomeCtrl = managerHomeCtrl;
+
+/***/ }),
+/* 105 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	var interviewsCtrl = function interviewsCtrl($scope) {
+
+	    $scope.interviewSelect = function (interview) {
+	        $scope.interviewSideTable = { "interview": interview };
+	    };
+
+	    $scope.interviews = [{
+	        associateName: 'Billy',
+	        batch: 'Java',
+	        client: 'Infosys',
+	        scheduled_time: '6-5-2017'
+	    }, {
+	        associateName: 'Bob',
+	        batch: 'Java',
+	        client: 'CapitolOne',
+	        scheduled_time: '6-23-2017'
+	    }, {
+	        associateName: 'Sally',
+	        batch: '.Net',
+	        client: 'BofA',
+	        scheduled_time: '6-10-2017'
+	    }, {
+	        associateName: 'Jim',
+	        batch: 'SDET',
+	        client: 'Oracle',
+	        scheduled_time: '7-2-2017'
+	    }, {
+	        associateName: 'Jimbo',
+	        batch: 'Java',
+	        client: 'CapitalOne',
+	        scheduled_time: '6-23-2017'
+	    }, {
+	        associateName: 'Peter',
+	        batch: 'Java',
+	        client: 'Wells Fargo',
+	        scheduled_time: '6-15-2017'
+	    }];
+	};
+
+	exports.interviewsCtrl = interviewsCtrl;
+
+/***/ }),
+/* 106 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var managerCreateCtrl = function managerCreateCtrl($scope, $state) {
+	  $scope.$state = $state;
+	};
+
+	exports.default = managerCreateCtrl;
+
+/***/ }),
+/* 107 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	var associateCtrl = function associateCtrl($scope, $location, $http, $state) {
+		$scope.checkInBtn = "Check In";
+		$scope.hasCheckedIn = false;
+		$scope.isActive = function (viewLocation) {
+			return viewLocation === $location.path();
+		};
+
+		$scope.checkIn = function () {
+			$scope.checkInBtn = "Checked In";
+			$scope.hasCheckedIn = true;
+		};
+
+		$scope.logout = function () {
+			$http({
+				method: 'GET',
+				url: '/logout/'
+			}).then(function (response) {
+				$state.go('login');
+			});
+		};
+	};
+
+	exports.default = associateCtrl;
+
+/***/ }),
+/* 108 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	var chart = {
+	    caption: "Product-wise quarterly revenue in current year",
+	    subCaption: "Harry's SuperMart",
+	    xAxisname: "Quarter",
+	    yAxisName: "Revenue (In USD)",
+	    numberPrefix: "$",
+	    paletteColors: "#ff0000,#0075c2",
+	    bgColor: "#ffffff",
+	    borderAlpha: "20",
+	    showCanvasBorder: "0",
+	    usePlotGradientColor: "0",
+	    plotBorderAlpha: "10",
+	    legendBorderAlpha: "0",
+	    legendShadow: "0",
+	    valueFontColor: "#ffffff",
+	    showXAxisLine: "1",
+	    xAxisLineColor: "#999999",
+	    divlineColor: "#999999",
+	    divLineDashed: "1",
+	    showAlternateHGridColor: "0",
+	    subcaptionFontBold: "0",
+	    subcaptionFontSize: "14",
+	    showHoverEffect: "1"
+	};
+
+	var categories = [{
+	    "category": [{
+	        "label": "Q1"
+	    }, {
+	        "label": "Q2"
+	    }, {
+	        "label": "Q3"
+	    }, {
+	        "label": "Q4"
+	    }]
+	}];
+	var dataset = [{
+	    "seriesname": "Food Products",
+	    "data": [{
+	        "value": "121000"
+	    }, {
+	        "value": "135000"
+	    }, {
+	        "value": "123500"
+	    }, {
+	        "value": "145000"
+	    }]
+	}, {
+	    "seriesname": "Non-Food Products",
+	    "data": [{
+	        "value": "131400"
+	    }, {
+	        "value": "154800"
+	    }, {
+	        "value": "98300"
+	    }, {
+	        "value": "131800"
+	    }]
+	}];
+
+	var barCtrl = function barCtrl($scope) {
+	    plainBarChart2($scope, chart, categories, dataset);
+	};
+
+	function plainBarChart2($scope, chartstuff, categories, dataset) {
+	    $scope.greeting = 'test';
+	    var myDataSource = {
+	        chart: chartstuff,
+	        categories: categories,
+	        dataset: dataset
+	    };
+
+	    var chart = new FusionCharts({
+	        type: 'stackedcolumn3d',
+	        renderAt: 'chart-container',
+	        width: '550',
+	        height: '350',
+	        dataFormat: 'json',
+	        dataSource: myDataSource
+	    });
+
+	    chart.render();
+	}
+
+	exports.barCtrl = barCtrl;
 
 /***/ })
 /******/ ]);

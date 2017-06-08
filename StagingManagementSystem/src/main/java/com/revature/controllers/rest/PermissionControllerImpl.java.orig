@@ -30,14 +30,24 @@ public class PermissionControllerImpl {
 	/**
 	 * When called this will always persist a unique permission in the database.
 	 * 
+<<<<<<< HEAD
 	 * @param permission
 	 *            - permission to be persisted.
+	 */
+	@PostMapping
+	public void addPermission(@RequestBody Permission permission) {
+		permission.setId(0);
+		permissionService.add(permission);
+=======
+	 * @param location
+	 *            - location to be persisted.
 	 * @throws SmsCustomException 
 	 */
 	@PostMapping
-	public void addPermission(@RequestBody Permission permission) throws SmsCustomException {
-		permission.setId((long) 0);
-		permissionService.add(permission);
+	public void addPermission(@RequestBody Permission location) throws SmsCustomException {
+		location.setId(0l);
+		permissionService.add(location);
+>>>>>>> 7c3deba117e26faf8ee05f21df2d0679cab31eea
 	}
 	
 	 /**
@@ -45,10 +55,9 @@ public class PermissionControllerImpl {
    * 
    * @param permission
    *            - permission to be persisted.
-	 * @throws SmsCustomException 
    */
   @PostMapping("/add/all")
-  public void addPermission(@RequestBody Set<Permission> permissions) throws SmsCustomException {
+  public void addPermission(@RequestBody Set<Permission> permissions) {
     for(Permission p : permissions)
       permissionService.add(p);
   }
@@ -62,8 +71,13 @@ public class PermissionControllerImpl {
 	 * @throws SmsCustomException 
 	 */
 	@DeleteMapping
-	public void removePermission(@RequestBody Permission permission) throws SmsCustomException {
+<<<<<<< HEAD
+	public void removePermission(@RequestBody Permission permission) {
 		permissionService.remove(permission);
+=======
+	public void removePermission(@RequestBody Permission location) throws SmsCustomException {
+		permissionService.remove(location);
+>>>>>>> 7c3deba117e26faf8ee05f21df2d0679cab31eea
 	}
 
 	/**
@@ -75,17 +89,27 @@ public class PermissionControllerImpl {
 	 * @throws SmsCustomException 
 	 */
 	@PutMapping
-	public void updatePermission(@RequestBody Permission permission) throws SmsCustomException {
+<<<<<<< HEAD
+	public void updatePermission(@RequestBody Permission permission) {
 		permissionService.update(permission);
+=======
+	public void updatePermission(@RequestBody Permission location) throws SmsCustomException {
+		permissionService.update(location);
+>>>>>>> 7c3deba117e26faf8ee05f21df2d0679cab31eea
 	}
 
 	/**
 	 * Gets a permission with id.
 	 * 
 	 * @param id
+<<<<<<< HEAD
+	 *            - id of permission to be retrieved.
+	 * @return permission object from dataBase.
+=======
 	 *            - id of location to be retrieved.
 	 * @return location object from dataBase.
 	 * @throws SmsCustomException 
+>>>>>>> 7c3deba117e26faf8ee05f21df2d0679cab31eea
 	 */
 	@GetMapping("/{id}")
 	public Permission getById(@PathVariable long id) throws SmsCustomException {
