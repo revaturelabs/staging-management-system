@@ -46880,6 +46880,13 @@
 		value: true
 	});
 	var managerCtrl = function managerCtrl($scope, $state, $location, $http) {
+		$http({
+			method: 'GET',
+			url: '/login/isManager'
+		}).then(function (response) {
+			if (!response.data) $state.go('login');
+		});
+
 		$scope.isActive = function (viewLocation) {
 			return viewLocation === $location.path();
 		};
@@ -46991,34 +46998,31 @@
 	  value: true
 	});
 	var profileCtrl = function profileCtrl($scope, $http) {
-	  var associateId = 1;
+	  var associateId = 184;
 	  var method = 'GET';
-	  var url = '/associate/' + associateId;
+	  var associateUrl = '/associate/' + associateId;
 
 	  $http({
-	    method: method,
-	    url: url
+	    method: 'GET',
+	    url: associateUrl
 	  }).then(function (response) {
-	    $scope.name = response.data.name;
-	    $scope.batchType = response.data.batch === null ? 'None' : response.data.batch;
+	    $scope.associate = response.data;
+	    console.log(response);
 	    $scope.portfolioUrl = response.data.portfolioLink;
 	  });
 
-	  $scope.name = '';
-	  $scope.batchType = '';
-	  $scope.portfolioUrl = '';
 	  $scope.portfolioUrlInput = '';
-	  $scope.skills = ['Java', 'Spring', 'Hibernate', 'Servlets', 'JSP'];
-	  $scope.additionalSkills = ['hello', 'poop'];
 	  $scope.status = 'Active';
-	  $scope.additionalSkillsInput = '';
-	  $scope.shortenUrl = function (urlToShorten, length) {
+
+	  $scope.shortenUrl = function (url, length) {
 	    return (// used to display portfolioUrl
-	      urlToShorten === '' ? '' : urlToShorten.substring(0, length) + '...'
+	      url === '' || url === undefined ? '' : url.substring(0, length) + '...'
 	    );
 	  };
 	  $scope.toggleSkillsModal = function () {
-	    $scope.additionalSkillsInput = $scope.additionalSkills.join(',');
+	    $scope.additionalSkillsInput = $scope.associate.skills.map(function (skill) {
+	      return skill.value;
+	    }).join(',');
 	    $('#additionalSkillsModal').modal('show');
 	  };
 	  $scope.openPortfolioUrlModal = function () {
@@ -47026,13 +47030,43 @@
 	    $('#portfolioUrlModal').modal('show');
 	  };
 	  $scope.submitPortfolioUrl = function () {
-	    $scope.portfolioUrl = $scope.portfolioUrlInput;
+	    $scope.associate.portfolioLink = $scope.portfolioUrlInput;
+
+	    $http({
+	      method: 'PUT',
+	      url: '/associate/',
+	      data: $scope.associate
+	    }).then(function (response) {
+	      console.log('success');
+	    }, function () {
+	      console.log('error');
+	    });
+
 	    $('#portfolioUrlModal').modal('hide');
 	  };
 	  $scope.submitSkills = function () {
-	    $scope.additionalSkills = $scope.additionalSkillsInput.split(',').filter(function (skill) {
-	      return skill !== '';
+	    var skills = $scope.associate.skills.map(function (skill) {
+	      return skill.value;
 	    });
+	    $scope.associate.skills = $scope.additionalSkillsInput.split(',').filter(function (skill) {
+	      return skill !== '';
+	    }).map(function (skill) {
+	      var existingSkill = $scope.associate.skills.find(function (skill) {
+	        return skill.value === skill;
+	      });
+	      return { id: existingSkill !== undefined ? existingSkill.id : 0, value: skill };
+	    });
+
+	    $http({
+	      method: 'PUT',
+	      url: '/associate/',
+	      data: $scope.associate
+	    }).then(function (response) {
+	      console.log('success');
+	    }, function () {
+	      console.log('error');
+	    });
+
 	    $('#additionalSkillsModal').modal('hide');
 	  };
 	};
@@ -47075,7 +47109,7 @@
 	        url: '/login',
 	        data: { username: $scope.username, password: $scope.password }
 	      }).then(function (response) {
-	        if (response.data.permission !== undefined) $state.go('manager');else $state.go('associate');
+	        if (response.data.permission !== undefined) $state.go('manager.home');else $state.go('associate');
 	      }, function () {
 	        $scope.errorMsg = 'Username or Password is incorrect.';
 	        $scope.errorMsgShow = true;
@@ -47198,21 +47232,44 @@
 /* 107 */
 /***/ (function(module, exports) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
 	var associateCtrl = function associateCtrl($scope, $location, $http, $state) {
-		$scope.checkInBtn = "Check In";
+		$http({
+			method: 'GET',
+			url: '/login/isAssociate'
+		}).then(function (response) {
+			if (!response.data) $state.go('login');else {
+				$http({
+					method: 'GET',
+					url: '/checkin'
+				}).then(function (response) {
+					if (response.data === true) {
+						$scope.checkInBtn = "Checked In";
+						$scope.hasCheckedIn = true;
+					} else $scope.checkInBtn = "Check In";
+				});
+			}
+		});
+
 		$scope.hasCheckedIn = false;
 		$scope.isActive = function (viewLocation) {
 			return viewLocation === $location.path();
 		};
 
 		$scope.checkIn = function () {
-			$scope.checkInBtn = "Checked In";
-			$scope.hasCheckedIn = true;
+			$http({
+				method: 'PUT',
+				url: '/checkin'
+			}).then(function (response) {
+				if (response.data === true) {
+					$scope.checkInBtn = "Checked In";
+					$scope.hasCheckedIn = true;
+				}
+			});
 		};
 
 		$scope.logout = function () {
