@@ -14,7 +14,8 @@ import profileCtrl from './associate-pages/profile/profile';
 import { reportCtrl } from './reports/reports';
 import { nestedCtrl } from './reports/nestedGraph';
 import { loginCtrl } from './login/login';
-import { employedCtrl } from './reports/employed';
+import { attendanceCtrl } from './reports/attendance'
+
 
 const routerApp = angular.module('routerApp', [uiRouter]);
 
@@ -91,10 +92,10 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       templateUrl: 'reports/nestedGraph.html',
       controller: nestedCtrl,
     })
-    .state('employed', {
-    	url: '/employed',
+    .state('reports.attendance', {
+    	url: '/attendance',
     	templateUrl: 'reports/employed.html',
-    	controller: employedCtrl,
+    	controller: attendanceCtrl,
     })
 
 
