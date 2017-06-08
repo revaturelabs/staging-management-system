@@ -16,39 +16,51 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.revature.config.SmsSettings;
+import com.revature.exceptions.SmsCustomException;
+import com.revature.exceptions.badrequests.InvalidFieldException;
+import com.revature.exceptions.badrequests.NullReferenceException;
+import com.revature.markers.SmsValidatable;
 
 @Entity
 @Table(name = "MANAGERS")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Manager {
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+public class Manager implements SmsValidatable {
+
+	transient private static SmsSettings settings = SmsSettings.getInstance();
 
 	@Id
 	@Column(name = "MANAGER_ID")
-	@SequenceGenerator(name="MANAGER_ID_SEQ", sequenceName="MANAGER_ID_SEQ")
-	@GeneratedValue(generator="MANAGER_ID_SEQ", strategy=GenerationType.AUTO)
+	@SequenceGenerator(name = "MANAGER_ID_SEQ", sequenceName = "MANAGER_ID_SEQ")
+	@GeneratedValue(generator = "MANAGER_ID_SEQ", strategy = GenerationType.SEQUENCE)
 	private Long id;
-	
-	@Column(name = "NAME")
+
+	@Column(name = "MANAGER_NAME")
 	private String name;
-	
-	@OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
-	@JoinColumn(name="CREDENTIAL_ID")
+
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "CREDENTIAL_ID")
 	private Credential credential;
-	
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="PERMISSION_ID")
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "PERMISSION_ID")
 	private Permission permission;
 
-	public Manager(Long id, String name, Credential credential, Permission permission, Set<Checkin> approved) {
+	@Column(name = "MANAGER_ACTIVE")
+	private Boolean active;
+
+	public Manager() {
+		super();
+		this.active=true;
+	}
+
+	public Manager(Long id, String name, Credential credential, Permission permission, Boolean active) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.credential = credential;
 		this.permission = permission;
-	}
-
-	public Manager() {
-		super();
+		this.active = active;
 	}
 
 	public Long getId() {
@@ -83,10 +95,19 @@ public class Manager {
 		this.permission = permission;
 	}
 
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((active == null) ? 0 : active.hashCode());
 		result = prime * result + ((credential == null) ? 0 : credential.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
@@ -103,6 +124,11 @@ public class Manager {
 		if (getClass() != obj.getClass())
 			return false;
 		Manager other = (Manager) obj;
+		if (active == null) {
+			if (other.active != null)
+				return false;
+		} else if (!active.equals(other.active))
+			return false;
 		if (credential == null) {
 			if (other.credential != null)
 				return false;
@@ -129,8 +155,27 @@ public class Manager {
 	@Override
 	public String toString() {
 		return "Manager [id=" + id + ", name=" + name + ", credential=" + credential + ", permission=" + permission
-				+ "]";
-	} 
+				+ ", active=" + active + "]";
+	}
 
-	
+	@Override
+	public void validate() throws SmsCustomException {
+		if (this.name == null) {
+			throw new NullReferenceException("Manager name is null.");
+		}
+		if (this.name == "") {
+			throw new InvalidFieldException("Manager name is empty.");
+		}
+		if (!this.name.matches(settings.get("allowed_manager_name"))) {
+			throw new InvalidFieldException("Manager name contains illegal characters.");
+		}
+		int min = Integer.parseInt(settings.get("length_min_manager_name"));
+		int max = Integer.parseInt(settings.get("length_max_manager_name"));
+		if (this.name.length() < min) {
+			throw new InvalidFieldException("Manager name requires " + min + " characters.");
+		}
+		if (this.name.length() > max) {
+			throw new InvalidFieldException("Manager name is limited to " + max + " characters.");
+		}
+	}
 }

@@ -4,16 +4,16 @@ import java.time.LocalDateTime;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.revature.entities.Interviews;
+import com.revature.entities.Interview;
 
-public interface InterviewsRepo extends JpaRepository<Interviews, Long> {
+public interface InterviewsRepo extends JpaRepository<Interview, Long> {
 	
-	 Interviews findByAssociateId(long id);
+	 Interview findByAssociateId(long id);
 	
-	 Interviews findByClientId(long id);
+	 Interview findByClientId(long id);
 	 
-	 Interviews findByInterviewStatusId(long id);
+	 Interview findByInterviewStatusId(long id);
 	
-	 Interviews findByScheduled(LocalDateTime dateandtime);
+	 Interview findByScheduled(LocalDateTime dateandtime);
 
 }

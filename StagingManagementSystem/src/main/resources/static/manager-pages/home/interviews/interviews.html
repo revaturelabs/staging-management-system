@@ -1,0 +1,40 @@
+<div class="interviews-container">
+  <div>
+    <table class="table table-striped interviews-table">
+      <thead>
+      <tr>
+        <th class="interview-th" scope="col">Associate</th>
+        <th class="interview-th" scope="col">Batch</th>
+        <th class="interview-th" scope="col">Client</th>
+        <th class="interview-th" scope="col">Scheduled Time</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="interview in interviews" ng-click="interviewSelect(interview)">
+        <td class="interview-td" ng-bind="interview.associateName"></td>
+        <td class="interview-td" ng-bind="interview.batch"></td>
+        <td class="interview-td" ng-bind="interview.client"></td>
+        <td class="interview-td" ng-bind="interview.scheduled_time"></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="interview-side-table" ng-show="interviewSideTable">
+      <div>Associate: {{ interviewSideTable.interview.associateName }}</div>
+      <div>Date: {{ interviewSideTable.interview.scheduled_time }}</div>
+      <div>Skill: {{ interviewSideTable.interview.batch }}</div>
+      <div>Client: {{ interviewSideTable.interview.client }}</div>
+      <div class="interview-status-container">
+        <div class="interview-status-label">Status: </div>
+        <select ng-model="interviewSideTable.interview.status">
+          <option value="Unscheduled">Unscheduled</option>
+          <option value="Scheduled">Scheduled</option>
+          <option value="Pending Feedback">Pending Feedback</option>
+          <option value="Confirmed">Confirmed</option>
+          <option value="Denied">Denied</option>
+        </select><br>
+      </div>
+  </div>
+
+</div>

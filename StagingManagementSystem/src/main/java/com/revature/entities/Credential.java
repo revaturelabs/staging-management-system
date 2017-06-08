@@ -9,22 +9,27 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.revature.config.SmsSettings;
+import com.revature.exceptions.SmsCustomException;
+import com.revature.markers.SmsValidatable;
 
 @Entity
 @Table(name = "CREDENTIALS")
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-public class Credential {
+public class Credential implements SmsValidatable {
 
+	transient private static SmsSettings settings = SmsSettings.getInstance();
+	
 	@Id
 	@Column(name = "CREDENTIAL_ID")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CREDENTIAL_ID_SEQ")
 	@SequenceGenerator(name = "CREDENTIAL_ID_SEQ", sequenceName = "CREDENTIAL_ID_SEQ")
 	private Long id;
 
-	@Column
+	@Column(name = "CREDENTIAL_USERNAME")
 	private String username;
 
-	@Column
+	@Column(name = "CREDENTIAL_PASSWORD")
 	private String password;
 
 	public Credential(Long id, String username, String password) {
@@ -36,7 +41,6 @@ public class Credential {
 
 	public Credential() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public Long getId() {
@@ -103,6 +107,12 @@ public class Credential {
 	@Override
 	public String toString() {
 		return "Credential [id=" + id + ", username=" + username + ", password=" + password + "]";
+	}
+
+	@Override
+	public void validate() throws SmsCustomException {
+		// TODO Validate your members.
+
 	}
 
 }

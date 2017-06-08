@@ -1,6 +1,6 @@
 package com.revature.controllers.rest;
 
-import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -32,26 +32,34 @@ public class ClientControllerImpl {
 	}
 
 	/**
-	 * When called this will always persist a unique location in the database.
+	 * When called this will always persist a unique Client in the database.
 	 * 
-	 * @param location
-	 *            - location to be persisted.
+	 * @param Client
+	 *            - Client to be persisted.
 	 */
 	@PostMapping
-	public void addLocation(@RequestBody Client location) {
-		location.setId(0);
-		clientService.add(location);
+	public void addClient(@RequestBody Client Client) {
+		Client.setId(0l);
+		clientService.add(Client);
 	}
+	
+  @PostMapping("/add/all")
+  public void addMockClientData(@RequestBody Set<Client> client) {
+    for(Client c : client)
+    {
+      addClient(c);
+    }
+  }
 
 	/**
-	 * Deletes location with location.id
+	 * Deletes Client with Client.id
 	 * 
-	 * @param location
+	 * @param Client
 	 *            - holds the id to be deleted
 	 */
 	@DeleteMapping
-	public void deleteLocation(@RequestBody Client location) {
-		clientService.delete(location);
+	public void deleteClient(@RequestBody Client Client) {
+		clientService.delete(Client);
 	}
 
 	@PostMapping("/multiple")
@@ -64,20 +72,20 @@ public class ClientControllerImpl {
 	 * If the id exists, updates information. else creates a new row with
 	 * genrated id.
 	 * 
-	 * @param location
+	 * @param Client
 	 *            - data to be persisted.
 	 */
 	@PutMapping
-	public void updateLocation(@RequestBody Client location) {
-		clientService.update(location);
+	public void updateClient(@RequestBody Client Client) {
+		clientService.update(Client);
 	}
 
 	/**
-	 * Gets a location with id.
+	 * Gets a Client with id.
 	 * 
 	 * @param id
-	 *            - id of location to be retrieved.
-	 * @return location object from dataBase.
+	 *            - id of Client to be retrieved.
+	 * @return Client object from dataBase.
 	 */
 	@GetMapping("/{id}")
 	public Client findById(@PathVariable long id) {
@@ -85,13 +93,14 @@ public class ClientControllerImpl {
 	}
 
 	/**
-	 * Gets all locations.
+	 * Gets all Clients.
 	 * 
 	 * @param all
-	 * @return all location objects from dataBase.
+	 * @return all Client objects from dataBase.
 	 */
 	@GetMapping("/all")
-	public List<Client> findAll() {
+	public Set<Client> findAll() {
 		return clientService.getAll();
 	}
+
 }

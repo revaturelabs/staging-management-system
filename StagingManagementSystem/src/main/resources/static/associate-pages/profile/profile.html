@@ -1,0 +1,67 @@
+<div class="container">
+  <dl class="dl-horizontal">
+    <dt>Name</dt>
+    <dd ng-bind="associate.name"></dd>
+    <dt>Batch</dt>
+    <dd ng-bind="associate.batch.batchType.value"></dd>
+    <dt>Profile URL</dt>
+    <dd>
+      <span ng-bind="shortenUrl(associate.portfolioLink, 40)"></span>
+      <span style="cursor: pointer;" ng-click="openPortfolioUrlModal()">
+        <span class="glyphicon glyphicon-edit"></span>
+      </span>
+    </dd>
+    <dt>Skills</dt>
+    <dd>
+      <span ng-repeat="skill in associate.batch.batchType.skills.concat(associate.skills)">
+        <span class="badge" ng-bind="skill.value"></span>
+      </span>
+      <span style="cursor: pointer;" ng-click="toggleSkillsModal()">
+        <span class="glyphicon glyphicon-edit"></span>
+      </span>
+      <input class="form-control" ng-show="profileData.skillsInputShowing" />
+    </dd>
+    <dt>Status</dt>
+    <dd ng-bind="status"></dd>
+  </dl>
+</div>
+<div class="modal fade" id="additionalSkillsModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Add or remove skills</h4>
+      </div>
+      <div class="modal-body">
+        Add or remove skills, seperated by commas.
+        <div class="form-group">
+          <input ng-model="additionalSkillsInput" class="form-control" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button ng-click="submitSkills()" type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="portfolioUrlModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Edit Portfolio URL</h4>
+      </div>
+      <div class="modal-body">
+        Please edit your portfolio url here.
+        <div class="form-group">
+          <input ng-model="portfolioUrlInput" class="form-control" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button ng-click="submitPortfolioUrl()" type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,20 +1,26 @@
 package com.revature.services;
 
-import java.util.List;
 import java.util.Set;
 
+import com.revature.entities.Credential;
 import com.revature.entities.Manager;
+import com.revature.exceptions.SmsCustomException;
 
 public interface ManagerService {
-	
-	public void add(Manager manager);
 
-	public void delete(Manager manager);
+	// c
+	Manager add(Manager manager) throws SmsCustomException;
 
-	public void update(Manager manager);
+	// r
+	Manager getById(long id) throws SmsCustomException;
 
-	public Manager findById(long id);
+	Manager getByCredential(Credential credential) throws SmsCustomException;
 
-	public List<Manager> getAll();
+	Set<Manager> getAll();
 
+	// u
+	Manager update(Manager manager) throws SmsCustomException;
+
+	// d
+	void remove(Manager manager) throws SmsCustomException;
 }

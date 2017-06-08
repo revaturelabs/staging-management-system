@@ -1,9 +1,10 @@
 package com.revature.services;
 
-import java.util.List;
 import java.util.Set;
 
 import com.revature.entities.Client;
+
+import java.util.List;
 
 public interface ClientService {
 
@@ -19,5 +20,5 @@ public interface ClientService {
 
 	public Client findById(long id);
 
-	public List<Client> getAll();
+	public Set<Client> getAll();
 }

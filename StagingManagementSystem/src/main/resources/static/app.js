@@ -1,21 +1,26 @@
 import angular from 'angular';
 import uiRouter from 'angular-ui-router';
-import angularBootstrap from 'angular-bootstrap-npm';
 
 var FusionCharts = require("fusioncharts");
 require("fusioncharts/fusioncharts.charts")(FusionCharts);
 
-console.log();
-
-import { currentCtrl } from './manager/manager';
-import { batchCtrl } from './manager/create/batch';
-import { clientCtrl } from './manager/create/client';
-import { userCtrl } from './manager/create/user';
+import { managerCtrl } from './manager-pages/manager';
+import { managerHomeCtrl } from './manager-pages/home/home'
+import { interviewsCtrl } from './manager-pages/home/interviews/interviews';
+import managerCreateCtrl from './manager-pages/create/create'
+import { batchCtrl } from './manager-pages/create/batch';
+import { clientCtrl } from './manager-pages/create/client';
+import { userCtrl } from './manager-pages/create/user';
+import profileCtrl from './associate-pages/profile/profile';
+import associateCtrl from './associate-pages/associate';
 import { reportCtrl } from './reports/reports';
 import { nestedCtrl } from './reports/nestedGraph';
+import { loginCtrl } from './login/login';
+import { attendanceCtrl } from './reports/attendance'
+import { barCtrl } from './reports/barGraph';
 
 
-const routerApp = angular.module('routerApp', [uiRouter, angularBootstrap]);
+const routerApp = angular.module('routerApp', [uiRouter]);
 
 routerApp.config(($stateProvider, $urlRouterProvider) => {
   $urlRouterProvider.otherwise('/login');
@@ -24,30 +29,63 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
     .state('login', {
       url: '/login',
       templateUrl: 'login/login.html',
+      controller: loginCtrl,
     })
     .state('manager', {
       url: '/manager',
-      templateUrl: 'manager/manager.html',
+      templateUrl: 'manager-pages/manager.html',
+      controller: managerCtrl,
     })
     .state('manager.create', {
       url: '/create',
-      templateUrl: 'manager/create/create.html',
+      templateUrl: 'manager-pages/create/create.html',
+      controller: managerCreateCtrl,
     })
     .state('manager.create.batch', {
       url: '/batch',
-      templateUrl: 'manager/create/batch.html',
+      templateUrl: 'manager-pages/create/batch.html',
       controller: batchCtrl,
     })
     .state('manager.create.user', {
       url: '/user',
-      templateUrl: 'manager/create/user.html',
+      templateUrl: 'manager-pages/create/user.html',
       controller: userCtrl,
 
     })
     .state('manager.create.client', {
       url: '/client',
-      templateUrl: 'manager/create/client.html',
+      templateUrl: 'manager-pages/create/client.html',
       controller: clientCtrl,
+    })
+    .state('manager.home', {
+      url: '/home',
+      views: {
+              '': {
+                templateUrl: 'manager-pages/home/home.html',
+                controller: managerHomeCtrl,
+             },
+              'available@manager.home': { templateUrl: 'manager-pages/home/available.html' },
+              'priorityMapped@manager.home': {
+                  templateUrl: 'manager-pages/home/priorityMapped.html',
+              },
+              'interviews@manager.home': {
+                templateUrl: 'manager-pages/home/interviews/interviews.html',
+                controller: interviewsCtrl,
+              },
+              'checkins@manager.home': {
+                templateUrl: 'manager-pages/home/checkins.html',
+              }
+          }
+    })
+    .state('associate', {
+      url: '/associate',
+      templateUrl: 'associate-pages/associate.html',
+      controller: associateCtrl,
+    })
+    .state('associate.profile', {
+      url: '/profile',
+      templateUrl: 'associate-pages/profile/profile.html',
+      controller: profileCtrl,
     })
     .state('reports', {
     	url: '/reports',
@@ -58,6 +96,16 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       url: '/nestedGraph',
       templateUrl: 'reports/nestedGraph.html',
       controller: nestedCtrl,
+    })
+    .state('reports.attendance', {
+    	url: '/attendance',
+    	templateUrl: 'reports/employed.html',
+    	controller: attendanceCtrl,
+    })
+    .state('reports.barGraph', {
+      url: '/barGraph',
+      templateUrl: 'reports/barGraph.html',
+      controller: barCtrl,
     })
 
 
@@ -99,10 +147,3 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
     //
     // });
 });
-
-routerApp.controller('navController', ($scope) => {
-  // $scope.openMenu = ($mdOpenMenu, ev) => {
-  //   $mdOpenMenu(ev);
-  // };
-});
-

@@ -1,0 +1,28 @@
+<nav class="navbar navbar-default" role="navigation">
+	<div class="navbar navbar-fixed-top navbar-default">
+		<div class="navbar-header">
+			<a class="navbar-left img-center">
+				<img src="./images/revature-logo.png" alt="Revature" width="90" height="35">
+			</a>
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+		</div>
+		<div class="navbar-collapse collapse navbar-right">
+			<ul class="nav navbar-nav">
+				<li ng-class="{ active: isActive('/manager/home')}"><a ui-sref="manager.home">Home</a></li>
+				<li ng-class="{ active: isActive('/stats')}"><a ui-sref="manager.stats">Statistics</a></li>
+				<li ng-class="{ active: isActive('/manager/create') || isActive('/manager/create/batch')
+						|| isActive('/manager/create/user') || isActive('/manager/create/client')}">
+						<a ui-sref="manager.create">Add (user/batch/client)</a></li>
+				<li ng-click="logout()"><a ui-sref="">Logout</a></li>
+			</ul>
+		</div>
+	</div>
+</nav>
+<div class="manager-view">
+  <div ui-view></div>
+</div>
