@@ -103,12 +103,12 @@ public class Location implements SmsValidatable {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	final public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
 			return false;
-		if (getClass() != obj.getClass())
+		if (!(obj instanceof Location))
 			return false;
 		Location other = (Location) obj;
 		if (city == null) {

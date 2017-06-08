@@ -96,12 +96,12 @@ public class ClientQuestion implements SmsValidatable {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	final public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
 			return false;
-		if (getClass() != obj.getClass())
+		if (!(obj instanceof ClientQuestion))
 			return false;
 		ClientQuestion other = (ClientQuestion) obj;
 		if (associate == null) {

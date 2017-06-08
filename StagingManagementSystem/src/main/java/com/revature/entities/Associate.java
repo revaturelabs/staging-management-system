@@ -17,6 +17,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.aspectj.weaver.patterns.ThisOrTargetAnnotationPointcut;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.revature.config.SmsSettings;
 import com.revature.exceptions.SmsCustomException;
@@ -156,12 +158,12 @@ public class Associate implements SmsValidatable {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	final public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
 			return false;
-		if (getClass() != obj.getClass())
+		if (!(obj instanceof Associate))
 			return false;
 		Associate other = (Associate) obj;
 		if (active != other.active)

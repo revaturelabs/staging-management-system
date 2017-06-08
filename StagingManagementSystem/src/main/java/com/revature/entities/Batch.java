@@ -151,12 +151,12 @@ public class Batch implements SmsValidatable {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	final public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
 			return false;
-		if (getClass() != obj.getClass())
+		if (!(obj instanceof Batch))
 			return false;
 		Batch other = (Batch) obj;
 		if (associates == null) {

@@ -64,12 +64,12 @@ public class InterviewStatuses implements SmsValidatable {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	final public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
 			return false;
-		if (getClass() != obj.getClass())
+		if (!(obj instanceof InterviewStatuses))
 			return false;
 		InterviewStatuses other = (InterviewStatuses) obj;
 		if (value == null) {

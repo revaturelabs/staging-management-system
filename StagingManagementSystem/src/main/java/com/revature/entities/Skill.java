@@ -64,12 +64,12 @@ public class Skill implements SmsValidatable {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	final public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
 			return false;
-		if (getClass() != obj.getClass())
+		if (!(obj instanceof Skill))
 			return false;
 		Skill other = (Skill) obj;
 		if (value == null) {

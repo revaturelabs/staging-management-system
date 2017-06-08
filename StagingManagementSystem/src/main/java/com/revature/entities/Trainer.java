@@ -81,12 +81,12 @@ public class Trainer implements SmsValidatable {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	final public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
 			return false;
-		if (getClass() != obj.getClass())
+		if (!(obj instanceof Trainer))
 			return false;
 		Trainer other = (Trainer) obj;
 		if (active != other.active)

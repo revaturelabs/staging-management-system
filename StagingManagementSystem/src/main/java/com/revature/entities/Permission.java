@@ -66,12 +66,12 @@ public class Permission implements SmsValidatable {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	final public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
 			return false;
-		if (getClass() != obj.getClass())
+		if (!(obj instanceof Permission))
 			return false;
 		Permission other = (Permission) obj;
 		if (level == null) {
