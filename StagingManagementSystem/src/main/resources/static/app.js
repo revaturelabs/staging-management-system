@@ -97,17 +97,15 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       templateUrl: 'reports/nestedGraph.html',
       controller: nestedCtrl,
     })
-<<<<<<< HEAD
     .state('reports.attendance', {
     	url: '/attendance',
     	templateUrl: 'reports/employed.html',
     	controller: attendanceCtrl,
-=======
+    })
     .state('reports.barGraph', {
       url: '/barGraph',
       templateUrl: 'reports/barGraph.html',
       controller: barCtrl,
->>>>>>> a9d3b8dc354cd3e439cefefc9026f1ae94df4fa9
     })
 
 

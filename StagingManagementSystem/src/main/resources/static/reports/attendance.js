@@ -7,14 +7,6 @@
 //        label: "Unemployed",
 //        value: "1463"
 //    },
-////    {
-////        label: "Mid-age",
-////        value: "1050700"
-////    },
-////    {
-////        label: "Senior",
-////        value: "491000"
-////    }
 //];
 
 const chart = {
@@ -31,11 +23,31 @@ const chart = {
         theme: "fint"
     };
 
+//    const attendanceCtrl = ($scope) => {
+//    	threeDPie($scope, chart, data);
+//    };
+//
+//    function threeDPie($scope, chartInfo, data){
+//    	const myDataSource = {
+//    			chart: chartInfo,
+//    			data: data,
+//    	};
+//    const chart = new FusionCharts({
+//    	type: 'pie3d',
+//    	width: '600',
+//    	height: '400',
+//    	renderAt: 'chartContainer',
+//    	dataFormat: 'json',
+//    	dataSource: myDataSource,
+//    });
+//    chart.render();
+//    }
+
 const attendanceCtrl = ($scope, $http) => {
 	let chartInfo;
 	$http({
 		  method: 'GET',
-		  url: '/associate/1'
+		  url: '/associate/50'
 		}).then((response) => {
 		   chartInfo: response;
 		  }, (response) => {
@@ -51,6 +63,7 @@ const attendanceCtrl = ($scope, $http) => {
 	});
 chart.render();
 };
+
 
 
 export { attendanceCtrl };
