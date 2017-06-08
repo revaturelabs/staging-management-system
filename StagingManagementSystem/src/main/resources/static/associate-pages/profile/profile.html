@@ -1,19 +1,21 @@
 <div class="container">
   <dl class="dl-horizontal">
     <dt>Name</dt>
-    <dd ng-bind="name"></dd>
+    <dd ng-bind="associate.name"></dd>
     <dt>Batch</dt>
-    <dd ng-bind="batchType"></dd>
+    <dd ng-bind="associate.batch.batchType.value"></dd>
     <dt>Profile URL</dt>
     <dd>
-      <span ng-bind="shortenUrl(portfolioUrl, 40)"></span>
+      <span ng-bind="shortenUrl(associate.portfolioLink, 40)"></span>
       <span style="cursor: pointer;" ng-click="openPortfolioUrlModal()">
         <span class="glyphicon glyphicon-edit"></span>
       </span>
     </dd>
     <dt>Skills</dt>
     <dd>
-      <span ng-repeat="skill in skills.concat(additionalSkills)" class="badge" ng-bind="skill"></span>
+      <span ng-repeat="skill in associate.batch.batchType.skills.concat(associate.skills)">
+        <span class="badge" ng-bind="skill.value"></span>
+      </span>
       <span style="cursor: pointer;" ng-click="toggleSkillsModal()">
         <span class="glyphicon glyphicon-edit"></span>
       </span>
