@@ -26,7 +26,7 @@ const loginCtrl = ($scope, $http, $state) => {
     		data: { username: $scope.username, password: $scope.password },
     	}).then((response) => {
     		if(response.data.permission !== undefined)
-    			$state.go('manager');
+    			$state.go('manager.home');
     		else
     			$state.go('associate');
     	}, () => {
