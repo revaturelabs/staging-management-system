@@ -1,5 +1,9 @@
 const interviewsCtrl = ($scope) => {
 
+  $scope.interviewSelect = (interview) => {
+    $scope.interviewSideTable = { "interview": interview };
+  }
+
     $scope.interviews = [
         {
             associateName: 'Billy',

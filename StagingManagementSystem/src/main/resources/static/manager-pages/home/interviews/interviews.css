@@ -2,6 +2,10 @@ table{
     border: 1px solid black;
 }
 
+.interviews-table {
+  margin-bottom: 0;
+}
+
 .table > thead > tr > th.interview-th, .table > tbody > tr > td.interview-td {
     padding: 15px;
     text-align: left;
@@ -13,3 +17,26 @@ table{
 }
 
 tr:nth-child(even){background-color: lightgray}
+
+.interviews-container {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+.interview-side-table {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid black;
+  font-family: 'Roboto', sans-serif;
+  margin-left: 1em;
+  padding: 0.5em;
+}
+
+.interview-status-container {
+  display: flex;
+  flex-direction: row;
+}
+.interview-status-label {
+  margin-right: 0.2em;
+}

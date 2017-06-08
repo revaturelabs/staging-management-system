@@ -48,18 +48,18 @@ public class ManipulateDataController {
 		return model;
 	}
 
-	@RequestMapping(value = "/logout", method = RequestMethod.GET)
-	public ModelAndView logout(HttpServletRequest req) {
-		HttpSession session = req.getSession();
-		session.invalidate();
-
-		ModelAndView model = new ModelAndView();
-
-		model.setViewName("login");
-
-		return model;
-
-	}
+//	@RequestMapping(value = "/logout", method = RequestMethod.GET)
+//	public ModelAndView logout(HttpServletRequest req) {
+//		HttpSession session = req.getSession();
+//		session.invalidate();
+//
+//		ModelAndView model = new ModelAndView();
+//
+//		model.setViewName("login");
+//
+//		return model;
+//
+//	}
 
 	@RequestMapping(value = "/addAssociate", method = RequestMethod.POST)
 	public void PostService(HttpServletRequest request) throws IOException {
