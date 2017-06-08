@@ -1,6 +1,5 @@
 package com.revature.services;
 
-import java.time.LocalDateTime;
 import java.util.Set;
 
 import com.revature.entities.Interview;
@@ -13,13 +12,11 @@ public interface InterviewsService {
 	// R
 	public Interview findById(long id);
 
-	public Interview findByAssociateId(long id);
+	public Set<Interview> findByAssociateId(long id);
 
-	public Interview findByClientId(long id);
+	public Set<Interview> findByClientId(long id);
 
-	public Interview findByInterviewStatus(long id);
-
-	public Interview findByScheduled(LocalDateTime dateandtime);
+	public Set<Interview> findByInterviewStatus(long id);
 
 	public Set<Interview> getAll();
 
@@ -28,5 +25,7 @@ public interface InterviewsService {
 
 	// D
 	public void delete(Interview interviews);
+
+	Set<Interview> nextFiveDays();
 
 }
