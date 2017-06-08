@@ -33,11 +33,15 @@ public class Client implements SmsValidatable {
 	private Boolean priority;
 
 	@Column(name = "CLIENT_ACTIVE")
-	private Boolean active;
+	private Boolean active = true;
 
 	public Client() {
 		super();
 		this.active=true;
+	}
+	
+	public Client(Client other){
+	  this(other.id, other.name, other.priority, other.active);
 	}
 
 	public Client(Long id, String name, Boolean priority, Boolean active) {
