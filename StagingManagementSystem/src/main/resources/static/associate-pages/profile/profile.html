@@ -6,7 +6,9 @@
     <dd ng-bind="associate.batch.batchType.value"></dd>
     <dt>Profile URL</dt>
     <dd>
-      <span ng-bind="shortenUrl(associate.portfolioLink, 40)"></span>
+      <span>
+        <a ng-href="{{associate.portfolioLink}}">Profile Link</a>
+      </span>
       <span style="cursor: pointer;" ng-click="openPortfolioUrlModal()">
         <span class="glyphicon glyphicon-edit"></span>
       </span>
