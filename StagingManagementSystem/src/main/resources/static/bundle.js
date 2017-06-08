@@ -93,7 +93,18 @@
 	var FusionCharts = __webpack_require__(96);
 	__webpack_require__(97)(FusionCharts);
 
+	var Visualizer = window['ui-router-visualizer'].Visualizer;
+
 	var routerApp = _angular2.default.module('routerApp', [_angularUiRouter2.default]);
+
+	routerApp.run(function ($uiRouter, $trace) {
+	  // Auto-collapse children in state visualizer
+	  var registry = $uiRouter.stateRegistry;
+
+	  var pluginInstance = $uiRouter.plugin(Visualizer);
+
+	  $trace.enable('TRANSITION');
+	});
 
 	routerApp.config(function ($stateProvider, $urlRouterProvider) {
 	  $urlRouterProvider.otherwise('/login');
