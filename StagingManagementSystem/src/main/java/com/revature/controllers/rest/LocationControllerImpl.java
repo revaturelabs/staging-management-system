@@ -38,6 +38,12 @@ public class LocationControllerImpl {
 		location.setId(0l);
 		locationService.add(location);
 	}
+	
+	 @PostMapping("/add/all")
+	  public void addLocation(@RequestBody Set<Location> locations) {
+	    for(Location l : locations)
+	      addLocation(l);
+	  }
 
 	/**
 	 * Deletes location with location.id
