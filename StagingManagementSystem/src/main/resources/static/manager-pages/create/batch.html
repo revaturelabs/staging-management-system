@@ -1,9 +1,12 @@
 <p> test</p>
 		<div>
-		Batchtype: <input ng-model="batch.batchtype"> <br> <br>
+		<!-- batch type dropdown -->
+		Batch Type: <input ng-model="batch.batch_type.batchtype"> <br> <br>
+		Batch Trainer: <input ng-model="batch.batch_trainer.batchtrainer">
 		Start Date: <input ng-model="batch.startdate"> <br> <br>
 		End Date: <input ng-model="batch.enddate"> <br> <br>
-		Location: <input ng-model="batch.location" <br> <br>
+		<!-- dropdown again :^) -->
+		Location: <input ng-model="batch.location.loc" <br> <br>
 		<h1>Test: {{batch.password}} {{batch.name}}</h1>
 		</div>
 

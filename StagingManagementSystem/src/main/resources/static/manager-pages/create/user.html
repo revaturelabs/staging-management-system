@@ -1,6 +1,6 @@
 <div> Create a User:
 		<select ng-model="user.type">
-			<option value="manager" ng-click="type = 'manager'"">Manager</option>
+			<option value="manager" ng-click="type = 'manager'"">Manager</option>	
 			<option value="associate" ng-click="type = 'associate'">Associate</option>
 		</select> <br> <br>
 
@@ -11,6 +11,7 @@
 			Portfolio Link: <input  ng-model="user.portfolioLink">
 
 		</div>
+		<!--permission lvl is string... dropdown.......-->
 		<div ng-show="type === 'manager'">
 			Permission: <input ng-model="user.permission.level">
 		</div>
