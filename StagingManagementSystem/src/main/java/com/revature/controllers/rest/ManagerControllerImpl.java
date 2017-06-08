@@ -39,6 +39,18 @@ public class ManagerControllerImpl {
 		manager.setId((long) 0);
 		managerService.add(manager);
 	}
+	
+	 /**
+   * Add a list manager in-efficient function intended for mock data.
+   * 
+   * @param manager - manager to be persisted.
+	 * @throws SmsCustomException 
+   */
+  @PostMapping("/add/all")
+  public void addManagers(@RequestBody Set<Manager> managers) throws SmsCustomException {
+    for(Manager m : managers)
+      managerService.add(m);
+  }
 
 	/**
 	 * Deletes manager with location.id

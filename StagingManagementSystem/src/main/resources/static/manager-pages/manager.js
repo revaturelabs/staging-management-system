@@ -1,4 +1,13 @@
 const managerCtrl = ($scope, $state, $location, $http) => {
+	$http({
+		method: 'GET',
+		url: '/login/isManager',
+	})
+	.then((response) => {
+		if(!response.data)
+			$state.go('login');
+	});
+	
 	$scope.isActive = function (viewLocation) {
 			return viewLocation === $location.path();
 	};

@@ -19,9 +19,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters.LocalDateTimeConverter;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.revature.config.SmsSettings;
 import com.revature.exceptions.SmsCustomException;
@@ -60,8 +60,7 @@ public class Batch implements SmsValidatable {
 	@JoinTable(name = "BATCH_TRAINER", joinColumns = @JoinColumn(name = "BATCH_ID"), inverseJoinColumns = @JoinColumn(name = "TRAINER_ID"))
 	private Set<Trainer> trainers;
 
-	@JsonIgnore
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "batch")
+	@OneToMany(mappedBy = "batch", fetch = FetchType.LAZY)
 	private Set<Associate> associates;
 
 	public Batch() {
@@ -141,17 +140,27 @@ public class Batch implements SmsValidatable {
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = 1;
-		//result = prime * result + ((associates == null) ? 0 : associates.hashCode());
-		result = prime * result + ((batchType == null) ? 0 : batchType.hashCode());
-		result = prime * result + ((endDate == null) ? 0 : endDate.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((location == null) ? 0 : location.hashCode());
-		result = prime * result + ((startDate == null) ? 0 : startDate.hashCode());
-		result = prime * result + ((trainers == null) ? 0 : trainers.hashCode());
+		int result = 1 + associateFreeHashCode();
+		result = prime * result + ((associates == null) ? 0 : associates.hashCode());
 		return result;
 	}
 
+	/**
+	 * This function provieds a hash code for the associate class to prevent stack overflow.
+	 * @return
+	 */
+	 public int associateFreeHashCode() {
+	    final int prime = 31;
+	    int result = 1;
+	    result = prime * result + ((batchType == null) ? 0 : batchType.hashCode());
+	    result = prime * result + ((endDate == null) ? 0 : endDate.hashCode());
+	    result = prime * result + ((id == null) ? 0 : id.hashCode());
+	    result = prime * result + ((location == null) ? 0 : location.hashCode());
+	    result = prime * result + ((startDate == null) ? 0 : startDate.hashCode());
+	    result = prime * result + ((trainers == null) ? 0 : trainers.hashCode());
+	    return result;
+	  }
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -202,7 +211,7 @@ public class Batch implements SmsValidatable {
 	@Override
 	public String toString() {
 		return "Batch [id=" + id + ", batchType=" + batchType + ", startDate=" + startDate + ", endDate=" + endDate
-				+ ", location=" + location + ", trainers=" + trainers + "]";
+				+ ", location=" + location + ", trainers=" + trainers;
 	}
 
 	@Override

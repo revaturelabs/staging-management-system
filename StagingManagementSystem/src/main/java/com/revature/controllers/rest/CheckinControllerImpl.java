@@ -36,7 +36,6 @@ public class CheckinControllerImpl {
         return ResponseEntity.ok(service.getAllForAssociate(username));
     }
 
-
     @GetMapping
     public ResponseEntity<Boolean> isCheckedIn(HttpSession session){
         Associate associate = (Associate) session.getAttribute("login_associate");
