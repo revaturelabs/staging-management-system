@@ -14,27 +14,31 @@ const profileCtrl = ($scope, $http) => {
   $scope.status = 'Active';
 
   $scope.toggleSkillsModal = () => {
+    $scope.sendingRequest = false;
+    $scope.skillsModalButtonValue = 'Save';
     $scope.additionalSkillsInput = $scope.associate.skills.map(skill => skill.value).join(',');
     $('#additionalSkillsModal').modal('show');
   };
   $scope.openPortfolioUrlModal = () => {
+    $scope.sendingRequest = false;
+    $scope.portfolioModalButtonValue = 'Save';
     $scope.portfolioUrlInput = $scope.portfolioUrl;
     $('#portfolioUrlModal').modal('show');
   };
   $scope.submitPortfolioUrl = () => {
     $scope.associate.portfolioLink = $scope.portfolioUrlInput;
 
+    $scope.portfolioModalButtonValue = 'Saving...';
+    $scope.sendingRequest = true;
     $http({
       method: 'PUT',
       url: '/associate/',
       data: $scope.associate,
     }).then(() => {
-      console.log('success');
+      $('#portfolioUrlModal').modal('hide');
     }, () => {
-      console.log('error');
+      $('#portfolioUrlModal').modal('hide');
     });
-
-    $('#portfolioUrlModal').modal('hide');
   };
   $scope.submitSkills = () => {
     $scope.associate.skills = $scope.additionalSkillsInput.split(',')
@@ -44,17 +48,17 @@ const profileCtrl = ($scope, $http) => {
         return { id: (existingSkill !== undefined ? existingSkill.id : 0), value: skill };
       });
 
+    $scope.sendingRequest = true;
+    $scope.skillsModalButtonValue = 'Saving...';
     $http({
       method: 'PUT',
       url: '/associate/',
       data: $scope.associate,
     }).then(() => {
-      console.log('success');
+      $('#additionalSkillsModal').modal('hide');
     }, () => {
-      console.log('error');
+      $('#additionalSkillsModal').modal('hide');
     });
-
-    $('#additionalSkillsModal').modal('hide');
   };
 };
 
