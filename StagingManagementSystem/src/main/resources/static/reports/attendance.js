@@ -44,24 +44,28 @@ const chart = {
 //    }
 
 const attendanceCtrl = ($scope, $http) => {
-	let chartInfo;
+	let chartInfo, data;
 	$http({
 		  method: 'GET',
-		  url: '/associate/50'
+		  url: '/associate/56'
 		}).then((response) => {
+			console.log(response);
 		   chartInfo: response;
 		  }, (response) => {
 		  //
 		  });
-	const chart = new FusionCharts({
+	const pieChart = new FusionCharts({
 		type: 'pie3d',
 		width: '600',
 		height: '400',
 		renderAt: 'chartContainer',
 		dataFormat: 'json',
-		dataSource: chartInfo,
+		dataSource: {
+			'chart': chart,
+			'data:': chartInfo
+		}
 	});
-chart.render();
+pieChart.render();
 };
 
 

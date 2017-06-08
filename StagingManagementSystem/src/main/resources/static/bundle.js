@@ -45162,24 +45162,29 @@
 	//    }
 
 	var attendanceCtrl = function attendanceCtrl($scope, $http) {
-		var chartInfo = void 0;
+		var chartInfo = void 0,
+		    data = void 0;
 		$http({
 			method: 'GET',
-			url: '/associate/50'
+			url: '/associate/56'
 		}).then(function (response) {
+			console.log(response);
 			chartInfo: response;
 		}, function (response) {
 			//
 		});
-		var chart = new FusionCharts({
+		var pieChart = new FusionCharts({
 			type: 'pie3d',
 			width: '600',
 			height: '400',
 			renderAt: 'chartContainer',
 			dataFormat: 'json',
-			dataSource: chartInfo
+			dataSource: {
+				'chart': chart,
+				'data:': chartInfo
+			}
 		});
-		chart.render();
+		pieChart.render();
 	};
 
 	exports.attendanceCtrl = attendanceCtrl;
