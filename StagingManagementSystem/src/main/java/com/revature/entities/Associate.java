@@ -17,6 +17,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.revature.config.SmsSettings;
 import com.revature.exceptions.SmsCustomException;
@@ -45,12 +46,13 @@ public class Associate implements SmsValidatable {
 	@Column(name = "ASSOCIATE_PORTFOLIO_LINK")
 	private String portfolioLink;
 
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "BATCH_ID")
 	private Batch batch;
 
 	@Column(name = "ASSOCIATE_ACTIVE")
-	private Boolean active;
+	private Boolean active = true;
 
 	@Column(name = "CLIENT_ID")
 	private Long lockedTo;
@@ -61,6 +63,11 @@ public class Associate implements SmsValidatable {
 
 	public Associate() {
 		super();
+		// TODO Auto-generated constructor stub
+	}
+	
+	public Associate(Associate other){
+	  this(other.id, other.credential, other.name, other.portfolioLink, other.batch, other.active, other.lockedTo, null);
 		this.skills = new HashSet<Skill>();
 		this.active=true;
 	}
@@ -147,7 +154,7 @@ public class Associate implements SmsValidatable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((active == null) ? 0 : active.hashCode());
-		result = prime * result + ((batch == null) ? 0 : batch.hashCode());
+		result = prime * result + ((batch == null) ? 0 : batch.associateFreeHashCode());
 		result = prime * result + ((credential == null) ? 0 : credential.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((lockedTo == null) ? 0 : lockedTo.hashCode());

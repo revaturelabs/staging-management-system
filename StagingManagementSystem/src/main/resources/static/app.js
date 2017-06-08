@@ -18,7 +18,19 @@ import { nestedCtrl } from './reports/nestedGraph';
 import { barCtrl } from './reports/barGraph';
 import loginCtrl from './login/login';
 
+var Visualizer = window['ui-router-visualizer'].Visualizer;
+
 const routerApp = angular.module('routerApp', [uiRouter]);
+
+
+routerApp.run(function($uiRouter, $trace) {
+	  // Auto-collapse children in state visualizer
+	  var registry = $uiRouter.stateRegistry;
+	  
+	  var pluginInstance = $uiRouter.plugin(Visualizer);
+	  
+	  $trace.enable('TRANSITION')
+	})
 
 routerApp.config(($stateProvider, $urlRouterProvider) => {
   $urlRouterProvider.otherwise('/login');
