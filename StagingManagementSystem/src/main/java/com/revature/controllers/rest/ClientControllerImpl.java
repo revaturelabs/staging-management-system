@@ -47,10 +47,6 @@ public class ClientControllerImpl {
   public void addMockClientData(@RequestBody Set<Client> client) {
     for(Client c : client)
     {
-      Random r = new Random();
-      int i = r.nextInt() % 10;
-      if(i == 7)
-        c.setPriority(true);
       addClient(c);
     }
   }

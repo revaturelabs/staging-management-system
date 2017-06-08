@@ -33,7 +33,7 @@ public class Trainer implements SmsValidatable {
 	private String name;
 
 	@Column(name = "TRAINER_ACTIVE")
-	private Boolean active;
+	private Boolean active = true;
 
 	public Trainer() {
 		super();

@@ -39,7 +39,7 @@ public class CheckinControllerImpl
 	 * 
 	 * @param checkin - checkin to be persisted.
 	 */
-	@PostMapping
+	@PostMapping("/add")
 	public void addcheckin(@RequestBody Checkin checkin) {
 		checkinService.add(checkin);
 	}
@@ -60,7 +60,7 @@ public class CheckinControllerImpl
 	 * 
 	 * @param checkin - data to be persisted.
 	 */
-	@PutMapping
+	@PutMapping("/update")
 	public void updatecheckin(@RequestBody Checkin checkin) {
 		checkinService.update(checkin);
 	}
