@@ -99,14 +99,13 @@ public class CheckinControllerImpl
         return ResponseEntity.ok(checkinService.getAllForAssociate(username));
     }
 
-
     @GetMapping
     public ResponseEntity<Boolean> isCheckedIn(HttpSession session){
         Associate associate = (Associate) session.getAttribute("login_associate");
         if(associate == null)
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(false);
-        return ResponseEntity.ok(checkinService.hasCheckedInToday(associate));
 
+        return ResponseEntity.ok(checkinService.hasCheckedInToday(associate));
     }
 
     @PutMapping
