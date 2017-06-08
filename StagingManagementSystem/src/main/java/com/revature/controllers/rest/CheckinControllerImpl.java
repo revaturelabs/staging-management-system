@@ -4,7 +4,6 @@ import com.revature.entities.Associate;
 import com.revature.entities.Checkin;
 import com.revature.entities.Manager;
 import com.revature.exceptions.AlreadyCheckedInException;
-import com.revature.exceptions.NotLoggedInException;
 import com.revature.services.CheckinService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,21 +18,21 @@ import java.util.Set;
 @RequestMapping("checkin")
 public class CheckinControllerImpl {
     @Autowired
-    private CheckinService service;
+    private CheckinService checkinService;
 
     @GetMapping(path="checkin/{username}")
     public ResponseEntity<Set<Checkin>> getCheckins(@PathVariable String username, HttpSession session){
         Associate associate = (Associate) session.getAttribute("login_associate");
         if(associate != null){ // If you're not an associate..
             if(username.equals(associate.getCredential().getUsername())) // If you're asking for your own details..
-                return ResponseEntity.ok(service.getAllForAssociate(associate)); // You're welcome to your own data.
+                return ResponseEntity.ok(checkinService.getAllForAssociate(associate)); // You're welcome to your own data.
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null); // Otherwise, go away!
         }
         Manager manager = (Manager) session.getAttribute("login_manager");
         if(manager == null){ // And if you're not a manager..
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null); // Go away!
         }
-        return ResponseEntity.ok(service.getAllForAssociate(username));
+        return ResponseEntity.ok(checkinService.getAllForAssociate(username));
     }
 
     @GetMapping
@@ -41,7 +40,7 @@ public class CheckinControllerImpl {
         Associate associate = (Associate) session.getAttribute("login_associate");
         if(associate == null)
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(false);
-        return ResponseEntity.ok(service.hasCheckedInToday(associate));
+        return ResponseEntity.ok(checkinService.hasCheckedInToday(associate));
 
     }
 
@@ -51,7 +50,7 @@ public class CheckinControllerImpl {
         if(associate == null)
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(false);
         try{
-            service.checkIn(associate, LocalDateTime.now());
+            checkinService.checkIn(associate, LocalDateTime.now());
             return ResponseEntity.ok(true);
         }catch(AlreadyCheckedInException e){
             return ResponseEntity.status(HttpStatus.CONFLICT).body(false);
@@ -73,7 +72,8 @@ public class CheckinControllerImpl {
         }
         if(checkin == null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
-        service.approveCheckin(manager,checkin);
+        checkinService.approveCheckin(manager,checkin);
         return ResponseEntity.ok(true);
     }
 }
+
