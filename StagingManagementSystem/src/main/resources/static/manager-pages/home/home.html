@@ -1,18 +1,18 @@
 <div class="manager-home">
 
     <div class="home-view-1">
-      <div class="row home-view-selecter-container">
-        <a class="home-view-selecter" ng-click="view1 = 'available'"> Available Associates </a>
-        <a class="home-view-selecter" ng-click="view1 = 'priorityMapped'"> Priority Clients </a>
+      <div class="row manager-view-selecter-container">
+        <button type="button" class="manager-view-selecter" ng-click="selectView1('available')" ng-style="availableSelecter"> Available Associates </button>
+        <button type="button" class="manager-view-selecter" ng-click="selectView1('priority')" ng-style="prioritySelecter"> Priority Clients </button>
       </div>
         <div ui-view="available" ng-show="view1 === 'available'"></div>
         <div ui-view="priorityMapped" ng-show="view1 === 'priorityMapped'"></div>
     </div>
 
     <div class="home-view-2">
-        <div class="row home-view-selecter-container">
-          <a class="home-view-selecter" ng-click="view2 = 'interviews'">Interviews</a>
-          <a class="home-view-selecter" ng-click="view2 = 'checkins'">Checkins</a>
+        <div class="row manager-view-selecter-container">
+          <button type="button" class="manager-view-selecter" ng-click="selectView2('interviews')" ng-style="interviewsSelecter">Interviews</button>
+          <button type="button" class="manager-view-selecter" ng-click="selectView2('checkins')" ng-style="checkinsSelecter">Checkins</button>
         </div>
         <div ui-view="interviews" ng-show="view2 === 'interviews'"></div>
         <div ui-view="checkins" ng-show="view2 === 'checkins'"></div>

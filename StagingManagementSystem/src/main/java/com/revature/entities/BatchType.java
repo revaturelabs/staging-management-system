@@ -12,7 +12,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -40,9 +39,6 @@ public class BatchType implements SmsValidatable {
 	@Column(name = "BATCH_TYPE_VALUE")
 	private String value;
 
-	@OneToMany(mappedBy = "batchType")
-	private Set<InterviewQuestion> interviewQuestions;
-
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "BATCH_TYPE_SKILLS", joinColumns = @JoinColumn(name = "BATCH_TYPE_ID"), inverseJoinColumns = @JoinColumn(name = "SKILL_ID"))
 	private Set<Skill> skills;
@@ -52,11 +48,10 @@ public class BatchType implements SmsValidatable {
 		this.skills = new HashSet<Skill>();
 	}
 
-	public BatchType(Long id, String value, Set<InterviewQuestion> interviewQuestions, Set<Skill> skills) {
+	public BatchType(Long id, String value, Set<Skill> skills) {
 		super();
 		this.id = id;
 		this.value = value;
-		this.interviewQuestions = interviewQuestions;
 		this.skills = skills;
 	}
 
@@ -76,14 +71,6 @@ public class BatchType implements SmsValidatable {
 		this.value = value;
 	}
 
-	public Set<InterviewQuestion> getInterviewQuestions() {
-		return interviewQuestions;
-	}
-
-	public void setInterviewQuestions(Set<InterviewQuestion> interviewQuestions) {
-		this.interviewQuestions = interviewQuestions;
-	}
-
 	public Set<Skill> getSkills() {
 		return skills;
 	}
@@ -97,7 +84,6 @@ public class BatchType implements SmsValidatable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((interviewQuestions == null) ? 0 : interviewQuestions.hashCode());
 		result = prime * result + ((skills == null) ? 0 : skills.hashCode());
 		result = prime * result + ((value == null) ? 0 : value.hashCode());
 		return result;
@@ -117,11 +103,6 @@ public class BatchType implements SmsValidatable {
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
-		if (interviewQuestions == null) {
-			if (other.interviewQuestions != null)
-				return false;
-		} else if (!interviewQuestions.equals(other.interviewQuestions))
-			return false;
 		if (skills == null) {
 			if (other.skills != null)
 				return false;
@@ -137,8 +118,7 @@ public class BatchType implements SmsValidatable {
 
 	@Override
 	public String toString() {
-		return "BatchType [id=" + id + ", value=" + value + ", interviewQuestions=" + interviewQuestions + ", skills="
-				+ skills + "]";
+		return "BatchType [id=" + id + ", value=" + value + ", skills=" + skills + "]";
 	}
 
 	@Override

@@ -1,5 +1,5 @@
 const profileCtrl = ($scope, $http) => {
-  const associateId = 96;
+  const associateId = 1;
   const method = 'GET';
   const url = `/associate/${associateId}`;
 
@@ -21,7 +21,7 @@ const profileCtrl = ($scope, $http) => {
   $scope.status = 'Active';
   $scope.additionalSkillsInput = '';
   $scope.shortenUrl = (urlToShorten, length) => ( // used to display portfolioUrl
-    `${urlToShorten.substring(0, length)}...`
+    (urlToShorten === '') ? '' : `${urlToShorten.substring(0, length)}...`
   );
   $scope.toggleSkillsModal = () => {
     $scope.additionalSkillsInput = $scope.additionalSkills.join(',');
