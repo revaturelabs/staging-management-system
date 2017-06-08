@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.entities.Associate;
 import com.revature.services.AssociateService;
+import com.revature.util.DataGeneration;
 
 @RestController
 @RequestMapping("associate")
@@ -21,6 +22,8 @@ public class AssociateControllerImpl {
 
 	@Autowired
 	AssociateService associateService;
+	@Autowired
+	DataGeneration dataGen;
 
 	public AssociateControllerImpl(AssociateService associateService) {
 		super();
@@ -29,9 +32,20 @@ public class AssociateControllerImpl {
 
 	@PostMapping
 	public void addAssociate(@RequestBody Associate associate) {
-		System.out.println(associate);
 		associateService.add(associate);
 	}
+	
+	 @PostMapping("/add/all")
+	  public void addAssociates(@RequestBody Set<Associate> associates) {
+	   for(Associate a : associates){
+       associateService.add(a);       
+	   }
+	  }
+	 
+	 @GetMapping("/generate/mock-data")
+	 public void generateAssociateMockDate(){
+	   dataGen.generate();
+	 }
 
 	@DeleteMapping
 	public void deleteAssociate(@RequestBody Associate associate) {

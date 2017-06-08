@@ -1,5 +1,6 @@
 package com.revature.entities;
 
+import java.lang.reflect.Array;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,10 +16,14 @@ import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.assertj.core.util.Arrays;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.revature.config.SmsSettings;
 import com.revature.exceptions.SmsCustomException;
 import com.revature.markers.SmsValidatable;
+
+import oracle.sql.ARRAY;
 
 /**
  * Created by mnikitin on 5/31/17.
@@ -53,6 +58,7 @@ public class BatchType implements SmsValidatable {
 		this.id = id;
 		this.value = value;
 		this.skills = skills;
+		
 	}
 
 	public Long getId() {
