@@ -28,7 +28,7 @@ const loginCtrl = ($scope, $http, $state) => {
     		if(response.data.permission !== undefined)
     			$state.go('manager.home');
     		else
-    			$state.go('associate');
+    			$state.go('associate.home');
     	}, () => {
         $scope.errorMsg = 'Username or Password is incorrect.';
         $scope.errorMsgShow = true;
