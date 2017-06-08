@@ -23,7 +23,7 @@ public class CheckinControllerImpl {
     @Autowired
     private CheckinService service;
 
-    @GetMapping(path="checkin/%{username}")
+    @GetMapping(path="checkin/{username}")
     public ResponseEntity<Set<Checkin>> getCheckins(@PathVariable String username){
         //Probably verify that whoever is calling this is actually, y'know, logged in as a manager, or as the user checking things. Until that's implemented, this is wildly insecure, since anyone can call it.
         return ResponseEntity.ok(service.getAllForAssociate(username));

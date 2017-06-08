@@ -24,14 +24,14 @@ import com.revature.util.LocalDateTimeConverter;
 @Table(name = "CHECKINS")
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Checkin implements SmsValidatable {
-	
+
 	transient private static SmsSettings settings = SmsSettings.getInstance();
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CHECKIN_ID_SEQ")
 	@SequenceGenerator(name = "CHECKIN_ID_SEQ", sequenceName = "CHECKIN_ID_SEQ")
 	@Column(name = "CHECKIN_ID")
-	private Long id;
+	private long id;
 
 	@Column(name = "CHECKIN_IN_TIME")
 	@Convert(converter = LocalDateTimeConverter.class)
@@ -57,11 +57,7 @@ public class Checkin implements SmsValidatable {
 		super();
 	}
 
-	public Long getId() {
-		return id;
-	}
-
-	public Checkin(Long id, LocalDateTime checkinTime, LocalDateTime checkoutTime, Manager approvedBy,
+	public Checkin(long id, LocalDateTime checkinTime, LocalDateTime checkoutTime, Manager approvedBy,
 			LocalDateTime approveTime, Associate associate) {
 		super();
 		this.id = id;
@@ -72,7 +68,11 @@ public class Checkin implements SmsValidatable {
 		this.associate = associate;
 	}
 
-	public void setId(Long id) {
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -108,10 +108,6 @@ public class Checkin implements SmsValidatable {
 		this.approveTime = approveTime;
 	}
 
-	public Associate getAssociateId() {
-		return associate;
-	}
-
 	public Associate getAssociate() {
 		return associate;
 	}
@@ -129,7 +125,6 @@ public class Checkin implements SmsValidatable {
 		result = prime * result + ((associate == null) ? 0 : associate.hashCode());
 		result = prime * result + ((checkinTime == null) ? 0 : checkinTime.hashCode());
 		result = prime * result + ((checkoutTime == null) ? 0 : checkoutTime.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
 
@@ -166,11 +161,6 @@ public class Checkin implements SmsValidatable {
 			if (other.checkoutTime != null)
 				return false;
 		} else if (!checkoutTime.equals(other.checkoutTime))
-			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
 			return false;
 		return true;
 	}

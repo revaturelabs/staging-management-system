@@ -26,12 +26,12 @@ import com.revature.util.LocalDateTimeConverter;
 public class Interview implements SmsValidatable {
 
 	transient private static SmsSettings settings = SmsSettings.getInstance();
-	
+
 	@Id
 	@Column(name = "INTERVIEW_ID")
 	@SequenceGenerator(name = "INTERVIEW_ID_SEQ", sequenceName = "INTERVIEW_ID_SEQ")
 	@GeneratedValue(generator = "INTERVIEW_ID_SEQ", strategy = GenerationType.SEQUENCE)
-	private Long id;
+	private long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "ASSOCIATE_ID")
@@ -53,7 +53,7 @@ public class Interview implements SmsValidatable {
 		super();
 	}
 
-	public Interview(Long id, Associate associate, Client client, InterviewStatuses interviewStatus,
+	public Interview(long id, Associate associate, Client client, InterviewStatuses interviewStatus,
 			LocalDateTime scheduled) {
 		super();
 		this.id = id;
@@ -63,11 +63,11 @@ public class Interview implements SmsValidatable {
 		this.scheduled = scheduled;
 	}
 
-	public Long getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -109,7 +109,6 @@ public class Interview implements SmsValidatable {
 		int result = 1;
 		result = prime * result + ((associate == null) ? 0 : associate.hashCode());
 		result = prime * result + ((client == null) ? 0 : client.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((interviewStatus == null) ? 0 : interviewStatus.hashCode());
 		result = prime * result + ((scheduled == null) ? 0 : scheduled.hashCode());
 		return result;
@@ -133,11 +132,6 @@ public class Interview implements SmsValidatable {
 			if (other.client != null)
 				return false;
 		} else if (!client.equals(other.client))
-			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
 			return false;
 		if (interviewStatus == null) {
 			if (other.interviewStatus != null)

@@ -34,7 +34,7 @@ public class BatchType implements SmsValidatable {
 	@Column(name = "BATCH_TYPE_ID")
 	@SequenceGenerator(name = "BATCH_TYPE_ID_SEQ", sequenceName = "BATCH_TYPE_ID_SEQ")
 	@GeneratedValue(generator = "BATCH_TYPE_ID_SEQ", strategy = GenerationType.SEQUENCE)
-	private Long id;
+	private long id;
 
 	@Column(name = "BATCH_TYPE_VALUE")
 	private String value;
@@ -48,18 +48,18 @@ public class BatchType implements SmsValidatable {
 		this.skills = new HashSet<Skill>();
 	}
 
-	public BatchType(Long id, String value, Set<Skill> skills) {
+	public BatchType(long id, String value, Set<Skill> skills) {
 		super();
 		this.id = id;
 		this.value = value;
 		this.skills = skills;
 	}
 
-	public Long getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -83,7 +83,6 @@ public class BatchType implements SmsValidatable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((skills == null) ? 0 : skills.hashCode());
 		result = prime * result + ((value == null) ? 0 : value.hashCode());
 		return result;
@@ -98,11 +97,6 @@ public class BatchType implements SmsValidatable {
 		if (getClass() != obj.getClass())
 			return false;
 		BatchType other = (BatchType) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
 		if (skills == null) {
 			if (other.skills != null)
 				return false;

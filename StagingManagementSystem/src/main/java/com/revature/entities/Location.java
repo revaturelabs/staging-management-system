@@ -19,12 +19,12 @@ import com.revature.markers.SmsValidatable;
 public class Location implements SmsValidatable {
 
 	transient private static SmsSettings settings = SmsSettings.getInstance();
-	
+
 	@Id
 	@Column(name = "LOCATION_ID")
 	@SequenceGenerator(name = "LOCATION_ID_SEQ", sequenceName = "LOCATION_ID_SEQ")
 	@GeneratedValue(generator = "LOCATION_ID_SEQ", strategy = GenerationType.SEQUENCE)
-	private Long id;
+	private long id;
 
 	@Column(name = "LOCATION_NAME")
 	private String name;
@@ -42,7 +42,7 @@ public class Location implements SmsValidatable {
 		super();
 	}
 
-	public Location(Long id, String name, String country, String state, String city) {
+	public Location(long id, String name, String country, String state, String city) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -51,11 +51,11 @@ public class Location implements SmsValidatable {
 		this.city = city;
 	}
 
-	public Long getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -97,7 +97,6 @@ public class Location implements SmsValidatable {
 		int result = 1;
 		result = prime * result + ((city == null) ? 0 : city.hashCode());
 		result = prime * result + ((country == null) ? 0 : country.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((state == null) ? 0 : state.hashCode());
 		return result;
@@ -121,11 +120,6 @@ public class Location implements SmsValidatable {
 			if (other.country != null)
 				return false;
 		} else if (!country.equals(other.country))
-			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
 			return false;
 		if (name == null) {
 			if (other.name != null)

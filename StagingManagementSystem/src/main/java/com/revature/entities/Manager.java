@@ -1,7 +1,5 @@
 package com.revature.entities;
 
-import java.util.Set;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -33,7 +31,7 @@ public class Manager implements SmsValidatable {
 	@Column(name = "MANAGER_ID")
 	@SequenceGenerator(name = "MANAGER_ID_SEQ", sequenceName = "MANAGER_ID_SEQ")
 	@GeneratedValue(generator = "MANAGER_ID_SEQ", strategy = GenerationType.SEQUENCE)
-	private Long id;
+	private long id;
 
 	@Column(name = "MANAGER_NAME")
 	private String name;
@@ -47,14 +45,14 @@ public class Manager implements SmsValidatable {
 	private Permission permission;
 
 	@Column(name = "MANAGER_ACTIVE")
-	private Boolean active;
+	private boolean active;
 
 	public Manager() {
 		super();
-		this.active=true;
+		this.active = true;
 	}
 
-	public Manager(Long id, String name, Credential credential, Permission permission, Boolean active) {
+	public Manager(long id, String name, Credential credential, Permission permission, boolean active) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -63,11 +61,11 @@ public class Manager implements SmsValidatable {
 		this.active = active;
 	}
 
-	public Long getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -95,11 +93,11 @@ public class Manager implements SmsValidatable {
 		this.permission = permission;
 	}
 
-	public Boolean getActive() {
+	public boolean isActive() {
 		return active;
 	}
 
-	public void setActive(Boolean active) {
+	public void setActive(boolean active) {
 		this.active = active;
 	}
 
@@ -107,9 +105,8 @@ public class Manager implements SmsValidatable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((active == null) ? 0 : active.hashCode());
+		result = prime * result + (active ? 1231 : 1237);
 		result = prime * result + ((credential == null) ? 0 : credential.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((permission == null) ? 0 : permission.hashCode());
 		return result;
@@ -124,20 +121,12 @@ public class Manager implements SmsValidatable {
 		if (getClass() != obj.getClass())
 			return false;
 		Manager other = (Manager) obj;
-		if (active == null) {
-			if (other.active != null)
-				return false;
-		} else if (!active.equals(other.active))
+		if (active != other.active)
 			return false;
 		if (credential == null) {
 			if (other.credential != null)
 				return false;
 		} else if (!credential.equals(other.credential))
-			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
 			return false;
 		if (name == null) {
 			if (other.name != null)
