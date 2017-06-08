@@ -129,6 +129,7 @@ public class Batch implements SmsValidatable {
 		this.trainers = trainers;
 	}
 
+	@JsonIgnore
 	public Set<Associate> getAssociates() {
 		return associates;
 	}
