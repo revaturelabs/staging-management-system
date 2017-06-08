@@ -15,16 +15,13 @@ import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-/**
- * Created by Mykola Nikitin on 6/5/17.
- */
 @RestController
 @RequestMapping("checkin")
 public class CheckinControllerImpl {
     @Autowired
     private CheckinService service;
 
-    @GetMapping(path="checkin/%{username}")
+    @GetMapping(path="checkin/{username}")
     public ResponseEntity<Set<Checkin>> getCheckins(@PathVariable String username, HttpSession session){
         Associate associate = (Associate) session.getAttribute("login_associate");
         if(associate != null){ // If you're not an associate..
@@ -62,12 +59,21 @@ public class CheckinControllerImpl {
         }
     }
 
+    /**
+     * Marks a given checkin as having been verified by the currently logged in manager Accessible through POST:/checkin
+     * and requires a checkin to be given.
+     * @param session
+     * @param checkin
+     * @return
+     */
     @PostMapping
     public ResponseEntity<Boolean> managerModification(HttpSession session, @RequestBody Checkin checkin){ // TODO complete and make managers be able to do checkins. Use the PUT mapping instead, for non-manager checkins.
         Manager manager = (Manager) session.getAttribute("login_manager");
         if(manager == null){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(false);
         }
+        if(checkin == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
         service.approveCheckin(manager,checkin);
         return ResponseEntity.ok(true);
     }

@@ -24,7 +24,7 @@ public class Skill implements SmsValidatable{
 	@Column(name = "SKILL_ID")
 	@SequenceGenerator(name = "SKILL_ID_SEQ", sequenceName = "SKILL_ID_SEQ")
 	@GeneratedValue(generator = "SKILL_ID_SEQ", strategy = GenerationType.SEQUENCE)
-	private Long id;
+	private long id;
 
 	@Column(name = "SKILL_VALUE")
 	private String value;
@@ -33,17 +33,17 @@ public class Skill implements SmsValidatable{
 		super();
 	}
 
-	public Skill(Long id, String value) {
+	public Skill(long id, String value) {
 		super();
 		this.id = id;
 		this.value = value;
 	}
 
-	public Long getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -59,7 +59,7 @@ public class Skill implements SmsValidatable{
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		//result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((value == null) ? 0 : value.hashCode());
 		return result;
 	}
@@ -70,14 +70,14 @@ public class Skill implements SmsValidatable{
 			return true;
 		if (obj == null)
 			return false;
-		if (getClass() != obj.getClass())
+		if (!(obj instanceof Skill))
 			return false;
 		Skill other = (Skill) obj;
-		if (id == null) {
+		/*if (id == null) {
 			if (other.id != null)
 				return false;
 		} else if (!id.equals(other.id))
-			return false;
+			return false;*/
 		if (value == null) {
 			if (other.value != null)
 				return false;
