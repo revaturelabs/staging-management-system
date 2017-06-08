@@ -35,9 +35,22 @@ public class InterviewStatusControllerImpl {
 	 */
 	@PostMapping
 	public void add(@RequestBody InterviewStatuses interviewStatus) {
-		interviewStatus.setId(0);
+		interviewStatus.setId(0l);
 		interviewStatusService.add(interviewStatus);
 	}
+	
+	 /**
+   * When called this will always persist a unique interviewStatus in the
+   * database.
+   * 
+   * @param interveiwStatus
+   *            - interviewStatus to be persisted.
+   */
+  @PostMapping("/add/all")
+  public void addAll(@RequestBody Set<InterviewStatuses> interviewStatus) {
+    for(InterviewStatuses is : interviewStatus)
+      add(is);
+  }
 
 	/**
 	 * Gets a interveiwStatus with id.

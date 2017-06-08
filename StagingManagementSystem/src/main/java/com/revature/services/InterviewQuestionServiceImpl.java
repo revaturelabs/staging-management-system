@@ -28,27 +28,18 @@ public class InterviewQuestionServiceImpl implements InterviewQuestionService {
 	}
 
 	@Override
-	public void delete(InterviewQuestion interviewQ) throws SmsCustomException{
-		if(interviewQ == null){
-			throw new NullReferenceException("Interview Questions is null.");
-		}
+	public void delete(InterviewQuestion interviewQ){
 		interviewQuestionRepo.delete(interviewQ);
 	}
 
 	@Override
-	public void update(InterviewQuestion interviewQ) throws SmsCustomException{
-		if(interviewQ == null){
-			throw new NullReferenceException("Interview Question is null.");
-		}
+	public void update(InterviewQuestion interviewQ){
 		interviewQ = interviewQuestionRepo.saveAndFlush(interviewQ);
 	}
 
 	@Override
-	public InterviewQuestion findById(long id) throws SmsCustomException{
+	public InterviewQuestion findById(long id){
 		InterviewQuestion interviewQ = interviewQuestionRepo.getOne(id);
-		if(interviewQ == null){
-			throw new NullReferenceException("Interview Question is null.");
-		}
 		return interviewQ;
 	}
 

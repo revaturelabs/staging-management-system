@@ -1,8 +1,11 @@
 package com.revature.controllers.rest;
 
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,30 +23,36 @@ public class LoginControllerImpl {
 	@Autowired
 	CredentialService credService;
 	
-	@PostMapping("associate")
-	public Associate postAssociate(@RequestBody Credential creds, HttpServletResponse resp) throws Exception {
-		System.out.println("here!");
-		Object obj = credService.login(creds);
-		if(obj instanceof Manager)
-			System.out.println("Is a Manager");
-		if(obj instanceof Associate)
-			System.out.println("Is a Associate");
-		System.out.println(creds.getUsername());
-		System.out.println(obj);
-		System.out.println(creds.getPassword());
-		throw new Exception();
-		
-//		resp.setStatus(401);
+	@GetMapping("isAssociate")
+	public ResponseEntity<Boolean> isAssociate(HttpSession session) {
+		System.out.println("isAssociate");
+		Associate associate = (Associate)session.getAttribute("login_associate");
+		if(associate == null)
+			return ResponseEntity.ok(false);
+		else
+			return ResponseEntity.ok(true);
 	}
 	
-	@PostMapping("manager")
-	public Manager postManager(@RequestBody Credential creds, HttpServletResponse resp) {
-//		System.out.println(creds.getUsername());
-//		System.out.println(creds.getPassword());
-			
-		return new Manager();
-		
-//		resp.setStatus(401);
+	@GetMapping("isManager")
+	public ResponseEntity<Boolean> isManager(HttpSession session) {
+		System.out.println("isManager");
+		Manager manager = (Manager)session.getAttribute("login_manager");
+		if(manager == null)
+			return ResponseEntity.ok(false);
+		else
+			return ResponseEntity.ok(true);
 	}
 
+	@PostMapping
+	public ResponseEntity<Object> dualLogin(@RequestBody Credential creds, HttpSession session){
+		Object obj = credService.login(creds);
+		if(obj instanceof Associate){
+			session.setAttribute("login_associate", (Associate)obj);
+			return ResponseEntity.ok((Associate)obj);
+		}else if(obj instanceof Manager){
+			session.setAttribute("login_manager", (Manager)obj);
+			return ResponseEntity.ok((Manager)obj);
+		}
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+	}
 }

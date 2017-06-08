@@ -30,8 +30,8 @@ public class CredentialServiceImpl implements CredentialService {
 	}
 
 	@Override
-	public void add(Credential location) {
-		credentialRepo.saveAndFlush(location);
+	public void add(Credential credential) {
+		credential = credentialRepo.saveAndFlush(credential);
 	}
 
 	@Override
@@ -45,31 +45,24 @@ public class CredentialServiceImpl implements CredentialService {
 	}
 
 	@Override
-	public void delete(Credential location) {
-		credentialRepo.delete(location);
+	public void remove(Credential credential) {
+		credentialRepo.delete(credential);
 	}
 
 	@Override
-	public void update(Credential location) {
-		credentialRepo.saveAndFlush(location);
+	public void update(Credential credential) {
+		credential = credentialRepo.saveAndFlush(credential);
 	}
 
 	@Override
 	public Object login(Credential creds) {
-		Credential newCred = credentialRepo.findByUsernameAndPassword(creds.getUsername(), creds.getPassword());
-		System.out.println("Here1");
-		System.out.println(newCred);
+		Credential newCred = credentialRepo.findByUsername(creds.getUsername());
 		if(newCred != null) {
-			System.out.println("Here2");
-			Associate associate = associateRepo.getByCredential_Id(creds.getId());
-			System.out.println("Here3");
-			System.out.println(associate);
+			Associate associate = associateRepo.getByCredential(newCred);
 			if(associate != null)
 				return associate;
 			else{
-				System.out.println("Here1");
-				Manager man =  managerRepo.getByCredential_Id(creds.getId());
-				System.out.println(man);
+				Manager man =  managerRepo.getByCredential(newCred);
 				return man;
 			}
 		}

@@ -9,7 +9,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.revature.entities.Interviews;
+import com.revature.entities.Interview;
 import com.revature.repositories.InterviewsRepo;
 
 @Service
@@ -25,47 +25,47 @@ public class InterviewsServiceImpl implements InterviewsService {
 
 	@Override
 	@Transactional
-	public void add(Interviews interviews) {
-		interviews= interviewsRepo.saveAndFlush(interviews);
+	public void add(Interview interviews) {
+		interviewsRepo.saveAndFlush(interviews);
 	}
 
 	@Override
-	public Interviews findById(long id) {
+	public Interview findById(long id) {
 		return interviewsRepo.getOne(id);
 	}
 
 	@Override
-	public Set<Interviews> getAll() {
-		return new HashSet<Interviews>(interviewsRepo.findAll());
+	public Set<Interview> getAll() {
+		return new HashSet<Interview>(interviewsRepo.findAll());
 	}
 
 	@Override
-	public void update(Interviews interviews) {
+	public void update(Interview interviews) {
 		interviews = interviewsRepo.saveAndFlush(interviews);
 	}
 
 	@Override
-	public void delete(Interviews interviews) {
+	public void delete(Interview interviews) {
 		interviewsRepo.delete(interviews);
 	}
 
 	@Override
-	public Interviews findByAssociateId(long id) {
+	public Interview findByAssociateId(long id) {
 		return interviewsRepo.findByAssociateId(id);
 	}
 
 	@Override
-	public Interviews findByClientId(long id) {
+	public Interview findByClientId(long id) {
 		return interviewsRepo.findByClientId(id);
 	}
 
 	@Override
-	public Interviews findByInterviewStatus(long id) {
+	public Interview findByInterviewStatus(long id) {
 		return interviewsRepo.findByInterviewStatusId(id);
 	}
 
 	@Override
-	public Interviews findByScheduled(LocalDateTime dateandtime) {
+	public Interview findByScheduled(LocalDateTime dateandtime) {
 		return interviewsRepo.findByScheduled(dateandtime);
 	}
 }
