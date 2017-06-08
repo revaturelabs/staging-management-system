@@ -16,7 +16,7 @@ import com.revature.markers.SmsValidatable;
 @Entity
 @Table(name = "SKILLS")
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-public class Skill implements SmsValidatable {
+public class Skill implements SmsValidatable{
 
 	transient private static SmsSettings settings = SmsSettings.getInstance();
 
@@ -88,7 +88,7 @@ public class Skill implements SmsValidatable {
 	@Override
 	public void validate() throws SmsCustomException {
 		// TODO Validate your members.
-
+		
 	}
 
 }

@@ -21,6 +21,11 @@ public class CheckinControllerImpl {
     private CheckinService checkinService;
 
     @GetMapping(path="checkin/{username}")
+<<<<<<< HEAD
+    public ResponseEntity<Set<Checkin>> getCheckins(@PathVariable String username){
+        //Probably verify that whoever is calling this is actually, y'know, logged in as a manager, or as the user checking things. Until that's implemented, this is wildly insecure, since anyone can call it.
+        return ResponseEntity.ok(service.getAllForAssociate(username));
+=======
     public ResponseEntity<Set<Checkin>> getCheckins(@PathVariable String username, HttpSession session){
         Associate associate = (Associate) session.getAttribute("login_associate");
         if(associate != null){ // If you're not an associate..
@@ -33,6 +38,7 @@ public class CheckinControllerImpl {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null); // Go away!
         }
         return ResponseEntity.ok(checkinService.getAllForAssociate(username));
+>>>>>>> ee2341f4372d0c9e06416341a29d967f969fa5ce
     }
 
     @GetMapping

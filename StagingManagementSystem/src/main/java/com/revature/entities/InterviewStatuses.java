@@ -19,7 +19,7 @@ import com.revature.markers.SmsValidatable;
 public class InterviewStatuses implements SmsValidatable {
 
 	transient private static SmsSettings settings = SmsSettings.getInstance();
-
+	
 	@Id
 	@Column(name = "INTERVIEW_STATUS_ID")
 	@SequenceGenerator(name = "INTERVIEW_STATUS_ID_SEQ", sequenceName = "INTERVIEW_STATUS_ID_SEQ")

@@ -17,6 +17,12 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+<<<<<<< HEAD
+import org.aspectj.weaver.patterns.ThisOrTargetAnnotationPointcut;
+
+=======
+import com.fasterxml.jackson.annotation.JsonIgnore;
+>>>>>>> ee2341f4372d0c9e06416341a29d967f969fa5ce
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.revature.config.SmsSettings;
 import com.revature.exceptions.SmsCustomException;
@@ -45,12 +51,17 @@ public class Associate implements SmsValidatable {
 	@Column(name = "ASSOCIATE_PORTFOLIO_LINK")
 	private String portfolioLink;
 
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "BATCH_ID")
 	private Batch batch;
 
 	@Column(name = "ASSOCIATE_ACTIVE")
+<<<<<<< HEAD
 	private boolean active;
+=======
+	private Boolean active = true;
+>>>>>>> ee2341f4372d0c9e06416341a29d967f969fa5ce
 
 	@Column(name = "CLIENT_ID")
 	private Client lockedTo;
@@ -61,6 +72,11 @@ public class Associate implements SmsValidatable {
 
 	public Associate() {
 		super();
+		// TODO Auto-generated constructor stub
+	}
+	
+	public Associate(Associate other){
+	  this(other.id, other.credential, other.name, other.portfolioLink, other.batch, other.active, other.lockedTo, null);
 		this.skills = new HashSet<Skill>();
 		this.active = true;
 	}
@@ -146,7 +162,12 @@ public class Associate implements SmsValidatable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+<<<<<<< HEAD
 		result = prime * result + (active ? 1231 : 1237);
+=======
+		result = prime * result + ((active == null) ? 0 : active.hashCode());
+		result = prime * result + ((batch == null) ? 0 : batch.associateFreeHashCode());
+>>>>>>> ee2341f4372d0c9e06416341a29d967f969fa5ce
 		result = prime * result + ((credential == null) ? 0 : credential.hashCode());
 		result = prime * result + ((lockedTo == null) ? 0 : lockedTo.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
