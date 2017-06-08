@@ -1,14 +1,33 @@
-<p> checkins </p>
-<p> checkins </p>
-<p> checkins </p>
-<p> checkins </p>
-<p> checkins </p>
-<p> checkins </p>
-<p> checkins </p>
-<p> checkins </p>
-<p> checkins </p>
-<p> checkins </p>
-<p> checkins </p>
+<!DOCTYPE html>
+<html lang="en" xmlns:ng-model="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="checkin.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+</head>
+<body ng-app='checkin' ng-controller="checkinCtrl">
+<script src="checkin.js"></script>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <!--<th class="interview-th" scope="col"></th>-->
+        <th class="interview-th" scope="col">Associate</th>
+        <th class="interview-th" scope="col">Checked In Time</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="associate in associates"
+        class="associate">
 
-<p> checkins </p>
-<p> checkins </p>
+        <td class="interview-td" ng-bind="associate.associateName"></td>
+
+        <td class="interview-td" ng-bind="associate.checkinTime"></td>
+    </tr>
+    </tbody>
+</table>
+<button class="btn btn-lg btn-primary btn-block" type="submit"
+        ng-click="approve()">Submit</button>
+</body>
+</html>
