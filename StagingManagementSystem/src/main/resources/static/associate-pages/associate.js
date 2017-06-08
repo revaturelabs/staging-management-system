@@ -16,18 +16,17 @@ const associateCtrl = ($scope, $location, $http, $state) => {
 					$scope.checkInBtn = "Checked In";
 					$scope.hasCheckedIn = true;
 				}
-				else 
+				else
 					$scope.checkInBtn = "Check In";
 			});
 		}
 	});
-	
-	
+
 	$scope.hasCheckedIn = false;
-	$scope.isActive = function (viewLocation) { 
+	$scope.isActive = function (viewLocation) {
     return viewLocation === $location.path();
 	};
-	
+
 	$scope.checkIn = function () {
 		$http({
 			method: 'PUT',
@@ -40,7 +39,7 @@ const associateCtrl = ($scope, $location, $http, $state) => {
 			}
 		});
 	};
-	
+
 	$scope.logout = function () {
 		$http({
 			method: 'GET',
