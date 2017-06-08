@@ -1,0 +1,47 @@
+<link rel="stylesheet" href="./associate-pages/interview/associateInterview.css"/>
+
+<div class="container">
+<h2 class="interviewH2">Add Interview</h2>
+
+<div class="form-group addInterview">     
+	<div class="col-sm-5">
+		<select id="selectbasic" name="selectbasic" class="form-control">
+			<option value="1">Option one</option>
+			<option value="2">Option two</option>
+			<option value="2">Option three</option>
+			<option value="2">Option four</option>
+		</select>
+	</div>
+	<div class="col-sm-5">
+		<div class="form-group" >
+            <div class='input-group date' >
+                <input type='text' class="form-control"  id='datetimepicker1'/>
+                <span ng-click="showDateTimePicker()" class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+        </div>
+	</div>
+	<div class="col-sm-2">
+		<button type="button" class="btn btn-primary">Add Interview</button>
+	</div>  
+</div>
+	<hr class="colorgraph">
+	  <h2 class="interviewH2">Finished Interviews</h2>          
+	  <table class="table table-hover">
+	    <thead>
+	      <tr>
+	        <th>Client Name</th>
+	        <th>Time</th>
+	        <th>Status</th>
+	      </tr>
+	    </thead>
+	    <tbody>
+	      <tr ng-repeat="x in names">
+	        <td>Infosys</td>
+	        <td>10/10/1000 10:10:10</td>
+	        <td>Good</td>
+	      </tr>
+	    </tbody>
+	  </table>
+</div>

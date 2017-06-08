@@ -4,6 +4,12 @@
   background: rgba(242, 105, 38, 1);
 }
 
-#center {
+.interviewH2 {
 	text-align: center;
+	color: rgba(55, 71, 79, 0.75);
+}
+
+.addInterview {
+	text-align: center;
+	margin-bottom: 7em;
 }

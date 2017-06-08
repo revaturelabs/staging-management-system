@@ -31,7 +31,7 @@ public class Job implements SmsValidatable {
 	@Column(name = "JOB_ID")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "JOB_ID_SEQ")
 	@SequenceGenerator(name = "JOB_ID_SEQ", sequenceName = "JOB_ID_SEQ")
-	private Long id;
+	private long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "ASSOCIATE_ID")
@@ -65,7 +65,7 @@ public class Job implements SmsValidatable {
 		super();
 	}
 
-	public Job(Long id, Associate associate, Client client, LocalDateTime startDate, LocalDateTime projectedEndDate,
+	public Job(long id, Associate associate, Client client, LocalDateTime startDate, LocalDateTime projectedEndDate,
 			LocalDateTime endDate, LocalDateTime buyoutDate, LocalDateTime confirmedDate) {
 		super();
 		this.id = id;
@@ -78,11 +78,11 @@ public class Job implements SmsValidatable {
 		this.confirmedDate = confirmedDate;
 	}
 
-	public Long getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -151,7 +151,7 @@ public class Job implements SmsValidatable {
 		result = prime * result + ((client == null) ? 0 : client.hashCode());
 		result = prime * result + ((confirmedDate == null) ? 0 : confirmedDate.hashCode());
 		result = prime * result + ((endDate == null) ? 0 : endDate.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		//result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((projectedEndDate == null) ? 0 : projectedEndDate.hashCode());
 		result = prime * result + ((startDate == null) ? 0 : startDate.hashCode());
 		return result;
@@ -163,7 +163,7 @@ public class Job implements SmsValidatable {
 			return true;
 		if (obj == null)
 			return false;
-		if (getClass() != obj.getClass())
+		if (!(obj instanceof Job))
 			return false;
 		Job other = (Job) obj;
 		if (associate == null) {
@@ -191,11 +191,11 @@ public class Job implements SmsValidatable {
 				return false;
 		} else if (!endDate.equals(other.endDate))
 			return false;
-		if (id == null) {
+		/*if (id == null) {
 			if (other.id != null)
 				return false;
 		} else if (!id.equals(other.id))
-			return false;
+			return false;*/
 		if (projectedEndDate == null) {
 			if (other.projectedEndDate != null)
 				return false;
