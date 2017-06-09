@@ -21,18 +21,15 @@ public class Credential implements SmsValidatable {
 
 	transient private static SmsSettings settings = SmsSettings.getInstance();
 
-	@JsonIgnore
 	@Id
 	@Column(name = "CREDENTIAL_ID")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CREDENTIAL_ID_SEQ")
 	@SequenceGenerator(name = "CREDENTIAL_ID_SEQ", sequenceName = "CREDENTIAL_ID_SEQ")
 	private long id;
 
-	@JsonIgnore
 	@Column(name = "CREDENTIAL_USERNAME")
 	private String username;
 
-	@JsonIgnore
 	@Column(name = "CREDENTIAL_PASSWORD")
 	private String password;
 
@@ -47,6 +44,7 @@ public class Credential implements SmsValidatable {
 		this.password = password;
 	}
 
+	@JsonIgnore
 	public long getId() {
 		return id;
 	}
@@ -55,6 +53,7 @@ public class Credential implements SmsValidatable {
 		this.id = id;
 	}
 
+	@JsonIgnore
 	public String getUsername() {
 		return username;
 	}
@@ -63,6 +62,7 @@ public class Credential implements SmsValidatable {
 		this.username = username;
 	}
 
+	@JsonIgnore
 	public String getPassword() {
 		return password;
 	}
