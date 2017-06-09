@@ -2,7 +2,7 @@
 <table class="table table-striped">
     <thead>
     <tr>
-        <th class="interview-th" scope="col">Create a Client</th>
+        <th class="create-th" scope="col">Create a Client</th>
     </tr>
     </thead>
 
@@ -16,8 +16,8 @@
         <tr>
 		<td><label>Client Priority: </label><select ng-model="client.priority">
 			<option disabled selected value> -- Select a Priority -- </option>
-			<option value="0" ng-click="priority = '0'"">0</option>	
-			<option value="0" ng-click="priority = '1'">1</option>
+			<option value="false" ng-click="priority = '0'"">0</option>	
+			<option value="true" ng-click="priority = '1'">1</option>
 		</select></td> <br> <br>
     </tr>
     </tbody>
