@@ -76,6 +76,7 @@ public class BatchServiceImpl implements BatchService {
 
 	@Override
 	public void addMockBatches(Set<Batch> batches) {
+	  System.out.println("Batches: " + batches);
 		List<Trainer> trainers = trainerRepo.findAll();
 		int trainerIndex = 0;
 		List<BatchType> batchTypes = batchTypeRepo.findAll();

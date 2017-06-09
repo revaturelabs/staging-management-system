@@ -213,7 +213,7 @@ public class Batch implements SmsValidatable {
 	@Override
 	public String toString() {
 		return "Batch [id=" + id + ", batchType=" + batchType + ", startDate=" + startDate + ", endDate=" + endDate
-				+ ", location=" + location + ", trainers=" + trainers;
+				+ ", location=" + location + ", trainers=" + trainers + ", batch size: " + associates.size();
 	}
 
 	@Override
