@@ -15,8 +15,10 @@ import profileCtrl from './associate-pages/profile/profile';
 import associateCtrl from './associate-pages/associate';
 import { reportCtrl } from './reports/reports';
 import { nestedCtrl } from './reports/nestedGraph';
+import { loginCtrl } from './login/login';
+import { attendanceCtrl } from './reports/attendance'
 import { barCtrl } from './reports/barGraph';
-import loginCtrl from './login/login';
+
 
 console.log();
 const Visualizer = window['ui-router-visualizer'].Visualizer;
@@ -107,6 +109,11 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       url: '/nestedGraph',
       templateUrl: 'reports/nestedGraph.html',
       controller: nestedCtrl,
+    })
+    .state('reports.attendance', {
+    	url: '/attendance',
+    	templateUrl: 'reports/employed.html',
+    	controller: attendanceCtrl,
     })
     .state('reports.barGraph', {
       url: '/barGraph',
