@@ -26,7 +26,7 @@ const profileCtrl = ($scope, $http, userService) => {
   $scope.openPortfolioUrlModal = () => {
     $scope.sendingRequest = false;
     $scope.portfolioModalButtonValue = 'Save';
-    $scope.portfolioUrlInput = $scope.portfolioUrl;
+    $scope.portfolioUrlInput = $scope.associate.portfolioLink;
     $('#portfolioUrlModal').modal('show');
   };
   $scope.submitPortfolioUrl = () => {
