@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.revature.config.SmsSettings;
 import com.revature.exceptions.SmsCustomException;
@@ -26,7 +27,7 @@ import com.revature.util.LocalDateTimeConverter;
 public class Job implements SmsValidatable {
 
 	transient private static SmsSettings settings = SmsSettings.getInstance();
-	
+
 	@Id
 	@Column(name = "JOB_ID")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "JOB_ID_SEQ")
@@ -86,6 +87,7 @@ public class Job implements SmsValidatable {
 		this.id = id;
 	}
 
+	@JsonIgnore
 	public Associate getAssociate() {
 		return associate;
 	}
