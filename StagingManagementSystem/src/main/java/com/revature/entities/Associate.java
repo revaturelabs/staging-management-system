@@ -17,7 +17,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.revature.config.SmsSettings;
 import com.revature.exceptions.SmsCustomException;
@@ -46,7 +45,6 @@ public class Associate implements SmsValidatable {
 	@Column(name = "ASSOCIATE_PORTFOLIO_LINK")
 	private String portfolioLink;
 
-	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "BATCH_ID")
 	private Batch batch;
@@ -54,8 +52,9 @@ public class Associate implements SmsValidatable {
 	@Column(name = "ASSOCIATE_ACTIVE")
 	private Boolean active = true;
 
-	@Column(name = "CLIENT_ID")
-	private Long lockedTo;
+	@ManyToOne
+	@JoinColumn(name = "CLIENT_ID")
+	private Client lockedTo;
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "ASSOCIATE_SKILLS", joinColumns = @JoinColumn(name = "ASSOCIATE_ID"), inverseJoinColumns = @JoinColumn(name = "SKILL_ID"))
@@ -65,15 +64,9 @@ public class Associate implements SmsValidatable {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
-	public Associate(Associate other){
-	  this(other.id, other.credential, other.name, other.portfolioLink, other.batch, other.active, other.lockedTo, null);
-		this.skills = new HashSet<Skill>();
-		this.active=true;
-	}
 
 	public Associate(Long id, Credential credential, String name, String portfolioLink, Batch batch, Boolean active,
-			Long lockedTo, Set<Skill> skills) {
+			Client lockedTo, Set<Skill> skills) {
 		super();
 		this.id = id;
 		this.credential = credential;
@@ -133,16 +126,19 @@ public class Associate implements SmsValidatable {
 		this.active = active;
 	}
 
-	public Long getLockedTo() {
+	public Client getLockedTo() {
 		return lockedTo;
 	}
 
-	public void setLockedTo(Long lockedTo) {
+	public void setLockedTo(Client lockedTo) {
 		this.lockedTo = lockedTo;
 	}
 
 	public Set<Skill> getSkills() {
-		return skills;
+	  if(skills != null)
+	    return skills;
+	  
+	  return new HashSet<Skill>();
 	}
 
 	public void setSkills(Set<Skill> skills) {

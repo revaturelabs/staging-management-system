@@ -214,9 +214,8 @@ function plainBarChart($scope, chartInfo, data, linkedData) {
   chart.addEventListener('chartrollout', () => {
     $('#slide-in').hide('slow');
   });
- 
+
   chart.render();
-  
 }
 
 export { nestedCtrl };
