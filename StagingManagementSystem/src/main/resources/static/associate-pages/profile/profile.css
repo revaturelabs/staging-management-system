@@ -1,6 +1,5 @@
 div[class^="col-md"] {
-  padding: .5em 0 .5em 0;
-  text-align: center;
+  padding: .5em;
 }
 
 #main-profile {
@@ -13,4 +12,8 @@ div[class^="col-md"] {
 
 .batch-skill {
   background-color: rgba(242, 105, 38, 1);
+}
+
+#profile-panel {
+  max-width: 1000px;
 }
