@@ -29,11 +29,11 @@ public class ClientQuestion implements SmsValidatable {
 	@GeneratedValue(generator = "CLIENT_QUESTION_ID_SEQ", strategy = GenerationType.SEQUENCE)
 	private Long ClientQuestionId;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "CLIENT_ID")
 	private Client client;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "INTERVIEW_QUESTION_ID")
 	private InterviewQuestion interviewQ;
 

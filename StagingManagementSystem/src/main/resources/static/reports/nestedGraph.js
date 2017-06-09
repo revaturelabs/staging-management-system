@@ -185,9 +185,21 @@ const chart = {
 };
 
 
-const nestedCtrl = ($scope) => {
+const nestedCtrl = ($scope, $http) => {
+  $http({
+    method: 'GET',
+    url: 'http://localhost:8090/interviewQuestions/all'
+  }).then((response) => {
+    console.log("Hello World" + JSON.stringify(response));
+  });
+  
   plainBarChart($scope, chart, data, linkedData);
+  
 };
+
+function sortQuestions(){
+  
+}
 
 function plainBarChart($scope, chartInfo, data, linkedData) {
   $scope.greeting = 'test';
