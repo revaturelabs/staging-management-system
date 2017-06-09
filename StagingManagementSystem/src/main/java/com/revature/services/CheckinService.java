@@ -114,4 +114,10 @@ public interface CheckinService {
      */
     public void add(Checkin checkin);
 
+    /**
+     * Gets checkins of the day method called
+     * @return checkins.
+     */
+    public Set<Checkin> getTodaysCheckins();
+
 }
