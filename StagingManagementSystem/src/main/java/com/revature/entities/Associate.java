@@ -92,6 +92,7 @@ public class Associate implements SmsValidatable {
 		this.id = id;
 	}
 
+	@JsonIgnore
 	public Credential getCredential() {
 		return credential;
 	}

@@ -1,5 +1,4 @@
-var app = angular.module('myApp', []);
-app.controller('interviewsCtrl', function($scope, $http) {
+const interviewsCtrl = ($scope, $http) => {
     $http({
         method : "GET",
         url : "interviews/all"
@@ -10,6 +9,6 @@ app.controller('interviewsCtrl', function($scope, $http) {
     });
 
 
-});
+};
 
 export { interviewsCtrl };
