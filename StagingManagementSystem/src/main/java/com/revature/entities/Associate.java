@@ -46,7 +46,6 @@ public class Associate implements SmsValidatable {
 	@Column(name = "ASSOCIATE_PORTFOLIO_LINK")
 	private String portfolioLink;
 
-	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "BATCH_ID")
 	private Batch batch;
@@ -93,6 +92,7 @@ public class Associate implements SmsValidatable {
 		this.id = id;
 	}
 
+	@JsonIgnore
 	public Credential getCredential() {
 		return credential;
 	}
