@@ -5,6 +5,7 @@ import FusionCharts from 'fusioncharts';
 
 import { managerCtrl } from './manager-pages/manager';
 import { managerHomeCtrl } from './manager-pages/home/home';
+import managerCheckinsCtr from './manager-pages/home/checkin';
 import { interviewsCtrl } from './manager-pages/home/interviews/interviews';
 import managerCreateCtrl from './manager-pages/create/create';
 import { batchCtrl } from './manager-pages/create/batch';
@@ -95,6 +96,7 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
         },
         'checkins@manager.home': {
           templateUrl: 'manager-pages/home/checkins.html',
+            controller: managerCheckinsCtr,
         },
       },
     })
