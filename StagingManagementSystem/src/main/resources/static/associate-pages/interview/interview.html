@@ -5,17 +5,20 @@
 
 <div class="form-group addInterview">     
 	<div class="col-sm-5">
-		<select id="selectbasic" name="selectbasic" class="form-control">
-			<option value="1">Option one</option>
-			<option value="2">Option two</option>
-			<option value="2">Option three</option>
-			<option value="2">Option four</option>
-		</select>
+	Client Name
+	</div>
+	<div class="col-sm-5">
+	Interview Date & Time
+	</div>
+	<div class="col-sm-2"></div>  
+	
+	<div class="col-sm-5">
+		<select class="form-control" ng-model="selectedClient" ng-options="x.name for x in clients" title="Client"></select>
 	</div>
 	<div class="col-sm-5">
 		<div class="form-group" >
             <div class='input-group date' >
-                <input type='text' class="form-control"  id='datetimepicker1'/>
+                <input type='text' class="form-control" ng-model="selectedDate.value" id='datetimepicker1'/>
                 <span ng-click="showDateTimePicker()" class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
                 </span>
@@ -23,11 +26,19 @@
         </div>
 	</div>
 	<div class="col-sm-2">
-		<button type="button" class="btn btn-primary">Add Interview</button>
+		<button type="button" ng-click="addInterviewClick()" class="btn btn-primary">Add Interview</button>
 	</div>  
-</div>
+	
+	</div>
+	<div class="alert alert-success" ng-show="successMsgShow">
+	  Successfully added an Interview!
+	</div>
+	<div class="alert alert-danger" ng-show="errorMsgShow">
+	  Failed to add an Interview.
+	</div>
+	
 	<hr class="colorgraph">
-	  <h2 class="interviewH2">Finished Interviews</h2>          
+	  <h2 class="interviewH2">Interviews</h2>          
 	  <table class="table table-hover">
 	    <thead>
 	      <tr>
