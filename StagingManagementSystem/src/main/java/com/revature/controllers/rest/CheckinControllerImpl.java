@@ -2,6 +2,7 @@ package com.revature.controllers.rest;
 
 import com.revature.entities.Associate;
 import com.revature.entities.Checkin;
+import com.revature.entities.Manager;
 import com.revature.exceptions.AlreadyCheckedInException;
 import com.revature.exceptions.NotLoggedInException;
 import com.revature.services.CheckinService;
@@ -14,30 +15,43 @@ import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-/**
- * Created by Mykola Nikitin on 6/5/17.
- */
 @RestController
 @RequestMapping("checkin")
 public class CheckinControllerImpl {
     @Autowired
-    private CheckinService service;
+    private CheckinService checkinService;
 
-    @GetMapping(path="checkin/%{username}")
-    public ResponseEntity<Set<Checkin>> getCheckins(@PathVariable String username){
-        //Probably verify that whoever is calling this is actually, y'know, logged in as a manager, or as the user checking things. Until that's implemented, this is wildly insecure, since anyone can call it.
-        return ResponseEntity.ok(service.getAllForAssociate(username));
+    public CheckinControllerImpl(CheckinService checkinService) {
+        this.checkinService = checkinService;
     }
 
+    @GetMapping(path="checkin/{username}")
+    public ResponseEntity<Set<Checkin>> getCheckins(@PathVariable String username, HttpSession session){
+        Associate associate = (Associate) session.getAttribute("login_associate");
+        if(associate != null){ // If you're not an associate..
+            if(username.equals(associate.getCredential().getUsername())) // If you're asking for your own details..
+                return ResponseEntity.ok(checkinService.getAllForAssociate(associate)); // You're welcome to your own data.
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null); // Otherwise, go away!
+        }
+        Manager manager = (Manager) session.getAttribute("login_manager");
+        if(manager == null){ // And if you're not a manager..
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null); // Go away!
+        }
+        return ResponseEntity.ok(checkinService.getAllForAssociate(username));
+    }
 
     @GetMapping
     public ResponseEntity<Boolean> isCheckedIn(HttpSession session){
         Associate associate = (Associate) session.getAttribute("login_associate");
         if(associate == null)
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(false);
-        return ResponseEntity.ok(service.hasCheckedInToday(associate));
+        return ResponseEntity.ok(checkinService.hasCheckedInToday(associate));
 
     }
+
+    @GetMapping("/allTodays")
+    public Set<Checkin> getTodaysCheckins() {return checkinService.getTodaysCheckins();}
+
 
     @PutMapping
     public ResponseEntity<Boolean> checkIn(HttpSession session){
@@ -45,15 +59,32 @@ public class CheckinControllerImpl {
         if(associate == null)
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(false);
         try{
-            service.checkIn(associate, LocalDateTime.now());
+            checkinService.checkIn(associate, LocalDateTime.now());
             return ResponseEntity.ok(true);
         }catch(AlreadyCheckedInException e){
             return ResponseEntity.status(HttpStatus.CONFLICT).body(false);
         }
     }
 
+    /**
+     * Marks a given checkin as having been verified by the currently logged in manager Accessible through POST:/checkin
+     * and requires a checkin to be given.
+     * @param session
+     * @param checkin
+     * @return
+     */
     @PostMapping
-    public ResponseEntity<Boolean> managerCheckIn(){ // TODO complete and make managers be able to do checkins. Use the PUT mapping instead, for non-manager checkins.
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(false);
+    public ResponseEntity<Boolean> managerModification(HttpSession session, @RequestBody Checkin checkin){ // TODO complete and make managers be able to do checkins. Use the PUT mapping instead, for non-manager checkins.
+        Manager manager = (Manager) session.getAttribute("login_manager");
+        if(manager == null){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(false);
+        }
+        if(checkin == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
+        checkinService.approveCheckin(manager,checkin);
+        return ResponseEntity.ok(true);
     }
+
+
 }
+

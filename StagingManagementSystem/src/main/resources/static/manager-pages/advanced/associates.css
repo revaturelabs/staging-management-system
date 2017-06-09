@@ -1,0 +1,6 @@
+.manager-advanced-associates-table {
+  width: auto !important;
+}
+.manager-advanced-associates-table > thead > tr {
+  background-color: #FF8000;
+}

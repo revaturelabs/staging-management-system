@@ -70,30 +70,45 @@
 
 	var _user = __webpack_require__(95);
 
-	var _profile = __webpack_require__(96);
+	var _associates = __webpack_require__(96);
+
+	var _associates2 = _interopRequireDefault(_associates);
+
+	var _profile = __webpack_require__(97);
 
 	var _profile2 = _interopRequireDefault(_profile);
 
-	var _associate = __webpack_require__(97);
+	var _associate = __webpack_require__(98);
 
 	var _associate2 = _interopRequireDefault(_associate);
 
-	var _reports = __webpack_require__(98);
+	var _reports = __webpack_require__(99);
 
-	var _nestedGraph = __webpack_require__(99);
+	var _nestedGraph = __webpack_require__(100);
 
-	var _barGraph = __webpack_require__(100);
+	var _barGraph = __webpack_require__(101);
 
-	var _login = __webpack_require__(101);
+	var _login = __webpack_require__(102);
 
 	var _login2 = _interopRequireDefault(_login);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var FusionCharts = __webpack_require__(102);
-	__webpack_require__(103)(FusionCharts);
+	var FusionCharts = __webpack_require__(103);
+	__webpack_require__(104)(FusionCharts);
+
+	var Visualizer = window['ui-router-visualizer'].Visualizer;
 
 	var routerApp = _angular2.default.module('routerApp', [_angularUiRouter2.default]);
+
+	routerApp.run(function ($uiRouter, $trace) {
+	  // Auto-collapse children in state visualizer
+	  var registry = $uiRouter.stateRegistry;
+
+	  var pluginInstance = $uiRouter.plugin(Visualizer);
+
+	  $trace.enable('TRANSITION');
+	});
 
 	routerApp.config(function ($stateProvider, $urlRouterProvider) {
 	  $urlRouterProvider.otherwise('/login');
@@ -143,6 +158,13 @@
 	        templateUrl: 'manager-pages/home/checkins.html'
 	      }
 	    }
+	  }).state('manager.advanced', {
+	    url: '/advanced',
+	    templateUrl: 'manager-pages/advanced/advanced.html',
+	    controller: _associates2.default
+	  }).state('manager.advanced.allassociates', {
+	    url: '/associates',
+	    templateUrl: 'manager-pages/advanced/associates.html'
 	  }).state('associate', {
 	    url: '/associate',
 	    templateUrl: 'associate-pages/associate.html',
@@ -44490,6 +44512,13 @@
 		value: true
 	});
 	var managerCtrl = function managerCtrl($scope, $state, $location, $http) {
+		$http({
+			method: 'GET',
+			url: '/login/isManager'
+		}).then(function (response) {
+			if (!response.data) $state.go('login');
+		});
+
 		$scope.isActive = function (viewLocation) {
 			return viewLocation === $location.path();
 		};
@@ -44542,7 +44571,7 @@
 	    }
 	  };
 
-	  //initialize our named views
+	  // initialize our named views
 	  $scope.selectView1('available');
 	  $scope.selectView2('interviews');
 	};
@@ -44706,35 +44735,101 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	var managerAdvancedAssociatesCtrl = function managerAdvancedAssociatesCtrl($scope, $http) {
+	  window.scope = $scope;
+
+	  $http.get('batchtype/all').then(function (data) {
+	    $scope.batchtypes = data.data;
+	    $scope.selectedBatchTypes = [];
+	    $scope.batchtypes.forEach(function (type) {
+	      return $scope.selectedBatchTypes.push(type);
+	    });
+	  });
+
+	  $http.get('associate/all').then(function (data) {
+	    $scope.associates = data.data;
+	    window.associates = data.data;
+	  }, function (data) {
+	    console.log('failed');
+	  });
+
+	  $scope.trainerFilter = function (associate) {
+	    return true;
+	  };
+
+	  $scope.isSelectedBatchType = function (batchType) {
+	    return $scope.selectedBatchType.filter(function (type) {
+	      return type.value === batchType.value;
+	    }) >= 1;
+	  };
+
+	  $scope.toggleSelectedBatchTypes = function (selectedBatch) {
+	    var idx = $scope.selectedBatchTypes.indexOf(selectedBatch);
+	    console.log(idx
+
+	    // Is currently selected
+	    );if (idx > -1) {
+	      $scope.selectedBatchTypes.splice(idx, 1);
+	    }
+
+	    // Is newly selected
+	    else {
+	        $scope.selectedBatchTypes.push(selectedBatch);
+	      }
+	  };
+
+	  $scope.batchFilter = function (associate) {
+	    return $scope.selectedBatchTypes.filter(function (batchType) {
+	      return batchType.value === associate.batch.batchType.value;
+	    }).length >= 1;
+	  };
+	};
+
+	exports.default = managerAdvancedAssociatesCtrl;
+
+/***/ }),
+/* 97 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
 	var profileCtrl = function profileCtrl($scope, $http) {
+<<<<<<< HEAD
 	  var associateId = 1;
+=======
+	  var associateId = 184;
+>>>>>>> b2cc2df879e29ed978ee2a3e9613b8d8eb007c3b
 	  var method = 'GET';
-	  var url = '/associate/' + associateId;
+	  var associateUrl = '/associate/' + associateId;
 
 	  $http({
-	    method: method,
-	    url: url
+	    method: 'GET',
+	    url: associateUrl
 	  }).then(function (response) {
-	    $scope.name = response.data.name;
-	    $scope.batchType = response.data.batch === null ? 'None' : response.data.batch;
+	    $scope.associate = response.data;
+	    console.log(response);
 	    $scope.portfolioUrl = response.data.portfolioLink;
 	  });
 
-	  $scope.name = '';
-	  $scope.batchType = '';
-	  $scope.portfolioUrl = '';
 	  $scope.portfolioUrlInput = '';
-	  $scope.skills = ['Java', 'Spring', 'Hibernate', 'Servlets', 'JSP'];
-	  $scope.additionalSkills = ['hello', 'poop'];
 	  $scope.status = 'Active';
-	  $scope.additionalSkillsInput = '';
-	  $scope.shortenUrl = function (urlToShorten, length) {
+
+	  $scope.shortenUrl = function (url, length) {
 	    return (// used to display portfolioUrl
+<<<<<<< HEAD
 	      urlToShorten === '' ? '' : urlToShorten.substring(0, length) + '...'
+=======
+	      url === '' || url === undefined ? '' : url.substring(0, length) + '...'
+>>>>>>> b2cc2df879e29ed978ee2a3e9613b8d8eb007c3b
 	    );
 	  };
 	  $scope.toggleSkillsModal = function () {
-	    $scope.additionalSkillsInput = $scope.additionalSkills.join(',');
+	    $scope.additionalSkillsInput = $scope.associate.skills.map(function (skill) {
+	      return skill.value;
+	    }).join(',');
 	    $('#additionalSkillsModal').modal('show');
 	  };
 	  $scope.openPortfolioUrlModal = function () {
@@ -44742,13 +44837,43 @@
 	    $('#portfolioUrlModal').modal('show');
 	  };
 	  $scope.submitPortfolioUrl = function () {
-	    $scope.portfolioUrl = $scope.portfolioUrlInput;
+	    $scope.associate.portfolioLink = $scope.portfolioUrlInput;
+
+	    $http({
+	      method: 'PUT',
+	      url: '/associate/',
+	      data: $scope.associate
+	    }).then(function (response) {
+	      console.log('success');
+	    }, function () {
+	      console.log('error');
+	    });
+
 	    $('#portfolioUrlModal').modal('hide');
 	  };
 	  $scope.submitSkills = function () {
-	    $scope.additionalSkills = $scope.additionalSkillsInput.split(',').filter(function (skill) {
-	      return skill !== '';
+	    var skills = $scope.associate.skills.map(function (skill) {
+	      return skill.value;
 	    });
+	    $scope.associate.skills = $scope.additionalSkillsInput.split(',').filter(function (skill) {
+	      return skill !== '';
+	    }).map(function (skill) {
+	      var existingSkill = $scope.associate.skills.find(function (skill) {
+	        return skill.value === skill;
+	      });
+	      return { id: existingSkill !== undefined ? existingSkill.id : 0, value: skill };
+	    });
+
+	    $http({
+	      method: 'PUT',
+	      url: '/associate/',
+	      data: $scope.associate
+	    }).then(function (response) {
+	      console.log('success');
+	    }, function () {
+	      console.log('error');
+	    });
+
 	    $('#additionalSkillsModal').modal('hide');
 	  };
 	};
@@ -44756,24 +44881,47 @@
 	exports.default = profileCtrl;
 
 /***/ }),
-/* 97 */
+/* 98 */
 /***/ (function(module, exports) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
 	var associateCtrl = function associateCtrl($scope, $location, $http, $state) {
-		$scope.checkInBtn = "Check In";
+		$http({
+			method: 'GET',
+			url: '/login/isAssociate'
+		}).then(function (response) {
+			if (!response.data) $state.go('login');else {
+				$http({
+					method: 'GET',
+					url: '/checkin'
+				}).then(function (response) {
+					if (response.data === true) {
+						$scope.checkInBtn = "Checked In";
+						$scope.hasCheckedIn = true;
+					} else $scope.checkInBtn = "Check In";
+				});
+			}
+		});
+
 		$scope.hasCheckedIn = false;
 		$scope.isActive = function (viewLocation) {
 			return viewLocation === $location.path();
 		};
 
 		$scope.checkIn = function () {
-			$scope.checkInBtn = "Checked In";
-			$scope.hasCheckedIn = true;
+			$http({
+				method: 'PUT',
+				url: '/checkin'
+			}).then(function (response) {
+				if (response.data === true) {
+					$scope.checkInBtn = "Checked In";
+					$scope.hasCheckedIn = true;
+				}
+			});
 		};
 
 		$scope.logout = function () {
@@ -44789,7 +44937,7 @@
 	exports.default = associateCtrl;
 
 /***/ }),
-/* 98 */
+/* 99 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -44802,7 +44950,7 @@
 	exports.reportCtrl = reportCtrl;
 
 /***/ }),
-/* 99 */
+/* 100 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -44998,7 +45146,7 @@
 	exports.nestedCtrl = nestedCtrl;
 
 /***/ }),
-/* 100 */
+/* 101 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -45100,7 +45248,7 @@
 	exports.barCtrl = barCtrl;
 
 /***/ }),
-/* 101 */
+/* 102 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -45135,7 +45283,7 @@
 	        url: '/login',
 	        data: { username: $scope.username, password: $scope.password }
 	      }).then(function (response) {
-	        if (response.data.permission !== undefined) $state.go('manager');else $state.go('associate');
+	        if (response.data.permission !== undefined) $state.go('manager.home');else $state.go('associate');
 	      }, function () {
 	        $scope.errorMsg = 'Username or Password is incorrect.';
 	        $scope.errorMsgShow = true;
@@ -45149,7 +45297,7 @@
 	exports.default = loginCtrl;
 
 /***/ }),
-/* 102 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*
@@ -47075,7 +47223,7 @@
 
 
 /***/ }),
-/* 103 */
+/* 104 */
 /***/ (function(module, exports) {
 
 	/*

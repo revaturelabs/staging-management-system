@@ -1,5 +1,17 @@
 package com.revature.services;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+
 import com.revature.entities.Associate;
 import com.revature.entities.Checkin;
 import com.revature.entities.Manager;
@@ -9,20 +21,13 @@ import com.revature.exceptions.NotCheckedInException;
 import com.revature.exceptions.NotLoggedInException;
 import com.revature.repositories.AssociateRepo;
 import com.revature.repositories.CheckinRepo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.stereotype.Component;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.Set;
+import org.springframework.web.bind.annotation.GetMapping;
 
 /**
  * Created by Mykola Nikitin on 6/1/17.
  * An implementation of the CheckinService.
  */
+@Service
 @Component
 public class CheckinServiceImpl implements CheckinService {
 
@@ -126,6 +131,45 @@ public class CheckinServiceImpl implements CheckinService {
     public void checkOut(Checkin checkin, LocalDateTime when){
         checkin.setCheckoutTime(when);
         checkinRepo.save(checkin);
+    }
+
+    @Override
+    public void addcheckins(Set<Checkin> checkins) {
+      // TODO Auto-generated method stub
+      
+    }
+
+    @Override
+    public Set<Checkin> getAll() {
+      Set<Checkin> checkin = new HashSet<Checkin>(checkinRepo.findAll());
+      return checkin;
+    }
+
+    @Override
+    public Set<Checkin> getTodaysCheckins()
+    {
+        Set<Checkin> checkins = checkinRepo.getAllByCheckinTimeBetween(
+                LocalDateTime.of(
+                        LocalDate.now(), LocalTime.MIDNIGHT
+                ), LocalDateTime.now()
+        );
+        System.out.println(checkins);
+        return checkins;
+    }
+
+    @Override
+    public Checkin findById(long id) {
+      return checkinRepo.getOne(id);
+    }
+
+    @Override
+    public void update(Checkin checkin) {
+      checkinRepo.saveAndFlush(checkin);
+    }
+
+    @Override
+    public void add(Checkin checkin) {
+      checkinRepo.saveAndFlush(checkin);
     }
 
     @Override

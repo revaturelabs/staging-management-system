@@ -1,5 +1,6 @@
 package com.revature.entities;
 
+import java.lang.reflect.Array;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,6 +21,8 @@ import com.revature.config.SmsSettings;
 import com.revature.exceptions.SmsCustomException;
 import com.revature.markers.SmsValidatable;
 
+import oracle.sql.ARRAY;
+
 /**
  * Created by mnikitin on 5/31/17.
  */
@@ -34,7 +37,7 @@ public class BatchType implements SmsValidatable {
 	@Column(name = "BATCH_TYPE_ID")
 	@SequenceGenerator(name = "BATCH_TYPE_ID_SEQ", sequenceName = "BATCH_TYPE_ID_SEQ")
 	@GeneratedValue(generator = "BATCH_TYPE_ID_SEQ", strategy = GenerationType.SEQUENCE)
-	private Long id;
+	private long id;
 
 	@Column(name = "BATCH_TYPE_VALUE")
 	private String value;
@@ -48,18 +51,19 @@ public class BatchType implements SmsValidatable {
 		this.skills = new HashSet<Skill>();
 	}
 
-	public BatchType(Long id, String value, Set<Skill> skills) {
+	public BatchType(long id, String value, Set<Skill> skills) {
 		super();
 		this.id = id;
 		this.value = value;
 		this.skills = skills;
+		
 	}
 
-	public Long getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -83,26 +87,20 @@ public class BatchType implements SmsValidatable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((skills == null) ? 0 : skills.hashCode());
 		result = prime * result + ((value == null) ? 0 : value.hashCode());
 		return result;
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	final public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
 			return false;
-		if (getClass() != obj.getClass())
+		if (!(obj instanceof BatchType))
 			return false;
 		BatchType other = (BatchType) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
 		if (skills == null) {
 			if (other.skills != null)
 				return false;

@@ -1,20 +1,20 @@
 package com.revature.controllers.rest;
 
-import com.revature.entities.Associate;
-import com.revature.entities.Credential;
-import com.revature.entities.Manager;
-import com.revature.exceptions.SmsCustomException;
-import com.revature.services.CredentialService;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import com.revature.entities.Associate;
+import com.revature.entities.Credential;
+import com.revature.entities.Manager;
+import com.revature.services.CredentialService;
 
 @RestController
 @RequestMapping("login")
@@ -22,10 +22,23 @@ public class LoginControllerImpl {
 	
 	@Autowired
 	CredentialService credService;
-
-	@PostMapping("associate/create")
-	public void createAssociate(){
-
+	
+	@GetMapping("isAssociate")
+	public ResponseEntity<Boolean> isAssociate(HttpSession session) {
+		Associate associate = (Associate)session.getAttribute("login_associate");
+		if(associate == null)
+			return ResponseEntity.ok(false);
+		else
+			return ResponseEntity.ok(true);
+	}
+	
+	@GetMapping("isManager")
+	public ResponseEntity<Boolean> isManager(HttpSession session) {
+		Manager manager = (Manager)session.getAttribute("login_manager");
+		if(manager == null)
+			return ResponseEntity.ok(false);
+		else
+			return ResponseEntity.ok(true);
 	}
 
 	@PostMapping

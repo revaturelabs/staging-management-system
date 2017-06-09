@@ -26,7 +26,7 @@ public class Permission implements SmsValidatable {
 	@Column(name = "PERMISSION_ID")
 	@SequenceGenerator(name = "PERMISSION_ID_SEQ", sequenceName = "PERMISSION_ID_SEQ")
 	@GeneratedValue(generator = "PERMISSION_ID_SEQ", strategy = GenerationType.SEQUENCE)
-	private Long id;
+	private long id;
 
 	@Column(name = "PERMISSION_LEVEL")
 	private String level;
@@ -35,17 +35,17 @@ public class Permission implements SmsValidatable {
 		super();
 	}
 
-	public Permission(Long id, String level) {
+	public Permission(long id, String level) {
 		super();
 		this.id = id;
 		this.level = level;
 	}
 
-	public Long getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -61,25 +61,19 @@ public class Permission implements SmsValidatable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((level == null) ? 0 : level.hashCode());
 		return result;
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	final public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
 			return false;
-		if (getClass() != obj.getClass())
+		if (!(obj instanceof Permission))
 			return false;
 		Permission other = (Permission) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
 		if (level == null) {
 			if (other.level != null)
 				return false;
