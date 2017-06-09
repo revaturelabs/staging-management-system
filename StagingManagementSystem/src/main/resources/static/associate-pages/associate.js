@@ -1,5 +1,8 @@
 const associateCtrl = ($scope, $location, $http, $state, userService) => {
   const authenticatedUser = userService.getUser();
+  const checkBtnDOM = document.getElementById("checkBtn");
+	$scope.checkInBtn = "Loading...";
+	checkBtnDOM.disabled = true;
 
   if (authenticatedUser.id === undefined) {
 		$state.go('login');
@@ -16,6 +19,7 @@ const associateCtrl = ($scope, $location, $http, $state, userService) => {
         $scope.hasCheckedIn = true;
       } else {
         $scope.checkInBtn = "Check In";
+        checkBtnDOM.disabled = false;
       }
     });
 
