@@ -1,4 +1,5 @@
 import angular from 'angular';
+import angularCookies from 'angular-cookies';
 import uiRouter from 'angular-ui-router';
 
 var FusionCharts = require("fusioncharts");
@@ -23,8 +24,18 @@ import loginCtrl from './login/login';
 
 var Visualizer = window['ui-router-visualizer'].Visualizer;
 
-const routerApp = angular.module('routerApp', [uiRouter]);
+const routerApp = angular.module('routerApp', [uiRouter, angularCookies]);
 
+routerApp.service('userService', function($cookies) {
+  this.user = $cookies.getObject('user') === undefined ? {} : $cookies.getObject('user');
+  this.getUser = () => {
+    return { ...this.user };
+  };
+  this.setUser = (user) => {
+    $cookies.putObject('user', user);
+    this.user = {...user};
+  }
+});
 
 routerApp.run(function($uiRouter, $trace) {
 	  // Auto-collapse children in state visualizer

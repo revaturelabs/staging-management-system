@@ -1,4 +1,4 @@
-const loginCtrl = ($scope, $http, $state) => {
+const loginCtrl = ($scope, $http, $state, userService) => {
 	var loginBtn = document.getElementById('loginBtn');
   $scope.username = '';
   $scope.password = '';
@@ -25,6 +25,7 @@ const loginCtrl = ($scope, $http, $state) => {
     		url: '/login',
     		data: { username: $scope.username, password: $scope.password },
     	}).then((response) => {
+        userService.setUser(response.data);
     		if(response.data.permission !== undefined)
     			$state.go('manager.home');
     		else
