@@ -44707,7 +44707,7 @@
 	  value: true
 	});
 	var profileCtrl = function profileCtrl($scope, $http) {
-	  var associateId = 96;
+	  var associateId = 1;
 	  var method = 'GET';
 	  var url = '/associate/' + associateId;
 
@@ -44730,7 +44730,7 @@
 	  $scope.additionalSkillsInput = '';
 	  $scope.shortenUrl = function (urlToShorten, length) {
 	    return (// used to display portfolioUrl
-	      urlToShorten.substring(0, length) + '...'
+	      urlToShorten === '' ? '' : urlToShorten.substring(0, length) + '...'
 	    );
 	  };
 	  $scope.toggleSkillsModal = function () {
@@ -45007,11 +45007,11 @@
 	    value: true
 	});
 	var chart = {
-	    caption: "Product-wise quarterly revenue in current year",
-	    subCaption: "Harry's SuperMart",
-	    xAxisname: "Quarter",
-	    yAxisName: "Revenue (In USD)",
-	    numberPrefix: "$",
+	    caption: "Asscoiates Available vs. Associate Confirmed",
+	    subCaption: "Revature LLC",
+	    xAxisname: "Batch Type",
+	    yAxisName: "Number of Associate",
+	    //    numberPrefix: "$",
 	    paletteColors: "#ff0000,#0075c2",
 	    bgColor: "#ffffff",
 	    borderAlpha: "20",
@@ -45031,17 +45031,8 @@
 	    showHoverEffect: "1"
 	};
 
-	var categories = [{
-	    "category": [{
-	        "label": "Q1"
-	    }, {
-	        "label": "Q2"
-	    }, {
-	        "label": "Q3"
-	    }, {
-	        "label": "Q4"
-	    }]
-	}];
+	var categories = void 0;
+
 	var dataset = [{
 	    "seriesname": "Food Products",
 	    "data": [{
@@ -45066,12 +45057,28 @@
 	    }]
 	}];
 
-	var barCtrl = function barCtrl($scope) {
-	    plainBarChart2($scope, chart, categories, dataset);
+	var barCtrl = function barCtrl($scope, $http) {
+	    graphBuilder($scope, $http);
 	};
 
+	function graphBuilder($scope, $http) {
+	    $http({
+	        method: 'GET',
+	        url: '/batchtype/all'
+	    }).then(function (response) {
+	        var stuff = [];
+	        var value = response.data;
+	        value.forEach(function (item) {
+	            stuff.push({ "label": item.value });
+	        });
+	        categories = [{
+	            "category": stuff
+	        }];
+	        plainBarChart2($scope, chart, categories, dataset);
+	    });
+	}
 	function plainBarChart2($scope, chartstuff, categories, dataset) {
-	    $scope.greeting = 'test';
+
 	    var myDataSource = {
 	        chart: chartstuff,
 	        categories: categories,
