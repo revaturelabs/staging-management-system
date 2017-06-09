@@ -143,7 +143,6 @@ public class Batch implements SmsValidatable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((associates == null) ? 0 : associates.hashCode());
-
 	    result = prime * result + ((batchType == null) ? 0 : batchType.hashCode());
 	    result = prime * result + ((endDate == null) ? 0 : endDate.hashCode());
 	    result = prime * result + ((location == null) ? 0 : location.hashCode());
