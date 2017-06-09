@@ -17,7 +17,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.revature.config.SmsSettings;
 import com.revature.exceptions.SmsCustomException;
@@ -34,7 +33,7 @@ public class Associate implements SmsValidatable {
 	@Column(name = "ASSOCIATE_ID")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ASSOCIATE_ID_SEQ")
 	@SequenceGenerator(name = "ASSOCIATE_ID_SEQ", sequenceName = "ASSOCIATE_ID_SEQ")
-	private Long id;
+	private long id;
 
 	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "CREDENTIAL_ID")
@@ -51,10 +50,10 @@ public class Associate implements SmsValidatable {
 	private Batch batch;
 
 	@Column(name = "ASSOCIATE_ACTIVE")
-	private Boolean active = true;
+	private boolean active;
 
 	@Column(name = "CLIENT_ID")
-	private Long lockedTo;
+	private Client lockedTo;
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "ASSOCIATE_SKILLS", joinColumns = @JoinColumn(name = "ASSOCIATE_ID"), inverseJoinColumns = @JoinColumn(name = "SKILL_ID"))
@@ -62,17 +61,12 @@ public class Associate implements SmsValidatable {
 
 	public Associate() {
 		super();
-		// TODO Auto-generated constructor stub
-	}
-	
-	public Associate(Associate other){
-	  this(other.id, other.credential, other.name, other.portfolioLink, other.batch, other.active, other.lockedTo, null);
 		this.skills = new HashSet<Skill>();
-		this.active=true;
+		this.active = true;
 	}
 
-	public Associate(Long id, Credential credential, String name, String portfolioLink, Batch batch, Boolean active,
-			Long lockedTo, Set<Skill> skills) {
+	public Associate(long id, Credential credential, String name, String portfolioLink, Batch batch, boolean active,
+			Client lockedTo, Set<Skill> skills) {
 		super();
 		this.id = id;
 		this.credential = credential;
@@ -84,15 +78,14 @@ public class Associate implements SmsValidatable {
 		this.skills = skills;
 	}
 
-	public Long getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
-	@JsonIgnore
 	public Credential getCredential() {
 		return credential;
 	}
@@ -125,19 +118,19 @@ public class Associate implements SmsValidatable {
 		this.batch = batch;
 	}
 
-	public Boolean getActive() {
+	public boolean isActive() {
 		return active;
 	}
 
-	public void setActive(Boolean active) {
+	public void setActive(boolean active) {
 		this.active = active;
 	}
 
-	public Long getLockedTo() {
+	public Client getLockedTo() {
 		return lockedTo;
 	}
 
-	public void setLockedTo(Long lockedTo) {
+	public void setLockedTo(Client lockedTo) {
 		this.lockedTo = lockedTo;
 	}
 
@@ -153,10 +146,8 @@ public class Associate implements SmsValidatable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((active == null) ? 0 : active.hashCode());
-		result = prime * result + ((batch == null) ? 0 : batch.associateFreeHashCode());
+		result = prime * result + (active ? 1231 : 1237);
 		result = prime * result + ((credential == null) ? 0 : credential.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((lockedTo == null) ? 0 : lockedTo.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((portfolioLink == null) ? 0 : portfolioLink.hashCode());
@@ -165,33 +156,20 @@ public class Associate implements SmsValidatable {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	final public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
 			return false;
-		if (getClass() != obj.getClass())
+		if (!(obj instanceof Associate))
 			return false;
 		Associate other = (Associate) obj;
-		if (active == null) {
-			if (other.active != null)
-				return false;
-		} else if (!active.equals(other.active))
-			return false;
-		if (batch == null) {
-			if (other.batch != null)
-				return false;
-		} else if (!batch.equals(other.batch))
+		if (active != other.active)
 			return false;
 		if (credential == null) {
 			if (other.credential != null)
 				return false;
 		} else if (!credential.equals(other.credential))
-			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
 			return false;
 		if (lockedTo == null) {
 			if (other.lockedTo != null)
@@ -219,8 +197,8 @@ public class Associate implements SmsValidatable {
 	@Override
 	public String toString() {
 		return "Associate [id=" + id + ", credential=" + credential + ", name=" + name + ", portfolioLink="
-				+ portfolioLink + ", batch=" + batch + ", active=" + active + ", lockedTo=" + lockedTo + ", skills="
-				+ skills + "]";
+				+ portfolioLink + ", batch=" + batch.getBatchType().getValue() + ", active=" + active + ", lockedTo="
+				+ lockedTo + ", skills=" + skills + "]";
 	}
 
 	@Override

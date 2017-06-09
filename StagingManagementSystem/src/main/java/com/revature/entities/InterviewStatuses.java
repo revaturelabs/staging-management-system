@@ -59,13 +59,12 @@ public class InterviewStatuses implements SmsValidatable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		//result = prime * result + (int) id + (int)(id >> 32);
 		result = prime * result + ((value == null) ? 0 : value.hashCode());
 		return result;
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	final public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -73,11 +72,6 @@ public class InterviewStatuses implements SmsValidatable {
 		if (!(obj instanceof InterviewStatuses))
 			return false;
 		InterviewStatuses other = (InterviewStatuses) obj;
-		/*if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;*/
 		if (value == null) {
 			if (other.value != null)
 				return false;

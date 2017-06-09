@@ -1,32 +1,27 @@
-const associateCtrl = ($scope, $location, $http, $state) => {
-	const checkBtnDOM = document.getElementById("checkBtn");
+const associateCtrl = ($scope, $location, $http, $state, userService) => {
+  const authenticatedUser = userService.getUser();
+  const checkBtnDOM = document.getElementById("checkBtn");
 	$scope.checkInBtn = "Loading...";
 	checkBtnDOM.disabled = true;
-	
-	$http({
-		method: 'GET',
-		url: '/login/isAssociate',
-	})
-	.then((response) => {
-		if(!response.data)
-			$state.go('login');
-		else {
-			$http({
-				method: 'GET',
-				url: '/checkin',
-			})
-			.then((response) => {
-				if(response.data === true) {
-					$scope.checkInBtn = "Checked In";
-					$scope.hasCheckedIn = true;
-				}
-				else {
-					$scope.checkInBtn = "Check In";
-					checkBtnDOM.disabled = false;
-				}
-			});
-		}
-	});
+
+  if (authenticatedUser.id === undefined) {
+		$state.go('login');
+    return;
+  }
+
+  $http({
+    method: 'GET',
+    url: '/checkin',
+  })
+    .then((response) => {
+      if (response.data === true) {
+        $scope.checkInBtn = "Checked In";
+        $scope.hasCheckedIn = true;
+      } else {
+        $scope.checkInBtn = "Check In";
+        checkBtnDOM.disabled = false;
+      }
+    });
 
 	$scope.hasCheckedIn = false;
 	$scope.isActive = function (viewLocation) {
@@ -52,6 +47,7 @@ const associateCtrl = ($scope, $location, $http, $state) => {
 			url: '/logout/',
 		})
 		.then((response) => {
+      userService.setUser({});
 			$state.go('login');
 		});
 	};
