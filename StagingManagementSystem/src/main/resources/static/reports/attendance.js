@@ -51,7 +51,7 @@ const attendanceCtrl = ($scope, $http) => {
 		}).then((response) => {
 			console.log(response);
 		   chartInfo: response;
-		  }, (response) => {
+		  },(error) => {
 		  //
 		  });
 	const pieChart = new FusionCharts({
@@ -62,7 +62,7 @@ const attendanceCtrl = ($scope, $http) => {
 		dataFormat: 'json',
 		dataSource: {
 			'chart': chart,
-			'data:': chartInfo
+			'data': chartInfo
 		}
 	});
 pieChart.render();

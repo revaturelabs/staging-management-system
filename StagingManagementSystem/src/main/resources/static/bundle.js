@@ -45170,7 +45170,7 @@
 		}).then(function (response) {
 			console.log(response);
 			chartInfo: response;
-		}, function (response) {
+		}, function (error) {
 			//
 		});
 		var pieChart = new FusionCharts({
@@ -45181,7 +45181,7 @@
 			dataFormat: 'json',
 			dataSource: {
 				'chart': chart,
-				'data:': chartInfo
+				'data': chartInfo
 			}
 		});
 		pieChart.render();
