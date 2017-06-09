@@ -1,8 +1,37 @@
-		<div>
-		Name: <input ng-model="client.name"> <br> <br> 
-		Password: <input ng-model="client.password"> <br> <br>
-		<!--form validation for yes or no only in priority... or you could just do a dropdown lol-->
-		Priority: <input ng-model="client.priority"> <br> <br>
-		</div>
+	<div class="create-container">
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th class="create-th" scope="col">Create a Client</th>
+    </tr>
+    </thead>
 
-<button ng-click="submit()">Submit</button>
+    <tbody>
+        <tr>
+		<td><label>Name: </label> <input ng-model="client.name"></td> <br> <br> 
+    </tr>
+        <tr>
+		<td><label>Password: </label> <input ng-model="client.password"></td> <br> <br>
+    </tr>
+        <tr>
+		<td><label>Client Priority: </label><select ng-model="client.priority">
+			<option disabled selected value> -- Select a Priority -- </option>
+			<option value="false" ng-click="priority = '0'"">0</option>	
+			<option value="true" ng-click="priority = '1'">1</option>
+		</select></td> <br> <br>
+    </tr>
+    </tbody>
+</table>
+
+	</div>
+
+
+
+
+
+
+
+
+<button class="submit" ng-click="submit()">Submit</button>
+ 
+

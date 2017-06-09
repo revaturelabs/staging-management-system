@@ -3,3 +3,41 @@
   flex-direction: column;
   align-items: center;
 }
+
+.submit{
+  margin:auto;
+  display:block;
+  font-size: 200 px;
+}
+
+.create-container{
+	margin-top: -100px;
+}
+
+input {
+  display: inline-block;
+  float: center;
+}
+
+label{
+    display: inline-block;
+    float: left;
+    clear: left;
+    width: 250px;
+    text-align: center;
+    margin-right: 25px;
+}
+
+#permission{
+    display: inline-block;
+    float: left;
+    clear: left;
+    width: 250px;
+    text-align: center;
+    margin-right: 700px;
+}
+
+.table > thead > tr > th.create-th {
+    background-color: #FF8000;
+    text-align: center;
+}
