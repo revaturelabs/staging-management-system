@@ -95,7 +95,7 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
           controller: interviewsCtrl,
         },
         'checkins@manager.home': {
-          templateUrl: 'manager-pages/home/checkins.html',
+          templateUrl: 'manager-pages/home/checkins/checkin.html',
             controller: managerCheckinsCtr,
         },
       },
