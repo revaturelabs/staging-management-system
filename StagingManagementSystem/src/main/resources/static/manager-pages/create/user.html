@@ -1,20 +1,14 @@
-<div> Create a User:
-
-  <div>
-    <ul ng-repeat="post in posts2">
-      <li>{{post.value}}</li>
-    </ul>
-  </div>
-
+<div class="create-container"> 
+		<label>Create a User: </label>
 		<select ng-model="user.type">
 			<option disabled selected value> -- Select a User -- </option>
 			<option value="manager" ng-click="type = 'manager'"">Manager</option>	
 			<option value="associate" ng-click="type = 'associate'">Associate</option>
 		</select> <br> <br>
 
-		Username <input ng-model="user.credential.username"> <br> <br>
-		Password: <input ng-model="user.credential.password"> <br> <br>
-		Name: <input ng-model="user.name"> <br> <br>
+		<label>Username: </label> <input ng-model="user.credential.username"> <br> <br>
+		<label>Password: </label> <input ng-model="user.credential.password"> <br> <br>
+		<label>Name: </label> <input ng-model="user.name"> <br> <br>
 		<div ng-show="type === 'associate'">
 			Portfolio Link: <input  ng-model="user.portfolioLink">
 
@@ -29,5 +23,5 @@
 
 
 </div>
-<button ng-click="submit()">Submit</button>
+<button class="submit" ng-click="submit()">Submit</button>
 

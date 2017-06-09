@@ -3,3 +3,40 @@
   flex-direction: column;
   align-items: center;
 }
+
+.submit{
+  margin:auto;
+  display:block;
+  font-size: 200 px;
+}
+
+.create-container{
+	margin-top: 50px;
+	margin-right: 250px;
+}
+
+input {
+  display: inline-block;
+  float: left;
+}
+
+label{
+    display: inline-block;
+    float: left;
+    clear: left;
+    width: 250px;
+    text-align: right;
+    margin-right: 25px;
+}
+
+
+/*.table > thead > tr > th.interview-th, .table > tbody > tr > td.interview-td {
+    padding: 15px;
+    text-align: left;
+    font-family: 'Roboto', sans-serif;
+}
+
+.table > thead > tr > th.interview-th {
+    background-color: #FF8000;
+}
+*/

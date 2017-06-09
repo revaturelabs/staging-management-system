@@ -15,6 +15,14 @@ const batchCtrl = ($scope, $http) => {
   		console.log("failure")
   	})
 
+$scope.open = function($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+
+        $scope.obj = {
+          opened : true
+          };
+      };
 
   $scope.submit = () => {
     $scope.batch.startDate = $filter('date')($scope.batch.startDate, "dd/MM/yyyy", "UTC");

@@ -1,11 +1,37 @@
-		<div>
-		Name: <input ng-model="client.name"> <br> <br> 
-		Password: <input ng-model="client.password"> <br> <br>
-		<select ng-model="client.priority">
+	<div class="create-container">
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th class="interview-th" scope="col">Create a Client</th>
+    </tr>
+    </thead>
+
+    <tbody>
+        <tr>
+		<td><label>Name: </label> <input ng-model="client.name"></td> <br> <br> 
+    </tr>
+        <tr>
+		<td><label>Password: </label> <input ng-model="client.password"></td> <br> <br>
+    </tr>
+        <tr>
+		<td><label>Client Priority: </label><select ng-model="client.priority">
 			<option disabled selected value> -- Select a Priority -- </option>
 			<option value="0" ng-click="priority = '0'"">0</option>	
 			<option value="0" ng-click="priority = '1'">1</option>
-		</select> <br> <br>
-		</div>
+		</select></td> <br> <br>
+    </tr>
+    </tbody>
+</table>
 
-<button ng-click="submit()">Submit</button>
+	</div>
+
+
+
+
+
+
+
+
+<button class="submit" ng-click="submit()">Submit</button>
+ 
+
