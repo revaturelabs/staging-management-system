@@ -1,6 +1,10 @@
-const profileCtrl = ($scope, $http) => {
-  const associateId = 184;
+const profileCtrl = ($scope, $http, userService) => {
+  const associateId = userService.getUser().id;
   const associateUrl = `/associate/${associateId}`;
+
+  if (associateId === undefined) {
+    return;
+  }
 
   $http({
     method: 'GET',
