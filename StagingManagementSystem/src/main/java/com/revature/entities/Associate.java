@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -52,21 +53,26 @@ public class Associate implements SmsValidatable {
 	@Column(name = "ASSOCIATE_ACTIVE")
 	private boolean active;
 
-	@Column(name = "CLIENT_ID")
+	@ManyToOne
+	@JoinColumn(name = "CLIENT_ID")
 	private Client lockedTo;
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "ASSOCIATE_SKILLS", joinColumns = @JoinColumn(name = "ASSOCIATE_ID"), inverseJoinColumns = @JoinColumn(name = "SKILL_ID"))
 	private Set<Skill> skills;
 
+	@OneToMany(mappedBy = "associate")
+	private Set<Job> jobs;
+
 	public Associate() {
 		super();
 		this.skills = new HashSet<Skill>();
+		this.jobs = new HashSet<Job>();
 		this.active = true;
 	}
 
 	public Associate(long id, Credential credential, String name, String portfolioLink, Batch batch, boolean active,
-			Client lockedTo, Set<Skill> skills) {
+			Client lockedTo, Set<Skill> skills, Set<Job> jobs) {
 		super();
 		this.id = id;
 		this.credential = credential;
@@ -76,6 +82,7 @@ public class Associate implements SmsValidatable {
 		this.active = active;
 		this.lockedTo = lockedTo;
 		this.skills = skills;
+		this.jobs = jobs;
 	}
 
 	public long getId() {
@@ -140,6 +147,14 @@ public class Associate implements SmsValidatable {
 
 	public void setSkills(Set<Skill> skills) {
 		this.skills = skills;
+	}
+
+	public Set<Job> getJobs() {
+		return jobs;
+	}
+
+	public void setJobs(Set<Job> jobs) {
+		this.jobs = jobs;
 	}
 
 	@Override
