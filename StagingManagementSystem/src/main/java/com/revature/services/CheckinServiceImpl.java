@@ -153,6 +153,7 @@ public class CheckinServiceImpl implements CheckinService {
                         LocalDate.now(), LocalTime.MIDNIGHT
                 ), LocalDateTime.now()
         );
+        System.out.println(checkins);
         return checkins;
     }
 

@@ -4,6 +4,7 @@ import com.revature.entities.Associate;
 import com.revature.entities.Checkin;
 import com.revature.entities.Manager;
 import com.revature.exceptions.AlreadyCheckedInException;
+import com.revature.exceptions.NotLoggedInException;
 import com.revature.services.CheckinService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,10 @@ import java.util.Set;
 public class CheckinControllerImpl {
     @Autowired
     private CheckinService checkinService;
+
+    public CheckinControllerImpl(CheckinService checkinService) {
+        this.checkinService = checkinService;
+    }
 
     @GetMapping(path="checkin/{username}")
     public ResponseEntity<Set<Checkin>> getCheckins(@PathVariable String username, HttpSession session){
@@ -45,7 +50,8 @@ public class CheckinControllerImpl {
     }
 
     @GetMapping("/allTodays")
-    public Set<Checkin> todaysCheckins() {return checkinService.getTodaysCheckins();}
+    public Set<Checkin> getTodaysCheckins() {return checkinService.getTodaysCheckins();}
+
 
     @PutMapping
     public ResponseEntity<Boolean> checkIn(HttpSession session){
@@ -78,5 +84,7 @@ public class CheckinControllerImpl {
         checkinService.approveCheckin(manager,checkin);
         return ResponseEntity.ok(true);
     }
+
+
 }
 
