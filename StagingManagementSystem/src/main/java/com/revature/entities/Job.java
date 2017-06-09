@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.revature.config.SmsSettings;
 import com.revature.exceptions.SmsCustomException;
@@ -26,7 +27,7 @@ import com.revature.util.LocalDateTimeConverter;
 public class Job implements SmsValidatable {
 
 	transient private static SmsSettings settings = SmsSettings.getInstance();
-	
+
 	@Id
 	@Column(name = "JOB_ID")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "JOB_ID_SEQ")
@@ -86,6 +87,7 @@ public class Job implements SmsValidatable {
 		this.id = id;
 	}
 
+	@JsonIgnore
 	public Associate getAssociate() {
 		return associate;
 	}
@@ -151,14 +153,13 @@ public class Job implements SmsValidatable {
 		result = prime * result + ((client == null) ? 0 : client.hashCode());
 		result = prime * result + ((confirmedDate == null) ? 0 : confirmedDate.hashCode());
 		result = prime * result + ((endDate == null) ? 0 : endDate.hashCode());
-		//result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((projectedEndDate == null) ? 0 : projectedEndDate.hashCode());
 		result = prime * result + ((startDate == null) ? 0 : startDate.hashCode());
 		return result;
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	final public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -191,11 +192,6 @@ public class Job implements SmsValidatable {
 				return false;
 		} else if (!endDate.equals(other.endDate))
 			return false;
-		/*if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;*/
 		if (projectedEndDate == null) {
 			if (other.projectedEndDate != null)
 				return false;

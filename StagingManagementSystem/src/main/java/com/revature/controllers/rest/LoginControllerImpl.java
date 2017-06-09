@@ -25,7 +25,6 @@ public class LoginControllerImpl {
 	
 	@GetMapping("isAssociate")
 	public ResponseEntity<Boolean> isAssociate(HttpSession session) {
-		System.out.println("isAssociate");
 		Associate associate = (Associate)session.getAttribute("login_associate");
 		if(associate == null)
 			return ResponseEntity.ok(false);
@@ -35,7 +34,6 @@ public class LoginControllerImpl {
 	
 	@GetMapping("isManager")
 	public ResponseEntity<Boolean> isManager(HttpSession session) {
-		System.out.println("isManager");
 		Manager manager = (Manager)session.getAttribute("login_manager");
 		if(manager == null)
 			return ResponseEntity.ok(false);

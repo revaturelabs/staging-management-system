@@ -11,10 +11,10 @@
       </thead>
       <tbody>
       <tr ng-repeat="interview in interviews" ng-click="interviewSelect(interview)">
-        <td class="interview-td" ng-bind="interview.associateName"></td>
-        <td class="interview-td" ng-bind="interview.batch"></td>
-        <td class="interview-td" ng-bind="interview.client"></td>
-        <td class="interview-td" ng-bind="interview.scheduled_time"></td>
+        <td class="interview-td" ng-bind="interview.associate.name"></td>
+        <td class="interview-td" ng-bind="interview.associate.batch"></td>
+        <td class="interview-td" ng-bind="interview.client.clientName"></td>
+        <td class="interview-td" ng-bind="interview.scheduled_time.scheduled"></td>
       </tr>
       </tbody>
     </table>
