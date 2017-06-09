@@ -1,5 +1,13 @@
 <div> Create a User:
+
+  <div>
+    <ul ng-repeat="post in posts2">
+      <li>{{post.value}}</li>
+    </ul>
+  </div>
+
 		<select ng-model="user.type">
+			<option disabled selected value> -- Select a User -- </option>
 			<option value="manager" ng-click="type = 'manager'"">Manager</option>	
 			<option value="associate" ng-click="type = 'associate'">Associate</option>
 		</select> <br> <br>
@@ -11,18 +19,15 @@
 			Portfolio Link: <input  ng-model="user.portfolioLink">
 
 		</div>
-		<!--permission lvl is string... dropdown.......-->
-		<div ng-show="type === 'manager'">
-			Permission: <input ng-model="user.permission.level">
-		</div>
+		<select ng-show="type === 'manager'" ng-model="user.permission.level">
+			<option disabled selected value> -- Select a Permission -- </option>
+			<option value="ADMIN" ng-click="permission = 'ADMIN'"">Admin</option>
+			<option value="MGR" ng-click="permission = 'MGR'"">Manager</option>	
+			<option value="ASSOC" ng-click="permission = 'ASSOC'">Associate</option>
+		</select> <br> <br>
+
+
+
 </div>
 <button ng-click="submit()">Submit</button>
 
-
-	<!-- <div> Create a Associate:
-			Username <input ng-model="user.credential.username"> <br> <br>
-			Password: <input ng-model="user.credential.password"> <br> <br>
-			Name: <input ng-model="user.name"> <br> <br>
-			User Type: <input ng-model="user.type"> <br> <br>
-	</div>
-<button ng-click="submit()">Submit</button> -->

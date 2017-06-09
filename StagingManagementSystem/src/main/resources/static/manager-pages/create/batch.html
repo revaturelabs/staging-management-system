@@ -1,13 +1,29 @@
-<p> test</p>
 		<div>
-		<!-- batch type dropdown -->
-		Batch Type: <input ng-model="batch.batch_type.batchtype"> <br> <br>
-		Batch Trainer: <input ng-model="batch.batch_trainer.batchtrainer">
-		Start Date: <input ng-model="batch.startdate"> <br> <br>
-		End Date: <input ng-model="batch.enddate"> <br> <br>
-		<!-- dropdown again :^) -->
-		Location: <input ng-model="batch.location.loc" <br> <br>
-		<h1>Test: {{batch.password}} {{batch.name}}</h1>
+
+		Batch Type: <select ng-model="batch.batchType">
+			<option disabled selected value> -- Select a Batch Type -- </option>
+			<option value={{post}} ng-repeat="post in posts2.data">{{post.value}}</option>
+		</select> <br> <br>
+
+
+		Start Date: <input
+ uib-datepicker-popup
+ ng-model=batch.startDate
+ ng-model-options="{timezone: 'utc'}"><br>
+
+
+   <div layout-gt-xs="row">
+    <div flex-gt-xs>
+      <h4>Opening the calendar when the input is focused</h4>
+      <md-datepicker ng-model="batch.startDate" md-placeholder="Enter date" md-open-on-focus></md-datepicker>
+    </div>
+		End Date: <input value = ng-model="batch.endDate"><br> <br>
+
+		<!-- format date: 2014-01-01T00:00:00 -->
+				Location: <select ng-model="batch.location">
+			<option disabled selected value> -- Select a Location -- </option>
+			<option value={{post}} ng-repeat="post in posts.data">{{post.name}}</option>
+		</select> <br> <br>
 		</div>
 
 <button ng-click="submit()">Submit</button>

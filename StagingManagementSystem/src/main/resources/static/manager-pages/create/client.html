@@ -1,8 +1,11 @@
 		<div>
 		Name: <input ng-model="client.name"> <br> <br> 
 		Password: <input ng-model="client.password"> <br> <br>
-		<!--form validation for yes or no only in priority... or you could just do a dropdown lol-->
-		Priority: <input ng-model="client.priority"> <br> <br>
+		<select ng-model="client.priority">
+			<option disabled selected value> -- Select a Priority -- </option>
+			<option value="0" ng-click="priority = '0'"">0</option>	
+			<option value="0" ng-click="priority = '1'">1</option>
+		</select> <br> <br>
 		</div>
 
 <button ng-click="submit()">Submit</button>
