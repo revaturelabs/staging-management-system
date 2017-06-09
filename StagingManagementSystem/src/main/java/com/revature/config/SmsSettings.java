@@ -8,7 +8,7 @@ import java.util.Properties;
 import org.springframework.stereotype.Component;
 
 @Component
-public final class SmsSettings extends HashMap<String,String>{
+public class SmsSettings extends HashMap<String,String>{
 
 	private static final long serialVersionUID = 8452345186136105388L;
 	
