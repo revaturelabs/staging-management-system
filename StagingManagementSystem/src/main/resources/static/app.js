@@ -13,6 +13,7 @@ import { clientCtrl } from './manager-pages/create/client';
 import { userCtrl } from './manager-pages/create/user';
 import managerAdvancedAssociatesCtrl from './manager-pages/advanced/associates';
 import profileCtrl from './associate-pages/profile/profile';
+import associateInterviewCtrl from './associate-pages/interview/interview';
 import associateCtrl from './associate-pages/associate';
 import { reportCtrl } from './reports/reports';
 import { nestedCtrl } from './reports/nestedGraph';
@@ -102,6 +103,16 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       url: '/associate',
       templateUrl: 'associate-pages/associate.html',
       controller: associateCtrl,
+    })
+    .state('associate.home', {
+      url: '/home',
+      templateUrl: 'associate-pages/profile/profile.html',
+      controller: profileCtrl,
+    })
+    .state('associate.associateInterview', {
+      url: '/interview',
+      templateUrl: 'associate-pages/interview/interview.html',
+      controller: associateInterviewCtrl,
     })
     .state('associate.profile', {
       url: '/profile',

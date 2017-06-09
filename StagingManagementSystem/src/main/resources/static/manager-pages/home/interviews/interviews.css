@@ -16,7 +16,6 @@ table{
     background-color: #FF8000;
 }
 
-tr:nth-child(even){background-color: lightgray}
 
 .interviews-container {
   display: flex;

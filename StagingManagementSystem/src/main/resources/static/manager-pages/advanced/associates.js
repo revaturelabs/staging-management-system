@@ -26,7 +26,6 @@ const managerAdvancedAssociatesCtrl = ($scope, $http) => {
 
   $scope.toggleSelectedBatchTypes = (selectedBatch) => {
     let idx = $scope.selectedBatchTypes.indexOf(selectedBatch);
-    console.log(idx)
 
     // Is currently selected
     if (idx > -1) {

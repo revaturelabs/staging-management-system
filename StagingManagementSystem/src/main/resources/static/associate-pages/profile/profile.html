@@ -1,28 +1,60 @@
-<div class="container">
-  <dl class="dl-horizontal">
-    <dt>Name</dt>
-    <dd ng-bind="associate.name"></dd>
-    <dt>Batch</dt>
-    <dd ng-bind="associate.batch.batchType.value"></dd>
-    <dt>Profile URL</dt>
-    <dd>
-      <span ng-bind="shortenUrl(associate.portfolioLink, 40)"></span>
-      <span style="cursor: pointer;" ng-click="openPortfolioUrlModal()">
-        <span class="glyphicon glyphicon-edit"></span>
-      </span>
-    </dd>
-    <dt>Skills</dt>
-    <dd>
-      <span ng-repeat="skill in associate.batch.batchType.skills.concat(associate.skills)">
-        <span class="badge" ng-bind="skill.value"></span>
-      </span>
-      <span style="cursor: pointer;" ng-click="toggleSkillsModal()">
-        <span class="glyphicon glyphicon-edit"></span>
-      </span>
-      <input class="form-control" ng-show="profileData.skillsInputShowing" />
-    </dd>
-    <dt>Status</dt>
-    <dd ng-bind="status"></dd>
+<link rel="stylesheet" href="./associate-pages/profile/profile.css"/>
+
+<div class="container" id="main-profile">
+  <dl>
+    <div class="row">
+      <div class="col-md-6">
+        <dt>Name</dt>
+        <dd ng-bind="associate.name"></dd>
+      </div>
+      <div class="col-md-6">
+        <dt>Batch</dt>
+        <dd>
+          <span ng-bind-template="{{associate.batch.batchType.value}} - "></span>
+          <span ng-repeat="trainer in associate.batch.trainers">
+            <span ng-bind="trainer.name"></span>
+          </span>
+        </dd>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <dt>
+          Profile URL
+          <span style="cursor: pointer;" ng-click="openPortfolioUrlModal()">
+            <span class="glyphicon glyphicon-edit"></span>
+          </span>
+        </dt>
+        <dd>
+          <span>
+            <a ng-href="{{associate.portfolioLink}}">Profile Link</a>
+          </span>
+        </dd>
+      </div>
+      <div class="col-md-6">
+        <dt>Status</dt>
+        <dd ng-bind-template="{{associate.active === true ? 'Active': 'Not active'}}"></dd>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <dt>
+          Skills
+          <span style="cursor: pointer;" ng-click="toggleSkillsModal()">
+            <span class="glyphicon glyphicon-edit"></span>
+          </span>
+        </dt>
+        <dd>
+          <span ng-repeat="skill in associate.batch.batchType.skills">
+            <span class="badge skill-badge batch-skill" ng-bind="skill.value"></span>
+          </span>
+          <span ng-repeat="skill in associate.skills">
+            <span class="badge skill-badge" ng-bind="skill.value"></span>
+          </span>
+          <input class="form-control" ng-show="profileData.skillsInputShowing" />
+        </dd>
+      </div>
+    </div>
   </dl>
 </div>
 <div class="modal fade" id="additionalSkillsModal" tabindex="-1" role="dialog">
@@ -40,7 +72,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button ng-click="submitSkills()" type="button" class="btn btn-primary">Save changes</button>
+        <button ng-click="submitSkills()" ng-class="{ disabled: sendingRequest }" ng-bind="skillsModalButtonValue" type="button" class="btn btn-primary"></button>
       </div>
     </div>
   </div>
@@ -60,7 +92,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button ng-click="submitPortfolioUrl()" type="button" class="btn btn-primary">Save changes</button>
+        <button ng-click="submitPortfolioUrl()" ng-class="{ disabled: sendingRequest }" ng-bind="portfolioModalButtonValue" type="button" class="btn btn-primary"></button>
       </div>
     </div>
   </div>
