@@ -23,6 +23,8 @@ import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters.LocalDa
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.revature.config.SmsSettings;
 import com.revature.exceptions.SmsCustomException;
 import com.revature.markers.SmsValidatable;
@@ -61,6 +63,7 @@ public class Batch implements SmsValidatable {
 	private Set<Trainer> trainers;
 
 	@OneToMany(mappedBy = "batch", fetch = FetchType.LAZY)
+	@JsonProperty(access=Access.WRITE_ONLY)
 	private Set<Associate> associates;
 
 	public Batch() {
@@ -129,7 +132,6 @@ public class Batch implements SmsValidatable {
 		this.trainers = trainers;
 	}
 
-	@JsonIgnore
 	public Set<Associate> getAssociates() {
 		return associates;
 	}
