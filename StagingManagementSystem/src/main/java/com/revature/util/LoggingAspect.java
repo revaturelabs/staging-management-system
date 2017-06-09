@@ -14,7 +14,6 @@ public class LoggingAspect {;
 
     @Before("mostEverything()")
     public void logCall(JoinPoint joinPoint){
-        System.out.println("AAA");
         log.trace("Call made to: " + joinPoint.getSignature().getName());
     }
 
