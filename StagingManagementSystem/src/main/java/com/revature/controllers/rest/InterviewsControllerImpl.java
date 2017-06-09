@@ -1,6 +1,5 @@
 package com.revature.controllers.rest;
 
-import java.time.LocalDateTime;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,24 +37,19 @@ public class InterviewsControllerImpl {
 		return interviewsService.findById(id);
 	}
 
-	@GetMapping("/associate/{associate_Id}")
-	public Interview findByAssociate(long id) {
-		return interviewsService.findByAssociateId(id);
+	@GetMapping("/associate/{associateId}")
+	public Set<Interview> findByAssociate(@PathVariable long associateId) {
+		return interviewsService.findByAssociateId(associateId);
 	}
 
-	@GetMapping("/client/{client_Id}")
-	public Interview findByClientId(long id) {
-		return interviewsService.findByClientId(id);
+	@GetMapping("/client/{clientId}")
+	public Set<Interview> findByClientId(@PathVariable long clientId) {
+		return interviewsService.findByClientId(clientId);
 	}
 
-	@GetMapping("/status/{interview_Status_Id}")
-	public Interview findByInterviewStatusId(long id) {
+	@GetMapping("/status/{id}")
+	public Set<Interview> findByInterviewStatusId(@PathVariable long id) {
 		return interviewsService.findByInterviewStatus(id);
-	}
-
-	@GetMapping("/date/{dateandtime}")
-	public Interview findByScheduled(@PathVariable LocalDateTime dateandtime) {
-		return interviewsService.findByScheduled(dateandtime);
 	}
 
 	@GetMapping("/all")
@@ -71,5 +65,10 @@ public class InterviewsControllerImpl {
 	@DeleteMapping
 	public void delete(@RequestBody Interview interviews) {
 		interviewsService.delete(interviews);
+	}
+
+	@GetMapping("/next-five-days")
+	public Set<Interview> findByNextFiveDays() {
+		return interviewsService.nextFiveDays();
 	}
 }

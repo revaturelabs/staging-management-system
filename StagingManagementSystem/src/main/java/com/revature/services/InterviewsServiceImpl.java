@@ -50,22 +50,28 @@ public class InterviewsServiceImpl implements InterviewsService {
 	}
 
 	@Override
-	public Interview findByAssociateId(long id) {
+	public Set<Interview> findByAssociateId(long id) {
 		return interviewsRepo.findByAssociateId(id);
 	}
 
 	@Override
-	public Interview findByClientId(long id) {
+	public Set<Interview> findByClientId(long id) {
 		return interviewsRepo.findByClientId(id);
 	}
 
 	@Override
-	public Interview findByInterviewStatus(long id) {
+	public Set<Interview> findByInterviewStatus(long id) {
 		return interviewsRepo.findByInterviewStatusId(id);
 	}
 
 	@Override
-	public Interview findByScheduled(LocalDateTime dateandtime) {
-		return interviewsRepo.findByScheduled(dateandtime);
+	public Set<Interview> nextFiveDays() {
+		LocalDateTime now = LocalDateTime.now();
+
+		// Subtracted the hours so we see all interviews that were today even if
+		// they happened before the current time
+		// Then look at 5 days in the future of the current time
+		return interviewsRepo.findByScheduledBetween(now.minusHours(now.getHour()), now.plusDays(5l));
 	}
+
 }

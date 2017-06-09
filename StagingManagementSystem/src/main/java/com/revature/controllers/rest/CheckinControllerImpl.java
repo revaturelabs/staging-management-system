@@ -44,6 +44,9 @@ public class CheckinControllerImpl {
 
     }
 
+    @GetMapping("/allTodays")
+    public Set<Checkin> todaysCheckins() {return checkinService.getTodaysCheckins();}
+
     @PutMapping
     public ResponseEntity<Boolean> checkIn(HttpSession session){
         Associate associate = (Associate) session.getAttribute("login_associate");

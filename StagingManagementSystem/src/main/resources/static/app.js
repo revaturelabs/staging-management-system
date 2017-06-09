@@ -11,12 +11,15 @@ import managerCreateCtrl from './manager-pages/create/create'
 import { batchCtrl } from './manager-pages/create/batch';
 import { clientCtrl } from './manager-pages/create/client';
 import { userCtrl } from './manager-pages/create/user';
+import managerAdvancedAssociatesCtrl from './manager-pages/advanced/associates';
 import profileCtrl from './associate-pages/profile/profile';
+import associateInterviewCtrl from './associate-pages/interview/interview';
 import associateCtrl from './associate-pages/associate';
 import { reportCtrl } from './reports/reports';
 import { nestedCtrl } from './reports/nestedGraph';
 import { barCtrl } from './reports/barGraph';
 import loginCtrl from './login/login';
+
 
 var Visualizer = window['ui-router-visualizer'].Visualizer;
 
@@ -26,9 +29,9 @@ const routerApp = angular.module('routerApp', [uiRouter]);
 routerApp.run(function($uiRouter, $trace) {
 	  // Auto-collapse children in state visualizer
 	  var registry = $uiRouter.stateRegistry;
-	  
+
 	  var pluginInstance = $uiRouter.plugin(Visualizer);
-	  
+
 	  $trace.enable('TRANSITION')
 	})
 
@@ -87,10 +90,29 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
               }
           }
     })
+		.state('manager.advanced', {
+			url:'/advanced',
+			templateUrl: 'manager-pages/advanced/advanced.html',
+			controller: managerAdvancedAssociatesCtrl
+		})
+		.state('manager.advanced.allassociates', {
+			url:'/associates',
+			templateUrl: 'manager-pages/advanced/associates.html',
+		})
     .state('associate', {
       url: '/associate',
       templateUrl: 'associate-pages/associate.html',
       controller: associateCtrl,
+    })
+    .state('associate.home', {
+      url: '/home',
+      templateUrl: 'associate-pages/profile/profile.html',
+      controller: profileCtrl,
+    })
+    .state('associate.associateInterview', {
+      url: '/interview',
+      templateUrl: 'associate-pages/interview/interview.html',
+      controller: associateInterviewCtrl,
     })
     .state('associate.profile', {
       url: '/profile',
