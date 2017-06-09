@@ -13,22 +13,14 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.revature.exceptions.SmsCustomException;
 import com.revature.markers.SmsValidatable;
 
 @Entity
-@PropertySource("classpath:sms.properties")
 @Table(name = "MANAGERS")
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Manager implements SmsValidatable {
-
-	@Autowired
-	Environment env;
 
 	@Id
 	@Column(name = "MANAGER_ID")
@@ -152,7 +144,7 @@ public class Manager implements SmsValidatable {
 
 	@Override
 	public void validate() throws SmsCustomException {
-		System.out.println(env);
+		// TODO ='[
 	}
 
 }
