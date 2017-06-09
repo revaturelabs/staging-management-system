@@ -91,7 +91,7 @@ public class DataGeneration
 	  
 	  
 	  ClientP(Client c){
-	    super(c.getId(), c.getName(), c.getPriority(), c.getActive());
+	    super(c.getId(), c.getName(), c.isPriority(), c.isActive());
 	    
 	    probabilityOfHiring = rand.nextInt(20) + 60;   //Hiring probability is between 60 and 80.
 	    probabilityOfLiking = rand.nextInt(10);          //Liking probability is between 0 and 10.
@@ -105,7 +105,7 @@ public class DataGeneration
      * @return - super instance
      */
 	  Client getClient(){
-	    return new Client(this.getId(), this.getName(), this.getPriority(), this.getActive());
+	    return new Client(this.getId(), this.getName(), this.isPriority(), this.isActive());
 	  }
 	  
 	  /**
@@ -137,7 +137,7 @@ public class DataGeneration
 	  double clientProbabilityMultiplier;
 	  
 	  AssociateP(Associate a){
-	    super(a.getId(), a.getCredential(), a.getName(), a.getPortfolioLink(), a.getBatch(), a.getActive(), a.getLockedTo(), null);
+	    super(a.getId(), a.getCredential(), a.getName(), a.getPortfolioLink(), a.getBatch(), a.isActive(), a.getLockedTo(), null);
 	    int qualityOfAssociate = rand.nextInt(100); 
 	    
 	    if(qualityOfAssociate < 20)    //20 percent chance of being half as hirable as the average associate.
@@ -155,7 +155,7 @@ public class DataGeneration
 	   * @return - super instance
 	   */
 	  Associate getAssocaite(){
-	    return new Associate(getId(), getCredential(), getName(), getPortfolioLink(), getBatch(), getActive(), getLockedTo(), null);
+	    return new Associate(getId(), getCredential(), getName(), getPortfolioLink(), getBatch(), isActive(), getLockedTo(), null);
 	  }
 	}
 
@@ -167,7 +167,7 @@ public class DataGeneration
 
     Set<Client> allClients = clientService.getAll();
     for(Client c : allClients){
-      if(c.getPriority())
+      if(c.isPriority())
         priorityClients.add(new ClientP(c));
       else
         regularClients.add(new ClientP(c));
@@ -175,7 +175,7 @@ public class DataGeneration
 
 	  for(Associate a : associates){
       AssociateP ap = new AssociateP(a); //Create a probability associate.
-	    if(!ap.getActive())
+	    if(!ap.isActive())
 	      ap.setActive(true); // When generating data associates should be active
 
 	    LocalDateTime endDate = a.getBatch().getEndDate();
@@ -216,7 +216,7 @@ public class DataGeneration
 	        log.debug("Client Decision: " + is);
 	        
 	        //Save Interview
-	        Interview i = new Interview(null, ap, client, is, currDate);
+	        Interview i = new Interview(0l, ap, client, is, currDate);
 	        interviewsService.add(i);
 	        
 	        submitInterviewQuestions(ap, client);
@@ -246,7 +246,7 @@ public class DataGeneration
 	          InterviewStatuses is = client.evaluateAssociate(ap);
 	          
 	          //Save Interview
-	          Interview i = new Interview(null, ap, client, is, currDate);
+	          Interview i = new Interview(0l, ap, client, is, currDate);
 	          interviewsService.add(i);
 	          
 	          submitInterviewQuestions(ap, client);
@@ -320,7 +320,7 @@ public class DataGeneration
         if(!chosenQuestions.contains(qIndex)){
           chosenQuestions.add(qIndex);
           InterviewQuestion iq = interviewQuestions.get(qIndex);
-          clientQService.add(new ClientQuestion(null, client, iq, ap));
+          clientQService.add(new ClientQuestion(0l, client, iq, ap));
           log.debug("Question at index " + qIndex + ": " + iq);
         }
       }

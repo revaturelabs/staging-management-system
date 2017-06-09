@@ -37,7 +37,11 @@ public class Client implements SmsValidatable {
 
 	public Client() {
 		super();
+<<<<<<< HEAD
+		this.active=true;
+=======
 		this.active = true;
+>>>>>>> 5066a5ca09dde81708545ac6075be21037e6cb68
 	}
 
 	public Client(long id, String name, boolean priority, boolean active) {

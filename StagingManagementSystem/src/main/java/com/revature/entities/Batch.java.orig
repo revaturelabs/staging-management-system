@@ -33,7 +33,7 @@ import com.revature.markers.SmsValidatable;
 public class Batch implements SmsValidatable {
 
 	transient private static SmsSettings settings = SmsSettings.getInstance();
-
+	
 	@Id
 	@Column(name = "BATCH_ID")
 	@SequenceGenerator(name = "BATCH_ID_SEQ", sequenceName = "BATCH_ID_SEQ")
@@ -196,7 +196,11 @@ public class Batch implements SmsValidatable {
 	@Override
 	public String toString() {
 		return "Batch [id=" + id + ", batchType=" + batchType + ", startDate=" + startDate + ", endDate=" + endDate
+<<<<<<< HEAD
+				+ ", location=" + location + ", trainers=" + trainers + ", batch size: " + associates.size();
+=======
 				+ ", location=" + location + ", trainers=" + trainers + ", associates=" + associates + "]";
+>>>>>>> 5066a5ca09dde81708545ac6075be21037e6cb68
 	}
 
 	@Override

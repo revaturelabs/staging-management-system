@@ -17,7 +17,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.revature.config.SmsSettings;
 import com.revature.exceptions.SmsCustomException;
@@ -53,7 +52,12 @@ public class Associate implements SmsValidatable {
 	@Column(name = "ASSOCIATE_ACTIVE")
 	private boolean active;
 
+<<<<<<< HEAD
+	@ManyToOne
+	@JoinColumn(name = "CLIENT_ID")
+=======
 	@Column(name = "CLIENT_ID")
+>>>>>>> 5066a5ca09dde81708545ac6075be21037e6cb68
 	private Client lockedTo;
 
 	@ManyToMany(fetch = FetchType.EAGER)
@@ -62,11 +66,18 @@ public class Associate implements SmsValidatable {
 
 	public Associate() {
 		super();
+<<<<<<< HEAD
+		// TODO Auto-generated constructor stub
+	}
+
+	public Associate(Long id, Credential credential, String name, String portfolioLink, Batch batch, Boolean active,
+=======
 		this.skills = new HashSet<Skill>();
 		this.active = true;
 	}
 
 	public Associate(long id, Credential credential, String name, String portfolioLink, Batch batch, boolean active,
+>>>>>>> 5066a5ca09dde81708545ac6075be21037e6cb68
 			Client lockedTo, Set<Skill> skills) {
 		super();
 		this.id = id;
@@ -87,7 +98,6 @@ public class Associate implements SmsValidatable {
 		this.id = id;
 	}
 
-	@JsonIgnore
 	public Credential getCredential() {
 		return credential;
 	}
@@ -137,7 +147,10 @@ public class Associate implements SmsValidatable {
 	}
 
 	public Set<Skill> getSkills() {
-		return skills;
+	  if(skills != null)
+	    return skills;
+	  
+	  return new HashSet<Skill>();
 	}
 
 	public void setSkills(Set<Skill> skills) {
