@@ -20,14 +20,14 @@ import com.revature.markers.SmsValidatable;
 @Table(name = "CLIENT_QUESTIONS")
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class ClientQuestion implements SmsValidatable {
-	
+
 	transient private static SmsSettings settings = SmsSettings.getInstance();
-	
+
 	@Id
 	@Column(name = "CLIENT_QUESTION_ID")
 	@SequenceGenerator(name = "CLIENT_QUESTION_ID_SEQ", sequenceName = "CLIENT_QUESTION_ID_SEQ")
 	@GeneratedValue(generator = "CLIENT_QUESTION_ID_SEQ", strategy = GenerationType.SEQUENCE)
-	private Long ClientQuestionId;
+	private long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "CLIENT_ID")
@@ -45,20 +45,20 @@ public class ClientQuestion implements SmsValidatable {
 		super();
 	}
 
-	public ClientQuestion(Long clientQuestionId, Client client, InterviewQuestion interviewQ, Associate associate) {
+	public ClientQuestion(long id, Client client, InterviewQuestion interviewQ, Associate associate) {
 		super();
-		ClientQuestionId = clientQuestionId;
+		this.id = id;
 		this.client = client;
 		this.interviewQ = interviewQ;
 		this.associate = associate;
 	}
 
-	public Long getClientQuestionId() {
-		return ClientQuestionId;
+	public long getId() {
+		return id;
 	}
 
-	public void setClientQuestionId(Long clientQuestionId) {
-		ClientQuestionId = clientQuestionId;
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public Client getClient() {
@@ -89,7 +89,6 @@ public class ClientQuestion implements SmsValidatable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((ClientQuestionId == null) ? 0 : ClientQuestionId.hashCode());
 		result = prime * result + ((associate == null) ? 0 : associate.hashCode());
 		result = prime * result + ((client == null) ? 0 : client.hashCode());
 		result = prime * result + ((interviewQ == null) ? 0 : interviewQ.hashCode());
@@ -97,19 +96,14 @@ public class ClientQuestion implements SmsValidatable {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	final public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
 			return false;
-		if (getClass() != obj.getClass())
+		if (!(obj instanceof ClientQuestion))
 			return false;
 		ClientQuestion other = (ClientQuestion) obj;
-		if (ClientQuestionId == null) {
-			if (other.ClientQuestionId != null)
-				return false;
-		} else if (!ClientQuestionId.equals(other.ClientQuestionId))
-			return false;
 		if (associate == null) {
 			if (other.associate != null)
 				return false;
@@ -130,8 +124,8 @@ public class ClientQuestion implements SmsValidatable {
 
 	@Override
 	public String toString() {
-		return "ClientQuestion [ClientQuestionId=" + ClientQuestionId + ", client=" + client + ", interviewQ="
-				+ interviewQ + ", associate=" + associate + "]";
+		return "ClientQuestion [id=" + id + ", client=" + client + ", interviewQ=" + interviewQ + ", associate="
+				+ associate + "]";
 	}
 
 	@Override
