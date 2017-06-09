@@ -33,7 +33,7 @@ import com.revature.markers.SmsValidatable;
 public class Batch implements SmsValidatable {
 
 	transient private static SmsSettings settings = SmsSettings.getInstance();
-	
+
 	@Id
 	@Column(name = "BATCH_ID")
 	@SequenceGenerator(name = "BATCH_ID_SEQ", sequenceName = "BATCH_ID_SEQ")
@@ -129,6 +129,7 @@ public class Batch implements SmsValidatable {
 		this.trainers = trainers;
 	}
 
+	@JsonIgnore
 	public Set<Associate> getAssociates() {
 		return associates;
 	}
@@ -146,21 +147,23 @@ public class Batch implements SmsValidatable {
 	}
 
 	/**
-	 * This function provieds a hash code for the associate class to prevent stack overflow.
+	 * This function provieds a hash code for the associate class to prevent
+	 * stack overflow.
+	 * 
 	 * @return
 	 */
-	 public int associateFreeHashCode() {
-	    final int prime = 31;
-	    int result = 1;
-	    result = prime * result + ((batchType == null) ? 0 : batchType.hashCode());
-	    result = prime * result + ((endDate == null) ? 0 : endDate.hashCode());
-	    result = prime * result + ((id == null) ? 0 : id.hashCode());
-	    result = prime * result + ((location == null) ? 0 : location.hashCode());
-	    result = prime * result + ((startDate == null) ? 0 : startDate.hashCode());
-	    result = prime * result + ((trainers == null) ? 0 : trainers.hashCode());
-	    return result;
-	  }
-	
+	public int associateFreeHashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((batchType == null) ? 0 : batchType.hashCode());
+		result = prime * result + ((endDate == null) ? 0 : endDate.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((location == null) ? 0 : location.hashCode());
+		result = prime * result + ((startDate == null) ? 0 : startDate.hashCode());
+		result = prime * result + ((trainers == null) ? 0 : trainers.hashCode());
+		return result;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -170,11 +173,10 @@ public class Batch implements SmsValidatable {
 		if (!(obj instanceof Batch))
 			return false;
 		Batch other = (Batch) obj;
-		/*if (associates == null) {
-			if (other.associates != null)
-				return false;
-		} else if (!associates.equals(other.associates))
-			return false;*/
+		/*
+		 * if (associates == null) { if (other.associates != null) return false;
+		 * } else if (!associates.equals(other.associates)) return false;
+		 */
 		if (batchType == null) {
 			if (other.batchType != null)
 				return false;

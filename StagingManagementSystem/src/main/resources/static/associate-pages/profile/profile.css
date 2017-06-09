@@ -1,0 +1,16 @@
+div[class^="col-md"] {
+  padding: .5em 0 .5em 0;
+  text-align: center;
+}
+
+#main-profile {
+  font-size: 1.3em;
+}
+
+.skill-badge {
+  font-size: .8em;
+}
+
+.batch-skill {
+  background-color: rgba(242, 105, 38, 1);
+}

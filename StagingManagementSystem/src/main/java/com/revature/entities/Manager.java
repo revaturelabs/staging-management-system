@@ -33,7 +33,7 @@ public class Manager implements SmsValidatable {
 	@Column(name = "MANAGER_ID")
 	@SequenceGenerator(name = "MANAGER_ID_SEQ", sequenceName = "MANAGER_ID_SEQ")
 	@GeneratedValue(generator = "MANAGER_ID_SEQ", strategy = GenerationType.SEQUENCE)
-	private Long id;
+	private long id;
 
 	@Column(name = "MANAGER_NAME")
 	private String name;
@@ -54,7 +54,7 @@ public class Manager implements SmsValidatable {
 		this.active=true;
 	}
 
-	public Manager(Long id, String name, Credential credential, Permission permission, Boolean active) {
+	public Manager(long id, String name, Credential credential, Permission permission, Boolean active) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -63,11 +63,11 @@ public class Manager implements SmsValidatable {
 		this.active = active;
 	}
 
-	public Long getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -109,7 +109,7 @@ public class Manager implements SmsValidatable {
 		int result = 1;
 		result = prime * result + ((active == null) ? 0 : active.hashCode());
 		result = prime * result + ((credential == null) ? 0 : credential.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		//result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((permission == null) ? 0 : permission.hashCode());
 		return result;
@@ -121,7 +121,7 @@ public class Manager implements SmsValidatable {
 			return true;
 		if (obj == null)
 			return false;
-		if (getClass() != obj.getClass())
+		if (!(obj instanceof Manager))
 			return false;
 		Manager other = (Manager) obj;
 		if (active == null) {
@@ -134,11 +134,11 @@ public class Manager implements SmsValidatable {
 				return false;
 		} else if (!credential.equals(other.credential))
 			return false;
-		if (id == null) {
+		/*if (id == null) {
 			if (other.id != null)
 				return false;
 		} else if (!id.equals(other.id))
-			return false;
+			return false;*/
 		if (name == null) {
 			if (other.name != null)
 				return false;
@@ -163,7 +163,7 @@ public class Manager implements SmsValidatable {
 		if (this.name == null) {
 			throw new NullReferenceException("Manager name is null.");
 		}
-		if (this.name == "") {
+		if ("".equals(this.name)) {
 			throw new InvalidFieldException("Manager name is empty.");
 		}
 		if (!this.name.matches(settings.get("allowed_manager_name"))) {

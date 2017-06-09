@@ -18,12 +18,12 @@
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="associate in associates"
+    <tr ng-repeat="checkin in checkins"
         class="associate">
 
-        <td class="interview-td" ng-bind="associate.associateName"></td>
+        <td class="interview-td" ng-bind="checkin.associate.name"></td>
 
-        <td class="interview-td" ng-bind="associate.checkinTime"></td>
+        <td class="interview-td" ng-bind="checkin.checkinTime"></td>
     </tr>
     </tbody>
 </table>
