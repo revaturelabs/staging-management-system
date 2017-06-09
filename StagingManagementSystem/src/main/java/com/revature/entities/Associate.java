@@ -17,7 +17,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.revature.config.SmsSettings;
 import com.revature.exceptions.SmsCustomException;
@@ -87,7 +86,6 @@ public class Associate implements SmsValidatable {
 		this.id = id;
 	}
 
-	@JsonIgnore
 	public Credential getCredential() {
 		return credential;
 	}

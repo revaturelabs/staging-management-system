@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.revature.config.SmsSettings;
 import com.revature.exceptions.SmsCustomException;
@@ -20,15 +21,18 @@ public class Credential implements SmsValidatable {
 
 	transient private static SmsSettings settings = SmsSettings.getInstance();
 
+	@JsonIgnore
 	@Id
 	@Column(name = "CREDENTIAL_ID")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CREDENTIAL_ID_SEQ")
 	@SequenceGenerator(name = "CREDENTIAL_ID_SEQ", sequenceName = "CREDENTIAL_ID_SEQ")
 	private long id;
 
+	@JsonIgnore
 	@Column(name = "CREDENTIAL_USERNAME")
 	private String username;
 
+	@JsonIgnore
 	@Column(name = "CREDENTIAL_PASSWORD")
 	private String password;
 
