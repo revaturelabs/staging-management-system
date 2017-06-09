@@ -1,7 +1,5 @@
 package com.revature.entities;
 
-import java.util.Set;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,19 +13,22 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.revature.config.SmsSettings;
 import com.revature.exceptions.SmsCustomException;
-import com.revature.exceptions.badrequests.InvalidFieldException;
-import com.revature.exceptions.badrequests.NullReferenceException;
 import com.revature.markers.SmsValidatable;
 
 @Entity
+@PropertySource("classpath:sms.properties")
 @Table(name = "MANAGERS")
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Manager implements SmsValidatable {
 
-	transient private static SmsSettings settings = SmsSettings.getInstance();
+	@Autowired
+	Environment env;
 
 	@Id
 	@Column(name = "MANAGER_ID")
@@ -51,7 +52,7 @@ public class Manager implements SmsValidatable {
 
 	public Manager() {
 		super();
-		this.active=true;
+		this.active = true;
 	}
 
 	public Manager(long id, String name, Credential credential, Permission permission, boolean active) {
@@ -151,22 +152,7 @@ public class Manager implements SmsValidatable {
 
 	@Override
 	public void validate() throws SmsCustomException {
-		if (this.name == null) {
-			throw new NullReferenceException("Manager name is null.");
-		}
-		if ("".equals(this.name)) {
-			throw new InvalidFieldException("Manager name is empty.");
-		}
-		if (!this.name.matches(settings.get("allowed_manager_name"))) {
-			throw new InvalidFieldException("Manager name contains illegal characters.");
-		}
-		int min = Integer.parseInt(settings.get("length_min_manager_name"));
-		int max = Integer.parseInt(settings.get("length_max_manager_name"));
-		if (this.name.length() < min) {
-			throw new InvalidFieldException("Manager name requires " + min + " characters.");
-		}
-		if (this.name.length() > max) {
-			throw new InvalidFieldException("Manager name is limited to " + max + " characters.");
-		}
+		System.out.println(env);
 	}
+
 }

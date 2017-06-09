@@ -52,7 +52,8 @@ public class Associate implements SmsValidatable {
 	@Column(name = "ASSOCIATE_ACTIVE")
 	private boolean active;
 
-	@Column(name = "CLIENT_ID")
+	@ManyToOne
+	@JoinColumn(name = "CLIENT_ID")
 	private Client lockedTo;
 
 	@ManyToMany(fetch = FetchType.EAGER)
