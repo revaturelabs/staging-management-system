@@ -1,26 +1,23 @@
-const associateCtrl = ($scope, $location, $http, $state) => {
-	$http({
-		method: 'GET',
-		url: '/login/isAssociate',
-	})
-	.then((response) => {
-		if(!response.data)
-			$state.go('login');
-		else {
-			$http({
-				method: 'GET',
-				url: '/checkin',
-			})
-			.then((response) => {
-				if(response.data === true) {
-					$scope.checkInBtn = "Checked In";
-					$scope.hasCheckedIn = true;
-				}
-				else
-					$scope.checkInBtn = "Check In";
-			});
-		}
-	});
+const associateCtrl = ($scope, $location, $http, $state, userService) => {
+  const authenticatedUser = userService.getUser();
+
+  if (authenticatedUser.id === undefined) {
+		$state.go('login');
+    return;
+  }
+
+  $http({
+    method: 'GET',
+    url: '/checkin',
+  })
+    .then((response) => {
+      if (response.data === true) {
+        $scope.checkInBtn = "Checked In";
+        $scope.hasCheckedIn = true;
+      } else {
+        $scope.checkInBtn = "Check In";
+      }
+    });
 
 	$scope.hasCheckedIn = false;
 	$scope.isActive = function (viewLocation) {
@@ -46,6 +43,7 @@ const associateCtrl = ($scope, $location, $http, $state) => {
 			url: '/logout/',
 		})
 		.then((response) => {
+      userService.setUser({});
 			$state.go('login');
 		});
 	};
