@@ -94,7 +94,6 @@ public class Associate implements SmsValidatable {
 		this.id = id;
 	}
 
-	@JsonIgnore
 	public Credential getCredential() {
 		return credential;
 	}
@@ -214,7 +213,7 @@ public class Associate implements SmsValidatable {
 	@Override
 	public String toString() {
 		return "Associate [id=" + id + ", credential=" + credential + ", name=" + name + ", portfolioLink="
-				+ portfolioLink + ", batch=" + batch.getBatchType().getValue() + ", active=" + active + ", lockedTo="
+				+ portfolioLink + ", batch=" + (batch == null ? null : batch.getBatchType().getValue()) + ", active=" + active + ", lockedTo="
 				+ lockedTo + ", skills=" + skills + "]";
 	}
 

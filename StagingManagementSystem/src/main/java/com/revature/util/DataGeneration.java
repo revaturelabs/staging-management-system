@@ -7,7 +7,6 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import com.revature.entities.Associate;
@@ -138,7 +137,7 @@ public class DataGeneration
 	  double clientProbabilityMultiplier;
 	  
 	  AssociateP(Associate a){
-	    super(a.getId(), a.getCredential(), a.getName(), a.getPortfolioLink(), a.getBatch(), a.isActive(), a.getLockedTo(), null);
+	    super(a.getId(), a.getCredential(), a.getName(), a.getPortfolioLink(), a.getBatch(), a.isActive(), a.getLockedTo(), a.getSkills(), a.getJobs());
 	    int qualityOfAssociate = rand.nextInt(100); 
 	    
 	    if(qualityOfAssociate < 20)    //20 percent chance of being half as hirable as the average associate.
@@ -156,7 +155,7 @@ public class DataGeneration
 	   * @return - super instance
 	   */
 	  Associate getAssocaite(){
-	    return new Associate(getId(), getCredential(), getName(), getPortfolioLink(), getBatch(), isActive(), getLockedTo(), null);
+	    return new Associate(getId(), getCredential(), getName(), getPortfolioLink(), getBatch(), isActive(), getLockedTo(), getSkills(), getJobs());
 	  }
 	}
 
