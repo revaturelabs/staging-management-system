@@ -1,4 +1,8 @@
 const associateCtrl = ($scope, $location, $http, $state) => {
+	const checkBtnDOM = document.getElementById("checkBtn");
+	$scope.checkInBtn = "Loading...";
+	checkBtnDOM.disabled = true;
+	
 	$http({
 		method: 'GET',
 		url: '/login/isAssociate',
@@ -16,8 +20,10 @@ const associateCtrl = ($scope, $location, $http, $state) => {
 					$scope.checkInBtn = "Checked In";
 					$scope.hasCheckedIn = true;
 				}
-				else
+				else {
 					$scope.checkInBtn = "Check In";
+					checkBtnDOM.disabled = false;
+				}
 			});
 		}
 	});
