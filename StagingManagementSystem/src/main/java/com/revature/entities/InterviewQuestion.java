@@ -18,14 +18,14 @@ import com.revature.markers.SmsValidatable;
 @Entity
 @Table(name = "INTERVIEW_QUESTIONS")
 public class InterviewQuestion implements SmsValidatable {
-	
+
 	transient private static SmsSettings settings = SmsSettings.getInstance();
-	
+
 	@Id
 	@Column(name = "INTERVIEW_QUESTION_ID")
 	@SequenceGenerator(name = "INTERVIEW_QUESTION_ID_SEQ", sequenceName = "INTERVIEW_QUESTION_ID_SEQ")
 	@GeneratedValue(generator = "INTERVIEW_QUESTION_ID_SEQ", strategy = GenerationType.SEQUENCE)
-	private Long id;
+	private long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "BATCH_TYPE_ID")
@@ -38,18 +38,18 @@ public class InterviewQuestion implements SmsValidatable {
 		super();
 	}
 
-	public InterviewQuestion(Long id, BatchType batchType, String value) {
+	public InterviewQuestion(long id, BatchType batchType, String value) {
 		super();
 		this.id = id;
 		this.batchType = batchType;
 		this.value = value;
 	}
 
-	public Long getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -74,29 +74,23 @@ public class InterviewQuestion implements SmsValidatable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((batchType == null) ? 0 : batchType.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((value == null) ? 0 : value.hashCode());
 		return result;
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	final public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
 			return false;
-		if (getClass() != obj.getClass())
+		if (!(obj instanceof InterviewQuestion))
 			return false;
 		InterviewQuestion other = (InterviewQuestion) obj;
 		if (batchType == null) {
 			if (other.batchType != null)
 				return false;
 		} else if (!batchType.equals(other.batchType))
-			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
 			return false;
 		if (value == null) {
 			if (other.value != null)

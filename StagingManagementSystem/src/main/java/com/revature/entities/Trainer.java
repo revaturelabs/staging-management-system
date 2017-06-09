@@ -29,31 +29,31 @@ public class Trainer implements SmsValidatable {
 	@Column(name = "TRAINER_ID")
 	@SequenceGenerator(name = "TRAINER_ID_SEQ", sequenceName = "TRAINER_ID_SEQ")
 	@GeneratedValue(generator = "TRAINER_ID_SEQ", strategy = GenerationType.SEQUENCE)
-	private Long id;
+	private long id;
 
 	@Column(name = "TRAINER_NAME")
 	private String name;
 
 	@Column(name = "TRAINER_ACTIVE")
-	private Boolean active = true;
+	private boolean active;
 
 	public Trainer() {
 		super();
 		this.active=true;
 	}
 
-	public Trainer(Long id, String name, Boolean active) {
+	public Trainer(long id, String name, boolean active) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.active = active;
 	}
 
-	public Long getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -65,11 +65,11 @@ public class Trainer implements SmsValidatable {
 		this.name = name;
 	}
 
-	public Boolean getActive() {
+	public boolean isActive() {
 		return active;
 	}
 
-	public void setActive(Boolean active) {
+	public void setActive(boolean active) {
 		this.active = active;
 	}
 
@@ -77,30 +77,21 @@ public class Trainer implements SmsValidatable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((active == null) ? 0 : active.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + (active ? 1231 : 1237);
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	final public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
 			return false;
-		if (getClass() != obj.getClass())
+		if (!(obj instanceof Trainer))
 			return false;
 		Trainer other = (Trainer) obj;
-		if (active == null) {
-			if (other.active != null)
-				return false;
-		} else if (!active.equals(other.active))
-			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
+		if (active != other.active)
 			return false;
 		if (name == null) {
 			if (other.name != null)
