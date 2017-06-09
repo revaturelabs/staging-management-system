@@ -251,7 +251,7 @@ public class DataGeneration
     LocalDateTime confirmDate = currDate;
     //Should randomize actual endDate by creating a bias in the client.
     
-    Job j = new Job(null, ap, client, startDate, projectedEndDate,
+    Job j = new Job(0, ap, client, startDate, projectedEndDate,
         projectedEndDate, null, confirmDate);
     jobService.add(j);
     log.debug("Created Job: " + j);
