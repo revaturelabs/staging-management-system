@@ -12,19 +12,19 @@
       <tbody>
       <tr ng-repeat="interview in interviews" ng-click="interviewSelect(interview)">
         <td class="interview-td" ng-bind="interview.associate.name"></td>
-        <td class="interview-td" ng-bind="interview.associate.batch"></td>
-        <td class="interview-td" ng-bind="interview.client.clientName"></td>
-        <td class="interview-td" ng-bind="interview.scheduled_time.scheduled"></td>
+        <td class="interview-td" ng-bind="interview.associate.batch.batchType.value"></td>
+        <td class="interview-td" ng-bind="interview.client.name"></td>
+        <td class="interview-td" ng-bind="dateConverter(interview.scheduled)"></td>
       </tr>
       </tbody>
     </table>
   </div>
 
   <div class="interview-side-table" ng-show="interviewSideTable">
-      <div>Associate: {{ interviewSideTable.interview.associateName }}</div>
-      <div>Date: {{ interviewSideTable.interview.scheduled_time }}</div>
-      <div>Skill: {{ interviewSideTable.interview.batch }}</div>
-      <div>Client: {{ interviewSideTable.interview.client }}</div>
+      <div>Associate: {{ interviewSideTable.interview.associate.name }}</div>
+      <div>Date: {{ dateConverter(interviewSideTable.interview.scheduled) }}</div>
+      <div>Skill: {{ interviewSideTable.interview.associate.batch.batchType.value }}</div>
+      <div>Client: {{ interviewSideTable.interview.client.name }}</div>
       <div class="interview-status-container">
         <div class="interview-status-label">Status: </div>
         <select ng-model="interviewSideTable.interview.status">
