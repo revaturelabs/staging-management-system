@@ -1,5 +1,6 @@
 package com.revature.entities;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,7 +19,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.revature.config.SmsSettings;
 import com.revature.exceptions.SmsCustomException;
@@ -84,6 +84,35 @@ public class Associate implements SmsValidatable {
 		this.lockedTo = lockedTo;
 		this.skills = skills;
 		this.jobs = jobs;
+	}
+	
+	/**
+	 *  Returns true if associate was on job during the given date.
+	 */
+	public boolean hasJobOnDate(LocalDateTime date){
+	  date = date.withHour(12); //Set mid day all other events should be the beginning of the day.
+	  for(Job j : jobs){
+	    boolean afterEnd = date.compareTo(j.getEndDate()) < 0;
+	    boolean hasentStopped = j.getEndDate() == null;
+	    boolean afterStart = date.compareTo(j.getStartDate()) > 0;
+	    if(afterStart && (hasentStopped || afterEnd))
+	      return true;
+	  }
+	  return false;
+	}
+	
+	/**
+	 * Returns true if associate was in training during the given date.
+	 */
+	public boolean isTrainingOnDate(LocalDateTime date) {
+	   date = date.withHour(12); //Set mid day all other events should be the beginning of the day.
+	   boolean afterBatchStart = date.compareTo(batch.getStartDate()) > 0;
+	   boolean beforeBatchEnd = date.compareTo(batch.getEndDate()) < 0;
+	   boolean hasNotBegunTraining = date.compareTo(batch.getStartDate()) < 0;
+	   if(hasNotBegunTraining || (afterBatchStart && beforeBatchEnd))
+	     return true;
+	  
+	  return false;
 	}
 
 	public long getId() {

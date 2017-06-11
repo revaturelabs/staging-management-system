@@ -2,11 +2,12 @@ import angular from 'angular';
 import angularCookies from 'angular-cookies';
 import uiRouter from 'angular-ui-router';
 import FusionCharts from 'fusioncharts';
+import moment from 'moment';
 
 import { managerCtrl } from './manager-pages/manager';
 import { managerHomeCtrl } from './manager-pages/home/home';
 import managerCheckinsCtr from './manager-pages/home/checkin/checkin';
-import { interviewsCtrl } from './manager-pages/home/interviews/interviews';
+//import { interviewsCtrl } from './manager-pages/home/interviews/interviews';
 import managerCreateCtrl from './manager-pages/create/create';
 import { batchCtrl } from './manager-pages/create/batch';
 import { clientCtrl } from './manager-pages/create/client';
@@ -18,6 +19,7 @@ import associateCtrl from './associate-pages/associate';
 import { reportCtrl } from './reports/reports';
 import { nestedCtrl } from './reports/nestedGraph';
 import { barCtrl } from './reports/barGraph';
+import { attendanceBarGraphCtrl } from './reports/attendance/attendanceBarGraph';
 import loginCtrl from './login/login';
 
 require('fusioncharts/fusioncharts.charts')(FusionCharts);
@@ -25,7 +27,6 @@ require('fusioncharts/fusioncharts.charts')(FusionCharts);
 const Visualizer = window['ui-router-visualizer'].Visualizer;
 
 const routerApp = angular.module('routerApp', [uiRouter, angularCookies]);
-
 routerApp.service('userService', function ($cookies) {
   this.user = $cookies.getObject('user') === undefined ? {} : $cookies.getObject('user');
   this.getUser = () => ({ ...this.user });
@@ -34,6 +35,9 @@ routerApp.service('userService', function ($cookies) {
     this.user = { ...user };
   };
 });
+
+console.log();
+
 
 routerApp.run(($uiRouter, $trace) => {
   // Auto-collapse children in state visualizer
@@ -92,7 +96,7 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
         },
         'interviews@manager.home': {
           templateUrl: 'manager-pages/home/interviews/interviews.html',
-          controller: interviewsCtrl,
+          //controller: interviewsCtrl,
         },
         'checkins@manager.home': {
           templateUrl: 'manager-pages/home/checkin/checkin.html',
@@ -142,14 +146,19 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
     .state('reports.attendance', {
     	url: '/attendance',
     	templateUrl: 'reports/employed.html',
-    	controller: attendanceCtrl,
+    	//controller: attendanceCtrl,
     })
     .state('reports.barGraph', {
       url: '/barGraph',
       templateUrl: 'reports/barGraph.html',
       controller: barCtrl,
+    })
+    .state('reports.attendanceBarGraph', {
+      url: '/attendanceBarGraph',
+      templateUrl: 'reports/attendance/attendanceBarGraph.html',
+      controller: attendanceBarGraphCtrl,
     });
-
+  console.log("hi");
 
     // views: {
     //   '': { templateUrl: 'manager/manager.html' },
