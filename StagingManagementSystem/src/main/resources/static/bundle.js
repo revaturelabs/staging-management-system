@@ -241,16 +241,18 @@
 	    url: '/attendance',
 	    templateUrl: 'reports/employed.html'
 	    //controller: attendanceCtrl,
+	  }).state('reports.attendanceBarGraph', {
+	    url: '/graph',
+	    templateUrl: 'reports/attendance/attendanceBarGraph.html',
+	    controller: _attendanceBarGraph.attendanceBarGraphCtrl
 	  }).state('reports.barGraph', {
 	    url: '/barGraph',
 	    templateUrl: 'reports/barGraph.html',
 	    controller: _barGraph.barCtrl
-	  }).state('reports.attendanceBarGraph', {
-	    url: '/attendanceBarGraph',
-	    templateUrl: 'reports/attendance/attendanceBarGraph.html',
-	    controller: _attendanceBarGraph.attendanceBarGraphCtrl
 	  });
 	});
+
+	console.log();
 
 /***/ }),
 /* 1 */
