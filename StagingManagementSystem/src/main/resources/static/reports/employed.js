@@ -44,6 +44,7 @@ const chart = {
 //    }
 
 const employedCtrl = ($scope, $http) => {
+	console.log("hello calandra");
 	let chartInfo, data;
 	$http({
 		  method: 'GET',
@@ -51,7 +52,7 @@ const employedCtrl = ($scope, $http) => {
 		}).then((response) => {
 			console.log(response);
 			
-			renderChart(response)
+			renderChart(response);
 		  },(error) => {
 		  console.log('Unable to render chart');
 		  });

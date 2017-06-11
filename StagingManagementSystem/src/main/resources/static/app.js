@@ -25,7 +25,7 @@ import { barCtrl } from './reports/barGraph';
 import { attendanceBarGraphCtrl } from './reports/attendance/attendanceBarGraph';
 
 require('fusioncharts/fusioncharts.charts')(FusionCharts);
-
+console.log();
 const Visualizer = window['ui-router-visualizer'].Visualizer;
 
 const routerApp = angular.module('routerApp', [uiRouter, angularCookies]);
