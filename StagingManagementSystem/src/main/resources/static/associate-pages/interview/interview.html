@@ -48,10 +48,10 @@
 	      </tr>
 	    </thead>
 	    <tbody>
-	      <tr ng-repeat="x in names">
-	        <td>Infosys</td>
-	        <td>10/10/1000 10:10:10</td>
-	        <td>Good</td>
+	      <tr ng-repeat="x in associateInterviews">
+	        <td>{{x.client.name}}</td>
+	        <td>{{x.day}}</td>
+	        <td>{{x.interviewStatus.value}}</td>
 	      </tr>
 	    </tbody>
 	  </table>
