@@ -2,5 +2,7 @@
     margin: 1em;
 }
 
-
-@import url("/manager-pages/manager.css");
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
