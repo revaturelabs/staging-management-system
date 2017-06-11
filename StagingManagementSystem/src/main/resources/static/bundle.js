@@ -123,6 +123,7 @@
 	var Visualizer = window['ui-router-visualizer'].Visualizer;
 
 	var routerApp = _angular2.default.module('routerApp', [_angularUiRouter2.default, _angularCookies2.default]);
+
 	routerApp.service('userService', function ($cookies) {
 	  var _this = this;
 
@@ -136,18 +137,29 @@
 	  };
 	});
 
-	console.log();
+	routerApp.run(function ($uiRouter, $trace, $rootScope) {
 
-	routerApp.run(function ($uiRouter, $trace) {
+	  //Ui Visualizer
 	  // Auto-collapse children in state visualizer
 	  var registry = $uiRouter.stateRegistry;
 
 	  var pluginInstance = $uiRouter.plugin(Visualizer);
 
 	  $trace.enable('TRANSITION');
+
+	  //Global Functions
+	  $rootScope.dateConverter = function (localDateTime) {
+	    console.log('hello');
+	    var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+	    // month                             day
+	    return '' + months[localDateTime[1] - 1] + ' ' + localDateTime[2] + ' '
+	    // hour                                                              minute                AM/PM
+	    + (localDateTime[3] > 12 ? localDateTime[3] - 12 : localDateTime) + ':' + localDateTime[4] + (localDateTime > 12 ? 'p.m.' : 'a.m.');
+	  };
 	});
 
 	routerApp.config(function ($stateProvider, $urlRouterProvider) {
+
 	  $urlRouterProvider.otherwise('/login');
 
 	  $stateProvider // HOME STATES AND NESTED VIEWS
@@ -231,54 +243,18 @@
 	    url: '/attendance',
 	    templateUrl: 'reports/employed.html'
 	    //controller: attendanceCtrl,
+	  }).state('reports.attendanceBarGraph', {
+	    url: '/graph',
+	    templateUrl: 'reports/attendance/attendanceBarGraph.html',
+	    controller: _attendanceBarGraph.attendanceBarGraphCtrl
 	  }).state('reports.barGraph', {
 	    url: '/barGraph',
 	    templateUrl: 'reports/barGraph.html',
 	    controller: _barGraph.barCtrl
-	  }).state('reports.attendanceBarGraph', {
-	    url: '/attendanceBarGraph',
-	    templateUrl: 'reports/attendance/attendanceBarGraph.html',
-	    controller: _attendanceBarGraph.attendanceBarGraphCtrl
 	  });
-	  console.log("hi");
-
-	  // views: {
-	  //   '': { templateUrl: 'manager/manager.html' },
-	  //   'top': { templateUrl: 'manager/top.html' },
-	  //   'bottom': { templateUrl: 'manager/schedule.html'}
-	  //   }
-	  // }
-
-
-	  // nested list with custom controller
-	  // .state('home.list', {
-	  //     url: '/list',
-	  //     templateUrl: 'partial-home-list.html',
-	  //     controller: function($scope) {
-	  //         $scope.dogs = ['Bernese', 'Husky', 'Goldendoodle'];
-	  //     }
-	  // })
-
-	  // nested list with just some random string data
-	  // .state('home.paragraph', {
-	  //     url: '/paragraph',
-	  //     template: 'I could sure use a drink right now.'
-	  // })
-
-	  // ABOUT PAGE AND MULTIPLE NAMED VIEWS =================================
-	  // .state('about', {
-	  //     url: '/about',
-	  //     views: {
-	  //         '': { templateUrl: 'partial-about.html' },
-	  //         'columnOne@about': { template: 'Look I am a column!' },
-	  //         'columnTwo@about': {
-	  //             templateUrl: 'table-data.html',
-	  //             controller: 'scotchController'
-	  //         }
-	  //     }
-	  //
-	  // });
 	});
+
+	console.log();
 
 /***/ }),
 /* 1 */
