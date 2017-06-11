@@ -48,7 +48,7 @@ public class AssociateControllerImpl {
 	 
 	 @GetMapping("/generate/mock-data")
 	 public void generateAssociateMockDate(){
-	  // dataGen.generate();
+	  dataGen.generate();
 	 }
 
 	@DeleteMapping

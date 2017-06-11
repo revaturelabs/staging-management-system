@@ -43,7 +43,7 @@ public class InterviewsServiceImpl implements InterviewsService {
 
 	@Override
 	public void update(Interview interviews) {
-		interviewsRepo.saveAndFlush(interviews);
+		interviews = interviewsRepo.saveAndFlush(interviews);
 	}
 
 	@Override
