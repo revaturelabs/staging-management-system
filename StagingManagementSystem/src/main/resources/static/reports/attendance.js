@@ -47,25 +47,30 @@ const attendanceCtrl = ($scope, $http) => {
 	let chartInfo, data;
 	$http({
 		  method: 'GET',
-		  url: '/associate/56'
+		  url: '/associate/all'
 		}).then((response) => {
 			console.log(response);
-		   chartInfo: response;
+			
+			renderChart(response)
 		  },(error) => {
-		  //
+		  console.log('Unable to render chart');
 		  });
-	const pieChart = new FusionCharts({
-		type: 'pie3d',
-		width: '600',
-		height: '400',
-		renderAt: 'chartContainer',
-		dataFormat: 'json',
-		dataSource: {
-			'chart': chart,
-			'data': chartInfo
-		}
-	});
-pieChart.render();
+
+	function renderChart(chartInfo) {
+		var pieChart = new FusionCharts({
+			type: 'pie3d',
+			width: '600',
+			height: '400',
+			renderAt: 'chartContainer',
+			dataFormat: 'json',
+			dataSource: {
+				'chart': chart,
+				'data': chartInfo
+			}
+		});
+	pieChart.render();
+	}
+	
 };
 
 
