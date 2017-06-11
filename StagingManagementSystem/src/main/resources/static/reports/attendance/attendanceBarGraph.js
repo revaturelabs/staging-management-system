@@ -230,7 +230,8 @@ function setWeekly($scope, tarDate) {
   if (date === undefined) {
     date = moment();
   }
-
+  console.log("hello");
+  alert(date.format('YYYY-MM-DDTHH:MM:SS'));
   const currDay = date.day();
 
   date.subtract(currDay, 'days');
