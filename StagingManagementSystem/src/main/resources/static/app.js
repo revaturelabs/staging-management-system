@@ -19,6 +19,7 @@ import { reportCtrl } from './reports/reports';
 import { nestedCtrl } from './reports/nestedGraph';
 import { barCtrl } from './reports/barGraph';
 import loginCtrl from './login/login';
+import { attendanceBarGraphCtrl } from './reports/attendance/attendanceBarGraph';
 
 require('fusioncharts/fusioncharts.charts')(FusionCharts);
 
@@ -155,9 +156,21 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       templateUrl: 'reports/nestedGraph.html',
       controller: nestedCtrl,
     })
+    .state('reports.attendance', {
+    	url: '/attendance',
+    	templateUrl: 'reports/employed.html',
+    	//controller: attendanceCtrl,
+    })
+    .state('reports.attendanceBarGraph', {
+      url: '/graph',
+      templateUrl: 'reports/attendance/attendanceBarGraph.html',
+      controller: attendanceBarGraphCtrl,
+    })
     .state('reports.barGraph', {
       url: '/barGraph',
       templateUrl: 'reports/barGraph.html',
       controller: barCtrl,
     });
 });
+
+console.log();

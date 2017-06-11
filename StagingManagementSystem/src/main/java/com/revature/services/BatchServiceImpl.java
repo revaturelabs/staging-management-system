@@ -63,7 +63,6 @@ public class BatchServiceImpl implements BatchService {
 
 	@Override
 	public void add(Batch batch) {
-	  System.out.println("Batch: " + batch);
 		batchRepo.saveAndFlush(batch);
 	}
 

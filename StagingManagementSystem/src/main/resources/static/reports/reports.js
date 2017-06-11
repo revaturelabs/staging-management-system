@@ -1,4 +1,5 @@
-const reportCtrl = ($scope) => {
+const reportCtrl = ($scope, $http) => {
+  console.log();
 };
 
 
