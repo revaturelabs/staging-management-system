@@ -9,11 +9,11 @@
     <div class="panel-body">
       <dl>
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-6 col-sm-6 col-xs-6">
             <dt>Name</dt>
             <dd ng-bind="associate.name"></dd>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-6 col-sm-6 col-xs-6">
             <dt>Batch</dt>
             <dd>
               <span ng-bind-template="{{associate.batch.batchType.value}} - "></span>
@@ -24,7 +24,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-6 col-sm-6 col-xs-6">
             <dt>
               Profile URL
               <span style="cursor: pointer;" ng-click="openPortfolioUrlModal()">
@@ -37,13 +37,13 @@
               </span>
             </dd>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-6 col-sm-6 col-xs-6">
             <dt>Status</dt>
             <dd ng-bind-template="{{associate.active === true ? 'Active': 'Not active'}}"></dd>
           </div>
         </div>
         <div class="row">
-          <div class="col-md-12">
+          <div class="col-md-12 col-sm-12 col-xs-12">
             <dt>
               Skills
               <span style="cursor: pointer;" ng-click="toggleSkillsModal()">

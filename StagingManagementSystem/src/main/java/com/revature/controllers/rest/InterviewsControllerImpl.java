@@ -29,7 +29,10 @@ public class InterviewsControllerImpl {
 
 	@PostMapping
 	public void add(@RequestBody Interview interviews) {
-		interviewsService.add(interviews);
+		System.out.println(interviews);
+		System.out.println(interviews.getClient());
+		System.out.println(interviews.getScheduled());
+//		interviewsService.add(interviews);
 	}
 
 	@GetMapping("/{id}")
