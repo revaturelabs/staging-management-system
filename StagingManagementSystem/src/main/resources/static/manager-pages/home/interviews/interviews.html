@@ -11,7 +11,7 @@
       </thead>
       <tbody>
       <!-- <tr ng-repeat="interview in interviews" data-toggle="modal" data-target="#interviewModal" ng-click="interviewSelect(interview)" ng-class="{selectedTableRow : interview.id === idSelectedInterview}" >-->
-      <tr ng-repeat="interview in interviews" data-toggle="modal" data-target="#interviewModal" ng-click="interviewSelect(interview)" ng-class="{selectedTableRow : interview.id === idSelectedInterview}" >
+      <tr ng-repeat="interview in interviews" data-toggle="modal" data-target="#interviewModal" ng-click="interviewSelect(interview)">
         <td class="interview-td" ng-bind="interview.associate.name"></td>
         <td class="interview-td" ng-bind="interview.associate.batch.batchType.value"></td>
         <td class="interview-td" ng-bind="interview.client.name"></td>
