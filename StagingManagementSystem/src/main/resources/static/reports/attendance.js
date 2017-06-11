@@ -49,7 +49,7 @@ const attendanceCtrl = ($scope, $http) => {
 		  method: 'GET',
 		  url: '/associate/56'
 		}).then((response) => {
-			console.log(response);	
+			console.log(response);
 		   chartInfo: response;
 		  },(error) => {
 		  //
@@ -62,12 +62,7 @@ const attendanceCtrl = ($scope, $http) => {
 		dataFormat: 'json',
 		dataSource: {
 			'chart': chart,
-			'data': data: [
-	            {
-	            	label: "Employed",
-	            	value: chartInfo
-	            }
-		        ]
+			'data': chartInfo
 		}
 	});
 pieChart.render();
