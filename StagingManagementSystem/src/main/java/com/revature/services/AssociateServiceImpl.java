@@ -11,8 +11,6 @@ import org.springframework.stereotype.Service;
 
 import com.revature.entities.Associate;
 import com.revature.entities.Credential;
-import com.revature.exceptions.SmsCustomException;
-import com.revature.exceptions.badrequests.NullReferenceException;
 import com.revature.entities.Skill;
 import com.revature.repositories.AssociateRepo;
 import com.revature.repositories.CredentialRepo;

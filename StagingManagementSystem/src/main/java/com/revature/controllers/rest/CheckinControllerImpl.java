@@ -1,25 +1,37 @@
 package com.revature.controllers.rest;
 
-import com.revature.entities.Associate;
-import com.revature.entities.Checkin;
-import com.revature.entities.Manager;
-import com.revature.exceptions.AlreadyCheckedInException;
-import com.revature.exceptions.NotLoggedInException;
-import com.revature.services.CheckinService;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Set;
+
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpSession;
-import java.time.LocalDateTime;
-import java.util.Set;
+import com.revature.entities.Associate;
+import com.revature.entities.Checkin;
+import com.revature.entities.Manager;
+import com.revature.entities.data.CheckinReport;
+import com.revature.entities.data.CheckinReport.DailyReport;
+import com.revature.exceptions.AlreadyCheckedInException;
+import com.revature.services.CheckinService;
 
 @RestController
 @RequestMapping("checkin")
 public class CheckinControllerImpl {
     @Autowired
     private CheckinService checkinService;
+    @Autowired
+    private CheckinReport checkinReport;
 
     public CheckinControllerImpl(CheckinService checkinService) {
         this.checkinService = checkinService;
@@ -85,6 +97,9 @@ public class CheckinControllerImpl {
         return ResponseEntity.ok(true);
     }
 
-
+    @GetMapping(path="/report")
+    public ResponseEntity<ArrayList<DailyReport>> getCheckins(){
+        return ResponseEntity.ok(checkinReport.process(checkinService.getAll()));
+    }
 }
 

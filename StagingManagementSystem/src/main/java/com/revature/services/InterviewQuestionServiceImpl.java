@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.revature.entities.InterviewQuestion;
-import com.revature.exceptions.SmsCustomException;
-import com.revature.exceptions.badrequests.NullReferenceException;
 import com.revature.repositories.InterviewQuestionRepo;
 
 @Service

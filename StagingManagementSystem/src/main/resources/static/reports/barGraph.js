@@ -1,9 +1,9 @@
 const chart = {
-            caption: "Product-wise quarterly revenue in current year",
-            subCaption: "Harry's SuperMart",
-            xAxisname: "Quarter",
-            yAxisName: "Revenue (In USD)",
-            numberPrefix: "$",
+            caption: "Asscoiates Available vs. Associate Confirmed",
+            subCaption: "Revature LLC",
+            xAxisname: "Batch Type",
+            yAxisName: "Number of Associate",
+        //    numberPrefix: "$",
             paletteColors: "#ff0000,#0075c2",
             bgColor: "#ffffff",
             borderAlpha: "20",
@@ -23,24 +23,8 @@ const chart = {
             showHoverEffect: "1"
             };
 
-const categories = [
-                {
-                  "category": [
-                    {
-                        "label": "Q1"
-                    },
-                    {
-                        "label": "Q2"
-                    },
-                    {
-                        "label": "Q3"
-                    },
-                    {
-                        "label": "Q4"
-                    }
-                    ]
-                }     
-            ];
+let categories;
+
 const dataset = [
                 {
                   "seriesname": "Food Products",
@@ -78,12 +62,31 @@ const dataset = [
                 }
             ];
 
-const barCtrl = ($scope) => {
-  plainBarChart2($scope, chart, categories, dataset );
+const barCtrl = ($scope, $http) => {
+  graphBuilder($scope, $http);
 };
 
+function graphBuilder($scope, $http){
+  $http ({
+    method: 'GET',
+    url: '/batchtype/all',   
+  }).then ((response) => {
+      var stuff = [];
+      var value = response.data;
+          value.forEach(function(item){
+          stuff.push({"label" : item.value});      
+      });
+      categories = [
+        {
+          "category": stuff   
+        }];
+        plainBarChart2($scope, chart, categories, dataset );
+      });
+ 
+}
+
 function plainBarChart2($scope, chartstuff, categories, dataset ) {
-  $scope.greeting = 'test';
+  
   const myDataSource = {
       chart : chartstuff,
       categories,
@@ -99,6 +102,7 @@ function plainBarChart2($scope, chartstuff, categories, dataset ) {
     dataSource: myDataSource,     
   });
   
+  console.log("his chart: " + chart);
   chart.render();
 
 }

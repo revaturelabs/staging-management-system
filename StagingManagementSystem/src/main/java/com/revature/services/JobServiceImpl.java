@@ -6,6 +6,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.revature.entities.Associate;
 import com.revature.entities.Job;
 import com.revature.repositories.JobRepo;
 
@@ -43,4 +44,9 @@ public class JobServiceImpl implements JobService {
 	public void update(Job job) {
 		jobRepo.saveAndFlush(job);
 	}
+
+  @Override
+  public Set<Job> findByAssociate(Associate associate) {
+    return jobRepo.getByAssociate(associate);
+  }
 }
