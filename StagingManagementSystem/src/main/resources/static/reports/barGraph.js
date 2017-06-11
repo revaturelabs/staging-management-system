@@ -102,6 +102,7 @@ function plainBarChart2($scope, chartstuff, categories, dataset ) {
     dataSource: myDataSource,     
   });
   
+  console.log("his chart: " + chart);
   chart.render();
 
 }

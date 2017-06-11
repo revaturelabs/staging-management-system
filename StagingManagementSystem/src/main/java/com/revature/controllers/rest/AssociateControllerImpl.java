@@ -2,7 +2,11 @@ package com.revature.controllers.rest;
 
 import java.util.Set;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,7 +48,7 @@ public class AssociateControllerImpl {
 	 
 	 @GetMapping("/generate/mock-data")
 	 public void generateAssociateMockDate(){
-	  // dataGen.generate();
+	  dataGen.generate();
 	 }
 
 	@DeleteMapping
@@ -53,8 +57,16 @@ public class AssociateControllerImpl {
 	}
 
 	@PutMapping
-	public void updateAssociate(@RequestBody Associate associate) {
+	public ResponseEntity<Object> updateAssociate(@RequestBody Associate associate, HttpSession session) {
+		Associate authenticatedAssociate = (Associate)session.getAttribute("login_associate");
+		
+		if (authenticatedAssociate == null) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+		}
+		
+		associate.setCredential(authenticatedAssociate.getCredential());
 		associateService.update(associate);
+		return ResponseEntity.ok(null);
 	}
 
 	@GetMapping("/{id}")

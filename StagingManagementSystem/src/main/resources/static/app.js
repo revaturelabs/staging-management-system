@@ -2,10 +2,12 @@ import angular from 'angular';
 import angularCookies from 'angular-cookies';
 import uiRouter from 'angular-ui-router';
 import FusionCharts from 'fusioncharts';
+import moment from 'moment';
 
 import { managerCtrl } from './manager-pages/manager';
 import { managerHomeCtrl } from './manager-pages/home/home';
-import { interviewsCtrl } from './manager-pages/home/interviews/interviews';
+import managerCheckinsCtr from './manager-pages/home/checkin/checkin';
+//import { interviewsCtrl } from './manager-pages/home/interviews/interviews';
 import managerCreateCtrl from './manager-pages/create/create';
 import { batchCtrl } from './manager-pages/create/batch';
 import { clientCtrl } from './manager-pages/create/client';
@@ -17,6 +19,7 @@ import associateCtrl from './associate-pages/associate';
 import { reportCtrl } from './reports/reports';
 import { nestedCtrl } from './reports/nestedGraph';
 import { barCtrl } from './reports/barGraph';
+import { attendanceBarGraphCtrl } from './reports/attendance/attendanceBarGraph';
 import loginCtrl from './login/login';
 
 require('fusioncharts/fusioncharts.charts')(FusionCharts);
@@ -34,16 +37,32 @@ routerApp.service('userService', function ($cookies) {
   };
 });
 
-routerApp.run(($uiRouter, $trace) => {
+routerApp.run(($uiRouter, $trace, $rootScope) => {
+
+	//Ui Visualizer
   // Auto-collapse children in state visualizer
   const registry = $uiRouter.stateRegistry;
 
   const pluginInstance = $uiRouter.plugin(Visualizer);
 
   $trace.enable('TRANSITION');
+
+	//Global Functions
+	$rootScope.dateConverter = (localDateTime) => {
+		console.log('hello')
+		let months = [
+			"January", "February", "March", "April", "May", "June",
+			"July", "August", "September", "October", "November", "December"
+		]
+								// month                             day
+		return '' + months[localDateTime[1]-1] + ' ' + localDateTime[2] + ' '
+								// hour                                                              minute                AM/PM
+					+ (localDateTime[3] > 12 ? localDateTime[3] - 12 : localDateTime) + ':' + localDateTime[4] + (localDateTime > 12 ? 'p.m.' : 'a.m.')
+	};
 });
 
 routerApp.config(($stateProvider, $urlRouterProvider) => {
+
   $urlRouterProvider.otherwise('/login');
 
   $stateProvider // HOME STATES AND NESTED VIEWS
@@ -91,10 +110,11 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
         },
         'interviews@manager.home': {
           templateUrl: 'manager-pages/home/interviews/interviews.html',
-          controller: interviewsCtrl,
+          //controller: interviewsCtrl,
         },
         'checkins@manager.home': {
-          templateUrl: 'manager-pages/home/checkins.html',
+          templateUrl: 'manager-pages/home/checkin/checkin.html',
+            controller: managerCheckinsCtr,
         },
       },
     })
@@ -137,47 +157,21 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       templateUrl: 'reports/nestedGraph.html',
       controller: nestedCtrl,
     })
+    .state('reports.attendance', {
+    	url: '/attendance',
+    	templateUrl: 'reports/employed.html',
+    	//controller: attendanceCtrl,
+    })
+    .state('reports.attendanceBarGraph', {
+      url: '/graph',
+      templateUrl: 'reports/attendance/attendanceBarGraph.html',
+      controller: attendanceBarGraphCtrl,
+    })
     .state('reports.barGraph', {
       url: '/barGraph',
       templateUrl: 'reports/barGraph.html',
       controller: barCtrl,
     });
-
-
-    // views: {
-    //   '': { templateUrl: 'manager/manager.html' },
-    //   'top': { templateUrl: 'manager/top.html' },
-    //   'bottom': { templateUrl: 'manager/schedule.html'}
-    //   }
-    // }
-
-
-    // nested list with custom controller
-    // .state('home.list', {
-    //     url: '/list',
-    //     templateUrl: 'partial-home-list.html',
-    //     controller: function($scope) {
-    //         $scope.dogs = ['Bernese', 'Husky', 'Goldendoodle'];
-    //     }
-    // })
-
-    // nested list with just some random string data
-    // .state('home.paragraph', {
-    //     url: '/paragraph',
-    //     template: 'I could sure use a drink right now.'
-    // })
-
-    // ABOUT PAGE AND MULTIPLE NAMED VIEWS =================================
-    // .state('about', {
-    //     url: '/about',
-    //     views: {
-    //         '': { templateUrl: 'partial-about.html' },
-    //         'columnOne@about': { template: 'Look I am a column!' },
-    //         'columnTwo@about': {
-    //             templateUrl: 'table-data.html',
-    //             controller: 'scotchController'
-    //         }
-    //     }
-    //
-    // });
 });
+
+console.log();
