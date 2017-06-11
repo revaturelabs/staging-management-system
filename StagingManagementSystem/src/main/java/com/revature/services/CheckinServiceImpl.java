@@ -148,13 +148,12 @@ public class CheckinServiceImpl implements CheckinService {
     @Override
     public Set<Checkin> getTodaysCheckins()
     {
-        Set<Checkin> checkins = checkinRepo.getAllByCheckinTimeBetween(
-                LocalDateTime.of(
-                        LocalDate.now(), LocalTime.MIDNIGHT
-                ), LocalDateTime.now()
-        );
-        System.out.println(checkins);
-        return checkins;
+        LocalDateTime now = LocalDateTime.now();
+
+        // Subtracted the hours so we see all interviews that were today even if
+        // they happened before the current time
+        // Then look at 5 days in the future of the current time
+        return checkinRepo.getAllByCheckinTimeBetween(now.minusHours(now.getHour()), now.plusDays(5l));
     }
 
     @Override
