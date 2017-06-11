@@ -64,55 +64,59 @@
 
 	var _fusioncharts2 = _interopRequireDefault(_fusioncharts);
 
-	var _manager = __webpack_require__(210);
+	var _manager = __webpack_require__(92);
 
-	var _home = __webpack_require__(211);
+	var _home = __webpack_require__(93);
 
-	var _checkin = __webpack_require__(212);
+	var _checkin = __webpack_require__(94);
 
 	var _checkin2 = _interopRequireDefault(_checkin);
 
-	var _interviews = __webpack_require__(233);
+	var _interviews = __webpack_require__(95);
 
-	var _create = __webpack_require__(213);
+	var _create = __webpack_require__(96);
 
 	var _create2 = _interopRequireDefault(_create);
 
-	var _batch = __webpack_require__(214);
+	var _batch = __webpack_require__(97);
 
-	var _client = __webpack_require__(215);
+	var _client = __webpack_require__(98);
 
-	var _user = __webpack_require__(216);
+	var _user = __webpack_require__(99);
 
-	var _associates = __webpack_require__(217);
+	var _associates = __webpack_require__(100);
 
 	var _associates2 = _interopRequireDefault(_associates);
 
-	var _profile = __webpack_require__(218);
+	var _profile = __webpack_require__(101);
 
 	var _profile2 = _interopRequireDefault(_profile);
 
-	var _interview = __webpack_require__(219);
+	var _interview = __webpack_require__(102);
 
 	var _interview2 = _interopRequireDefault(_interview);
 
-	var _associate = __webpack_require__(221);
+	var _associate = __webpack_require__(104);
 
 	var _associate2 = _interopRequireDefault(_associate);
 
-	var _reports = __webpack_require__(222);
+	var _reports = __webpack_require__(105);
 
-	var _nestedGraph = __webpack_require__(223);
+	var _nestedGraph = __webpack_require__(106);
 
-	var _barGraph = __webpack_require__(224);
+	var _barGraph = __webpack_require__(107);
 
-	var _login = __webpack_require__(226);
+	var _login = __webpack_require__(108);
 
 	var _login2 = _interopRequireDefault(_login);
 
+	var _attendanceBarGraph = __webpack_require__(110);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	__webpack_require__(227)(_fusioncharts2.default);
+	console.log();
+
+	__webpack_require__(109)(_fusioncharts2.default);
 
 	var Visualizer = window['ui-router-visualizer'].Visualizer;
 
@@ -244,7 +248,7 @@
 	  }).state('reports.attendanceBarGraph', {
 	    url: '/attendanceBarGraph',
 	    templateUrl: 'reports/attendance/attendanceBarGraph.html',
-	    controller: attendanceBarGraphCtrl
+	    controller: _attendanceBarGraph.attendanceBarGraphCtrl
 	  });
 	});
 
@@ -46796,125 +46800,7 @@
 
 
 /***/ }),
-/* 92 */,
-/* 93 */,
-/* 94 */,
-/* 95 */,
-/* 96 */,
-/* 97 */,
-/* 98 */,
-/* 99 */,
-/* 100 */,
-/* 101 */,
-/* 102 */,
-/* 103 */,
-/* 104 */,
-/* 105 */,
-/* 106 */,
-/* 107 */,
-/* 108 */,
-/* 109 */,
-/* 110 */,
-/* 111 */,
-/* 112 */,
-/* 113 */,
-/* 114 */,
-/* 115 */,
-/* 116 */,
-/* 117 */,
-/* 118 */,
-/* 119 */,
-/* 120 */,
-/* 121 */,
-/* 122 */,
-/* 123 */,
-/* 124 */,
-/* 125 */,
-/* 126 */,
-/* 127 */,
-/* 128 */,
-/* 129 */,
-/* 130 */,
-/* 131 */,
-/* 132 */,
-/* 133 */,
-/* 134 */,
-/* 135 */,
-/* 136 */,
-/* 137 */,
-/* 138 */,
-/* 139 */,
-/* 140 */,
-/* 141 */,
-/* 142 */,
-/* 143 */,
-/* 144 */,
-/* 145 */,
-/* 146 */,
-/* 147 */,
-/* 148 */,
-/* 149 */,
-/* 150 */,
-/* 151 */,
-/* 152 */,
-/* 153 */,
-/* 154 */,
-/* 155 */,
-/* 156 */,
-/* 157 */,
-/* 158 */,
-/* 159 */,
-/* 160 */,
-/* 161 */,
-/* 162 */,
-/* 163 */,
-/* 164 */,
-/* 165 */,
-/* 166 */,
-/* 167 */,
-/* 168 */,
-/* 169 */,
-/* 170 */,
-/* 171 */,
-/* 172 */,
-/* 173 */,
-/* 174 */,
-/* 175 */,
-/* 176 */,
-/* 177 */,
-/* 178 */,
-/* 179 */,
-/* 180 */,
-/* 181 */,
-/* 182 */,
-/* 183 */,
-/* 184 */,
-/* 185 */,
-/* 186 */,
-/* 187 */,
-/* 188 */,
-/* 189 */,
-/* 190 */,
-/* 191 */,
-/* 192 */,
-/* 193 */,
-/* 194 */,
-/* 195 */,
-/* 196 */,
-/* 197 */,
-/* 198 */,
-/* 199 */,
-/* 200 */,
-/* 201 */,
-/* 202 */,
-/* 203 */,
-/* 204 */,
-/* 205 */,
-/* 206 */,
-/* 207 */,
-/* 208 */,
-/* 209 */,
-/* 210 */
+/* 92 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -46949,7 +46835,7 @@
 	exports.managerCtrl = managerCtrl;
 
 /***/ }),
-/* 211 */
+/* 93 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -46990,7 +46876,7 @@
 	exports.managerHomeCtrl = managerHomeCtrl;
 
 /***/ }),
-/* 212 */
+/* 94 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -47011,7 +46897,35 @@
 	exports.default = managerCheckinsCtrl;
 
 /***/ }),
-/* 213 */
+/* 95 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	var interviewsCtrl = function interviewsCtrl($scope, $http) {
+	    console.log("started");
+	    $http({
+	        method: "GET",
+	        url: "interviews/all"
+	    }).then(function mySuccess(response) {
+	        window.interviews = response.data;
+	        $scope.interviews = response.data;
+	    }, function myError(response) {
+	        console.log("error!");
+	    });
+
+	    $scope.interviewSelect = function (interview) {
+	        $scope.interviewSideTable = { "interview": interview };
+	    };
+	};
+
+	exports.interviewsCtrl = interviewsCtrl;
+
+/***/ }),
+/* 96 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -47026,7 +46940,7 @@
 	exports.default = managerCreateCtrl;
 
 /***/ }),
-/* 214 */
+/* 97 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -47078,7 +46992,7 @@
 	exports.batchCtrl = batchCtrl;
 
 /***/ }),
-/* 215 */
+/* 98 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -47101,7 +47015,7 @@
 	exports.clientCtrl = clientCtrl;
 
 /***/ }),
-/* 216 */
+/* 99 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -47146,7 +47060,7 @@
 	exports.userCtrl = userCtrl;
 
 /***/ }),
-/* 217 */
+/* 100 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -47206,7 +47120,7 @@
 	exports.default = managerAdvancedAssociatesCtrl;
 
 /***/ }),
-/* 218 */
+/* 101 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -47289,7 +47203,7 @@
 	exports.default = profileCtrl;
 
 /***/ }),
-/* 219 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -47298,7 +47212,7 @@
 		value: true
 	});
 
-	var _dateformat = __webpack_require__(220);
+	var _dateformat = __webpack_require__(103);
 
 	var _dateformat2 = _interopRequireDefault(_dateformat);
 
@@ -47353,7 +47267,7 @@
 	exports.default = associateInterviewCtrl;
 
 /***/ }),
-/* 220 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/*
@@ -47585,7 +47499,7 @@
 
 
 /***/ }),
-/* 221 */
+/* 104 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -47648,7 +47562,7 @@
 	exports.default = associateCtrl;
 
 /***/ }),
-/* 222 */
+/* 105 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -47663,7 +47577,7 @@
 	exports.reportCtrl = reportCtrl;
 
 /***/ }),
-/* 223 */
+/* 106 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -47868,7 +47782,7 @@
 	exports.nestedCtrl = nestedCtrl;
 
 /***/ }),
-/* 224 */
+/* 107 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -47972,8 +47886,7 @@
 	exports.barCtrl = barCtrl;
 
 /***/ }),
-/* 225 */,
-/* 226 */
+/* 108 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -48027,7 +47940,7 @@
 	exports.default = loginCtrl;
 
 /***/ }),
-/* 227 */
+/* 109 */
 /***/ (function(module, exports) {
 
 	/*
@@ -48277,37 +48190,539 @@
 
 
 /***/ }),
-/* 228 */,
-/* 229 */,
-/* 230 */,
-/* 231 */,
-/* 232 */,
-/* 233 */
+/* 110 */
 /***/ (function(module, exports) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
-	var interviewsCtrl = function interviewsCtrl($scope, $http) {
-	    console.log("started");
-	    $http({
-	        method: "GET",
-	        url: "interviews/all"
-	    }).then(function mySuccess(response) {
-	        window.interviews = response.data;
-	        $scope.interviews = response.data;
-	    }, function myError(response) {
-	        console.log("error!");
-	    });
+	// ----------------------------------- Start Variables ----------------------------------- //
 
-	    $scope.interviewSelect = function (interview) {
-	        $scope.interviewSideTable = { "interview": interview };
-	    };
+	var YEAR = 'Year';
+	var MONTH = 'Month';
+	var WEEK = 'Week';
+
+	var scale = void 0; // The scale of the graph equal to the constant values WEEK, MONTH, or YEAR.
+	var focalDate = void 0; // The date that was used to create graph view.
+	var firstColumnIndex = void 0; // The index of the first column relative dataSet the view was built from.
+
+	var originalData = void 0; // The data retrieved from the data Base.
+	var displayData = void 0; // A window of the data set being displayed determined by the focal Date.
+	var diaplayLabels = void 0; // The column labels for displayData.
+
+	var weeklyData = void 0; // Data grouped by day and displayed by week.
+	var monthlyData = void 0; // Data grouped by week and displayed 5 weeks at a time with focal date
+	// determining the center.
+	var yearlyData = void 0; // Data grouped by quarter year displaying the year focal point resides in.
+
+	var displayChart = void 0;
+
+	var weeklyLabels = [{
+	  label: 'Sunday'
+	}, {
+	  label: 'Monday'
+	}, {
+	  label: 'Tuesday'
+	}, {
+	  label: 'Wednesday'
+	}, {
+	  label: 'Thursday'
+	}, {
+	  label: 'Friday'
+	}, {
+	  label: 'Saturday'
+	}];
+
+	var yearlyLabels = [{
+	  label: '1st Quarter'
+	}, {
+	  label: '2nd Quarter'
+	}, {
+	  label: '3rd Quarter'
+	}, {
+	  label: '4th Quarter'
+	}];
+
+	/**
+	 * Chart display setup.
+	 */
+	var chartPoperties = {
+	  caption: 'Attendance Associates in Stagging',
+	  subCaption: scale,
+	  xAxisname: scale,
+	  yAxisName: 'Percentage of Attendance',
+	  numberPrefix: '%',
+	  paletteColors: '#0075c2',
+	  bgColor: '#ffffff',
+	  borderAlpha: '20',
+	  showCanvasBorder: '0',
+	  usePlotGradientColor: '0',
+	  plotBorderAlpha: '10',
+	  legendBorderAlpha: '0',
+	  legendShadow: '0',
+	  valueFontColor: '#ffffff',
+	  showXAxisLine: '1',
+	  xAxisLineColor: '#999999',
+	  divlineColor: '#999999',
+	  divLineDashed: '1',
+	  showAlternateHGridColor: '0',
+	  subcaptionFontBold: '0',
+	  subcaptionFontSize: '14',
+	  showHoverEffect: '1'
 	};
 
-	exports.interviewsCtrl = interviewsCtrl;
+	// ----------------------------------- End Variables ----------------------------------- //
+
+
+	// ----------------------------------- Start Utilities ----------------------------------- //
+
+	/**
+	 * This function will conduct a recursive binary search on a section of an array.
+	 *
+	 * @param data - array to be searched
+	 * @param searchVal - value searching for
+	 * @param start - starting index
+	 * @param stop - stopping index
+	 * @param cmpFunction - a function of the form foo(searchVal, data[i]) that returns an integer
+	 *                      comparison value
+	 * @returns - the index corresponding to the closest value to searchVal.
+	 */
+	function binarySearch(data, searchVal, start, stop, cmpFunction) {
+	  if (start >= stop) {
+	    return stop;
+	  }
+	  var midpoint = Math.floor((start + stop) / 2);
+
+	  var value = cmpFunction(searchVal, data[midpoint]);
+	  if (value === 0) {
+	    return midpoint;
+	  } else if (value > 0) {
+	    return binarySearch(data, searchVal, midpoint + 1, stop, cmpFunction);
+	  }
+
+	  return binarySearch(data, searchVal, start, midpoint, cmpFunction);
+	}
+
+	/**
+	 * This is a wrapper function for the binary search it searches an entire array.
+	 *
+	 * @param data - array to be searched
+	 * @param searchVal - value searching for
+	 * @param cmpFunction - a function of the form foo(searchVal, data[i]) that returns an integer
+	 *                      comparison value
+	 * @returns - the index corresponding to the closest value to searchVal.
+	 */
+	function binarySearchHelper(data, searchVal, cmpFunction) {
+	  return binarySearch(data, searchVal, 0, data.length, cmpFunction);
+	}
+
+	/**
+	 * Converts a moment object to the first of the week.
+	 *
+	 * @param momentObj - date of interest.
+	 * @returns - sunday of the week containing momentObj.
+	 */
+	function convertToFirstOfTheWeek(momentObj) {
+	  var dayValue = momentObj.day();
+	  var newMoment = momentObj.subtract(dayValue, 'days');
+	  return moment(newMoment.format('YYYY-MM-DD'));
+	}
+
+	/**
+	 * Converts a moment object to a moment representing the first of the
+	 * month.
+	 *
+	 * @param momentObj - moment object to be evaluated
+	 * @returns - if momentObj is in month A then it returns the first of month A
+	 *            with time zeroed.
+	 */
+	function convertToFirstOfMonth(momentObj) {
+	  var dayValue = momentObj.format('DD') - 1;
+	  var newMoment = momentObj.subtract(dayValue, 'days');
+	  return moment(newMoment.format('YYYY-MM-DD'));
+	}
+
+	/**
+	 * Converts a moment object to the first day of the quarter year momentObj(A) is within.
+	 *
+	 * @param momentObj - date of interest.
+	 * @returns - jan 1st <= (A) <= mar 31st : jan 1st
+	 *            apr 1st <= (A) <= jun 30st : jun 1st
+	 *            jul 1st <= (A) <= sep 30st : jul 1st
+	 *            oct 1st <= (A) <= dec 31st : oct 1st
+	 *            (Time is zeroed)
+	 */
+	function convertToFirstOfQuarter(momentObj) {
+	  var monthValue = momentObj.month() % 3;
+	  var newMoment = momentObj.subtract(monthValue, 'months');
+	  newMoment = convertToFirstOfMonth(momentObj);
+
+	  return moment(newMoment.format('YYYY-MM-DD'));
+	}
+
+	/**
+	 * Converts to the first of the year that is contained in month.
+	 *
+	 * @param momentObj - moment object to be evaluated
+	 * @returns - if momentObj is in year A then it returns the jan 1st of year A
+	 *            with time zeroed.
+	 */
+	function convertToFirstOfYear(momentObj) {
+	  var monthValue = momentObj.month();
+	  var newMoment = momentObj.subtract(monthValue, 'months');
+	  newMoment = convertToFirstOfMonth(momentObj);
+	  return moment(newMoment.format('YYYY-MM-DD'));
+	}
+
+	/**
+	 * Compares searchVal(a) to currentVal.time(b) by creating date objects that ignore time.
+	 *
+	 * @searchVal - a moment object to be searched.
+	 * @currentVal - an object with an attribute time that can be parsed by moment.
+	 *
+	 * @return a == b (0), a < b (positive value), a > b (negative value)
+	 */
+	function cmpDay(searchVal, currentVal) {
+	  var parseMoment = moment(moment(currentVal.time).format('YYYY-MM-DD'));
+	  var zeroSearch = moment(searchVal.format('YYYY-MM-DD'));
+
+	  return zeroSearch.diff(parseMoment);
+	}
+
+	// ----------------------------------- End Utilities ----------------------------------- //
+
+
+	// ----------------------------------- Start Weekly ----------------------------------- //
+
+	/**
+	 * Function that "builds" weeklyData, for current implementation originalData is already in the
+	 * correct form. A Copy should be made if weeklyData needs to be edited in the future.
+	 */
+	function buildWeekly() {
+	  weeklyData = originalData;
+	}
+
+	/**
+	 * Creates a view of weeklyData using date as the focal point, if date is undefined it uses
+	 * todays date.
+	 *
+	 * @param $scope
+	 * @param date - a date within week to be viewed.
+	 * @returns
+	 */
+	function setWeekly($scope, tarDate) {
+	  var date = tarDate;
+	  if (date === undefined) {
+	    date = moment();
+	  }
+	  console.log("hello");
+	  alert(date.format('YYYY-MM-DDTHH:MM:SS'));
+	  var currDay = date.day();
+
+	  date.subtract(currDay, 'days');
+
+	  var index = binarySearchHelper(weeklyData, date, cmpDay);
+
+	  // Set global view properties.
+	  firstColumnIndex = index;
+	  focalDate = moment(date.format());
+	  scale = WEEK;
+
+	  var dataString = '[{"seriesname":"Weekly","data":[';
+
+	  var i = void 0;
+	  for (i = 0; i < 7; i += 1) {
+	    var hourCount = weeklyData[index].hourCount;
+	    var hourEstimate = weeklyData[index].hourEstimate;
+	    index += 1;
+	    var value = Math.floor(hourCount / hourEstimate * 100);
+	    dataString += '{"value":"' + value + '"}';
+	    if (i !== 6) {
+	      dataString += ',';
+	    }
+	  }
+	  dataString += ']}]';
+
+	  displayData = JSON.parse(dataString);
+	  diaplayLabels = weeklyLabels;
+
+	  displayChart($scope);
+	}
+
+	function weeklyColumnClick(ev, props, $scope) {
+	  // TODO: display modal.
+	  $scope.selectedValue = '$props.displayValue}/' + props.categoryLabel + '/' + props.dataIndex;
+	}
+
+	// ----------------------------------- End Weekly ----------------------------------- //
+
+
+	// ----------------------------------- Start Monthly ----------------------------------- //
+
+	function buildMonthlyForEach(item) {
+	  var identityString = convertToFirstOfTheWeek(moment(item.time));
+	  var index = binarySearchHelper(monthlyData, moment(identityString), cmpDay);
+
+	  if (index < 0 || index >= monthlyData.length || monthlyData.length === 0) {
+	    var itemCpy = JSON.parse(JSON.stringify(item));
+	    itemCpy.time = identityString;
+	    monthlyData.push(itemCpy);
+	  } else {
+	    var existing = monthlyData[index];
+	    existing.hourCount = parseFloat(existing.hourCount) + parseFloat(item.hourCount);
+	    existing.hourCount = parseFloat(existing.hourEstimate) + parseFloat(item.hourEstimate);
+	  }
+	}
+
+	function buildMonthly() {
+	  monthlyData = [];
+	  originalData.forEach(buildMonthlyForEach);
+	}
+
+	function setMonthly($scope, tarDate) {
+	  var date = tarDate;
+	  if (date === undefined) {
+	    date = moment();
+	  }
+
+	  date = convertToFirstOfTheWeek(date);
+
+	  var index = binarySearchHelper(monthlyData, date, cmpDay) - 3;
+	  if (index < 0) {
+	    index = 0;
+	  }
+
+	  // Set global view properties
+	  firstColumnIndex = index;
+	  focalDate = moment(date.format());
+	  scale = MONTH;
+
+	  var dataString = '[{"seriesname":"Monthly","data":[';
+	  var valueString = '[';
+
+	  var i = void 0;
+	  for (i = 0; i < 5; i += 1) {
+	    var hourCount = monthlyData[index].hourCount;
+	    var hourEstimate = monthlyData[index].hourEstimate;
+	    index += 1;
+
+	    var start = moment(monthlyData[index].time).format('MM/DD');
+	    var stop = moment(monthlyData[index + 1].time).subtract(1, 'days').format('MM/DD');
+	    valueString += '{"label":"' + start + '-' + stop + '"}';
+
+	    var value = Math.floor(hourCount / hourEstimate * 100);
+	    dataString += '{"value":"' + value + '"}';
+	    if (i !== 4) {
+	      dataString += ',';
+	      valueString += ',';
+	    }
+	  }
+	  dataString += ']}]';
+	  valueString += ']';
+
+	  displayData = JSON.parse(dataString);
+	  diaplayLabels = JSON.parse(valueString);
+
+	  displayChart($scope);
+	}
+
+	function monthlyColumnClick(ev, props, $scope) {
+	  var newDateIndex = props.dataIndex + firstColumnIndex;
+	  setWeekly($scope, moment(monthlyData[newDateIndex].time));
+
+	  $scope.selectedValue = '$props.displayValue}/' + props.categoryLabel + '/' + props.dataIndex;
+	}
+
+	// ----------------------------------- End Monthly ----------------------------------- //
+
+
+	// ----------------------------------- Start Yearly ----------------------------------- //
+
+	function buildYearlyForEach(item) {
+	  var identityString = convertToFirstOfQuarter(moment(item.time));
+	  var index = binarySearchHelper(yearlyData, moment(identityString), cmpDay);
+
+	  if (index < 0 || index >= yearlyData.length || yearlyData.length === 0) {
+	    var itemCpy = JSON.parse(JSON.stringify(item));
+	    itemCpy.time = identityString;
+	    yearlyData.push(itemCpy);
+	  } else {
+	    var existing = yearlyData[index];
+	    existing.hourCount = parseFloat(existing.hourCount) + parseFloat(item.hourCount);
+	    existing.hourCount = parseFloat(existing.hourEstimate) + parseFloat(item.hourEstimate);
+	  }
+	}
+
+	function buildYearly() {
+	  yearlyData = [];
+	  originalData.forEach(buildYearlyForEach);
+	}
+
+	function setYearly($scope, tarDate) {
+	  var date = tarDate;
+	  if (date === undefined) {
+	    date = moment();
+	  }
+
+	  date = convertToFirstOfYear(date);
+
+	  var index = binarySearchHelper(yearlyData, date, cmpDay);
+
+	  // Set global view properties.
+	  firstColumnIndex = index;
+	  focalDate = moment(date.format());
+	  scale = YEAR;
+
+	  var dataString = '[{"seriesname":"Yearly","data":[';
+
+	  var i = void 0;
+	  for (i = 0; i < 3; i += 1) {
+	    var hourCount = yearlyData[index].hourCount;
+	    var hourEstimate = yearlyData[index].hourEstimate;
+	    index += 1;
+
+	    var value = Math.floor(hourCount / hourEstimate * 100);
+	    dataString += '{"value":"' + value + '"}';
+	    if (i !== 2) {
+	      dataString += ',';
+	    }
+	  }
+	  dataString += ']}]';
+
+	  displayData = JSON.parse(dataString);
+	  diaplayLabels = yearlyLabels;
+
+	  displayChart($scope);
+	}
+
+	function yearlyColumnClick(ev, props, $scope) {
+	  var newDateIndex = props.dataIndex + firstColumnIndex;
+	  setMonthly($scope, moment(yearlyData[newDateIndex].time));
+
+	  $scope.selectedValue = '$props.displayValue}/' + props.categoryLabel + '/' + props.dataIndex;
+	}
+
+	// ----------------------------------- End Yearly ----------------------------------- //
+
+
+	// ----------------------------------- Start Nav ----------------------------------- //
+
+	function setNavFunctions($scope) {
+	  $scope.step = function step(steps) {
+	    switch (scale) {
+	      case WEEK:
+	        focalDate = focalDate.add(steps, 'days');
+	        setWeekly($scope, focalDate);
+	        break;
+	      case MONTH:
+	        focalDate = focalDate.add(steps, 'months');
+	        setMonthly($scope, focalDate);
+	        break;
+	      case YEAR:
+	        focalDate = focalDate.add(steps, 'years');
+	        setYearly($scope, focalDate);
+	        break;
+	      default:
+	    }
+	  };
+
+	  $scope.zoomOut = function zoomOut() {
+	    if (scale === WEEK) {
+	      setMonthly($scope, focalDate);
+	    } else if (scale === MONTH) {
+	      setYearly($scope, focalDate);
+	    }
+	  };
+	}
+
+	// ----------------------------------- End Nav ----------------------------------- //
+
+
+	// ----------------------------------- Start Main ----------------------------------- //
+
+	displayChart = function displayChartFunc($scope) {
+	  var categories = [{
+	    category: diaplayLabels
+	  }];
+
+	  var dataset = displayData;
+
+	  var myDataSource = {
+	    chart: chartPoperties,
+	    categories: categories,
+	    dataset: dataset
+	  };
+
+	  $scope.selectedValue = 'nothing';
+
+	  var chart = new FusionCharts({
+	    type: 'stackedcolumn3d',
+	    renderAt: 'attn-chart-container',
+	    width: '550',
+	    height: '350',
+	    dataFormat: 'json',
+	    dataSource: myDataSource,
+	    events: {
+	      dataplotclick: function dataplotclick(ev, props) {
+	        $scope.$apply(function () {
+	          switch (scale) {
+	            case WEEK:
+	              weeklyColumnClick(ev, props, $scope);
+	              break;
+	            case MONTH:
+	              monthlyColumnClick(ev, props, $scope);
+	              break;
+	            case YEAR:
+	              yearlyColumnClick(ev, props, $scope);
+	              break;
+	            default:
+	          }
+	        });
+	      }
+	    }
+	  });
+
+	  chart.render();
+	};
+
+	/**
+	 * Build all graphs and set default graph to current week view.
+	 */
+	function buildGraphs($scope) {
+	  buildWeekly();
+	  setWeekly($scope);
+
+	  buildMonthly();
+	  buildYearly();
+	}
+
+	/**
+	 * Request checkin data from rest controller.
+	 */
+	function attendanceRequest($scope, $http) {
+	  $http({
+	    method: 'GET',
+	    url: '/checkin/report'
+	  }).then(function (response) {
+	    originalData = response.data;
+	    buildGraphs($scope);
+	  });
+	}
+
+	/**
+	 * Request data and set scope bindings.
+	 */
+	var attendanceBarGraphCtrl = function attendanceBarGraphCtrl($scope, $http) {
+	  $scope.zoomOutStr = 'Zoom Out';
+	  attendanceRequest($scope, $http);
+	  setNavFunctions($scope);
+	};
+
+	exports.attendanceBarGraphCtrl = attendanceBarGraphCtrl;
+
+	// ----------------------------------- End Main ----------------------------------- //
 
 /***/ })
 /******/ ]);

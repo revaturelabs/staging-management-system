@@ -19,6 +19,9 @@ import { reportCtrl } from './reports/reports';
 import { nestedCtrl } from './reports/nestedGraph';
 import { barCtrl } from './reports/barGraph';
 import loginCtrl from './login/login';
+import { attendanceBarGraphCtrl } from './reports/attendance/attendanceBarGraph';
+
+console.log();
 
 require('fusioncharts/fusioncharts.charts')(FusionCharts);
 
