@@ -19,7 +19,7 @@ import associateCtrl from './associate-pages/associate';
 import { reportCtrl } from './reports/reports';
 import { nestedCtrl } from './reports/nestedGraph';
 import { loginCtrl } from './login/login';
-import { attendanceCtrl } from './reports/attendance'
+import { employedCtrl } from './reports/employed'
 import { barCtrl } from './reports/barGraph';
 
 
@@ -158,10 +158,10 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       templateUrl: 'reports/nestedGraph.html',
       controller: nestedCtrl,
     })
-    .state('reports.attendance', {
-    	url: '/attendance',
+    .state('reports.employed', {
+    	url: '/employed',
     	templateUrl: 'reports/employed.html',
-    	controller: attendanceCtrl,
+    	controller: employedCtrl,
     })
     .state('reports.barGraph', {
       url: '/barGraph',

@@ -43,7 +43,7 @@ const chart = {
 //    chart.render();
 //    }
 
-const attendanceCtrl = ($scope, $http) => {
+const employedCtrl = ($scope, $http) => {
 	let chartInfo, data;
 	$http({
 		  method: 'GET',
@@ -75,4 +75,4 @@ const attendanceCtrl = ($scope, $http) => {
 
 
 
-export { attendanceCtrl };
+export { employedCtrl };
