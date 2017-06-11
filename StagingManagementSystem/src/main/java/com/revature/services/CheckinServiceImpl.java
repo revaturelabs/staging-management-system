@@ -63,12 +63,12 @@ public class CheckinServiceImpl implements CheckinService {
     @Override
     public boolean hasCheckedInToday(Associate associate) {
         Set<Checkin> checkins = checkinRepo.getAllByCheckinTimeBetween(
-                LocalDateTime.of()
+                LocalDateTime.of(
+                        LocalDate.now(), LocalTime.MIDNIGHT
+                ), LocalDateTime.now()
         );
         return (checkins != null && checkins.size() != 0);
     }
-
-
 
     @Override
     public boolean hasCheckedInToday() throws NotLoggedInException{
@@ -148,12 +148,12 @@ public class CheckinServiceImpl implements CheckinService {
     @Override
     public Set<Checkin> getTodaysCheckins()
     {
-        LocalDateTime now = LocalDateTime.now();
-
-        // Subtracted the hours so we see all interviews that were today even if
-        // they happened before the current time
-        // Then look at 5 days in the future of the current time
-        return checkinRepo.getAllByCheckinTimeBetween(now.minusHours(now.getHour()), now.minusDays(1l));
+        Set<Checkin> checkins = checkinRepo.getAllByCheckinTimeBetween(
+                LocalDateTime.of(
+                        LocalDate.now(), LocalTime.MIDNIGHT
+                ), LocalDateTime.now()
+        );
+        return checkins;
     }
 
     @Override

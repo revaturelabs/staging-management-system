@@ -1,19 +1,23 @@
 <table class="table table-striped" ng-app='checkin' >
     <thead>
     <tr>
-        <!--<th class="interview-th" scope="col"></th>-->
+        <th class="interview-th" scope="col">Approved</th>
         <th class="interview-th" scope="col">Associate</th>
         <th class="interview-th" scope="col">Checked In Time</th>
+
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="checkin in checkins"
+    <tr ng-repeat="checkin in checkins | filter:isApproved"
         class="associate">
-
+        <input class="interview-td"><input type="checkbox"
+         ng-model="hasCheckedIn"></td>
+    </tr>
         <td class="interview-td" ng-bind="checkin.associate.name"></td>
 
-        <td class="interview-td" ng-bind="checkin.checkinTime"></td>
-    </tr>
+        <td class="interview-td" ng-bind="checkin.checkinTime"
+        value="{{ checkinDates | date: 'DD-MON-RR HH.MI.SSX AM' }}"></td>
+
     </tbody>
 </table>
 <button class="btn btn-lg btn-primary btn-block" type="submit"
