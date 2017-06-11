@@ -4,7 +4,7 @@ footer {
     width: 90%;
 }
 
-.footer-line { 
+.footer-line {
     width: 90%;
     border-color: rgba(55, 71, 79, 0.75);
 }
@@ -17,4 +17,9 @@ footer {
 
 #body {
 	margin-bottom: 101px;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
 }

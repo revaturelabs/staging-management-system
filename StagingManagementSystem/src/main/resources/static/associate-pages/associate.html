@@ -5,7 +5,7 @@
 				<img src="./images/revature-logo.png" alt="Revature" width="90" height="35">
 			</a>
 			<div class="nav navbar-brand">
-				<button ng-class="{ disabled: hasCheckedIn }" ng-click="checkIn()" ng-bind="checkInBtn" type="button" class="btn btn-primary" ></button>
+				<button ng-class="{ disabled: hasCheckedIn }" ng-click="checkIn()" ng-bind="checkInBtn" type="button" id="checkBtn" class="btn btn-primary" ></button>
 			</div>	
 			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
 				<span class="sr-only">Toggle navigation</span>
@@ -16,8 +16,8 @@
 		</div>
 		<div class="navbar-collapse collapse navbar-right">
 			<ul class="nav navbar-nav">
-				<li ng-class="{ active: isActive('/associate')}"><a ui-sref="associate">Home</a></li>
-				<li ng-class="{ active: isActive('/associate/profile')}"><a ui-sref="associate.profile">Profile</a></li>
+				<li ng-class="{ active: isActive('/associate/home')}"><a ui-sref="associate.home">Home</a></li>
+				<li ng-class="{ active: isActive('/associate/interview')}"><a ui-sref="associate.associateInterview">Interview</a></li>
 				<li ng-click="logout()"><a ui-sref="">Logout</a></li>
 			</ul>
 		</div>

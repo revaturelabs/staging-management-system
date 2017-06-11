@@ -1,26 +1,47 @@
 import angular from 'angular';
+import angularCookies from 'angular-cookies';
 import uiRouter from 'angular-ui-router';
-
-var FusionCharts = require("fusioncharts");
-require("fusioncharts/fusioncharts.charts")(FusionCharts);
+import FusionCharts from 'fusioncharts';
 
 import { managerCtrl } from './manager-pages/manager';
-import { managerHomeCtrl } from './manager-pages/home/home'
+import { managerHomeCtrl } from './manager-pages/home/home';
 import { interviewsCtrl } from './manager-pages/home/interviews/interviews';
-import managerCreateCtrl from './manager-pages/create/create'
+import managerCreateCtrl from './manager-pages/create/create';
 import { batchCtrl } from './manager-pages/create/batch';
 import { clientCtrl } from './manager-pages/create/client';
 import { userCtrl } from './manager-pages/create/user';
+import managerAdvancedAssociatesCtrl from './manager-pages/advanced/associates';
 import profileCtrl from './associate-pages/profile/profile';
+import associateInterviewCtrl from './associate-pages/interview/interview';
 import associateCtrl from './associate-pages/associate';
 import { reportCtrl } from './reports/reports';
 import { nestedCtrl } from './reports/nestedGraph';
-import { loginCtrl } from './login/login';
-import { attendanceCtrl } from './reports/attendance'
 import { barCtrl } from './reports/barGraph';
+import loginCtrl from './login/login';
 
+require('fusioncharts/fusioncharts.charts')(FusionCharts);
 
-const routerApp = angular.module('routerApp', [uiRouter]);
+const Visualizer = window['ui-router-visualizer'].Visualizer;
+
+const routerApp = angular.module('routerApp', [uiRouter, angularCookies]);
+
+routerApp.service('userService', function ($cookies) {
+  this.user = $cookies.getObject('user') === undefined ? {} : $cookies.getObject('user');
+  this.getUser = () => ({ ...this.user });
+  this.setUser = (user) => {
+    $cookies.putObject('user', user);
+    this.user = { ...user };
+  };
+});
+
+routerApp.run(($uiRouter, $trace) => {
+  // Auto-collapse children in state visualizer
+  const registry = $uiRouter.stateRegistry;
+
+  const pluginInstance = $uiRouter.plugin(Visualizer);
+
+  $trace.enable('TRANSITION');
+});
 
 routerApp.config(($stateProvider, $urlRouterProvider) => {
   $urlRouterProvider.otherwise('/login');
@@ -60,27 +81,46 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
     .state('manager.home', {
       url: '/home',
       views: {
-              '': {
-                templateUrl: 'manager-pages/home/home.html',
-                controller: managerHomeCtrl,
-             },
-              'available@manager.home': { templateUrl: 'manager-pages/home/available.html' },
-              'priorityMapped@manager.home': {
-                  templateUrl: 'manager-pages/home/priorityMapped.html',
-              },
-              'interviews@manager.home': {
-                templateUrl: 'manager-pages/home/interviews/interviews.html',
-                controller: interviewsCtrl,
-              },
-              'checkins@manager.home': {
-                templateUrl: 'manager-pages/home/checkins.html',
-              }
-          }
+        '': {
+          templateUrl: 'manager-pages/home/home.html',
+          controller: managerHomeCtrl,
+        },
+        'available@manager.home': { templateUrl: 'manager-pages/home/available.html' },
+        'priorityMapped@manager.home': {
+          templateUrl: 'manager-pages/home/priorityMapped.html',
+        },
+        'interviews@manager.home': {
+          templateUrl: 'manager-pages/home/interviews/interviews.html',
+          controller: interviewsCtrl,
+        },
+        'checkins@manager.home': {
+          templateUrl: 'manager-pages/home/checkins.html',
+        },
+      },
+    })
+    .state('manager.advanced', {
+      url: '/advanced',
+      templateUrl: 'manager-pages/advanced/advanced.html',
+      controller: managerAdvancedAssociatesCtrl,
+    })
+    .state('manager.advanced.allassociates', {
+      url: '/associates',
+      templateUrl: 'manager-pages/advanced/associates.html',
     })
     .state('associate', {
       url: '/associate',
       templateUrl: 'associate-pages/associate.html',
       controller: associateCtrl,
+    })
+    .state('associate.home', {
+      url: '/home',
+      templateUrl: 'associate-pages/profile/profile.html',
+      controller: profileCtrl,
+    })
+    .state('associate.associateInterview', {
+      url: '/interview',
+      templateUrl: 'associate-pages/interview/interview.html',
+      controller: associateInterviewCtrl,
     })
     .state('associate.profile', {
       url: '/profile',
@@ -88,9 +128,9 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       controller: profileCtrl,
     })
     .state('reports', {
-    	url: '/reports',
-    	templateUrl: 'reports/reports.html',
-    	controller: reportCtrl,
+      url: '/reports',
+      templateUrl: 'reports/reports.html',
+      controller: reportCtrl,
     })
     .state('reports.nestedGraph', {
       url: '/nestedGraph',
@@ -106,7 +146,7 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       url: '/barGraph',
       templateUrl: 'reports/barGraph.html',
       controller: barCtrl,
-    })
+    });
 
 
     // views: {
@@ -115,7 +155,6 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
     //   'bottom': { templateUrl: 'manager/schedule.html'}
     //   }
     // }
-
 
 
     // nested list with custom controller

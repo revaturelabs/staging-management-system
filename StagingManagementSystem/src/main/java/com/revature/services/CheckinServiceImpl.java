@@ -21,6 +21,7 @@ import com.revature.exceptions.NotCheckedInException;
 import com.revature.exceptions.NotLoggedInException;
 import com.revature.repositories.AssociateRepo;
 import com.revature.repositories.CheckinRepo;
+import org.springframework.web.bind.annotation.GetMapping;
 
 /**
  * Created by Mykola Nikitin on 6/1/17.
@@ -142,6 +143,18 @@ public class CheckinServiceImpl implements CheckinService {
     public Set<Checkin> getAll() {
       Set<Checkin> checkin = new HashSet<Checkin>(checkinRepo.findAll());
       return checkin;
+    }
+
+    @Override
+    public Set<Checkin> getTodaysCheckins()
+    {
+        Set<Checkin> checkins = checkinRepo.getAllByCheckinTimeBetween(
+                LocalDateTime.of(
+                        LocalDate.now(), LocalTime.MIDNIGHT
+                ), LocalDateTime.now()
+        );
+        System.out.println(checkins);
+        return checkins;
     }
 
     @Override

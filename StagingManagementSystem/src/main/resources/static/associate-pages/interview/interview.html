@@ -1,0 +1,58 @@
+<link rel="stylesheet" href="./associate-pages/interview/associateInterview.css"/>
+
+<div class="container">
+<h2 class="interviewH2">Add Interview</h2>
+
+<div class="form-group addInterview">     
+	<div class="col-sm-5">
+	Client Name
+	</div>
+	<div class="col-sm-5">
+	Interview Date & Time
+	</div>
+	<div class="col-sm-2"></div>  
+	
+	<div class="col-sm-5">
+		<select class="form-control" ng-model="selectedClient" ng-options="x.name for x in clients" title="Client"></select>
+	</div>
+	<div class="col-sm-5">
+		<div class="form-group" >
+            <div class='input-group date' >
+                <input type='text' class="form-control" ng-model="selectedDate.value" id='datetimepicker1'/>
+                <span ng-click="showDateTimePicker()" class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+        </div>
+	</div>
+	<div class="col-sm-2">
+		<button type="button" ng-click="addInterviewClick()" class="btn btn-primary">Add Interview</button>
+	</div>  
+	
+	</div>
+	<div class="alert alert-success" ng-show="successMsgShow">
+	  Successfully added an Interview!
+	</div>
+	<div class="alert alert-danger" ng-show="errorMsgShow">
+	  Failed to add an Interview.
+	</div>
+	
+	<hr class="colorgraph">
+	  <h2 class="interviewH2">Interviews</h2>          
+	  <table class="table table-hover">
+	    <thead>
+	      <tr>
+	        <th>Client Name</th>
+	        <th>Time</th>
+	        <th>Status</th>
+	      </tr>
+	    </thead>
+	    <tbody>
+	      <tr ng-repeat="x in names">
+	        <td>Infosys</td>
+	        <td>10/10/1000 10:10:10</td>
+	        <td>Good</td>
+	      </tr>
+	    </tbody>
+	  </table>
+</div>

@@ -1,0 +1,20 @@
+<table class="table table-striped" ng-app='checkin' >
+    <thead>
+    <tr>
+        <!--<th class="interview-th" scope="col"></th>-->
+        <th class="interview-th" scope="col">Associate</th>
+        <th class="interview-th" scope="col">Checked In Time</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="checkin in checkins"
+        class="associate">
+
+        <td class="interview-td" ng-bind="checkin.associate.name"></td>
+
+        <td class="interview-td" ng-bind="checkin.checkinTime"></td>
+    </tr>
+    </tbody>
+</table>
+<button class="btn btn-lg btn-primary btn-block" type="submit"
+        ng-click="approve()">Submit</button>
