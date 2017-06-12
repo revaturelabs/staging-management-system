@@ -1,5 +1,5 @@
 const profileCtrl = ($scope, $http, userService, $stateParams, $state) => {
-  if ($state.includes('manager')) {
+  if ($state.includes('manager')) { // manager is logged in, fetch data from api
     const associateToFetchId = $stateParams.id;
     if (associateToFetchId === undefined) {
       return;
@@ -13,7 +13,7 @@ const profileCtrl = ($scope, $http, userService, $stateParams, $state) => {
     }, () => {
       alert('could not grab associate data');
     });
-  } else {
+  } else { // associate is logged in, grab local user data
     $scope.associate = { ...userService.getUser() };
   }
 
