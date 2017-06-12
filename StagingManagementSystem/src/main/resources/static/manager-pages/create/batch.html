@@ -1,43 +1,53 @@
-
-		<!-- format date: 2014-01-01T00:00:00 -->
-	<div class="create-container">
 <table class="table table-striped">
-    <thead>
+  <thead>
     <tr>
-        <th class="create-th" scope="col">Create a Batch</th>
+      <th class="create-th" scope="col">Create a Batch</th>
     </tr>
-    </thead>
+  </thead>
 
-    <tbody>
-        <tr> 
-		<td><label>Batch Type: </label> <select ng-model="batch.batchType">
-			<option disabled selected value> -- Select a Batch Type -- </option>
-			<option value={{post}} ng-repeat="post in posts2.data">{{post.value}}</option>
-		</select></td> <br> <br> 
+  <tbody>
+    <tr>
+      <td>
+				<label>Batch Type:</label>
+				<select ng-model="batch.batchType">
+					<option disabled selected value> -- Select a Batch Type -- </option>
+					<option value={{post}} ng-repeat="post in posts2.data">{{post.value}}</option>
+				</select>
+			</td>
     </tr>
-        <tr>
-		<td><label>Start Date: </label> <input ng-model="batch.startDate">
-<!-- 		 <div class="form-group">
-                <div class='input-group date' id='datetimepicker1'>
-                    <input ng-model="batch.startDate" type='text' class="form-control" />
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                </div>
-            </div> --></td>
+    <tr>
+      <tr>
+        <td><label>Start Date: </label>
+          <div class='input-group date' id='datetimepicker1'>
+            <input ng-model="batch.startDate" ng-model-options="{timezone: 'utc'}" type='text' class="form-control" />
+            <span class="input-group-addon">
+							<span class="glyphicon glyphicon-calendar"></span>
+            </span>
+					</div>
+        </td>
+      </tr>
+      <tr>
+        <td><label>End Date: </label>
+          <div class='input-group date' id='datetimepicker2'>
+	          <input ng-model="batch.endDate" ng-model-options="{timezone: 'utc'}" type='text' class="form-control" />
+	          <span class="input-group-addon">
+							<span class="glyphicon glyphicon-calendar"></span>
+	          </span>
+					</div>
+        </td>
+      </tr>
     </tr>
-        <tr>
-		<td><label>End Date: </label> <input ng-model="batch.endDate"></td> <br> <br>
+    <tr>
+      <td>
+				<label>Location: </label>
+				<select ng-model="batch.location">
+					<option disabled selected value> -- Select a Location -- </option>
+					<option value={{post}} ng-repeat="post in posts.data">{{post.name}}</option>
+				</select>
+			</td>
     </tr>
-            <tr>
-		<td><label>Location: </label> <select ng-model="batch.location">
-			<option disabled selected value> -- Select a Location -- </option>
-			<option value={{post}} ng-repeat="post in posts.data">{{post.name}}</option>
-		</select> <br> <br></td> <br> <br>
-    </tr>
-    </tbody>
+  </tbody>
 </table>
 
-	</div>
 
 <button class="submit" ng-click="submit()">Submit</button>

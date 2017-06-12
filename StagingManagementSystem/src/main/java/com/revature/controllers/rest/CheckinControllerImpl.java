@@ -62,7 +62,13 @@ public class CheckinControllerImpl {
     }
 
     @GetMapping("/allTodays")
-    public Set<Checkin> getTodaysCheckins() {return checkinService.getTodaysCheckins();}
+    public ResponseEntity<Set<Checkin>> getTodaysCheckins(HttpSession session) {
+        Manager manager = (Manager) session.getAttribute("login_manager");
+        if(manager == null){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+        return ResponseEntity.ok(checkinService.getTodaysCheckins());
+    }
 
 
     @PutMapping
@@ -98,7 +104,11 @@ public class CheckinControllerImpl {
     }
 
     @GetMapping(path="/report")
-    public ResponseEntity<ArrayList<DailyReport>> getCheckins(){
+    public ResponseEntity<ArrayList<DailyReport>> getCheckins(HttpSession session){// For managers only.
+        Manager manager = (Manager) session.getAttribute("login_manager");
+        if(manager == null){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
         return ResponseEntity.ok(checkinReport.process(checkinService.getAll()));
     }
 }
