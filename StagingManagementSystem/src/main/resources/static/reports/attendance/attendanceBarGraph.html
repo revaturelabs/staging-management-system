@@ -1,0 +1,12 @@
+<div id=attn-report-container>
+
+	<button ng-click='zoomOut()'>{{zoomOutStr}}</button>
+ <div id="attn-chart-container" fusioncharts width="600" height="400" type="column2d" , datasource="{{dataSource}}" events=attn_event></div>
+ <!-- The `selectedValue` variable is defined to store the label and the value of the data plot that is clicked. -->
+ <p>Selected Value:: {{ selectedValue }}</p>
+
+<button id='previous' ng-click='step(-1)'>Previous</button>
+<button id='next' ng-click='step(1)'>Next</button>
+
+</div>
+

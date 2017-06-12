@@ -1,17 +1,19 @@
 /**
  * Created by colts on 6/8/2017.
  */
+const managerCheckinsCtrl = ($scope, $http) => {
+    console.log("started")
 
-var app = angular.module('myApp', []);
-app.controller('checkinCtrl', function($scope, $http) {
-    $http({
-        method : "GET",
-        url : "checkin/todaysCheckins"
-    }).then(function mySuccess(response) {
-        $scope.checkins = response.data;
-    }, function myError(response) {
-        console.log("error!");
+
+    $http.get("checkin/allTodays").then(function(result) {
+        $scope.checkins = result.data;
+        $scope.checkinDates = checkins.checkinTime;
+
     });
 
 
-});
+
+
+};
+
+export default managerCheckinsCtrl;

@@ -46,71 +46,116 @@
 
 	'use strict';
 
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 	var _angular = __webpack_require__(1);
 
 	var _angular2 = _interopRequireDefault(_angular);
 
-	var _angularUiRouter = __webpack_require__(3);
+	var _angularCookies = __webpack_require__(3);
+
+	var _angularCookies2 = _interopRequireDefault(_angularCookies);
+
+	var _angularUiRouter = __webpack_require__(5);
 
 	var _angularUiRouter2 = _interopRequireDefault(_angularUiRouter);
 
-	var _manager = __webpack_require__(89);
+	var _fusioncharts = __webpack_require__(91);
 
-	var _home = __webpack_require__(90);
+	var _fusioncharts2 = _interopRequireDefault(_fusioncharts);
 
-	var _interviews = __webpack_require__(91);
+	var _manager = __webpack_require__(92);
 
-	var _create = __webpack_require__(92);
+	var _home = __webpack_require__(93);
+
+	var _checkin = __webpack_require__(94);
+
+	var _checkin2 = _interopRequireDefault(_checkin);
+
+	var _interviews = __webpack_require__(95);
+
+	var _create = __webpack_require__(96);
 
 	var _create2 = _interopRequireDefault(_create);
 
-	var _batch = __webpack_require__(93);
+	var _batch = __webpack_require__(97);
 
-	var _client = __webpack_require__(94);
+	var _client = __webpack_require__(98);
 
-	var _user = __webpack_require__(95);
+	var _user = __webpack_require__(99);
 
-	var _associates = __webpack_require__(96);
+	var _associates = __webpack_require__(100);
 
 	var _associates2 = _interopRequireDefault(_associates);
 
-	var _profile = __webpack_require__(97);
+	var _profile = __webpack_require__(101);
 
 	var _profile2 = _interopRequireDefault(_profile);
 
-	var _associate = __webpack_require__(98);
+	var _interview = __webpack_require__(102);
+
+	var _interview2 = _interopRequireDefault(_interview);
+
+	var _associate = __webpack_require__(104);
 
 	var _associate2 = _interopRequireDefault(_associate);
 
-	var _reports = __webpack_require__(99);
+	var _reports = __webpack_require__(105);
 
-	var _nestedGraph = __webpack_require__(100);
+	var _nestedGraph = __webpack_require__(106);
 
-	var _barGraph = __webpack_require__(101);
+	var _barGraph = __webpack_require__(107);
 
-	var _login = __webpack_require__(102);
+	var _login = __webpack_require__(108);
 
 	var _login2 = _interopRequireDefault(_login);
 
+	var _attendanceBarGraph = __webpack_require__(109);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var FusionCharts = __webpack_require__(103);
-	__webpack_require__(104)(FusionCharts);
+	__webpack_require__(110)(_fusioncharts2.default);
 
 	var Visualizer = window['ui-router-visualizer'].Visualizer;
 
-	var routerApp = _angular2.default.module('routerApp', [_angularUiRouter2.default]);
+	var routerApp = _angular2.default.module('routerApp', [_angularUiRouter2.default, _angularCookies2.default]);
 
-	routerApp.run(function ($uiRouter, $trace) {
+	routerApp.service('userService', function ($cookies) {
+	  var _this = this;
+
+	  this.user = $cookies.getObject('user') === undefined ? {} : $cookies.getObject('user');
+	  this.getUser = function () {
+	    return _extends({}, _this.user);
+	  };
+	  this.setUser = function (user) {
+	    $cookies.putObject('user', user);
+	    _this.user = _extends({}, user);
+	  };
+	});
+
+	routerApp.run(function ($uiRouter, $trace, $rootScope) {
+
+	  //Ui Visualizer
 	  // Auto-collapse children in state visualizer
 	  var registry = $uiRouter.stateRegistry;
 
 	  var pluginInstance = $uiRouter.plugin(Visualizer);
 
 	  $trace.enable('TRANSITION');
+
+	  //Global Functions
+	  $rootScope.dateConverter = function (localDateTime) {
+	    console.log('hello');
+	    var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+	    // month                             day
+	    return '' + months[localDateTime[1] - 1] + ' ' + localDateTime[2] + ' '
+	    // hour                                                              minute                AM/PM
+	    + (localDateTime[3] > 12 ? localDateTime[3] - 12 : localDateTime) + ':' + localDateTime[4] + (localDateTime > 12 ? 'p.m.' : 'a.m.');
+	  };
 	});
 
 	routerApp.config(function ($stateProvider, $urlRouterProvider) {
+
 	  $urlRouterProvider.otherwise('/login');
 
 	  $stateProvider // HOME STATES AND NESTED VIEWS
@@ -155,7 +200,8 @@
 	        controller: _interviews.interviewsCtrl
 	      },
 	      'checkins@manager.home': {
-	        templateUrl: 'manager-pages/home/checkins.html'
+	        templateUrl: 'manager-pages/home/checkin/checkin.html',
+	        controller: _checkin2.default
 	      }
 	    }
 	  }).state('manager.advanced', {
@@ -169,6 +215,14 @@
 	    url: '/associate',
 	    templateUrl: 'associate-pages/associate.html',
 	    controller: _associate2.default
+	  }).state('associate.home', {
+	    url: '/home',
+	    templateUrl: 'associate-pages/profile/profile.html',
+	    controller: _profile2.default
+	  }).state('associate.associateInterview', {
+	    url: '/interview',
+	    templateUrl: 'associate-pages/interview/interview.html',
+	    controller: _interview2.default
 	  }).state('associate.profile', {
 	    url: '/profile',
 	    templateUrl: 'associate-pages/profile/profile.html',
@@ -181,50 +235,22 @@
 	    url: '/nestedGraph',
 	    templateUrl: 'reports/nestedGraph.html',
 	    controller: _nestedGraph.nestedCtrl
+	  }).state('reports.attendance', {
+	    url: '/attendance',
+	    templateUrl: 'reports/employed.html'
+	    //controller: attendanceCtrl,
+	  }).state('reports.attendanceBarGraph', {
+	    url: '/graph',
+	    templateUrl: 'reports/attendance/attendanceBarGraph.html',
+	    controller: _attendanceBarGraph.attendanceBarGraphCtrl
 	  }).state('reports.barGraph', {
 	    url: '/barGraph',
 	    templateUrl: 'reports/barGraph.html',
 	    controller: _barGraph.barCtrl
-	  }
-
-	  // views: {
-	  //   '': { templateUrl: 'manager/manager.html' },
-	  //   'top': { templateUrl: 'manager/top.html' },
-	  //   'bottom': { templateUrl: 'manager/schedule.html'}
-	  //   }
-	  // }
-
-
-	  // nested list with custom controller
-	  // .state('home.list', {
-	  //     url: '/list',
-	  //     templateUrl: 'partial-home-list.html',
-	  //     controller: function($scope) {
-	  //         $scope.dogs = ['Bernese', 'Husky', 'Goldendoodle'];
-	  //     }
-	  // })
-
-	  // nested list with just some random string data
-	  // .state('home.paragraph', {
-	  //     url: '/paragraph',
-	  //     template: 'I could sure use a drink right now.'
-	  // })
-
-	  // ABOUT PAGE AND MULTIPLE NAMED VIEWS =================================
-	  // .state('about', {
-	  //     url: '/about',
-	  //     views: {
-	  //         '': { templateUrl: 'partial-about.html' },
-	  //         'columnOne@about': { template: 'Look I am a column!' },
-	  //         'columnTwo@about': {
-	  //             templateUrl: 'table-data.html',
-	  //             controller: 'scotchController'
-	  //         }
-	  //     }
-	  //
-	  // });
-	  );
+	  });
 	});
+
+	console.log();
 
 /***/ }),
 /* 1 */
@@ -33615,6 +33641,351 @@
 /* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
+	__webpack_require__(4);
+	module.exports = 'ngCookies';
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports) {
+
+	/**
+	 * @license AngularJS v1.6.4
+	 * (c) 2010-2017 Google, Inc. http://angularjs.org
+	 * License: MIT
+	 */
+	(function(window, angular) {'use strict';
+
+	/**
+	 * @ngdoc module
+	 * @name ngCookies
+	 * @description
+	 *
+	 * # ngCookies
+	 *
+	 * The `ngCookies` module provides a convenient wrapper for reading and writing browser cookies.
+	 *
+	 *
+	 * <div doc-module-components="ngCookies"></div>
+	 *
+	 * See {@link ngCookies.$cookies `$cookies`} for usage.
+	 */
+
+
+	angular.module('ngCookies', ['ng']).
+	  info({ angularVersion: '1.6.4' }).
+	  /**
+	   * @ngdoc provider
+	   * @name $cookiesProvider
+	   * @description
+	   * Use `$cookiesProvider` to change the default behavior of the {@link ngCookies.$cookies $cookies} service.
+	   * */
+	   provider('$cookies', [/** @this */function $CookiesProvider() {
+	    /**
+	     * @ngdoc property
+	     * @name $cookiesProvider#defaults
+	     * @description
+	     *
+	     * Object containing default options to pass when setting cookies.
+	     *
+	     * The object may have following properties:
+	     *
+	     * - **path** - `{string}` - The cookie will be available only for this path and its
+	     *   sub-paths. By default, this is the URL that appears in your `<base>` tag.
+	     * - **domain** - `{string}` - The cookie will be available only for this domain and
+	     *   its sub-domains. For security reasons the user agent will not accept the cookie
+	     *   if the current domain is not a sub-domain of this domain or equal to it.
+	     * - **expires** - `{string|Date}` - String of the form "Wdy, DD Mon YYYY HH:MM:SS GMT"
+	     *   or a Date object indicating the exact date/time this cookie will expire.
+	     * - **secure** - `{boolean}` - If `true`, then the cookie will only be available through a
+	     *   secured connection.
+	     *
+	     * Note: By default, the address that appears in your `<base>` tag will be used as the path.
+	     * This is important so that cookies will be visible for all routes when html5mode is enabled.
+	     *
+	     * @example
+	     *
+	     * ```js
+	     * angular.module('cookiesProviderExample', ['ngCookies'])
+	     *   .config(['$cookiesProvider', function($cookiesProvider) {
+	     *     // Setting default options
+	     *     $cookiesProvider.defaults.domain = 'foo.com';
+	     *     $cookiesProvider.defaults.secure = true;
+	     *   }]);
+	     * ```
+	     **/
+	    var defaults = this.defaults = {};
+
+	    function calcOptions(options) {
+	      return options ? angular.extend({}, defaults, options) : defaults;
+	    }
+
+	    /**
+	     * @ngdoc service
+	     * @name $cookies
+	     *
+	     * @description
+	     * Provides read/write access to browser's cookies.
+	     *
+	     * <div class="alert alert-info">
+	     * Up until Angular 1.3, `$cookies` exposed properties that represented the
+	     * current browser cookie values. In version 1.4, this behavior has changed, and
+	     * `$cookies` now provides a standard api of getters, setters etc.
+	     * </div>
+	     *
+	     * Requires the {@link ngCookies `ngCookies`} module to be installed.
+	     *
+	     * @example
+	     *
+	     * ```js
+	     * angular.module('cookiesExample', ['ngCookies'])
+	     *   .controller('ExampleController', ['$cookies', function($cookies) {
+	     *     // Retrieving a cookie
+	     *     var favoriteCookie = $cookies.get('myFavorite');
+	     *     // Setting a cookie
+	     *     $cookies.put('myFavorite', 'oatmeal');
+	     *   }]);
+	     * ```
+	     */
+	    this.$get = ['$$cookieReader', '$$cookieWriter', function($$cookieReader, $$cookieWriter) {
+	      return {
+	        /**
+	         * @ngdoc method
+	         * @name $cookies#get
+	         *
+	         * @description
+	         * Returns the value of given cookie key
+	         *
+	         * @param {string} key Id to use for lookup.
+	         * @returns {string} Raw cookie value.
+	         */
+	        get: function(key) {
+	          return $$cookieReader()[key];
+	        },
+
+	        /**
+	         * @ngdoc method
+	         * @name $cookies#getObject
+	         *
+	         * @description
+	         * Returns the deserialized value of given cookie key
+	         *
+	         * @param {string} key Id to use for lookup.
+	         * @returns {Object} Deserialized cookie value.
+	         */
+	        getObject: function(key) {
+	          var value = this.get(key);
+	          return value ? angular.fromJson(value) : value;
+	        },
+
+	        /**
+	         * @ngdoc method
+	         * @name $cookies#getAll
+	         *
+	         * @description
+	         * Returns a key value object with all the cookies
+	         *
+	         * @returns {Object} All cookies
+	         */
+	        getAll: function() {
+	          return $$cookieReader();
+	        },
+
+	        /**
+	         * @ngdoc method
+	         * @name $cookies#put
+	         *
+	         * @description
+	         * Sets a value for given cookie key
+	         *
+	         * @param {string} key Id for the `value`.
+	         * @param {string} value Raw value to be stored.
+	         * @param {Object=} options Options object.
+	         *    See {@link ngCookies.$cookiesProvider#defaults $cookiesProvider.defaults}
+	         */
+	        put: function(key, value, options) {
+	          $$cookieWriter(key, value, calcOptions(options));
+	        },
+
+	        /**
+	         * @ngdoc method
+	         * @name $cookies#putObject
+	         *
+	         * @description
+	         * Serializes and sets a value for given cookie key
+	         *
+	         * @param {string} key Id for the `value`.
+	         * @param {Object} value Value to be stored.
+	         * @param {Object=} options Options object.
+	         *    See {@link ngCookies.$cookiesProvider#defaults $cookiesProvider.defaults}
+	         */
+	        putObject: function(key, value, options) {
+	          this.put(key, angular.toJson(value), options);
+	        },
+
+	        /**
+	         * @ngdoc method
+	         * @name $cookies#remove
+	         *
+	         * @description
+	         * Remove given cookie
+	         *
+	         * @param {string} key Id of the key-value pair to delete.
+	         * @param {Object=} options Options object.
+	         *    See {@link ngCookies.$cookiesProvider#defaults $cookiesProvider.defaults}
+	         */
+	        remove: function(key, options) {
+	          $$cookieWriter(key, undefined, calcOptions(options));
+	        }
+	      };
+	    }];
+	  }]);
+
+	angular.module('ngCookies').
+	/**
+	 * @ngdoc service
+	 * @name $cookieStore
+	 * @deprecated
+	 * sinceVersion="v1.4.0"
+	 * Please use the {@link ngCookies.$cookies `$cookies`} service instead.
+	 *
+	 * @requires $cookies
+	 *
+	 * @description
+	 * Provides a key-value (string-object) storage, that is backed by session cookies.
+	 * Objects put or retrieved from this storage are automatically serialized or
+	 * deserialized by angular's toJson/fromJson.
+	 *
+	 * Requires the {@link ngCookies `ngCookies`} module to be installed.
+	 *
+	 * @example
+	 *
+	 * ```js
+	 * angular.module('cookieStoreExample', ['ngCookies'])
+	 *   .controller('ExampleController', ['$cookieStore', function($cookieStore) {
+	 *     // Put cookie
+	 *     $cookieStore.put('myFavorite','oatmeal');
+	 *     // Get cookie
+	 *     var favoriteCookie = $cookieStore.get('myFavorite');
+	 *     // Removing a cookie
+	 *     $cookieStore.remove('myFavorite');
+	 *   }]);
+	 * ```
+	 */
+	 factory('$cookieStore', ['$cookies', function($cookies) {
+
+	    return {
+	      /**
+	       * @ngdoc method
+	       * @name $cookieStore#get
+	       *
+	       * @description
+	       * Returns the value of given cookie key
+	       *
+	       * @param {string} key Id to use for lookup.
+	       * @returns {Object} Deserialized cookie value, undefined if the cookie does not exist.
+	       */
+	      get: function(key) {
+	        return $cookies.getObject(key);
+	      },
+
+	      /**
+	       * @ngdoc method
+	       * @name $cookieStore#put
+	       *
+	       * @description
+	       * Sets a value for given cookie key
+	       *
+	       * @param {string} key Id for the `value`.
+	       * @param {Object} value Value to be stored.
+	       */
+	      put: function(key, value) {
+	        $cookies.putObject(key, value);
+	      },
+
+	      /**
+	       * @ngdoc method
+	       * @name $cookieStore#remove
+	       *
+	       * @description
+	       * Remove given cookie
+	       *
+	       * @param {string} key Id of the key-value pair to delete.
+	       */
+	      remove: function(key) {
+	        $cookies.remove(key);
+	      }
+	    };
+
+	  }]);
+
+	/**
+	 * @name $$cookieWriter
+	 * @requires $document
+	 *
+	 * @description
+	 * This is a private service for writing cookies
+	 *
+	 * @param {string} name Cookie name
+	 * @param {string=} value Cookie value (if undefined, cookie will be deleted)
+	 * @param {Object=} options Object with options that need to be stored for the cookie.
+	 */
+	function $$CookieWriter($document, $log, $browser) {
+	  var cookiePath = $browser.baseHref();
+	  var rawDocument = $document[0];
+
+	  function buildCookieString(name, value, options) {
+	    var path, expires;
+	    options = options || {};
+	    expires = options.expires;
+	    path = angular.isDefined(options.path) ? options.path : cookiePath;
+	    if (angular.isUndefined(value)) {
+	      expires = 'Thu, 01 Jan 1970 00:00:00 GMT';
+	      value = '';
+	    }
+	    if (angular.isString(expires)) {
+	      expires = new Date(expires);
+	    }
+
+	    var str = encodeURIComponent(name) + '=' + encodeURIComponent(value);
+	    str += path ? ';path=' + path : '';
+	    str += options.domain ? ';domain=' + options.domain : '';
+	    str += expires ? ';expires=' + expires.toUTCString() : '';
+	    str += options.secure ? ';secure' : '';
+
+	    // per http://www.ietf.org/rfc/rfc2109.txt browser must allow at minimum:
+	    // - 300 cookies
+	    // - 20 cookies per unique domain
+	    // - 4096 bytes per cookie
+	    var cookieLength = str.length + 1;
+	    if (cookieLength > 4096) {
+	      $log.warn('Cookie \'' + name +
+	        '\' possibly not set or overflowed because it was too large (' +
+	        cookieLength + ' > 4096 bytes)!');
+	    }
+
+	    return str;
+	  }
+
+	  return function(name, value, options) {
+	    rawDocument.cookie = buildCookieString(name, value, options);
+	  };
+	}
+
+	$$CookieWriter.$inject = ['$document', '$log', '$browser'];
+
+	angular.module('ngCookies').provider('$$cookieWriter', /** @this */ function $$CookieWriterProvider() {
+	  this.$get = $$CookieWriter;
+	});
+
+
+	})(window, window.angular);
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
 	"use strict";
 	/**
 	 * Main entry point for angular 1.x build
@@ -33624,23 +33995,23 @@
 	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 	}
 	Object.defineProperty(exports, "__esModule", { value: true });
-	var core = __webpack_require__(4);
+	var core = __webpack_require__(6);
 	exports.core = core;
-	__export(__webpack_require__(4));
-	__export(__webpack_require__(76));
+	__export(__webpack_require__(6));
 	__export(__webpack_require__(78));
 	__export(__webpack_require__(80));
-	__export(__webpack_require__(83));
-	__webpack_require__(84);
-	__webpack_require__(85);
+	__export(__webpack_require__(82));
+	__export(__webpack_require__(85));
 	__webpack_require__(86);
 	__webpack_require__(87);
 	__webpack_require__(88);
+	__webpack_require__(89);
+	__webpack_require__(90);
 	exports.default = "ui.router";
 	//# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 4 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -33652,22 +34023,22 @@
 	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 	}
 	Object.defineProperty(exports, "__esModule", { value: true });
-	__export(__webpack_require__(5));
-	__export(__webpack_require__(29));
-	__export(__webpack_require__(32));
-	__export(__webpack_require__(33));
+	__export(__webpack_require__(7));
+	__export(__webpack_require__(31));
 	__export(__webpack_require__(34));
-	__export(__webpack_require__(60));
-	__export(__webpack_require__(61));
+	__export(__webpack_require__(35));
+	__export(__webpack_require__(36));
 	__export(__webpack_require__(62));
-	__export(__webpack_require__(48));
-	__export(__webpack_require__(42));
 	__export(__webpack_require__(63));
-	__export(__webpack_require__(75));
+	__export(__webpack_require__(64));
+	__export(__webpack_require__(50));
+	__export(__webpack_require__(44));
+	__export(__webpack_require__(65));
+	__export(__webpack_require__(77));
 	//# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 5 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -33676,18 +34047,18 @@
 	}
 	Object.defineProperty(exports, "__esModule", { value: true });
 	/** @module common */ /** for typedoc */
-	__export(__webpack_require__(6));
-	__export(__webpack_require__(11));
-	__export(__webpack_require__(10));
 	__export(__webpack_require__(8));
-	__export(__webpack_require__(7));
-	__export(__webpack_require__(12));
 	__export(__webpack_require__(13));
-	__export(__webpack_require__(16));
+	__export(__webpack_require__(12));
+	__export(__webpack_require__(10));
+	__export(__webpack_require__(9));
+	__export(__webpack_require__(14));
+	__export(__webpack_require__(15));
+	__export(__webpack_require__(18));
 	//# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 6 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -33701,9 +34072,9 @@
 	 * @module common
 	 */
 	/** for typedoc */
-	var predicates_1 = __webpack_require__(7);
-	var hof_1 = __webpack_require__(8);
-	var coreservices_1 = __webpack_require__(11);
+	var predicates_1 = __webpack_require__(9);
+	var hof_1 = __webpack_require__(10);
+	var coreservices_1 = __webpack_require__(13);
 	var w = typeof window === 'undefined' ? {} : window;
 	var angular = w.angular || {};
 	exports.fromJson = angular.fromJson || JSON.parse.bind(JSON);
@@ -34339,7 +34710,7 @@
 	//# sourceMappingURL=common.js.map
 
 /***/ }),
-/* 7 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -34352,8 +34723,8 @@
 	 * @module common_predicates
 	 */
 	/** */
-	var hof_1 = __webpack_require__(8);
-	var stateObject_1 = __webpack_require__(9);
+	var hof_1 = __webpack_require__(10);
+	var stateObject_1 = __webpack_require__(11);
 	var toStr = Object.prototype.toString;
 	var tis = function (t) { return function (x) { return typeof (x) === t; }; };
 	exports.isUndefined = tis('undefined');
@@ -34391,7 +34762,7 @@
 	//# sourceMappingURL=predicates.js.map
 
 /***/ }),
-/* 8 */
+/* 10 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -34641,15 +35012,15 @@
 	//# sourceMappingURL=hof.js.map
 
 /***/ }),
-/* 9 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
-	var common_1 = __webpack_require__(6);
-	var hof_1 = __webpack_require__(8);
-	var glob_1 = __webpack_require__(10);
-	var predicates_1 = __webpack_require__(7);
+	var common_1 = __webpack_require__(8);
+	var hof_1 = __webpack_require__(10);
+	var glob_1 = __webpack_require__(12);
+	var predicates_1 = __webpack_require__(9);
 	/**
 	 * Internal representation of a UI-Router state.
 	 *
@@ -34760,7 +35131,7 @@
 	//# sourceMappingURL=stateObject.js.map
 
 /***/ }),
-/* 10 */
+/* 12 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -34848,7 +35219,7 @@
 	//# sourceMappingURL=glob.js.map
 
 /***/ }),
-/* 11 */
+/* 13 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -34864,7 +35235,7 @@
 	//# sourceMappingURL=coreservices.js.map
 
 /***/ }),
-/* 12 */
+/* 14 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -34915,7 +35286,7 @@
 	//# sourceMappingURL=queue.js.map
 
 /***/ }),
-/* 13 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -34927,12 +35298,12 @@
 	 * @module common_strings
 	 */ /** */
 	Object.defineProperty(exports, "__esModule", { value: true });
-	var predicates_1 = __webpack_require__(7);
-	var rejectFactory_1 = __webpack_require__(14);
-	var common_1 = __webpack_require__(6);
-	var hof_1 = __webpack_require__(8);
-	var transition_1 = __webpack_require__(15);
-	var resolvable_1 = __webpack_require__(26);
+	var predicates_1 = __webpack_require__(9);
+	var rejectFactory_1 = __webpack_require__(16);
+	var common_1 = __webpack_require__(8);
+	var hof_1 = __webpack_require__(10);
+	var transition_1 = __webpack_require__(17);
+	var resolvable_1 = __webpack_require__(28);
 	/**
 	 * Returns a string shortened to a maximum length
 	 *
@@ -35072,7 +35443,7 @@
 	//# sourceMappingURL=strings.js.map
 
 /***/ }),
-/* 14 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -35081,9 +35452,9 @@
 	 */ /** for typedoc */
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
-	var common_1 = __webpack_require__(6);
-	var strings_1 = __webpack_require__(13);
-	var hof_1 = __webpack_require__(8);
+	var common_1 = __webpack_require__(8);
+	var strings_1 = __webpack_require__(15);
+	var hof_1 = __webpack_require__(10);
 	var RejectType;
 	(function (RejectType) {
 	    RejectType[RejectType["SUPERSEDED"] = 2] = "SUPERSEDED";
@@ -35166,7 +35537,7 @@
 	//# sourceMappingURL=rejectFactory.js.map
 
 /***/ }),
-/* 15 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -35176,20 +35547,20 @@
 	 * @module transition
 	 */
 	/** for typedoc */
-	var trace_1 = __webpack_require__(16);
-	var coreservices_1 = __webpack_require__(11);
-	var common_1 = __webpack_require__(6);
-	var predicates_1 = __webpack_require__(7);
-	var hof_1 = __webpack_require__(8);
-	var interface_1 = __webpack_require__(17); // has or is using
-	var transitionHook_1 = __webpack_require__(18);
-	var hookRegistry_1 = __webpack_require__(20);
-	var hookBuilder_1 = __webpack_require__(21);
-	var pathFactory_1 = __webpack_require__(22);
-	var targetState_1 = __webpack_require__(19);
-	var param_1 = __webpack_require__(24);
-	var resolvable_1 = __webpack_require__(26);
-	var resolveContext_1 = __webpack_require__(27);
+	var trace_1 = __webpack_require__(18);
+	var coreservices_1 = __webpack_require__(13);
+	var common_1 = __webpack_require__(8);
+	var predicates_1 = __webpack_require__(9);
+	var hof_1 = __webpack_require__(10);
+	var interface_1 = __webpack_require__(19); // has or is using
+	var transitionHook_1 = __webpack_require__(20);
+	var hookRegistry_1 = __webpack_require__(22);
+	var hookBuilder_1 = __webpack_require__(23);
+	var pathFactory_1 = __webpack_require__(24);
+	var targetState_1 = __webpack_require__(21);
+	var param_1 = __webpack_require__(26);
+	var resolvable_1 = __webpack_require__(28);
+	var resolveContext_1 = __webpack_require__(29);
 	/** @hidden */
 	var stateSelf = hof_1.prop("self");
 	/**
@@ -35798,7 +36169,7 @@
 	//# sourceMappingURL=transition.js.map
 
 /***/ }),
-/* 16 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -35838,9 +36209,9 @@
 	 * @coreapi
 	 * @module trace
 	 */ /** for typedoc */
-	var hof_1 = __webpack_require__(8);
-	var predicates_1 = __webpack_require__(7);
-	var strings_1 = __webpack_require__(13);
+	var hof_1 = __webpack_require__(10);
+	var predicates_1 = __webpack_require__(9);
+	var strings_1 = __webpack_require__(15);
 	/** @hidden */
 	function uiViewString(viewData) {
 	    if (!viewData)
@@ -36046,7 +36417,7 @@
 	//# sourceMappingURL=trace.js.map
 
 /***/ }),
-/* 17 */
+/* 19 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -36067,7 +36438,7 @@
 	//# sourceMappingURL=interface.js.map
 
 /***/ }),
-/* 18 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -36077,15 +36448,15 @@
 	 * @module transition
 	 */
 	/** for typedoc */
-	var interface_1 = __webpack_require__(17);
-	var common_1 = __webpack_require__(6);
-	var strings_1 = __webpack_require__(13);
-	var predicates_1 = __webpack_require__(7);
-	var hof_1 = __webpack_require__(8);
-	var trace_1 = __webpack_require__(16);
-	var coreservices_1 = __webpack_require__(11);
-	var rejectFactory_1 = __webpack_require__(14);
-	var targetState_1 = __webpack_require__(19);
+	var interface_1 = __webpack_require__(19);
+	var common_1 = __webpack_require__(8);
+	var strings_1 = __webpack_require__(15);
+	var predicates_1 = __webpack_require__(9);
+	var hof_1 = __webpack_require__(10);
+	var trace_1 = __webpack_require__(18);
+	var coreservices_1 = __webpack_require__(13);
+	var rejectFactory_1 = __webpack_require__(16);
+	var targetState_1 = __webpack_require__(21);
 	var defaultOptions = {
 	    current: common_1.noop,
 	    transition: null,
@@ -36292,7 +36663,7 @@
 	//# sourceMappingURL=transitionHook.js.map
 
 /***/ }),
-/* 19 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -36301,8 +36672,8 @@
 	 * @module state
 	 */ /** for typedoc */
 	Object.defineProperty(exports, "__esModule", { value: true });
-	var common_1 = __webpack_require__(6);
-	var predicates_1 = __webpack_require__(7);
+	var common_1 = __webpack_require__(8);
+	var predicates_1 = __webpack_require__(9);
 	/**
 	 * Encapsulate the target (destination) state/params/options of a [[Transition]].
 	 *
@@ -36411,7 +36782,7 @@
 	//# sourceMappingURL=targetState.js.map
 
 /***/ }),
-/* 20 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -36420,10 +36791,10 @@
 	 * @coreapi
 	 * @module transition
 	 */ /** for typedoc */
-	var common_1 = __webpack_require__(6);
-	var predicates_1 = __webpack_require__(7);
-	var interface_1 = __webpack_require__(17); // has or is using
-	var glob_1 = __webpack_require__(10);
+	var common_1 = __webpack_require__(8);
+	var predicates_1 = __webpack_require__(9);
+	var interface_1 = __webpack_require__(19); // has or is using
+	var glob_1 = __webpack_require__(12);
 	/**
 	 * Determines if the given state matches the matchCriteria
 	 *
@@ -36572,7 +36943,7 @@
 	//# sourceMappingURL=hookRegistry.js.map
 
 /***/ }),
-/* 21 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -36581,10 +36952,10 @@
 	 * @module transition
 	 */ /** for typedoc */
 	Object.defineProperty(exports, "__esModule", { value: true });
-	var common_1 = __webpack_require__(6);
-	var predicates_1 = __webpack_require__(7);
-	var interface_1 = __webpack_require__(17);
-	var transitionHook_1 = __webpack_require__(18);
+	var common_1 = __webpack_require__(8);
+	var predicates_1 = __webpack_require__(9);
+	var interface_1 = __webpack_require__(19);
+	var transitionHook_1 = __webpack_require__(20);
 	/**
 	 * This class returns applicable TransitionHooks for a specific Transition instance.
 	 *
@@ -36696,16 +37067,16 @@
 	//# sourceMappingURL=hookBuilder.js.map
 
 /***/ }),
-/* 22 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	/** @module path */ /** for typedoc */
 	Object.defineProperty(exports, "__esModule", { value: true });
-	var common_1 = __webpack_require__(6);
-	var hof_1 = __webpack_require__(8);
-	var targetState_1 = __webpack_require__(19);
-	var pathNode_1 = __webpack_require__(23);
+	var common_1 = __webpack_require__(8);
+	var hof_1 = __webpack_require__(10);
+	var targetState_1 = __webpack_require__(21);
+	var pathNode_1 = __webpack_require__(25);
 	/**
 	 * This class contains functions which convert TargetStates, Nodes and paths from one type to another.
 	 */
@@ -36874,15 +37245,15 @@
 	//# sourceMappingURL=pathFactory.js.map
 
 /***/ }),
-/* 23 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	/** @module path */ /** for typedoc */
-	var common_1 = __webpack_require__(6);
-	var hof_1 = __webpack_require__(8);
-	var param_1 = __webpack_require__(24);
+	var common_1 = __webpack_require__(8);
+	var hof_1 = __webpack_require__(10);
+	var param_1 = __webpack_require__(26);
 	/**
 	 * @internalapi
 	 *
@@ -36956,7 +37327,7 @@
 	//# sourceMappingURL=pathNode.js.map
 
 /***/ }),
-/* 24 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -36965,11 +37336,11 @@
 	 * @coreapi
 	 * @module params
 	 */ /** for typedoc */
-	var common_1 = __webpack_require__(6);
-	var hof_1 = __webpack_require__(8);
-	var predicates_1 = __webpack_require__(7);
-	var coreservices_1 = __webpack_require__(11);
-	var paramType_1 = __webpack_require__(25);
+	var common_1 = __webpack_require__(8);
+	var hof_1 = __webpack_require__(10);
+	var predicates_1 = __webpack_require__(9);
+	var coreservices_1 = __webpack_require__(13);
+	var paramType_1 = __webpack_require__(27);
 	/** @hidden */ var hasOwn = Object.prototype.hasOwnProperty;
 	/** @hidden */ var isShorthand = function (cfg) {
 	    return ["value", "type", "squash", "array", "dynamic"].filter(hasOwn.bind(cfg || {})).length === 0;
@@ -37159,7 +37530,7 @@
 	//# sourceMappingURL=param.js.map
 
 /***/ }),
-/* 25 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -37169,8 +37540,8 @@
 	 * @module params
 	 */
 	/** */
-	var common_1 = __webpack_require__(6);
-	var predicates_1 = __webpack_require__(7);
+	var common_1 = __webpack_require__(8);
+	var predicates_1 = __webpack_require__(9);
 	/**
 	 * An internal class which implements [[ParamTypeDefinition]].
 	 *
@@ -37306,7 +37677,7 @@
 	//# sourceMappingURL=paramType.js.map
 
 /***/ }),
-/* 26 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -37315,11 +37686,11 @@
 	 * @coreapi
 	 * @module resolve
 	 */ /** for typedoc */
-	var common_1 = __webpack_require__(6);
-	var coreservices_1 = __webpack_require__(11);
-	var trace_1 = __webpack_require__(16);
-	var strings_1 = __webpack_require__(13);
-	var predicates_1 = __webpack_require__(7);
+	var common_1 = __webpack_require__(8);
+	var coreservices_1 = __webpack_require__(13);
+	var trace_1 = __webpack_require__(18);
+	var strings_1 = __webpack_require__(15);
+	var predicates_1 = __webpack_require__(9);
 	// TODO: explicitly make this user configurable
 	exports.defaultResolvePolicy = {
 	    when: "LAZY",
@@ -37444,21 +37815,21 @@
 	//# sourceMappingURL=resolvable.js.map
 
 /***/ }),
-/* 27 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	/** @module resolve */
 	/** for typedoc */
-	var common_1 = __webpack_require__(6);
-	var hof_1 = __webpack_require__(8);
-	var trace_1 = __webpack_require__(16);
-	var coreservices_1 = __webpack_require__(11);
-	var interface_1 = __webpack_require__(28);
-	var resolvable_1 = __webpack_require__(26);
-	var pathFactory_1 = __webpack_require__(22);
-	var strings_1 = __webpack_require__(13);
+	var common_1 = __webpack_require__(8);
+	var hof_1 = __webpack_require__(10);
+	var trace_1 = __webpack_require__(18);
+	var coreservices_1 = __webpack_require__(13);
+	var interface_1 = __webpack_require__(30);
+	var resolvable_1 = __webpack_require__(28);
+	var pathFactory_1 = __webpack_require__(24);
+	var strings_1 = __webpack_require__(15);
 	var when = interface_1.resolvePolicies.when;
 	var ALL_WHENS = [when.EAGER, when.LAZY];
 	var EAGER_WHENS = [when.EAGER];
@@ -37649,7 +38020,7 @@
 	//# sourceMappingURL=resolveContext.js.map
 
 /***/ }),
-/* 28 */
+/* 30 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -37669,7 +38040,7 @@
 	//# sourceMappingURL=interface.js.map
 
 /***/ }),
-/* 29 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -37677,14 +38048,14 @@
 	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 	}
 	Object.defineProperty(exports, "__esModule", { value: true });
-	__export(__webpack_require__(24));
-	__export(__webpack_require__(30));
-	__export(__webpack_require__(31));
-	__export(__webpack_require__(25));
+	__export(__webpack_require__(26));
+	__export(__webpack_require__(32));
+	__export(__webpack_require__(33));
+	__export(__webpack_require__(27));
 	//# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 30 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -37694,11 +38065,11 @@
 	 * @module params
 	 */
 	/** */
-	var common_1 = __webpack_require__(6);
-	var predicates_1 = __webpack_require__(7);
-	var hof_1 = __webpack_require__(8);
-	var coreservices_1 = __webpack_require__(11);
-	var paramType_1 = __webpack_require__(25);
+	var common_1 = __webpack_require__(8);
+	var predicates_1 = __webpack_require__(9);
+	var hof_1 = __webpack_require__(10);
+	var coreservices_1 = __webpack_require__(13);
+	var paramType_1 = __webpack_require__(27);
 	/**
 	 * A registry for parameter types.
 	 *
@@ -37845,7 +38216,7 @@
 	//# sourceMappingURL=paramTypes.js.map
 
 /***/ }),
-/* 31 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -37855,7 +38226,7 @@
 	 * @module params
 	 */
 	/** */
-	var common_1 = __webpack_require__(6);
+	var common_1 = __webpack_require__(8);
 	/** @internalapi */
 	var StateParams = (function () {
 	    function StateParams(params) {
@@ -37894,35 +38265,6 @@
 	//# sourceMappingURL=stateParams.js.map
 
 /***/ }),
-/* 32 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	"use strict";
-	function __export(m) {
-	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-	}
-	Object.defineProperty(exports, "__esModule", { value: true });
-	/** @module path */ /** for typedoc */
-	__export(__webpack_require__(23));
-	__export(__webpack_require__(22));
-	//# sourceMappingURL=index.js.map
-
-/***/ }),
-/* 33 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	"use strict";
-	function __export(m) {
-	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-	}
-	Object.defineProperty(exports, "__esModule", { value: true });
-	/** @module resolve */ /** for typedoc */
-	__export(__webpack_require__(28));
-	__export(__webpack_require__(26));
-	__export(__webpack_require__(27));
-	//# sourceMappingURL=index.js.map
-
-/***/ }),
 /* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -37931,13 +38273,9 @@
 	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 	}
 	Object.defineProperty(exports, "__esModule", { value: true });
-	__export(__webpack_require__(35));
-	__export(__webpack_require__(9));
-	__export(__webpack_require__(36));
-	__export(__webpack_require__(37));
-	__export(__webpack_require__(38));
-	__export(__webpack_require__(39));
-	__export(__webpack_require__(19));
+	/** @module path */ /** for typedoc */
+	__export(__webpack_require__(25));
+	__export(__webpack_require__(24));
 	//# sourceMappingURL=index.js.map
 
 /***/ }),
@@ -37945,14 +38283,47 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
+	function __export(m) {
+	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+	}
+	Object.defineProperty(exports, "__esModule", { value: true });
+	/** @module resolve */ /** for typedoc */
+	__export(__webpack_require__(30));
+	__export(__webpack_require__(28));
+	__export(__webpack_require__(29));
+	//# sourceMappingURL=index.js.map
+
+/***/ }),
+/* 36 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	function __export(m) {
+	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+	}
+	Object.defineProperty(exports, "__esModule", { value: true });
+	__export(__webpack_require__(37));
+	__export(__webpack_require__(11));
+	__export(__webpack_require__(38));
+	__export(__webpack_require__(39));
+	__export(__webpack_require__(40));
+	__export(__webpack_require__(41));
+	__export(__webpack_require__(21));
+	//# sourceMappingURL=index.js.map
+
+/***/ }),
+/* 37 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	/** @module state */ /** for typedoc */
-	var common_1 = __webpack_require__(6);
-	var predicates_1 = __webpack_require__(7);
-	var strings_1 = __webpack_require__(13);
-	var hof_1 = __webpack_require__(8);
-	var resolvable_1 = __webpack_require__(26);
-	var coreservices_1 = __webpack_require__(11);
+	var common_1 = __webpack_require__(8);
+	var predicates_1 = __webpack_require__(9);
+	var strings_1 = __webpack_require__(15);
+	var hof_1 = __webpack_require__(10);
+	var resolvable_1 = __webpack_require__(28);
+	var coreservices_1 = __webpack_require__(13);
 	var parseUrl = function (url) {
 	    if (!predicates_1.isString(url))
 	        return false;
@@ -38221,14 +38592,14 @@
 	//# sourceMappingURL=stateBuilder.js.map
 
 /***/ }),
-/* 36 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	/** @module state */ /** for typedoc */
-	var predicates_1 = __webpack_require__(7);
-	var common_1 = __webpack_require__(6);
+	var predicates_1 = __webpack_require__(9);
+	var common_1 = __webpack_require__(8);
 	var StateMatcher = (function () {
 	    function StateMatcher(_states) {
 	        this._states = _states;
@@ -38289,16 +38660,16 @@
 	//# sourceMappingURL=stateMatcher.js.map
 
 /***/ }),
-/* 37 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	/** @module state */ /** for typedoc */
-	var common_1 = __webpack_require__(6);
-	var predicates_1 = __webpack_require__(7);
-	var stateObject_1 = __webpack_require__(9);
-	var hof_1 = __webpack_require__(8);
+	var common_1 = __webpack_require__(8);
+	var predicates_1 = __webpack_require__(9);
+	var stateObject_1 = __webpack_require__(11);
+	var hof_1 = __webpack_require__(10);
 	/** @internalapi */
 	var StateQueueManager = (function () {
 	    function StateQueueManager($registry, $urlRouter, states, builder, listeners) {
@@ -38386,7 +38757,7 @@
 	//# sourceMappingURL=stateQueueManager.js.map
 
 /***/ }),
-/* 38 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -38395,11 +38766,11 @@
 	 * @module state
 	 */ /** for typedoc */
 	Object.defineProperty(exports, "__esModule", { value: true });
-	var stateMatcher_1 = __webpack_require__(36);
-	var stateBuilder_1 = __webpack_require__(35);
-	var stateQueueManager_1 = __webpack_require__(37);
-	var common_1 = __webpack_require__(6);
-	var hof_1 = __webpack_require__(8);
+	var stateMatcher_1 = __webpack_require__(38);
+	var stateBuilder_1 = __webpack_require__(37);
+	var stateQueueManager_1 = __webpack_require__(39);
+	var common_1 = __webpack_require__(8);
+	var hof_1 = __webpack_require__(10);
 	var StateRegistry = (function () {
 	    /** @internalapi */
 	    function StateRegistry(_router) {
@@ -38547,7 +38918,7 @@
 	//# sourceMappingURL=stateRegistry.js.map
 
 /***/ }),
-/* 39 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -38557,20 +38928,20 @@
 	 * @module state
 	 */
 	/** */
-	var common_1 = __webpack_require__(6);
-	var predicates_1 = __webpack_require__(7);
-	var queue_1 = __webpack_require__(12);
-	var coreservices_1 = __webpack_require__(11);
-	var pathFactory_1 = __webpack_require__(22);
-	var pathNode_1 = __webpack_require__(23);
-	var transitionService_1 = __webpack_require__(40);
-	var rejectFactory_1 = __webpack_require__(14);
-	var targetState_1 = __webpack_require__(19);
-	var param_1 = __webpack_require__(24);
-	var glob_1 = __webpack_require__(10);
-	var resolveContext_1 = __webpack_require__(27);
-	var lazyLoad_1 = __webpack_require__(56);
-	var hof_1 = __webpack_require__(8);
+	var common_1 = __webpack_require__(8);
+	var predicates_1 = __webpack_require__(9);
+	var queue_1 = __webpack_require__(14);
+	var coreservices_1 = __webpack_require__(13);
+	var pathFactory_1 = __webpack_require__(24);
+	var pathNode_1 = __webpack_require__(25);
+	var transitionService_1 = __webpack_require__(42);
+	var rejectFactory_1 = __webpack_require__(16);
+	var targetState_1 = __webpack_require__(21);
+	var param_1 = __webpack_require__(26);
+	var glob_1 = __webpack_require__(12);
+	var resolveContext_1 = __webpack_require__(29);
+	var lazyLoad_1 = __webpack_require__(58);
+	var hof_1 = __webpack_require__(10);
 	/**
 	 * Provides state related service functions
 	 *
@@ -39125,7 +39496,7 @@
 	//# sourceMappingURL=stateService.js.map
 
 /***/ }),
-/* 40 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -39135,24 +39506,24 @@
 	 * @module transition
 	 */
 	/** for typedoc */
-	var interface_1 = __webpack_require__(17);
-	var transition_1 = __webpack_require__(15);
-	var hookRegistry_1 = __webpack_require__(20);
-	var coreResolvables_1 = __webpack_require__(41);
-	var redirectTo_1 = __webpack_require__(50);
-	var onEnterExitRetain_1 = __webpack_require__(51);
-	var resolve_1 = __webpack_require__(52);
-	var views_1 = __webpack_require__(53);
-	var updateGlobals_1 = __webpack_require__(54);
-	var url_1 = __webpack_require__(55);
-	var lazyLoad_1 = __webpack_require__(56);
-	var transitionEventType_1 = __webpack_require__(57);
-	var transitionHook_1 = __webpack_require__(18);
-	var predicates_1 = __webpack_require__(7);
-	var common_1 = __webpack_require__(6);
-	var hof_1 = __webpack_require__(8);
-	var ignoredTransition_1 = __webpack_require__(58);
-	var invalidTransition_1 = __webpack_require__(59);
+	var interface_1 = __webpack_require__(19);
+	var transition_1 = __webpack_require__(17);
+	var hookRegistry_1 = __webpack_require__(22);
+	var coreResolvables_1 = __webpack_require__(43);
+	var redirectTo_1 = __webpack_require__(52);
+	var onEnterExitRetain_1 = __webpack_require__(53);
+	var resolve_1 = __webpack_require__(54);
+	var views_1 = __webpack_require__(55);
+	var updateGlobals_1 = __webpack_require__(56);
+	var url_1 = __webpack_require__(57);
+	var lazyLoad_1 = __webpack_require__(58);
+	var transitionEventType_1 = __webpack_require__(59);
+	var transitionHook_1 = __webpack_require__(20);
+	var predicates_1 = __webpack_require__(9);
+	var common_1 = __webpack_require__(8);
+	var hof_1 = __webpack_require__(10);
+	var ignoredTransition_1 = __webpack_require__(60);
+	var invalidTransition_1 = __webpack_require__(61);
 	/**
 	 * The default [[Transition]] options.
 	 *
@@ -39369,14 +39740,14 @@
 	//# sourceMappingURL=transitionService.js.map
 
 /***/ }),
-/* 41 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	/** @module hooks */ /** */
-	var transition_1 = __webpack_require__(15);
-	var router_1 = __webpack_require__(42);
+	var transition_1 = __webpack_require__(17);
+	var router_1 = __webpack_require__(44);
 	function addCoreResolvables(trans) {
 	    trans.addResolvable({ token: router_1.UIRouter, deps: [], resolveFn: function () { return trans.router; }, data: trans.router }, "");
 	    trans.addResolvable({ token: transition_1.Transition, deps: [], resolveFn: function () { return trans; }, data: trans }, "");
@@ -39392,7 +39763,7 @@
 	//# sourceMappingURL=coreResolvables.js.map
 
 /***/ }),
-/* 42 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -39401,17 +39772,17 @@
 	 * @coreapi
 	 * @module core
 	 */ /** */
-	var urlMatcherFactory_1 = __webpack_require__(43);
-	var urlRouter_1 = __webpack_require__(45);
-	var transitionService_1 = __webpack_require__(40);
-	var view_1 = __webpack_require__(47);
-	var stateRegistry_1 = __webpack_require__(38);
-	var stateService_1 = __webpack_require__(39);
-	var globals_1 = __webpack_require__(48);
-	var common_1 = __webpack_require__(6);
-	var predicates_1 = __webpack_require__(7);
-	var urlService_1 = __webpack_require__(49);
-	var trace_1 = __webpack_require__(16);
+	var urlMatcherFactory_1 = __webpack_require__(45);
+	var urlRouter_1 = __webpack_require__(47);
+	var transitionService_1 = __webpack_require__(42);
+	var view_1 = __webpack_require__(49);
+	var stateRegistry_1 = __webpack_require__(40);
+	var stateService_1 = __webpack_require__(41);
+	var globals_1 = __webpack_require__(50);
+	var common_1 = __webpack_require__(8);
+	var predicates_1 = __webpack_require__(9);
+	var urlService_1 = __webpack_require__(51);
+	var trace_1 = __webpack_require__(18);
 	/** @hidden */
 	var _routerInstance = 0;
 	/**
@@ -39581,7 +39952,7 @@
 	//# sourceMappingURL=router.js.map
 
 /***/ }),
-/* 43 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -39590,11 +39961,11 @@
 	 * @internalapi
 	 * @module url
 	 */ /** for typedoc */
-	var common_1 = __webpack_require__(6);
-	var predicates_1 = __webpack_require__(7);
-	var urlMatcher_1 = __webpack_require__(44);
-	var param_1 = __webpack_require__(24);
-	var paramTypes_1 = __webpack_require__(30);
+	var common_1 = __webpack_require__(8);
+	var predicates_1 = __webpack_require__(9);
+	var urlMatcher_1 = __webpack_require__(46);
+	var param_1 = __webpack_require__(26);
+	var paramTypes_1 = __webpack_require__(32);
 	/**
 	 * Factory for [[UrlMatcher]] instances.
 	 *
@@ -39713,7 +40084,7 @@
 	//# sourceMappingURL=urlMatcherFactory.js.map
 
 /***/ }),
-/* 44 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -39723,11 +40094,11 @@
 	 * @module url
 	 */
 	/** for typedoc */
-	var common_1 = __webpack_require__(6);
-	var hof_1 = __webpack_require__(8);
-	var predicates_1 = __webpack_require__(7);
-	var param_1 = __webpack_require__(24);
-	var strings_1 = __webpack_require__(13);
+	var common_1 = __webpack_require__(8);
+	var hof_1 = __webpack_require__(10);
+	var predicates_1 = __webpack_require__(9);
+	var param_1 = __webpack_require__(26);
+	var strings_1 = __webpack_require__(15);
 	/** @hidden */
 	function quoteRegExp(string, param) {
 	    var surroundPattern = ['', ''], result = string.replace(/[\\\[\]\^$*+?.()|{}]/g, "\\$&");
@@ -40221,7 +40592,7 @@
 	//# sourceMappingURL=urlMatcher.js.map
 
 /***/ }),
-/* 45 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -40231,12 +40602,12 @@
 	 * @module url
 	 */
 	/** for typedoc */
-	var common_1 = __webpack_require__(6);
-	var predicates_1 = __webpack_require__(7);
-	var urlMatcher_1 = __webpack_require__(44);
-	var hof_1 = __webpack_require__(8);
-	var urlRule_1 = __webpack_require__(46);
-	var targetState_1 = __webpack_require__(19);
+	var common_1 = __webpack_require__(8);
+	var predicates_1 = __webpack_require__(9);
+	var urlMatcher_1 = __webpack_require__(46);
+	var hof_1 = __webpack_require__(10);
+	var urlRule_1 = __webpack_require__(48);
+	var targetState_1 = __webpack_require__(21);
 	/** @hidden */
 	function appendBasePath(url, isHtml5, absolute, baseHref) {
 	    if (baseHref === '/')
@@ -40499,7 +40870,7 @@
 	//# sourceMappingURL=urlRouter.js.map
 
 /***/ }),
-/* 46 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -40508,10 +40879,10 @@
 	 * @coreapi
 	 * @module url
 	 */ /** */
-	var urlMatcher_1 = __webpack_require__(44);
-	var predicates_1 = __webpack_require__(7);
-	var common_1 = __webpack_require__(6);
-	var hof_1 = __webpack_require__(8);
+	var urlMatcher_1 = __webpack_require__(46);
+	var predicates_1 = __webpack_require__(9);
+	var common_1 = __webpack_require__(8);
+	var hof_1 = __webpack_require__(10);
 	/**
 	 * Creates a [[UrlRule]]
 	 *
@@ -40713,7 +41084,7 @@
 	//# sourceMappingURL=urlRule.js.map
 
 /***/ }),
-/* 47 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -40722,10 +41093,10 @@
 	 * @coreapi
 	 * @module view
 	 */ /** for typedoc */
-	var common_1 = __webpack_require__(6);
-	var hof_1 = __webpack_require__(8);
-	var predicates_1 = __webpack_require__(7);
-	var trace_1 = __webpack_require__(16);
+	var common_1 = __webpack_require__(8);
+	var hof_1 = __webpack_require__(10);
+	var predicates_1 = __webpack_require__(9);
+	var trace_1 = __webpack_require__(18);
 	/**
 	 * The View service
 	 *
@@ -41001,7 +41372,7 @@
 	//# sourceMappingURL=view.js.map
 
 /***/ }),
-/* 48 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -41010,8 +41381,8 @@
 	 * @coreapi
 	 * @module core
 	 */ /** */
-	var stateParams_1 = __webpack_require__(31);
-	var queue_1 = __webpack_require__(12);
+	var stateParams_1 = __webpack_require__(33);
+	var queue_1 = __webpack_require__(14);
 	/**
 	 * Global router state
 	 *
@@ -41044,7 +41415,7 @@
 	//# sourceMappingURL=globals.js.map
 
 /***/ }),
-/* 49 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -41053,8 +41424,8 @@
 	 * @module url
 	 */ /** */
 	Object.defineProperty(exports, "__esModule", { value: true });
-	var coreservices_1 = __webpack_require__(11);
-	var common_1 = __webpack_require__(6);
+	var coreservices_1 = __webpack_require__(13);
+	var common_1 = __webpack_require__(8);
 	/** @hidden */
 	var makeStub = function (keys) {
 	    return keys.reduce(function (acc, key) { return (acc[key] = coreservices_1.notImplemented(key), acc); }, { dispose: common_1.noop });
@@ -41129,15 +41500,15 @@
 	//# sourceMappingURL=urlService.js.map
 
 /***/ }),
-/* 50 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	/** @module hooks */ /** */
-	var predicates_1 = __webpack_require__(7);
-	var coreservices_1 = __webpack_require__(11);
-	var targetState_1 = __webpack_require__(19);
+	var predicates_1 = __webpack_require__(9);
+	var coreservices_1 = __webpack_require__(13);
+	var targetState_1 = __webpack_require__(21);
 	/**
 	 * A [[TransitionHookFn]] that redirects to a different state or params
 	 *
@@ -41171,7 +41542,7 @@
 	//# sourceMappingURL=redirectTo.js.map
 
 /***/ }),
-/* 51 */
+/* 53 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -41233,16 +41604,16 @@
 	//# sourceMappingURL=onEnterExitRetain.js.map
 
 /***/ }),
-/* 52 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	/** @module hooks */
 	/** for typedoc */
-	var common_1 = __webpack_require__(6);
-	var resolveContext_1 = __webpack_require__(27);
-	var hof_1 = __webpack_require__(8);
+	var common_1 = __webpack_require__(8);
+	var resolveContext_1 = __webpack_require__(29);
+	var hof_1 = __webpack_require__(10);
 	/**
 	 * A [[TransitionHookFn]] which resolves all EAGER Resolvables in the To Path
 	 *
@@ -41281,14 +41652,14 @@
 	//# sourceMappingURL=resolve.js.map
 
 /***/ }),
-/* 53 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	/** @module hooks */ /** for typedoc */
-	var common_1 = __webpack_require__(6);
-	var coreservices_1 = __webpack_require__(11);
+	var common_1 = __webpack_require__(8);
+	var coreservices_1 = __webpack_require__(13);
 	/**
 	 * A [[TransitionHookFn]] which waits for the views to load
 	 *
@@ -41333,12 +41704,12 @@
 	//# sourceMappingURL=views.js.map
 
 /***/ }),
-/* 54 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
-	var common_1 = __webpack_require__(6);
+	var common_1 = __webpack_require__(8);
 	/**
 	 * A [[TransitionHookFn]] which updates global UI-Router state
 	 *
@@ -41373,7 +41744,7 @@
 	//# sourceMappingURL=updateGlobals.js.map
 
 /***/ }),
-/* 55 */
+/* 57 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -41403,12 +41774,12 @@
 	//# sourceMappingURL=url.js.map
 
 /***/ }),
-/* 56 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
-	var coreservices_1 = __webpack_require__(11);
+	var coreservices_1 = __webpack_require__(13);
 	/**
 	 * A [[TransitionHookFn]] that performs lazy loading
 	 *
@@ -41505,12 +41876,12 @@
 	//# sourceMappingURL=lazyLoad.js.map
 
 /***/ }),
-/* 57 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
-	var transitionHook_1 = __webpack_require__(18);
+	var transitionHook_1 = __webpack_require__(20);
 	/**
 	 * This class defines a type of hook, such as `onBefore` or `onEnter`.
 	 * Plugins can define custom hook types, such as sticky states does for `onInactive`.
@@ -41538,14 +41909,14 @@
 	//# sourceMappingURL=transitionEventType.js.map
 
 /***/ }),
-/* 58 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	/** @module hooks */ /** */
 	Object.defineProperty(exports, "__esModule", { value: true });
-	var trace_1 = __webpack_require__(16);
-	var rejectFactory_1 = __webpack_require__(14);
+	var trace_1 = __webpack_require__(18);
+	var rejectFactory_1 = __webpack_require__(16);
 	/**
 	 * A [[TransitionHookFn]] that skips a transition if it should be ignored
 	 *
@@ -41574,7 +41945,7 @@
 	//# sourceMappingURL=ignoredTransition.js.map
 
 /***/ }),
-/* 59 */
+/* 61 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -41598,7 +41969,7 @@
 	//# sourceMappingURL=invalidTransition.js.map
 
 /***/ }),
-/* 60 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -41620,42 +41991,14 @@
 	 * @preferred
 	 * @module transition
 	 */ /** for typedoc */
+	__export(__webpack_require__(19));
+	__export(__webpack_require__(23));
+	__export(__webpack_require__(22));
+	__export(__webpack_require__(16));
 	__export(__webpack_require__(17));
-	__export(__webpack_require__(21));
 	__export(__webpack_require__(20));
-	__export(__webpack_require__(14));
-	__export(__webpack_require__(15));
-	__export(__webpack_require__(18));
-	__export(__webpack_require__(57));
-	__export(__webpack_require__(40));
-	//# sourceMappingURL=index.js.map
-
-/***/ }),
-/* 61 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	"use strict";
-	function __export(m) {
-	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-	}
-	Object.defineProperty(exports, "__esModule", { value: true });
-	__export(__webpack_require__(44));
-	__export(__webpack_require__(43));
-	__export(__webpack_require__(45));
-	__export(__webpack_require__(46));
-	__export(__webpack_require__(49));
-	//# sourceMappingURL=index.js.map
-
-/***/ }),
-/* 62 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	"use strict";
-	function __export(m) {
-	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-	}
-	Object.defineProperty(exports, "__esModule", { value: true });
-	__export(__webpack_require__(47));
+	__export(__webpack_require__(59));
+	__export(__webpack_require__(42));
 	//# sourceMappingURL=index.js.map
 
 /***/ }),
@@ -41667,13 +42010,12 @@
 	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 	}
 	Object.defineProperty(exports, "__esModule", { value: true });
-	/**
-	 * @internalapi
-	 * @module vanilla
-	 */
-	/** */
-	__export(__webpack_require__(64));
-	//# sourceMappingURL=vanilla.js.map
+	__export(__webpack_require__(46));
+	__export(__webpack_require__(45));
+	__export(__webpack_require__(47));
+	__export(__webpack_require__(48));
+	__export(__webpack_require__(51));
+	//# sourceMappingURL=index.js.map
 
 /***/ }),
 /* 64 */
@@ -41684,20 +42026,49 @@
 	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 	}
 	Object.defineProperty(exports, "__esModule", { value: true });
-	__export(__webpack_require__(65));
-	__export(__webpack_require__(66));
-	__export(__webpack_require__(67));
-	__export(__webpack_require__(69));
-	__export(__webpack_require__(70));
-	__export(__webpack_require__(71));
-	__export(__webpack_require__(72));
-	__export(__webpack_require__(73));
-	__export(__webpack_require__(68));
-	__export(__webpack_require__(74));
+	__export(__webpack_require__(49));
 	//# sourceMappingURL=index.js.map
 
 /***/ }),
 /* 65 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	function __export(m) {
+	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+	}
+	Object.defineProperty(exports, "__esModule", { value: true });
+	/**
+	 * @internalapi
+	 * @module vanilla
+	 */
+	/** */
+	__export(__webpack_require__(66));
+	//# sourceMappingURL=vanilla.js.map
+
+/***/ }),
+/* 66 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	function __export(m) {
+	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+	}
+	Object.defineProperty(exports, "__esModule", { value: true });
+	__export(__webpack_require__(67));
+	__export(__webpack_require__(68));
+	__export(__webpack_require__(69));
+	__export(__webpack_require__(71));
+	__export(__webpack_require__(72));
+	__export(__webpack_require__(73));
+	__export(__webpack_require__(74));
+	__export(__webpack_require__(75));
+	__export(__webpack_require__(70));
+	__export(__webpack_require__(76));
+	//# sourceMappingURL=index.js.map
+
+/***/ }),
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -41707,7 +42078,7 @@
 	 * @module vanilla
 	 */
 	/** */
-	var index_1 = __webpack_require__(5);
+	var index_1 = __webpack_require__(7);
 	/**
 	 * An angular1-like promise api
 	 *
@@ -41757,7 +42128,7 @@
 	//# sourceMappingURL=q.js.map
 
 /***/ }),
-/* 66 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -41767,7 +42138,7 @@
 	 * @module vanilla
 	 */
 	/** */
-	var index_1 = __webpack_require__(5);
+	var index_1 = __webpack_require__(7);
 	// globally available injectables
 	var globals = {};
 	var STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
@@ -41862,7 +42233,7 @@
 	//# sourceMappingURL=injector.js.map
 
 /***/ }),
-/* 67 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -41871,9 +42242,9 @@
 	 * @module vanilla
 	 */ /** */
 	Object.defineProperty(exports, "__esModule", { value: true });
-	var utils_1 = __webpack_require__(68);
-	var predicates_1 = __webpack_require__(7);
-	var common_1 = __webpack_require__(6);
+	var utils_1 = __webpack_require__(70);
+	var predicates_1 = __webpack_require__(9);
+	var common_1 = __webpack_require__(8);
 	/** A base `LocationServices` */
 	var BaseLocationServices = (function () {
 	    function BaseLocationServices(router, fireAfterUpdate) {
@@ -41912,7 +42283,7 @@
 	//# sourceMappingURL=baseLocationService.js.map
 
 /***/ }),
-/* 68 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -41922,8 +42293,8 @@
 	 * @module vanilla
 	 */
 	/** */
-	var index_1 = __webpack_require__(5);
-	var common_1 = __webpack_require__(6);
+	var index_1 = __webpack_require__(7);
+	var common_1 = __webpack_require__(8);
 	var beforeAfterSubstr = function (char) { return function (str) {
 	    if (!str)
 	        return ["", ""];
@@ -41985,7 +42356,7 @@
 	//# sourceMappingURL=utils.js.map
 
 /***/ }),
-/* 69 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -42005,8 +42376,8 @@
 	 * @module vanilla
 	 */
 	/** */
-	var utils_1 = __webpack_require__(68);
-	var baseLocationService_1 = __webpack_require__(67);
+	var utils_1 = __webpack_require__(70);
+	var baseLocationService_1 = __webpack_require__(69);
 	/** A `LocationServices` that uses the browser hash "#" to get/set the current location */
 	var HashLocationService = (function (_super) {
 	    __extends(HashLocationService, _super);
@@ -42031,7 +42402,7 @@
 	//# sourceMappingURL=hashLocationService.js.map
 
 /***/ }),
-/* 70 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -42051,7 +42422,7 @@
 	 * @module vanilla
 	 */
 	/** */
-	var baseLocationService_1 = __webpack_require__(67);
+	var baseLocationService_1 = __webpack_require__(69);
 	/** A `LocationServices` that gets/sets the current location from an in-memory object */
 	var MemoryLocationService = (function (_super) {
 	    __extends(MemoryLocationService, _super);
@@ -42070,7 +42441,7 @@
 	//# sourceMappingURL=memoryLocationService.js.map
 
 /***/ }),
-/* 71 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -42085,8 +42456,8 @@
 	    };
 	})();
 	Object.defineProperty(exports, "__esModule", { value: true });
-	var utils_1 = __webpack_require__(68);
-	var baseLocationService_1 = __webpack_require__(67);
+	var utils_1 = __webpack_require__(70);
+	var baseLocationService_1 = __webpack_require__(69);
 	/**
 	 * A `LocationServices` that gets/sets the current location using the browser's `location` and `history` apis
 	 *
@@ -42127,13 +42498,13 @@
 	//# sourceMappingURL=pushStateLocationService.js.map
 
 /***/ }),
-/* 72 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
-	var predicates_1 = __webpack_require__(7);
-	var common_1 = __webpack_require__(6);
+	var predicates_1 = __webpack_require__(9);
+	var common_1 = __webpack_require__(8);
 	/** A `LocationConfig` mock that gets/sets all config from an in-memory object */
 	var MemoryLocationConfig = (function () {
 	    function MemoryLocationConfig() {
@@ -42157,7 +42528,7 @@
 	//# sourceMappingURL=memoryLocationConfig.js.map
 
 /***/ }),
-/* 73 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -42167,7 +42538,7 @@
 	 * @module vanilla
 	 */
 	/** */
-	var predicates_1 = __webpack_require__(7);
+	var predicates_1 = __webpack_require__(9);
 	/** A `LocationConfig` that delegates to the browser's `location` object */
 	var BrowserLocationConfig = (function () {
 	    function BrowserLocationConfig(router, _isHtml5) {
@@ -42209,7 +42580,7 @@
 	//# sourceMappingURL=browserLocationConfig.js.map
 
 /***/ }),
-/* 74 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -42219,15 +42590,15 @@
 	 * @module vanilla
 	 */
 	/** */
-	var browserLocationConfig_1 = __webpack_require__(73);
-	var hashLocationService_1 = __webpack_require__(69);
-	var utils_1 = __webpack_require__(68);
-	var pushStateLocationService_1 = __webpack_require__(71);
-	var memoryLocationService_1 = __webpack_require__(70);
-	var memoryLocationConfig_1 = __webpack_require__(72);
-	var injector_1 = __webpack_require__(66);
-	var q_1 = __webpack_require__(65);
-	var coreservices_1 = __webpack_require__(11);
+	var browserLocationConfig_1 = __webpack_require__(75);
+	var hashLocationService_1 = __webpack_require__(71);
+	var utils_1 = __webpack_require__(70);
+	var pushStateLocationService_1 = __webpack_require__(73);
+	var memoryLocationService_1 = __webpack_require__(72);
+	var memoryLocationConfig_1 = __webpack_require__(74);
+	var injector_1 = __webpack_require__(68);
+	var q_1 = __webpack_require__(67);
+	var coreservices_1 = __webpack_require__(13);
 	function servicesPlugin(router) {
 	    coreservices_1.services.$injector = injector_1.$injector;
 	    coreservices_1.services.$q = q_1.$q;
@@ -42243,7 +42614,7 @@
 	//# sourceMappingURL=plugins.js.map
 
 /***/ }),
-/* 75 */
+/* 77 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -42269,7 +42640,7 @@
 	//# sourceMappingURL=interface.js.map
 
 /***/ }),
-/* 76 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -42286,14 +42657,14 @@
 	 * @preferred
 	 */
 	/** for typedoc */
-	var angular_1 = __webpack_require__(77);
-	var core_1 = __webpack_require__(4);
-	var views_1 = __webpack_require__(78);
-	var templateFactory_1 = __webpack_require__(79);
-	var stateProvider_1 = __webpack_require__(80);
-	var onEnterExitRetain_1 = __webpack_require__(81);
-	var locationServices_1 = __webpack_require__(82);
-	var urlRouterProvider_1 = __webpack_require__(83);
+	var angular_1 = __webpack_require__(79);
+	var core_1 = __webpack_require__(6);
+	var views_1 = __webpack_require__(80);
+	var templateFactory_1 = __webpack_require__(81);
+	var stateProvider_1 = __webpack_require__(82);
+	var onEnterExitRetain_1 = __webpack_require__(83);
+	var locationServices_1 = __webpack_require__(84);
+	var urlRouterProvider_1 = __webpack_require__(85);
 	angular_1.ng.module("ui.router.angular1", []);
 	var mod_init = angular_1.ng.module('ui.router.init', []);
 	var mod_util = angular_1.ng.module('ui.router.util', ['ng', 'ui.router.init']);
@@ -42390,7 +42761,7 @@
 	//# sourceMappingURL=services.js.map
 
 /***/ }),
-/* 77 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -42401,12 +42772,12 @@
 	//# sourceMappingURL=angular.js.map
 
 /***/ }),
-/* 78 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
-	var core_1 = __webpack_require__(4);
+	var core_1 = __webpack_require__(6);
 	function getNg1ViewConfigFactory() {
 	    var templateFactory = null;
 	    return function (path, view) {
@@ -42515,15 +42886,15 @@
 	//# sourceMappingURL=views.js.map
 
 /***/ }),
-/* 79 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	/** @module view */
 	/** for typedoc */
-	var angular_1 = __webpack_require__(77);
-	var core_1 = __webpack_require__(4);
+	var angular_1 = __webpack_require__(79);
+	var core_1 = __webpack_require__(6);
 	/**
 	 * Service which manages loading of templates from a ViewConfig.
 	 */
@@ -42714,13 +43085,13 @@
 	//# sourceMappingURL=templateFactory.js.map
 
 /***/ }),
-/* 80 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	/** @module ng1 */ /** for typedoc */
-	var core_1 = __webpack_require__(4);
+	var core_1 = __webpack_require__(6);
 	/**
 	 * The Angular 1 `StateProvider`
 	 *
@@ -42859,14 +43230,14 @@
 	//# sourceMappingURL=stateProvider.js.map
 
 /***/ }),
-/* 81 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	/** @module ng1 */ /** */
-	var core_1 = __webpack_require__(4);
-	var services_1 = __webpack_require__(76);
+	var core_1 = __webpack_require__(6);
+	var services_1 = __webpack_require__(78);
 	/**
 	 * This is a [[StateBuilder.builder]] function for angular1 `onEnter`, `onExit`,
 	 * `onRetain` callback hooks on a [[Ng1StateDeclaration]].
@@ -42889,12 +43260,12 @@
 	//# sourceMappingURL=onEnterExitRetain.js.map
 
 /***/ }),
-/* 82 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
-	var core_1 = __webpack_require__(4);
+	var core_1 = __webpack_require__(6);
 	/**
 	 * Implements UI-Router LocationServices and LocationConfig using Angular 1's $location service
 	 */
@@ -42969,14 +43340,14 @@
 	//# sourceMappingURL=locationServices.js.map
 
 /***/ }),
-/* 83 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	/** @module url */ /** */
-	var core_1 = __webpack_require__(4);
-	var core_2 = __webpack_require__(4);
+	var core_1 = __webpack_require__(6);
+	var core_2 = __webpack_require__(6);
 	/**
 	 * Manages rules for client-side URL
 	 *
@@ -43180,7 +43551,7 @@
 	//# sourceMappingURL=urlRouterProvider.js.map
 
 /***/ }),
-/* 84 */
+/* 86 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -43553,7 +43924,7 @@
 	//# sourceMappingURL=injectables.js.map
 
 /***/ }),
-/* 85 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -43568,8 +43939,8 @@
 	 * @preferred
 	 * @module directives
 	 */ /** for typedoc */
-	var angular_1 = __webpack_require__(77);
-	var core_1 = __webpack_require__(4);
+	var angular_1 = __webpack_require__(79);
+	var core_1 = __webpack_require__(6);
 	/** @hidden */
 	function parseStateRef(ref) {
 	    var paramsOnly = ref.match(/^\s*({[^}]*})\s*$/), parsed;
@@ -44129,13 +44500,13 @@
 	//# sourceMappingURL=stateDirectives.js.map
 
 /***/ }),
-/* 86 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	/** @module ng1 */ /** for typedoc */
 	Object.defineProperty(exports, "__esModule", { value: true });
-	var angular_1 = __webpack_require__(77);
+	var angular_1 = __webpack_require__(79);
 	/**
 	 * `isState` Filter: truthy if the current state is the parameter
 	 *
@@ -44180,7 +44551,7 @@
 	//# sourceMappingURL=stateFilters.js.map
 
 /***/ }),
-/* 87 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -44189,11 +44560,11 @@
 	 * @ng1api
 	 * @module directives
 	 */ /** for typedoc */
-	var angular_1 = __webpack_require__(77);
+	var angular_1 = __webpack_require__(79);
 	var angular_2 = __webpack_require__(1);
-	var core_1 = __webpack_require__(4);
-	var views_1 = __webpack_require__(78);
-	var services_1 = __webpack_require__(76);
+	var core_1 = __webpack_require__(6);
+	var views_1 = __webpack_require__(80);
+	var services_1 = __webpack_require__(78);
 	exports.uiView = ['$view', '$animate', '$uiViewScroll', '$interpolate', '$q',
 	    function $ViewDirective($view, $animate, $uiViewScroll, $interpolate, $q) {
 	        function getRenderer(attrs, scope) {
@@ -44475,13 +44846,13 @@
 	//# sourceMappingURL=viewDirective.js.map
 
 /***/ }),
-/* 88 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	/** @module ng1 */ /** */
-	var angular_1 = __webpack_require__(77);
+	var angular_1 = __webpack_require__(79);
 	/** @hidden */
 	function $ViewScrollProvider() {
 	    var useAnchorScroll = false;
@@ -44503,786 +44874,7 @@
 	//# sourceMappingURL=viewScroll.js.map
 
 /***/ }),
-/* 89 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	var managerCtrl = function managerCtrl($scope, $state, $location, $http) {
-		$http({
-			method: 'GET',
-			url: '/login/isManager'
-		}).then(function (response) {
-			if (!response.data) $state.go('login');
-		});
-
-		$scope.isActive = function (viewLocation) {
-			return viewLocation === $location.path();
-		};
-
-		$scope.logout = function () {
-			$http({
-				method: 'GET',
-				url: '/logout/'
-			}).then(function (response) {
-				$state.go('login');
-			});
-		};
-
-		$scope.manager = { name: 'Joe' };
-	};
-
-	exports.managerCtrl = managerCtrl;
-
-/***/ }),
-/* 90 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var managerHomeCtrl = function managerHomeCtrl($scope) {
-	  $scope.view2 = 'interviews';
-	  $scope.selectView1 = function (selectedView) {
-	    if (selectedView === 'available') {
-	      $scope.availableSelecter = { 'background-color': 'gray' };
-	      $scope.prioritySelecter = { 'background-color': '#f8f8f8' };
-	      $scope.view1 = 'available';
-	    } else if (selectedView === 'priority') {
-	      $scope.availableSelecter = { 'background-color': '#f8f8f8' };
-	      $scope.prioritySelecter = { 'background-color': 'gray' };
-	      $scope.view1 = 'priorityMapped';
-	    }
-	  };
-	  $scope.selectView2 = function (selectedView) {
-	    if (selectedView === 'interviews') {
-	      $scope.interviewsSelecter = { 'background-color': 'gray' };
-	      $scope.checkinsSelecter = { 'background-color': '#f8f8f8' };
-	      $scope.view2 = 'interviews';
-	    } else if (selectedView === 'checkins') {
-	      $scope.interviewsSelecter = { 'background-color': '#f8f8f8' };
-	      $scope.checkinsSelecter = { 'background-color': 'gray' };
-	      $scope.view2 = 'checkins';
-	    }
-	  };
-
-	  // initialize our named views
-	  $scope.selectView1('available');
-	  $scope.selectView2('interviews');
-	};
-
-	exports.managerHomeCtrl = managerHomeCtrl;
-
-/***/ }),
 /* 91 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	var interviewsCtrl = function interviewsCtrl($scope) {
-
-	    $scope.interviewSelect = function (interview) {
-	        $scope.interviewSideTable = { "interview": interview };
-	    };
-
-	    $scope.interviews = [{
-	        associateName: 'Billy',
-	        batch: 'Java',
-	        client: 'Infosys',
-	        scheduled_time: '6-5-2017'
-	    }, {
-	        associateName: 'Bob',
-	        batch: 'Java',
-	        client: 'CapitolOne',
-	        scheduled_time: '6-23-2017'
-	    }, {
-	        associateName: 'Sally',
-	        batch: '.Net',
-	        client: 'BofA',
-	        scheduled_time: '6-10-2017'
-	    }, {
-	        associateName: 'Jim',
-	        batch: 'SDET',
-	        client: 'Oracle',
-	        scheduled_time: '7-2-2017'
-	    }, {
-	        associateName: 'Jimbo',
-	        batch: 'Java',
-	        client: 'CapitalOne',
-	        scheduled_time: '6-23-2017'
-	    }, {
-	        associateName: 'Peter',
-	        batch: 'Java',
-	        client: 'Wells Fargo',
-	        scheduled_time: '6-15-2017'
-	    }];
-	};
-
-	exports.interviewsCtrl = interviewsCtrl;
-
-/***/ }),
-/* 92 */
-/***/ (function(module, exports) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var managerCreateCtrl = function managerCreateCtrl($scope, $state) {
-	  $scope.$state = $state;
-	};
-
-	exports.default = managerCreateCtrl;
-
-/***/ }),
-/* 93 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var batchCtrl = function batchCtrl($scope, $http) {
-	  console.log('starting');
-	  $scope.submit = function () {
-	    var item = JSON.stringify($scope.batch);
-	    console.log(item);
-	    $http.post('/batch', item).then(function (response) {
-	      console.log("success");
-	    }, function () {
-	      console.log("failure");
-	    });
-	  };
-	};
-
-	exports.batchCtrl = batchCtrl;
-
-/***/ }),
-/* 94 */
-/***/ (function(module, exports) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var clientCtrl = function clientCtrl($scope, $http) {
-	  $scope.submit = function () {
-	    var item = JSON.stringify($scope.client);
-	    console.log(item);
-	    $http.post('/client', item).then(function (response) {
-	      console.log("success");
-	    }, function () {
-	      console.log("failure");
-	    });
-	  };
-	};
-
-	exports.clientCtrl = clientCtrl;
-
-/***/ }),
-/* 95 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var userCtrl = function userCtrl($scope, $http) {
-	  $scope.submit = function () {
-	    var item = JSON.stringify($scope.user);
-	    //need 2 different post requests for manager and associate
-	    console.log(item);
-	    console.log($scope.user.type == 'Associate');
-	    if ($scope.user.type == 'Associate') {
-	      console.log('in associate');
-	      $http.post('/associate', item).then(function (response) {
-	        console.log("success");
-	      }, function () {
-	        console.log("failure");
-	      });
-	    };
-	    if ($scope.user.type == 'Manager') {
-	      console.log('in manager');
-	      $http.post('/manager', item).then(function (response) {
-	        console.log("success");
-	      }, function () {
-	        console.log("failure");
-	      });
-	    };
-	  };
-	};
-
-	exports.userCtrl = userCtrl;
-
-/***/ }),
-/* 96 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var managerAdvancedAssociatesCtrl = function managerAdvancedAssociatesCtrl($scope, $http) {
-	  window.scope = $scope;
-
-	  $http.get('batchtype/all').then(function (data) {
-	    $scope.batchtypes = data.data;
-	    $scope.selectedBatchTypes = [];
-	    $scope.batchtypes.forEach(function (type) {
-	      return $scope.selectedBatchTypes.push(type);
-	    });
-	  });
-
-	  $http.get('associate/all').then(function (data) {
-	    $scope.associates = data.data;
-	    window.associates = data.data;
-	  }, function (data) {
-	    console.log('failed');
-	  });
-
-	  $scope.trainerFilter = function (associate) {
-	    return true;
-	  };
-
-	  $scope.isSelectedBatchType = function (batchType) {
-	    return $scope.selectedBatchType.filter(function (type) {
-	      return type.value === batchType.value;
-	    }) >= 1;
-	  };
-
-	  $scope.toggleSelectedBatchTypes = function (selectedBatch) {
-	    var idx = $scope.selectedBatchTypes.indexOf(selectedBatch);
-	    console.log(idx
-
-	    // Is currently selected
-	    );if (idx > -1) {
-	      $scope.selectedBatchTypes.splice(idx, 1);
-	    }
-
-	    // Is newly selected
-	    else {
-	        $scope.selectedBatchTypes.push(selectedBatch);
-	      }
-	  };
-
-	  $scope.batchFilter = function (associate) {
-	    return $scope.selectedBatchTypes.filter(function (batchType) {
-	      return batchType.value === associate.batch.batchType.value;
-	    }).length >= 1;
-	  };
-	};
-
-	exports.default = managerAdvancedAssociatesCtrl;
-
-/***/ }),
-/* 97 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var profileCtrl = function profileCtrl($scope, $http) {
-	  var associateId = 184;
-	  var method = 'GET';
-	  var associateUrl = '/associate/' + associateId;
-
-	  $http({
-	    method: 'GET',
-	    url: associateUrl
-	  }).then(function (response) {
-	    $scope.associate = response.data;
-	    console.log(response);
-	    $scope.portfolioUrl = response.data.portfolioLink;
-	  });
-
-	  $scope.portfolioUrlInput = '';
-	  $scope.status = 'Active';
-
-	  $scope.shortenUrl = function (url, length) {
-	    return (// used to display portfolioUrl
-	      url === '' || url === undefined ? '' : url.substring(0, length) + '...'
-	    );
-	  };
-	  $scope.toggleSkillsModal = function () {
-	    $scope.additionalSkillsInput = $scope.associate.skills.map(function (skill) {
-	      return skill.value;
-	    }).join(',');
-	    $('#additionalSkillsModal').modal('show');
-	  };
-	  $scope.openPortfolioUrlModal = function () {
-	    $scope.portfolioUrlInput = $scope.portfolioUrl;
-	    $('#portfolioUrlModal').modal('show');
-	  };
-	  $scope.submitPortfolioUrl = function () {
-	    $scope.associate.portfolioLink = $scope.portfolioUrlInput;
-
-	    $http({
-	      method: 'PUT',
-	      url: '/associate/',
-	      data: $scope.associate
-	    }).then(function (response) {
-	      console.log('success');
-	    }, function () {
-	      console.log('error');
-	    });
-
-	    $('#portfolioUrlModal').modal('hide');
-	  };
-	  $scope.submitSkills = function () {
-	    var skills = $scope.associate.skills.map(function (skill) {
-	      return skill.value;
-	    });
-	    $scope.associate.skills = $scope.additionalSkillsInput.split(',').filter(function (skill) {
-	      return skill !== '';
-	    }).map(function (skill) {
-	      var existingSkill = $scope.associate.skills.find(function (skill) {
-	        return skill.value === skill;
-	      });
-	      return { id: existingSkill !== undefined ? existingSkill.id : 0, value: skill };
-	    });
-
-	    $http({
-	      method: 'PUT',
-	      url: '/associate/',
-	      data: $scope.associate
-	    }).then(function (response) {
-	      console.log('success');
-	    }, function () {
-	      console.log('error');
-	    });
-
-	    $('#additionalSkillsModal').modal('hide');
-	  };
-	};
-
-	exports.default = profileCtrl;
-
-/***/ }),
-/* 98 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	var associateCtrl = function associateCtrl($scope, $location, $http, $state) {
-		$http({
-			method: 'GET',
-			url: '/login/isAssociate'
-		}).then(function (response) {
-			if (!response.data) $state.go('login');else {
-				$http({
-					method: 'GET',
-					url: '/checkin'
-				}).then(function (response) {
-					if (response.data === true) {
-						$scope.checkInBtn = "Checked In";
-						$scope.hasCheckedIn = true;
-					} else $scope.checkInBtn = "Check In";
-				});
-			}
-		});
-
-		$scope.hasCheckedIn = false;
-		$scope.isActive = function (viewLocation) {
-			return viewLocation === $location.path();
-		};
-
-		$scope.checkIn = function () {
-			$http({
-				method: 'PUT',
-				url: '/checkin'
-			}).then(function (response) {
-				if (response.data === true) {
-					$scope.checkInBtn = "Checked In";
-					$scope.hasCheckedIn = true;
-				}
-			});
-		};
-
-		$scope.logout = function () {
-			$http({
-				method: 'GET',
-				url: '/logout/'
-			}).then(function (response) {
-				$state.go('login');
-			});
-		};
-	};
-
-	exports.default = associateCtrl;
-
-/***/ }),
-/* 99 */
-/***/ (function(module, exports) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var reportCtrl = function reportCtrl($scope) {};
-
-	exports.reportCtrl = reportCtrl;
-
-/***/ }),
-/* 100 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _chart, _chart2, _chart3, _chart4, _chart5;
-
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-	var data = [{
-	  label: 'Q1',
-	  value: '1950000',
-	  link: 'newchart-json-q1'
-	}, {
-	  label: 'Q2',
-	  value: '1970000',
-	  link: 'newchart-json-q2'
-	}, {
-	  label: 'Q3',
-	  value: '1910000',
-	  link: 'newchart-json-q3'
-	}, {
-	  label: 'Q4',
-	  value: '2120000',
-	  link: 'newchart-json-q4'
-	}];
-
-	var linkedData = [{
-	  id: 'q1',
-	  linkedchart: {
-	    chart: (_chart = {
-	      caption: 'Monthly Revenue',
-	      subcaption: 'First Quarter',
-	      xAxisName: 'Month',
-	      yAxisName: 'Amount',
-	      numberPrefix: '$',
-	      paletteColors: '#008ee4',
-	      showBorder: '1',
-	      borderAlpha: '20',
-	      divLineAlpha: '50',
-	      showValues: '0',
-	      bgAlpha: '0',
-	      canvasBorderAlpha: '0'
-	    }, _defineProperty(_chart, 'showBorder', '0'), _defineProperty(_chart, 'plotBorderAlpha', '0'), _defineProperty(_chart, 'usePlotGradientColor', '0'), _defineProperty(_chart, 'showAlternateHgridcolor', '0'), _chart),
-	    data: [{
-	      label: 'Jan',
-	      value: '420000'
-	    }, {
-	      label: 'Feb',
-	      value: '810000'
-	    }, {
-	      label: 'Mar',
-	      value: '720000'
-	    }]
-	  }
-	}, {
-	  id: 'q2',
-	  linkedchart: {
-	    chart: (_chart2 = {
-	      caption: 'Monthly Revenue',
-	      subcaption: 'Second Quarter',
-	      xAxisName: 'Month',
-	      yAxisName: 'Amount',
-	      numberPrefix: '$',
-	      paletteColors: '#008ee4',
-	      showBorder: '1',
-	      borderAlpha: '20',
-	      divLineAlpha: '50',
-	      showValues: '0',
-	      bgAlpha: '0',
-	      canvasBorderAlpha: '0'
-	    }, _defineProperty(_chart2, 'showBorder', '0'), _defineProperty(_chart2, 'plotBorderAlpha', '0'), _defineProperty(_chart2, 'usePlotGradientColor', '0'), _defineProperty(_chart2, 'showAlternateHgridcolor', '0'), _chart2),
-	    data: [{
-	      label: 'Apr',
-	      value: '550000'
-	    }, {
-	      label: 'May',
-	      value: '910000'
-	    }, {
-	      label: 'Jun',
-	      value: '510000'
-	    }]
-	  }
-	}, {
-	  id: 'q3',
-	  linkedchart: {
-	    chart: (_chart3 = {
-	      caption: 'Monthly Revenue',
-	      subcaption: 'Third Quarter',
-	      xAxisName: 'Month',
-	      yAxisName: 'Amount',
-	      numberPrefix: '$',
-	      paletteColors: '#008ee4',
-	      showBorder: '1',
-	      borderAlpha: '20',
-	      divLineAlpha: '50',
-	      showValues: '0',
-	      bgAlpha: '0',
-	      canvasBorderAlpha: '0'
-	    }, _defineProperty(_chart3, 'showBorder', '0'), _defineProperty(_chart3, 'plotBorderAlpha', '0'), _defineProperty(_chart3, 'usePlotGradientColor', '0'), _defineProperty(_chart3, 'showAlternateHgridcolor', '0'), _chart3),
-	    data: [{
-	      label: 'Jul',
-	      value: '680000'
-	    }, {
-	      label: 'Aug',
-	      value: '620000'
-	    }, {
-	      label: 'Sep',
-	      value: '610000'
-	    }]
-	  }
-	}, {
-	  id: 'q4',
-	  linkedchart: {
-	    chart: (_chart4 = {
-	      caption: 'Monthly Revenue',
-	      subcaption: 'Fourth Quarter',
-	      xAxisName: 'Month',
-	      yAxisName: 'Amount',
-	      numberPrefix: '$',
-	      paletteColors: '#008ee4',
-	      showBorder: '1',
-	      borderAlpha: '20',
-	      divLineAlpha: '50',
-	      showValues: '0',
-	      bgAlpha: '0',
-	      canvasBorderAlpha: '0'
-	    }, _defineProperty(_chart4, 'showBorder', '0'), _defineProperty(_chart4, 'plotBorderAlpha', '0'), _defineProperty(_chart4, 'usePlotGradientColor', '0'), _defineProperty(_chart4, 'showAlternateHgridcolor', '0'), _chart4),
-	    data: [{
-	      label: 'Oct',
-	      value: '490000'
-	    }, {
-	      label: 'Nov',
-	      value: '900000'
-	    }, {
-	      label: 'Dec',
-	      value: '730000'
-	    }]
-	  }
-	}];
-
-	var chart = (_chart5 = {
-	  caption: 'Quarterly revenue',
-	  subCaption: 'Last year',
-	  xAxisName: 'Quarter',
-	  yAxisName: 'Amount',
-	  numberPrefix: '$',
-	  paletteColors: '#008ee4',
-	  showBorder: '1',
-	  borderAlpha: '20',
-	  divLineAlpha: '50',
-	  showValues: '0',
-	  bgAlpha: '0',
-	  canvasBorderAlpha: '0'
-	}, _defineProperty(_chart5, 'showBorder', '0'), _defineProperty(_chart5, 'plotBorderAlpha', '0'), _defineProperty(_chart5, 'usePlotGradientColor', '0'), _defineProperty(_chart5, 'showAlternateHgridcolor', '0'), _chart5);
-
-	var nestedCtrl = function nestedCtrl($scope) {
-	  plainBarChart($scope, chart, data, linkedData);
-	};
-
-	function plainBarChart($scope, chartInfo, data, linkedData) {
-	  $scope.greeting = 'test';
-	  var myDataSource = {
-	    chart: chartInfo,
-	    data: data,
-	    linkedData: linkedData
-	  };
-	  console.log('hello console: ' + linkedData);
-
-	  var chart = new FusionCharts({
-	    type: 'column2d',
-	    width: '500',
-	    height: '300',
-	    renderAt: 'chartContainer',
-	    dataFormat: 'json',
-	    dataSource: myDataSource
-	  });
-
-	  chart.addEventListener('chartrollover', function () {
-	    $('#slide-in').show('slow');
-	  });
-
-	  chart.addEventListener('chartrollout', function () {
-	    $('#slide-in').hide('slow');
-	  });
-
-	  chart.render();
-	}
-
-	exports.nestedCtrl = nestedCtrl;
-
-/***/ }),
-/* 101 */
-/***/ (function(module, exports) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	var chart = {
-	    caption: "Product-wise quarterly revenue in current year",
-	    subCaption: "Harry's SuperMart",
-	    xAxisname: "Quarter",
-	    yAxisName: "Revenue (In USD)",
-	    numberPrefix: "$",
-	    paletteColors: "#ff0000,#0075c2",
-	    bgColor: "#ffffff",
-	    borderAlpha: "20",
-	    showCanvasBorder: "0",
-	    usePlotGradientColor: "0",
-	    plotBorderAlpha: "10",
-	    legendBorderAlpha: "0",
-	    legendShadow: "0",
-	    valueFontColor: "#ffffff",
-	    showXAxisLine: "1",
-	    xAxisLineColor: "#999999",
-	    divlineColor: "#999999",
-	    divLineDashed: "1",
-	    showAlternateHGridColor: "0",
-	    subcaptionFontBold: "0",
-	    subcaptionFontSize: "14",
-	    showHoverEffect: "1"
-	};
-
-	var categories = [{
-	    "category": [{
-	        "label": "Q1"
-	    }, {
-	        "label": "Q2"
-	    }, {
-	        "label": "Q3"
-	    }, {
-	        "label": "Q4"
-	    }]
-	}];
-	var dataset = [{
-	    "seriesname": "Food Products",
-	    "data": [{
-	        "value": "121000"
-	    }, {
-	        "value": "135000"
-	    }, {
-	        "value": "123500"
-	    }, {
-	        "value": "145000"
-	    }]
-	}, {
-	    "seriesname": "Non-Food Products",
-	    "data": [{
-	        "value": "131400"
-	    }, {
-	        "value": "154800"
-	    }, {
-	        "value": "98300"
-	    }, {
-	        "value": "131800"
-	    }]
-	}];
-
-	var barCtrl = function barCtrl($scope) {
-	    plainBarChart2($scope, chart, categories, dataset);
-	};
-
-	function plainBarChart2($scope, chartstuff, categories, dataset) {
-	    $scope.greeting = 'test';
-	    var myDataSource = {
-	        chart: chartstuff,
-	        categories: categories,
-	        dataset: dataset
-	    };
-
-	    var chart = new FusionCharts({
-	        type: 'stackedcolumn3d',
-	        renderAt: 'chart-container',
-	        width: '550',
-	        height: '350',
-	        dataFormat: 'json',
-	        dataSource: myDataSource
-	    });
-
-	    chart.render();
-	}
-
-	exports.barCtrl = barCtrl;
-
-/***/ }),
-/* 102 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var loginCtrl = function loginCtrl($scope, $http, $state) {
-	  var loginBtn = document.getElementById('loginBtn');
-	  $scope.username = '';
-	  $scope.password = '';
-	  $scope.errorMsgShow = false;
-
-	  $scope.submit = function () {
-	    loginBtn.disabled = true;
-	    loginBtn.innerHTML = "Logging in...";
-	    $scope.errorMsgShow = false;
-
-	    if ($scope.username === '' || $scope.username === undefined) {
-	      $scope.errorMsg = 'Please input a Username.';
-	      $scope.errorMsgShow = true;
-	      loginBtn.disabled = false;
-	      loginBtn.innerHTML = "Log In";
-	    } else if ($scope.password === '' || $scope.password === undefined) {
-	      $scope.errorMsg = 'Please input a Password.';
-	      $scope.errorMsgShow = true;
-	      loginBtn.disabled = false;
-	      loginBtn.innerHTML = "Log In";
-	    } else {
-	      $http({
-	        method: 'POST',
-	        url: '/login',
-	        data: { username: $scope.username, password: $scope.password }
-	      }).then(function (response) {
-	        if (response.data.permission !== undefined) $state.go('manager.home');else $state.go('associate');
-	      }, function () {
-	        $scope.errorMsg = 'Username or Password is incorrect.';
-	        $scope.errorMsgShow = true;
-	        loginBtn.disabled = false;
-	        loginBtn.innerHTML = "Log In";
-	      });
-	    }
-	  };
-	};
-
-	exports.default = loginCtrl;
-
-/***/ }),
-/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*
@@ -47208,7 +46800,1685 @@
 
 
 /***/ }),
+/* 92 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	var managerCtrl = function managerCtrl($scope, $state, $location, $http) {
+		$http({
+			method: 'GET',
+			url: '/login/isManager'
+		}).then(function (response) {
+			if (!response.data) $state.go('login');
+		});
+
+		$scope.isActive = function (viewLocation) {
+			return viewLocation === $location.path();
+		};
+
+		$scope.logout = function () {
+			$http({
+				method: 'GET',
+				url: '/logout/'
+			}).then(function (response) {
+				$state.go('login');
+			});
+		};
+
+		$scope.manager = { name: 'Joe' };
+	};
+
+	exports.managerCtrl = managerCtrl;
+
+/***/ }),
+/* 93 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var managerHomeCtrl = function managerHomeCtrl($scope) {
+	  $scope.view2 = 'interviews';
+	  $scope.selectView1 = function (selectedView) {
+	    if (selectedView === 'available') {
+	      $scope.availableSelecter = { 'background-color': 'gray' };
+	      $scope.prioritySelecter = { 'background-color': '#f8f8f8' };
+	      $scope.view1 = 'available';
+	    } else if (selectedView === 'priority') {
+	      $scope.availableSelecter = { 'background-color': '#f8f8f8' };
+	      $scope.prioritySelecter = { 'background-color': 'gray' };
+	      $scope.view1 = 'priorityMapped';
+	    }
+	  };
+	  $scope.selectView2 = function (selectedView) {
+	    if (selectedView === 'interviews') {
+	      $scope.interviewsSelecter = { 'background-color': 'gray' };
+	      $scope.checkinsSelecter = { 'background-color': '#f8f8f8' };
+	      $scope.view2 = 'interviews';
+	    } else if (selectedView === 'checkins') {
+	      $scope.interviewsSelecter = { 'background-color': '#f8f8f8' };
+	      $scope.checkinsSelecter = { 'background-color': 'gray' };
+	      $scope.view2 = 'checkins';
+	    }
+	  };
+
+	  // initialize our named views
+	  $scope.selectView1('available');
+	  $scope.selectView2('interviews');
+	};
+
+	exports.managerHomeCtrl = managerHomeCtrl;
+
+/***/ }),
+/* 94 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	/**
+	 * Created by colts on 6/8/2017.
+	 */
+	var managerCheckinsCtrl = function managerCheckinsCtrl(scope, $http) {
+
+	    $http.get("checkin/allTodays").then(function (result) {
+	        $scope.checkins = result.data;
+	    });
+	};
+
+	exports.default = managerCheckinsCtrl;
+
+/***/ }),
+/* 95 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	var interviewsCtrl = function interviewsCtrl($scope, $http) {
+	    console.log("started");
+	    $http({
+	        method: "GET",
+	        url: "interviews/all"
+	    }).then(function mySuccess(response) {
+	        window.interviews = response.data;
+	        $scope.interviews = response.data;
+	    }, function myError(response) {
+	        console.log("error!");
+	    });
+
+	    $scope.interviewSelect = function (interview) {
+	        $scope.interviewSideTable = { "interview": interview };
+	    };
+	};
+
+	exports.interviewsCtrl = interviewsCtrl;
+
+/***/ }),
+/* 96 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var managerCreateCtrl = function managerCreateCtrl($scope, $state) {
+	  $scope.$state = $state;
+	};
+
+	exports.default = managerCreateCtrl;
+
+/***/ }),
+/* 97 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var batchCtrl = function batchCtrl($scope, $http) {
+	  console.log('starting');
+
+	  $(function () {
+	    $('#datetimepicker1').datetimepicker();
+	  });
+
+	  $http.get('batchtype/all.json').then(function (response) {
+	    // console.log(response.data[0].id)
+	    console.log(response);
+	    $scope.posts2 = response;
+	  }, function () {
+	    console.log("failure");
+	  });
+
+	  $http.get('location/all.json').then(function (response) {
+	    $scope.posts = response;
+	  }, function () {
+	    console.log("failure");
+	  });
+
+	  $scope.submit = function () {
+	    var item = JSON.stringify($scope.batch);
+	    console.log(item);
+	    var str = item.replace(/\\/g, '');
+	    var str2 = str.replace('"{', '{');
+	    var str3 = str2.replace('}"', '}');
+	    var str4 = str3.replace('"{', '{');
+	    var str5 = str4.replace('}"', '}');
+	    var str6 = str5.replace('"{', '{');
+	    var str7 = str6.replace('}"', '}');
+	    console.log(str7);
+	    $http.post('/batch', str7).then(function (response) {
+	      console.log("success");
+	      console.log(response);
+	    }, function () {
+	      console.log("failure");
+	    });
+	  };
+	};
+
+	exports.batchCtrl = batchCtrl;
+
+/***/ }),
+/* 98 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var clientCtrl = function clientCtrl($scope, $http) {
+	  $scope.submit = function () {
+	    var item = JSON.stringify($scope.client);
+	    console.log(item);
+	    $http.post('/client', item).then(function (response) {
+	      console.log("success");
+	    }, function () {
+	      console.log("failure");
+	    });
+	  };
+	};
+
+	exports.clientCtrl = clientCtrl;
+
+/***/ }),
+/* 99 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var userCtrl = function userCtrl($scope, $http) {
+
+	  $http.get('batchtype/all.json').then(function (response) {
+	    // console.log(response.data[0].id)
+	    console.log(response.data);
+	    $scope.posts = response.data;
+	  }, function () {
+	    console.log("failure");
+	  });
+
+	  $scope.submit = function () {
+	    var item = JSON.stringify($scope.user);
+	    //need 2 different post requests for manager and associate
+	    console.log(item);
+	    console.log($scope.user.type == 'associate');
+	    if ($scope.user.type == 'associate') {
+	      console.log('in associate');
+	      $http.post('/associate', item).then(function (response) {
+	        console.log("success");
+	      }, function () {
+	        console.log("failure");
+	      });
+	    };
+	    if ($scope.user.type == 'manager') {
+	      console.log('in manager');
+	      $http.post('/manager', item).then(function (response) {
+	        console.log("success");
+	      }, function () {
+	        console.log("failure");
+	      });
+	    };
+	  };
+	};
+
+	exports.userCtrl = userCtrl;
+
+/***/ }),
+/* 100 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var managerAdvancedAssociatesCtrl = function managerAdvancedAssociatesCtrl($scope, $http) {
+	  window.scope = $scope;
+
+	  $http.get('batchtype/all').then(function (data) {
+	    $scope.batchtypes = data.data;
+	    $scope.selectedBatchTypes = [];
+	    $scope.batchtypes.forEach(function (type) {
+	      return $scope.selectedBatchTypes.push(type);
+	    });
+	  });
+
+	  $http.get('associate/all').then(function (data) {
+	    $scope.associates = data.data;
+	    window.associates = data.data;
+	  }, function (data) {
+	    console.log('failed');
+	  });
+
+	  $scope.trainerFilter = function (associate) {
+	    return true;
+	  };
+
+	  $scope.isSelectedBatchType = function (batchType) {
+	    return $scope.selectedBatchType.filter(function (type) {
+	      return type.value === batchType.value;
+	    }) >= 1;
+	  };
+
+	  $scope.toggleSelectedBatchTypes = function (selectedBatch) {
+	    var idx = $scope.selectedBatchTypes.indexOf(selectedBatch);
+
+	    // Is currently selected
+	    if (idx > -1) {
+	      $scope.selectedBatchTypes.splice(idx, 1);
+	    }
+
+	    // Is newly selected
+	    else {
+	        $scope.selectedBatchTypes.push(selectedBatch);
+	      }
+	  };
+
+	  $scope.batchFilter = function (associate) {
+	    return $scope.selectedBatchTypes.filter(function (batchType) {
+	      return batchType.value === associate.batch.batchType.value;
+	    }).length >= 1;
+	  };
+	};
+
+	exports.default = managerAdvancedAssociatesCtrl;
+
+/***/ }),
+/* 101 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var profileCtrl = function profileCtrl($scope, $http, userService) {
+	  var associateId = userService.getUser().id;
+	  var associateUrl = '/associate/' + associateId;
+
+	  if (associateId === undefined) {
+	    return;
+	  }
+
+	  $http({
+	    method: 'GET',
+	    url: associateUrl
+	  }).then(function (response) {
+	    $scope.associate = response.data;
+	    $scope.portfolioUrl = response.data.portfolioLink;
+	  });
+
+	  $scope.portfolioUrlInput = '';
+	  $scope.status = 'Active';
+
+	  $scope.toggleSkillsModal = function () {
+	    $scope.sendingRequest = false;
+	    $scope.skillsModalButtonValue = 'Save';
+	    $scope.additionalSkillsInput = $scope.associate.skills.map(function (skill) {
+	      return skill.value;
+	    }).join(',');
+	    $('#additionalSkillsModal').modal('show');
+	  };
+	  $scope.openPortfolioUrlModal = function () {
+	    $scope.sendingRequest = false;
+	    $scope.portfolioModalButtonValue = 'Save';
+	    $scope.portfolioUrlInput = $scope.associate.portfolioLink;
+	    $('#portfolioUrlModal').modal('show');
+	  };
+	  $scope.submitPortfolioUrl = function () {
+	    $scope.associate.portfolioLink = $scope.portfolioUrlInput;
+
+	    $scope.portfolioModalButtonValue = 'Saving...';
+	    $scope.sendingRequest = true;
+	    $http({
+	      method: 'PUT',
+	      url: '/associate/',
+	      data: $scope.associate
+	    }).then(function () {
+	      $('#portfolioUrlModal').modal('hide');
+	    }, function () {
+	      $('#portfolioUrlModal').modal('hide');
+	    });
+	  };
+	  $scope.submitSkills = function () {
+	    $scope.associate.skills = $scope.additionalSkillsInput.split(',').filter(function (skill) {
+	      return skill !== '';
+	    }).map(function (skill) {
+	      var existingSkill = $scope.associate.skills.find(function (aSkill) {
+	        return aSkill.value === skill;
+	      });
+	      return { id: existingSkill !== undefined ? existingSkill.id : 0, value: skill };
+	    });
+
+	    $scope.sendingRequest = true;
+	    $scope.skillsModalButtonValue = 'Saving...';
+	    $http({
+	      method: 'PUT',
+	      url: '/associate/',
+	      data: $scope.associate
+	    }).then(function () {
+	      $('#additionalSkillsModal').modal('hide');
+	    }, function () {
+	      $('#additionalSkillsModal').modal('hide');
+	    });
+	  };
+	};
+
+	exports.default = profileCtrl;
+
+/***/ }),
+/* 102 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _dateformat = __webpack_require__(103);
+
+	var _dateformat2 = _interopRequireDefault(_dateformat);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var associateInterviewCtrl = function associateInterviewCtrl($scope, $http, userService) {
+		$scope.associateInterviews;
+		$('#datetimepicker1').datetimepicker();
+		$scope.showDateTimePicker = function () {
+			$('#datetimepicker1').datetimepicker("show");
+		};
+		$("#datetimepicker1").on("dp.change", function () {
+			$scope.selectedDate = $("#datetimepicker1").val();
+		});
+
+		$http({
+			method: 'GET',
+			url: '/client/all'
+		}).then(function (response) {
+			$scope.clients = response.data;
+			$scope.clients.sort(function (pre, cur) {
+				return pre.name.localeCompare(cur.name);
+			});
+		});
+
+		$http({
+			method: 'GET',
+			url: 'interviews/associate/' + userService.getUser().id
+		}).then(function (response) {
+			response.data.forEach(function (e) {
+				var day = new Date(response.data[0].scheduled[0], response.data[0].scheduled[1], response.data[0].scheduled[2], response.data[0].scheduled[3], response.data[0].scheduled[4], response.data[0].scheduled[5], 0);
+				e['day'] = (0, _dateformat2.default)(day, "dddd, mmmm dS, yyyy, h:MM TT");;
+			});
+			$scope.associateInterviews = response.data;
+		});
+
+		//	$scope.errorMsgShow = true;
+		//	$scope.successMsgShow = true;
+
+		$scope.addInterviewClick = function () {
+			$http({
+				method: 'POST',
+				url: '/interviews',
+				data: { associate: userService.getUser(), client: $scope.selectedClient }
+			}).then(function (response) {});
+			console.log(userService.getUser());
+			console.log($scope.selectedClient);
+			console.log($scope.selectedDate);
+		};
+	};
+
+	exports.default = associateInterviewCtrl;
+
+/***/ }),
+/* 103 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_RESULT__;/*
+	 * Date Format 1.2.3
+	 * (c) 2007-2009 Steven Levithan <stevenlevithan.com>
+	 * MIT license
+	 *
+	 * Includes enhancements by Scott Trenda <scott.trenda.net>
+	 * and Kris Kowal <cixar.com/~kris.kowal/>
+	 *
+	 * Accepts a date, a mask, or a date and a mask.
+	 * Returns a formatted version of the given date.
+	 * The date defaults to the current date/time.
+	 * The mask defaults to dateFormat.masks.default.
+	 */
+
+	(function(global) {
+	  'use strict';
+
+	  var dateFormat = (function() {
+	      var token = /d{1,4}|m{1,4}|yy(?:yy)?|([HhMsTt])\1?|[LloSZWN]|'[^']*'|'[^']*'/g;
+	      var timezone = /\b(?:[PMCEA][SDP]T|(?:Pacific|Mountain|Central|Eastern|Atlantic) (?:Standard|Daylight|Prevailing) Time|(?:GMT|UTC)(?:[-+]\d{4})?)\b/g;
+	      var timezoneClip = /[^-+\dA-Z]/g;
+	  
+	      // Regexes and supporting functions are cached through closure
+	      return function (date, mask, utc, gmt) {
+	  
+	        // You can't provide utc if you skip other args (use the 'UTC:' mask prefix)
+	        if (arguments.length === 1 && kindOf(date) === 'string' && !/\d/.test(date)) {
+	          mask = date;
+	          date = undefined;
+	        }
+	  
+	        date = date || new Date;
+	  
+	        if(!(date instanceof Date)) {
+	          date = new Date(date);
+	        }
+	  
+	        if (isNaN(date)) {
+	          throw TypeError('Invalid date');
+	        }
+	  
+	        mask = String(dateFormat.masks[mask] || mask || dateFormat.masks['default']);
+	  
+	        // Allow setting the utc/gmt argument via the mask
+	        var maskSlice = mask.slice(0, 4);
+	        if (maskSlice === 'UTC:' || maskSlice === 'GMT:') {
+	          mask = mask.slice(4);
+	          utc = true;
+	          if (maskSlice === 'GMT:') {
+	            gmt = true;
+	          }
+	        }
+	  
+	        var _ = utc ? 'getUTC' : 'get';
+	        var d = date[_ + 'Date']();
+	        var D = date[_ + 'Day']();
+	        var m = date[_ + 'Month']();
+	        var y = date[_ + 'FullYear']();
+	        var H = date[_ + 'Hours']();
+	        var M = date[_ + 'Minutes']();
+	        var s = date[_ + 'Seconds']();
+	        var L = date[_ + 'Milliseconds']();
+	        var o = utc ? 0 : date.getTimezoneOffset();
+	        var W = getWeek(date);
+	        var N = getDayOfWeek(date);
+	        var flags = {
+	          d:    d,
+	          dd:   pad(d),
+	          ddd:  dateFormat.i18n.dayNames[D],
+	          dddd: dateFormat.i18n.dayNames[D + 7],
+	          m:    m + 1,
+	          mm:   pad(m + 1),
+	          mmm:  dateFormat.i18n.monthNames[m],
+	          mmmm: dateFormat.i18n.monthNames[m + 12],
+	          yy:   String(y).slice(2),
+	          yyyy: y,
+	          h:    H % 12 || 12,
+	          hh:   pad(H % 12 || 12),
+	          H:    H,
+	          HH:   pad(H),
+	          M:    M,
+	          MM:   pad(M),
+	          s:    s,
+	          ss:   pad(s),
+	          l:    pad(L, 3),
+	          L:    pad(Math.round(L / 10)),
+	          t:    H < 12 ? 'a'  : 'p',
+	          tt:   H < 12 ? 'am' : 'pm',
+	          T:    H < 12 ? 'A'  : 'P',
+	          TT:   H < 12 ? 'AM' : 'PM',
+	          Z:    gmt ? 'GMT' : utc ? 'UTC' : (String(date).match(timezone) || ['']).pop().replace(timezoneClip, ''),
+	          o:    (o > 0 ? '-' : '+') + pad(Math.floor(Math.abs(o) / 60) * 100 + Math.abs(o) % 60, 4),
+	          S:    ['th', 'st', 'nd', 'rd'][d % 10 > 3 ? 0 : (d % 100 - d % 10 != 10) * d % 10],
+	          W:    W,
+	          N:    N
+	        };
+	  
+	        return mask.replace(token, function (match) {
+	          if (match in flags) {
+	            return flags[match];
+	          }
+	          return match.slice(1, match.length - 1);
+	        });
+	      };
+	    })();
+
+	  dateFormat.masks = {
+	    'default':               'ddd mmm dd yyyy HH:MM:ss',
+	    'shortDate':             'm/d/yy',
+	    'mediumDate':            'mmm d, yyyy',
+	    'longDate':              'mmmm d, yyyy',
+	    'fullDate':              'dddd, mmmm d, yyyy',
+	    'shortTime':             'h:MM TT',
+	    'mediumTime':            'h:MM:ss TT',
+	    'longTime':              'h:MM:ss TT Z',
+	    'isoDate':               'yyyy-mm-dd',
+	    'isoTime':               'HH:MM:ss',
+	    'isoDateTime':           'yyyy-mm-dd\'T\'HH:MM:sso',
+	    'isoUtcDateTime':        'UTC:yyyy-mm-dd\'T\'HH:MM:ss\'Z\'',
+	    'expiresHeaderFormat':   'ddd, dd mmm yyyy HH:MM:ss Z'
+	  };
+
+	  // Internationalization strings
+	  dateFormat.i18n = {
+	    dayNames: [
+	      'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat',
+	      'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
+	    ],
+	    monthNames: [
+	      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+	      'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'
+	    ]
+	  };
+
+	function pad(val, len) {
+	  val = String(val);
+	  len = len || 2;
+	  while (val.length < len) {
+	    val = '0' + val;
+	  }
+	  return val;
+	}
+
+	/**
+	 * Get the ISO 8601 week number
+	 * Based on comments from
+	 * http://techblog.procurios.nl/k/n618/news/view/33796/14863/Calculate-ISO-8601-week-and-year-in-javascript.html
+	 *
+	 * @param  {Object} `date`
+	 * @return {Number}
+	 */
+	function getWeek(date) {
+	  // Remove time components of date
+	  var targetThursday = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+
+	  // Change date to Thursday same week
+	  targetThursday.setDate(targetThursday.getDate() - ((targetThursday.getDay() + 6) % 7) + 3);
+
+	  // Take January 4th as it is always in week 1 (see ISO 8601)
+	  var firstThursday = new Date(targetThursday.getFullYear(), 0, 4);
+
+	  // Change date to Thursday same week
+	  firstThursday.setDate(firstThursday.getDate() - ((firstThursday.getDay() + 6) % 7) + 3);
+
+	  // Check if daylight-saving-time-switch occured and correct for it
+	  var ds = targetThursday.getTimezoneOffset() - firstThursday.getTimezoneOffset();
+	  targetThursday.setHours(targetThursday.getHours() - ds);
+
+	  // Number of weeks between target Thursday and first Thursday
+	  var weekDiff = (targetThursday - firstThursday) / (86400000*7);
+	  return 1 + Math.floor(weekDiff);
+	}
+
+	/**
+	 * Get ISO-8601 numeric representation of the day of the week
+	 * 1 (for Monday) through 7 (for Sunday)
+	 * 
+	 * @param  {Object} `date`
+	 * @return {Number}
+	 */
+	function getDayOfWeek(date) {
+	  var dow = date.getDay();
+	  if(dow === 0) {
+	    dow = 7;
+	  }
+	  return dow;
+	}
+
+	/**
+	 * kind-of shortcut
+	 * @param  {*} val
+	 * @return {String}
+	 */
+	function kindOf(val) {
+	  if (val === null) {
+	    return 'null';
+	  }
+
+	  if (val === undefined) {
+	    return 'undefined';
+	  }
+
+	  if (typeof val !== 'object') {
+	    return typeof val;
+	  }
+
+	  if (Array.isArray(val)) {
+	    return 'array';
+	  }
+
+	  return {}.toString.call(val)
+	    .slice(8, -1).toLowerCase();
+	};
+
+
+
+	  if (true) {
+	    !(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
+	      return dateFormat;
+	    }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	  } else if (typeof exports === 'object') {
+	    module.exports = dateFormat;
+	  } else {
+	    global.dateFormat = dateFormat;
+	  }
+	})(this);
+
+
+/***/ }),
 /* 104 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	var associateCtrl = function associateCtrl($scope, $location, $http, $state, userService) {
+		var authenticatedUser = userService.getUser();
+		var checkBtnDOM = document.getElementById("checkBtn");
+		$scope.checkInBtn = "Loading...";
+		checkBtnDOM.disabled = true;
+
+		if (authenticatedUser.id === undefined) {
+			$state.go('login');
+			return;
+		}
+
+		$http({
+			method: 'GET',
+			url: '/checkin'
+		}).then(function (response) {
+			if (response.data === true) {
+				$scope.checkInBtn = "Checked In";
+				$scope.hasCheckedIn = true;
+			} else {
+				$scope.checkInBtn = "Check In";
+				checkBtnDOM.disabled = false;
+			}
+		});
+
+		$scope.hasCheckedIn = false;
+		$scope.isActive = function (viewLocation) {
+			return viewLocation === $location.path();
+		};
+
+		$scope.checkIn = function () {
+			$http({
+				method: 'PUT',
+				url: '/checkin'
+			}).then(function (response) {
+				if (response.data === true) {
+					$scope.checkInBtn = "Checked In";
+					$scope.hasCheckedIn = true;
+				}
+			});
+		};
+
+		$scope.logout = function () {
+			$http({
+				method: 'GET',
+				url: '/logout/'
+			}).then(function (response) {
+				userService.setUser({});
+				$state.go('login');
+			});
+		};
+	};
+
+	exports.default = associateCtrl;
+
+/***/ }),
+/* 105 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var reportCtrl = function reportCtrl($scope, $http) {
+	  console.log();
+	};
+
+	exports.reportCtrl = reportCtrl;
+
+/***/ }),
+/* 106 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _chart, _chart2, _chart3, _chart4, _chart5;
+
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+	var data = [{
+	  label: 'Q1',
+	  value: '1950000',
+	  link: 'newchart-json-q1'
+	}, {
+	  label: 'Q2',
+	  value: '1970000',
+	  link: 'newchart-json-q2'
+	}, {
+	  label: 'Q3',
+	  value: '1910000',
+	  link: 'newchart-json-q3'
+	}, {
+	  label: 'Q4',
+	  value: '2120000',
+	  link: 'newchart-json-q4'
+	}];
+
+	var linkedData = [{
+	  id: 'q1',
+	  linkedchart: {
+	    chart: (_chart = {
+	      caption: 'Monthly Revenue',
+	      subcaption: 'First Quarter',
+	      xAxisName: 'Month',
+	      yAxisName: 'Amount',
+	      numberPrefix: '$',
+	      paletteColors: '#008ee4',
+	      showBorder: '1',
+	      borderAlpha: '20',
+	      divLineAlpha: '50',
+	      showValues: '0',
+	      bgAlpha: '0',
+	      canvasBorderAlpha: '0'
+	    }, _defineProperty(_chart, 'showBorder', '0'), _defineProperty(_chart, 'plotBorderAlpha', '0'), _defineProperty(_chart, 'usePlotGradientColor', '0'), _defineProperty(_chart, 'showAlternateHgridcolor', '0'), _chart),
+	    data: [{
+	      label: 'Jan',
+	      value: '420000'
+	    }, {
+	      label: 'Feb',
+	      value: '810000'
+	    }, {
+	      label: 'Mar',
+	      value: '720000'
+	    }]
+	  }
+	}, {
+	  id: 'q2',
+	  linkedchart: {
+	    chart: (_chart2 = {
+	      caption: 'Monthly Revenue',
+	      subcaption: 'Second Quarter',
+	      xAxisName: 'Month',
+	      yAxisName: 'Amount',
+	      numberPrefix: '$',
+	      paletteColors: '#008ee4',
+	      showBorder: '1',
+	      borderAlpha: '20',
+	      divLineAlpha: '50',
+	      showValues: '0',
+	      bgAlpha: '0',
+	      canvasBorderAlpha: '0'
+	    }, _defineProperty(_chart2, 'showBorder', '0'), _defineProperty(_chart2, 'plotBorderAlpha', '0'), _defineProperty(_chart2, 'usePlotGradientColor', '0'), _defineProperty(_chart2, 'showAlternateHgridcolor', '0'), _chart2),
+	    data: [{
+	      label: 'Apr',
+	      value: '550000'
+	    }, {
+	      label: 'May',
+	      value: '910000'
+	    }, {
+	      label: 'Jun',
+	      value: '510000'
+	    }]
+	  }
+	}, {
+	  id: 'q3',
+	  linkedchart: {
+	    chart: (_chart3 = {
+	      caption: 'Monthly Revenue',
+	      subcaption: 'Third Quarter',
+	      xAxisName: 'Month',
+	      yAxisName: 'Amount',
+	      numberPrefix: '$',
+	      paletteColors: '#008ee4',
+	      showBorder: '1',
+	      borderAlpha: '20',
+	      divLineAlpha: '50',
+	      showValues: '0',
+	      bgAlpha: '0',
+	      canvasBorderAlpha: '0'
+	    }, _defineProperty(_chart3, 'showBorder', '0'), _defineProperty(_chart3, 'plotBorderAlpha', '0'), _defineProperty(_chart3, 'usePlotGradientColor', '0'), _defineProperty(_chart3, 'showAlternateHgridcolor', '0'), _chart3),
+	    data: [{
+	      label: 'Jul',
+	      value: '680000'
+	    }, {
+	      label: 'Aug',
+	      value: '620000'
+	    }, {
+	      label: 'Sep',
+	      value: '610000'
+	    }]
+	  }
+	}, {
+	  id: 'q4',
+	  linkedchart: {
+	    chart: (_chart4 = {
+	      caption: 'Monthly Revenue',
+	      subcaption: 'Fourth Quarter',
+	      xAxisName: 'Month',
+	      yAxisName: 'Amount',
+	      numberPrefix: '$',
+	      paletteColors: '#008ee4',
+	      showBorder: '1',
+	      borderAlpha: '20',
+	      divLineAlpha: '50',
+	      showValues: '0',
+	      bgAlpha: '0',
+	      canvasBorderAlpha: '0'
+	    }, _defineProperty(_chart4, 'showBorder', '0'), _defineProperty(_chart4, 'plotBorderAlpha', '0'), _defineProperty(_chart4, 'usePlotGradientColor', '0'), _defineProperty(_chart4, 'showAlternateHgridcolor', '0'), _chart4),
+	    data: [{
+	      label: 'Oct',
+	      value: '490000'
+	    }, {
+	      label: 'Nov',
+	      value: '900000'
+	    }, {
+	      label: 'Dec',
+	      value: '730000'
+	    }]
+	  }
+	}];
+
+	var chart = (_chart5 = {
+	  caption: 'Quarterly revenue',
+	  subCaption: 'Last year',
+	  xAxisName: 'Quarter',
+	  yAxisName: 'Amount',
+	  numberPrefix: '$',
+	  paletteColors: '#008ee4',
+	  showBorder: '1',
+	  borderAlpha: '20',
+	  divLineAlpha: '50',
+	  showValues: '0',
+	  bgAlpha: '0',
+	  canvasBorderAlpha: '0'
+	}, _defineProperty(_chart5, 'showBorder', '0'), _defineProperty(_chart5, 'plotBorderAlpha', '0'), _defineProperty(_chart5, 'usePlotGradientColor', '0'), _defineProperty(_chart5, 'showAlternateHgridcolor', '0'), _chart5);
+
+	var nestedCtrl = function nestedCtrl($scope, $http) {
+	  $http({
+	    method: 'GET',
+	    url: 'http://localhost:8090/interviewQuestions/all'
+	  }).then(function (response) {
+	    console.log("Hello World" + JSON.stringify(response));
+	  });
+
+	  plainBarChart($scope, chart, data, linkedData);
+	};
+
+	function sortQuestions() {}
+
+	function plainBarChart($scope, chartInfo, data, linkedData) {
+	  $scope.greeting = 'test';
+	  var myDataSource = {
+	    chart: chartInfo,
+	    data: data,
+	    linkedData: linkedData
+	  };
+	  console.log('hello console: ' + linkedData);
+
+	  var chart = new FusionCharts({
+	    type: 'column2d',
+	    width: '500',
+	    height: '300',
+	    renderAt: 'chartContainer',
+	    dataFormat: 'json',
+	    dataSource: myDataSource
+	  });
+
+	  chart.addEventListener('chartrollover', function () {
+	    $('#slide-in').show('slow');
+	  });
+
+	  chart.addEventListener('chartrollout', function () {
+	    $('#slide-in').hide('slow');
+	  });
+
+	  chart.render();
+	}
+
+	exports.nestedCtrl = nestedCtrl;
+
+/***/ }),
+/* 107 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	var chart = {
+	    caption: "Asscoiates Available vs. Associate Confirmed",
+	    subCaption: "Revature LLC",
+	    xAxisname: "Batch Type",
+	    yAxisName: "Number of Associate",
+	    //    numberPrefix: "$",
+	    paletteColors: "#ff0000,#0075c2",
+	    bgColor: "#ffffff",
+	    borderAlpha: "20",
+	    showCanvasBorder: "0",
+	    usePlotGradientColor: "0",
+	    plotBorderAlpha: "10",
+	    legendBorderAlpha: "0",
+	    legendShadow: "0",
+	    valueFontColor: "#ffffff",
+	    showXAxisLine: "1",
+	    xAxisLineColor: "#999999",
+	    divlineColor: "#999999",
+	    divLineDashed: "1",
+	    showAlternateHGridColor: "0",
+	    subcaptionFontBold: "0",
+	    subcaptionFontSize: "14",
+	    showHoverEffect: "1"
+	};
+
+	var categories = void 0;
+
+	var dataset = [{
+	    "seriesname": "Food Products",
+	    "data": [{
+	        "value": "121000"
+	    }, {
+	        "value": "135000"
+	    }, {
+	        "value": "123500"
+	    }, {
+	        "value": "145000"
+	    }]
+	}, {
+	    "seriesname": "Non-Food Products",
+	    "data": [{
+	        "value": "131400"
+	    }, {
+	        "value": "154800"
+	    }, {
+	        "value": "98300"
+	    }, {
+	        "value": "131800"
+	    }]
+	}];
+
+	var barCtrl = function barCtrl($scope, $http) {
+	    graphBuilder($scope, $http);
+	};
+
+	function graphBuilder($scope, $http) {
+	    $http({
+	        method: 'GET',
+	        url: '/batchtype/all'
+	    }).then(function (response) {
+	        var stuff = [];
+	        var value = response.data;
+	        value.forEach(function (item) {
+	            stuff.push({ "label": item.value });
+	        });
+	        categories = [{
+	            "category": stuff
+	        }];
+	        plainBarChart2($scope, chart, categories, dataset);
+	    });
+	}
+
+	function plainBarChart2($scope, chartstuff, categories, dataset) {
+
+	    var myDataSource = {
+	        chart: chartstuff,
+	        categories: categories,
+	        dataset: dataset
+	    };
+
+	    var chart = new FusionCharts({
+	        type: 'stackedcolumn3d',
+	        renderAt: 'chart-container',
+	        width: '550',
+	        height: '350',
+	        dataFormat: 'json',
+	        dataSource: myDataSource
+	    });
+
+	    console.log("his chart: " + chart);
+	    chart.render();
+	}
+
+	exports.barCtrl = barCtrl;
+
+/***/ }),
+/* 108 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var loginCtrl = function loginCtrl($scope, $http, $state, userService) {
+	  var loginBtn = document.getElementById('loginBtn');
+	  $scope.username = '';
+	  $scope.password = '';
+	  $scope.errorMsgShow = false;
+
+	  $scope.submit = function () {
+	    loginBtn.disabled = true;
+	    loginBtn.innerHTML = 'Logging in...';
+	    $scope.errorMsgShow = false;
+
+	    if ($scope.username === '' || $scope.username === undefined) {
+	      $scope.errorMsg = 'Please input a Username.';
+	      $scope.errorMsgShow = true;
+	      loginBtn.disabled = false;
+	      loginBtn.innerHTML = 'Log In';
+	    } else if ($scope.password === '' || $scope.password === undefined) {
+	      $scope.errorMsg = 'Please input a Password.';
+	      $scope.errorMsgShow = true;
+	      loginBtn.disabled = false;
+	      loginBtn.innerHTML = 'Log In';
+	    } else {
+	      $http({
+	        method: 'POST',
+	        url: '/login',
+	        data: { username: $scope.username, password: $scope.password }
+	      }).then(function (response) {
+	        userService.setUser(response.data);
+	        if (response.data.permission !== undefined) {
+	          $state.go('manager.home');
+	        } else {
+	          $state.go('associate.home');
+	        }
+	      }, function () {
+	        $scope.errorMsg = 'Username or Password is incorrect.';
+	        $scope.errorMsgShow = true;
+	        loginBtn.disabled = false;
+	        loginBtn.innerHTML = 'Log In';
+	      });
+	    }
+	  };
+	};
+
+	exports.default = loginCtrl;
+
+/***/ }),
+/* 109 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	// ----------------------------------- Start Variables ----------------------------------- //
+
+	var YEAR = 'Year';
+	var MONTH = 'Month';
+	var WEEK = 'Week';
+
+	var scale = void 0; // The scale of the graph equal to the constant values WEEK, MONTH, or YEAR.
+	var focalDate = void 0; // The date that was used to create graph view.
+	var firstColumnIndex = void 0; // The index of the first column relative dataSet the view was built from.
+
+	var originalData = void 0; // The data retrieved from the data Base.
+	var displayData = void 0; // A window of the data set being displayed determined by the focal Date.
+	var diaplayLabels = void 0; // The column labels for displayData.
+
+	var weeklyData = void 0; // Data grouped by day and displayed by week.
+	var monthlyData = void 0; // Data grouped by week and displayed 5 weeks at a time with focal date
+	// determining the center.
+	var yearlyData = void 0; // Data grouped by quarter year displaying the year focal point resides in.
+
+	var displayChart = void 0;
+
+	var weeklyLabels = [{
+	  label: 'Sunday'
+	}, {
+	  label: 'Monday'
+	}, {
+	  label: 'Tuesday'
+	}, {
+	  label: 'Wednesday'
+	}, {
+	  label: 'Thursday'
+	}, {
+	  label: 'Friday'
+	}, {
+	  label: 'Saturday'
+	}];
+
+	var yearlyLabels = [{
+	  label: '1st Quarter'
+	}, {
+	  label: '2nd Quarter'
+	}, {
+	  label: '3rd Quarter'
+	}, {
+	  label: '4th Quarter'
+	}];
+
+	/**
+	 * Chart display setup.
+	 */
+	var chartPoperties = {
+	  caption: 'Attendance Associates in Stagging',
+	  subCaption: scale,
+	  xAxisname: scale,
+	  yAxisName: 'Percentage of Attendance',
+	  numberPrefix: '%',
+	  paletteColors: '#0075c2',
+	  bgColor: '#ffffff',
+	  borderAlpha: '20',
+	  showCanvasBorder: '0',
+	  usePlotGradientColor: '0',
+	  plotBorderAlpha: '10',
+	  legendBorderAlpha: '0',
+	  legendShadow: '0',
+	  valueFontColor: '#ffffff',
+	  showXAxisLine: '1',
+	  xAxisLineColor: '#999999',
+	  divlineColor: '#999999',
+	  divLineDashed: '1',
+	  showAlternateHGridColor: '0',
+	  subcaptionFontBold: '0',
+	  subcaptionFontSize: '14',
+	  showHoverEffect: '1'
+	};
+
+	// ----------------------------------- End Variables ----------------------------------- //
+
+
+	// ----------------------------------- Start Utilities ----------------------------------- //
+
+	/**
+	 * This function will conduct a recursive binary search on a section of an array.
+	 *
+	 * @param data - array to be searched
+	 * @param searchVal - value searching for
+	 * @param start - starting index
+	 * @param stop - stopping index
+	 * @param cmpFunction - a function of the form foo(searchVal, data[i]) that returns an integer
+	 *                      comparison value
+	 * @returns - the index corresponding to the closest value to searchVal.
+	 */
+	function binarySearch(data, searchVal, start, stop, cmpFunction) {
+	  if (start >= stop) {
+	    return stop;
+	  }
+	  var midpoint = Math.floor((start + stop) / 2);
+
+	  var value = cmpFunction(searchVal, data[midpoint]);
+	  if (value === 0) {
+	    return midpoint;
+	  } else if (value > 0) {
+	    return binarySearch(data, searchVal, midpoint + 1, stop, cmpFunction);
+	  }
+
+	  return binarySearch(data, searchVal, start, midpoint, cmpFunction);
+	}
+
+	/**
+	 * This is a wrapper function for the binary search it searches an entire array.
+	 *
+	 * @param data - array to be searched
+	 * @param searchVal - value searching for
+	 * @param cmpFunction - a function of the form foo(searchVal, data[i]) that returns an integer
+	 *                      comparison value
+	 * @returns - the index corresponding to the closest value to searchVal.
+	 */
+	function binarySearchHelper(data, searchVal, cmpFunction) {
+	  return binarySearch(data, searchVal, 0, data.length, cmpFunction);
+	}
+
+	/**
+	 * Converts a moment object to the first of the week.
+	 *
+	 * @param momentObj - date of interest.
+	 * @returns - sunday of the week containing momentObj.
+	 */
+	function convertToFirstOfTheWeek(momentObj) {
+	  var dayValue = momentObj.day();
+	  var newMoment = momentObj.subtract(dayValue, 'days');
+	  return moment(newMoment.format('YYYY-MM-DD'));
+	}
+
+	/**
+	 * Converts a moment object to a moment representing the first of the
+	 * month.
+	 *
+	 * @param momentObj - moment object to be evaluated
+	 * @returns - if momentObj is in month A then it returns the first of month A
+	 *            with time zeroed.
+	 */
+	function convertToFirstOfMonth(momentObj) {
+	  var dayValue = momentObj.format('DD') - 1;
+	  var newMoment = momentObj.subtract(dayValue, 'days');
+	  return moment(newMoment.format('YYYY-MM-DD'));
+	}
+
+	/**
+	 * Converts a moment object to the first day of the quarter year momentObj(A) is within.
+	 *
+	 * @param momentObj - date of interest.
+	 * @returns - jan 1st <= (A) <= mar 31st : jan 1st
+	 *            apr 1st <= (A) <= jun 30st : jun 1st
+	 *            jul 1st <= (A) <= sep 30st : jul 1st
+	 *            oct 1st <= (A) <= dec 31st : oct 1st
+	 *            (Time is zeroed)
+	 */
+	function convertToFirstOfQuarter(momentObj) {
+	  var monthValue = momentObj.month() % 3;
+	  var newMoment = momentObj.subtract(monthValue, 'months');
+	  newMoment = convertToFirstOfMonth(momentObj);
+
+	  return moment(newMoment.format('YYYY-MM-DD'));
+	}
+
+	/**
+	 * Converts to the first of the year that is contained in month.
+	 *
+	 * @param momentObj - moment object to be evaluated
+	 * @returns - if momentObj is in year A then it returns the jan 1st of year A
+	 *            with time zeroed.
+	 */
+	function convertToFirstOfYear(momentObj) {
+	  var monthValue = momentObj.month();
+	  var newMoment = momentObj.subtract(monthValue, 'months');
+	  newMoment = convertToFirstOfMonth(momentObj);
+	  return moment(newMoment.format('YYYY-MM-DD'));
+	}
+
+	/**
+	 * Compares searchVal(a) to currentVal.time(b) by creating date objects that ignore time.
+	 *
+	 * @searchVal - a moment object to be searched.
+	 * @currentVal - an object with an attribute time that can be parsed by moment.
+	 *
+	 * @return a == b (0), a < b (positive value), a > b (negative value)
+	 */
+	function cmpDay(searchVal, currentVal) {
+	  var parseMoment = moment(moment(currentVal.time).format('YYYY-MM-DD'));
+	  var zeroSearch = moment(searchVal.format('YYYY-MM-DD'));
+
+	  return zeroSearch.diff(parseMoment);
+	}
+
+	// ----------------------------------- End Utilities ----------------------------------- //
+
+
+	// ----------------------------------- Start Weekly ----------------------------------- //
+
+	/**
+	 * Function that "builds" weeklyData, for current implementation originalData is already in the
+	 * correct form. A Copy should be made if weeklyData needs to be edited in the future.
+	 */
+	function buildWeekly() {
+	  weeklyData = originalData;
+	}
+
+	/**
+	 * Creates a view of weeklyData using date as the focal point, if date is undefined it uses
+	 * todays date.
+	 *
+	 * @param $scope
+	 * @param date - a date within week to be viewed.
+	 * @returns
+	 */
+	function setWeekly($scope, tarDate) {
+	  var date = tarDate;
+	  if (date === undefined) {
+	    date = moment();
+	  }
+	  var currDay = date.day();
+
+	  date.subtract(currDay, 'days');
+
+	  var index = binarySearchHelper(weeklyData, date, cmpDay);
+
+	  // Set global view properties.
+	  firstColumnIndex = index;
+	  focalDate = moment(date.format());
+	  scale = WEEK;
+
+	  var dataString = '[{"seriesname":"Weekly","data":[';
+
+	  var i = void 0;
+	  for (i = 0; i < 7; i += 1) {
+	    var hourCount = weeklyData[index].hourCount;
+	    var hourEstimate = weeklyData[index].hourEstimate;
+	    index += 1;
+	    var value = Math.floor(hourCount / hourEstimate * 100);
+	    dataString += '{"value":"' + value + '"}';
+	    if (i !== 6) {
+	      dataString += ',';
+	    }
+	  }
+	  dataString += ']}]';
+
+	  displayData = JSON.parse(dataString);
+	  diaplayLabels = weeklyLabels;
+
+	  displayChart($scope);
+	}
+
+	function weeklyColumnClick(ev, props, $scope) {
+	  // TODO: display modal.
+	  $scope.selectedValue = '$props.displayValue}/' + props.categoryLabel + '/' + props.dataIndex;
+	}
+
+	// ----------------------------------- End Weekly ----------------------------------- //
+
+
+	// ----------------------------------- Start Monthly ----------------------------------- //
+
+	function buildMonthlyForEach(item) {
+	  var identityString = convertToFirstOfTheWeek(moment(item.time));
+	  var index = binarySearchHelper(monthlyData, moment(identityString), cmpDay);
+
+	  if (index < 0 || index >= monthlyData.length || monthlyData.length === 0) {
+	    var itemCpy = JSON.parse(JSON.stringify(item));
+	    itemCpy.time = identityString;
+	    monthlyData.push(itemCpy);
+	  } else {
+	    var existing = monthlyData[index];
+	    existing.hourCount = parseFloat(existing.hourCount) + parseFloat(item.hourCount);
+	    existing.hourEstimate = parseFloat(existing.hourEstimate) + parseFloat(item.hourEstimate);
+	  }
+	}
+
+	function buildMonthly() {
+	  monthlyData = [];
+	  originalData.forEach(buildMonthlyForEach);
+	}
+
+	function setMonthly($scope, tarDate) {
+	  var date = tarDate;
+	  if (date === undefined) {
+	    date = moment();
+	  }
+
+	  date = convertToFirstOfTheWeek(date);
+
+	  var index = binarySearchHelper(monthlyData, date, cmpDay) - 3;
+	  if (index < 0) {
+	    index = 0;
+	  }
+
+	  // Set global view properties
+	  firstColumnIndex = index;
+	  focalDate = moment(date.format());
+	  scale = MONTH;
+
+	  var dataString = '[{"seriesname":"Monthly","data":[';
+	  var valueString = '[';
+
+	  var i = void 0;
+	  for (i = 0; i < 5; i += 1) {
+	    var hourCount = monthlyData[index].hourCount;
+	    var hourEstimate = monthlyData[index].hourEstimate;
+	    index += 1;
+
+	    var start = moment(monthlyData[index].time).format('MM/DD');
+	    var stop = moment(monthlyData[index + 1].time).subtract(1, 'days').format('MM/DD');
+	    valueString += '{"label":"' + start + '-' + stop + '"}';
+
+	    var value = Math.floor(hourCount / hourEstimate * 100);
+	    dataString += '{"value":"' + value + '"}';
+	    if (i !== 4) {
+	      dataString += ',';
+	      valueString += ',';
+	    }
+	  }
+	  dataString += ']}]';
+	  valueString += ']';
+
+	  displayData = JSON.parse(dataString);
+	  diaplayLabels = JSON.parse(valueString);
+
+	  displayChart($scope);
+	}
+
+	function monthlyColumnClick(ev, props, $scope) {
+	  var newDateIndex = props.dataIndex + firstColumnIndex;
+	  setWeekly($scope, moment(monthlyData[newDateIndex].time));
+
+	  $scope.selectedValue = '$props.displayValue}/' + props.categoryLabel + '/' + props.dataIndex;
+	}
+
+	// ----------------------------------- End Monthly ----------------------------------- //
+
+
+	// ----------------------------------- Start Yearly ----------------------------------- //
+
+	function buildYearlyForEach(item) {
+	  var identityString = convertToFirstOfQuarter(moment(item.time));
+	  var index = binarySearchHelper(yearlyData, moment(identityString), cmpDay);
+
+	  console.log('Identity String: ' + identityString);
+	  console.log('COUNT/ESTAMATE: ' + item.hourCount + '/' + item.hourEstimate);
+	  console.log('Item: ' + JSON.stringify(item, null, 2));
+	  console.log('Data: ' + JSON.stringify(yearlyData, null, 2));
+
+	  if (index < 0 || index >= yearlyData.length || yearlyData.length === 0) {
+	    var itemCpy = JSON.parse(JSON.stringify(item));
+	    itemCpy.time = identityString;
+	    yearlyData.push(itemCpy);
+	  } else {
+	    var existing = yearlyData[index];
+	    existing.hourCount = parseFloat(existing.hourCount) + parseFloat(item.hourCount);
+	    existing.hourEstimate = parseFloat(existing.hourEstimate) + parseFloat(item.hourEstimate);
+	  }
+	}
+
+	function buildYearly() {
+	  yearlyData = [];
+	  originalData.forEach(buildYearlyForEach);
+	}
+
+	function setYearly($scope, tarDate) {
+	  var date = tarDate;
+	  if (date === undefined) {
+	    date = moment();
+	  }
+
+	  date = convertToFirstOfYear(date);
+
+	  var index = binarySearchHelper(yearlyData, date, cmpDay);
+
+	  // Set global view properties.
+	  firstColumnIndex = index;
+	  focalDate = moment(date.format());
+	  scale = YEAR;
+
+	  var dataString = '[{"seriesname":"Yearly","data":[';
+
+	  var i = void 0;
+	  for (i = 0; i < 3; i += 1) {
+	    var hourCount = yearlyData[index].hourCount;
+	    var hourEstimate = yearlyData[index].hourEstimate;
+	    index += 1;
+
+	    var value = Math.floor(hourCount / hourEstimate * 100);
+	    dataString += '{"value":"' + value + '"}';
+	    if (i !== 2) {
+	      dataString += ',';
+	    }
+	  }
+	  dataString += ']}]';
+
+	  displayData = JSON.parse(dataString);
+	  diaplayLabels = yearlyLabels;
+
+	  displayChart($scope);
+	}
+
+	function yearlyColumnClick(ev, props, $scope) {
+	  var newDateIndex = props.dataIndex + firstColumnIndex;
+	  setMonthly($scope, moment(yearlyData[newDateIndex].time));
+
+	  $scope.selectedValue = '$props.displayValue}/' + props.categoryLabel + '/' + props.dataIndex;
+	}
+
+	// ----------------------------------- End Yearly ----------------------------------- //
+
+
+	// ----------------------------------- Start Nav ----------------------------------- //
+
+	function setNavFunctions($scope) {
+	  $scope.step = function step(steps) {
+	    switch (scale) {
+	      case WEEK:
+	        focalDate = focalDate.add(steps, 'days');
+	        setWeekly($scope, focalDate);
+	        break;
+	      case MONTH:
+	        focalDate = focalDate.add(steps, 'months');
+	        setMonthly($scope, focalDate);
+	        break;
+	      case YEAR:
+	        focalDate = focalDate.add(steps, 'years');
+	        setYearly($scope, focalDate);
+	        break;
+	      default:
+	    }
+	  };
+
+	  $scope.zoomOut = function zoomOut() {
+	    if (scale === WEEK) {
+	      setMonthly($scope, focalDate);
+	    } else if (scale === MONTH) {
+	      setYearly($scope, focalDate);
+	    }
+	  };
+	}
+
+	// ----------------------------------- End Nav ----------------------------------- //
+
+
+	// ----------------------------------- Start Main ----------------------------------- //
+
+	displayChart = function displayChartFunc($scope) {
+	  var categories = [{
+	    category: diaplayLabels
+	  }];
+
+	  var dataset = displayData;
+
+	  var myDataSource = {
+	    chart: chartPoperties,
+	    categories: categories,
+	    dataset: dataset
+	  };
+
+	  $scope.selectedValue = 'nothing';
+
+	  var chart = new FusionCharts({
+	    type: 'stackedcolumn3d',
+	    renderAt: 'attn-chart-container',
+	    width: '550',
+	    height: '350',
+	    dataFormat: 'json',
+	    dataSource: myDataSource,
+	    events: {
+	      dataplotclick: function dataplotclick(ev, props) {
+	        $scope.$apply(function () {
+	          switch (scale) {
+	            case WEEK:
+	              weeklyColumnClick(ev, props, $scope);
+	              break;
+	            case MONTH:
+	              monthlyColumnClick(ev, props, $scope);
+	              break;
+	            case YEAR:
+	              yearlyColumnClick(ev, props, $scope);
+	              break;
+	            default:
+	          }
+	        });
+	      }
+	    }
+	  });
+
+	  chart.render();
+	};
+
+	/**
+	 * Build all graphs and set default graph to current week view.
+	 */
+	function buildGraphs($scope) {
+	  buildWeekly();
+	  setWeekly($scope);
+
+	  buildMonthly();
+	  buildYearly();
+	}
+
+	/**
+	 * Request checkin data from rest controller.
+	 */
+	function attendanceRequest($scope, $http) {
+	  $http({
+	    method: 'GET',
+	    url: '/checkin/report'
+	  }).then(function (response) {
+	    originalData = response.data;
+	    buildGraphs($scope);
+	  });
+	}
+
+	/**
+	 * Request data and set scope bindings.
+	 */
+	var attendanceBarGraphCtrl = function attendanceBarGraphCtrl($scope, $http) {
+	  $scope.zoomOutStr = 'Zoom Out';
+	  attendanceRequest($scope, $http);
+	  setNavFunctions($scope);
+	};
+
+	exports.attendanceBarGraphCtrl = attendanceBarGraphCtrl;
+
+	// ----------------------------------- End Main ----------------------------------- //
+
+/***/ }),
+/* 110 */
 /***/ (function(module, exports) {
 
 	/*

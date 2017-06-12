@@ -2,6 +2,7 @@ package com.revature.services;
 
 import java.util.Set;
 
+import com.revature.entities.Associate;
 import com.revature.entities.Job;
 
 public interface JobService {
@@ -13,6 +14,8 @@ public interface JobService {
 	public void update(Job job);
 
 	public Job findById(long id);
+	
+	public Set<Job> findByAssociate(Associate associate);
 
 	public Set<Job> getAll();
 

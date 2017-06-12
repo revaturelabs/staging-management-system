@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.revature.entities.Associate;
 import com.revature.entities.Job;
 import com.revature.services.JobService;
 
@@ -36,6 +37,7 @@ public class JobControllerImpl {
 	@PostMapping
 	public void addjob(@RequestBody Job job) {
 		job.setId(0l);
+		System.out.println("Job: " + job);
 		jobService.add(job);
 	}
 
@@ -73,6 +75,18 @@ public class JobControllerImpl {
 	public Job findById(@PathVariable long id) {
 		return jobService.findById(id);
 	}
+	
+	 /**
+   * Gets a job with id.
+   * 
+   * @param id
+   *            - id of job to be retrieved.
+   * @return job object from dataBase.
+   */
+  @PostMapping("/associate")
+  public Set<Job> findById(@RequestBody Associate associate) {
+    return jobService.findByAssociate(associate);
+  }
 
 	/**
 	 * Gets all jobs.
