@@ -6,12 +6,13 @@ import moment from 'moment';
 
 import { managerCtrl } from './manager-pages/manager';
 import { managerHomeCtrl } from './manager-pages/home/home';
-import managerCheckinsCtr from './manager-pages/home/checkin/checkin';
-//import { interviewsCtrl } from './manager-pages/home/interviews/interviews';
+import managerCheckinsCtrl from './manager-pages/home/checkin/checkin';
+import { interviewsCtrl } from './manager-pages/home/interviews/interviews';
 import managerCreateCtrl from './manager-pages/create/create';
 import { batchCtrl } from './manager-pages/create/batch';
 import { clientCtrl } from './manager-pages/create/client';
 import { userCtrl } from './manager-pages/create/user';
+import { locCtrl } from './manager-pages/create/location';
 import managerAdvancedAssociatesCtrl from './manager-pages/advanced/associates';
 import profileCtrl from './associate-pages/profile/profile';
 import associateInterviewCtrl from './associate-pages/interview/interview';
@@ -19,8 +20,8 @@ import associateCtrl from './associate-pages/associate';
 import { reportCtrl } from './reports/reports';
 import { nestedCtrl } from './reports/nestedGraph';
 import { barCtrl } from './reports/barGraph';
-import { attendanceBarGraphCtrl } from './reports/attendance/attendanceBarGraph';
 import loginCtrl from './login/login';
+import { attendanceBarGraphCtrl } from './reports/attendance/attendanceBarGraph';
 
 require('fusioncharts/fusioncharts.charts')(FusionCharts);
 
@@ -48,16 +49,8 @@ routerApp.run(($uiRouter, $trace, $rootScope) => {
   $trace.enable('TRANSITION');
 
 	//Global Functions
-	$rootScope.dateConverter = (localDateTime) => {
-		console.log('hello')
-		let months = [
-			"January", "February", "March", "April", "May", "June",
-			"July", "August", "September", "October", "November", "December"
-		]
-								// month                             day
-		return '' + months[localDateTime[1]-1] + ' ' + localDateTime[2] + ' '
-								// hour                                                              minute                AM/PM
-					+ (localDateTime[3] > 12 ? localDateTime[3] - 12 : localDateTime) + ':' + localDateTime[4] + (localDateTime > 12 ? 'p.m.' : 'a.m.')
+	$rootScope.dateConverter = (time) => {
+    return moment(time).format('MMM D, hh:mm a');
 	};
 });
 
@@ -97,6 +90,12 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       templateUrl: 'manager-pages/create/client.html',
       controller: clientCtrl,
     })
+    .state('manager.create.location', {
+      url: '/location',
+      templateUrl: 'manager-pages/create/location.html',
+      controller: locCtrl,
+
+    })
     .state('manager.home', {
       url: '/home',
       views: {
@@ -110,13 +109,18 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
         },
         'interviews@manager.home': {
           templateUrl: 'manager-pages/home/interviews/interviews.html',
-          //controller: interviewsCtrl,
+          controller: interviewsCtrl,
         },
         'checkins@manager.home': {
           templateUrl: 'manager-pages/home/checkin/checkin.html',
-            controller: managerCheckinsCtr,
+            controller: managerCheckinsCtrl,
         },
       },
+    })
+    .state('manager.associateView', {
+      url: '/associate/:id',
+      templateUrl: 'associate-pages/profile/profile.html',
+      controller: profileCtrl,
     })
     .state('manager.advanced', {
       url: '/advanced',

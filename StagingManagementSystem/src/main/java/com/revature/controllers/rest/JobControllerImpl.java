@@ -37,6 +37,7 @@ public class JobControllerImpl {
 	@PostMapping
 	public void addjob(@RequestBody Job job) {
 		job.setId(0l);
+		System.out.println("Job: " + job);
 		jobService.add(job);
 	}
 

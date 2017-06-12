@@ -47,8 +47,6 @@
 	'use strict';
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-	//import { interviewsCtrl } from './manager-pages/home/interviews/interviews';
-
 
 	var _angular = __webpack_require__(1);
 
@@ -66,59 +64,69 @@
 
 	var _fusioncharts2 = _interopRequireDefault(_fusioncharts);
 
-	var _moment = __webpack_require__(92);
+	var _manager = __webpack_require__(92);
 
-	var _moment2 = _interopRequireDefault(_moment);
+	var _home = __webpack_require__(93);
 
-	var _manager = __webpack_require__(210);
-
-	var _home = __webpack_require__(211);
-
-	var _checkin = __webpack_require__(212);
+	var _checkin = __webpack_require__(94);
 
 	var _checkin2 = _interopRequireDefault(_checkin);
 
-	var _create = __webpack_require__(213);
+	var _interviews = __webpack_require__(95);
+
+	var _create = __webpack_require__(96);
 
 	var _create2 = _interopRequireDefault(_create);
 
-	var _batch = __webpack_require__(214);
+	var _batch = __webpack_require__(97);
 
-	var _client = __webpack_require__(215);
+	var _client = __webpack_require__(98);
 
-	var _user = __webpack_require__(216);
+	var _user = __webpack_require__(99);
 
-	var _associates = __webpack_require__(217);
+	var _associates = __webpack_require__(100);
 
 	var _associates2 = _interopRequireDefault(_associates);
 
-	var _profile = __webpack_require__(218);
+	var _profile = __webpack_require__(101);
 
 	var _profile2 = _interopRequireDefault(_profile);
 
-	var _interview = __webpack_require__(219);
+	var _interview = __webpack_require__(102);
 
 	var _interview2 = _interopRequireDefault(_interview);
 
-	var _associate = __webpack_require__(221);
+	var _associate = __webpack_require__(104);
 
 	var _associate2 = _interopRequireDefault(_associate);
 
-	var _reports = __webpack_require__(222);
+	var _reports = __webpack_require__(105);
 
-	var _nestedGraph = __webpack_require__(223);
+	var _nestedGraph = __webpack_require__(106);
 
+<<<<<<< HEAD
 	var _barGraph = __webpack_require__(228);
 
 	var _attendanceBarGraph = __webpack_require__(224);
 
 	var _login = __webpack_require__(225);
+=======
+	var _barGraph = __webpack_require__(107);
+
+	var _login = __webpack_require__(108);
+>>>>>>> 8ba3de4fbdcebedaa0f1ffd913cab6d62ee0dc12
 
 	var _login2 = _interopRequireDefault(_login);
 
+	var _attendanceBarGraph = __webpack_require__(109);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+<<<<<<< HEAD
 	__webpack_require__(226)(_fusioncharts2.default);
+=======
+	__webpack_require__(110)(_fusioncharts2.default);
+>>>>>>> 8ba3de4fbdcebedaa0f1ffd913cab6d62ee0dc12
 
 	var Visualizer = window['ui-router-visualizer'].Visualizer;
 
@@ -200,8 +208,8 @@
 	        templateUrl: 'manager-pages/home/priorityMapped.html'
 	      },
 	      'interviews@manager.home': {
-	        templateUrl: 'manager-pages/home/interviews/interviews.html'
-	        //controller: interviewsCtrl,
+	        templateUrl: 'manager-pages/home/interviews/interviews.html',
+	        controller: _interviews.interviewsCtrl
 	      },
 	      'checkins@manager.home': {
 	        templateUrl: 'manager-pages/home/checkin/checkin.html',
@@ -46805,649 +46813,472 @@
 
 /***/ }),
 /* 92 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	var managerCtrl = function managerCtrl($scope, $state, $location, $http) {
+		$http({
+			method: 'GET',
+			url: '/login/isManager'
+		}).then(function (response) {
+			if (!response.data) $state.go('login');
+		});
+
+		$scope.isActive = function (viewLocation) {
+			return viewLocation === $location.path();
+		};
+
+		$scope.logout = function () {
+			$http({
+				method: 'GET',
+				url: '/logout/'
+			}).then(function (response) {
+				$state.go('login');
+			});
+		};
+
+		$scope.manager = { name: 'Joe' };
+	};
+
+	exports.managerCtrl = managerCtrl;
+
+/***/ }),
+/* 93 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var managerHomeCtrl = function managerHomeCtrl($scope) {
+	  $scope.view2 = 'interviews';
+	  $scope.selectView1 = function (selectedView) {
+	    if (selectedView === 'available') {
+	      $scope.availableSelecter = { 'background-color': 'gray' };
+	      $scope.prioritySelecter = { 'background-color': '#f8f8f8' };
+	      $scope.view1 = 'available';
+	    } else if (selectedView === 'priority') {
+	      $scope.availableSelecter = { 'background-color': '#f8f8f8' };
+	      $scope.prioritySelecter = { 'background-color': 'gray' };
+	      $scope.view1 = 'priorityMapped';
+	    }
+	  };
+	  $scope.selectView2 = function (selectedView) {
+	    if (selectedView === 'interviews') {
+	      $scope.interviewsSelecter = { 'background-color': 'gray' };
+	      $scope.checkinsSelecter = { 'background-color': '#f8f8f8' };
+	      $scope.view2 = 'interviews';
+	    } else if (selectedView === 'checkins') {
+	      $scope.interviewsSelecter = { 'background-color': '#f8f8f8' };
+	      $scope.checkinsSelecter = { 'background-color': 'gray' };
+	      $scope.view2 = 'checkins';
+	    }
+	  };
+
+	  // initialize our named views
+	  $scope.selectView1('available');
+	  $scope.selectView2('interviews');
+	};
+
+	exports.managerHomeCtrl = managerHomeCtrl;
+
+/***/ }),
+/* 94 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	/**
+	 * Created by colts on 6/8/2017.
+	 */
+	var managerCheckinsCtrl = function managerCheckinsCtrl(scope, $http) {
+
+	    $http.get("checkin/allTodays").then(function (result) {
+	        $scope.checkins = result.data;
+	    });
+	};
+
+	exports.default = managerCheckinsCtrl;
+
+/***/ }),
+/* 95 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	var interviewsCtrl = function interviewsCtrl($scope, $http) {
+	    console.log("started");
+	    $http({
+	        method: "GET",
+	        url: "interviews/all"
+	    }).then(function mySuccess(response) {
+	        window.interviews = response.data;
+	        $scope.interviews = response.data;
+	    }, function myError(response) {
+	        console.log("error!");
+	    });
+
+	    $scope.interviewSelect = function (interview) {
+	        $scope.interviewSideTable = { "interview": interview };
+	    };
+	};
+
+	exports.interviewsCtrl = interviewsCtrl;
+
+/***/ }),
+/* 96 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var managerCreateCtrl = function managerCreateCtrl($scope, $state) {
+	  $scope.$state = $state;
+	};
+
+	exports.default = managerCreateCtrl;
+
+/***/ }),
+/* 97 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var batchCtrl = function batchCtrl($scope, $http) {
+	  console.log('starting');
+
+	  $(function () {
+	    $('#datetimepicker1').datetimepicker();
+	  });
+
+	  $http.get('batchtype/all.json').then(function (response) {
+	    // console.log(response.data[0].id)
+	    console.log(response);
+	    $scope.posts2 = response;
+	  }, function () {
+	    console.log("failure");
+	  });
+
+	  $http.get('location/all.json').then(function (response) {
+	    $scope.posts = response;
+	  }, function () {
+	    console.log("failure");
+	  });
+
+	  $scope.submit = function () {
+	    var item = JSON.stringify($scope.batch);
+	    console.log(item);
+	    var str = item.replace(/\\/g, '');
+	    var str2 = str.replace('"{', '{');
+	    var str3 = str2.replace('}"', '}');
+	    var str4 = str3.replace('"{', '{');
+	    var str5 = str4.replace('}"', '}');
+	    var str6 = str5.replace('"{', '{');
+	    var str7 = str6.replace('}"', '}');
+	    console.log(str7);
+	    $http.post('/batch', str7).then(function (response) {
+	      console.log("success");
+	      console.log(response);
+	    }, function () {
+	      console.log("failure");
+	    });
+	  };
+	};
+
+	exports.batchCtrl = batchCtrl;
+
+/***/ }),
+/* 98 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var clientCtrl = function clientCtrl($scope, $http) {
+	  $scope.submit = function () {
+	    var item = JSON.stringify($scope.client);
+	    console.log(item);
+	    $http.post('/client', item).then(function (response) {
+	      console.log("success");
+	    }, function () {
+	      console.log("failure");
+	    });
+	  };
+	};
+
+	exports.clientCtrl = clientCtrl;
+
+/***/ }),
+/* 99 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var userCtrl = function userCtrl($scope, $http) {
+
+	  $http.get('batchtype/all.json').then(function (response) {
+	    // console.log(response.data[0].id)
+	    console.log(response.data);
+	    $scope.posts = response.data;
+	  }, function () {
+	    console.log("failure");
+	  });
+
+	  $scope.submit = function () {
+	    var item = JSON.stringify($scope.user);
+	    //need 2 different post requests for manager and associate
+	    console.log(item);
+	    console.log($scope.user.type == 'associate');
+	    if ($scope.user.type == 'associate') {
+	      console.log('in associate');
+	      $http.post('/associate', item).then(function (response) {
+	        console.log("success");
+	      }, function () {
+	        console.log("failure");
+	      });
+	    };
+	    if ($scope.user.type == 'manager') {
+	      console.log('in manager');
+	      $http.post('/manager', item).then(function (response) {
+	        console.log("success");
+	      }, function () {
+	        console.log("failure");
+	      });
+	    };
+	  };
+	};
+
+	exports.userCtrl = userCtrl;
+
+/***/ }),
+/* 100 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var managerAdvancedAssociatesCtrl = function managerAdvancedAssociatesCtrl($scope, $http) {
+	  window.scope = $scope;
+
+	  $http.get('batchtype/all').then(function (data) {
+	    $scope.batchtypes = data.data;
+	    $scope.selectedBatchTypes = [];
+	    $scope.batchtypes.forEach(function (type) {
+	      return $scope.selectedBatchTypes.push(type);
+	    });
+	  });
+
+	  $http.get('associate/all').then(function (data) {
+	    $scope.associates = data.data;
+	    window.associates = data.data;
+	  }, function (data) {
+	    console.log('failed');
+	  });
+
+	  $scope.trainerFilter = function (associate) {
+	    return true;
+	  };
+
+	  $scope.isSelectedBatchType = function (batchType) {
+	    return $scope.selectedBatchType.filter(function (type) {
+	      return type.value === batchType.value;
+	    }) >= 1;
+	  };
+
+	  $scope.toggleSelectedBatchTypes = function (selectedBatch) {
+	    var idx = $scope.selectedBatchTypes.indexOf(selectedBatch);
+
+	    // Is currently selected
+	    if (idx > -1) {
+	      $scope.selectedBatchTypes.splice(idx, 1);
+	    }
+
+	    // Is newly selected
+	    else {
+	        $scope.selectedBatchTypes.push(selectedBatch);
+	      }
+	  };
+
+	  $scope.batchFilter = function (associate) {
+	    return $scope.selectedBatchTypes.filter(function (batchType) {
+	      return batchType.value === associate.batch.batchType.value;
+	    }).length >= 1;
+	  };
+	};
+
+	exports.default = managerAdvancedAssociatesCtrl;
+
+/***/ }),
+/* 101 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var profileCtrl = function profileCtrl($scope, $http, userService) {
+	  var associateId = userService.getUser().id;
+	  var associateUrl = '/associate/' + associateId;
+
+	  if (associateId === undefined) {
+	    return;
+	  }
+
+	  $http({
+	    method: 'GET',
+	    url: associateUrl
+	  }).then(function (response) {
+	    $scope.associate = response.data;
+	    $scope.portfolioUrl = response.data.portfolioLink;
+	  });
+
+	  $scope.portfolioUrlInput = '';
+	  $scope.status = 'Active';
+
+	  $scope.toggleSkillsModal = function () {
+	    $scope.sendingRequest = false;
+	    $scope.skillsModalButtonValue = 'Save';
+	    $scope.additionalSkillsInput = $scope.associate.skills.map(function (skill) {
+	      return skill.value;
+	    }).join(',');
+	    $('#additionalSkillsModal').modal('show');
+	  };
+	  $scope.openPortfolioUrlModal = function () {
+	    $scope.sendingRequest = false;
+	    $scope.portfolioModalButtonValue = 'Save';
+	    $scope.portfolioUrlInput = $scope.associate.portfolioLink;
+	    $('#portfolioUrlModal').modal('show');
+	  };
+	  $scope.submitPortfolioUrl = function () {
+	    $scope.associate.portfolioLink = $scope.portfolioUrlInput;
+
+	    $scope.portfolioModalButtonValue = 'Saving...';
+	    $scope.sendingRequest = true;
+	    $http({
+	      method: 'PUT',
+	      url: '/associate/',
+	      data: $scope.associate
+	    }).then(function () {
+	      $('#portfolioUrlModal').modal('hide');
+	    }, function () {
+	      $('#portfolioUrlModal').modal('hide');
+	    });
+	  };
+	  $scope.submitSkills = function () {
+	    $scope.associate.skills = $scope.additionalSkillsInput.split(',').filter(function (skill) {
+	      return skill !== '';
+	    }).map(function (skill) {
+	      var existingSkill = $scope.associate.skills.find(function (aSkill) {
+	        return aSkill.value === skill;
+	      });
+	      return { id: existingSkill !== undefined ? existingSkill.id : 0, value: skill };
+	    });
+
+	    $scope.sendingRequest = true;
+	    $scope.skillsModalButtonValue = 'Saving...';
+	    $http({
+	      method: 'PUT',
+	      url: '/associate/',
+	      data: $scope.associate
+	    }).then(function () {
+	      $('#additionalSkillsModal').modal('hide');
+	    }, function () {
+	      $('#additionalSkillsModal').modal('hide');
+	    });
+	  };
+	};
+
+	exports.default = profileCtrl;
+
+/***/ }),
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(module) {//! moment.js
-	//! version : 2.18.1
-	//! authors : Tim Wood, Iskren Chernev, Moment.js contributors
-	//! license : MIT
-	//! momentjs.com
+	'use strict';
 
-	;(function (global, factory) {
-	     true ? module.exports = factory() :
-	    typeof define === 'function' && define.amd ? define(factory) :
-	    global.moment = factory()
-	}(this, (function () { 'use strict';
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
 
-	var hookCallback;
+	var _dateformat = __webpack_require__(103);
 
-	function hooks () {
-	    return hookCallback.apply(null, arguments);
-	}
+	var _dateformat2 = _interopRequireDefault(_dateformat);
 
-	// This is done to register the method called with moment()
-	// without creating circular dependencies.
-	function setHookCallback (callback) {
-	    hookCallback = callback;
-	}
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	function isArray(input) {
-	    return input instanceof Array || Object.prototype.toString.call(input) === '[object Array]';
-	}
+	var associateInterviewCtrl = function associateInterviewCtrl($scope, $http, userService) {
+		$scope.associateInterviews;
+		$('#datetimepicker1').datetimepicker();
+		$scope.showDateTimePicker = function () {
+			$('#datetimepicker1').datetimepicker("show");
+		};
+		$("#datetimepicker1").on("dp.change", function () {
+			$scope.selectedDate = $("#datetimepicker1").val();
+		});
 
-	function isObject(input) {
-	    // IE8 will treat undefined and null as object if it wasn't for
-	    // input != null
-	    return input != null && Object.prototype.toString.call(input) === '[object Object]';
-	}
+		$http({
+			method: 'GET',
+			url: '/client/all'
+		}).then(function (response) {
+			$scope.clients = response.data;
+			$scope.clients.sort(function (pre, cur) {
+				return pre.name.localeCompare(cur.name);
+			});
+		});
 
-	function isObjectEmpty(obj) {
-	    var k;
-	    for (k in obj) {
-	        // even if its not own property I'd still call it non-empty
-	        return false;
-	    }
-	    return true;
-	}
+		$http({
+			method: 'GET',
+			url: 'interviews/associate/' + userService.getUser().id
+		}).then(function (response) {
+			response.data.forEach(function (e) {
+				var day = new Date(response.data[0].scheduled[0], response.data[0].scheduled[1], response.data[0].scheduled[2], response.data[0].scheduled[3], response.data[0].scheduled[4], response.data[0].scheduled[5], 0);
+				e['day'] = (0, _dateformat2.default)(day, "dddd, mmmm dS, yyyy, h:MM TT");;
+			});
+			$scope.associateInterviews = response.data;
+		});
 
-	function isUndefined(input) {
-	    return input === void 0;
-	}
+		//	$scope.errorMsgShow = true;
+		//	$scope.successMsgShow = true;
 
-	function isNumber(input) {
-	    return typeof input === 'number' || Object.prototype.toString.call(input) === '[object Number]';
-	}
-
-	function isDate(input) {
-	    return input instanceof Date || Object.prototype.toString.call(input) === '[object Date]';
-	}
-
-	function map(arr, fn) {
-	    var res = [], i;
-	    for (i = 0; i < arr.length; ++i) {
-	        res.push(fn(arr[i], i));
-	    }
-	    return res;
-	}
-
-	function hasOwnProp(a, b) {
-	    return Object.prototype.hasOwnProperty.call(a, b);
-	}
-
-	function extend(a, b) {
-	    for (var i in b) {
-	        if (hasOwnProp(b, i)) {
-	            a[i] = b[i];
-	        }
-	    }
-
-	    if (hasOwnProp(b, 'toString')) {
-	        a.toString = b.toString;
-	    }
-
-	    if (hasOwnProp(b, 'valueOf')) {
-	        a.valueOf = b.valueOf;
-	    }
-
-	    return a;
-	}
-
-	function createUTC (input, format, locale, strict) {
-	    return createLocalOrUTC(input, format, locale, strict, true).utc();
-	}
-
-	function defaultParsingFlags() {
-	    // We need to deep clone this object.
-	    return {
-	        empty           : false,
-	        unusedTokens    : [],
-	        unusedInput     : [],
-	        overflow        : -2,
-	        charsLeftOver   : 0,
-	        nullInput       : false,
-	        invalidMonth    : null,
-	        invalidFormat   : false,
-	        userInvalidated : false,
-	        iso             : false,
-	        parsedDateParts : [],
-	        meridiem        : null,
-	        rfc2822         : false,
-	        weekdayMismatch : false
-	    };
-	}
-
-	function getParsingFlags(m) {
-	    if (m._pf == null) {
-	        m._pf = defaultParsingFlags();
-	    }
-	    return m._pf;
-	}
-
-	var some;
-	if (Array.prototype.some) {
-	    some = Array.prototype.some;
-	} else {
-	    some = function (fun) {
-	        var t = Object(this);
-	        var len = t.length >>> 0;
-
-	        for (var i = 0; i < len; i++) {
-	            if (i in t && fun.call(this, t[i], i, t)) {
-	                return true;
-	            }
-	        }
-
-	        return false;
-	    };
-	}
-
-	var some$1 = some;
-
-	function isValid(m) {
-	    if (m._isValid == null) {
-	        var flags = getParsingFlags(m);
-	        var parsedParts = some$1.call(flags.parsedDateParts, function (i) {
-	            return i != null;
-	        });
-	        var isNowValid = !isNaN(m._d.getTime()) &&
-	            flags.overflow < 0 &&
-	            !flags.empty &&
-	            !flags.invalidMonth &&
-	            !flags.invalidWeekday &&
-	            !flags.nullInput &&
-	            !flags.invalidFormat &&
-	            !flags.userInvalidated &&
-	            (!flags.meridiem || (flags.meridiem && parsedParts));
-
-	        if (m._strict) {
-	            isNowValid = isNowValid &&
-	                flags.charsLeftOver === 0 &&
-	                flags.unusedTokens.length === 0 &&
-	                flags.bigHour === undefined;
-	        }
-
-	        if (Object.isFrozen == null || !Object.isFrozen(m)) {
-	            m._isValid = isNowValid;
-	        }
-	        else {
-	            return isNowValid;
-	        }
-	    }
-	    return m._isValid;
-	}
-
-	function createInvalid (flags) {
-	    var m = createUTC(NaN);
-	    if (flags != null) {
-	        extend(getParsingFlags(m), flags);
-	    }
-	    else {
-	        getParsingFlags(m).userInvalidated = true;
-	    }
-
-	    return m;
-	}
-
-	// Plugins that add properties should also add the key here (null value),
-	// so we can properly clone ourselves.
-	var momentProperties = hooks.momentProperties = [];
-
-	function copyConfig(to, from) {
-	    var i, prop, val;
-
-	    if (!isUndefined(from._isAMomentObject)) {
-	        to._isAMomentObject = from._isAMomentObject;
-	    }
-	    if (!isUndefined(from._i)) {
-	        to._i = from._i;
-	    }
-	    if (!isUndefined(from._f)) {
-	        to._f = from._f;
-	    }
-	    if (!isUndefined(from._l)) {
-	        to._l = from._l;
-	    }
-	    if (!isUndefined(from._strict)) {
-	        to._strict = from._strict;
-	    }
-	    if (!isUndefined(from._tzm)) {
-	        to._tzm = from._tzm;
-	    }
-	    if (!isUndefined(from._isUTC)) {
-	        to._isUTC = from._isUTC;
-	    }
-	    if (!isUndefined(from._offset)) {
-	        to._offset = from._offset;
-	    }
-	    if (!isUndefined(from._pf)) {
-	        to._pf = getParsingFlags(from);
-	    }
-	    if (!isUndefined(from._locale)) {
-	        to._locale = from._locale;
-	    }
-
-	    if (momentProperties.length > 0) {
-	        for (i = 0; i < momentProperties.length; i++) {
-	            prop = momentProperties[i];
-	            val = from[prop];
-	            if (!isUndefined(val)) {
-	                to[prop] = val;
-	            }
-	        }
-	    }
-
-	    return to;
-	}
-
-	var updateInProgress = false;
-
-	// Moment prototype object
-	function Moment(config) {
-	    copyConfig(this, config);
-	    this._d = new Date(config._d != null ? config._d.getTime() : NaN);
-	    if (!this.isValid()) {
-	        this._d = new Date(NaN);
-	    }
-	    // Prevent infinite loop in case updateOffset creates new moment
-	    // objects.
-	    if (updateInProgress === false) {
-	        updateInProgress = true;
-	        hooks.updateOffset(this);
-	        updateInProgress = false;
-	    }
-	}
-
-	function isMoment (obj) {
-	    return obj instanceof Moment || (obj != null && obj._isAMomentObject != null);
-	}
-
-	function absFloor (number) {
-	    if (number < 0) {
-	        // -0 -> 0
-	        return Math.ceil(number) || 0;
-	    } else {
-	        return Math.floor(number);
-	    }
-	}
-
-	function toInt(argumentForCoercion) {
-	    var coercedNumber = +argumentForCoercion,
-	        value = 0;
-
-	    if (coercedNumber !== 0 && isFinite(coercedNumber)) {
-	        value = absFloor(coercedNumber);
-	    }
-
-	    return value;
-	}
-
-	// compare two arrays, return the number of differences
-	function compareArrays(array1, array2, dontConvert) {
-	    var len = Math.min(array1.length, array2.length),
-	        lengthDiff = Math.abs(array1.length - array2.length),
-	        diffs = 0,
-	        i;
-	    for (i = 0; i < len; i++) {
-	        if ((dontConvert && array1[i] !== array2[i]) ||
-	            (!dontConvert && toInt(array1[i]) !== toInt(array2[i]))) {
-	            diffs++;
-	        }
-	    }
-	    return diffs + lengthDiff;
-	}
-
-	function warn(msg) {
-	    if (hooks.suppressDeprecationWarnings === false &&
-	            (typeof console !==  'undefined') && console.warn) {
-	        console.warn('Deprecation warning: ' + msg);
-	    }
-	}
-
-	function deprecate(msg, fn) {
-	    var firstTime = true;
-
-	    return extend(function () {
-	        if (hooks.deprecationHandler != null) {
-	            hooks.deprecationHandler(null, msg);
-	        }
-	        if (firstTime) {
-	            var args = [];
-	            var arg;
-	            for (var i = 0; i < arguments.length; i++) {
-	                arg = '';
-	                if (typeof arguments[i] === 'object') {
-	                    arg += '\n[' + i + '] ';
-	                    for (var key in arguments[0]) {
-	                        arg += key + ': ' + arguments[0][key] + ', ';
-	                    }
-	                    arg = arg.slice(0, -2); // Remove trailing comma and space
-	                } else {
-	                    arg = arguments[i];
-	                }
-	                args.push(arg);
-	            }
-	            warn(msg + '\nArguments: ' + Array.prototype.slice.call(args).join('') + '\n' + (new Error()).stack);
-	            firstTime = false;
-	        }
-	        return fn.apply(this, arguments);
-	    }, fn);
-	}
-
-	var deprecations = {};
-
-	function deprecateSimple(name, msg) {
-	    if (hooks.deprecationHandler != null) {
-	        hooks.deprecationHandler(name, msg);
-	    }
-	    if (!deprecations[name]) {
-	        warn(msg);
-	        deprecations[name] = true;
-	    }
-	}
-
-	hooks.suppressDeprecationWarnings = false;
-	hooks.deprecationHandler = null;
-
-	function isFunction(input) {
-	    return input instanceof Function || Object.prototype.toString.call(input) === '[object Function]';
-	}
-
-	function set (config) {
-	    var prop, i;
-	    for (i in config) {
-	        prop = config[i];
-	        if (isFunction(prop)) {
-	            this[i] = prop;
-	        } else {
-	            this['_' + i] = prop;
-	        }
-	    }
-	    this._config = config;
-	    // Lenient ordinal parsing accepts just a number in addition to
-	    // number + (possibly) stuff coming from _dayOfMonthOrdinalParse.
-	    // TODO: Remove "ordinalParse" fallback in next major release.
-	    this._dayOfMonthOrdinalParseLenient = new RegExp(
-	        (this._dayOfMonthOrdinalParse.source || this._ordinalParse.source) +
-	            '|' + (/\d{1,2}/).source);
-	}
-
-	function mergeConfigs(parentConfig, childConfig) {
-	    var res = extend({}, parentConfig), prop;
-	    for (prop in childConfig) {
-	        if (hasOwnProp(childConfig, prop)) {
-	            if (isObject(parentConfig[prop]) && isObject(childConfig[prop])) {
-	                res[prop] = {};
-	                extend(res[prop], parentConfig[prop]);
-	                extend(res[prop], childConfig[prop]);
-	            } else if (childConfig[prop] != null) {
-	                res[prop] = childConfig[prop];
-	            } else {
-	                delete res[prop];
-	            }
-	        }
-	    }
-	    for (prop in parentConfig) {
-	        if (hasOwnProp(parentConfig, prop) &&
-	                !hasOwnProp(childConfig, prop) &&
-	                isObject(parentConfig[prop])) {
-	            // make sure changes to properties don't modify parent config
-	            res[prop] = extend({}, res[prop]);
-	        }
-	    }
-	    return res;
-	}
-
-	function Locale(config) {
-	    if (config != null) {
-	        this.set(config);
-	    }
-	}
-
-	var keys;
-
-	if (Object.keys) {
-	    keys = Object.keys;
-	} else {
-	    keys = function (obj) {
-	        var i, res = [];
-	        for (i in obj) {
-	            if (hasOwnProp(obj, i)) {
-	                res.push(i);
-	            }
-	        }
-	        return res;
-	    };
-	}
-
-	var keys$1 = keys;
-
-	var defaultCalendar = {
-	    sameDay : '[Today at] LT',
-	    nextDay : '[Tomorrow at] LT',
-	    nextWeek : 'dddd [at] LT',
-	    lastDay : '[Yesterday at] LT',
-	    lastWeek : '[Last] dddd [at] LT',
-	    sameElse : 'L'
+		$scope.addInterviewClick = function () {
+			$http({
+				method: 'POST',
+				url: '/interviews',
+				data: { associate: userService.getUser(), client: $scope.selectedClient }
+			}).then(function (response) {});
+			console.log(userService.getUser());
+			console.log($scope.selectedClient);
+			console.log($scope.selectedDate);
+		};
 	};
 
-	function calendar (key, mom, now) {
-	    var output = this._calendar[key] || this._calendar['sameElse'];
-	    return isFunction(output) ? output.call(mom, now) : output;
-	}
+	exports.default = associateInterviewCtrl;
 
-	var defaultLongDateFormat = {
-	    LTS  : 'h:mm:ss A',
-	    LT   : 'h:mm A',
-	    L    : 'MM/DD/YYYY',
-	    LL   : 'MMMM D, YYYY',
-	    LLL  : 'MMMM D, YYYY h:mm A',
-	    LLLL : 'dddd, MMMM D, YYYY h:mm A'
-	};
-
-	function longDateFormat (key) {
-	    var format = this._longDateFormat[key],
-	        formatUpper = this._longDateFormat[key.toUpperCase()];
-
-	    if (format || !formatUpper) {
-	        return format;
-	    }
-
-	    this._longDateFormat[key] = formatUpper.replace(/MMMM|MM|DD|dddd/g, function (val) {
-	        return val.slice(1);
-	    });
-
-	    return this._longDateFormat[key];
-	}
-
-	var defaultInvalidDate = 'Invalid date';
-
-	function invalidDate () {
-	    return this._invalidDate;
-	}
-
-	var defaultOrdinal = '%d';
-	var defaultDayOfMonthOrdinalParse = /\d{1,2}/;
-
-	function ordinal (number) {
-	    return this._ordinal.replace('%d', number);
-	}
-
-	var defaultRelativeTime = {
-	    future : 'in %s',
-	    past   : '%s ago',
-	    s  : 'a few seconds',
-	    ss : '%d seconds',
-	    m  : 'a minute',
-	    mm : '%d minutes',
-	    h  : 'an hour',
-	    hh : '%d hours',
-	    d  : 'a day',
-	    dd : '%d days',
-	    M  : 'a month',
-	    MM : '%d months',
-	    y  : 'a year',
-	    yy : '%d years'
-	};
-
-	function relativeTime (number, withoutSuffix, string, isFuture) {
-	    var output = this._relativeTime[string];
-	    return (isFunction(output)) ?
-	        output(number, withoutSuffix, string, isFuture) :
-	        output.replace(/%d/i, number);
-	}
-
-	function pastFuture (diff, output) {
-	    var format = this._relativeTime[diff > 0 ? 'future' : 'past'];
-	    return isFunction(format) ? format(output) : format.replace(/%s/i, output);
-	}
-
-	var aliases = {};
-
-	function addUnitAlias (unit, shorthand) {
-	    var lowerCase = unit.toLowerCase();
-	    aliases[lowerCase] = aliases[lowerCase + 's'] = aliases[shorthand] = unit;
-	}
-
-	function normalizeUnits(units) {
-	    return typeof units === 'string' ? aliases[units] || aliases[units.toLowerCase()] : undefined;
-	}
-
-	function normalizeObjectUnits(inputObject) {
-	    var normalizedInput = {},
-	        normalizedProp,
-	        prop;
-
-	    for (prop in inputObject) {
-	        if (hasOwnProp(inputObject, prop)) {
-	            normalizedProp = normalizeUnits(prop);
-	            if (normalizedProp) {
-	                normalizedInput[normalizedProp] = inputObject[prop];
-	            }
-	        }
-	    }
-
-	    return normalizedInput;
-	}
-
-	var priorities = {};
-
-	function addUnitPriority(unit, priority) {
-	    priorities[unit] = priority;
-	}
-
-	function getPrioritizedUnits(unitsObj) {
-	    var units = [];
-	    for (var u in unitsObj) {
-	        units.push({unit: u, priority: priorities[u]});
-	    }
-	    units.sort(function (a, b) {
-	        return a.priority - b.priority;
-	    });
-	    return units;
-	}
-
-	function makeGetSet (unit, keepTime) {
-	    return function (value) {
-	        if (value != null) {
-	            set$1(this, unit, value);
-	            hooks.updateOffset(this, keepTime);
-	            return this;
-	        } else {
-	            return get(this, unit);
-	        }
-	    };
-	}
-
-	function get (mom, unit) {
-	    return mom.isValid() ?
-	        mom._d['get' + (mom._isUTC ? 'UTC' : '') + unit]() : NaN;
-	}
-
-	function set$1 (mom, unit, value) {
-	    if (mom.isValid()) {
-	        mom._d['set' + (mom._isUTC ? 'UTC' : '') + unit](value);
-	    }
-	}
-
-	// MOMENTS
-
-	function stringGet (units) {
-	    units = normalizeUnits(units);
-	    if (isFunction(this[units])) {
-	        return this[units]();
-	    }
-	    return this;
-	}
-
-
-	function stringSet (units, value) {
-	    if (typeof units === 'object') {
-	        units = normalizeObjectUnits(units);
-	        var prioritized = getPrioritizedUnits(units);
-	        for (var i = 0; i < prioritized.length; i++) {
-	            this[prioritized[i].unit](units[prioritized[i].unit]);
-	        }
-	    } else {
-	        units = normalizeUnits(units);
-	        if (isFunction(this[units])) {
-	            return this[units](value);
-	        }
-	    }
-	    return this;
-	}
-
-	function zeroFill(number, targetLength, forceSign) {
-	    var absNumber = '' + Math.abs(number),
-	        zerosToFill = targetLength - absNumber.length,
-	        sign = number >= 0;
-	    return (sign ? (forceSign ? '+' : '') : '-') +
-	        Math.pow(10, Math.max(0, zerosToFill)).toString().substr(1) + absNumber;
-	}
-
-	var formattingTokens = /(\[[^\[]*\])|(\\)?([Hh]mm(ss)?|Mo|MM?M?M?|Do|DDDo|DD?D?D?|ddd?d?|do?|w[o|w]?|W[o|W]?|Qo?|YYYYYY|YYYYY|YYYY|YY|gg(ggg?)?|GG(GGG?)?|e|E|a|A|hh?|HH?|kk?|mm?|ss?|S{1,9}|x|X|zz?|ZZ?|.)/g;
-
-	var localFormattingTokens = /(\[[^\[]*\])|(\\)?(LTS|LT|LL?L?L?|l{1,4})/g;
-
-	var formatFunctions = {};
-
-	var formatTokenFunctions = {};
-
-	// token:    'M'
-	// padded:   ['MM', 2]
-	// ordinal:  'Mo'
-	// callback: function () { this.month() + 1 }
-	function addFormatToken (token, padded, ordinal, callback) {
-	    var func = callback;
-	    if (typeof callback === 'string') {
-	        func = function () {
-	            return this[callback]();
-	        };
-	    }
-	    if (token) {
-	        formatTokenFunctions[token] = func;
-	    }
-	    if (padded) {
-	        formatTokenFunctions[padded[0]] = function () {
-	            return zeroFill(func.apply(this, arguments), padded[1], padded[2]);
-	        };
-	    }
-	    if (ordinal) {
-	        formatTokenFunctions[ordinal] = function () {
-	            return this.localeData().ordinal(func.apply(this, arguments), token);
-	        };
-	    }
-	}
-
-	function removeFormattingTokens(input) {
-	    if (input.match(/\[[\s\S]/)) {
-	        return input.replace(/^\[|\]$/g, '');
-	    }
-	    return input.replace(/\\/g, '');
-	}
-
-	function makeFormatFunction(format) {
-	    var array = format.match(formattingTokens), i, length;
-
+<<<<<<< HEAD
 	    for (i = 0, length = array.length; i < length; i++) {
 	        if (formatTokenFunctions[array[i]]) {
 	            array[i] = formatTokenFunctions[array[i]];
@@ -63061,6 +62892,11 @@
 /***/ }),
 /* 220 */
 /***/ (function(module, exports, __webpack_require__) {
+=======
+/***/ }),
+/* 103 */
+/***/ (function(module, exports, __webpack_require__) {
+>>>>>>> 8ba3de4fbdcebedaa0f1ffd913cab6d62ee0dc12
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/*
 	 * Date Format 1.2.3
@@ -63291,7 +63127,7 @@
 
 
 /***/ }),
-/* 221 */
+/* 104 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -63354,7 +63190,7 @@
 	exports.default = associateCtrl;
 
 /***/ }),
-/* 222 */
+/* 105 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -63369,7 +63205,7 @@
 	exports.reportCtrl = reportCtrl;
 
 /***/ }),
-/* 223 */
+/* 106 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -63574,9 +63410,170 @@
 	exports.nestedCtrl = nestedCtrl;
 
 /***/ }),
-/* 224 */
+/* 107 */
 /***/ (function(module, exports) {
 
+<<<<<<< HEAD
+=======
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	var chart = {
+	    caption: "Asscoiates Available vs. Associate Confirmed",
+	    subCaption: "Revature LLC",
+	    xAxisname: "Batch Type",
+	    yAxisName: "Number of Associate",
+	    //    numberPrefix: "$",
+	    paletteColors: "#ff0000,#0075c2",
+	    bgColor: "#ffffff",
+	    borderAlpha: "20",
+	    showCanvasBorder: "0",
+	    usePlotGradientColor: "0",
+	    plotBorderAlpha: "10",
+	    legendBorderAlpha: "0",
+	    legendShadow: "0",
+	    valueFontColor: "#ffffff",
+	    showXAxisLine: "1",
+	    xAxisLineColor: "#999999",
+	    divlineColor: "#999999",
+	    divLineDashed: "1",
+	    showAlternateHGridColor: "0",
+	    subcaptionFontBold: "0",
+	    subcaptionFontSize: "14",
+	    showHoverEffect: "1"
+	};
+
+	var categories = void 0;
+
+	var dataset = [{
+	    "seriesname": "Food Products",
+	    "data": [{
+	        "value": "121000"
+	    }, {
+	        "value": "135000"
+	    }, {
+	        "value": "123500"
+	    }, {
+	        "value": "145000"
+	    }]
+	}, {
+	    "seriesname": "Non-Food Products",
+	    "data": [{
+	        "value": "131400"
+	    }, {
+	        "value": "154800"
+	    }, {
+	        "value": "98300"
+	    }, {
+	        "value": "131800"
+	    }]
+	}];
+
+	var barCtrl = function barCtrl($scope, $http) {
+	    graphBuilder($scope, $http);
+	};
+
+	function graphBuilder($scope, $http) {
+	    $http({
+	        method: 'GET',
+	        url: '/batchtype/all'
+	    }).then(function (response) {
+	        var stuff = [];
+	        var value = response.data;
+	        value.forEach(function (item) {
+	            stuff.push({ "label": item.value });
+	        });
+	        categories = [{
+	            "category": stuff
+	        }];
+	        plainBarChart2($scope, chart, categories, dataset);
+	    });
+	}
+
+	function plainBarChart2($scope, chartstuff, categories, dataset) {
+
+	    var myDataSource = {
+	        chart: chartstuff,
+	        categories: categories,
+	        dataset: dataset
+	    };
+
+	    var chart = new FusionCharts({
+	        type: 'stackedcolumn3d',
+	        renderAt: 'chart-container',
+	        width: '550',
+	        height: '350',
+	        dataFormat: 'json',
+	        dataSource: myDataSource
+	    });
+
+	    console.log("his chart: " + chart);
+	    chart.render();
+	}
+
+	exports.barCtrl = barCtrl;
+
+/***/ }),
+/* 108 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var loginCtrl = function loginCtrl($scope, $http, $state, userService) {
+	  var loginBtn = document.getElementById('loginBtn');
+	  $scope.username = '';
+	  $scope.password = '';
+	  $scope.errorMsgShow = false;
+
+	  $scope.submit = function () {
+	    loginBtn.disabled = true;
+	    loginBtn.innerHTML = 'Logging in...';
+	    $scope.errorMsgShow = false;
+
+	    if ($scope.username === '' || $scope.username === undefined) {
+	      $scope.errorMsg = 'Please input a Username.';
+	      $scope.errorMsgShow = true;
+	      loginBtn.disabled = false;
+	      loginBtn.innerHTML = 'Log In';
+	    } else if ($scope.password === '' || $scope.password === undefined) {
+	      $scope.errorMsg = 'Please input a Password.';
+	      $scope.errorMsgShow = true;
+	      loginBtn.disabled = false;
+	      loginBtn.innerHTML = 'Log In';
+	    } else {
+	      $http({
+	        method: 'POST',
+	        url: '/login',
+	        data: { username: $scope.username, password: $scope.password }
+	      }).then(function (response) {
+	        userService.setUser(response.data);
+	        if (response.data.permission !== undefined) {
+	          $state.go('manager.home');
+	        } else {
+	          $state.go('associate.home');
+	        }
+	      }, function () {
+	        $scope.errorMsg = 'Username or Password is incorrect.';
+	        $scope.errorMsgShow = true;
+	        loginBtn.disabled = false;
+	        loginBtn.innerHTML = 'Log In';
+	      });
+	    }
+	  };
+	};
+
+	exports.default = loginCtrl;
+
+/***/ }),
+/* 109 */
+/***/ (function(module, exports) {
+
+>>>>>>> 8ba3de4fbdcebedaa0f1ffd913cab6d62ee0dc12
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
@@ -63801,7 +63798,6 @@
 	  if (date === undefined) {
 	    date = moment();
 	  }
-
 	  var currDay = date.day();
 
 	  date.subtract(currDay, 'days');
@@ -63855,7 +63851,7 @@
 	  } else {
 	    var existing = monthlyData[index];
 	    existing.hourCount = parseFloat(existing.hourCount) + parseFloat(item.hourCount);
-	    existing.hourCount = parseFloat(existing.hourEstimate) + parseFloat(item.hourEstimate);
+	    existing.hourEstimate = parseFloat(existing.hourEstimate) + parseFloat(item.hourEstimate);
 	  }
 	}
 
@@ -63927,6 +63923,11 @@
 	  var identityString = convertToFirstOfQuarter(moment(item.time));
 	  var index = binarySearchHelper(yearlyData, moment(identityString), cmpDay);
 
+	  console.log('Identity String: ' + identityString);
+	  console.log('COUNT/ESTAMATE: ' + item.hourCount + '/' + item.hourEstimate);
+	  console.log('Item: ' + JSON.stringify(item, null, 2));
+	  console.log('Data: ' + JSON.stringify(yearlyData, null, 2));
+
 	  if (index < 0 || index >= yearlyData.length || yearlyData.length === 0) {
 	    var itemCpy = JSON.parse(JSON.stringify(item));
 	    itemCpy.time = identityString;
@@ -63934,7 +63935,7 @@
 	  } else {
 	    var existing = yearlyData[index];
 	    existing.hourCount = parseFloat(existing.hourCount) + parseFloat(item.hourCount);
-	    existing.hourCount = parseFloat(existing.hourEstimate) + parseFloat(item.hourEstimate);
+	    existing.hourEstimate = parseFloat(existing.hourEstimate) + parseFloat(item.hourEstimate);
 	  }
 	}
 
@@ -64108,6 +64109,7 @@
 	// ----------------------------------- End Main ----------------------------------- //
 
 /***/ }),
+<<<<<<< HEAD
 /* 225 */
 /***/ (function(module, exports) {
 
@@ -64163,6 +64165,9 @@
 
 /***/ }),
 /* 226 */
+=======
+/* 110 */
+>>>>>>> 8ba3de4fbdcebedaa0f1ffd913cab6d62ee0dc12
 /***/ (function(module, exports) {
 
 	/*

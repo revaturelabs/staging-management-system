@@ -1,6 +1,8 @@
 import dateformat from 'dateformat';
 
 const associateInterviewCtrl = ($scope, $http, userService) => {
+	const addInterviewBtn = document.getElementById('addInterviewBtn');
+	
 	$scope.associateInterviews;
 	$('#datetimepicker1').datetimepicker();
 	$scope.showDateTimePicker = () => {
@@ -9,7 +11,7 @@ const associateInterviewCtrl = ($scope, $http, userService) => {
 	$("#datetimepicker1").on("dp.change", function() {
     $scope.selectedDate = $("#datetimepicker1").val();
 	});
-	
+
 	$http({
 		method: 'GET',
 		url: '/client/all',
@@ -20,35 +22,60 @@ const associateInterviewCtrl = ($scope, $http, userService) => {
 			return pre.name.localeCompare(cur.name);
 		});
 	});
-	
+
 	$http ({
 		method: 'GET',
 		url: `interviews/associate/${userService.getUser().id}`,
 	})
 	.then((response) => {
-		response.data.forEach(function(e) {
-			let day = new Date(response.data[0].scheduled[0], response.data[0].scheduled[1], response.data[0].scheduled[2], response.data[0].scheduled[3],
-					response.data[0].scheduled[4], response.data[0].scheduled[5], 0);
-			e['day'] = dateformat(day, "dddd, mmmm dS, yyyy, h:MM TT");;
-		});
 		$scope.associateInterviews = response.data;
+		$scope.associateInterviews.sort(function(a,b) {
+	    return new Date(b.scheduled).getTime() - new Date(a.scheduled).getTime();
+		});
+		console.log(response.data)
 	});
-	
+
 //	$scope.errorMsgShow = true;
 //	$scope.successMsgShow = true;
-	
+
 	$scope.addInterviewClick = function() {
-		$http({
-			method: 'POST',
-			url: '/interviews',
-			data: { associate: userService.getUser(), client: $scope.selectedClient},
-		})
-		.then((response) => {
-			
-		});
-		console.log(userService.getUser())
-		console.log($scope.selectedClient)
-		console.log($scope.selectedDate)
+		addInterviewBtn.disabled = true;
+		addInterviewBtn.innerHTML = 'Adding...';
+		$scope.errorMsgShow = false;
+		$scope.successMsgShow = false;
+	
+		if($scope.selectedClient == undefined) {
+			$scope.errorMsg = 'Please select a Client.';
+      $scope.errorMsgShow = true;
+		}
+		else if($scope.selectedDate == undefined) {
+			$scope.errorMsg = 'Please select a Date.';
+      $scope.errorMsgShow = true;
+		}
+		else {
+			let newDate = moment($scope.selectedDate).toDate();
+			$http({
+				method: 'POST',
+				url: '/interviews',
+				data: { associate: userService.getUser(), client: $scope.selectedClient, scheduled: newDate},
+			})
+			.then((response) => {
+				$scope.successMsgShow = true;
+				addInterviewBtn.disabled = false;
+				addInterviewBtn.innerHTML = 'Add Interview';
+				
+				$http ({
+					method: 'GET',
+					url: `interviews/associate/${userService.getUser().id}`,
+				})
+				.then((response) => {
+					$scope.associateInterviews = response.data;
+					$scope.associateInterviews.sort(function(a,b) {
+				    return new Date(b.scheduled).getTime() - new Date(a.scheduled).getTime();
+					});
+				});
+			});
+		}
 	}
 };
 
