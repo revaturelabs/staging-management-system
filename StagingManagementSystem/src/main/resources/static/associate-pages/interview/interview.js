@@ -9,7 +9,7 @@ const associateInterviewCtrl = ($scope, $http, userService) => {
 	$("#datetimepicker1").on("dp.change", function() {
     $scope.selectedDate = $("#datetimepicker1").val();
 	});
-	
+
 	$http({
 		method: 'GET',
 		url: '/client/all',
@@ -20,7 +20,7 @@ const associateInterviewCtrl = ($scope, $http, userService) => {
 			return pre.name.localeCompare(cur.name);
 		});
 	});
-	
+
 	$http ({
 		method: 'GET',
 		url: `interviews/associate/${userService.getUser().id}`,
@@ -33,10 +33,10 @@ const associateInterviewCtrl = ($scope, $http, userService) => {
 		});
 		$scope.associateInterviews = response.data;
 	});
-	
+
 //	$scope.errorMsgShow = true;
 //	$scope.successMsgShow = true;
-	
+
 	$scope.addInterviewClick = function() {
 		$http({
 			method: 'POST',
@@ -44,7 +44,7 @@ const associateInterviewCtrl = ($scope, $http, userService) => {
 			data: { associate: userService.getUser(), client: $scope.selectedClient},
 		})
 		.then((response) => {
-			
+
 		});
 		console.log(userService.getUser())
 		console.log($scope.selectedClient)
