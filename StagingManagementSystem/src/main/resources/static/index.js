@@ -46898,7 +46898,6 @@
 
 	    $http.get("checkin/allTodays").then(function (result) {
 	        $scope.checkins = result.data;
-	        $scope.checkinDates = checkins.checkinTime;
 	    });
 	};
 
@@ -47212,32 +47211,21 @@
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 	var profileCtrl = function profileCtrl($scope, $http, userService, $stateParams, $state) {
-
-	  alert($state.includes('manager'));
-
-	  alert($stateParams.id);
-
-	  var associateId = userService.getUser().id;
-	  var associateData = { $scope: $scope };
+	  var associateId = $state.includes('manager') ? $stateParams.id : userService.getUser().id;
 
 	  if (associateId === undefined) {
 	    return;
 	  }
 
-	  if (associateData === undefined) {
-	    var associateUrl = '/associate/' + associateId;
-	    $http({
-	      method: 'GET',
-	      url: associateUrl
-	    }).then(function (response) {
-	      $scope.associate = response.data;
-	    });
-	  } else {
-	    $scope.associate = _extends({}, associateData);
-	  }
+	  var associateUrl = '/associate/' + associateId;
+	  $http({
+	    method: 'GET',
+	    url: associateUrl
+	  }).then(function (response) {
+	    $scope.associate = _extends({}, response.data);
+	  });
 
 	  $scope.portfolioUrlInput = '';
-	  $scope.status = 'Active';
 
 	  $scope.addSkill = function () {
 	    var skillAlreadyExists = $scope.additionalSkillsValues.find(function (skill) {
