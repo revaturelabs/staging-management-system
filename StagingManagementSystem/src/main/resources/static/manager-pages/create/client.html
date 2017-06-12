@@ -11,14 +11,13 @@
 		<td><label>Name: </label> <input ng-model="client.name"></td> <br> <br> 
     </tr>
         <tr>
-		<td><label>Password: </label> <input ng-model="client.password"></td> <br> <br>
+		<td><label>Password: </label> <input type="password" ng-model="client.password"></td> <br> <br>
     </tr>
         <tr>
-		<td><label>Client Priority: </label><select ng-model="client.priority">
-			<option disabled selected value> -- Select a Priority -- </option>
-			<option value="false" ng-click="priority = '0'"">0</option>	
-			<option value="true" ng-click="priority = '1'">1</option>
-		</select></td> <br> <br>
+		<td><label>Client Priority: </label>
+			0 <input value="false" type ="radio" ng-model="client.priority"> 
+			1 <input value="true" type ="radio" ng-model="client.priority">
+		</td> <br> <br>
     </tr>
     </tbody>
 </table>
