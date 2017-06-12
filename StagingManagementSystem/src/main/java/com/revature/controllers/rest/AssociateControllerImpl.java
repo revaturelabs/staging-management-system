@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.entities.Associate;
+import com.revature.entities.Manager;
 import com.revature.services.AssociateService;
 import com.revature.util.DataGeneration;
 
@@ -72,6 +73,7 @@ public class AssociateControllerImpl {
 	@PutMapping
 	public ResponseEntity<Object> updateAssociate(@RequestBody Associate associate, HttpSession session) {
 		Associate authenticatedAssociate = (Associate)session.getAttribute("login_associate");
+		Manager authenticatedManager = (Manager)session.getAttribute("login_manager");
 		
 		if (authenticatedAssociate != null) { // Associate edits their profile
 			// Now we block any changes we don't want, by cherry picking the associate information
@@ -94,7 +96,7 @@ public class AssociateControllerImpl {
 	@GetMapping("/{id}")
 	public ResponseEntity<Associate> getAssociate(@PathVariable long id, HttpSession session) {
 	 	Associate associate = ((Associate)session.getAttribute("login_associate"));
-		if(session.getAttribute("login_manager") == null || associate == null || associate.getId() != id){ // If you're not logged in as a manger..
+		if(session.getAttribute("login_manager") == null && (associate == null || associate.getId() != id)){ // If you're not logged in as a manger..
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 		}
 	 	return ResponseEntity.ok(associateService.getById(id));
@@ -105,6 +107,6 @@ public class AssociateControllerImpl {
 		if(session.getAttribute("login_manager") == null){ // If you're not logged in as a manger..
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 		}
-	 	return ResponseEntity.ok(associateService.getAll());
+		return ResponseEntity.ok(associateService.getAll());
 	}
 }

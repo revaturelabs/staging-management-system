@@ -51,6 +51,7 @@
               </span>
             </dt>
             <dd>
+              <span ng-bind-template="{{associateHasNoSkills() ? 'None' : ''}}"></span>
               <span ng-repeat="skill in associate.batch.batchType.skills">
                 <span class="badge skill-badge batch-skill" ng-bind="skill.value"></span>
               </span>
