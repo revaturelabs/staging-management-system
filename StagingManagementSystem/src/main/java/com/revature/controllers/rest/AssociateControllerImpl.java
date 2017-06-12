@@ -83,6 +83,7 @@ public class AssociateControllerImpl {
 		}
 		Manager manager = (Manager)session.getAttribute("login_manager");
 		if(manager != null){// We trust managers. A lot.
+			associate.setCredential(associateService.getById(associate.getId()).getCredential());
 			associateService.update(associate);
 			return ResponseEntity.ok(null);
 		}
