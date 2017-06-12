@@ -5,19 +5,23 @@ const profileCtrl = ($scope, $http, userService, $stateParams, $state) => {
   alert($stateParams.id)
 
   const associateId = userService.getUser().id;
-  const associateUrl = `/associate/${associateId}`;
+  const associateData = { $scope };
 
   if (associateId === undefined) {
     return;
   }
 
-  $http({
-    method: 'GET',
-    url: associateUrl,
-  }).then((response) => {
-    $scope.associate = response.data;
-    $scope.portfolioUrl = response.data.portfolioLink;
-  });
+  if (associateData === undefined) {
+    const associateUrl = `/associate/${associateId}`;
+    $http({
+      method: 'GET',
+      url: associateUrl,
+    }).then((response) => {
+      $scope.associate = response.data;
+    });
+  } else {
+    $scope.associate = { ...associateData };
+  }
 
   $scope.portfolioUrlInput = '';
   $scope.status = 'Active';
@@ -45,12 +49,14 @@ const profileCtrl = ($scope, $http, userService, $stateParams, $state) => {
     $scope.newSkillValue = '';
     $('#additionalSkillsModal').modal('show');
   };
+
   $scope.openPortfolioUrlModal = () => {
     $scope.sendingRequest = false;
     $scope.portfolioModalButtonValue = 'Save';
     $scope.portfolioUrlInput = $scope.associate.portfolioLink;
     $('#portfolioUrlModal').modal('show');
   };
+
   $scope.submitPortfolioUrl = () => {
     $scope.associate.portfolioLink = $scope.portfolioUrlInput;
 
@@ -66,6 +72,7 @@ const profileCtrl = ($scope, $http, userService, $stateParams, $state) => {
       $('#portfolioUrlModal').modal('hide');
     });
   };
+
   $scope.submitSkills = () => {
     $scope.associate.skills = [...$scope.additionalSkillsValues]
       .filter(skill => skill.value !== '');

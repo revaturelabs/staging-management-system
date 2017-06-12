@@ -2,6 +2,7 @@ import angular from 'angular';
 import angularCookies from 'angular-cookies';
 import uiRouter from 'angular-ui-router';
 import FusionCharts from 'fusioncharts';
+import moment from 'moment';
 
 import { managerCtrl } from './manager-pages/manager';
 import { managerHomeCtrl } from './manager-pages/home/home';
