@@ -64,8 +64,11 @@ public class AssociateControllerImpl {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 		}
 		
-		associate.setCredential(authenticatedAssociate.getCredential());
-		associateService.update(associate);
+		// Now we block any changes we don't want, by cherry picking the associate information
+		// from the passed in associate into the session associate.
+		authenticatedAssociate.setSkills(associate.getSkills());
+		authenticatedAssociate.setPortfolioLink(associate.getPortfolioLink());
+		associateService.update(authenticatedAssociate);
 		return ResponseEntity.ok(null);
 	}
 
