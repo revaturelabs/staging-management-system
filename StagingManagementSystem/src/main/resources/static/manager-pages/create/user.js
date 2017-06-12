@@ -1,7 +1,4 @@
 const userCtrl = ($scope, $http) => {
-
-  $scope.user.type = 'manager'
-
   $http.get('batchtype/all.json')
     .then((response) => {
 		  $scope.posts = response.data
@@ -11,6 +8,7 @@ const userCtrl = ($scope, $http) => {
 
   $scope.submit = () => {
   	let item = JSON.stringify($scope.user);
+    
   	//need 2 different post requests for manager and associate
   	if ($scope.user.type == 'associate'){
     	$http.post('/associate', item).then( (response) => {
