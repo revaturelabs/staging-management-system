@@ -26,14 +26,14 @@
         </div>
 	</div>
 	<div class="col-sm-2">
-		<button type="button" ng-click="addInterviewClick()" class="btn btn-primary">Add Interview</button>
+		<button type="button" id="addInterviewBtn" ng-click="addInterviewClick()" class="btn btn-primary">Add Interview</button>
 	</div>  
 	
 	</div>
 	<div class="alert alert-success" ng-show="successMsgShow">
 	  Successfully added an Interview!
 	</div>
-	<div class="alert alert-danger" ng-show="errorMsgShow">
+	<div class="alert alert-danger" ng-bind="errorMsg" ng-show="errorMsgShow">
 	  Failed to add an Interview.
 	</div>
 	
@@ -50,7 +50,7 @@
 	    <tbody>
 	      <tr ng-repeat="x in associateInterviews">
 	        <td>{{x.client.name}}</td>
-	        <td>{{x.day}}</td>
+	        <td>{{ dateConverter(x.scheduled) }}</td>
 	        <td>{{x.interviewStatus.value}}</td>
 	      </tr>
 	    </tbody>
