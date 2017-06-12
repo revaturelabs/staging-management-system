@@ -17,5 +17,15 @@ div[class^="col-md"] {
 
 #profile-panel {
   max-width: 1000px;
+  min-width: 50%;
   display: inline-block;
+}
+
+#modal-skills-wrapper {
+  max-height: 380px;
+  overflow-y: auto;
+}
+
+#new-skill-input {
+  margin-top: 20px;
 }

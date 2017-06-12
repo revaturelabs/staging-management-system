@@ -74,9 +74,24 @@
         <h4 class="modal-title">Add or remove skills</h4>
       </div>
       <div class="modal-body">
-        Add or remove skills, seperated by commas.
-        <div class="form-group">
-          <input ng-model="additionalSkillsInput" class="form-control" />
+        <div id="modal-skills-wrapper">
+          <ul class="list-group">
+            <li ng-repeat="skill in additionalSkillsValues" class="list-group-item">
+              <span ng-bind="skill.value"></span>
+              <span class="pull-right">
+                <button class="btn btn-xs btn-danger">
+                  <span ng-click="removeSkill(skill)" class="glyphicon glyphicon-trash"></span>
+                </button>
+              </span>
+            </li>
+          </ul>
+        </div>
+        <div id="new-skill-input" class="input-group">
+          <span class="input-group-addon"><i class="glyphicon glyphicon-plus"></i></span>
+          <input ng-model="newSkillValue" type="text" class="form-control" placeholder="Add new skill">
+          <span class="input-group-btn">
+             <button ng-click="addSkill()" class="btn btn-default" type="button">Add</button>
+          </span>
         </div>
       </div>
       <div class="modal-footer">
