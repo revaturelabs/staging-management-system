@@ -20,3 +20,12 @@ div[class^="col-md"] {
   min-width: 50%;
   display: inline-block;
 }
+
+#modal-skills-wrapper {
+  max-height: 380px;
+  overflow-y: auto;
+}
+
+#new-skill-input {
+  margin-top: 20px;
+}
