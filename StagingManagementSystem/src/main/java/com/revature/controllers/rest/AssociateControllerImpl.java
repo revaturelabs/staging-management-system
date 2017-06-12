@@ -86,7 +86,8 @@ public class AssociateControllerImpl {
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Associate> getAssociate(@PathVariable long id, HttpSession session) {
-		if(session.getAttribute("login_manager") == null){ // If you're not logged in as a manger..
+	 	Associate associate = ((Associate)session.getAttribute("login_associate"));
+		if(session.getAttribute("login_manager") == null || associate == null || associate.getId() != id){ // If you're not logged in as a manger..
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 		}
 	 	return ResponseEntity.ok(associateService.getById(id));
