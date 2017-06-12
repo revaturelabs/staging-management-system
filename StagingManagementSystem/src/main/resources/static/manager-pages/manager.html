@@ -16,7 +16,7 @@
 				<li ng-class="{ active: isActive('/manager/home')}"><a ui-sref="manager.home">Home</a></li>
 				<li ng-class="{ active: isActive('/stats')}"><a ui-sref="manager.stats">Statistics</a></li>
 				<li ng-class="{ active: isActive('/manager/create') || isActive('/manager/create/batch')
-						|| isActive('/manager/create/user') || isActive('/manager/create/client')}">
+						|| isActive('/manager/create/user') || isActive('/manager/create/client') || isActive('/manager/create/location')}">
 						<a ui-sref="manager.create">Add (user/batch/client/location)</a></li>
 				<li ng-click="logout()"><a ui-sref="">Logout</a></li>
 			</ul>
