@@ -41,3 +41,7 @@ label{
     background-color: #FF8000;
     text-align: center;
 }
+
+#country{
+  overflow:visible;
+}
