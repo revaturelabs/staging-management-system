@@ -9,25 +9,29 @@
     </thead>
 
     <tbody>
-        <tr> 
+        <tr>
+
 		<td><label>Batch Type: </label> <select ng-model="batch.batchType">
 			<option disabled selected value> -- Select a Batch Type -- </option>
 			<option value={{post}} ng-repeat="post in posts2.data">{{post.value}}</option>
 		</select></td> <br> <br> 
     </tr>
         <tr>
-		<td><label>Start Date: </label> <input ng-model="batch.startDate">
-<!-- 		 <div class="form-group">
-                <div class='input-group date' id='datetimepicker1'>
-                    <input ng-model="batch.startDate" type='text' class="form-control" />
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                </div>
-            </div> --></td>
+        <tr>
+		<td><label>Start Date: </label>   <div class='input-group date' id='datetimepicker1'>
+                    <input ng-model="batch.startDate" ng-model-options="{timezone: 'utc'}" type='text' class="form-control" />
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                    </span></td>
     </tr>
         <tr>
-		<td><label>End Date: </label> <input ng-model="batch.endDate"></td> <br> <br>
+		<td><label>End Date: </label>   <div class='input-group date' id='datetimepicker2'>
+                    <input ng-model="batch.endDate" ng-model-options="{timezone: 'utc'}" type='text' class="form-control" />
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                    </span></td>
+    </tr>
+    </tr>
+        <tr>
+		<br> <br>
     </tr>
             <tr>
 		<td><label>Location: </label> <select ng-model="batch.location">

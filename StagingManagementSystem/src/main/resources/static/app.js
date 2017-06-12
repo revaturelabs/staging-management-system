@@ -11,6 +11,7 @@ import managerCreateCtrl from './manager-pages/create/create';
 import { batchCtrl } from './manager-pages/create/batch';
 import { clientCtrl } from './manager-pages/create/client';
 import { userCtrl } from './manager-pages/create/user';
+import { locCtrl } from './manager-pages/create/location';
 import managerAdvancedAssociatesCtrl from './manager-pages/advanced/associates';
 import profileCtrl from './associate-pages/profile/profile';
 import associateInterviewCtrl from './associate-pages/interview/interview';
@@ -95,6 +96,12 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       url: '/client',
       templateUrl: 'manager-pages/create/client.html',
       controller: clientCtrl,
+    })
+    .state('manager.create.location', {
+      url: '/location',
+      templateUrl: 'manager-pages/create/location.html',
+      controller: locCtrl,
+
     })
     .state('manager.home', {
       url: '/home',
