@@ -1,30 +1,19 @@
 const profileCtrl = ($scope, $http, userService, $stateParams, $state) => {
-
-  alert($state.includes('manager'))
-
-  alert($stateParams.id)
-
-  const associateId = userService.getUser().id;
-  const associateData = { $scope };
+  const associateId = $state.includes('manager') ? $stateParams.id : userService.getUser().id;
 
   if (associateId === undefined) {
     return;
   }
 
-  if (associateData === undefined) {
-    const associateUrl = `/associate/${associateId}`;
-    $http({
-      method: 'GET',
-      url: associateUrl,
-    }).then((response) => {
-      $scope.associate = response.data;
-    });
-  } else {
-    $scope.associate = { ...associateData };
-  }
+  const associateUrl = `/associate/${associateId}`;
+  $http({
+    method: 'GET',
+    url: associateUrl,
+  }).then((response) => {
+    $scope.associate = { ...response.data };
+  });
 
   $scope.portfolioUrlInput = '';
-  $scope.status = 'Active';
 
   $scope.addSkill = () => {
     const skillAlreadyExists = $scope.additionalSkillsValues
