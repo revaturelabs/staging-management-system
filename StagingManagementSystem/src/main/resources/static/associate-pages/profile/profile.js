@@ -1,21 +1,17 @@
 const profileCtrl = ($scope, $http, userService, $stateParams, $state) => {
-  if ($state.includes('manager')) {
-    const associateToFetchId = $stateParams.id;
-    if (associateToFetchId === undefined) {
-      return;
-    }
-    const associateUrl = `/associate/${associateToFetchId}`;
-    $http({
-      method: 'GET',
-      url: associateUrl,
-    }).then((response) => {
-      $scope.associate = { ...response.data };
-    }, () => {
-      alert('could not grab associate data');
-    });
-  } else {
-    $scope.associate = { ...userService.getUser() };
+  const associateId = $state.includes('manager') ? $stateParams.id : userService.getUser().id;
+
+  if (associateId === undefined) {
+    return;
   }
+
+  const associateUrl = `/associate/${associateId}`;
+  $http({
+    method: 'GET',
+    url: associateUrl,
+  }).then((response) => {
+    $scope.associate = { ...response.data };
+  });
 
   $scope.portfolioUrlInput = '';
 
