@@ -108,17 +108,17 @@
 
 	var _nestedGraph = __webpack_require__(223);
 
-	var _barGraph = __webpack_require__(224);
+	var _barGraph = __webpack_require__(228);
 
-	var _attendanceBarGraph = __webpack_require__(225);
+	var _attendanceBarGraph = __webpack_require__(224);
 
-	var _login = __webpack_require__(226);
+	var _login = __webpack_require__(225);
 
 	var _login2 = _interopRequireDefault(_login);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	__webpack_require__(227)(_fusioncharts2.default);
+	__webpack_require__(226)(_fusioncharts2.default);
 
 	var Visualizer = window['ui-router-visualizer'].Visualizer;
 
@@ -62738,47 +62738,47 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 	var batchCtrl = function batchCtrl($scope, $http) {
-	    console.log('starting');
+	  console.log('starting');
 
-	    $(function () {
-	        $('#datetimepicker1').datetimepicker();
-	    });
+	  $(function () {
+	    $('#datetimepicker1').datetimepicker();
+	  });
 
-	    $http.get('batchtype/all.json').then(function (response) {
-	        // console.log(response.data[0].id)
-	        console.log(response);
-	        $scope.posts2 = response;
+	  $http.get('batchtype/all.json').then(function (response) {
+	    // console.log(response.data[0].id)
+	    console.log(response);
+	    $scope.posts2 = response;
+	  }, function () {
+	    console.log("failure");
+	  });
+
+	  $http.get('location/all.json').then(function (response) {
+	    $scope.posts = response;
+	  }, function () {
+	    console.log("failure");
+	  });
+
+	  $scope.submit = function () {
+	    var item = JSON.stringify($scope.batch);
+	    console.log(item);
+	    var str = item.replace(/\\/g, '');
+	    var str2 = str.replace('"{', '{');
+	    var str3 = str2.replace('}"', '}');
+	    var str4 = str3.replace('"{', '{');
+	    var str5 = str4.replace('}"', '}');
+	    var str6 = str5.replace('"{', '{');
+	    var str7 = str6.replace('}"', '}');
+	    console.log(str7);
+	    $http.post('/batch', str7).then(function (response) {
+	      console.log("success");
+	      console.log(response);
 	    }, function () {
-	        console.log("failure");
+	      console.log("failure");
 	    });
-
-	    $http.get('location/all.json').then(function (response) {
-	        $scope.posts = response;
-	    }, function () {
-	        console.log("failure");
-	    });
-
-	    $scope.submit = function () {
-	        var item = JSON.stringify($scope.batch);
-	        console.log(item);
-	        var str = item.replace(/\\/g, '');
-	        var str2 = str.replace('"{', '{');
-	        var str3 = str2.replace('}"', '}');
-	        var str4 = str3.replace('"{', '{');
-	        var str5 = str4.replace('}"', '}');
-	        var str6 = str5.replace('"{', '{');
-	        var str7 = str6.replace('}"', '}');
-	        console.log(str7);
-	        $http.post('/batch', str7).then(function (response) {
-	            console.log("success");
-	            console.log(response);
-	        }, function () {
-	            console.log("failure");
-	        });
-	    };
+	  };
 	};
 
 	exports.batchCtrl = batchCtrl;
@@ -63577,110 +63577,6 @@
 /* 224 */
 /***/ (function(module, exports) {
 
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	var chart = {
-	    caption: "Asscoiates Available vs. Associate Confirmed",
-	    subCaption: "Revature LLC",
-	    xAxisname: "Batch Type",
-	    yAxisName: "Number of Associate",
-	    //    numberPrefix: "$",
-	    paletteColors: "#ff0000,#0075c2",
-	    bgColor: "#ffffff",
-	    borderAlpha: "20",
-	    showCanvasBorder: "0",
-	    usePlotGradientColor: "0",
-	    plotBorderAlpha: "10",
-	    legendBorderAlpha: "0",
-	    legendShadow: "0",
-	    valueFontColor: "#ffffff",
-	    showXAxisLine: "1",
-	    xAxisLineColor: "#999999",
-	    divlineColor: "#999999",
-	    divLineDashed: "1",
-	    showAlternateHGridColor: "0",
-	    subcaptionFontBold: "0",
-	    subcaptionFontSize: "14",
-	    showHoverEffect: "1"
-	};
-
-	var categories = void 0;
-
-	var dataset = [{
-	    "seriesname": "Food Products",
-	    "data": [{
-	        "value": "121000"
-	    }, {
-	        "value": "135000"
-	    }, {
-	        "value": "123500"
-	    }, {
-	        "value": "145000"
-	    }]
-	}, {
-	    "seriesname": "Non-Food Products",
-	    "data": [{
-	        "value": "131400"
-	    }, {
-	        "value": "154800"
-	    }, {
-	        "value": "98300"
-	    }, {
-	        "value": "131800"
-	    }]
-	}];
-
-	var barCtrl = function barCtrl($scope, $http) {
-	    graphBuilder($scope, $http);
-	};
-
-	function graphBuilder($scope, $http) {
-	    $http({
-	        method: 'GET',
-	        url: '/batchtype/all'
-	    }).then(function (response) {
-	        var stuff = [];
-	        var value = response.data;
-	        value.forEach(function (item) {
-	            stuff.push({ "label": item.value });
-	        });
-	        categories = [{
-	            "category": stuff
-	        }];
-	        plainBarChart2($scope, chart, categories, dataset);
-	    });
-	}
-
-	function plainBarChart2($scope, chartstuff, categories, dataset) {
-
-	    var myDataSource = {
-	        chart: chartstuff,
-	        categories: categories,
-	        dataset: dataset
-	    };
-
-	    var chart = new FusionCharts({
-	        type: 'stackedcolumn3d',
-	        renderAt: 'chart-container',
-	        width: '550',
-	        height: '350',
-	        dataFormat: 'json',
-	        dataSource: myDataSource
-	    });
-
-	    console.log("his chart: " + chart);
-	    chart.render();
-	}
-
-	exports.barCtrl = barCtrl;
-
-/***/ }),
-/* 225 */
-/***/ (function(module, exports) {
-
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
@@ -64212,7 +64108,7 @@
 	// ----------------------------------- End Main ----------------------------------- //
 
 /***/ }),
-/* 226 */
+/* 225 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -64266,7 +64162,7 @@
 	exports.default = loginCtrl;
 
 /***/ }),
-/* 227 */
+/* 226 */
 /***/ (function(module, exports) {
 
 	/*
@@ -64514,6 +64410,98 @@
 	c,b){var f=.5*b,k=a-b,h=a+b,l=a-f,m=a+f,n=a+.5,p=n+1,r=n+1.5,t=c-b,u=c+f,v=c-f,f=c+(b-f);return["M",k,t,"L",l,v,l,f,k,u,a-.5,u,a,c+b+.5,n,u,h,u,m,f,m,v,h,t,r,t,r,v,r,f,p,f,p,v,r,v,r,t,"Z"]},zoomOutIcon:function(a,c,b){a-=.2*b;c-=.2*b;var f=.8*b,k=w.rad(43),h=w.rad(48),l=a+f*ya(k),k=c+f*va(k),m=a+f*ya(h),h=c+f*va(h),n=w.rad(45),p=l+b*ya(n),r=k+b*va(n),t=m+b*ya(n);b=h+b*va(n);return["M",l,k,"A",f,f,0,1,0,m,h,"Z","M",l+1,k+1,"L",p,r,t,b,m+1,h+1,"Z","M",a-2,c,"L",a+2,c,"Z"]},resetIcon:function(a,c,b){var f=
 	a-b,k=(da.PI/2+da.PI)/2;a+=b*ya(k);var k=c+b*va(k),h=2*b/3;return["M",f,c,"A",b,b,0,1,1,a,k,"L",a+h,k-1,a+2,k+h-.5,a,k]}})}])});
 
+
+/***/ }),
+/* 227 */,
+/* 228 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var chart = {
+	  caption: "Asscoiates Available vs. Associate Confirmed",
+	  subCaption: "Revature LLC",
+	  xAxisname: "Batch Type",
+	  yAxisName: "Number of Associate",
+	  paletteColors: "#ff0000,#0075c2",
+	  bgColor: "#ffffff",
+	  borderAlpha: "20",
+	  showCanvasBorder: "0",
+	  usePlotGradientColor: "0",
+	  plotBorderAlpha: "10",
+	  legendBorderAlpha: "0",
+	  legendShadow: "0",
+	  valueFontColor: "#ffffff",
+	  showXAxisLine: "1",
+	  xAxisLineColor: "#999999",
+	  divlineColor: "#999999",
+	  divLineDashed: "1",
+	  showAlternateHGridColor: "0",
+	  subcaptionFontBold: "0",
+	  subcaptionFontSize: "14",
+	  showHoverEffect: "1"
+	};
+
+	var categories = void 0;
+	var dataset = void 0;
+
+	var barCtrl = function barCtrl($scope, $http) {
+	  graphBuilder($scope, $http);
+	};
+
+	function graphBuilder($scope, $http) {
+	  $http({
+	    method: 'GET',
+	    url: '/associate/totaldata'
+	  }).then(function (response) {
+	    console.log("new stuff: " + JSON.stringify(response.data));
+	    var stuff1 = [];
+	    var stuff2 = [];
+	    var stuff3 = [];
+	    var value = response.data;
+	    value.forEach(function (item) {
+	      stuff1.push({ "label": item.batchName });
+	      stuff2.push({ "value": item.totalAvailable - item.totalUnavailable });
+	      stuff3.push({ "value": item.totalUnavailable });
+	    });
+	    categories = [{
+	      "category": stuff1
+	    }];
+	    dataset = [{
+	      "seriesname": "Confirmed Associates",
+	      "data": stuff3
+	    }, {
+	      "seriesname": " Available Associates",
+	      "data": stuff2
+	    }];
+	    plainBarChart2($scope, chart, categories, dataset);
+	  });
+	}
+
+	function plainBarChart2($scope, chartstuff, categories, dataset) {
+
+	  var myDataSource = {
+	    chart: chartstuff,
+	    categories: categories,
+	    dataset: dataset
+	  };
+
+	  var chart = new FusionCharts({
+	    type: 'stackedcolumn3d',
+	    renderAt: 'chart-container',
+	    width: '650',
+	    height: '450',
+	    dataFormat: 'json',
+	    dataSource: myDataSource
+	  });
+
+	  chart.render();
+	}
+
+	exports.barCtrl = barCtrl;
 
 /***/ })
 /******/ ]);

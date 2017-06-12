@@ -3,7 +3,6 @@ const chart = {
             subCaption: "Revature LLC",
             xAxisname: "Batch Type",
             yAxisName: "Number of Associate",
-        //    numberPrefix: "$",
             paletteColors: "#ff0000,#0075c2",
             bgColor: "#ffffff",
             borderAlpha: "20",
@@ -24,43 +23,7 @@ const chart = {
             };
 
 let categories;
-
-const dataset = [
-                {
-                  "seriesname": "Food Products",
-                  "data": [
-                      {
-                          "value": "121000"
-                      },
-                      {
-                          "value": "135000"
-                      },
-                      {
-                          "value": "123500"
-                      },
-                      {
-                          "value": "145000"
-                      }
-                  ]
-              },
-              {
-                  "seriesname": "Non-Food Products",
-                  "data": [
-                      {
-                          "value": "131400"
-                      },
-                      {
-                          "value": "154800"
-                      },
-                      {
-                          "value": "98300"
-                      },
-                      {
-                          "value": "131800"
-                      }
-                  ]
-                }
-            ];
+let dataset;
 
 const barCtrl = ($scope, $http) => {
   graphBuilder($scope, $http);
@@ -69,18 +32,33 @@ const barCtrl = ($scope, $http) => {
 function graphBuilder($scope, $http){
   $http ({
     method: 'GET',
-    url: '/batchtype/all',   
+    url: '/associate/totaldata',   
   }).then ((response) => {
-      var stuff = [];
+      console.log("new stuff: " + JSON.stringify(response.data));
+      var stuff1 = [];
+      var stuff2 = [];
+      var stuff3 = [];
       var value = response.data;
           value.forEach(function(item){
-          stuff.push({"label" : item.value});      
+          stuff1.push({"label" : item.batchName});      
+          stuff2.push({"value" : item.totalAvailable - item.totalUnavailable});
+          stuff3.push({"value" : item.totalUnavailable});
       });
       categories = [
         {
-          "category": stuff   
+          "category": stuff1  
+        }];
+      dataset = [
+        {
+          "seriesname": "Confirmed Associates",
+          "data": stuff3
+        },
+        {
+          "seriesname": " Available Associates",
+          "data": stuff2
         }];
         plainBarChart2($scope, chart, categories, dataset );
+
       });
  
 }
@@ -96,13 +74,12 @@ function plainBarChart2($scope, chartstuff, categories, dataset ) {
   const chart = new FusionCharts({
     type: 'stackedcolumn3d',
     renderAt: 'chart-container',
-    width: '550',
-    height: '350',
+    width: '650',
+    height: '450',
     dataFormat: 'json',
     dataSource: myDataSource,     
   });
   
-  console.log("his chart: " + chart);
   chart.render();
 
 }
