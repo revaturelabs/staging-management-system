@@ -4,6 +4,7 @@ import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
+import com.revature.entities.Manager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -74,24 +75,21 @@ public class AssociateControllerImpl {
 		Associate authenticatedAssociate = (Associate)session.getAttribute("login_associate");
 		Manager authenticatedManager = (Manager)session.getAttribute("login_manager");
 		
-		if (authenticatedAssociate == null && authenticatedManager == null) {
-			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
-		}
-		
-		if (authenticatedAssociate != null) {
+		if (authenticatedAssociate != null) { // Associate edits their profile
 			// Now we block any changes we don't want, by cherry picking the associate information
 			// from the passed in associate into the session associate.
 			authenticatedAssociate.setSkills(associate.getSkills());
 			authenticatedAssociate.setPortfolioLink(associate.getPortfolioLink());
-			associateService.update(authenticatedAssociate);	
-		} else { // authenticatedManager != null, manager can edit associate information
-			Associate associateToUpdate = associateService.getById(associate.getId());
-			
-			associateToUpdate.setSkills(associate.getSkills());
-			associateToUpdate.setPortfolioLink(associate.getPortfolioLink());
-			associateService.update(associateToUpdate);	
+			associateService.update(authenticatedAssociate);
+			return ResponseEntity.ok(null);
 		}
-		return ResponseEntity.ok(null);
+		Manager manager = (Manager)session.getAttribute("login_manager");
+		if(manager != null){// We trust managers. A lot.
+			associateService.update(associate);
+			return ResponseEntity.ok(null);
+		}
+
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 	}
 
 	@GetMapping("/{id}")
