@@ -56,7 +56,7 @@
           </select><br>
         </div>
         <div style="height:0.3em"></div>
-        <div class="update-message" ng-show="edit" ng-bind="updateMessage" ng-style="updateMessageStyle"></div>
+        <div class="update-message" ng-show="edit && requestMade" ng-bind="updateMessage" ng-style="updateMessageStyle"></div>
         <div class="interview-side-table-row" ng-show="edit">
           <button class="btn btn-success" ng-click="updateInterview()">Update</button>
         </div>

@@ -1,5 +1,4 @@
 const interviewsCtrl = ($scope, $http) => {
-  window.scope = $scope
   $http({
       method : "GET",
       url : "interviews/next-five-days"
@@ -29,6 +28,7 @@ const interviewsCtrl = ($scope, $http) => {
 
     // incase edit mode was enabled from previously viewing a different interview
     $scope.edit = false;
+    $scope.requestMade = false;
 
     // Date time picker setup
     $('#datetimepicker1').datetimepicker({
