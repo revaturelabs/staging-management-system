@@ -1,5 +1,6 @@
 package com.revature.controllers.rest;
 
+import java.util.Collection;
 import java.util.Set;
 
 import javax.servlet.http.HttpSession;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.entities.Associate;
 import com.revature.services.AssociateService;
+import com.revature.services.TotalReport;
+import com.revature.services.TotalReport.TotalData;
 import com.revature.util.DataGeneration;
 
 @RestController
@@ -28,6 +31,9 @@ public class AssociateControllerImpl {
 	AssociateService associateService;
 	@Autowired
 	DataGeneration dataGen;
+	@Autowired
+	TotalReport totalReport;
+	
 
 	public AssociateControllerImpl(AssociateService associateService) {
 		super();
@@ -78,4 +84,10 @@ public class AssociateControllerImpl {
 	public Set<Associate> findById() {
 		return associateService.getAll();
 	}
+	
+	@GetMapping(path="/totaldata")
+	public ResponseEntity<Collection<TotalData>> getAssocaites(){
+		return ResponseEntity.ok(totalReport.process(associateService.getAll()));
+	}
+	
 }
