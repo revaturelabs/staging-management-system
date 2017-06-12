@@ -1,4 +1,3 @@
-import dateformat from 'dateformat';
 
 const associateInterviewCtrl = ($scope, $http, userService) => {
 	const addInterviewBtn = document.getElementById('addInterviewBtn');
@@ -11,7 +10,7 @@ const associateInterviewCtrl = ($scope, $http, userService) => {
 	$("#datetimepicker1").on("dp.change", function() {
     $scope.selectedDate = $("#datetimepicker1").val();
 	});
-
+//
 	$http({
 		method: 'GET',
 		url: '/client/all',
