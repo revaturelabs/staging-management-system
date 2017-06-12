@@ -298,7 +298,7 @@ public class DataGeneration
    */
 	private void createCheckins(LocalDateTime batchEndDate, LocalDateTime startDate, Associate associate){
 	  LocalDateTime currDate = batchEndDate;
-	  while(currDate.compareTo(startDate) < 0){
+	  while(currDate.compareTo(startDate) < 0 && currDate.compareTo(LocalDateTime.now()) < 0){
 	    currDate = currDate.plusDays(1);
 	    int managerIndex = rand.nextInt(managers.size());
 	    

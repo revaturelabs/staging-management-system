@@ -48069,6 +48069,60 @@
 	}
 
 	/**
+	 * This function creates a an array of data containing a checkin report object
+	 * That fills in missing data if toDate is outside of the range of Data.
+	 * (Assumes array is ordered by date earliest to latest)
+	 *
+	 * @param data - reference array to build off of.
+	 * @param toDate - date to build to.
+	 * @param increment - value to increment date by.
+	 * @param unit - unit to increment date by i.e. days, months, years...
+	 * @returns - an array that has checkin report objects spanning to and including toDate.
+	 */
+	function createBlankData(data, toDate, increment, unit) {
+	  // Assumes data has information
+	  var start = moment(data[0].time);
+	  var end = moment(data[data.length - 1]);
+
+	  // front is true if objects need to be added to the front of the array.
+	  var front = start.diff(toDate) > 0;
+	  var curr = void 0;
+	  var inc = increment;
+
+	  if (front) {
+	    // Adding in the negative direction starting with the startDate.
+	    inc = increment * -1;
+	    curr = start.format('YYYY-MM-DD');
+	  } else {
+	    // Adding in the positive direction starting with the endDate.
+	    curr = end.format('YYYY-MM-DD');
+	  }
+
+	  //Count increment date by the given unit until it passes the toDate limit.
+	  while (front && curr.diff(toDate) > 0 || !front && curr.diff(toDate) < 0) {
+	    curr = curr.add(inc, unit);
+	  }
+
+	  //Build an array with empty date information initialized to zero percent.
+	  var newData = [];
+	  while (curr.diff(moment(toDate.format('YYYY-MM-DD')) != 0)) {
+	    newObj = {
+	      time: curr.format('YYYY-MM-DD'),
+	      hourCount: 0,
+	      hourEstimate: 1
+	    };
+	    newData.push(newObj);
+	    curr = curr.subtract(inc, unit);
+	  }
+
+	  // Order and return arrays.
+	  if (front) {
+	    return newData.addAll(data);
+	  }
+	  return data.addAll(newData);
+	}
+
+	/**
 	 * Converts a moment object to the first of the week.
 	 *
 	 * @param momentObj - date of interest.
