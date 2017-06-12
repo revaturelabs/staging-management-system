@@ -10,10 +10,6 @@
   font-size: 200 px;
 }
 
-.create-container{
-	margin-top: -100px;
-}
-
 input {
   display: inline-block;
   float: center;
@@ -40,4 +36,8 @@ label{
 .table > thead > tr > th.create-th {
     background-color: #FF8000;
     text-align: center;
+}
+
+#country{
+  overflow:visible;
 }

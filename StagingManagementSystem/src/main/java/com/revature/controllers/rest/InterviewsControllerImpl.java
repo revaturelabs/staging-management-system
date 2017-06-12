@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.entities.Interview;
+import com.revature.entities.InterviewStatuses;
 import com.revature.services.InterviewsService;
 
 @RestController
@@ -29,10 +30,8 @@ public class InterviewsControllerImpl {
 
 	@PostMapping
 	public void add(@RequestBody Interview interviews) {
-		System.out.println(interviews);
-		System.out.println(interviews.getClient());
-		System.out.println(interviews.getScheduled());
-//		interviewsService.add(interviews);
+		interviews.setInterviewStatus(new InterviewStatuses(55, "SCHEDULED"));
+		interviewsService.add(interviews);
 	}
 
 	@GetMapping("/{id}")

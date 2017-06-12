@@ -20,10 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.revature.entities.Associate;
 import com.revature.entities.Checkin;
 import com.revature.entities.Manager;
-import com.revature.entities.data.CheckinReport;
-import com.revature.entities.data.CheckinReport.DailyReport;
 import com.revature.exceptions.AlreadyCheckedInException;
+import com.revature.services.CheckinReportServiceImpl;
 import com.revature.services.CheckinService;
+import com.revature.services.CheckinReportServiceImpl.DailyReport;
 
 @RestController
 @RequestMapping("checkin")
@@ -31,7 +31,7 @@ public class CheckinControllerImpl {
     @Autowired
     private CheckinService checkinService;
     @Autowired
-    private CheckinReport checkinReport;
+    private CheckinReportServiceImpl checkinReport;
 
     public CheckinControllerImpl(CheckinService checkinService) {
         this.checkinService = checkinService;
@@ -62,7 +62,13 @@ public class CheckinControllerImpl {
     }
 
     @GetMapping("/allTodays")
-    public Set<Checkin> getTodaysCheckins() {return checkinService.getTodaysCheckins();}
+    public ResponseEntity<Set<Checkin>> getTodaysCheckins(HttpSession session) {
+        Manager manager = (Manager) session.getAttribute("login_manager");
+        if(manager == null){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+        return ResponseEntity.ok(checkinService.getTodaysCheckins());
+    }
 
 
     @PutMapping
@@ -98,7 +104,11 @@ public class CheckinControllerImpl {
     }
 
     @GetMapping(path="/report")
-    public ResponseEntity<ArrayList<DailyReport>> getCheckins(){
+    public ResponseEntity<ArrayList<DailyReport>> getCheckins(HttpSession session){// For managers only.
+        Manager manager = (Manager) session.getAttribute("login_manager");
+        if(manager == null){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
         return ResponseEntity.ok(checkinReport.process(checkinService.getAll()));
     }
 }
