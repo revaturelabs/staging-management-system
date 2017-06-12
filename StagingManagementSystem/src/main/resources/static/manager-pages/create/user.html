@@ -1,78 +1,56 @@
-<div class="create-container"> 
-
-	<div class="create-container">
 <table class="table table-striped">
-    <thead>
+  <thead>
     <tr>
-        <th class="create-th" scope="col">Create a User</th>
+      <th class="create-th" scope="col">Create a User</th>
     </tr>
-    </thead>
+  </thead>
 
-    <tbody>
-        <tr>
-		<td>		<label>Select User Type: </label>
-		<select ng-model="user.type">
-			<option disabled selected value> -- Select a User -- </option>
-			<option value="manager" ng-click="type = 'manager'"">Manager</option>	
-			<option value="associate" ng-click="type = 'associate'">Associate</option>
-		</select> <br> <br>
-
-		</td> <br> <br> 
+  <tbody>
+    <tr>
+      <td> <label>Select User Type: </label>
+        <select ng-model="user.type" ng-init="user.type = 'associate'">
+					<option value="manager" ng-click="type = 'manager'" selected="selected">Manager</option>
+					<option value="associate" ng-click="type = 'associate'">Associate</option>
+				</select>
+      </td>
     </tr>
-        <tr>
-		<td><label>Username: </label> <input ng-model="user.credential.username"><br> <br>
+    <tr>
+      <td>
+				<label>Username: </label>
+				<input ng-model="user.credential.username"/>
+			</td>
     </tr>
-        <tr>
-		<td><label>Password: </label> <input ng-model="user.credential.password"> <br> <br></td> <br> <br>
+    <tr>
+      <td>
+				<label>Password: </label>
+				<input ng-model="user.credential.password"/>
+			</td>
     </tr>
-            <tr>
-		<td><label>Name: </label> <input ng-model="user.name"><br> <br></td> <br> <br>
+    <tr>
+      <td>
+				<label>Name: </label>
+				<input ng-model="user.name"/>
+			</td>
     </tr>
-                <tr>
-		<td><div ng-show="user.type === 'associate'">
-			<label>Portfolio Link:</label> <input  ng-model="user.portfolioLink">
-
-		</div>
-		<div ng-show="user.type === 'manager'"><Label>Permission: </Label><select  ng-show="user.type === 'manager'" ng-model="user.permission.level">
-			<option disabled selected value> -- Select a Permission -- </option>
-			<option value="ADMIN" ng-click="permission = 'ADMIN'"">Admin</option>
-			<option value="MGR" ng-click="permission = 'MGR'"">Manager</option>	
-			<option value="ASSOC" ng-click="permission = 'ASSOC'">Associate</option>
-		</select></div> <br> <br></td>		
+    <tr>
+      <td>
+        <div ng-show="user.type === 'associate'">
+          <label>Portfolio Link:</label>
+					<input ng-model="user.portfolioLink"/>
+        </div>
+        <div ng-show="user.type === 'manager'">
+          <Label>Permission: </Label>
+					<select ng-show="user.type === 'manager'" ng-model="user.permission.level">
+						<option disabled selected value> -- Select a Permission -- </option>
+						<option value="ADMIN" ng-click="permission = 'ADMIN'">Admin</option>
+						<option value="MGR" ng-click="permission = 'MGR'">Manager</option>
+						<option value="ASSOC" ng-click="permission = 'ASSOC'">Associate</option>
+					</select>
+				</div>
+      </td>
     </tr>
-    </tbody>
+  </tbody>
 </table>
 
-	</div>
 
 <button class="submit" ng-click="submit()">Submit</button>
-
-
-<!-- 
-<div> Create a User:
-
-		<select ng-model="user.type">
-			<option disabled selected value> -- Select a User -- </option>
-			<option value="manager" ng-click="type = 'manager'"">Manager</option>	
-			<option value="associate" ng-click="type = 'associate'">Associate</option>
-		</select> <br> <br>
-
-		Username <input ng-model="user.credential.username"> <br> <br>
-		Password: <input ng-model="user.credential.password"> <br> <br>
-		Name: <input ng-model="user.name"> <br> <br>
-		<div ng-show="user.type === 'associate'">
-			Portfolio Link: <input  ng-model="user.portfolioLink">
-
-		</div>
-		<select ng-show="user.type === 'manager'" ng-model="user.permission.level">
-			<option disabled selected value> -- Select a Permission -- </option>
-			<option value="ADMIN" ng-click="permission = 'ADMIN'"">Admin</option>
-			<option value="MGR" ng-click="permission = 'MGR'"">Manager</option>	
-			<option value="ASSOC" ng-click="permission = 'ASSOC'">Associate</option>
-		</select> <br> <br>
-
-
-
-</div>
-<button ng-click="submit()">Submit</button> -->
-
