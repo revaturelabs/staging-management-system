@@ -131,58 +131,15 @@ function binarySearchHelper(data, searchVal, cmpFunction) {
   return binarySearch(data, searchVal, 0, data.length, cmpFunction);
 }
 
-/**
- * This function creates a an array of data containing a checkin report object
- * That fills in missing data if toDate is outside of the range of Data.
- * (Assumes array is ordered by date earliest to latest)
- *
- * @param data - reference array to build off of.
- * @param toDate - date to build to.
- * @param increment - value to increment date by.
- * @param unit - unit to increment date by i.e. days, months, years...
- * @returns - an array that has checkin report objects spanning to and including toDate.
- */
-function createBlankData(data, toDate, increment, unit) {
-  // Assumes data has information
-  const start = moment(data[0].time);
-  const end = moment(data[data.length - 1]);
+function getObj(data, index, time) {
+  if(index > 0 && index < data.length)
+    return data[index];
   
-  // front is true if objects need to be added to the front of the array.
-  const front = start.diff(toDate) > 0;
-  let curr;
-  let inc = increment;
-
-  if (front) {
-    // Adding in the negative direction starting with the startDate.
-    inc = increment * -1
-    curr = start.format('YYYY-MM-DD');
-  } else {
-    // Adding in the positive direction starting with the endDate.
-    curr = end.format('YYYY-MM-DD');
-  }
-    
-  //Count increment date by the given unit until it passes the toDate limit.
-  while ( front && curr.diff(toDate) > 0 || !front && curr.diff(toDate) < 0) {
-    curr = curr.add(inc, unit);
-  }
-  
-  //Build an array with empty date information initialized to zero percent.
-  const newData = [];
-  while (curr.diff(moment(toDate.format('YYYY-MM-DD')) != 0)) {
-    newObj = {
-      time: curr.format('YYYY-MM-DD'),
+  return {
+      time: time,
       hourCount: 0,
       hourEstimate: 1,
-    }
-    newData.push(newObj);
-    curr = curr.subtract(inc, unit);
-  }
-  
-  // Order and return arrays.
-  if (front) {
-    return newData.addAll(data);
-  }
-  return data.addAll(newData);
+    };
 }
 
 /**
@@ -355,6 +312,10 @@ function setMonthly($scope, tarDate) {
   date = convertToFirstOfTheWeek(date);
 
   let index = binarySearchHelper(monthlyData, date, cmpDay) - 3;
+  console.log(`Date/index/dLength: ${date.format('YYYY-MM-DD')}/${index}/${monthlyData.length}`);
+  console.log(`returnded data: ${JSON.stringify(monthlyData)}`);
+
+
   if (index < 0) {
     index = 0;
   }
@@ -368,13 +329,17 @@ function setMonthly($scope, tarDate) {
   let valueString = '[';
 
   let i;
+  let currDate = moment(date.format());
   for (i = 0; i < 5; i += 1) {
-    const hourCount = monthlyData[index].hourCount;
-    const hourEstimate = monthlyData[index].hourEstimate;
+    const currObj = getObj(monthlyData, index, currDate.format());
+    const nextObj = getObj(monthlyData, index, currDate.add(7, 'days').format());
+    
+    const hourCount = currObj.hourCount;
+    const hourEstimate = currObj.hourEstimate;
     index += 1;
 
-    const start = moment(monthlyData[index].time).format('MM/DD');
-    const stop = moment(monthlyData[index + 1].time).subtract(1, 'days').format('MM/DD');
+    const start = moment(currObj.time).format('MM/DD');
+    const stop = moment(nextObj.time).subtract(1, 'days').format('MM/DD');
     valueString += `{"label":"${start}-${stop}"}`;
 
     const value = Math.floor((hourCount / hourEstimate) * 100);
@@ -383,6 +348,7 @@ function setMonthly($scope, tarDate) {
       dataString += ',';
       valueString += ',';
     }
+    currDate.add(7, 'days');
   }
   dataString += ']}]';
   valueString += ']';
@@ -408,18 +374,7 @@ function monthlyColumnClick(ev, props, $scope) {
 function buildYearlyForEach(item) {
   const identityString = convertToFirstOfQuarter(moment(item.time));
   const index = binarySearchHelper(yearlyData, moment(identityString), cmpDay);
-  
 
-  console.log(`Identity String: ${identityString}`);
-  console.log(`COUNT/ESTAMATE: ${item.hourCount}/${item.hourEstimate}`);
-  console.log(`Item: ${JSON.stringify(item, null, 2)}`)
-  console.log(`Data: ${JSON.stringify(yearlyData, null, 2)}`)
-
-  
-  
-  
-
-  
   if (index < 0 || index >= yearlyData.length || yearlyData.length === 0) {
     const itemCpy = JSON.parse(JSON.stringify(item));
     itemCpy.time = identityString;

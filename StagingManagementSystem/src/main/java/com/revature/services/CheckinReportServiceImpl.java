@@ -1,4 +1,4 @@
-package com.revature.entities.data;
+package com.revature.services;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -15,11 +15,9 @@ import org.springframework.stereotype.Service;
 import com.revature.entities.Associate;
 import com.revature.entities.Checkin;
 import com.revature.entities.Job;
-import com.revature.services.AssociateService;
-import com.revature.services.JobService;
 
 @Service
-public class CheckinReport {
+public class CheckinReportServiceImpl {
   
   public class DailyReport implements Comparable<DailyReport>{
     LocalDateTime time;
@@ -76,7 +74,7 @@ public class CheckinReport {
   Map<String, DailyReport> reports;
   Set<Associate> associates;
   
-  public CheckinReport(){
+  public CheckinReportServiceImpl(){
     super();
   }
 

@@ -134,8 +134,7 @@
 	});
 
 	routerApp.run(function ($uiRouter, $trace, $rootScope) {
-
-	  //Ui Visualizer
+	  // Ui Visualizer
 	  // Auto-collapse children in state visualizer
 	  var registry = $uiRouter.stateRegistry;
 
@@ -143,19 +142,18 @@
 
 	  $trace.enable('TRANSITION');
 
-	  //Global Functions
+	  // Global Functions
 	  $rootScope.dateConverter = function (localDateTime) {
 	    console.log('hello');
-	    var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+	    var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 	    // month                             day
-	    return '' + months[localDateTime[1] - 1] + ' ' + localDateTime[2] + ' '
+	    return months[localDateTime[1] - 1] + ' ' + localDateTime[2] + ' ' + (
 	    // hour                                                              minute                AM/PM
-	    + (localDateTime[3] > 12 ? localDateTime[3] - 12 : localDateTime) + ':' + localDateTime[4] + (localDateTime > 12 ? 'p.m.' : 'a.m.');
+	    localDateTime[3] > 12 ? localDateTime[3] - 12 : localDateTime) + ':' + localDateTime[4] + (localDateTime > 12 ? 'p.m.' : 'a.m.');
 	  };
 	});
 
 	routerApp.config(function ($stateProvider, $urlRouterProvider) {
-
 	  $urlRouterProvider.otherwise('/login');
 
 	  $stateProvider // HOME STATES AND NESTED VIEWS
@@ -46946,47 +46944,47 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 	var batchCtrl = function batchCtrl($scope, $http) {
-	  console.log('starting');
+	    console.log('starting');
 
-	  $(function () {
-	    $('#datetimepicker1').datetimepicker();
-	  });
-
-	  $http.get('batchtype/all.json').then(function (response) {
-	    // console.log(response.data[0].id)
-	    console.log(response);
-	    $scope.posts2 = response;
-	  }, function () {
-	    console.log("failure");
-	  });
-
-	  $http.get('location/all.json').then(function (response) {
-	    $scope.posts = response;
-	  }, function () {
-	    console.log("failure");
-	  });
-
-	  $scope.submit = function () {
-	    var item = JSON.stringify($scope.batch);
-	    console.log(item);
-	    var str = item.replace(/\\/g, '');
-	    var str2 = str.replace('"{', '{');
-	    var str3 = str2.replace('}"', '}');
-	    var str4 = str3.replace('"{', '{');
-	    var str5 = str4.replace('}"', '}');
-	    var str6 = str5.replace('"{', '{');
-	    var str7 = str6.replace('}"', '}');
-	    console.log(str7);
-	    $http.post('/batch', str7).then(function (response) {
-	      console.log("success");
-	      console.log(response);
-	    }, function () {
-	      console.log("failure");
+	    $(function () {
+	        $('#datetimepicker1').datetimepicker();
 	    });
-	  };
+
+	    $http.get('batchtype/all.json').then(function (response) {
+	        // console.log(response.data[0].id)
+	        console.log(response);
+	        $scope.posts2 = response;
+	    }, function () {
+	        console.log("failure");
+	    });
+
+	    $http.get('location/all.json').then(function (response) {
+	        $scope.posts = response;
+	    }, function () {
+	        console.log("failure");
+	    });
+
+	    $scope.submit = function () {
+	        var item = JSON.stringify($scope.batch);
+	        console.log(item);
+	        var str = item.replace(/\\/g, '');
+	        var str2 = str.replace('"{', '{');
+	        var str3 = str2.replace('}"', '}');
+	        var str4 = str3.replace('"{', '{');
+	        var str5 = str4.replace('}"', '}');
+	        var str6 = str5.replace('"{', '{');
+	        var str7 = str6.replace('}"', '}');
+	        console.log(str7);
+	        $http.post('/batch', str7).then(function (response) {
+	            console.log("success");
+	            console.log(response);
+	        }, function () {
+	            console.log("failure");
+	        });
+	    };
 	};
 
 	exports.batchCtrl = batchCtrl;
@@ -48068,58 +48066,14 @@
 	  return binarySearch(data, searchVal, 0, data.length, cmpFunction);
 	}
 
-	/**
-	 * This function creates a an array of data containing a checkin report object
-	 * That fills in missing data if toDate is outside of the range of Data.
-	 * (Assumes array is ordered by date earliest to latest)
-	 *
-	 * @param data - reference array to build off of.
-	 * @param toDate - date to build to.
-	 * @param increment - value to increment date by.
-	 * @param unit - unit to increment date by i.e. days, months, years...
-	 * @returns - an array that has checkin report objects spanning to and including toDate.
-	 */
-	function createBlankData(data, toDate, increment, unit) {
-	  // Assumes data has information
-	  var start = moment(data[0].time);
-	  var end = moment(data[data.length - 1]);
+	function getObj(data, index, time) {
+	  if (index > 0 && index < data.length) return data[index];
 
-	  // front is true if objects need to be added to the front of the array.
-	  var front = start.diff(toDate) > 0;
-	  var curr = void 0;
-	  var inc = increment;
-
-	  if (front) {
-	    // Adding in the negative direction starting with the startDate.
-	    inc = increment * -1;
-	    curr = start.format('YYYY-MM-DD');
-	  } else {
-	    // Adding in the positive direction starting with the endDate.
-	    curr = end.format('YYYY-MM-DD');
-	  }
-
-	  //Count increment date by the given unit until it passes the toDate limit.
-	  while (front && curr.diff(toDate) > 0 || !front && curr.diff(toDate) < 0) {
-	    curr = curr.add(inc, unit);
-	  }
-
-	  //Build an array with empty date information initialized to zero percent.
-	  var newData = [];
-	  while (curr.diff(moment(toDate.format('YYYY-MM-DD')) != 0)) {
-	    newObj = {
-	      time: curr.format('YYYY-MM-DD'),
-	      hourCount: 0,
-	      hourEstimate: 1
-	    };
-	    newData.push(newObj);
-	    curr = curr.subtract(inc, unit);
-	  }
-
-	  // Order and return arrays.
-	  if (front) {
-	    return newData.addAll(data);
-	  }
-	  return data.addAll(newData);
+	  return {
+	    time: time,
+	    hourCount: 0,
+	    hourEstimate: 1
+	  };
 	}
 
 	/**
@@ -48292,6 +48246,9 @@
 	  date = convertToFirstOfTheWeek(date);
 
 	  var index = binarySearchHelper(monthlyData, date, cmpDay) - 3;
+	  console.log('Date/index/dLength: ' + date.format('YYYY-MM-DD') + '/' + index + '/' + monthlyData.length);
+	  console.log('returnded data: ' + JSON.stringify(monthlyData));
+
 	  if (index < 0) {
 	    index = 0;
 	  }
@@ -48305,13 +48262,17 @@
 	  var valueString = '[';
 
 	  var i = void 0;
+	  var currDate = moment(date.format());
 	  for (i = 0; i < 5; i += 1) {
-	    var hourCount = monthlyData[index].hourCount;
-	    var hourEstimate = monthlyData[index].hourEstimate;
+	    var currObj = getObj(monthlyData, index, currDate.format());
+	    var nextObj = getObj(monthlyData, index, currDate.add(7, 'days').format());
+
+	    var hourCount = currObj.hourCount;
+	    var hourEstimate = currObj.hourEstimate;
 	    index += 1;
 
-	    var start = moment(monthlyData[index].time).format('MM/DD');
-	    var stop = moment(monthlyData[index + 1].time).subtract(1, 'days').format('MM/DD');
+	    var start = moment(currObj.time).format('MM/DD');
+	    var stop = moment(nextObj.time).subtract(1, 'days').format('MM/DD');
 	    valueString += '{"label":"' + start + '-' + stop + '"}';
 
 	    var value = Math.floor(hourCount / hourEstimate * 100);
@@ -48320,6 +48281,7 @@
 	      dataString += ',';
 	      valueString += ',';
 	    }
+	    currDate.add(7, 'days');
 	  }
 	  dataString += ']}]';
 	  valueString += ']';
@@ -48345,11 +48307,6 @@
 	function buildYearlyForEach(item) {
 	  var identityString = convertToFirstOfQuarter(moment(item.time));
 	  var index = binarySearchHelper(yearlyData, moment(identityString), cmpDay);
-
-	  console.log('Identity String: ' + identityString);
-	  console.log('COUNT/ESTAMATE: ' + item.hourCount + '/' + item.hourEstimate);
-	  console.log('Item: ' + JSON.stringify(item, null, 2));
-	  console.log('Data: ' + JSON.stringify(yearlyData, null, 2));
 
 	  if (index < 0 || index >= yearlyData.length || yearlyData.length === 0) {
 	    var itemCpy = JSON.parse(JSON.stringify(item));

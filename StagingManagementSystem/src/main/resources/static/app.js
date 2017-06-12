@@ -37,8 +37,7 @@ routerApp.service('userService', function ($cookies) {
 });
 
 routerApp.run(($uiRouter, $trace, $rootScope) => {
-
-	//Ui Visualizer
+	// Ui Visualizer
   // Auto-collapse children in state visualizer
   const registry = $uiRouter.stateRegistry;
 
@@ -46,22 +45,21 @@ routerApp.run(($uiRouter, $trace, $rootScope) => {
 
   $trace.enable('TRANSITION');
 
-	//Global Functions
-	$rootScope.dateConverter = (localDateTime) => {
-		console.log('hello')
-		let months = [
-			"January", "February", "March", "April", "May", "June",
-			"July", "August", "September", "October", "November", "December"
-		]
+	// Global Functions
+  $rootScope.dateConverter = (localDateTime) => {
+    console.log('hello');
+    const months = [
+      'January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December',
+    ];
 								// month                             day
-		return '' + months[localDateTime[1]-1] + ' ' + localDateTime[2] + ' '
+    return `${months[localDateTime[1] - 1]} ${localDateTime[2]} ${
 								// hour                                                              minute                AM/PM
-					+ (localDateTime[3] > 12 ? localDateTime[3] - 12 : localDateTime) + ':' + localDateTime[4] + (localDateTime > 12 ? 'p.m.' : 'a.m.')
-	};
+					 localDateTime[3] > 12 ? localDateTime[3] - 12 : localDateTime}:${localDateTime[4]}${localDateTime > 12 ? 'p.m.' : 'a.m.'}`;
+  };
 });
 
 routerApp.config(($stateProvider, $urlRouterProvider) => {
-
   $urlRouterProvider.otherwise('/login');
 
   $stateProvider // HOME STATES AND NESTED VIEWS
@@ -113,7 +111,7 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
         },
         'checkins@manager.home': {
           templateUrl: 'manager-pages/home/checkin/checkin.html',
-            controller: managerCheckinsCtr,
+          controller: managerCheckinsCtr,
         },
       },
     })
