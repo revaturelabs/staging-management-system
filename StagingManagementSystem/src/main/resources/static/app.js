@@ -51,14 +51,6 @@ routerApp.run(($uiRouter, $trace, $rootScope) => {
 	//Global Functions
 	$rootScope.dateConverter = (time) => {
     return moment(time).format('MMM D, hh:mm a');
-	// 	let months = [
-	// 		"January", "February", "March", "April", "May", "June",
-	// 		"July", "August", "September", "October", "November", "December"
-	// 	]
-	// 							// month                             day
-	// 	return '' + months[localDateTime[1]-1] + ' ' + localDateTime[2] + ' '
-	// 							// hour                                                              minute                AM/PM
-	// 				+ (localDateTime[3] > 12 ? localDateTime[3] - 12 : localDateTime) + ':' + localDateTime[4] + (localDateTime > 12 ? 'p.m.' : 'a.m.')
 	};
 });
 
@@ -124,6 +116,11 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
             controller: managerCheckinsCtrl,
         },
       },
+    })
+    .state('manager.associateView', {
+      url: '/associate/:id',
+      templateUrl: 'associate-pages/profile/profile.html',
+      controller: profileCtrl,
     })
     .state('manager.advanced', {
       url: '/advanced',
