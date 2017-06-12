@@ -8,8 +8,10 @@ const managerCheckinsCtrl = ($scope, $http) => {
     $http.get("checkin/allTodays").then(function(result) {
         $scope.checkins = result.data;
         $scope.checkinDates = checkins.checkinTime;
-        $scope.isApproved = hasCheckedIn;
+
     });
+
+
 
 
 };
