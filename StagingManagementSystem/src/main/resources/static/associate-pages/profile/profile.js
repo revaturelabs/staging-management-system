@@ -78,6 +78,13 @@ const profileCtrl = ($scope, $http, userService, $stateParams, $state) => {
       $('#additionalSkillsModal').modal('hide');
     });
   };
+
+  $scope.associateHasNoSkills = () => {
+    if ($scope.associate === undefined) {
+      return true;
+    }
+    return $scope.associate.batch.batchType.skills.concat($scope.associate.skills).length === 0;
+  };
 };
 
 export default profileCtrl;
