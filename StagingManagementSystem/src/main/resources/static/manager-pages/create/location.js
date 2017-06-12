@@ -1,8 +1,8 @@
 const locCtrl = ($scope, $http) => {
   $scope.submit = () => {
-  	let item = JSON.stringify($scope.client);
+  	let item = JSON.stringify($scope.location);
   	console.log(item);
-  	$http.post('/client', item).then( (response) => {
+  	$http.post('/location', item).then( (response) => {
   		console.log("success")
   	}, () => {
   		console.log("failure")
