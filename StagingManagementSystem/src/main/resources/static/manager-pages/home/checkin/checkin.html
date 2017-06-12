@@ -2,7 +2,7 @@
     <thead>
     <tr>
         <th class="interview-th" scope="col"><input type="checkbox"
-          ng-model="selectAll" ng-click="checkAll()"> Select All</th>
+          ng-model="selectedAll" ng-click="isSelectAll()"> Select All</th>
         <th class="interview-th" scope="col">Associate</th>
         <th class="interview-th" scope="col">Checked In Time</th>
 
@@ -11,13 +11,13 @@
     <tbody>
     <tr ng-repeat="checkin in checkins" class="associate">
         <td class="interview-td"><input type="checkbox"
-          ng-model="checkin.selected" checked>
+          ng-model="checkin.selected" ng-click="checkIfAllSelected(checkin)">
          </td>
 
         <td class="interview-td" ng-bind="checkin.associate.name"></td>
 
         <td class="interview-td" ng-bind="checkin.checkinTime"
-        value="{{ checkin.checkinTime| date: 'DD-MON-RR HH:MI:SSX AM' }}"></td>
+        value="{{ checkin.checkinTime | date: 'DD-MON-RR HH:MI:SSX AM' }}"></td>
       </tr>
     </tbody>
 </table>
