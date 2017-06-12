@@ -1,40 +1,71 @@
 <div class="interviews-container">
   <div>
-    <table class="table table-striped interviews-table">
+    <table class="table table-striped interviews-table selectable-table">
       <thead>
       <tr>
         <th class="interview-th" scope="col">Associate</th>
-        <th class="interview-th" scope="col">Batch</th>
         <th class="interview-th" scope="col">Client</th>
         <th class="interview-th" scope="col">Scheduled Time</th>
       </tr>
       </thead>
       <tbody>
-      <tr ng-repeat="interview in interviews" ng-click="interviewSelect(interview)">
+      <!-- <tr ng-repeat="interview in interviews" data-toggle="modal" data-target="#interviewModal" ng-click="interviewSelect(interview)" ng-class="{selectedTableRow : interview.id === idSelectedInterview}" >-->
+      <tr ng-repeat="interview in interviews" data-toggle="modal" data-target="#interviewModal" ng-click="interviewSelect(interview)">
         <td class="interview-td" ng-bind="interview.associate.name"></td>
-        <td class="interview-td" ng-bind="interview.associate.batch.batchType.value"></td>
         <td class="interview-td" ng-bind="interview.client.name"></td>
         <td class="interview-td" ng-bind="dateConverter(interview.scheduled)"></td>
       </tr>
       </tbody>
     </table>
   </div>
+</div>
 
-  <div class="interview-side-table" ng-show="interviewSideTable">
-      <div>Associate: {{ interviewSideTable.interview.associate.name }}</div>
-      <div>Date: {{ dateConverter(interviewSideTable.interview.scheduled) }}</div>
-      <div>Skill: {{ interviewSideTable.interview.associate.batch.batchType.value }}</div>
-      <div>Client: {{ interviewSideTable.interview.client.name }}</div>
-      <div class="interview-status-container">
-        <div class="interview-status-label">Status: </div>
-        <select ng-model="interviewSideTable.interview.status">
-          <option value="Unscheduled">Unscheduled</option>
-          <option value="Scheduled">Scheduled</option>
-          <option value="Pending Feedback">Pending Feedback</option>
-          <option value="Confirmed">Confirmed</option>
-          <option value="Denied">Denied</option>
-        </select><br>
+<!-- Modal -->
+<div id="interviewModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header interview-modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Interview
+          <span style="cursor: pointer;" ng-click="edit=true">
+            <span class="glyphicon glyphicon-edit"></span>
+          </span>
+        </h4>
       </div>
-  </div>
+      <div class="modal-body">
+        <div class="interview-side-table-row">Associate: {{ interviewSideTable.interview.associate.name }}</div>
+        <div class="interview-side-table-row" ng-hide="edit">Date: {{ dateConverter(interviewSideTable.interview.scheduled) }}</div>
+        <div class="interview-side-table-row flex-row" ng-show="edit">
+          Date:
+              <input type='text' class="manager-input" ng-model="selectedDate.value" id='datetimepicker1'/>
+              <div ng-click="showDateTimePicker()" class="interview-input-addon">
+                  <span class="glyphicon glyphicon-calendar"></span>
+              </div>
+        </div>
+        <div class="interview-side-table-row">Skill: {{ interviewSideTable.interview.associate.batch.batchType.value }}</div>
+        <div class="interview-side-table-row">Client: {{ interviewSideTable.interview.client.name }}</div>
+        <div class="interview-side-table-row" ng-hide="edit">
+          Status: {{ interviewSideTable.interview.interviewStatus.value }}
+        </div>
+        <div class="interview-side-table-row flex-row" class="interview-status-container" ng-show="edit">
+          <div class="interview-status-label">Status: </div>
+          <select class="manager-input" ng-model="interviewSideTable.interview.interviewStatus" ng-options="status as status.value for status in interviewStatuses">
+            <option value=""></option>
+          </select><br>
+        </div>
+        <div style="height:0.3em"></div>
+        <div class="update-message" ng-show="edit" ng-bind="updateMessage" ng-style="updateMessageStyle"></div>
+        <div class="interview-side-table-row" ng-show="edit">
+          <button class="btn btn-success" ng-click="updateInterview()">Update</button>
+        </div>
+      </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
 
+  </div>
 </div>
