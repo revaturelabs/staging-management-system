@@ -1,5 +1,6 @@
 package com.revature.entities;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -83,6 +84,52 @@ public class Associate implements SmsValidatable {
 		this.lockedTo = lockedTo;
 		this.skills = skills;
 		this.jobs = jobs;
+	}
+	
+	/**
+	 *  Returns true if associate was on job during the given date.
+	 */
+	public boolean hasJobOnDate(LocalDateTime date){
+	  date = date.withHour(12); //Set mid day all other events should be the beginning of the day.
+	  for(Job j : jobs){
+	    boolean afterEnd = j.getEndDate() == null || date.compareTo(j.getEndDate()) < 0;
+	    boolean hasentStopped = j.getEndDate() == null;
+	    boolean afterStart = date.compareTo(j.getStartDate()) > 0;
+	    
+	    if(afterStart && (hasentStopped || !afterEnd))
+	      return true;
+	  }
+	  return false;
+	}
+	
+	/**
+	 * Returns true if associate has not started thier training and they have not had
+	 * any jobs. Leaving it possible for associates to participate in multiple training
+	 * batches only after they have had atleast one job.
+	 */
+	public boolean hasNotStartedOnDate(LocalDateTime date) {
+		boolean hasNotBegunTraining = date.compareTo(batch.getStartDate()) < 0;
+		System.out.println(batch.getStartDate() + ") before " + hasNotBegunTraining);
+
+		if(hasNotBegunTraining && jobs.isEmpty())
+			     return true;
+		return false;
+	}
+	
+	/**
+	 * Returns true if associate was in training during the given date.
+	 */
+	public boolean isTrainingOnDate(LocalDateTime date) {
+	   date = date.withHour(12); //Set mid day all other events should be the beginning of the day.
+	   boolean afterBatchStart = date.compareTo(batch.getStartDate()) > 0;
+	   boolean beforeBatchEnd = date.compareTo(batch.getEndDate()) < 0;
+	   System.out.println("date to compare: " + date);
+	   System.out.println(batch.getStartDate() + ") after " + afterBatchStart);
+	   System.out.println(batch.getEndDate() + ") before " + afterBatchStart);
+	   if(afterBatchStart && beforeBatchEnd)
+	     return true;
+	  
+	  return false;
 	}
 
 	public long getId() {
@@ -212,7 +259,7 @@ public class Associate implements SmsValidatable {
 	@Override
 	public String toString() {
 		return "Associate [id=" + id + ", credential=" + credential + ", name=" + name + ", portfolioLink="
-				+ portfolioLink + ", batch=" + batch.getBatchType().getValue() + ", active=" + active + ", lockedTo="
+				+ portfolioLink + ", batch=" + (batch == null ? null : batch.getBatchType().getValue()) + ", active=" + active + ", lockedTo="
 				+ lockedTo + ", skills=" + skills + "]";
 	}
 

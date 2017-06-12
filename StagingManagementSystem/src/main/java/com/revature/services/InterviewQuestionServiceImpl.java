@@ -22,22 +22,23 @@ public class InterviewQuestionServiceImpl implements InterviewQuestionService {
 
 	@Override
 	public void add(InterviewQuestion interviewQ) {
-		interviewQuestionRepo.saveAndFlush(interviewQ);
+		interviewQ = interviewQuestionRepo.saveAndFlush(interviewQ);
 	}
 
 	@Override
-	public void delete(InterviewQuestion interviewQ) {
+	public void delete(InterviewQuestion interviewQ){
 		interviewQuestionRepo.delete(interviewQ);
 	}
 
 	@Override
-	public void update(InterviewQuestion interviewQ) {
-		interviewQuestionRepo.saveAndFlush(interviewQ);
+	public void update(InterviewQuestion interviewQ){
+		interviewQ = interviewQuestionRepo.saveAndFlush(interviewQ);
 	}
 
 	@Override
-	public InterviewQuestion findById(long id) {
-		return interviewQuestionRepo.getOne(id);
+	public InterviewQuestion findById(long id){
+		InterviewQuestion interviewQ = interviewQuestionRepo.getOne(id);
+		return interviewQ;
 	}
 
 	@Override
