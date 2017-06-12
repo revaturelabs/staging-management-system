@@ -9,10 +9,9 @@
     <tr>
       <td>
 				<label>Batch Type:</label>
-				<select ng-model="batch.batchType">
-					<option disabled selected value> -- Select a Batch Type -- </option>
-					<option value={{post}} ng-repeat="post in posts2.data">{{post.value}}</option>
-				</select>
+        <select class="manager-input" ng-model="batch.batchType" ng-options="batchType as batchType.value for batchType in batchTypes">
+          <option value="">-- Select a Batch Type --</option>
+        </select>
 			</td>
     </tr>
     <tr>
@@ -40,14 +39,13 @@
     <tr>
       <td>
 				<label>Location: </label>
-				<select ng-model="batch.location">
-					<option disabled selected value> -- Select a Location -- </option>
-					<option value={{post}} ng-repeat="post in posts.data">{{post.name}}</option>
-				</select>
+        <select class="manager-input" ng-model="batch.location" ng-options="location as location.name for location in locations">
+          <option value=""> -- Select a Location -- </option>
+        </select>
 			</td>
     </tr>
   </tbody>
 </table>
 
-
+<div ng-show="requestMade" ng-bind="createMessage" ng-style="createMessageStyle"></div>
 <button class="submit" ng-click="submit()">Submit</button>

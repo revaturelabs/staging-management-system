@@ -1,54 +1,33 @@
 const batchCtrl = ($scope, $http) => {
-	console.log('starting');
+  $('#datetimepicker1').datetimepicker();
+	$('#datetimepicker2').datetimepicker();
 
-  $(function () {
-      $('#datetimepicker1').datetimepicker();
-  });
-
-  $(function () {
-      $('#datetimepicker2').datetimepicker();
-  });
-
-  $http.get('batchtype/all.json').then( (response) => {
-		// console.log(response.data[0].id)
-		console.log(response)
-		$scope.posts2 = response
+  $http.get('batchtype/all').then((response) => {
+			$scope.batchTypes = response.data
   	}, () => {
   		console.log("failure")
   	})
 
-  $http.get('location/all.json').then( (response) => {
-		$scope.posts = response
+  $http.get('location/all').then( (response) => {
+		$scope.locations = response.data
   	}, () => {
   		console.log("failure")
   	})
-
-
 
   $scope.submit = () => {
+		$scope.requestMade = true;
+    $scope.createMessage = 'Attempting to create batch';
+    $scope.createMessageStyle = { color: 'black' };
 
-  	let item = (JSON.stringify($scope.batch));
-  	console.log(item)
-    console.log($scope.batch.startDate)
-    var now = new Date($scope.batch.startDate).toISOString(); 
-    $scope.batch.startDate = now;
-      var now2 = new Date($scope.batch.endDate).toISOString(); 
-    $scope.batch.endDate = now2;
-    console.log(now);
-    //var now_utc = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(),  now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
-  	let str = item.replace(/\\/g, '')
-  	let str2 = str.replace('"{', '{')
-  	let str3 = str2.replace('}"', '}')
-  	let str4 = str3.replace('"{', '{')
-  	let str5 = str4.replace('}"', '}')
-  	let str6 = str5.replace('"{', '{')
-  	let str7 = str6.replace('}"', '}')
-  	console.log(str7);
-  	$http.post('/batch', str7).then( (response) => {
-  		console.log("success")
-  		console.log(response)
+		$scope.batch.startDate = moment($scope.batch.startDate).toDate();
+		$scope.batch.endDate = moment($scope.batch.endDate).toDate();
+
+  	$http.post('/batch', JSON.stringify($scope.batch)).then( (response) => {
+			$scope.createMessage = 'Successfully created batch';
+  		$scope.createMessageStyle = { color: 'green' };
   	}, () => {
-  		console.log("failure")
+			$scope.createMessage = 'Failed to create batch';
+      $scope.createMessageStyle = { color: 'red' };
   	})
   };
 };
