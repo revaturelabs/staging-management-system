@@ -30,10 +30,7 @@ public class InterviewsControllerImpl {
 
 	@PostMapping
 	public void add(@RequestBody Interview interviews) {
-		System.out.println(interviews);
-		System.out.println(interviews.getClient());
-		System.out.println(interviews.getScheduled());
-		interviews.setInterviewStatus(new InterviewStatuses(51, "MAPPED"));
+		interviews.setInterviewStatus(new InterviewStatuses(55, "SCHEDULED"));
 		interviewsService.add(interviews);
 	}
 
