@@ -3,6 +3,7 @@ package com.revature.entities.data;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,13 +14,14 @@ import org.springframework.stereotype.Service;
 
 import com.revature.entities.Associate;
 import com.revature.entities.Checkin;
+import com.revature.entities.Job;
 import com.revature.services.AssociateService;
 import com.revature.services.JobService;
 
 @Service
 public class CheckinReport {
   
-  public class DailyReport implements Comparable{
+  public class DailyReport implements Comparable<DailyReport>{
     LocalDateTime time;
     int hourCount;
     int hourEstimate;
@@ -61,10 +63,7 @@ public class CheckinReport {
     }
 
     @Override
-    public int compareTo(Object arg0) {
-      if(!(arg0 instanceof DailyReport))
-        return 1;
-      DailyReport other = (DailyReport)arg0;
+    public int compareTo(DailyReport other) {
       return this.getTime().compareTo(other.getTime());
     }
   }
@@ -92,6 +91,7 @@ public class CheckinReport {
     }
     else {
       int hourEstimate = calculateHourEstimate(checkin.getCheckinTime());
+      System.out.println("Estamate: " + hourEstimate);
       reports.put(getKey(checkin), new DailyReport(checkin, hourEstimate));
     }
   }
@@ -110,10 +110,11 @@ public class CheckinReport {
   private int calculateHourEstimate(LocalDateTime date){
     int total = 0;
     for(Associate a : associates){
-      if(!a.isTrainingOnDate(date) && !a.hasJobOnDate(date))
-      {
+    	
+     if(a.isTrackedOnDate(date))
+     {    		
         total += 8;
-      }
+     }
     }
     return total;
   }

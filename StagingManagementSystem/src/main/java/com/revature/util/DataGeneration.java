@@ -197,7 +197,8 @@ public class DataGeneration
 	      
 	      // Determines if on this currDate a priority Interview is scheduled.
 	      int rollDiceInterview = rand.nextInt(100); 
-        //Halve the probability if it is before batch endDate.
+	      
+	      //Halve the probability if it is before batch endDate.
 	      double probabilityOfInterview = probabilityOfPriorityInterview * ap.clientProbabilityMultiplier * (0 < currDate.compareTo(endDate)  ? .5 : 1.0);
 	      boolean interview = rollDiceInterview < probabilityOfInterview;
 	      log.debug("priority interview diceRoll/probabilityOfInterview/boolean: " + rollDiceInterview + "/" + probabilityOfInterview + "/" + interview);
@@ -224,10 +225,10 @@ public class DataGeneration
 	        // Create Job.
 	        if(is.getValue().equals("CONFIRMED")){
 	          
-            LocalDateTime startDate = currDate.plusWeeks(2);
-            confirmDate = createJob(ap, currDate, startDate, client);
-            
-            createCheckins(endDate, startDate, ap);
+	            LocalDateTime startDate = currDate.plusWeeks(2);
+	            confirmDate = createJob(ap, currDate, startDate, client);
+	            
+	            createCheckins(endDate, startDate, ap);
 	        }
 	      }
 	      else 
