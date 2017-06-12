@@ -1,4 +1,9 @@
-const profileCtrl = ($scope, $http, userService) => {
+const profileCtrl = ($scope, $http, userService, $stateParams, $state) => {
+
+  alert($state.includes('manager'))
+
+  alert($stateParams.id)
+
   const associateId = userService.getUser().id;
   const associateData = { $scope };
 
