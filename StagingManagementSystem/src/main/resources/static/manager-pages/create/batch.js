@@ -9,6 +9,18 @@ const batchCtrl = ($scope, $http) => {
       $('#datetimepicker2').datetimepicker();
   });
 
+  $('#datetimepicker1').on('dp.change', () => {
+    $scope.batch.startDate = $('#datetimepicker1').val();
+   var now = new Date($scope.batch.startDate).toISOString(); 
+   $scope.batch.startDate = now;
+  });
+
+  $('#datetimepicker2').on('dp.change', () => {
+    $scope.batch.endDate = $('#datetimepicker2').val();
+    var now2 = new Date($scope.batch.endDate).toISOString(); 
+    $scope.batch.endDate = now2;
+  });
+
   $http.get('batchtype/all.json').then( (response) => {
 		// console.log(response.data[0].id)
 		console.log(response)
@@ -29,13 +41,7 @@ const batchCtrl = ($scope, $http) => {
 
   	let item = (JSON.stringify($scope.batch));
   	console.log(item)
-    console.log($scope.batch.startDate)
-    var now = new Date($scope.batch.startDate).toISOString(); 
-    $scope.batch.startDate = now;
-      var now2 = new Date($scope.batch.endDate).toISOString(); 
-    $scope.batch.endDate = now2;
-    console.log(now);
-    //var now_utc = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(),  now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
+
   	let str = item.replace(/\\/g, '')
   	let str2 = str.replace('"{', '{')
   	let str3 = str2.replace('}"', '}')

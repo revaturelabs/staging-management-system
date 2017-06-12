@@ -18,22 +18,16 @@
     <tr>
       <tr>
         <td><label>Start Date: </label>
-          <div class='input-group date' id='datetimepicker1'>
-            <input ng-model="batch.startDate" ng-model-options="{timezone: 'utc'}" type='text' class="form-control" />
-            <span class="input-group-addon">
-							<span class="glyphicon glyphicon-calendar"></span>
-            </span>
-					</div>
+              <input type='text' class="manager-input" ng-model="batch.startDate" id='datetimepicker1'/>
+              <div ng-click="showDateTimePicker()">
+              </div>
         </td>
       </tr>
       <tr>
         <td><label>End Date: </label>
-          <div class='input-group date' id='datetimepicker2'>
-	          <input ng-model="batch.endDate" ng-model-options="{timezone: 'utc'}" type='text' class="form-control" />
-	          <span class="input-group-addon">
-							<span class="glyphicon glyphicon-calendar"></span>
-	          </span>
-					</div>
+              <input type='text' class="manager-input" ng-model="batch.endDate" id='datetimepicker2'/>
+              <div ng-click="showDateTimePicker()">
+              </div>
         </td>
       </tr>
     </tr>
