@@ -104,6 +104,12 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       controller: locCtrl,
 
     })
+    .state('manager.create.job', {
+      url: '/job',
+      templateUrl: 'manager-pages/create/job.html',
+      controller: jobCtrl,
+
+    })
     .state('manager.home', {
       url: '/home',
       views: {
