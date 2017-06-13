@@ -1,14 +1,14 @@
 const interviewsCtrl = ($scope, $http) => {
   $http({
     method: 'GET',
-    url: 'interviews/next-five-days',
+    url: '/interviews/next-five-days',
   }).then((response) => {
     $scope.interviews = response.data;
   }, () => {
     console.log('error!');
   });
 
-  $http.get('interviewStatus/all').then((successResponse) => {
+  $http.get('/interviewStatus/all').then((successResponse) => {
     $scope.interviewStatuses = successResponse.data;
   }, () => {
     console.log('failed to retreive interview statuses');
