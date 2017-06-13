@@ -220,7 +220,7 @@ public class DataGeneration
 	        log.debug("Client Decision: " + is);
 	        
 	        //Save Interview
-	        Interview i = new Interview(0l, ap, client, is, currDate);
+	        Interview i = new Interview(0l, ap, client, null, is, currDate);
 	        interviewsService.add(i);
 	        
 	        submitInterviewQuestions(ap, client);
@@ -250,7 +250,7 @@ public class DataGeneration
 	          InterviewStatuses is = client.evaluateAssociate(ap);
 	          
 	          //Save Interview
-	          Interview i = new Interview(0l, ap, client, is, currDate);
+	          Interview i = new Interview(0l, ap, client, null, is, currDate);
 	          interviewsService.add(i);
 	          
 	          submitInterviewQuestions(ap, client);
@@ -312,47 +312,6 @@ public class DataGeneration
 	    checkinService.add(checkin);
 	    log.debug("Created checkin: " + checkin);
 	  }
-	}
-
-	private LocalDateTime createJob(AssociateP ap, LocalDateTime currDate, LocalDateTime startDate, ClientP client) {
-		// projectedEndDate and EndDate are the same for more realistic data
-		// randomize end date and buyoutDate.
-
-		LocalDateTime projectedEndDate = currDate.plusYears(rand.nextBoolean() ? 1 : 2);
-		LocalDateTime confirmDate = currDate;
-		// Should randomize actual endDate by creating a bias in the client.
-
-		Job j = new Job(0l, ap, client, startDate, projectedEndDate, projectedEndDate, null, confirmDate);
-		jobService.add(j);
-		log.debug("Created Job: " + j);
-
-		ap.setLockedTo(client);
-
-		return confirmDate;
-	}
-
-	/**
-	 * Checkin creation between the batch endDate and the startDate.
-	 * 
-	 * @param batchEndDate
-	 *            - date marking the end of training.
-	 * @param startDate
-	 *            - date marking the start of client employment.
-	 * @param associate
-	 *            - associate that is checking in.
-	 */
-	private void createCheckins(LocalDateTime batchEndDate, LocalDateTime startDate, Associate associate) {
-		LocalDateTime currDate = batchEndDate;
-		while (currDate.compareTo(startDate) < 0) {
-			currDate = currDate.plusDays(1);
-			int managerIndex = rand.nextInt(managers.size());
-
-			Checkin checkin = new Checkin(0l, currDate.withHour(8), currDate.withHour(16), managers.get(managerIndex),
-					currDate.withHour(10), associate);
-
-			checkinService.add(checkin);
-			log.debug("Created checkin: " + checkin);
-		}
 	}
 
 	private void submitInterviewQuestions(AssociateP ap, ClientP client) {

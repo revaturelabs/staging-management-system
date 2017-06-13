@@ -37,6 +37,8 @@ routerApp.service('userService', function ($cookies) {
   };
 });
 
+console.log("wtf mate");
+
 routerApp.run(($uiRouter, $trace, $rootScope) => {
 
 	//Ui Visualizer

@@ -84,17 +84,17 @@
 
 	var _user = __webpack_require__(99);
 
-	var _location = __webpack_require__(100);
+	var _location = __webpack_require__(229);
 
-	var _associates = __webpack_require__(101);
+	var _associates = __webpack_require__(100);
 
 	var _associates2 = _interopRequireDefault(_associates);
 
-	var _profile = __webpack_require__(102);
+	var _profile = __webpack_require__(101);
 
 	var _profile2 = _interopRequireDefault(_profile);
 
-	var _interview = __webpack_require__(103);
+	var _interview = __webpack_require__(102);
 
 	var _interview2 = _interopRequireDefault(_interview);
 
@@ -47158,29 +47158,6 @@
 /* 100 */
 /***/ (function(module, exports) {
 
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var locCtrl = function locCtrl($scope, $http) {
-	  $scope.submit = function () {
-	    var item = JSON.stringify($scope.location);
-	    console.log(item);
-	    $http.post('/location', item).then(function (response) {
-	      console.log("success");
-	    }, function () {
-	      console.log("failure");
-	    });
-	  };
-	};
-
-	exports.locCtrl = locCtrl;
-
-/***/ }),
-/* 101 */
-/***/ (function(module, exports) {
-
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
@@ -47238,7 +47215,7 @@
 	exports.default = managerAdvancedAssociatesCtrl;
 
 /***/ }),
-/* 102 */
+/* 101 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -47346,7 +47323,7 @@
 	exports.default = profileCtrl;
 
 /***/ }),
-/* 103 */
+/* 102 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -47445,6 +47422,7 @@
 	exports.default = associateInterviewCtrl;
 
 /***/ }),
+/* 103 */,
 /* 104 */
 /***/ (function(module, exports) {
 
@@ -48687,6 +48665,147 @@
 	c,b){var f=.5*b,k=a-b,h=a+b,l=a-f,m=a+f,n=a+.5,p=n+1,r=n+1.5,t=c-b,u=c+f,v=c-f,f=c+(b-f);return["M",k,t,"L",l,v,l,f,k,u,a-.5,u,a,c+b+.5,n,u,h,u,m,f,m,v,h,t,r,t,r,v,r,f,p,f,p,v,r,v,r,t,"Z"]},zoomOutIcon:function(a,c,b){a-=.2*b;c-=.2*b;var f=.8*b,k=w.rad(43),h=w.rad(48),l=a+f*ya(k),k=c+f*va(k),m=a+f*ya(h),h=c+f*va(h),n=w.rad(45),p=l+b*ya(n),r=k+b*va(n),t=m+b*ya(n);b=h+b*va(n);return["M",l,k,"A",f,f,0,1,0,m,h,"Z","M",l+1,k+1,"L",p,r,t,b,m+1,h+1,"Z","M",a-2,c,"L",a+2,c,"Z"]},resetIcon:function(a,c,b){var f=
 	a-b,k=(da.PI/2+da.PI)/2;a+=b*ya(k);var k=c+b*va(k),h=2*b/3;return["M",f,c,"A",b,b,0,1,1,a,k,"L",a+h,k-1,a+2,k+h-.5,a,k]}})}])});
 
+
+/***/ }),
+/* 111 */,
+/* 112 */,
+/* 113 */,
+/* 114 */,
+/* 115 */,
+/* 116 */,
+/* 117 */,
+/* 118 */,
+/* 119 */,
+/* 120 */,
+/* 121 */,
+/* 122 */,
+/* 123 */,
+/* 124 */,
+/* 125 */,
+/* 126 */,
+/* 127 */,
+/* 128 */,
+/* 129 */,
+/* 130 */,
+/* 131 */,
+/* 132 */,
+/* 133 */,
+/* 134 */,
+/* 135 */,
+/* 136 */,
+/* 137 */,
+/* 138 */,
+/* 139 */,
+/* 140 */,
+/* 141 */,
+/* 142 */,
+/* 143 */,
+/* 144 */,
+/* 145 */,
+/* 146 */,
+/* 147 */,
+/* 148 */,
+/* 149 */,
+/* 150 */,
+/* 151 */,
+/* 152 */,
+/* 153 */,
+/* 154 */,
+/* 155 */,
+/* 156 */,
+/* 157 */,
+/* 158 */,
+/* 159 */,
+/* 160 */,
+/* 161 */,
+/* 162 */,
+/* 163 */,
+/* 164 */,
+/* 165 */,
+/* 166 */,
+/* 167 */,
+/* 168 */,
+/* 169 */,
+/* 170 */,
+/* 171 */,
+/* 172 */,
+/* 173 */,
+/* 174 */,
+/* 175 */,
+/* 176 */,
+/* 177 */,
+/* 178 */,
+/* 179 */,
+/* 180 */,
+/* 181 */,
+/* 182 */,
+/* 183 */,
+/* 184 */,
+/* 185 */,
+/* 186 */,
+/* 187 */,
+/* 188 */,
+/* 189 */,
+/* 190 */,
+/* 191 */,
+/* 192 */,
+/* 193 */,
+/* 194 */,
+/* 195 */,
+/* 196 */,
+/* 197 */,
+/* 198 */,
+/* 199 */,
+/* 200 */,
+/* 201 */,
+/* 202 */,
+/* 203 */,
+/* 204 */,
+/* 205 */,
+/* 206 */,
+/* 207 */,
+/* 208 */,
+/* 209 */,
+/* 210 */,
+/* 211 */,
+/* 212 */,
+/* 213 */,
+/* 214 */,
+/* 215 */,
+/* 216 */,
+/* 217 */,
+/* 218 */,
+/* 219 */,
+/* 220 */,
+/* 221 */,
+/* 222 */,
+/* 223 */,
+/* 224 */,
+/* 225 */,
+/* 226 */,
+/* 227 */,
+/* 228 */,
+/* 229 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var locCtrl = function locCtrl($scope, $http) {
+	  $scope.submit = function () {
+	    var item = JSON.stringify($scope.location);
+	    console.log(item);
+	    $http.post('/location', item).then(function (response) {
+	      console.log("success");
+	    }, function () {
+	      console.log("failure");
+	    });
+	  };
+	};
+
+	exports.locCtrl = locCtrl;
 
 /***/ })
 /******/ ]);
