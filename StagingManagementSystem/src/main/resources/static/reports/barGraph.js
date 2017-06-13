@@ -63,6 +63,14 @@ function graphBuilder($scope, $http){
  
 }
 
+function ColumnClick(ev, props, $scope) {
+  
+  
+  
+  $scope.selectedValue = `${props.displayValue}/${props.categoryLabel}/${props.dataIndex}`;
+}
+
+
 function plainBarChart2($scope, chartstuff, categories, dataset ) {
   
   const myDataSource = {
@@ -71,13 +79,27 @@ function plainBarChart2($scope, chartstuff, categories, dataset ) {
       dataset,
   };
   
+  $scope.selectedValue = 'nothing';
+  
   const chart = new FusionCharts({
     type: 'stackedcolumn3d',
     renderAt: 'chart-container',
     width: '650',
     height: '450',
     dataFormat: 'json',
-    dataSource: myDataSource,     
+    dataSource: myDataSource, 
+    events: {
+      dataplotclick: function dataplotclick(ev, props) {
+        $scope.$apply(() => {
+          switch (scale) {
+          case Stuff1:
+            ColumnClick(ev, props, $scope);
+            break;
+            default:
+          }
+        });
+      },
+    },
   });
   
   chart.render();

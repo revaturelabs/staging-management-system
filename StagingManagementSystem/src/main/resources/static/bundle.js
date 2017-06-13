@@ -64,69 +64,63 @@
 
 	var _fusioncharts2 = _interopRequireDefault(_fusioncharts);
 
-	var _manager = __webpack_require__(92);
+	var _moment = __webpack_require__(92);
 
-	var _home = __webpack_require__(93);
+	var _moment2 = _interopRequireDefault(_moment);
 
-	var _checkin = __webpack_require__(94);
+	var _manager = __webpack_require__(210);
+
+	var _home = __webpack_require__(211);
+
+	var _checkin = __webpack_require__(212);
 
 	var _checkin2 = _interopRequireDefault(_checkin);
 
-	var _interviews = __webpack_require__(95);
+	var _interviews = __webpack_require__(213);
 
-	var _create = __webpack_require__(96);
+	var _create = __webpack_require__(214);
 
 	var _create2 = _interopRequireDefault(_create);
 
-	var _batch = __webpack_require__(97);
+	var _batch = __webpack_require__(215);
 
-	var _client = __webpack_require__(98);
+	var _client = __webpack_require__(216);
 
-	var _user = __webpack_require__(99);
+	var _user = __webpack_require__(217);
 
-	var _associates = __webpack_require__(100);
+	var _location = __webpack_require__(218);
+
+	var _associates = __webpack_require__(219);
 
 	var _associates2 = _interopRequireDefault(_associates);
 
-	var _profile = __webpack_require__(101);
+	var _profile = __webpack_require__(220);
 
 	var _profile2 = _interopRequireDefault(_profile);
 
-	var _interview = __webpack_require__(102);
+	var _interview = __webpack_require__(221);
 
 	var _interview2 = _interopRequireDefault(_interview);
 
-	var _associate = __webpack_require__(104);
+	var _associate = __webpack_require__(222);
 
 	var _associate2 = _interopRequireDefault(_associate);
 
-	var _reports = __webpack_require__(105);
+	var _reports = __webpack_require__(223);
 
-	var _nestedGraph = __webpack_require__(106);
+	var _nestedGraph = __webpack_require__(224);
 
-<<<<<<< HEAD
-	var _barGraph = __webpack_require__(228);
+	var _barGraph = __webpack_require__(225);
 
-	var _attendanceBarGraph = __webpack_require__(224);
-
-	var _login = __webpack_require__(225);
-=======
-	var _barGraph = __webpack_require__(107);
-
-	var _login = __webpack_require__(108);
->>>>>>> 8ba3de4fbdcebedaa0f1ffd913cab6d62ee0dc12
+	var _login = __webpack_require__(226);
 
 	var _login2 = _interopRequireDefault(_login);
 
-	var _attendanceBarGraph = __webpack_require__(109);
+	var _attendanceBarGraph = __webpack_require__(227);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-<<<<<<< HEAD
-	__webpack_require__(226)(_fusioncharts2.default);
-=======
-	__webpack_require__(110)(_fusioncharts2.default);
->>>>>>> 8ba3de4fbdcebedaa0f1ffd913cab6d62ee0dc12
+	__webpack_require__(228)(_fusioncharts2.default);
 
 	var Visualizer = window['ui-router-visualizer'].Visualizer;
 
@@ -156,13 +150,8 @@
 	  $trace.enable('TRANSITION');
 
 	  //Global Functions
-	  $rootScope.dateConverter = function (localDateTime) {
-	    console.log('hello');
-	    var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-	    // month                             day
-	    return '' + months[localDateTime[1] - 1] + ' ' + localDateTime[2] + ' '
-	    // hour                                                              minute                AM/PM
-	    + (localDateTime[3] > 12 ? localDateTime[3] - 12 : localDateTime) + ':' + localDateTime[4] + (localDateTime > 12 ? 'p.m.' : 'a.m.');
+	  $rootScope.dateConverter = function (time) {
+	    return (0, _moment2.default)(time).format('MMM D, hh:mm a');
 	  };
 	});
 
@@ -196,6 +185,11 @@
 	    url: '/client',
 	    templateUrl: 'manager-pages/create/client.html',
 	    controller: _client.clientCtrl
+	  }).state('manager.create.location', {
+	    url: '/location',
+	    templateUrl: 'manager-pages/create/location.html',
+	    controller: _location.locCtrl
+
 	  }).state('manager.home', {
 	    url: '/home',
 	    views: {
@@ -216,6 +210,10 @@
 	        controller: _checkin2.default
 	      }
 	    }
+	  }).state('manager.associateView', {
+	    url: '/associate/:id',
+	    templateUrl: 'associate-pages/profile/profile.html',
+	    controller: _profile2.default
 	  }).state('manager.advanced', {
 	    url: '/advanced',
 	    templateUrl: 'manager-pages/advanced/advanced.html',
@@ -46813,472 +46811,649 @@
 
 /***/ }),
 /* 92 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	var managerCtrl = function managerCtrl($scope, $state, $location, $http) {
-		$http({
-			method: 'GET',
-			url: '/login/isManager'
-		}).then(function (response) {
-			if (!response.data) $state.go('login');
-		});
-
-		$scope.isActive = function (viewLocation) {
-			return viewLocation === $location.path();
-		};
-
-		$scope.logout = function () {
-			$http({
-				method: 'GET',
-				url: '/logout/'
-			}).then(function (response) {
-				$state.go('login');
-			});
-		};
-
-		$scope.manager = { name: 'Joe' };
-	};
-
-	exports.managerCtrl = managerCtrl;
-
-/***/ }),
-/* 93 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var managerHomeCtrl = function managerHomeCtrl($scope) {
-	  $scope.view2 = 'interviews';
-	  $scope.selectView1 = function (selectedView) {
-	    if (selectedView === 'available') {
-	      $scope.availableSelecter = { 'background-color': 'gray' };
-	      $scope.prioritySelecter = { 'background-color': '#f8f8f8' };
-	      $scope.view1 = 'available';
-	    } else if (selectedView === 'priority') {
-	      $scope.availableSelecter = { 'background-color': '#f8f8f8' };
-	      $scope.prioritySelecter = { 'background-color': 'gray' };
-	      $scope.view1 = 'priorityMapped';
-	    }
-	  };
-	  $scope.selectView2 = function (selectedView) {
-	    if (selectedView === 'interviews') {
-	      $scope.interviewsSelecter = { 'background-color': 'gray' };
-	      $scope.checkinsSelecter = { 'background-color': '#f8f8f8' };
-	      $scope.view2 = 'interviews';
-	    } else if (selectedView === 'checkins') {
-	      $scope.interviewsSelecter = { 'background-color': '#f8f8f8' };
-	      $scope.checkinsSelecter = { 'background-color': 'gray' };
-	      $scope.view2 = 'checkins';
-	    }
-	  };
-
-	  // initialize our named views
-	  $scope.selectView1('available');
-	  $scope.selectView2('interviews');
-	};
-
-	exports.managerHomeCtrl = managerHomeCtrl;
-
-/***/ }),
-/* 94 */
-/***/ (function(module, exports) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	/**
-	 * Created by colts on 6/8/2017.
-	 */
-	var managerCheckinsCtrl = function managerCheckinsCtrl(scope, $http) {
-
-	    $http.get("checkin/allTodays").then(function (result) {
-	        $scope.checkins = result.data;
-	    });
-	};
-
-	exports.default = managerCheckinsCtrl;
-
-/***/ }),
-/* 95 */
-/***/ (function(module, exports) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	var interviewsCtrl = function interviewsCtrl($scope, $http) {
-	    console.log("started");
-	    $http({
-	        method: "GET",
-	        url: "interviews/all"
-	    }).then(function mySuccess(response) {
-	        window.interviews = response.data;
-	        $scope.interviews = response.data;
-	    }, function myError(response) {
-	        console.log("error!");
-	    });
-
-	    $scope.interviewSelect = function (interview) {
-	        $scope.interviewSideTable = { "interview": interview };
-	    };
-	};
-
-	exports.interviewsCtrl = interviewsCtrl;
-
-/***/ }),
-/* 96 */
-/***/ (function(module, exports) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var managerCreateCtrl = function managerCreateCtrl($scope, $state) {
-	  $scope.$state = $state;
-	};
-
-	exports.default = managerCreateCtrl;
-
-/***/ }),
-/* 97 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var batchCtrl = function batchCtrl($scope, $http) {
-	  console.log('starting');
-
-	  $(function () {
-	    $('#datetimepicker1').datetimepicker();
-	  });
-
-	  $http.get('batchtype/all.json').then(function (response) {
-	    // console.log(response.data[0].id)
-	    console.log(response);
-	    $scope.posts2 = response;
-	  }, function () {
-	    console.log("failure");
-	  });
-
-	  $http.get('location/all.json').then(function (response) {
-	    $scope.posts = response;
-	  }, function () {
-	    console.log("failure");
-	  });
-
-	  $scope.submit = function () {
-	    var item = JSON.stringify($scope.batch);
-	    console.log(item);
-	    var str = item.replace(/\\/g, '');
-	    var str2 = str.replace('"{', '{');
-	    var str3 = str2.replace('}"', '}');
-	    var str4 = str3.replace('"{', '{');
-	    var str5 = str4.replace('}"', '}');
-	    var str6 = str5.replace('"{', '{');
-	    var str7 = str6.replace('}"', '}');
-	    console.log(str7);
-	    $http.post('/batch', str7).then(function (response) {
-	      console.log("success");
-	      console.log(response);
-	    }, function () {
-	      console.log("failure");
-	    });
-	  };
-	};
-
-	exports.batchCtrl = batchCtrl;
-
-/***/ }),
-/* 98 */
-/***/ (function(module, exports) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var clientCtrl = function clientCtrl($scope, $http) {
-	  $scope.submit = function () {
-	    var item = JSON.stringify($scope.client);
-	    console.log(item);
-	    $http.post('/client', item).then(function (response) {
-	      console.log("success");
-	    }, function () {
-	      console.log("failure");
-	    });
-	  };
-	};
-
-	exports.clientCtrl = clientCtrl;
-
-/***/ }),
-/* 99 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var userCtrl = function userCtrl($scope, $http) {
-
-	  $http.get('batchtype/all.json').then(function (response) {
-	    // console.log(response.data[0].id)
-	    console.log(response.data);
-	    $scope.posts = response.data;
-	  }, function () {
-	    console.log("failure");
-	  });
-
-	  $scope.submit = function () {
-	    var item = JSON.stringify($scope.user);
-	    //need 2 different post requests for manager and associate
-	    console.log(item);
-	    console.log($scope.user.type == 'associate');
-	    if ($scope.user.type == 'associate') {
-	      console.log('in associate');
-	      $http.post('/associate', item).then(function (response) {
-	        console.log("success");
-	      }, function () {
-	        console.log("failure");
-	      });
-	    };
-	    if ($scope.user.type == 'manager') {
-	      console.log('in manager');
-	      $http.post('/manager', item).then(function (response) {
-	        console.log("success");
-	      }, function () {
-	        console.log("failure");
-	      });
-	    };
-	  };
-	};
-
-	exports.userCtrl = userCtrl;
-
-/***/ }),
-/* 100 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var managerAdvancedAssociatesCtrl = function managerAdvancedAssociatesCtrl($scope, $http) {
-	  window.scope = $scope;
-
-	  $http.get('batchtype/all').then(function (data) {
-	    $scope.batchtypes = data.data;
-	    $scope.selectedBatchTypes = [];
-	    $scope.batchtypes.forEach(function (type) {
-	      return $scope.selectedBatchTypes.push(type);
-	    });
-	  });
-
-	  $http.get('associate/all').then(function (data) {
-	    $scope.associates = data.data;
-	    window.associates = data.data;
-	  }, function (data) {
-	    console.log('failed');
-	  });
-
-	  $scope.trainerFilter = function (associate) {
-	    return true;
-	  };
-
-	  $scope.isSelectedBatchType = function (batchType) {
-	    return $scope.selectedBatchType.filter(function (type) {
-	      return type.value === batchType.value;
-	    }) >= 1;
-	  };
-
-	  $scope.toggleSelectedBatchTypes = function (selectedBatch) {
-	    var idx = $scope.selectedBatchTypes.indexOf(selectedBatch);
-
-	    // Is currently selected
-	    if (idx > -1) {
-	      $scope.selectedBatchTypes.splice(idx, 1);
-	    }
-
-	    // Is newly selected
-	    else {
-	        $scope.selectedBatchTypes.push(selectedBatch);
-	      }
-	  };
-
-	  $scope.batchFilter = function (associate) {
-	    return $scope.selectedBatchTypes.filter(function (batchType) {
-	      return batchType.value === associate.batch.batchType.value;
-	    }).length >= 1;
-	  };
-	};
-
-	exports.default = managerAdvancedAssociatesCtrl;
-
-/***/ }),
-/* 101 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var profileCtrl = function profileCtrl($scope, $http, userService) {
-	  var associateId = userService.getUser().id;
-	  var associateUrl = '/associate/' + associateId;
-
-	  if (associateId === undefined) {
-	    return;
-	  }
-
-	  $http({
-	    method: 'GET',
-	    url: associateUrl
-	  }).then(function (response) {
-	    $scope.associate = response.data;
-	    $scope.portfolioUrl = response.data.portfolioLink;
-	  });
-
-	  $scope.portfolioUrlInput = '';
-	  $scope.status = 'Active';
-
-	  $scope.toggleSkillsModal = function () {
-	    $scope.sendingRequest = false;
-	    $scope.skillsModalButtonValue = 'Save';
-	    $scope.additionalSkillsInput = $scope.associate.skills.map(function (skill) {
-	      return skill.value;
-	    }).join(',');
-	    $('#additionalSkillsModal').modal('show');
-	  };
-	  $scope.openPortfolioUrlModal = function () {
-	    $scope.sendingRequest = false;
-	    $scope.portfolioModalButtonValue = 'Save';
-	    $scope.portfolioUrlInput = $scope.associate.portfolioLink;
-	    $('#portfolioUrlModal').modal('show');
-	  };
-	  $scope.submitPortfolioUrl = function () {
-	    $scope.associate.portfolioLink = $scope.portfolioUrlInput;
-
-	    $scope.portfolioModalButtonValue = 'Saving...';
-	    $scope.sendingRequest = true;
-	    $http({
-	      method: 'PUT',
-	      url: '/associate/',
-	      data: $scope.associate
-	    }).then(function () {
-	      $('#portfolioUrlModal').modal('hide');
-	    }, function () {
-	      $('#portfolioUrlModal').modal('hide');
-	    });
-	  };
-	  $scope.submitSkills = function () {
-	    $scope.associate.skills = $scope.additionalSkillsInput.split(',').filter(function (skill) {
-	      return skill !== '';
-	    }).map(function (skill) {
-	      var existingSkill = $scope.associate.skills.find(function (aSkill) {
-	        return aSkill.value === skill;
-	      });
-	      return { id: existingSkill !== undefined ? existingSkill.id : 0, value: skill };
-	    });
-
-	    $scope.sendingRequest = true;
-	    $scope.skillsModalButtonValue = 'Saving...';
-	    $http({
-	      method: 'PUT',
-	      url: '/associate/',
-	      data: $scope.associate
-	    }).then(function () {
-	      $('#additionalSkillsModal').modal('hide');
-	    }, function () {
-	      $('#additionalSkillsModal').modal('hide');
-	    });
-	  };
-	};
-
-	exports.default = profileCtrl;
-
-/***/ }),
-/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	'use strict';
+	/* WEBPACK VAR INJECTION */(function(module) {//! moment.js
+	//! version : 2.18.1
+	//! authors : Tim Wood, Iskren Chernev, Moment.js contributors
+	//! license : MIT
+	//! momentjs.com
 
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
+	;(function (global, factory) {
+	     true ? module.exports = factory() :
+	    typeof define === 'function' && define.amd ? define(factory) :
+	    global.moment = factory()
+	}(this, (function () { 'use strict';
 
-	var _dateformat = __webpack_require__(103);
+	var hookCallback;
 
-	var _dateformat2 = _interopRequireDefault(_dateformat);
+	function hooks () {
+	    return hookCallback.apply(null, arguments);
+	}
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	// This is done to register the method called with moment()
+	// without creating circular dependencies.
+	function setHookCallback (callback) {
+	    hookCallback = callback;
+	}
 
-	var associateInterviewCtrl = function associateInterviewCtrl($scope, $http, userService) {
-		$scope.associateInterviews;
-		$('#datetimepicker1').datetimepicker();
-		$scope.showDateTimePicker = function () {
-			$('#datetimepicker1').datetimepicker("show");
-		};
-		$("#datetimepicker1").on("dp.change", function () {
-			$scope.selectedDate = $("#datetimepicker1").val();
-		});
+	function isArray(input) {
+	    return input instanceof Array || Object.prototype.toString.call(input) === '[object Array]';
+	}
 
-		$http({
-			method: 'GET',
-			url: '/client/all'
-		}).then(function (response) {
-			$scope.clients = response.data;
-			$scope.clients.sort(function (pre, cur) {
-				return pre.name.localeCompare(cur.name);
-			});
-		});
+	function isObject(input) {
+	    // IE8 will treat undefined and null as object if it wasn't for
+	    // input != null
+	    return input != null && Object.prototype.toString.call(input) === '[object Object]';
+	}
 
-		$http({
-			method: 'GET',
-			url: 'interviews/associate/' + userService.getUser().id
-		}).then(function (response) {
-			response.data.forEach(function (e) {
-				var day = new Date(response.data[0].scheduled[0], response.data[0].scheduled[1], response.data[0].scheduled[2], response.data[0].scheduled[3], response.data[0].scheduled[4], response.data[0].scheduled[5], 0);
-				e['day'] = (0, _dateformat2.default)(day, "dddd, mmmm dS, yyyy, h:MM TT");;
-			});
-			$scope.associateInterviews = response.data;
-		});
+	function isObjectEmpty(obj) {
+	    var k;
+	    for (k in obj) {
+	        // even if its not own property I'd still call it non-empty
+	        return false;
+	    }
+	    return true;
+	}
 
-		//	$scope.errorMsgShow = true;
-		//	$scope.successMsgShow = true;
+	function isUndefined(input) {
+	    return input === void 0;
+	}
 
-		$scope.addInterviewClick = function () {
-			$http({
-				method: 'POST',
-				url: '/interviews',
-				data: { associate: userService.getUser(), client: $scope.selectedClient }
-			}).then(function (response) {});
-			console.log(userService.getUser());
-			console.log($scope.selectedClient);
-			console.log($scope.selectedDate);
-		};
+	function isNumber(input) {
+	    return typeof input === 'number' || Object.prototype.toString.call(input) === '[object Number]';
+	}
+
+	function isDate(input) {
+	    return input instanceof Date || Object.prototype.toString.call(input) === '[object Date]';
+	}
+
+	function map(arr, fn) {
+	    var res = [], i;
+	    for (i = 0; i < arr.length; ++i) {
+	        res.push(fn(arr[i], i));
+	    }
+	    return res;
+	}
+
+	function hasOwnProp(a, b) {
+	    return Object.prototype.hasOwnProperty.call(a, b);
+	}
+
+	function extend(a, b) {
+	    for (var i in b) {
+	        if (hasOwnProp(b, i)) {
+	            a[i] = b[i];
+	        }
+	    }
+
+	    if (hasOwnProp(b, 'toString')) {
+	        a.toString = b.toString;
+	    }
+
+	    if (hasOwnProp(b, 'valueOf')) {
+	        a.valueOf = b.valueOf;
+	    }
+
+	    return a;
+	}
+
+	function createUTC (input, format, locale, strict) {
+	    return createLocalOrUTC(input, format, locale, strict, true).utc();
+	}
+
+	function defaultParsingFlags() {
+	    // We need to deep clone this object.
+	    return {
+	        empty           : false,
+	        unusedTokens    : [],
+	        unusedInput     : [],
+	        overflow        : -2,
+	        charsLeftOver   : 0,
+	        nullInput       : false,
+	        invalidMonth    : null,
+	        invalidFormat   : false,
+	        userInvalidated : false,
+	        iso             : false,
+	        parsedDateParts : [],
+	        meridiem        : null,
+	        rfc2822         : false,
+	        weekdayMismatch : false
+	    };
+	}
+
+	function getParsingFlags(m) {
+	    if (m._pf == null) {
+	        m._pf = defaultParsingFlags();
+	    }
+	    return m._pf;
+	}
+
+	var some;
+	if (Array.prototype.some) {
+	    some = Array.prototype.some;
+	} else {
+	    some = function (fun) {
+	        var t = Object(this);
+	        var len = t.length >>> 0;
+
+	        for (var i = 0; i < len; i++) {
+	            if (i in t && fun.call(this, t[i], i, t)) {
+	                return true;
+	            }
+	        }
+
+	        return false;
+	    };
+	}
+
+	var some$1 = some;
+
+	function isValid(m) {
+	    if (m._isValid == null) {
+	        var flags = getParsingFlags(m);
+	        var parsedParts = some$1.call(flags.parsedDateParts, function (i) {
+	            return i != null;
+	        });
+	        var isNowValid = !isNaN(m._d.getTime()) &&
+	            flags.overflow < 0 &&
+	            !flags.empty &&
+	            !flags.invalidMonth &&
+	            !flags.invalidWeekday &&
+	            !flags.nullInput &&
+	            !flags.invalidFormat &&
+	            !flags.userInvalidated &&
+	            (!flags.meridiem || (flags.meridiem && parsedParts));
+
+	        if (m._strict) {
+	            isNowValid = isNowValid &&
+	                flags.charsLeftOver === 0 &&
+	                flags.unusedTokens.length === 0 &&
+	                flags.bigHour === undefined;
+	        }
+
+	        if (Object.isFrozen == null || !Object.isFrozen(m)) {
+	            m._isValid = isNowValid;
+	        }
+	        else {
+	            return isNowValid;
+	        }
+	    }
+	    return m._isValid;
+	}
+
+	function createInvalid (flags) {
+	    var m = createUTC(NaN);
+	    if (flags != null) {
+	        extend(getParsingFlags(m), flags);
+	    }
+	    else {
+	        getParsingFlags(m).userInvalidated = true;
+	    }
+
+	    return m;
+	}
+
+	// Plugins that add properties should also add the key here (null value),
+	// so we can properly clone ourselves.
+	var momentProperties = hooks.momentProperties = [];
+
+	function copyConfig(to, from) {
+	    var i, prop, val;
+
+	    if (!isUndefined(from._isAMomentObject)) {
+	        to._isAMomentObject = from._isAMomentObject;
+	    }
+	    if (!isUndefined(from._i)) {
+	        to._i = from._i;
+	    }
+	    if (!isUndefined(from._f)) {
+	        to._f = from._f;
+	    }
+	    if (!isUndefined(from._l)) {
+	        to._l = from._l;
+	    }
+	    if (!isUndefined(from._strict)) {
+	        to._strict = from._strict;
+	    }
+	    if (!isUndefined(from._tzm)) {
+	        to._tzm = from._tzm;
+	    }
+	    if (!isUndefined(from._isUTC)) {
+	        to._isUTC = from._isUTC;
+	    }
+	    if (!isUndefined(from._offset)) {
+	        to._offset = from._offset;
+	    }
+	    if (!isUndefined(from._pf)) {
+	        to._pf = getParsingFlags(from);
+	    }
+	    if (!isUndefined(from._locale)) {
+	        to._locale = from._locale;
+	    }
+
+	    if (momentProperties.length > 0) {
+	        for (i = 0; i < momentProperties.length; i++) {
+	            prop = momentProperties[i];
+	            val = from[prop];
+	            if (!isUndefined(val)) {
+	                to[prop] = val;
+	            }
+	        }
+	    }
+
+	    return to;
+	}
+
+	var updateInProgress = false;
+
+	// Moment prototype object
+	function Moment(config) {
+	    copyConfig(this, config);
+	    this._d = new Date(config._d != null ? config._d.getTime() : NaN);
+	    if (!this.isValid()) {
+	        this._d = new Date(NaN);
+	    }
+	    // Prevent infinite loop in case updateOffset creates new moment
+	    // objects.
+	    if (updateInProgress === false) {
+	        updateInProgress = true;
+	        hooks.updateOffset(this);
+	        updateInProgress = false;
+	    }
+	}
+
+	function isMoment (obj) {
+	    return obj instanceof Moment || (obj != null && obj._isAMomentObject != null);
+	}
+
+	function absFloor (number) {
+	    if (number < 0) {
+	        // -0 -> 0
+	        return Math.ceil(number) || 0;
+	    } else {
+	        return Math.floor(number);
+	    }
+	}
+
+	function toInt(argumentForCoercion) {
+	    var coercedNumber = +argumentForCoercion,
+	        value = 0;
+
+	    if (coercedNumber !== 0 && isFinite(coercedNumber)) {
+	        value = absFloor(coercedNumber);
+	    }
+
+	    return value;
+	}
+
+	// compare two arrays, return the number of differences
+	function compareArrays(array1, array2, dontConvert) {
+	    var len = Math.min(array1.length, array2.length),
+	        lengthDiff = Math.abs(array1.length - array2.length),
+	        diffs = 0,
+	        i;
+	    for (i = 0; i < len; i++) {
+	        if ((dontConvert && array1[i] !== array2[i]) ||
+	            (!dontConvert && toInt(array1[i]) !== toInt(array2[i]))) {
+	            diffs++;
+	        }
+	    }
+	    return diffs + lengthDiff;
+	}
+
+	function warn(msg) {
+	    if (hooks.suppressDeprecationWarnings === false &&
+	            (typeof console !==  'undefined') && console.warn) {
+	        console.warn('Deprecation warning: ' + msg);
+	    }
+	}
+
+	function deprecate(msg, fn) {
+	    var firstTime = true;
+
+	    return extend(function () {
+	        if (hooks.deprecationHandler != null) {
+	            hooks.deprecationHandler(null, msg);
+	        }
+	        if (firstTime) {
+	            var args = [];
+	            var arg;
+	            for (var i = 0; i < arguments.length; i++) {
+	                arg = '';
+	                if (typeof arguments[i] === 'object') {
+	                    arg += '\n[' + i + '] ';
+	                    for (var key in arguments[0]) {
+	                        arg += key + ': ' + arguments[0][key] + ', ';
+	                    }
+	                    arg = arg.slice(0, -2); // Remove trailing comma and space
+	                } else {
+	                    arg = arguments[i];
+	                }
+	                args.push(arg);
+	            }
+	            warn(msg + '\nArguments: ' + Array.prototype.slice.call(args).join('') + '\n' + (new Error()).stack);
+	            firstTime = false;
+	        }
+	        return fn.apply(this, arguments);
+	    }, fn);
+	}
+
+	var deprecations = {};
+
+	function deprecateSimple(name, msg) {
+	    if (hooks.deprecationHandler != null) {
+	        hooks.deprecationHandler(name, msg);
+	    }
+	    if (!deprecations[name]) {
+	        warn(msg);
+	        deprecations[name] = true;
+	    }
+	}
+
+	hooks.suppressDeprecationWarnings = false;
+	hooks.deprecationHandler = null;
+
+	function isFunction(input) {
+	    return input instanceof Function || Object.prototype.toString.call(input) === '[object Function]';
+	}
+
+	function set (config) {
+	    var prop, i;
+	    for (i in config) {
+	        prop = config[i];
+	        if (isFunction(prop)) {
+	            this[i] = prop;
+	        } else {
+	            this['_' + i] = prop;
+	        }
+	    }
+	    this._config = config;
+	    // Lenient ordinal parsing accepts just a number in addition to
+	    // number + (possibly) stuff coming from _dayOfMonthOrdinalParse.
+	    // TODO: Remove "ordinalParse" fallback in next major release.
+	    this._dayOfMonthOrdinalParseLenient = new RegExp(
+	        (this._dayOfMonthOrdinalParse.source || this._ordinalParse.source) +
+	            '|' + (/\d{1,2}/).source);
+	}
+
+	function mergeConfigs(parentConfig, childConfig) {
+	    var res = extend({}, parentConfig), prop;
+	    for (prop in childConfig) {
+	        if (hasOwnProp(childConfig, prop)) {
+	            if (isObject(parentConfig[prop]) && isObject(childConfig[prop])) {
+	                res[prop] = {};
+	                extend(res[prop], parentConfig[prop]);
+	                extend(res[prop], childConfig[prop]);
+	            } else if (childConfig[prop] != null) {
+	                res[prop] = childConfig[prop];
+	            } else {
+	                delete res[prop];
+	            }
+	        }
+	    }
+	    for (prop in parentConfig) {
+	        if (hasOwnProp(parentConfig, prop) &&
+	                !hasOwnProp(childConfig, prop) &&
+	                isObject(parentConfig[prop])) {
+	            // make sure changes to properties don't modify parent config
+	            res[prop] = extend({}, res[prop]);
+	        }
+	    }
+	    return res;
+	}
+
+	function Locale(config) {
+	    if (config != null) {
+	        this.set(config);
+	    }
+	}
+
+	var keys;
+
+	if (Object.keys) {
+	    keys = Object.keys;
+	} else {
+	    keys = function (obj) {
+	        var i, res = [];
+	        for (i in obj) {
+	            if (hasOwnProp(obj, i)) {
+	                res.push(i);
+	            }
+	        }
+	        return res;
+	    };
+	}
+
+	var keys$1 = keys;
+
+	var defaultCalendar = {
+	    sameDay : '[Today at] LT',
+	    nextDay : '[Tomorrow at] LT',
+	    nextWeek : 'dddd [at] LT',
+	    lastDay : '[Yesterday at] LT',
+	    lastWeek : '[Last] dddd [at] LT',
+	    sameElse : 'L'
 	};
 
-	exports.default = associateInterviewCtrl;
+	function calendar (key, mom, now) {
+	    var output = this._calendar[key] || this._calendar['sameElse'];
+	    return isFunction(output) ? output.call(mom, now) : output;
+	}
 
-<<<<<<< HEAD
+	var defaultLongDateFormat = {
+	    LTS  : 'h:mm:ss A',
+	    LT   : 'h:mm A',
+	    L    : 'MM/DD/YYYY',
+	    LL   : 'MMMM D, YYYY',
+	    LLL  : 'MMMM D, YYYY h:mm A',
+	    LLLL : 'dddd, MMMM D, YYYY h:mm A'
+	};
+
+	function longDateFormat (key) {
+	    var format = this._longDateFormat[key],
+	        formatUpper = this._longDateFormat[key.toUpperCase()];
+
+	    if (format || !formatUpper) {
+	        return format;
+	    }
+
+	    this._longDateFormat[key] = formatUpper.replace(/MMMM|MM|DD|dddd/g, function (val) {
+	        return val.slice(1);
+	    });
+
+	    return this._longDateFormat[key];
+	}
+
+	var defaultInvalidDate = 'Invalid date';
+
+	function invalidDate () {
+	    return this._invalidDate;
+	}
+
+	var defaultOrdinal = '%d';
+	var defaultDayOfMonthOrdinalParse = /\d{1,2}/;
+
+	function ordinal (number) {
+	    return this._ordinal.replace('%d', number);
+	}
+
+	var defaultRelativeTime = {
+	    future : 'in %s',
+	    past   : '%s ago',
+	    s  : 'a few seconds',
+	    ss : '%d seconds',
+	    m  : 'a minute',
+	    mm : '%d minutes',
+	    h  : 'an hour',
+	    hh : '%d hours',
+	    d  : 'a day',
+	    dd : '%d days',
+	    M  : 'a month',
+	    MM : '%d months',
+	    y  : 'a year',
+	    yy : '%d years'
+	};
+
+	function relativeTime (number, withoutSuffix, string, isFuture) {
+	    var output = this._relativeTime[string];
+	    return (isFunction(output)) ?
+	        output(number, withoutSuffix, string, isFuture) :
+	        output.replace(/%d/i, number);
+	}
+
+	function pastFuture (diff, output) {
+	    var format = this._relativeTime[diff > 0 ? 'future' : 'past'];
+	    return isFunction(format) ? format(output) : format.replace(/%s/i, output);
+	}
+
+	var aliases = {};
+
+	function addUnitAlias (unit, shorthand) {
+	    var lowerCase = unit.toLowerCase();
+	    aliases[lowerCase] = aliases[lowerCase + 's'] = aliases[shorthand] = unit;
+	}
+
+	function normalizeUnits(units) {
+	    return typeof units === 'string' ? aliases[units] || aliases[units.toLowerCase()] : undefined;
+	}
+
+	function normalizeObjectUnits(inputObject) {
+	    var normalizedInput = {},
+	        normalizedProp,
+	        prop;
+
+	    for (prop in inputObject) {
+	        if (hasOwnProp(inputObject, prop)) {
+	            normalizedProp = normalizeUnits(prop);
+	            if (normalizedProp) {
+	                normalizedInput[normalizedProp] = inputObject[prop];
+	            }
+	        }
+	    }
+
+	    return normalizedInput;
+	}
+
+	var priorities = {};
+
+	function addUnitPriority(unit, priority) {
+	    priorities[unit] = priority;
+	}
+
+	function getPrioritizedUnits(unitsObj) {
+	    var units = [];
+	    for (var u in unitsObj) {
+	        units.push({unit: u, priority: priorities[u]});
+	    }
+	    units.sort(function (a, b) {
+	        return a.priority - b.priority;
+	    });
+	    return units;
+	}
+
+	function makeGetSet (unit, keepTime) {
+	    return function (value) {
+	        if (value != null) {
+	            set$1(this, unit, value);
+	            hooks.updateOffset(this, keepTime);
+	            return this;
+	        } else {
+	            return get(this, unit);
+	        }
+	    };
+	}
+
+	function get (mom, unit) {
+	    return mom.isValid() ?
+	        mom._d['get' + (mom._isUTC ? 'UTC' : '') + unit]() : NaN;
+	}
+
+	function set$1 (mom, unit, value) {
+	    if (mom.isValid()) {
+	        mom._d['set' + (mom._isUTC ? 'UTC' : '') + unit](value);
+	    }
+	}
+
+	// MOMENTS
+
+	function stringGet (units) {
+	    units = normalizeUnits(units);
+	    if (isFunction(this[units])) {
+	        return this[units]();
+	    }
+	    return this;
+	}
+
+
+	function stringSet (units, value) {
+	    if (typeof units === 'object') {
+	        units = normalizeObjectUnits(units);
+	        var prioritized = getPrioritizedUnits(units);
+	        for (var i = 0; i < prioritized.length; i++) {
+	            this[prioritized[i].unit](units[prioritized[i].unit]);
+	        }
+	    } else {
+	        units = normalizeUnits(units);
+	        if (isFunction(this[units])) {
+	            return this[units](value);
+	        }
+	    }
+	    return this;
+	}
+
+	function zeroFill(number, targetLength, forceSign) {
+	    var absNumber = '' + Math.abs(number),
+	        zerosToFill = targetLength - absNumber.length,
+	        sign = number >= 0;
+	    return (sign ? (forceSign ? '+' : '') : '-') +
+	        Math.pow(10, Math.max(0, zerosToFill)).toString().substr(1) + absNumber;
+	}
+
+	var formattingTokens = /(\[[^\[]*\])|(\\)?([Hh]mm(ss)?|Mo|MM?M?M?|Do|DDDo|DD?D?D?|ddd?d?|do?|w[o|w]?|W[o|W]?|Qo?|YYYYYY|YYYYY|YYYY|YY|gg(ggg?)?|GG(GGG?)?|e|E|a|A|hh?|HH?|kk?|mm?|ss?|S{1,9}|x|X|zz?|ZZ?|.)/g;
+
+	var localFormattingTokens = /(\[[^\[]*\])|(\\)?(LTS|LT|LL?L?L?|l{1,4})/g;
+
+	var formatFunctions = {};
+
+	var formatTokenFunctions = {};
+
+	// token:    'M'
+	// padded:   ['MM', 2]
+	// ordinal:  'Mo'
+	// callback: function () { this.month() + 1 }
+	function addFormatToken (token, padded, ordinal, callback) {
+	    var func = callback;
+	    if (typeof callback === 'string') {
+	        func = function () {
+	            return this[callback]();
+	        };
+	    }
+	    if (token) {
+	        formatTokenFunctions[token] = func;
+	    }
+	    if (padded) {
+	        formatTokenFunctions[padded[0]] = function () {
+	            return zeroFill(func.apply(this, arguments), padded[1], padded[2]);
+	        };
+	    }
+	    if (ordinal) {
+	        formatTokenFunctions[ordinal] = function () {
+	            return this.localeData().ordinal(func.apply(this, arguments), token);
+	        };
+	    }
+	}
+
+	function removeFormattingTokens(input) {
+	    if (input.match(/\[[\s\S]/)) {
+	        return input.replace(/^\[|\]$/g, '');
+	    }
+	    return input.replace(/\\/g, '');
+	}
+
+	function makeFormatFunction(format) {
+	    var array = format.match(formattingTokens), i, length;
+
 	    for (i = 0, length = array.length; i < length; i++) {
 	        if (formatTokenFunctions[array[i]]) {
 	            array[i] = formatTokenFunctions[array[i]];
@@ -62538,17 +62713,99 @@
 	/**
 	 * Created by colts on 6/8/2017.
 	 */
-	var managerCheckinsCtrl = function managerCheckinsCtrl(scope, $http) {
+	var managerCheckinsCtrl = function managerCheckinsCtrl($scope, $http) {
+	    console.log("started");
 
 	    $http.get("checkin/allTodays").then(function (result) {
 	        $scope.checkins = result.data;
 	    });
+
+	    $scope.checkIfAllSelected = function (checkin) {
+	        window.checkin = checkin;
+	    };
+
+	    $scope.isSelectAll = function () {
+	        $scope.checkins.forEach(function (checkin) {
+	            checkin.selected = true;
+	        });
+	    };
+
+	    $scope.selectAll = true;
 	};
 
 	exports.default = managerCheckinsCtrl;
 
 /***/ }),
 /* 213 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var interviewsCtrl = function interviewsCtrl($scope, $http) {
+	  $http({
+	    method: 'GET',
+	    url: 'interviews/next-five-days'
+	  }).then(function (response) {
+	    $scope.interviews = response.data;
+	  }, function () {
+	    console.log('error!');
+	  });
+
+	  $http.get('interviewStatus/all').then(function (successResponse) {
+	    $scope.interviewStatuses = successResponse.data;
+	  }, function () {
+	    console.log('failed to retreive interview statuses');
+	  });
+
+	  // configure the modal for the interview selected
+	  $scope.interviewSelect = function (interview) {
+	    // give the interview the status object from the list of statuses
+	    interview.interviewStatus = $scope.interviewStatuses.filter(function (status) {
+	      return status.value === interview.interviewStatus.value;
+	    })[0];
+	    $scope.interviewSideTable = { interview: interview };
+	    $scope.idSelectedInterview = interview.id;
+
+	    // incase edit mode was enabled from previously viewing a different interview
+	    $scope.edit = false;
+	    $scope.requestMade = false;
+
+	    // Date time picker setup
+	    $('#datetimepicker1').datetimepicker({
+	      defaultDate: interview.scheduled
+	    });
+	    // $(".datepicker").datepicker("update", new Date());
+	    $scope.showDateTimePicker = function () {
+	      $('#datetimepicker1').datetimepicker('show');
+	    };
+	    $('#datetimepicker1').on('dp.change', function () {
+	      $scope.interviewSideTable.interview.scheduled = $('#datetimepicker1').val();
+	    });
+	  };
+
+	  // update the current interview
+	  $scope.updateInterview = function () {
+	    $scope.requestMade = true;
+	    $scope.updateMessage = 'Attempting to update interview';
+	    $scope.updateMessageStyle = { color: 'white' };
+	    $scope.interviewSideTable.interview.scheduled = moment($scope.interviewSideTable.interview.scheduled).toDate();
+	    $http.put('interviews', $scope.interviewSideTable.interview).then(function () {
+	      $scope.updateMessage = 'Successfully updated interview';
+	      $scope.updateMessageStyle = { color: 'green' };
+	    }, function () {
+	      $scope.updateMessage = 'Failed to update interview';
+	      $scope.updateMessageStyle = { color: 'red' };
+	    });
+	  };
+	};
+
+	exports.interviewsCtrl = interviewsCtrl;
+
+/***/ }),
+/* 214 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -62563,7 +62820,7 @@
 	exports.default = managerCreateCtrl;
 
 /***/ }),
-/* 214 */
+/* 215 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -62576,6 +62833,10 @@
 
 	  $(function () {
 	    $('#datetimepicker1').datetimepicker();
+	  });
+
+	  $(function () {
+	    $('#datetimepicker2').datetimepicker();
 	  });
 
 	  $http.get('batchtype/all.json').then(function (response) {
@@ -62593,8 +62854,16 @@
 	  });
 
 	  $scope.submit = function () {
+
 	    var item = JSON.stringify($scope.batch);
 	    console.log(item);
+	    console.log($scope.batch.startDate);
+	    var now = new Date($scope.batch.startDate).toISOString();
+	    $scope.batch.startDate = now;
+	    var now2 = new Date($scope.batch.endDate).toISOString();
+	    $scope.batch.endDate = now2;
+	    console.log(now);
+	    //var now_utc = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(),  now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
 	    var str = item.replace(/\\/g, '');
 	    var str2 = str.replace('"{', '{');
 	    var str3 = str2.replace('}"', '}');
@@ -62615,7 +62884,7 @@
 	exports.batchCtrl = batchCtrl;
 
 /***/ }),
-/* 215 */
+/* 216 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -62638,7 +62907,7 @@
 	exports.clientCtrl = clientCtrl;
 
 /***/ }),
-/* 216 */
+/* 217 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -62647,34 +62916,28 @@
 	  value: true
 	});
 	var userCtrl = function userCtrl($scope, $http) {
-
 	  $http.get('batchtype/all.json').then(function (response) {
-	    // console.log(response.data[0].id)
-	    console.log(response.data);
 	    $scope.posts = response.data;
 	  }, function () {
-	    console.log("failure");
+	    console.log('failure');
 	  });
 
 	  $scope.submit = function () {
 	    var item = JSON.stringify($scope.user);
+
 	    //need 2 different post requests for manager and associate
-	    console.log(item);
-	    console.log($scope.user.type == 'associate');
 	    if ($scope.user.type == 'associate') {
-	      console.log('in associate');
 	      $http.post('/associate', item).then(function (response) {
-	        console.log("success");
+	        console.log('success');
 	      }, function () {
-	        console.log("failure");
+	        console.log('failure');
 	      });
 	    };
 	    if ($scope.user.type == 'manager') {
-	      console.log('in manager');
 	      $http.post('/manager', item).then(function (response) {
-	        console.log("success");
+	        console.log('success');
 	      }, function () {
-	        console.log("failure");
+	        console.log('failure');
 	      });
 	    };
 	  };
@@ -62683,7 +62946,30 @@
 	exports.userCtrl = userCtrl;
 
 /***/ }),
-/* 217 */
+/* 218 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var locCtrl = function locCtrl($scope, $http) {
+	  $scope.submit = function () {
+	    var item = JSON.stringify($scope.location);
+	    console.log(item);
+	    $http.post('/location', item).then(function (response) {
+	      console.log("success");
+	    }, function () {
+	      console.log("failure");
+	    });
+	  };
+	};
+
+	exports.locCtrl = locCtrl;
+
+/***/ }),
+/* 219 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -62743,7 +63029,7 @@
 	exports.default = managerAdvancedAssociatesCtrl;
 
 /***/ }),
-/* 218 */
+/* 220 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -62751,39 +63037,61 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var profileCtrl = function profileCtrl($scope, $http, userService) {
-	  var associateId = userService.getUser().id;
-	  var associateUrl = '/associate/' + associateId;
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+	var profileCtrl = function profileCtrl($scope, $http, userService, $stateParams, $state) {
+	  var associateId = $state.includes('manager') ? $stateParams.id : userService.getUser().id;
 
 	  if (associateId === undefined) {
 	    return;
 	  }
 
+	  var associateUrl = '/associate/' + associateId;
 	  $http({
 	    method: 'GET',
 	    url: associateUrl
 	  }).then(function (response) {
-	    $scope.associate = response.data;
-	    $scope.portfolioUrl = response.data.portfolioLink;
+	    $scope.associate = _extends({}, response.data);
 	  });
 
 	  $scope.portfolioUrlInput = '';
-	  $scope.status = 'Active';
+
+	  $scope.addSkill = function () {
+	    var skillAlreadyExists = $scope.additionalSkillsValues.find(function (skill) {
+	      return skill.value === $scope.newSkillValue;
+	    }) !== undefined;
+	    if (skillAlreadyExists || $scope.newSkillValue === '') {
+	      return;
+	    }
+	    var skillToAdd = { id: 0, value: $scope.newSkillValue };
+	    $scope.additionalSkillsValues = [].concat(_toConsumableArray($scope.additionalSkillsValues), [skillToAdd]);
+	    $scope.newSkillValue = '';
+	  };
+
+	  $scope.removeSkill = function (skillToDelete) {
+	    $scope.additionalSkillsValues = $scope.additionalSkillsValues.filter(function (skill) {
+	      return skill.id !== skillToDelete.id;
+	    });
+	  };
 
 	  $scope.toggleSkillsModal = function () {
 	    $scope.sendingRequest = false;
 	    $scope.skillsModalButtonValue = 'Save';
-	    $scope.additionalSkillsInput = $scope.associate.skills.map(function (skill) {
-	      return skill.value;
-	    }).join(',');
+	    $scope.additionalSkillsValues = [].concat(_toConsumableArray($scope.associate.skills));
+	    $scope.newSkillValue = '';
 	    $('#additionalSkillsModal').modal('show');
 	  };
+
 	  $scope.openPortfolioUrlModal = function () {
 	    $scope.sendingRequest = false;
 	    $scope.portfolioModalButtonValue = 'Save';
 	    $scope.portfolioUrlInput = $scope.associate.portfolioLink;
 	    $('#portfolioUrlModal').modal('show');
 	  };
+
 	  $scope.submitPortfolioUrl = function () {
 	    $scope.associate.portfolioLink = $scope.portfolioUrlInput;
 
@@ -62799,14 +63107,10 @@
 	      $('#portfolioUrlModal').modal('hide');
 	    });
 	  };
+
 	  $scope.submitSkills = function () {
-	    $scope.associate.skills = $scope.additionalSkillsInput.split(',').filter(function (skill) {
-	      return skill !== '';
-	    }).map(function (skill) {
-	      var existingSkill = $scope.associate.skills.find(function (aSkill) {
-	        return aSkill.value === skill;
-	      });
-	      return { id: existingSkill !== undefined ? existingSkill.id : 0, value: skill };
+	    $scope.associate.skills = [].concat(_toConsumableArray($scope.additionalSkillsValues)).filter(function (skill) {
+	      return skill.value !== '';
 	    });
 
 	    $scope.sendingRequest = true;
@@ -62821,27 +63125,29 @@
 	      $('#additionalSkillsModal').modal('hide');
 	    });
 	  };
+
+	  $scope.associateHasNoSkills = function () {
+	    if ($scope.associate === undefined) {
+	      return true;
+	    }
+	    return $scope.associate.batch.batchType.skills.concat($scope.associate.skills).length === 0;
+	  };
 	};
 
 	exports.default = profileCtrl;
 
 /***/ }),
-/* 219 */
-/***/ (function(module, exports, __webpack_require__) {
+/* 221 */
+/***/ (function(module, exports) {
 
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
-
-	var _dateformat = __webpack_require__(220);
-
-	var _dateformat2 = _interopRequireDefault(_dateformat);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 	var associateInterviewCtrl = function associateInterviewCtrl($scope, $http, userService) {
+		var addInterviewBtn = document.getElementById('addInterviewBtn');
+
 		$scope.associateInterviews;
 		$('#datetimepicker1').datetimepicker();
 		$scope.showDateTimePicker = function () {
@@ -62863,334 +63169,136 @@
 
 		$http({
 			method: 'GET',
-			url: 'interviews/associate/' + userService.getUser().id
+			url: '/interviewStatus/all'
 		}).then(function (response) {
-			response.data.forEach(function (e) {
-				var day = new Date(response.data[0].scheduled[0], response.data[0].scheduled[1], response.data[0].scheduled[2], response.data[0].scheduled[3], response.data[0].scheduled[4], response.data[0].scheduled[5], 0);
-				e['day'] = (0, _dateformat2.default)(day, "dddd, mmmm dS, yyyy, h:MM TT");;
-			});
-			$scope.associateInterviews = response.data;
+			console.log(response);
+			$scope.interviewStatuses = response.data;
 		});
 
-		//	$scope.errorMsgShow = true;
-		//	$scope.successMsgShow = true;
+		$http({
+			method: 'GET',
+			url: 'interviews/associate/' + userService.getUser().id
+		}).then(function (response) {
+			$scope.associateInterviews = response.data;
+			$scope.associateInterviews.sort(function (a, b) {
+				return new Date(b.scheduled).getTime() - new Date(a.scheduled).getTime();
+			});
+			console.log(response.data);
+		});
 
 		$scope.addInterviewClick = function () {
-			$http({
-				method: 'POST',
-				url: '/interviews',
-				data: { associate: userService.getUser(), client: $scope.selectedClient }
-			}).then(function (response) {});
-			console.log(userService.getUser());
-			console.log($scope.selectedClient);
-			console.log($scope.selectedDate);
+			$scope.errorMsgShow = false;
+			$scope.successMsgShow = false;
+
+			if ($scope.selectedClient == undefined) {
+				$scope.errorMsg = 'Please select a Client.';
+				$scope.errorMsgShow = true;
+			} else if ($scope.selectedDate == undefined) {
+				$scope.errorMsg = 'Please select a Date.';
+				$scope.errorMsgShow = true;
+			} else {
+				var newDate = moment($scope.selectedDate).toDate();
+				addInterviewBtn.disabled = true;
+				addInterviewBtn.innerHTML = 'Adding...';
+				$http({
+					method: 'POST',
+					url: '/interviews',
+					data: { associate: userService.getUser(), client: $scope.selectedClient, scheduled: newDate }
+				}).then(function (response) {
+					$scope.successMsgShow = true;
+					addInterviewBtn.disabled = false;
+					addInterviewBtn.innerHTML = 'Add Interview';
+
+					$http({
+						method: 'GET',
+						url: 'interviews/associate/' + userService.getUser().id
+					}).then(function (response) {
+						$scope.associateInterviews = response.data;
+						$scope.associateInterviews.sort(function (a, b) {
+							return new Date(b.scheduled).getTime() - new Date(a.scheduled).getTime();
+						});
+					});
+				});
+			}
+		};
+
+		$scope.interviewClick = function (interview) {
+			console.log(interview);
+			$scope.clickedInterview = interview;
+			for (var i = 0; i < $scope.interviewStatuses.length; i++) {
+				if ($scope.interviewStatuses[i].value === interview.interviewStatus.value) $scope.modalStatus = $scope.interviewStatuses[i];
+			}
+			$('#interviewModal').modal('show');
 		};
 	};
 
 	exports.default = associateInterviewCtrl;
 
 /***/ }),
-/* 220 */
-/***/ (function(module, exports, __webpack_require__) {
-=======
-/***/ }),
-/* 103 */
-/***/ (function(module, exports, __webpack_require__) {
->>>>>>> 8ba3de4fbdcebedaa0f1ffd913cab6d62ee0dc12
-
-	var __WEBPACK_AMD_DEFINE_RESULT__;/*
-	 * Date Format 1.2.3
-	 * (c) 2007-2009 Steven Levithan <stevenlevithan.com>
-	 * MIT license
-	 *
-	 * Includes enhancements by Scott Trenda <scott.trenda.net>
-	 * and Kris Kowal <cixar.com/~kris.kowal/>
-	 *
-	 * Accepts a date, a mask, or a date and a mask.
-	 * Returns a formatted version of the given date.
-	 * The date defaults to the current date/time.
-	 * The mask defaults to dateFormat.masks.default.
-	 */
-
-	(function(global) {
-	  'use strict';
-
-	  var dateFormat = (function() {
-	      var token = /d{1,4}|m{1,4}|yy(?:yy)?|([HhMsTt])\1?|[LloSZWN]|'[^']*'|'[^']*'/g;
-	      var timezone = /\b(?:[PMCEA][SDP]T|(?:Pacific|Mountain|Central|Eastern|Atlantic) (?:Standard|Daylight|Prevailing) Time|(?:GMT|UTC)(?:[-+]\d{4})?)\b/g;
-	      var timezoneClip = /[^-+\dA-Z]/g;
-	  
-	      // Regexes and supporting functions are cached through closure
-	      return function (date, mask, utc, gmt) {
-	  
-	        // You can't provide utc if you skip other args (use the 'UTC:' mask prefix)
-	        if (arguments.length === 1 && kindOf(date) === 'string' && !/\d/.test(date)) {
-	          mask = date;
-	          date = undefined;
-	        }
-	  
-	        date = date || new Date;
-	  
-	        if(!(date instanceof Date)) {
-	          date = new Date(date);
-	        }
-	  
-	        if (isNaN(date)) {
-	          throw TypeError('Invalid date');
-	        }
-	  
-	        mask = String(dateFormat.masks[mask] || mask || dateFormat.masks['default']);
-	  
-	        // Allow setting the utc/gmt argument via the mask
-	        var maskSlice = mask.slice(0, 4);
-	        if (maskSlice === 'UTC:' || maskSlice === 'GMT:') {
-	          mask = mask.slice(4);
-	          utc = true;
-	          if (maskSlice === 'GMT:') {
-	            gmt = true;
-	          }
-	        }
-	  
-	        var _ = utc ? 'getUTC' : 'get';
-	        var d = date[_ + 'Date']();
-	        var D = date[_ + 'Day']();
-	        var m = date[_ + 'Month']();
-	        var y = date[_ + 'FullYear']();
-	        var H = date[_ + 'Hours']();
-	        var M = date[_ + 'Minutes']();
-	        var s = date[_ + 'Seconds']();
-	        var L = date[_ + 'Milliseconds']();
-	        var o = utc ? 0 : date.getTimezoneOffset();
-	        var W = getWeek(date);
-	        var N = getDayOfWeek(date);
-	        var flags = {
-	          d:    d,
-	          dd:   pad(d),
-	          ddd:  dateFormat.i18n.dayNames[D],
-	          dddd: dateFormat.i18n.dayNames[D + 7],
-	          m:    m + 1,
-	          mm:   pad(m + 1),
-	          mmm:  dateFormat.i18n.monthNames[m],
-	          mmmm: dateFormat.i18n.monthNames[m + 12],
-	          yy:   String(y).slice(2),
-	          yyyy: y,
-	          h:    H % 12 || 12,
-	          hh:   pad(H % 12 || 12),
-	          H:    H,
-	          HH:   pad(H),
-	          M:    M,
-	          MM:   pad(M),
-	          s:    s,
-	          ss:   pad(s),
-	          l:    pad(L, 3),
-	          L:    pad(Math.round(L / 10)),
-	          t:    H < 12 ? 'a'  : 'p',
-	          tt:   H < 12 ? 'am' : 'pm',
-	          T:    H < 12 ? 'A'  : 'P',
-	          TT:   H < 12 ? 'AM' : 'PM',
-	          Z:    gmt ? 'GMT' : utc ? 'UTC' : (String(date).match(timezone) || ['']).pop().replace(timezoneClip, ''),
-	          o:    (o > 0 ? '-' : '+') + pad(Math.floor(Math.abs(o) / 60) * 100 + Math.abs(o) % 60, 4),
-	          S:    ['th', 'st', 'nd', 'rd'][d % 10 > 3 ? 0 : (d % 100 - d % 10 != 10) * d % 10],
-	          W:    W,
-	          N:    N
-	        };
-	  
-	        return mask.replace(token, function (match) {
-	          if (match in flags) {
-	            return flags[match];
-	          }
-	          return match.slice(1, match.length - 1);
-	        });
-	      };
-	    })();
-
-	  dateFormat.masks = {
-	    'default':               'ddd mmm dd yyyy HH:MM:ss',
-	    'shortDate':             'm/d/yy',
-	    'mediumDate':            'mmm d, yyyy',
-	    'longDate':              'mmmm d, yyyy',
-	    'fullDate':              'dddd, mmmm d, yyyy',
-	    'shortTime':             'h:MM TT',
-	    'mediumTime':            'h:MM:ss TT',
-	    'longTime':              'h:MM:ss TT Z',
-	    'isoDate':               'yyyy-mm-dd',
-	    'isoTime':               'HH:MM:ss',
-	    'isoDateTime':           'yyyy-mm-dd\'T\'HH:MM:sso',
-	    'isoUtcDateTime':        'UTC:yyyy-mm-dd\'T\'HH:MM:ss\'Z\'',
-	    'expiresHeaderFormat':   'ddd, dd mmm yyyy HH:MM:ss Z'
-	  };
-
-	  // Internationalization strings
-	  dateFormat.i18n = {
-	    dayNames: [
-	      'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat',
-	      'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
-	    ],
-	    monthNames: [
-	      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
-	      'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'
-	    ]
-	  };
-
-	function pad(val, len) {
-	  val = String(val);
-	  len = len || 2;
-	  while (val.length < len) {
-	    val = '0' + val;
-	  }
-	  return val;
-	}
-
-	/**
-	 * Get the ISO 8601 week number
-	 * Based on comments from
-	 * http://techblog.procurios.nl/k/n618/news/view/33796/14863/Calculate-ISO-8601-week-and-year-in-javascript.html
-	 *
-	 * @param  {Object} `date`
-	 * @return {Number}
-	 */
-	function getWeek(date) {
-	  // Remove time components of date
-	  var targetThursday = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-
-	  // Change date to Thursday same week
-	  targetThursday.setDate(targetThursday.getDate() - ((targetThursday.getDay() + 6) % 7) + 3);
-
-	  // Take January 4th as it is always in week 1 (see ISO 8601)
-	  var firstThursday = new Date(targetThursday.getFullYear(), 0, 4);
-
-	  // Change date to Thursday same week
-	  firstThursday.setDate(firstThursday.getDate() - ((firstThursday.getDay() + 6) % 7) + 3);
-
-	  // Check if daylight-saving-time-switch occured and correct for it
-	  var ds = targetThursday.getTimezoneOffset() - firstThursday.getTimezoneOffset();
-	  targetThursday.setHours(targetThursday.getHours() - ds);
-
-	  // Number of weeks between target Thursday and first Thursday
-	  var weekDiff = (targetThursday - firstThursday) / (86400000*7);
-	  return 1 + Math.floor(weekDiff);
-	}
-
-	/**
-	 * Get ISO-8601 numeric representation of the day of the week
-	 * 1 (for Monday) through 7 (for Sunday)
-	 * 
-	 * @param  {Object} `date`
-	 * @return {Number}
-	 */
-	function getDayOfWeek(date) {
-	  var dow = date.getDay();
-	  if(dow === 0) {
-	    dow = 7;
-	  }
-	  return dow;
-	}
-
-	/**
-	 * kind-of shortcut
-	 * @param  {*} val
-	 * @return {String}
-	 */
-	function kindOf(val) {
-	  if (val === null) {
-	    return 'null';
-	  }
-
-	  if (val === undefined) {
-	    return 'undefined';
-	  }
-
-	  if (typeof val !== 'object') {
-	    return typeof val;
-	  }
-
-	  if (Array.isArray(val)) {
-	    return 'array';
-	  }
-
-	  return {}.toString.call(val)
-	    .slice(8, -1).toLowerCase();
-	};
-
-
-
-	  if (true) {
-	    !(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
-	      return dateFormat;
-	    }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	  } else if (typeof exports === 'object') {
-	    module.exports = dateFormat;
-	  } else {
-	    global.dateFormat = dateFormat;
-	  }
-	})(this);
-
-
-/***/ }),
-/* 104 */
+/* 222 */
 /***/ (function(module, exports) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-		value: true
+	  value: true
 	});
 	var associateCtrl = function associateCtrl($scope, $location, $http, $state, userService) {
-		var authenticatedUser = userService.getUser();
-		var checkBtnDOM = document.getElementById("checkBtn");
-		$scope.checkInBtn = "Loading...";
-		checkBtnDOM.disabled = true;
+	  var authenticatedUser = userService.getUser();
+	  var checkBtnDOM = document.getElementById('checkBtn');
+	  $scope.checkInBtn = 'Loading...';
+	  checkBtnDOM.disabled = true;
 
-		if (authenticatedUser.id === undefined) {
-			$state.go('login');
-			return;
-		}
+	  if (authenticatedUser.id === undefined) {
+	    $state.go('login');
+	    return;
+	  }
 
-		$http({
-			method: 'GET',
-			url: '/checkin'
-		}).then(function (response) {
-			if (response.data === true) {
-				$scope.checkInBtn = "Checked In";
-				$scope.hasCheckedIn = true;
-			} else {
-				$scope.checkInBtn = "Check In";
-				checkBtnDOM.disabled = false;
-			}
-		});
+	  $http({
+	    method: 'GET',
+	    url: '/checkin'
+	  }).then(function (response) {
+	    if (response.data === true) {
+	      $scope.checkInBtn = 'Checked In';
+	      $scope.hasCheckedIn = true;
+	    } else {
+	      $scope.checkInBtn = 'Check In';
+	      checkBtnDOM.disabled = false;
+	    }
+	  });
 
-		$scope.hasCheckedIn = false;
-		$scope.isActive = function (viewLocation) {
-			return viewLocation === $location.path();
-		};
+	  $scope.hasCheckedIn = false;
+	  $scope.isActive = function (viewLocation) {
+	    return viewLocation === $location.path();
+	  };
 
-		$scope.checkIn = function () {
-			$http({
-				method: 'PUT',
-				url: '/checkin'
-			}).then(function (response) {
-				if (response.data === true) {
-					$scope.checkInBtn = "Checked In";
-					$scope.hasCheckedIn = true;
-				}
-			});
-		};
+	  $scope.checkIn = function () {
+	    $http({
+	      method: 'PUT',
+	      url: '/checkin'
+	    }).then(function (response) {
+	      if (response.data === true) {
+	        $scope.checkInBtn = 'Checked In';
+	        $scope.hasCheckedIn = true;
+	      }
+	    });
+	  };
 
-		$scope.logout = function () {
-			$http({
-				method: 'GET',
-				url: '/logout/'
-			}).then(function (response) {
-				userService.setUser({});
-				$state.go('login');
-			});
-		};
+	  $scope.logout = function () {
+	    $http({
+	      method: 'GET',
+	      url: '/logout/'
+	    }).then(function () {
+	      userService.setUser({});
+	      $state.go('login');
+	    });
+	  };
 	};
 
 	exports.default = associateCtrl;
 
 /***/ }),
-/* 105 */
+/* 223 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -63205,7 +63313,7 @@
 	exports.reportCtrl = reportCtrl;
 
 /***/ }),
-/* 106 */
+/* 224 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -63410,113 +63518,98 @@
 	exports.nestedCtrl = nestedCtrl;
 
 /***/ }),
-/* 107 */
+/* 225 */
 /***/ (function(module, exports) {
 
-<<<<<<< HEAD
-=======
 	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 	var chart = {
-	    caption: "Asscoiates Available vs. Associate Confirmed",
-	    subCaption: "Revature LLC",
-	    xAxisname: "Batch Type",
-	    yAxisName: "Number of Associate",
-	    //    numberPrefix: "$",
-	    paletteColors: "#ff0000,#0075c2",
-	    bgColor: "#ffffff",
-	    borderAlpha: "20",
-	    showCanvasBorder: "0",
-	    usePlotGradientColor: "0",
-	    plotBorderAlpha: "10",
-	    legendBorderAlpha: "0",
-	    legendShadow: "0",
-	    valueFontColor: "#ffffff",
-	    showXAxisLine: "1",
-	    xAxisLineColor: "#999999",
-	    divlineColor: "#999999",
-	    divLineDashed: "1",
-	    showAlternateHGridColor: "0",
-	    subcaptionFontBold: "0",
-	    subcaptionFontSize: "14",
-	    showHoverEffect: "1"
+	  caption: "Asscoiates Available vs. Associate Confirmed",
+	  subCaption: "Revature LLC",
+	  xAxisname: "Batch Type",
+	  yAxisName: "Number of Associate",
+	  paletteColors: "#ff0000,#0075c2",
+	  bgColor: "#ffffff",
+	  borderAlpha: "20",
+	  showCanvasBorder: "0",
+	  usePlotGradientColor: "0",
+	  plotBorderAlpha: "10",
+	  legendBorderAlpha: "0",
+	  legendShadow: "0",
+	  valueFontColor: "#ffffff",
+	  showXAxisLine: "1",
+	  xAxisLineColor: "#999999",
+	  divlineColor: "#999999",
+	  divLineDashed: "1",
+	  showAlternateHGridColor: "0",
+	  subcaptionFontBold: "0",
+	  subcaptionFontSize: "14",
+	  showHoverEffect: "1"
 	};
 
 	var categories = void 0;
-
-	var dataset = [{
-	    "seriesname": "Food Products",
-	    "data": [{
-	        "value": "121000"
-	    }, {
-	        "value": "135000"
-	    }, {
-	        "value": "123500"
-	    }, {
-	        "value": "145000"
-	    }]
-	}, {
-	    "seriesname": "Non-Food Products",
-	    "data": [{
-	        "value": "131400"
-	    }, {
-	        "value": "154800"
-	    }, {
-	        "value": "98300"
-	    }, {
-	        "value": "131800"
-	    }]
-	}];
+	var dataset = void 0;
 
 	var barCtrl = function barCtrl($scope, $http) {
-	    graphBuilder($scope, $http);
+	  graphBuilder($scope, $http);
 	};
 
 	function graphBuilder($scope, $http) {
-	    $http({
-	        method: 'GET',
-	        url: '/batchtype/all'
-	    }).then(function (response) {
-	        var stuff = [];
-	        var value = response.data;
-	        value.forEach(function (item) {
-	            stuff.push({ "label": item.value });
-	        });
-	        categories = [{
-	            "category": stuff
-	        }];
-	        plainBarChart2($scope, chart, categories, dataset);
+	  $http({
+	    method: 'GET',
+	    url: '/associate/totaldata'
+	  }).then(function (response) {
+	    console.log("new stuff: " + JSON.stringify(response.data));
+	    var stuff1 = [];
+	    var stuff2 = [];
+	    var stuff3 = [];
+	    var value = response.data;
+	    value.forEach(function (item) {
+	      stuff1.push({ "label": item.batchName });
+	      stuff2.push({ "value": item.totalAvailable - item.totalUnavailable });
+	      stuff3.push({ "value": item.totalUnavailable });
 	    });
+	    categories = [{
+	      "category": stuff1
+	    }];
+	    dataset = [{
+	      "seriesname": "Confirmed Associates",
+	      "data": stuff3
+	    }, {
+	      "seriesname": " Available Associates",
+	      "data": stuff2
+	    }];
+	    plainBarChart2($scope, chart, categories, dataset);
+	  });
 	}
 
 	function plainBarChart2($scope, chartstuff, categories, dataset) {
 
-	    var myDataSource = {
-	        chart: chartstuff,
-	        categories: categories,
-	        dataset: dataset
-	    };
+	  var myDataSource = {
+	    chart: chartstuff,
+	    categories: categories,
+	    dataset: dataset
+	  };
 
-	    var chart = new FusionCharts({
-	        type: 'stackedcolumn3d',
-	        renderAt: 'chart-container',
-	        width: '550',
-	        height: '350',
-	        dataFormat: 'json',
-	        dataSource: myDataSource
-	    });
+	  var chart = new FusionCharts({
+	    type: 'stackedcolumn3d',
+	    renderAt: 'chart-container',
+	    width: '650',
+	    height: '450',
+	    dataFormat: 'json',
+	    dataSource: myDataSource
+	  });
 
-	    console.log("his chart: " + chart);
-	    chart.render();
+	  chart.render();
 	}
 
 	exports.barCtrl = barCtrl;
 
 /***/ }),
-/* 108 */
+/* 226 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -63570,10 +63663,9 @@
 	exports.default = loginCtrl;
 
 /***/ }),
-/* 109 */
+/* 227 */
 /***/ (function(module, exports) {
 
->>>>>>> 8ba3de4fbdcebedaa0f1ffd913cab6d62ee0dc12
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
@@ -64109,65 +64201,7 @@
 	// ----------------------------------- End Main ----------------------------------- //
 
 /***/ }),
-<<<<<<< HEAD
-/* 225 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var loginCtrl = function loginCtrl($scope, $http, $state, userService) {
-	  var loginBtn = document.getElementById('loginBtn');
-	  $scope.username = '';
-	  $scope.password = '';
-	  $scope.errorMsgShow = false;
-
-	  $scope.submit = function () {
-	    loginBtn.disabled = true;
-	    loginBtn.innerHTML = 'Logging in...';
-	    $scope.errorMsgShow = false;
-
-	    if ($scope.username === '' || $scope.username === undefined) {
-	      $scope.errorMsg = 'Please input a Username.';
-	      $scope.errorMsgShow = true;
-	      loginBtn.disabled = false;
-	      loginBtn.innerHTML = 'Log In';
-	    } else if ($scope.password === '' || $scope.password === undefined) {
-	      $scope.errorMsg = 'Please input a Password.';
-	      $scope.errorMsgShow = true;
-	      loginBtn.disabled = false;
-	      loginBtn.innerHTML = 'Log In';
-	    } else {
-	      $http({
-	        method: 'POST',
-	        url: '/login',
-	        data: { username: $scope.username, password: $scope.password }
-	      }).then(function (response) {
-	        userService.setUser(response.data);
-	        if (response.data.permission !== undefined) {
-	          $state.go('manager.home');
-	        } else {
-	          $state.go('associate.home');
-	        }
-	      }, function () {
-	        $scope.errorMsg = 'Username or Password is incorrect.';
-	        $scope.errorMsgShow = true;
-	        loginBtn.disabled = false;
-	        loginBtn.innerHTML = 'Log In';
-	      });
-	    }
-	  };
-	};
-
-	exports.default = loginCtrl;
-
-/***/ }),
-/* 226 */
-=======
-/* 110 */
->>>>>>> 8ba3de4fbdcebedaa0f1ffd913cab6d62ee0dc12
+/* 228 */
 /***/ (function(module, exports) {
 
 	/*
@@ -64415,98 +64449,6 @@
 	c,b){var f=.5*b,k=a-b,h=a+b,l=a-f,m=a+f,n=a+.5,p=n+1,r=n+1.5,t=c-b,u=c+f,v=c-f,f=c+(b-f);return["M",k,t,"L",l,v,l,f,k,u,a-.5,u,a,c+b+.5,n,u,h,u,m,f,m,v,h,t,r,t,r,v,r,f,p,f,p,v,r,v,r,t,"Z"]},zoomOutIcon:function(a,c,b){a-=.2*b;c-=.2*b;var f=.8*b,k=w.rad(43),h=w.rad(48),l=a+f*ya(k),k=c+f*va(k),m=a+f*ya(h),h=c+f*va(h),n=w.rad(45),p=l+b*ya(n),r=k+b*va(n),t=m+b*ya(n);b=h+b*va(n);return["M",l,k,"A",f,f,0,1,0,m,h,"Z","M",l+1,k+1,"L",p,r,t,b,m+1,h+1,"Z","M",a-2,c,"L",a+2,c,"Z"]},resetIcon:function(a,c,b){var f=
 	a-b,k=(da.PI/2+da.PI)/2;a+=b*ya(k);var k=c+b*va(k),h=2*b/3;return["M",f,c,"A",b,b,0,1,1,a,k,"L",a+h,k-1,a+2,k+h-.5,a,k]}})}])});
 
-
-/***/ }),
-/* 227 */,
-/* 228 */
-/***/ (function(module, exports) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var chart = {
-	  caption: "Asscoiates Available vs. Associate Confirmed",
-	  subCaption: "Revature LLC",
-	  xAxisname: "Batch Type",
-	  yAxisName: "Number of Associate",
-	  paletteColors: "#ff0000,#0075c2",
-	  bgColor: "#ffffff",
-	  borderAlpha: "20",
-	  showCanvasBorder: "0",
-	  usePlotGradientColor: "0",
-	  plotBorderAlpha: "10",
-	  legendBorderAlpha: "0",
-	  legendShadow: "0",
-	  valueFontColor: "#ffffff",
-	  showXAxisLine: "1",
-	  xAxisLineColor: "#999999",
-	  divlineColor: "#999999",
-	  divLineDashed: "1",
-	  showAlternateHGridColor: "0",
-	  subcaptionFontBold: "0",
-	  subcaptionFontSize: "14",
-	  showHoverEffect: "1"
-	};
-
-	var categories = void 0;
-	var dataset = void 0;
-
-	var barCtrl = function barCtrl($scope, $http) {
-	  graphBuilder($scope, $http);
-	};
-
-	function graphBuilder($scope, $http) {
-	  $http({
-	    method: 'GET',
-	    url: '/associate/totaldata'
-	  }).then(function (response) {
-	    console.log("new stuff: " + JSON.stringify(response.data));
-	    var stuff1 = [];
-	    var stuff2 = [];
-	    var stuff3 = [];
-	    var value = response.data;
-	    value.forEach(function (item) {
-	      stuff1.push({ "label": item.batchName });
-	      stuff2.push({ "value": item.totalAvailable - item.totalUnavailable });
-	      stuff3.push({ "value": item.totalUnavailable });
-	    });
-	    categories = [{
-	      "category": stuff1
-	    }];
-	    dataset = [{
-	      "seriesname": "Confirmed Associates",
-	      "data": stuff3
-	    }, {
-	      "seriesname": " Available Associates",
-	      "data": stuff2
-	    }];
-	    plainBarChart2($scope, chart, categories, dataset);
-	  });
-	}
-
-	function plainBarChart2($scope, chartstuff, categories, dataset) {
-
-	  var myDataSource = {
-	    chart: chartstuff,
-	    categories: categories,
-	    dataset: dataset
-	  };
-
-	  var chart = new FusionCharts({
-	    type: 'stackedcolumn3d',
-	    renderAt: 'chart-container',
-	    width: '650',
-	    height: '450',
-	    dataFormat: 'json',
-	    dataSource: myDataSource
-	  });
-
-	  chart.render();
-	}
-
-	exports.barCtrl = barCtrl;
 
 /***/ })
 /******/ ]);
