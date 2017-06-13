@@ -15,8 +15,8 @@
               <select class="manager-input form-control"ng-model="batch.batchType" ng-options="batchType as batchType.value for batchType in batchTypes">
                 <option value="">-- Select a Batch Type --</option>
               </select>
-              <span class="input-group-addon" style="cursor: pointer" ng-click="openNewBatchTypeForm()">
-                <span class="glyphicon glyphicon-plus" data-toggle="modal" data-target="#batchTypeModal"></span>
+              <span class="input-group-addon" style="cursor: pointer" ng-click="openNewBatchTypeForm()" data-toggle="modal" data-target="#batchTypeModal">
+                <span class="glyphicon glyphicon-plus"></span>
               </span>
             </div>
           </div>
