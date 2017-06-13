@@ -1,14 +1,17 @@
 package com.revature.services;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.time.LocalTime;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.revature.entities.Interviews;
+import com.revature.entities.Interview;
 import com.revature.repositories.InterviewsRepo;
 
 @Service
@@ -24,47 +27,49 @@ public class InterviewsServiceImpl implements InterviewsService {
 
 	@Override
 	@Transactional
-	public void add(Interviews interviews) {
+	public void add(Interview interviews) {
 		interviewsRepo.saveAndFlush(interviews);
 	}
 
 	@Override
-	public Interviews findById(long id) {
+	public Interview findById(long id) {
 		return interviewsRepo.getOne(id);
 	}
 
 	@Override
-	public List<Interviews> getAll() {
-		return interviewsRepo.findAll();
+	public Set<Interview> getAll() {
+		return new HashSet<Interview>(interviewsRepo.findAll());
 	}
 
 	@Override
-	public void update(Interviews interviews) {
-		interviewsRepo.saveAndFlush(interviews);
+	public void update(Interview interviews) {
+		interviews = interviewsRepo.saveAndFlush(interviews);
 	}
 
 	@Override
-	public void delete(Interviews interviews) {
+	public void delete(Interview interviews) {
 		interviewsRepo.delete(interviews);
 	}
 
 	@Override
-	public Interviews findByAssociateId(long id) {
+	public Set<Interview> findByAssociateId(long id) {
 		return interviewsRepo.findByAssociateId(id);
 	}
 
 	@Override
-	public Interviews findByClientId(long id) {
+	public Set<Interview> findByClientId(long id) {
 		return interviewsRepo.findByClientId(id);
 	}
-	
-	 @Override
-	 public Interviews findByInterviewStatus(long id) {
-		 return interviewsRepo.findByInterviewStatusId(id);
-	 }
-	
-	 @Override
-	 public Interviews findByScheduled(LocalDateTime dateandtime) {
-	 return interviewsRepo.findByScheduled(dateandtime);
-	 }
+
+	@Override
+	public Set<Interview> findByInterviewStatus(long id) {
+		return interviewsRepo.findByInterviewStatusId(id);
+	}
+
+	@Override
+	public Set<Interview> nextFiveDays() {
+		LocalDateTime endOfToday = LocalDateTime.of(LocalDate.now(), LocalTime.MAX);
+		return interviewsRepo.findByScheduledBetween(LocalDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT), endOfToday.plusDays(5l));
+	}
+
 }

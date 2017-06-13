@@ -1,20 +1,25 @@
 package com.revature.services;
 
-import java.util.List;
+import java.util.Set;
 
 import com.revature.entities.InterviewStatuses;
 
 public interface InterviewStatusService {
-	
-	//C
+
+	// C
 	void add(InterviewStatuses interviewstatus);
-	//R
+
+	// R
 	public InterviewStatuses findById(long id);
-	public List<InterviewStatuses> getAll();
+
+	public Set<InterviewStatuses> getAll();
+
 	public InterviewStatuses findByStatus(String status);
-	//U
+
+	// U
 	public void update(InterviewStatuses interviewstatus);
-	//D
+
+	// D
 	public void delete(InterviewStatuses interviewstatus);
 
 }

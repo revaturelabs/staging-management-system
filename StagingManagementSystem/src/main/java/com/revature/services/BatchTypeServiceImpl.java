@@ -1,32 +1,47 @@
 package com.revature.services;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.revature.entities.BatchType;
+import com.revature.entities.Skill;
 import com.revature.repositories.BatchTypeRepo;
+import com.revature.repositories.SkillRepo;
 
 @Service
-public class BatchTypeServiceImpl implements BatchTypeService{
-	
+public class BatchTypeServiceImpl implements BatchTypeService {
+
 	@Autowired
 	BatchTypeRepo batchTypeRepo;
 
-	public BatchTypeServiceImpl(BatchTypeRepo batchTypeRepo) {
+	@Autowired
+	SkillRepo skillRepo;
+
+	public BatchTypeServiceImpl(BatchTypeRepo batchTypeRepo, SkillRepo skillRepo) {
 		super();
 		this.batchTypeRepo = batchTypeRepo;
+		this.skillRepo = skillRepo;
 	}
 
 	@Override
-	public void add(BatchType batchType) {
-		batchTypeRepo.saveAndFlush(batchType);
+	public BatchType add(BatchType batchType) {
+		for (Skill skill : batchType.getSkills()) {
+			Skill retreivedSkill = skillRepo.findFirstByValueIgnoreCase(skill.getValue());
+			if (retreivedSkill != null) {
+				skill.setId(retreivedSkill.getId());
+			} else {
+				skill = skillRepo.saveAndFlush(skill);
+			}
+		}
+		return batchTypeRepo.saveAndFlush(batchType);
 	}
 
 	@Override
-	public List<BatchType> getAll() {
-		return batchTypeRepo.findAll();
+	public Set<BatchType> getAll() {
+		return new HashSet<BatchType>(batchTypeRepo.findAll());
 	}
 
 	@Override
@@ -36,7 +51,7 @@ public class BatchTypeServiceImpl implements BatchTypeService{
 
 	@Override
 	public void delete(BatchType batchType) {
-		batchTypeRepo.delete(batchType);		
+		batchTypeRepo.delete(batchType);
 	}
 
 	@Override

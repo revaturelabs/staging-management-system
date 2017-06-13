@@ -1,10 +1,12 @@
 package com.revature.services;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.revature.entities.Associate;
 import com.revature.entities.Job;
 import com.revature.repositories.JobRepo;
 
@@ -24,8 +26,8 @@ public class JobServiceImpl implements JobService {
 	}
 
 	@Override
-	public List<Job> getAll() {
-		return jobRepo.findAll();
+	public Set<Job> getAll() {
+		return new HashSet<Job>(jobRepo.findAll());
 	}
 
 	@Override
@@ -35,11 +37,16 @@ public class JobServiceImpl implements JobService {
 
 	@Override
 	public void delete(Job job) {
-		jobRepo.delete(job);		
+		jobRepo.delete(job);
 	}
 
 	@Override
 	public void update(Job job) {
 		jobRepo.saveAndFlush(job);
 	}
+
+  @Override
+  public Set<Job> findByAssociate(Associate associate) {
+    return jobRepo.getByAssociate(associate);
+  }
 }

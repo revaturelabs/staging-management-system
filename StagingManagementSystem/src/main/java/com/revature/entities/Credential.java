@@ -9,41 +9,50 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.revature.config.SmsSettings;
+import com.revature.exceptions.SmsCustomException;
+import com.revature.markers.SmsValidatable;
 
 @Entity
 @Table(name = "CREDENTIALS")
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-public class Credential {
+public class Credential implements SmsValidatable {
 
+	transient private static SmsSettings settings = SmsSettings.getInstance();
+
+	@JsonProperty(access=Access.WRITE_ONLY)
 	@Id
 	@Column(name = "CREDENTIAL_ID")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CREDENTIAL_ID_SEQ")
 	@SequenceGenerator(name = "CREDENTIAL_ID_SEQ", sequenceName = "CREDENTIAL_ID_SEQ")
-	private Long id;
+	private long id;
 
-	@Column
+	@JsonProperty(access=Access.WRITE_ONLY)
+	@Column(name = "CREDENTIAL_USERNAME")
 	private String username;
 
-	@Column
+	@JsonProperty(access=Access.WRITE_ONLY)
+	@Column(name = "CREDENTIAL_PASSWORD")
 	private String password;
 
-	public Credential(Long id, String username, String password) {
+	public Credential() {
+		super();
+	}
+
+	public Credential(long id, String username, String password) {
 		super();
 		this.id = id;
 		this.username = username;
 		this.password = password;
 	}
 
-	public Credential() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
-	public Long getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -67,14 +76,13 @@ public class Credential {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
 		result = prime * result + ((username == null) ? 0 : username.hashCode());
 		return result;
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	final public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -82,11 +90,6 @@ public class Credential {
 		if (!(obj instanceof Credential))
 			return false;
 		Credential other = (Credential) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
 		if (password == null) {
 			if (other.password != null)
 				return false;
@@ -103,6 +106,12 @@ public class Credential {
 	@Override
 	public String toString() {
 		return "Credential [id=" + id + ", username=" + username + ", password=" + password + "]";
+	}
+
+	@Override
+	public void validate() throws SmsCustomException {
+		// TODO Validate your members.
+
 	}
 
 }

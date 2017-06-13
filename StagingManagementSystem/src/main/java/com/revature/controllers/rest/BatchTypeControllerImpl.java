@@ -1,6 +1,6 @@
 package com.revature.controllers.rest;
 
-import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,55 +21,59 @@ public class BatchTypeControllerImpl {
 
 	@Autowired
 	private BatchTypeService batchTypeService;
-	
-	public BatchTypeControllerImpl(BatchTypeService batchTypeService){
+
+	public BatchTypeControllerImpl(BatchTypeService batchTypeService) {
 		super();
 		this.batchTypeService = batchTypeService;
 	}
-	
+
 	/**
 	 * When called this will always persist a unique BatchType in the database.
 	 * 
-	 * @param batchType - batchType to be persisted.
+	 * @param batchType
+	 *            - batchType to be persisted.
 	 */
 	@PostMapping
-	public void addBatchType(@RequestBody BatchType batchType) {
-		batchType.setId(0);
-		batchTypeService.add(batchType);
+	public BatchType addBatchType(@RequestBody BatchType batchType) {
+		batchType.setId(0l);
+		return batchTypeService.add(batchType);
 	}
-	
+
 	/**
 	 * Deletes BatchType with location.id
 	 * 
-	 * @param batchType - holds the id to be deleted
+	 * @param batchType
+	 *            - holds the id to be deleted
 	 */
 	@DeleteMapping
 	public void deleteBatchType(@RequestBody BatchType batchType) {
 		batchTypeService.delete(batchType);
 	}
-	
+
 	/**
-	 * If the id exists, updates information.
-	 * else creates a new row with genrated id.
+	 * If the id exists, updates information. else creates a new row with
+	 * genrated id.
 	 * 
-	 * @param BatchType - data to be persisted.
+	 * @param BatchType
+	 *            - data to be persisted.
 	 */
 	@PutMapping
 	public void updateBatchType(@RequestBody BatchType batchType) {
 		batchTypeService.update(batchType);
 	}
-	
+
 	/**
 	 * Gets a batchType with id.
 	 * 
-	 * @param id - id of batchType to be retrieved.
+	 * @param id
+	 *            - id of batchType to be retrieved.
 	 * @return batchType object from dataBase.
 	 */
 	@GetMapping("/{id}")
 	public BatchType findById(@PathVariable long id) {
 		return batchTypeService.findById(id);
 	}
-	
+
 	/**
 	 * Gets all batchTypes.
 	 * 
@@ -77,7 +81,8 @@ public class BatchTypeControllerImpl {
 	 * @return all batchType objects from dataBase.
 	 */
 	@GetMapping("/all")
-	public List<BatchType> findAll() {
+	public Set<BatchType> findAll() {
 		return batchTypeService.getAll();
 	}
+
 }

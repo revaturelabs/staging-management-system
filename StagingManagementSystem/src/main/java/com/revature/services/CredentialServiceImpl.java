@@ -1,17 +1,28 @@
 package com.revature.services;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.revature.entities.Associate;
 import com.revature.entities.Credential;
+import com.revature.entities.Manager;
+import com.revature.repositories.AssociateRepo;
 import com.revature.repositories.CredentialRepo;
+import com.revature.repositories.ManagerRepo;
 
 @Service
 public class CredentialServiceImpl implements CredentialService {
 	@Autowired
 	CredentialRepo credentialRepo;
+	
+	@Autowired
+	AssociateRepo associateRepo;
+	
+	@Autowired
+	ManagerRepo managerRepo;
 
 	public CredentialServiceImpl(CredentialRepo credentialRepo) {
 		super();
@@ -19,13 +30,13 @@ public class CredentialServiceImpl implements CredentialService {
 	}
 
 	@Override
-	public void add(Credential location) {
-		credentialRepo.saveAndFlush(location);
+	public void add(Credential credential) {
+		credential = credentialRepo.saveAndFlush(credential);
 	}
 
 	@Override
-	public List<Credential> getAll() {
-		return credentialRepo.findAll();
+	public Set<Credential> getAll() {
+		return new HashSet<Credential>(credentialRepo.findAll());
 	}
 
 	@Override
@@ -34,12 +45,27 @@ public class CredentialServiceImpl implements CredentialService {
 	}
 
 	@Override
-	public void delete(Credential location) {
-		credentialRepo.delete(location);		
+	public void remove(Credential credential) {
+		credentialRepo.delete(credential);
 	}
 
 	@Override
-	public void update(Credential location) {
-		credentialRepo.saveAndFlush(location);
+	public void update(Credential credential) {
+		credential = credentialRepo.saveAndFlush(credential);
+	}
+
+	@Override
+	public Object login(Credential creds) {
+		Credential newCred = credentialRepo.findByUsername(creds.getUsername());
+		if(newCred != null) {
+			Associate associate = associateRepo.getByCredential(newCred);
+			if(associate != null)
+				return associate;
+			else{
+				Manager man =  managerRepo.getByCredential(newCred);
+				return man;
+			}
+		}
+		return null;
 	}
 }

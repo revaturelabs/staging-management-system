@@ -11,31 +11,38 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.revature.config.SmsSettings;
+import com.revature.exceptions.SmsCustomException;
+import com.revature.markers.SmsValidatable;
+
 @Entity
-@Table(name="INTERVIEW_QUESTIONS")
-public class InterviewQuestion {
+@Table(name = "INTERVIEW_QUESTIONS")
+public class InterviewQuestion implements SmsValidatable {
+
+	transient private static SmsSettings settings = SmsSettings.getInstance();
+
 	@Id
-	@Column(name="INTERVIEW_QUESTION_ID")
-	@SequenceGenerator(name="INTERVIEW_QUESTION_ID_SEQ", sequenceName="INTERVIEW_QUESTION_ID_SEQ")
-    @GeneratedValue(generator="INTERVIEW_QUESTION_ID_SEQ", strategy=GenerationType.AUTO)
+	@Column(name = "INTERVIEW_QUESTION_ID")
+	@SequenceGenerator(name = "INTERVIEW_QUESTION_ID_SEQ", sequenceName = "INTERVIEW_QUESTION_ID_SEQ")
+	@GeneratedValue(generator = "INTERVIEW_QUESTION_ID_SEQ", strategy = GenerationType.SEQUENCE)
 	private long id;
 
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="BATCH_TYPE_ID")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "BATCH_TYPE_ID")
 	private BatchType batchType;
 
-	@Column
-	private String question;
+	@Column(name = "INTERVIEW_QUESTION_VALUE")
+	private String value;
 
 	public InterviewQuestion() {
 		super();
 	}
 
-	public InterviewQuestion(long id, BatchType batchType, String question) {
+	public InterviewQuestion(long id, BatchType batchType, String value) {
 		super();
 		this.id = id;
 		this.batchType = batchType;
-		this.question = question;
+		this.value = value;
 	}
 
 	public long getId() {
@@ -54,12 +61,12 @@ public class InterviewQuestion {
 		this.batchType = batchType;
 	}
 
-	public String getQuestion() {
-		return question;
+	public String getValue() {
+		return value;
 	}
 
-	public void setQuestion(String question) {
-		this.question = question;
+	public void setValue(String value) {
+		this.value = value;
 	}
 
 	@Override
@@ -67,18 +74,17 @@ public class InterviewQuestion {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((batchType == null) ? 0 : batchType.hashCode());
-		result = prime * result + (int) (id ^ (id >>> 32));
-		result = prime * result + ((question == null) ? 0 : question.hashCode());
+		result = prime * result + ((value == null) ? 0 : value.hashCode());
 		return result;
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	final public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
 			return false;
-		if (getClass() != obj.getClass())
+		if (!(obj instanceof InterviewQuestion))
 			return false;
 		InterviewQuestion other = (InterviewQuestion) obj;
 		if (batchType == null) {
@@ -86,19 +92,23 @@ public class InterviewQuestion {
 				return false;
 		} else if (!batchType.equals(other.batchType))
 			return false;
-		if (id != other.id)
-			return false;
-		if (question == null) {
-			if (other.question != null)
+		if (value == null) {
+			if (other.value != null)
 				return false;
-		} else if (!question.equals(other.question))
+		} else if (!value.equals(other.value))
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "InterviewQuestion [id=" + id + ", batchType=" + batchType + ", question=" + question + "]";
+		return "InterviewQuestion [id=" + id + ", batchType=" + batchType + ", value=" + value + "]";
 	}
-	
+
+	@Override
+	public void validate() throws SmsCustomException {
+		// TODO Validate your members.
+
+	}
+
 }

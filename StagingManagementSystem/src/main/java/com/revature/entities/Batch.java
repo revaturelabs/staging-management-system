@@ -1,6 +1,7 @@
 package com.revature.entities;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -20,28 +21,36 @@ import javax.persistence.Table;
 
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters.LocalDateTimeConverter;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.revature.config.SmsSettings;
+import com.revature.exceptions.SmsCustomException;
+import com.revature.markers.SmsValidatable;
 
 @Entity
 @Table(name = "BATCHES")
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-public class Batch {
+public class Batch implements SmsValidatable {
+
+	transient private static SmsSettings settings = SmsSettings.getInstance();
 
 	@Id
 	@Column(name = "BATCH_ID")
 	@SequenceGenerator(name = "BATCH_ID_SEQ", sequenceName = "BATCH_ID_SEQ")
 	@GeneratedValue(generator = "BATCH_ID_SEQ", strategy = GenerationType.SEQUENCE)
-	private Long id = 0l;
+	private long id;
 
 	@ManyToOne
 	@JoinColumn(name = "BATCH_TYPE_ID")
 	private BatchType batchType;
 
-	@Column(name = "START_DATE")
+	@Column(name = "BATCH_START_DATE")
 	@Convert(converter = LocalDateTimeConverter.class)
 	private LocalDateTime startDate;
 
-	@Column(name = "END_DATE")
+	@Column(name = "BATCH_END_DATE")
 	@Convert(converter = LocalDateTimeConverter.class)
 	private LocalDateTime endDate;
 
@@ -53,15 +62,17 @@ public class Batch {
 	@JoinTable(name = "BATCH_TRAINER", joinColumns = @JoinColumn(name = "BATCH_ID"), inverseJoinColumns = @JoinColumn(name = "TRAINER_ID"))
 	private Set<Trainer> trainers;
 
-	@OneToMany(mappedBy = "batch")
+	@OneToMany(mappedBy = "batch", fetch = FetchType.LAZY)
+	@JsonProperty(access=Access.WRITE_ONLY)
 	private Set<Associate> associates;
 
 	public Batch() {
 		super();
-		// TODO Auto-generated constructor stub
+		this.trainers = new HashSet<Trainer>();
+		this.associates = new HashSet<Associate>();
 	}
 
-	public Batch(Long id, BatchType batchType, LocalDateTime startDate, LocalDateTime endDate, Location location,
+	public Batch(long id, BatchType batchType, LocalDateTime startDate, LocalDateTime endDate, Location location,
 			Set<Trainer> trainers, Set<Associate> associates) {
 		super();
 		this.id = id;
@@ -73,11 +84,11 @@ public class Batch {
 		this.associates = associates;
 	}
 
-	public Long getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -134,17 +145,16 @@ public class Batch {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((associates == null) ? 0 : associates.hashCode());
-		result = prime * result + ((batchType == null) ? 0 : batchType.hashCode());
-		result = prime * result + ((endDate == null) ? 0 : endDate.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((location == null) ? 0 : location.hashCode());
-		result = prime * result + ((startDate == null) ? 0 : startDate.hashCode());
-		result = prime * result + ((trainers == null) ? 0 : trainers.hashCode());
-		return result;
-	}
-
+	    result = prime * result + ((batchType == null) ? 0 : batchType.hashCode());
+	    result = prime * result + ((endDate == null) ? 0 : endDate.hashCode());
+	    result = prime * result + ((location == null) ? 0 : location.hashCode());
+	    result = prime * result + ((startDate == null) ? 0 : startDate.hashCode());
+	    result = prime * result + ((trainers == null) ? 0 : trainers.hashCode());
+	    return result;
+	  }
+	
 	@Override
-	public boolean equals(Object obj) {
+	final public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -166,11 +176,6 @@ public class Batch {
 			if (other.endDate != null)
 				return false;
 		} else if (!endDate.equals(other.endDate))
-			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
 			return false;
 		if (location == null) {
 			if (other.location != null)
@@ -194,6 +199,12 @@ public class Batch {
 	public String toString() {
 		return "Batch [id=" + id + ", batchType=" + batchType + ", startDate=" + startDate + ", endDate=" + endDate
 				+ ", location=" + location + ", trainers=" + trainers + ", associates=" + associates + "]";
+	}
+
+	@Override
+	public void validate() throws SmsCustomException {
+		// TODO Validate your members.
+
 	}
 
 }

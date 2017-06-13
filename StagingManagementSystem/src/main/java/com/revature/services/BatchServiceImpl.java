@@ -79,7 +79,7 @@ public class BatchServiceImpl implements BatchService {
 		int trainerIndex = 0;
 		List<BatchType> batchTypes = batchTypeRepo.findAll();
 
-		Location revature = locationRepo.findByName("Revature");
+		Location revature = locationRepo.findByName("Revature VA");
 
 		// Initialize a date to being the first monday of 2017
 		int week = 1;
@@ -112,21 +112,42 @@ public class BatchServiceImpl implements BatchService {
 			int value = rand.nextInt(batchTypes.size());
 			batch.setBatchType(batchTypes.get(value));
 
-			batch.getAssociates().forEach((Associate associate) -> {
-				String portfolio = associate.getPortfolioLink();
-				if (portfolio.length() > 128) {
-					associate.setPortfolioLink(portfolio.substring(0, 128));
-				}
-				associate.setCredential(credentialRepo.saveAndFlush(associate.getCredential()));
-				associate = associateRepo.saveAndFlush(associate);
-			});
-
 			// Set batch location to revature
 			batch.setLocation(revature);
 
 			batchRepo.saveAndFlush(batch);
+			
+	     batch.getAssociates().forEach((Associate associate) -> {
+	        String portfolio = associate.getPortfolioLink();
+	        if (portfolio.length() > 128) {
+	          associate.setPortfolioLink(portfolio.substring(0, 128));
+	        }
+	        associate.setBatch(batch);
+	        associate.setCredential(credentialRepo.saveAndFlush(associate.getCredential()));
+	        associate = associateRepo.saveAndFlush(associate);
+	      });
 		}
 
+	}
+
+	@Override
+	public void delete(Batch batch) {
+		batchRepo.delete(batch);
+	}
+
+	@Override
+	public void update(Batch batch) {
+		batchRepo.saveAndFlush(batch);
+	}
+
+	@Override
+	public List<Batch> getAll() {
+		return batchRepo.findAll();
+	}
+
+	@Override
+	public Batch findById(long id) {	
+		return batchRepo.getOne(id);
 	}
 
 }

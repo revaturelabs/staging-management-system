@@ -1,0 +1,66 @@
+.manager-create-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.submit{
+  margin:auto;
+  display:block;
+  font-size: 200 px;
+}
+
+input {
+  display: inline-block;
+  float: center;
+}
+
+label{
+    display: inline-block;
+    float: left;
+    clear: left;
+    width: 250px;
+    text-align: center;
+    margin-right: 25px;
+}
+
+#permission{
+    display: inline-block;
+    float: left;
+    clear: left;
+    width: 250px;
+    text-align: center;
+    margin-right: 700px;
+}
+
+.table > thead > tr > th.create-th {
+    background-color: #FF8000;
+    text-align: center;
+}
+
+#country{
+  overflow:visible;
+}
+
+.add-batch-type-container {
+  margin-top: 0.5em;
+  border-top: lightgray 1px solid;
+  padding-top: 0.5em;
+}
+
+.remove-batch-type-glyph {
+  color: red;
+  cursor: pointer;
+  margin-left: 0.3em;
+}
+
+.new-batchType-skills-title {
+  font-weight: 700;
+  text-align: center;
+  margin-top: 0.5em;
+}
+
+.invalid {
+  -webkit-box-shadow: inset 0 0 5px red !important;
+  box-shadow: inset 0 0 5px red !important;
+}

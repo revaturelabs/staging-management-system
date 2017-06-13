@@ -1,6 +1,6 @@
 package com.revature.controllers.rest;
 
-import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.revature.entities.Associate;
 import com.revature.entities.Job;
 import com.revature.services.JobService;
 
@@ -35,7 +36,7 @@ public class JobControllerImpl {
 	 */
 	@PostMapping
 	public void addjob(@RequestBody Job job) {
-		job.setId(0);
+		job.setId(0l);
 		jobService.add(job);
 	}
 
@@ -73,6 +74,18 @@ public class JobControllerImpl {
 	public Job findById(@PathVariable long id) {
 		return jobService.findById(id);
 	}
+	
+	 /**
+   * Gets a job with id.
+   * 
+   * @param id
+   *            - id of job to be retrieved.
+   * @return job object from dataBase.
+   */
+  @PostMapping("/associate")
+  public Set<Job> findById(@RequestBody Associate associate) {
+    return jobService.findByAssociate(associate);
+  }
 
 	/**
 	 * Gets all jobs.
@@ -81,7 +94,7 @@ public class JobControllerImpl {
 	 * @return all job objects from dataBase.
 	 */
 	@GetMapping("/all")
-	public List<Job> findAll() {
+	public Set<Job> findAll() {
 		return jobService.getAll();
 	}
 }

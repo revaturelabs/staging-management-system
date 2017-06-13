@@ -9,39 +9,46 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.revature.config.SmsSettings;
+import com.revature.exceptions.SmsCustomException;
+import com.revature.markers.SmsValidatable;
 
 @Entity
 @Table(name = "LOCATIONS")
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-public class Location {
+public class Location implements SmsValidatable {
 
+	transient private static SmsSettings settings = SmsSettings.getInstance();
+	
 	@Id
 	@Column(name = "LOCATION_ID")
 	@SequenceGenerator(name = "LOCATION_ID_SEQ", sequenceName = "LOCATION_ID_SEQ")
 	@GeneratedValue(generator = "LOCATION_ID_SEQ", strategy = GenerationType.SEQUENCE)
-	long id;
+	private long id;
 
-	@Column
-	String country;
-	@Column
-	String state;
-	@Column
-	String city;
-	@Column
-	String name;
+	@Column(name = "LOCATION_NAME")
+	private String name;
+
+	@Column(name = "LOCATION_COUNTRY")
+	private String country;
+
+	@Column(name = "LOCATION_STATE")
+	private String state;
+
+	@Column(name = "LOCATION_CITY")
+	private String city;
 
 	public Location() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
-	public Location(long id, String country, String state, String city, String name) {
+	public Location(long id, String name, String country, String state, String city) {
 		super();
 		this.id = id;
+		this.name = name;
 		this.country = country;
 		this.state = state;
 		this.city = city;
-		this.name = name;
 	}
 
 	public long getId() {
@@ -50,6 +57,14 @@ public class Location {
 
 	public void setId(long id) {
 		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getCountry() {
@@ -76,33 +91,24 @@ public class Location {
 		this.city = city;
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((city == null) ? 0 : city.hashCode());
 		result = prime * result + ((country == null) ? 0 : country.hashCode());
-		result = prime * result + (int) (id ^ (id >>> 32));
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((state == null) ? 0 : state.hashCode());
 		return result;
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	final public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
 			return false;
-		if (getClass() != obj.getClass())
+		if (!(obj instanceof Location))
 			return false;
 		Location other = (Location) obj;
 		if (city == null) {
@@ -114,8 +120,7 @@ public class Location {
 			if (other.country != null)
 				return false;
 		} else if (!country.equals(other.country))
-			return false;
-		if (id != other.id)
+
 			return false;
 		if (name == null) {
 			if (other.name != null)
@@ -132,8 +137,14 @@ public class Location {
 
 	@Override
 	public String toString() {
-		return "Location [id=" + id + ", country=" + country + ", state=" + state + ", city=" + city + ", name=" + name
+		return "Location [id=" + id + ", name=" + name + ", country=" + country + ", state=" + state + ", city=" + city
 				+ "]";
+	}
+
+	@Override
+	public void validate() throws SmsCustomException {
+		// TODO Validate your members.
+
 	}
 
 }

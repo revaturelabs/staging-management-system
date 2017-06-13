@@ -1,7 +1,6 @@
 package com.revature.controllers.rest;
 
-import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,7 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.revature.entities.Interviews;
+import com.revature.entities.Interview;
+import com.revature.entities.InterviewStatuses;
 import com.revature.services.InterviewsService;
 
 @RestController
@@ -29,47 +29,48 @@ public class InterviewsControllerImpl {
 	}
 
 	@PostMapping
-	public void add(@RequestBody Interviews interviews) {
+	public void add(@RequestBody Interview interviews) {
+		interviews.setInterviewStatus(new InterviewStatuses(55, "SCHEDULED"));
 		interviewsService.add(interviews);
 	}
 
 	@GetMapping("/{id}")
-	public Interviews findById(@PathVariable long id) {
+	public Interview findById(@PathVariable long id) {
 		return interviewsService.findById(id);
 	}
 
-	@GetMapping("/associate/{associate_Id}")
-	public Interviews findByAssociate(long id) {
-		return interviewsService.findByAssociateId(id);
+	@GetMapping("/associate/{associateId}")
+	public Set<Interview> findByAssociate(@PathVariable long associateId) {
+		return interviewsService.findByAssociateId(associateId);
 	}
-	
-	@GetMapping("/client/{client_Id}")
-	public Interviews findByClientId(long id) {
-		return interviewsService.findByClientId(id);
+
+	@GetMapping("/client/{clientId}")
+	public Set<Interview> findByClientId(@PathVariable long clientId) {
+		return interviewsService.findByClientId(clientId);
 	}
-	
-	@GetMapping("/status/{interview_Status_Id}")
-	public Interviews findByInterviewStatusId(long id) {
+
+	@GetMapping("/status/{id}")
+	public Set<Interview> findByInterviewStatusId(@PathVariable long id) {
 		return interviewsService.findByInterviewStatus(id);
 	}
 
-	@GetMapping("/date/{dateandtime}")
-	public Interviews findByScheduled(@PathVariable LocalDateTime dateandtime) {
-		return interviewsService.findByScheduled(dateandtime);
-	}
-
 	@GetMapping("/all")
-	public List<Interviews> findById() {
+	public Set<Interview> findById() {
 		return interviewsService.getAll();
 	}
 
 	@PutMapping
-	public void update(@RequestBody Interviews interviews) {
+	public void update(@RequestBody Interview interviews) {
 		interviewsService.update(interviews);
 	}
 
 	@DeleteMapping
-	public void delete(@RequestBody Interviews interviews) {
+	public void delete(@RequestBody Interview interviews) {
 		interviewsService.delete(interviews);
+	}
+
+	@GetMapping("/next-five-days")
+	public Set<Interview> findByNextFiveDays() {
+		return interviewsService.nextFiveDays();
 	}
 }

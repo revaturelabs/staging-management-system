@@ -1,6 +1,6 @@
 package com.revature.controllers.rest;
 
-import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -35,9 +35,15 @@ public class LocationControllerImpl {
 	 */
 	@PostMapping
 	public void addLocation(@RequestBody Location location) {
-		location.setId(0);
+		location.setId(0l);
 		locationService.add(location);
 	}
+	
+	 @PostMapping("/add/all")
+	  public void addLocation(@RequestBody Set<Location> locations) {
+	    for(Location l : locations)
+	      addLocation(l);
+	  }
 
 	/**
 	 * Deletes location with location.id
@@ -81,7 +87,7 @@ public class LocationControllerImpl {
 	 * @return all location objects from dataBase.
 	 */
 	@GetMapping("/all")
-	public List<Location> findAll() {
+	public Set<Location> findAll() {
 		return locationService.getAll();
 	}
 }

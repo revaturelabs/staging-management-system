@@ -1,0 +1,91 @@
+<link rel="stylesheet" href="./associate-pages/interview/associateInterview.css"/>
+
+<div class="container">
+<h2 class="interviewH2">Add Interview</h2>
+
+<div class="form-group addInterview">     
+	
+	<div class="col-sm-5">
+		Client Name
+		<select class="form-control" ng-model="selectedClient" ng-options="x.name for x in clients" title="Client"></select>
+	</div>
+	<div class="col-sm-5">
+		Interview Date & Time
+		<div class="form-group" >
+	           <div class='input-group date' >
+	               <input type='text' class="form-control" ng-model="selectedDate.value" id='datetimepicker1'/>
+	               <span ng-click="showDateTimePicker()" class="input-group-addon">
+	                   <span class="glyphicon glyphicon-calendar"></span>
+	               </span>
+	           </div>
+	       </div>
+	</div>
+	<div class="col-sm-2">
+		<br>
+		<button type="button" id="addInterviewBtn" ng-click="addInterviewClick()" class="btn btn-primary">Add Interview</button>
+	</div>  
+	
+	</div>
+	<div class="alert alert-success" ng-show="successMsgShow">
+	  Successfully added an Interview!
+	</div>
+	<div class="alert alert-danger" ng-bind="errorMsg" ng-show="errorMsgShow">
+	  Failed to add an Interview.
+	</div>
+	
+	<hr class="colorgraph">
+	<h2 class="interviewH2">Interviews</h2>          
+	<table class="table table-striped interviews-table selectable-table">
+	  <thead>
+	    <tr>
+	      <th class="interview-th" scope="col">Client Name</th>
+	      <th class="interview-th" scope="col">Time</th>
+	      <th class="interview-th" scope="col">Status</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	    <tr ng-repeat="x in associateInterviews" ng-click="interviewClick(x)" style="cursor: pointer;">
+	      <td>{{x.client.name}}</td>
+	      <td>{{ dateConverter(x.scheduled) }}</td>
+	      <td>{{x.interviewStatus.value}}</td>
+	    </tr>
+	  </tbody>
+	</table>
+</div>
+
+<div id="interviewModal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">{{clickedInterview.client.name}} - {{ dateConverter(clickedInterview.scheduled) }}</h4>
+      </div>
+      
+      <div class="modal-body">
+      	<div class="row">
+	      	<div class="col-sm-6" style="text-align: center;">
+	      		Marketer
+				<select class="form-control" ng-model="modalClient" ng-options="x.name for x in clients" title="Client"></select>
+			</div>
+			<div class="col-sm-6" style="text-align: center;">
+				Status
+				<select class="form-control" ng-model="modalStatus" ng-options="x.value for x in interviewStatuses"></select>
+			</div>
+	    </div>
+		
+		<div class="row" style="margin-top: 2em;">
+			<div class="col-sm-12 col-xs-12" style="text-align: center;">
+				Comment
+				<textarea class="form-control commentArea" rows="8"></textarea>
+			</div>
+	    </div>	
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

@@ -1,6 +1,6 @@
 package com.revature.controllers.rest;
 
-import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.revature.entities.ClientQ;
+import com.revature.entities.ClientQuestion;
 import com.revature.services.ClientQService;
 
 @RestController
@@ -34,7 +34,7 @@ public class ClientQControllerImpl {
 	 *            - clientQ to be persisted.
 	 */
 	@PostMapping
-	public void addclientQ(@RequestBody ClientQ clientQ) {
+	public void addclientQ(@RequestBody ClientQuestion clientQ) {
 		clientQService.add(clientQ);
 	}
 
@@ -45,7 +45,7 @@ public class ClientQControllerImpl {
 	 *            - holds the id to be deleted
 	 */
 	@DeleteMapping
-	public void deleteclientQ(@RequestBody ClientQ clientQ) {
+	public void deleteclientQ(@RequestBody ClientQuestion clientQ) {
 		clientQService.delete(clientQ);
 	}
 
@@ -57,7 +57,7 @@ public class ClientQControllerImpl {
 	 *            - data to be persisted.
 	 */
 	@PutMapping
-	public void updateclientQ(@RequestBody ClientQ clientQ) {
+	public void updateclientQ(@RequestBody ClientQuestion clientQ) {
 		clientQService.update(clientQ);
 	}
 
@@ -69,7 +69,7 @@ public class ClientQControllerImpl {
 	 * @return clientQ object from dataBase.
 	 */
 	@GetMapping("/{id}")
-	public ClientQ findById(@PathVariable long id) {
+	public ClientQuestion findById(@PathVariable long id) {
 		return clientQService.findById(id);
 	}
 
@@ -80,7 +80,7 @@ public class ClientQControllerImpl {
 	 * @return all clientQ objects from dataBase.
 	 */
 	@GetMapping("/all")
-	public List<ClientQ> findAll() {
+	public Set<ClientQuestion> findAll() {
 		return clientQService.getAll();
 	}
 }

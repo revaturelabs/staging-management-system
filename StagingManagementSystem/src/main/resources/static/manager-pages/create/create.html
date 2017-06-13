@@ -1,0 +1,11 @@
+
+<div class="manager-create-container">
+  <div class="row manager-view-selecter-container">
+    <button ui-sref="manager.create.batch" type="button" class="manager-view-selecter" ng-style="$state.current.name === 'manager.create.batch' ? {'background-color': 'gray'} : {'background-color': '#f8f8f8'}">Batch</button>
+    <button ui-sref="manager.create.user" type="button" class="manager-view-selecter" ng-style="$state.current.name === 'manager.create.user' ? {'background-color': 'gray'} : {'background-color': '#f8f8f8'}">User</button>
+    <button ui-sref="manager.create.client" type="button" class="manager-view-selecter" ng-style="$state.current.name === 'manager.create.client' ? {'background-color': 'gray'} : {'background-color': '#f8f8f8'}">Client</button>
+    <button ui-sref="manager.create.location" type="button" class="manager-view-selecter" ng-style="$state.current.name === 'manager.create.location' ? {'background-color': 'gray'} : {'background-color': '#f8f8f8'}">Location</button>
+  </div>
+
+  <div ui-view></div>
+</div>
