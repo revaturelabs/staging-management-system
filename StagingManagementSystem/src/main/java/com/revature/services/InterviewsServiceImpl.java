@@ -38,12 +38,12 @@ public class InterviewsServiceImpl implements InterviewsService {
 
 	@Override
 	public Set<Interview> getAll() {
-		return new HashSet<Interview>(interviewsRepo.findAll());
+		return new HashSet<>(interviewsRepo.findAll());
 	}
 
 	@Override
 	public void update(Interview interviews) {
-		interviews = interviewsRepo.saveAndFlush(interviews);
+		interviewsRepo.saveAndFlush(interviews);
 	}
 
 	@Override

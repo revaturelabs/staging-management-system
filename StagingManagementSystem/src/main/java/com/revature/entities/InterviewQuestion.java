@@ -11,15 +11,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import com.revature.config.SmsSettings;
 import com.revature.exceptions.SmsCustomException;
 import com.revature.markers.SmsValidatable;
 
 @Entity
 @Table(name = "INTERVIEW_QUESTIONS")
 public class InterviewQuestion implements SmsValidatable {
-
-	transient private static SmsSettings settings = SmsSettings.getInstance();
 
 	@Id
 	@Column(name = "INTERVIEW_QUESTION_ID")
@@ -79,7 +76,7 @@ public class InterviewQuestion implements SmsValidatable {
 	}
 
 	@Override
-	final public boolean equals(Object obj) {
+	public final boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)

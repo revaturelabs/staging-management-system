@@ -52,8 +52,7 @@ public class ManagerServiceImpl implements ManagerService {
 		Credential credential = manager.getCredential();
 		credentialService.add(credential);
 		manager.setCredential(credential);
-		manager = managerRepo.saveAndFlush(manager);
-		return manager;
+		return managerRepo.saveAndFlush(manager);
 	}
 
 	// r
@@ -81,8 +80,7 @@ public class ManagerServiceImpl implements ManagerService {
 
 	@Override
 	public Set<Manager> getAll() {
-		Set<Manager> managers = new HashSet<Manager>(managerRepo.findAll());
-		return managers;
+		return new HashSet<>(managerRepo.findAll());
 	}
 
 	// u
@@ -95,8 +93,7 @@ public class ManagerServiceImpl implements ManagerService {
 		Credential credential = manager.getCredential();
 		credentialService.add(credential);
 		manager.setCredential(credential);
-		manager = managerRepo.saveAndFlush(manager);
-		return manager;
+		return managerRepo.saveAndFlush(manager);
 	}
 
 	// d
