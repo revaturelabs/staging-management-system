@@ -41,6 +41,9 @@ public class Interview implements SmsValidatable {
     @Column(name = "INTERVIEW_TIME")
     @Convert(converter = LocalDateTimeConverter.class)
     private LocalDateTime scheduled;
+    
+    @Column(name = "INTERVIEW_COMMENT")
+    private String comment;
 
     public Interview() {
         super();
