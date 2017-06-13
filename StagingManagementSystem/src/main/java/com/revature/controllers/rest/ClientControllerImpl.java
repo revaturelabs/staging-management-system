@@ -64,7 +64,6 @@ public class ClientControllerImpl {
 
 	@PostMapping("/multiple")
 	public void addClients(@RequestBody Set<Client> clients) {
-		System.out.println(clients);
 		clientService.addMultiple(clients);
 	}
 

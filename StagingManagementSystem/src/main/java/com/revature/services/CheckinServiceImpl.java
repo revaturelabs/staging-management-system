@@ -74,8 +74,6 @@ public class CheckinServiceImpl implements CheckinService {
     public boolean hasCheckedInToday() throws NotLoggedInException{
         String user = (String)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Associate associate = associateRepo.getByCredential_Username(user);
-
-        System.out.println("AA: " + user);
         if(user == null || associate == null)
             throw new NotLoggedInException();
         return hasCheckedInToday(associate);
