@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.entities.Associate;
+import com.revature.entities.Manager;
 import com.revature.services.AssociateService;
 import com.revature.util.DataGeneration;
 
