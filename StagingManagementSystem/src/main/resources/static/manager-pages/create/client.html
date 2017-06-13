@@ -1,36 +1,28 @@
-	<div class="create-container">
 <table class="table table-striped">
-    <thead>
+  <thead>
     <tr>
-        <th class="create-th" scope="col">Create a Client</th>
+      <th class="create-th" scope="col">
+				Create a Client
+			</th>
     </tr>
-    </thead>
+  </thead>
 
-    <tbody>
-        <tr>
-		<td><label>Name: </label> <input ng-model="client.name"></td> <br> <br> 
+  <tbody>
+    <tr>
+      <td>
+				<label>Name: </label>
+				<input class="manager-input" ng-model="client.name"/>
+			</td>
     </tr>
-        <tr>
-		<td><label>Password: </label> <input type="password" ng-model="client.password"></td> <br> <br>
+    <tr>
+      <td>
+				<label>Client Priority: </label>
+				0 <input value="false" type="radio" ng-model="client.priority"/>
+				1 <input value="true" type="radio" ng-model="client.priority"/>
+      </td>
     </tr>
-        <tr>
-		<td><label>Client Priority: </label>
-			0 <input value="false" type ="radio" ng-model="client.priority"> 
-			1 <input value="true" type ="radio" ng-model="client.priority">
-		</td> <br> <br>
-    </tr>
-    </tbody>
+  </tbody>
 </table>
 
-	</div>
-
-
-
-
-
-
-
-
+<div ng-show="requestMade" ng-bind="createMessage" ng-style="createMessageStyle"></div>
 <button class="submit" ng-click="submit()">Submit</button>
- 
-

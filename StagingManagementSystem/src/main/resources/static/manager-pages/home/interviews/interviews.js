@@ -44,7 +44,7 @@ const interviewsCtrl = ($scope, $http) => {
   $scope.updateInterview = () => {
     $scope.requestMade = true;
     $scope.updateMessage = 'Attempting to update interview';
-    $scope.updateMessageStyle = { color: 'white' };
+    $scope.updateMessageStyle = { color: 'black' };
     $scope.interviewSideTable.interview.scheduled = moment($scope.interviewSideTable.interview.scheduled).toDate();
     $http.put('interviews', $scope.interviewSideTable.interview).then(
       () => {

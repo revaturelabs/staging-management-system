@@ -1,14 +1,17 @@
 const clientCtrl = ($scope, $http) => {
+  // $scope.requestMade = false;
   $scope.submit = () => {
+    $scope.requestMade = true;
+    $scope.createMessage = 'Attempting to create client';
+    $scope.createMessageStyle = { color: 'black' };
   	let item = JSON.stringify($scope.client);
-  	console.log(item);
-  	$http.post('/client', item).then( (response) => {
-  		console.log("success")
+  	$http.post('/client', item).then(() => {
+      $scope.createMessage = 'Successfully created client';
+  		$scope.createMessageStyle = { color: 'green' };
   	}, () => {
-  		console.log("failure")
+      $scope.createMessage = 'Failed to create client';
+      $scope.createMessageStyle = { color: 'red' };
   	})
   };
 };
-
-
 export { clientCtrl };

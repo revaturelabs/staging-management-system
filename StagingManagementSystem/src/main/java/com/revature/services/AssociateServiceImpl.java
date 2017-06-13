@@ -69,7 +69,7 @@ public class AssociateServiceImpl implements AssociateService {
 	public void update(Associate associate) {
 		final Set<Skill> skills = new LinkedHashSet<>();
 		for (Skill associateSkill : associate.getSkills()) {
-			Skill skill = skillRepo.findFirstByValue(associateSkill.getValue());
+			Skill skill = skillRepo.findFirstByValueIgnoreCase(associateSkill.getValue());
 			if (skill != null) {
 				skills.add(skill);
 			} else {
