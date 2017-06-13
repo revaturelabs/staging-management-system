@@ -23,6 +23,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.revature.config.SmsSettings;
 import com.revature.exceptions.SmsCustomException;
 import com.revature.markers.SmsValidatable;
+import org.apache.log4j.Logger;
 
 @Entity
 @Table(name = "ASSOCIATES")
@@ -109,7 +110,7 @@ public class Associate implements SmsValidatable {
 	 */
 	public boolean hasNotStartedOnDate(LocalDateTime date) {
 		boolean hasNotBegunTraining = date.compareTo(batch.getStartDate()) < 0;
-		System.out.println(batch.getStartDate() + ") before " + hasNotBegunTraining);
+		Logger.getRootLogger().info(batch.getStartDate() + ") before " + hasNotBegunTraining);
 
 		if(hasNotBegunTraining && jobs.isEmpty())
 			     return true;
@@ -123,9 +124,6 @@ public class Associate implements SmsValidatable {
 	   date = date.withHour(12); //Set mid day all other events should be the beginning of the day.
 	   boolean afterBatchStart = date.compareTo(batch.getStartDate()) > 0;
 	   boolean beforeBatchEnd = date.compareTo(batch.getEndDate()) < 0;
-	   System.out.println("date to compare: " + date);
-	   System.out.println(batch.getStartDate() + ") after " + afterBatchStart);
-	   System.out.println(batch.getEndDate() + ") before " + afterBatchStart);
 	   if(afterBatchStart && beforeBatchEnd)
 	     return true;
 	  
