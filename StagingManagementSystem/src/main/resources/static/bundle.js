@@ -82,6 +82,10 @@
 
 	var _interviews = __webpack_require__(95);
 
+	var _stagingGraph = __webpack_require__(232);
+
+	var _stagingGraph2 = _interopRequireDefault(_stagingGraph);
+
 	var _create = __webpack_require__(96);
 
 	var _create2 = _interopRequireDefault(_create);
@@ -195,7 +199,6 @@
 	    url: '/location',
 	    templateUrl: 'manager-pages/create/location.html',
 	    controller: _location.locCtrl
-
 	  }).state('manager.home', {
 	    url: '/home',
 	    views: {
@@ -203,7 +206,10 @@
 	        templateUrl: 'manager-pages/home/home.html',
 	        controller: _home.managerHomeCtrl
 	      },
-	      'available@manager.home': { templateUrl: 'manager-pages/home/available.html' },
+	      'staging-graph@manager.home': {
+	        templateUrl: 'manager-pages/home/staging-graph/staging-graph.html',
+	        controller: _stagingGraph2.default
+	      },
 	      'priorityMapped@manager.home': {
 	        templateUrl: 'manager-pages/home/priorityMapped.html'
 	      },
@@ -46943,14 +46949,14 @@
 	var interviewsCtrl = function interviewsCtrl($scope, $http) {
 	  $http({
 	    method: 'GET',
-	    url: 'interviews/next-five-days'
+	    url: '/interviews/next-five-days'
 	  }).then(function (response) {
 	    $scope.interviews = response.data;
 	  }, function () {
 	    console.log('error!');
 	  });
 
-	  $http.get('interviewStatus/all').then(function (successResponse) {
+	  $http.get('/interviewStatus/all').then(function (successResponse) {
 	    $scope.interviewStatuses = successResponse.data;
 	  }, function () {
 	    console.log('failed to retreive interview statuses');
@@ -47032,7 +47038,7 @@
 	  $http.get('batchtype/all').then(function (response) {
 	    $scope.batchTypes = response.data;
 	  }, function () {
-	    console.log('failure');
+	    // console.log('failure')
 	  });
 
 	  $http.get('location/all').then(function (response) {
@@ -64943,6 +64949,21 @@
 		/**********************************************/
 	};
 	exports.pie2DCtrl = pie2DCtrl;
+
+/***/ }),
+/* 232 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var stagingGraphController = function stagingGraphController($scope, $http) {
+	  // alert('started');
+	};
+
+	exports.default = stagingGraphController;
 
 /***/ })
 /******/ ]);
