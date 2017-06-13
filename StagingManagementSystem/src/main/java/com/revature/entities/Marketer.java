@@ -58,26 +58,37 @@ public class Marketer implements SmsValidatable {
     }
 
     @Override
-    public final boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Marketer)) return false;
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((credential == null) ? 0 : credential.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
 
-        Marketer marketer = (Marketer) o;
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Marketer other = (Marketer) obj;
+		if (credential == null) {
+			if (other.credential != null)
+				return false;
+		} else if (!credential.equals(other.credential))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		return true;
+	}
 
-        if (id != marketer.id) return false;
-        if (!name.equals(marketer.name)) return false;
-        return credential.equals(marketer.credential);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + name.hashCode();
-        result = 31 * result + credential.hashCode();
-        return result;
-    }
-
-    @Override
+	@Override
     public String toString() {
         return "Marketer{" +
                 "id=" + id +
