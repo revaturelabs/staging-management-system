@@ -41,16 +41,12 @@ public class AssociateServiceImpl implements AssociateService {
 	@Override
 	public Associate getById(long id) {
 		Associate associate = associateRepo.getOne(id);
-		System.out.println("");
-		System.out.println("");
-		System.out.println(associate);
 		return associate;
 	}
 
 	@Override
 	@Transactional
 	public void add(Associate associate) {
-		System.out.println(associate);
 		credentialRepo.save(associate.getCredential());
 		associate = associateRepo.saveAndFlush(associate);
 	}
