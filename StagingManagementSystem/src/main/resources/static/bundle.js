@@ -46830,6 +46830,7 @@
 		value: true
 	});
 	var managerCtrl = function managerCtrl($scope, $state, $location, $http) {
+		alert('manager');
 		$http({
 			method: 'GET',
 			url: '/login/isManager'
@@ -48075,12 +48076,14 @@
 	  value: true
 	});
 	var loginCtrl = function loginCtrl($scope, $http, $state, userService) {
+	  alert("started");
 	  var loginBtn = document.getElementById('loginBtn');
 	  $scope.username = '';
 	  $scope.password = '';
 	  $scope.errorMsgShow = false;
 
 	  $scope.submit = function () {
+	    alert("clicked");
 	    loginBtn.disabled = true;
 	    loginBtn.innerHTML = 'Logging in...';
 	    $scope.errorMsgShow = false;

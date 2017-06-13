@@ -1,10 +1,12 @@
 const loginCtrl = ($scope, $http, $state, userService) => {
+  alert("started")
   const loginBtn = document.getElementById('loginBtn');
   $scope.username = '';
   $scope.password = '';
   $scope.errorMsgShow = false;
 
   $scope.submit = () => {
+    alert("clicked")
     loginBtn.disabled = true;
     loginBtn.innerHTML = 'Logging in...';
     $scope.errorMsgShow = false;

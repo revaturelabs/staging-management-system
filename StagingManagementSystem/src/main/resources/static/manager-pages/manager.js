@@ -1,4 +1,5 @@
 const managerCtrl = ($scope, $state, $location, $http) => {
+  alert('manager')
 	$http({
 		method: 'GET',
 		url: '/login/isManager',

@@ -110,9 +110,9 @@ public class AssociateControllerImpl {
 
 	@GetMapping("/all")
 	public ResponseEntity<Set<Associate>> getAllAssociates(HttpSession session) {
-		if(session.getAttribute("login_manager") == null){ // If you're not logged in as a manger..
-			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
-		}
+//		if(session.getAttribute("login_manager") == null){ // If you're not logged in as a manger..
+//			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+//		}
 		return ResponseEntity.ok(associateService.getAll());
 	}
 	
