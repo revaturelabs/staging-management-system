@@ -105,8 +105,15 @@ public class Interview implements SmsValidatable {
         this.scheduled = scheduled;
     }
 
+    public String getComment() {
+		return comment;
+	}
 
-    @Override
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
+	@Override
     public final boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Interview)) return false;
