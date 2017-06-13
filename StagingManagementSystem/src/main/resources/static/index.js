@@ -84,15 +84,17 @@
 
 	var _user = __webpack_require__(99);
 
-	var _associates = __webpack_require__(100);
+	var _location = __webpack_require__(100);
+
+	var _associates = __webpack_require__(101);
 
 	var _associates2 = _interopRequireDefault(_associates);
 
-	var _profile = __webpack_require__(101);
+	var _profile = __webpack_require__(102);
 
 	var _profile2 = _interopRequireDefault(_profile);
 
-	var _interview = __webpack_require__(102);
+	var _interview = __webpack_require__(103);
 
 	var _interview2 = _interopRequireDefault(_interview);
 
@@ -144,13 +146,8 @@
 	  $trace.enable('TRANSITION');
 
 	  //Global Functions
-	  $rootScope.dateConverter = function (localDateTime) {
-	    console.log('hello');
-	    var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-	    // month                             day
-	    return '' + months[localDateTime[1] - 1] + ' ' + localDateTime[2] + ' '
-	    // hour                                                              minute                AM/PM
-	    + (localDateTime[3] > 12 ? localDateTime[3] - 12 : localDateTime) + ':' + localDateTime[4] + (localDateTime > 12 ? 'p.m.' : 'a.m.');
+	  $rootScope.dateConverter = function (time) {
+	    return moment(time).format('MMM D, hh:mm a');
 	  };
 	});
 
@@ -184,6 +181,11 @@
 	    url: '/client',
 	    templateUrl: 'manager-pages/create/client.html',
 	    controller: _client.clientCtrl
+	  }).state('manager.create.location', {
+	    url: '/location',
+	    templateUrl: 'manager-pages/create/location.html',
+	    controller: _location.locCtrl
+
 	  }).state('manager.home', {
 	    url: '/home',
 	    views: {
@@ -204,6 +206,10 @@
 	        controller: _checkin2.default
 	      }
 	    }
+	  }).state('manager.associateView', {
+	    url: '/associate/:id',
+	    templateUrl: 'associate-pages/profile/profile.html',
+	    controller: _profile2.default
 	  }).state('manager.advanced', {
 	    url: '/advanced',
 	    templateUrl: 'manager-pages/advanced/advanced.html',
@@ -46887,7 +46893,8 @@
 	/**
 	 * Created by colts on 6/8/2017.
 	 */
-	var managerCheckinsCtrl = function managerCheckinsCtrl(scope, $http) {
+	var managerCheckinsCtrl = function managerCheckinsCtrl($scope, $http) {
+	    console.log("started");
 
 	    $http.get("checkin/allTodays").then(function (result) {
 	        $scope.checkins = result.data;
@@ -46900,26 +46907,67 @@
 /* 95 */
 /***/ (function(module, exports) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 	var interviewsCtrl = function interviewsCtrl($scope, $http) {
-	    console.log("started");
-	    $http({
-	        method: "GET",
-	        url: "interviews/all"
-	    }).then(function mySuccess(response) {
-	        window.interviews = response.data;
-	        $scope.interviews = response.data;
-	    }, function myError(response) {
-	        console.log("error!");
-	    });
+	  $http({
+	    method: 'GET',
+	    url: 'interviews/next-five-days'
+	  }).then(function (response) {
+	    $scope.interviews = response.data;
+	  }, function () {
+	    console.log('error!');
+	  });
 
-	    $scope.interviewSelect = function (interview) {
-	        $scope.interviewSideTable = { "interview": interview };
+	  $http.get('interviewStatus/all').then(function (successResponse) {
+	    $scope.interviewStatuses = successResponse.data;
+	  }, function () {
+	    console.log('failed to retreive interview statuses');
+	  });
+
+	  // configure the modal for the interview selected
+	  $scope.interviewSelect = function (interview) {
+	    // give the interview the status object from the list of statuses
+	    interview.interviewStatus = $scope.interviewStatuses.filter(function (status) {
+	      return status.value === interview.interviewStatus.value;
+	    })[0];
+	    $scope.interviewSideTable = { interview: interview };
+	    $scope.idSelectedInterview = interview.id;
+
+	    // incase edit mode was enabled from previously viewing a different interview
+	    $scope.edit = false;
+	    $scope.requestMade = false;
+
+	    // Date time picker setup
+	    $('#datetimepicker1').datetimepicker({
+	      defaultDate: interview.scheduled
+	    });
+	    // $(".datepicker").datepicker("update", new Date());
+	    $scope.showDateTimePicker = function () {
+	      $('#datetimepicker1').datetimepicker('show');
 	    };
+	    $('#datetimepicker1').on('dp.change', function () {
+	      $scope.interviewSideTable.interview.scheduled = $('#datetimepicker1').val();
+	    });
+	  };
+
+	  // update the current interview
+	  $scope.updateInterview = function () {
+	    $scope.requestMade = true;
+	    $scope.updateMessage = 'Attempting to update interview';
+	    $scope.updateMessageStyle = { color: 'white' };
+	    $scope.interviewSideTable.interview.scheduled = moment($scope.interviewSideTable.interview.scheduled).toDate();
+	    $http.put('interviews', $scope.interviewSideTable.interview).then(function () {
+	      $scope.updateMessage = 'Successfully updated interview';
+	      $scope.updateMessageStyle = { color: 'green' };
+	    }, function () {
+	      $scope.updateMessage = 'Failed to update interview';
+	      $scope.updateMessageStyle = { color: 'red' };
+	    });
+	  };
 	};
 
 	exports.interviewsCtrl = interviewsCtrl;
@@ -46955,6 +47003,10 @@
 	    $('#datetimepicker1').datetimepicker();
 	  });
 
+	  $(function () {
+	    $('#datetimepicker2').datetimepicker();
+	  });
+
 	  $http.get('batchtype/all.json').then(function (response) {
 	    // console.log(response.data[0].id)
 	    console.log(response);
@@ -46970,8 +47022,16 @@
 	  });
 
 	  $scope.submit = function () {
+
 	    var item = JSON.stringify($scope.batch);
 	    console.log(item);
+	    console.log($scope.batch.startDate);
+	    var now = new Date($scope.batch.startDate).toISOString();
+	    $scope.batch.startDate = now;
+	    var now2 = new Date($scope.batch.endDate).toISOString();
+	    $scope.batch.endDate = now2;
+	    console.log(now);
+	    //var now_utc = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(),  now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
 	    var str = item.replace(/\\/g, '');
 	    var str2 = str.replace('"{', '{');
 	    var str3 = str2.replace('}"', '}');
@@ -47024,34 +47084,28 @@
 	  value: true
 	});
 	var userCtrl = function userCtrl($scope, $http) {
-
 	  $http.get('batchtype/all.json').then(function (response) {
-	    // console.log(response.data[0].id)
-	    console.log(response.data);
 	    $scope.posts = response.data;
 	  }, function () {
-	    console.log("failure");
+	    console.log('failure');
 	  });
 
 	  $scope.submit = function () {
 	    var item = JSON.stringify($scope.user);
+
 	    //need 2 different post requests for manager and associate
-	    console.log(item);
-	    console.log($scope.user.type == 'associate');
 	    if ($scope.user.type == 'associate') {
-	      console.log('in associate');
 	      $http.post('/associate', item).then(function (response) {
-	        console.log("success");
+	        console.log('success');
 	      }, function () {
-	        console.log("failure");
+	        console.log('failure');
 	      });
 	    };
 	    if ($scope.user.type == 'manager') {
-	      console.log('in manager');
 	      $http.post('/manager', item).then(function (response) {
-	        console.log("success");
+	        console.log('success');
 	      }, function () {
-	        console.log("failure");
+	        console.log('failure');
 	      });
 	    };
 	  };
@@ -47061,6 +47115,29 @@
 
 /***/ }),
 /* 100 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var locCtrl = function locCtrl($scope, $http) {
+	  $scope.submit = function () {
+	    var item = JSON.stringify($scope.location);
+	    console.log(item);
+	    $http.post('/location', item).then(function (response) {
+	      console.log("success");
+	    }, function () {
+	      console.log("failure");
+	    });
+	  };
+	};
+
+	exports.locCtrl = locCtrl;
+
+/***/ }),
+/* 101 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -47120,7 +47197,7 @@
 	exports.default = managerAdvancedAssociatesCtrl;
 
 /***/ }),
-/* 101 */
+/* 102 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -47128,39 +47205,61 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var profileCtrl = function profileCtrl($scope, $http, userService) {
-	  var associateId = userService.getUser().id;
-	  var associateUrl = '/associate/' + associateId;
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+	var profileCtrl = function profileCtrl($scope, $http, userService, $stateParams, $state) {
+	  var associateId = $state.includes('manager') ? $stateParams.id : userService.getUser().id;
 
 	  if (associateId === undefined) {
 	    return;
 	  }
 
+	  var associateUrl = '/associate/' + associateId;
 	  $http({
 	    method: 'GET',
 	    url: associateUrl
 	  }).then(function (response) {
-	    $scope.associate = response.data;
-	    $scope.portfolioUrl = response.data.portfolioLink;
+	    $scope.associate = _extends({}, response.data);
 	  });
 
 	  $scope.portfolioUrlInput = '';
-	  $scope.status = 'Active';
+
+	  $scope.addSkill = function () {
+	    var skillAlreadyExists = $scope.additionalSkillsValues.find(function (skill) {
+	      return skill.value === $scope.newSkillValue;
+	    }) !== undefined;
+	    if (skillAlreadyExists || $scope.newSkillValue === '') {
+	      return;
+	    }
+	    var skillToAdd = { id: 0, value: $scope.newSkillValue };
+	    $scope.additionalSkillsValues = [].concat(_toConsumableArray($scope.additionalSkillsValues), [skillToAdd]);
+	    $scope.newSkillValue = '';
+	  };
+
+	  $scope.removeSkill = function (skillToDelete) {
+	    $scope.additionalSkillsValues = $scope.additionalSkillsValues.filter(function (skill) {
+	      return skill.id !== skillToDelete.id;
+	    });
+	  };
 
 	  $scope.toggleSkillsModal = function () {
 	    $scope.sendingRequest = false;
 	    $scope.skillsModalButtonValue = 'Save';
-	    $scope.additionalSkillsInput = $scope.associate.skills.map(function (skill) {
-	      return skill.value;
-	    }).join(',');
+	    $scope.additionalSkillsValues = [].concat(_toConsumableArray($scope.associate.skills));
+	    $scope.newSkillValue = '';
 	    $('#additionalSkillsModal').modal('show');
 	  };
+
 	  $scope.openPortfolioUrlModal = function () {
 	    $scope.sendingRequest = false;
 	    $scope.portfolioModalButtonValue = 'Save';
 	    $scope.portfolioUrlInput = $scope.associate.portfolioLink;
 	    $('#portfolioUrlModal').modal('show');
 	  };
+
 	  $scope.submitPortfolioUrl = function () {
 	    $scope.associate.portfolioLink = $scope.portfolioUrlInput;
 
@@ -47176,14 +47275,10 @@
 	      $('#portfolioUrlModal').modal('hide');
 	    });
 	  };
+
 	  $scope.submitSkills = function () {
-	    $scope.associate.skills = $scope.additionalSkillsInput.split(',').filter(function (skill) {
-	      return skill !== '';
-	    }).map(function (skill) {
-	      var existingSkill = $scope.associate.skills.find(function (aSkill) {
-	        return aSkill.value === skill;
-	      });
-	      return { id: existingSkill !== undefined ? existingSkill.id : 0, value: skill };
+	    $scope.associate.skills = [].concat(_toConsumableArray($scope.additionalSkillsValues)).filter(function (skill) {
+	      return skill.value !== '';
 	    });
 
 	    $scope.sendingRequest = true;
@@ -47203,8 +47298,8 @@
 	exports.default = profileCtrl;
 
 /***/ }),
-/* 102 */
-/***/ (function(module, exports, __webpack_require__) {
+/* 103 */
+/***/ (function(module, exports) {
 
 	'use strict';
 
@@ -47212,13 +47307,9 @@
 		value: true
 	});
 
-	var _dateformat = __webpack_require__(103);
-
-	var _dateformat2 = _interopRequireDefault(_dateformat);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 	var associateInterviewCtrl = function associateInterviewCtrl($scope, $http, userService) {
+		var addInterviewBtn = document.getElementById('addInterviewBtn');
+
 		$scope.associateInterviews;
 		$('#datetimepicker1').datetimepicker();
 		$scope.showDateTimePicker = function () {
@@ -47227,7 +47318,7 @@
 		$("#datetimepicker1").on("dp.change", function () {
 			$scope.selectedDate = $("#datetimepicker1").val();
 		});
-
+		//
 		$http({
 			method: 'GET',
 			url: '/client/all'
@@ -47242,321 +47333,114 @@
 			method: 'GET',
 			url: 'interviews/associate/' + userService.getUser().id
 		}).then(function (response) {
-			response.data.forEach(function (e) {
-				var day = new Date(response.data[0].scheduled[0], response.data[0].scheduled[1], response.data[0].scheduled[2], response.data[0].scheduled[3], response.data[0].scheduled[4], response.data[0].scheduled[5], 0);
-				e['day'] = (0, _dateformat2.default)(day, "dddd, mmmm dS, yyyy, h:MM TT");;
-			});
 			$scope.associateInterviews = response.data;
+			$scope.associateInterviews.sort(function (a, b) {
+				return new Date(b.scheduled).getTime() - new Date(a.scheduled).getTime();
+			});
+			console.log(response.data);
 		});
 
 		//	$scope.errorMsgShow = true;
 		//	$scope.successMsgShow = true;
 
 		$scope.addInterviewClick = function () {
-			$http({
-				method: 'POST',
-				url: '/interviews',
-				data: { associate: userService.getUser(), client: $scope.selectedClient }
-			}).then(function (response) {});
-			console.log(userService.getUser());
-			console.log($scope.selectedClient);
-			console.log($scope.selectedDate);
+			addInterviewBtn.disabled = true;
+			addInterviewBtn.innerHTML = 'Adding...';
+			$scope.errorMsgShow = false;
+			$scope.successMsgShow = false;
+
+			if ($scope.selectedClient == undefined) {
+				$scope.errorMsg = 'Please select a Client.';
+				$scope.errorMsgShow = true;
+			} else if ($scope.selectedDate == undefined) {
+				$scope.errorMsg = 'Please select a Date.';
+				$scope.errorMsgShow = true;
+			} else {
+				var newDate = moment($scope.selectedDate).toDate();
+				$http({
+					method: 'POST',
+					url: '/interviews',
+					data: { associate: userService.getUser(), client: $scope.selectedClient, scheduled: newDate }
+				}).then(function (response) {
+					$scope.successMsgShow = true;
+					addInterviewBtn.disabled = false;
+					addInterviewBtn.innerHTML = 'Add Interview';
+
+					$http({
+						method: 'GET',
+						url: 'interviews/associate/' + userService.getUser().id
+					}).then(function (response) {
+						$scope.associateInterviews = response.data;
+						$scope.associateInterviews.sort(function (a, b) {
+							return new Date(b.scheduled).getTime() - new Date(a.scheduled).getTime();
+						});
+					});
+				});
+			}
 		};
 	};
 
 	exports.default = associateInterviewCtrl;
 
 /***/ }),
-/* 103 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_RESULT__;/*
-	 * Date Format 1.2.3
-	 * (c) 2007-2009 Steven Levithan <stevenlevithan.com>
-	 * MIT license
-	 *
-	 * Includes enhancements by Scott Trenda <scott.trenda.net>
-	 * and Kris Kowal <cixar.com/~kris.kowal/>
-	 *
-	 * Accepts a date, a mask, or a date and a mask.
-	 * Returns a formatted version of the given date.
-	 * The date defaults to the current date/time.
-	 * The mask defaults to dateFormat.masks.default.
-	 */
-
-	(function(global) {
-	  'use strict';
-
-	  var dateFormat = (function() {
-	      var token = /d{1,4}|m{1,4}|yy(?:yy)?|([HhMsTt])\1?|[LloSZWN]|'[^']*'|'[^']*'/g;
-	      var timezone = /\b(?:[PMCEA][SDP]T|(?:Pacific|Mountain|Central|Eastern|Atlantic) (?:Standard|Daylight|Prevailing) Time|(?:GMT|UTC)(?:[-+]\d{4})?)\b/g;
-	      var timezoneClip = /[^-+\dA-Z]/g;
-	  
-	      // Regexes and supporting functions are cached through closure
-	      return function (date, mask, utc, gmt) {
-	  
-	        // You can't provide utc if you skip other args (use the 'UTC:' mask prefix)
-	        if (arguments.length === 1 && kindOf(date) === 'string' && !/\d/.test(date)) {
-	          mask = date;
-	          date = undefined;
-	        }
-	  
-	        date = date || new Date;
-	  
-	        if(!(date instanceof Date)) {
-	          date = new Date(date);
-	        }
-	  
-	        if (isNaN(date)) {
-	          throw TypeError('Invalid date');
-	        }
-	  
-	        mask = String(dateFormat.masks[mask] || mask || dateFormat.masks['default']);
-	  
-	        // Allow setting the utc/gmt argument via the mask
-	        var maskSlice = mask.slice(0, 4);
-	        if (maskSlice === 'UTC:' || maskSlice === 'GMT:') {
-	          mask = mask.slice(4);
-	          utc = true;
-	          if (maskSlice === 'GMT:') {
-	            gmt = true;
-	          }
-	        }
-	  
-	        var _ = utc ? 'getUTC' : 'get';
-	        var d = date[_ + 'Date']();
-	        var D = date[_ + 'Day']();
-	        var m = date[_ + 'Month']();
-	        var y = date[_ + 'FullYear']();
-	        var H = date[_ + 'Hours']();
-	        var M = date[_ + 'Minutes']();
-	        var s = date[_ + 'Seconds']();
-	        var L = date[_ + 'Milliseconds']();
-	        var o = utc ? 0 : date.getTimezoneOffset();
-	        var W = getWeek(date);
-	        var N = getDayOfWeek(date);
-	        var flags = {
-	          d:    d,
-	          dd:   pad(d),
-	          ddd:  dateFormat.i18n.dayNames[D],
-	          dddd: dateFormat.i18n.dayNames[D + 7],
-	          m:    m + 1,
-	          mm:   pad(m + 1),
-	          mmm:  dateFormat.i18n.monthNames[m],
-	          mmmm: dateFormat.i18n.monthNames[m + 12],
-	          yy:   String(y).slice(2),
-	          yyyy: y,
-	          h:    H % 12 || 12,
-	          hh:   pad(H % 12 || 12),
-	          H:    H,
-	          HH:   pad(H),
-	          M:    M,
-	          MM:   pad(M),
-	          s:    s,
-	          ss:   pad(s),
-	          l:    pad(L, 3),
-	          L:    pad(Math.round(L / 10)),
-	          t:    H < 12 ? 'a'  : 'p',
-	          tt:   H < 12 ? 'am' : 'pm',
-	          T:    H < 12 ? 'A'  : 'P',
-	          TT:   H < 12 ? 'AM' : 'PM',
-	          Z:    gmt ? 'GMT' : utc ? 'UTC' : (String(date).match(timezone) || ['']).pop().replace(timezoneClip, ''),
-	          o:    (o > 0 ? '-' : '+') + pad(Math.floor(Math.abs(o) / 60) * 100 + Math.abs(o) % 60, 4),
-	          S:    ['th', 'st', 'nd', 'rd'][d % 10 > 3 ? 0 : (d % 100 - d % 10 != 10) * d % 10],
-	          W:    W,
-	          N:    N
-	        };
-	  
-	        return mask.replace(token, function (match) {
-	          if (match in flags) {
-	            return flags[match];
-	          }
-	          return match.slice(1, match.length - 1);
-	        });
-	      };
-	    })();
-
-	  dateFormat.masks = {
-	    'default':               'ddd mmm dd yyyy HH:MM:ss',
-	    'shortDate':             'm/d/yy',
-	    'mediumDate':            'mmm d, yyyy',
-	    'longDate':              'mmmm d, yyyy',
-	    'fullDate':              'dddd, mmmm d, yyyy',
-	    'shortTime':             'h:MM TT',
-	    'mediumTime':            'h:MM:ss TT',
-	    'longTime':              'h:MM:ss TT Z',
-	    'isoDate':               'yyyy-mm-dd',
-	    'isoTime':               'HH:MM:ss',
-	    'isoDateTime':           'yyyy-mm-dd\'T\'HH:MM:sso',
-	    'isoUtcDateTime':        'UTC:yyyy-mm-dd\'T\'HH:MM:ss\'Z\'',
-	    'expiresHeaderFormat':   'ddd, dd mmm yyyy HH:MM:ss Z'
-	  };
-
-	  // Internationalization strings
-	  dateFormat.i18n = {
-	    dayNames: [
-	      'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat',
-	      'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
-	    ],
-	    monthNames: [
-	      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
-	      'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'
-	    ]
-	  };
-
-	function pad(val, len) {
-	  val = String(val);
-	  len = len || 2;
-	  while (val.length < len) {
-	    val = '0' + val;
-	  }
-	  return val;
-	}
-
-	/**
-	 * Get the ISO 8601 week number
-	 * Based on comments from
-	 * http://techblog.procurios.nl/k/n618/news/view/33796/14863/Calculate-ISO-8601-week-and-year-in-javascript.html
-	 *
-	 * @param  {Object} `date`
-	 * @return {Number}
-	 */
-	function getWeek(date) {
-	  // Remove time components of date
-	  var targetThursday = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-
-	  // Change date to Thursday same week
-	  targetThursday.setDate(targetThursday.getDate() - ((targetThursday.getDay() + 6) % 7) + 3);
-
-	  // Take January 4th as it is always in week 1 (see ISO 8601)
-	  var firstThursday = new Date(targetThursday.getFullYear(), 0, 4);
-
-	  // Change date to Thursday same week
-	  firstThursday.setDate(firstThursday.getDate() - ((firstThursday.getDay() + 6) % 7) + 3);
-
-	  // Check if daylight-saving-time-switch occured and correct for it
-	  var ds = targetThursday.getTimezoneOffset() - firstThursday.getTimezoneOffset();
-	  targetThursday.setHours(targetThursday.getHours() - ds);
-
-	  // Number of weeks between target Thursday and first Thursday
-	  var weekDiff = (targetThursday - firstThursday) / (86400000*7);
-	  return 1 + Math.floor(weekDiff);
-	}
-
-	/**
-	 * Get ISO-8601 numeric representation of the day of the week
-	 * 1 (for Monday) through 7 (for Sunday)
-	 * 
-	 * @param  {Object} `date`
-	 * @return {Number}
-	 */
-	function getDayOfWeek(date) {
-	  var dow = date.getDay();
-	  if(dow === 0) {
-	    dow = 7;
-	  }
-	  return dow;
-	}
-
-	/**
-	 * kind-of shortcut
-	 * @param  {*} val
-	 * @return {String}
-	 */
-	function kindOf(val) {
-	  if (val === null) {
-	    return 'null';
-	  }
-
-	  if (val === undefined) {
-	    return 'undefined';
-	  }
-
-	  if (typeof val !== 'object') {
-	    return typeof val;
-	  }
-
-	  if (Array.isArray(val)) {
-	    return 'array';
-	  }
-
-	  return {}.toString.call(val)
-	    .slice(8, -1).toLowerCase();
-	};
-
-
-
-	  if (true) {
-	    !(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
-	      return dateFormat;
-	    }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	  } else if (typeof exports === 'object') {
-	    module.exports = dateFormat;
-	  } else {
-	    global.dateFormat = dateFormat;
-	  }
-	})(this);
-
-
-/***/ }),
 /* 104 */
 /***/ (function(module, exports) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-		value: true
+	  value: true
 	});
 	var associateCtrl = function associateCtrl($scope, $location, $http, $state, userService) {
-		var authenticatedUser = userService.getUser();
-		var checkBtnDOM = document.getElementById("checkBtn");
-		$scope.checkInBtn = "Loading...";
-		checkBtnDOM.disabled = true;
+	  var authenticatedUser = userService.getUser();
+	  var checkBtnDOM = document.getElementById('checkBtn');
+	  $scope.checkInBtn = 'Loading...';
+	  checkBtnDOM.disabled = true;
 
-		if (authenticatedUser.id === undefined) {
-			$state.go('login');
-			return;
-		}
+	  if (authenticatedUser.id === undefined) {
+	    $state.go('login');
+	    return;
+	  }
 
-		$http({
-			method: 'GET',
-			url: '/checkin'
-		}).then(function (response) {
-			if (response.data === true) {
-				$scope.checkInBtn = "Checked In";
-				$scope.hasCheckedIn = true;
-			} else {
-				$scope.checkInBtn = "Check In";
-				checkBtnDOM.disabled = false;
-			}
-		});
+	  $http({
+	    method: 'GET',
+	    url: '/checkin'
+	  }).then(function (response) {
+	    if (response.data === true) {
+	      $scope.checkInBtn = 'Checked In';
+	      $scope.hasCheckedIn = true;
+	    } else {
+	      $scope.checkInBtn = 'Check In';
+	      checkBtnDOM.disabled = false;
+	    }
+	  });
 
-		$scope.hasCheckedIn = false;
-		$scope.isActive = function (viewLocation) {
-			return viewLocation === $location.path();
-		};
+	  $scope.hasCheckedIn = false;
+	  $scope.isActive = function (viewLocation) {
+	    return viewLocation === $location.path();
+	  };
 
-		$scope.checkIn = function () {
-			$http({
-				method: 'PUT',
-				url: '/checkin'
-			}).then(function (response) {
-				if (response.data === true) {
-					$scope.checkInBtn = "Checked In";
-					$scope.hasCheckedIn = true;
-				}
-			});
-		};
+	  $scope.checkIn = function () {
+	    $http({
+	      method: 'PUT',
+	      url: '/checkin'
+	    }).then(function (response) {
+	      if (response.data === true) {
+	        $scope.checkInBtn = 'Checked In';
+	        $scope.hasCheckedIn = true;
+	      }
+	    });
+	  };
 
-		$scope.logout = function () {
-			$http({
-				method: 'GET',
-				url: '/logout/'
-			}).then(function (response) {
-				userService.setUser({});
-				$state.go('login');
-			});
-		};
+	  $scope.logout = function () {
+	    $http({
+	      method: 'GET',
+	      url: '/logout/'
+	    }).then(function () {
+	      userService.setUser({});
+	      $state.go('login');
+	    });
+	  };
 	};
 
 	exports.default = associateCtrl;
