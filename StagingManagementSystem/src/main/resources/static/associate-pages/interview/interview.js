@@ -20,8 +20,8 @@ const associateInterviewCtrl = ($scope, $http, userService) => {
 			return pre.name.localeCompare(cur.name);
 		});
 	});
-	
-	$http({
+
+	$http ({
 		method: 'GET',
 		url: '/interviewStatus/all',
 	})
@@ -42,7 +42,10 @@ const associateInterviewCtrl = ($scope, $http, userService) => {
 		console.log(response.data)
 	});
 
+
+
 	$scope.addInterviewClick = function() {
+
 		$scope.errorMsgShow = false;
 		$scope.successMsgShow = false;
 	

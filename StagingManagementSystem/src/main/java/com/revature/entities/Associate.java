@@ -86,7 +86,7 @@ public class Associate implements SmsValidatable {
 		this.skills = skills;
 		this.jobs = jobs;
 	}
-	
+
 	/**
 	 *  Returns true if associate was on job during the given date.
 	 */
@@ -129,7 +129,6 @@ public class Associate implements SmsValidatable {
 	  
 	  return false;
 	}
-
 	public long getId() {
 		return id;
 	}

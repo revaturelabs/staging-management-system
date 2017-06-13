@@ -8,13 +8,11 @@ const managerCheckinsCtrl = ($scope, $http) => {
     $http.get("checkin/allTodays").then(function(result) {
         $scope.checkins = result.data;
 
-
     });
 
     $scope.checkIfAllSelected = (checkin) => {
       window.checkin = checkin
     }
-
 
 
     $scope.isSelectAll = function() {
