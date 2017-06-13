@@ -2,6 +2,9 @@ import angular from 'angular';
 import angularCookies from 'angular-cookies';
 import uiRouter from 'angular-ui-router';
 import FusionCharts from 'fusioncharts';
+
+import dateformat from 'dateformat';
+
 import moment from 'moment';
 
 import { managerCtrl } from './manager-pages/manager';
@@ -19,12 +22,14 @@ import associateInterviewCtrl from './associate-pages/interview/interview';
 import associateCtrl from './associate-pages/associate';
 import { reportCtrl } from './reports/reports';
 import { nestedCtrl } from './reports/nestedGraph';
+import { loginCtrl } from './login/login';
+import { employedCtrl } from './reports/employed'
 import { barCtrl } from './reports/barGraph';
-import loginCtrl from './login/login';
 import { attendanceBarGraphCtrl } from './reports/attendance/attendanceBarGraph';
+import { pie2DCtrl } from './reports/piegraph2D';
 
 require('fusioncharts/fusioncharts.charts')(FusionCharts);
-
+console.log();
 const Visualizer = window['ui-router-visualizer'].Visualizer;
 
 const routerApp = angular.module('routerApp', [uiRouter, angularCookies]);
@@ -161,9 +166,10 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       templateUrl: 'reports/nestedGraph.html',
       controller: nestedCtrl,
     })
-    .state('reports.attendance', {
-    	url: '/attendance',
+    .state('reports.employed', {
+    	url: '/employed',
     	templateUrl: 'reports/employed.html',
+    	controller: employedCtrl,
     	//controller: attendanceCtrl,
     })
     .state('reports.attendanceBarGraph', {
@@ -175,7 +181,12 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       url: '/barGraph',
       templateUrl: 'reports/barGraph.html',
       controller: barCtrl,
-    });
+    })
+    .state('reports.piegraph2D', {
+    	url: '/piegraph2D',
+    	templateUrl: 'reports/piegraph2D.html',
+    	controller: pie2DCtrl,
+    })
 });
 
 console.log();

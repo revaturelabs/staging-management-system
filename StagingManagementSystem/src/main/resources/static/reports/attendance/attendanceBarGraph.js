@@ -62,7 +62,7 @@ const yearlyLabels = [
  * Chart display setup.
  */
 const chartPoperties = {
-  caption: 'Attendance Associates in Stagging',
+  caption: 'Attendance Associates in Staging',
   subCaption: scale,
   xAxisname: scale,
   yAxisName: 'Percentage of Attendance',
