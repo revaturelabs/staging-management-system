@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpSession;
 import java.util.Set;
 
-@RestController("/marketer")
+@RestController("marketer")
 public class MarketerControllerImpl {
     @Autowired
     private MarketerService marketerService;
 
-    @GetMapping("/all")
+    @GetMapping("marketer/all")
     public ResponseEntity<Set<Marketer>> getEverythingDude(){
         return ResponseEntity.ok(marketerService.getAllMarketers());
     }
