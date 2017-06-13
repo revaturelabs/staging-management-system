@@ -5,7 +5,7 @@
         <button type="button" class="manager-view-selecter" ng-click="selectView1('available')" ng-style="availableSelecter"> Available Associates </button>
         <button type="button" class="manager-view-selecter" ng-click="selectView1('priority')" ng-style="prioritySelecter"> Priority Clients </button>
       </div>
-        <div ui-view="available" ng-show="view1 === 'available'"></div>
+        <div ui-view="staging-graph" ng-show="view1 === 'available'"></div>
         <div ui-view="priorityMapped" ng-show="view1 === 'priorityMapped'"></div>
     </div>
 

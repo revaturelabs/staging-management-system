@@ -7,6 +7,7 @@ import { managerCtrl } from './manager-pages/manager';
 import { managerHomeCtrl } from './manager-pages/home/home';
 import managerCheckinsCtrl from './manager-pages/home/checkin/checkin';
 import { interviewsCtrl } from './manager-pages/home/interviews/interviews';
+import stagingGraphController from './manager-pages/home/staging-graph/staging-graph'
 import managerCreateCtrl from './manager-pages/create/create';
 import { batchCtrl } from './manager-pages/create/batch';
 import { clientCtrl } from './manager-pages/create/client';
@@ -94,7 +95,6 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       url: '/location',
       templateUrl: 'manager-pages/create/location.html',
       controller: locCtrl,
-
     })
     .state('manager.create.job', {
       url: '/job',
@@ -109,7 +109,10 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
           templateUrl: 'manager-pages/home/home.html',
           controller: managerHomeCtrl,
         },
-        'available@manager.home': { templateUrl: 'manager-pages/home/available.html' },
+        'staging-graph@manager.home': {
+          templateUrl: 'manager-pages/home/staging-graph/staging-graph.html',
+          controller: stagingGraphController,
+        },
         'priorityMapped@manager.home': {
           templateUrl: 'manager-pages/home/priorityMapped.html',
         },

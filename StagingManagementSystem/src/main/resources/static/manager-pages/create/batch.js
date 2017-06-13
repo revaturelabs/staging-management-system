@@ -6,7 +6,7 @@ const batchCtrl = ($scope, $http) => {
   $http.get('batchtype/all').then((response) => {
 			$scope.batchTypes = response.data
   	}, () => {
-  		console.log('failure')
+  		// console.log('failure')
   	})
 
   $http.get('location/all').then((response) => {

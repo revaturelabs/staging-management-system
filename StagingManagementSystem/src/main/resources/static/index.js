@@ -74,6 +74,10 @@
 
 	var _interviews = __webpack_require__(95);
 
+	var _stagingGraph = __webpack_require__(111);
+
+	var _stagingGraph2 = _interopRequireDefault(_stagingGraph);
+
 	var _create = __webpack_require__(96);
 
 	var _create2 = _interopRequireDefault(_create);
@@ -185,7 +189,6 @@
 	    url: '/location',
 	    templateUrl: 'manager-pages/create/location.html',
 	    controller: _location.locCtrl
-
 	  }).state('manager.home', {
 	    url: '/home',
 	    views: {
@@ -193,7 +196,10 @@
 	        templateUrl: 'manager-pages/home/home.html',
 	        controller: _home.managerHomeCtrl
 	      },
-	      'available@manager.home': { templateUrl: 'manager-pages/home/available.html' },
+	      'staging-graph@manager.home': {
+	        templateUrl: 'manager-pages/home/staging-graph/staging-graph.html',
+	        controller: _stagingGraph2.default
+	      },
 	      'priorityMapped@manager.home': {
 	        templateUrl: 'manager-pages/home/priorityMapped.html'
 	      },
@@ -46927,14 +46933,14 @@
 	var interviewsCtrl = function interviewsCtrl($scope, $http) {
 	  $http({
 	    method: 'GET',
-	    url: 'interviews/next-five-days'
+	    url: '/interviews/next-five-days'
 	  }).then(function (response) {
 	    $scope.interviews = response.data;
 	  }, function () {
 	    console.log('error!');
 	  });
 
-	  $http.get('interviewStatus/all').then(function (successResponse) {
+	  $http.get('/interviewStatus/all').then(function (successResponse) {
 	    $scope.interviewStatuses = successResponse.data;
 	  }, function () {
 	    console.log('failed to retreive interview statuses');
@@ -47016,7 +47022,7 @@
 	  $http.get('batchtype/all').then(function (response) {
 	    $scope.batchTypes = response.data;
 	  }, function () {
-	    console.log('failure');
+	    // console.log('failure')
 	  });
 
 	  $http.get('location/all').then(function (response) {
@@ -48670,6 +48676,21 @@
 	c,b){var f=.5*b,k=a-b,h=a+b,l=a-f,m=a+f,n=a+.5,p=n+1,r=n+1.5,t=c-b,u=c+f,v=c-f,f=c+(b-f);return["M",k,t,"L",l,v,l,f,k,u,a-.5,u,a,c+b+.5,n,u,h,u,m,f,m,v,h,t,r,t,r,v,r,f,p,f,p,v,r,v,r,t,"Z"]},zoomOutIcon:function(a,c,b){a-=.2*b;c-=.2*b;var f=.8*b,k=w.rad(43),h=w.rad(48),l=a+f*ya(k),k=c+f*va(k),m=a+f*ya(h),h=c+f*va(h),n=w.rad(45),p=l+b*ya(n),r=k+b*va(n),t=m+b*ya(n);b=h+b*va(n);return["M",l,k,"A",f,f,0,1,0,m,h,"Z","M",l+1,k+1,"L",p,r,t,b,m+1,h+1,"Z","M",a-2,c,"L",a+2,c,"Z"]},resetIcon:function(a,c,b){var f=
 	a-b,k=(da.PI/2+da.PI)/2;a+=b*ya(k);var k=c+b*va(k),h=2*b/3;return["M",f,c,"A",b,b,0,1,1,a,k,"L",a+h,k-1,a+2,k+h-.5,a,k]}})}])});
 
+
+/***/ }),
+/* 111 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var stagingGraphController = function stagingGraphController($scope, $http) {
+	  // alert('started');
+	};
+
+	exports.default = stagingGraphController;
 
 /***/ })
 /******/ ]);

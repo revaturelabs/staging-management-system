@@ -20,16 +20,14 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.revature.config.SmsSettings;
 import com.revature.exceptions.SmsCustomException;
 import com.revature.markers.SmsValidatable;
+import org.apache.log4j.Logger;
 
 @Entity
 @Table(name = "ASSOCIATES")
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Associate implements SmsValidatable {
-
-	transient private static SmsSettings settings = SmsSettings.getInstance();
 
 	@Id
 	@Column(name = "ASSOCIATE_ID")
@@ -67,8 +65,8 @@ public class Associate implements SmsValidatable {
 
 	public Associate() {
 		super();
-		this.skills = new HashSet<Skill>();
-		this.jobs = new HashSet<Job>();
+		this.skills = new HashSet<>();
+		this.jobs = new HashSet<>();
 		this.active = true;
 	}
 
@@ -90,11 +88,11 @@ public class Associate implements SmsValidatable {
 	 *  Returns true if associate was on job during the given date.
 	 */
 	public boolean hasJobOnDate(LocalDateTime date){
-	  date = date.withHour(12); //Set mid day all other events should be the beginning of the day.
+	  LocalDateTime ndate = date.withHour(12); //Set mid day all other events should be the beginning of the day.
 	  for(Job j : jobs){
-	    boolean afterEnd = j.getEndDate() == null || date.compareTo(j.getEndDate()) < 0;
+	    boolean afterEnd = j.getEndDate() == null || ndate.compareTo(j.getEndDate()) < 0;
 	    boolean hasentStopped = j.getEndDate() == null;
-	    boolean afterStart = date.compareTo(j.getStartDate()) > 0;
+	    boolean afterStart = ndate.compareTo(j.getStartDate()) > 0;
 	    
 	    if(afterStart && (hasentStopped || !afterEnd))
 	      return true;
@@ -109,7 +107,7 @@ public class Associate implements SmsValidatable {
 	 */
 	public boolean hasNotStartedOnDate(LocalDateTime date) {
 		boolean hasNotBegunTraining = date.compareTo(batch.getStartDate()) < 0;
-		System.out.println(batch.getStartDate() + ") before " + hasNotBegunTraining);
+		Logger.getRootLogger().info(batch.getStartDate() + ") before " + hasNotBegunTraining);
 
 		if(hasNotBegunTraining && jobs.isEmpty())
 			     return true;
@@ -123,9 +121,6 @@ public class Associate implements SmsValidatable {
 	   date = date.withHour(12); //Set mid day all other events should be the beginning of the day.
 	   boolean afterBatchStart = date.compareTo(batch.getStartDate()) > 0;
 	   boolean beforeBatchEnd = date.compareTo(batch.getEndDate()) < 0;
-	   System.out.println("date to compare: " + date);
-	   System.out.println(batch.getStartDate() + ") after " + afterBatchStart);
-	   System.out.println(batch.getEndDate() + ") before " + afterBatchStart);
 	   if(afterBatchStart && beforeBatchEnd)
 	     return true;
 	  
@@ -217,7 +212,7 @@ public class Associate implements SmsValidatable {
 	}
 
 	@Override
-	final public boolean equals(Object obj) {
+	public final boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)

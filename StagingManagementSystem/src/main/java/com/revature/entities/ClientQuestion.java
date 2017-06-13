@@ -12,7 +12,6 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.revature.config.SmsSettings;
 import com.revature.exceptions.SmsCustomException;
 import com.revature.markers.SmsValidatable;
 
@@ -20,8 +19,6 @@ import com.revature.markers.SmsValidatable;
 @Table(name = "CLIENT_QUESTIONS")
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class ClientQuestion implements SmsValidatable {
-
-	transient private static SmsSettings settings = SmsSettings.getInstance();
 
 	@Id
 	@Column(name = "CLIENT_QUESTION_ID")
@@ -96,7 +93,7 @@ public class ClientQuestion implements SmsValidatable {
 	}
 
 	@Override
-	final public boolean equals(Object obj) {
+	public final boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)

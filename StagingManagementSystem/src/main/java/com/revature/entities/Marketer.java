@@ -1,7 +1,6 @@
 package com.revature.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.revature.config.SmsSettings;
 import com.revature.exceptions.SmsCustomException;
 import com.revature.markers.SmsValidatable;
 
@@ -11,8 +10,6 @@ import javax.persistence.*;
 @Table(name = "MARKETERS")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Marketer implements SmsValidatable {
-
-    transient private static SmsSettings settings = SmsSettings.getInstance();
 
     @Id
     @Column(name = "MARKETER_ID")
@@ -61,7 +58,7 @@ public class Marketer implements SmsValidatable {
     }
 
     @Override
-    final public boolean equals(Object o) {
+    public final boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Marketer)) return false;
 
