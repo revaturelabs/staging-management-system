@@ -1,17 +1,18 @@
 const batchCtrl = ($scope, $http) => {
+  window.scope = $scope;
   $('#datetimepicker1').datetimepicker();
 	$('#datetimepicker2').datetimepicker();
 
   $http.get('batchtype/all').then((response) => {
 			$scope.batchTypes = response.data
   	}, () => {
-  		console.log("failure")
+  		console.log('failure')
   	})
 
-  $http.get('location/all').then( (response) => {
+  $http.get('location/all').then((response) => {
 		$scope.locations = response.data
   	}, () => {
-  		console.log("failure")
+  		console.log('failure')
   	})
 
   $scope.submit = () => {
@@ -30,6 +31,37 @@ const batchCtrl = ($scope, $http) => {
       $scope.createMessageStyle = { color: 'red' };
   	})
   };
+  $scope.openNewBatchTypeForm = () => {
+    $scope.newBatchTypeShow = true;
+    $scope.newBatchType = {};
+    $scope.newBatchType.skills = [];
+
+    $scope.addSkill = (newBatchTypeSkill) => {
+      if(!newBatchTypeSkill) {
+        return;
+      }
+      if($scope.newBatchType.skills.filter((skill) => skill.value.toUpperCase() === newBatchTypeSkill.toUpperCase()).length === 0) {
+        $scope.newBatchType.skills.push({value:newBatchTypeSkill})
+      }
+      $scope.newBatchTypeSkill = '';
+    }
+    $scope.removeSkill = (skill) => {
+      $scope.newBatchType.skills = $scope.newBatchType.skills.filter((skl) => skill.value != skl.value);
+    }
+  }
+  $scope.addBatchType = (batchType) => {
+    $scope.requestMade = true;
+    $scope.updateMessage = 'Attempting to update interview';
+    $scope.updateMessageStyle = { color: 'black' };
+    $http.post('batchtype', batchType).then((response) => {
+      $scope.updateMessage = 'Successfully updated interview';
+      $scope.updateMessageStyle = { color: 'green' };
+      $scope.batchTypes.push(response.data)
+    }, () => {
+      $scope.updateMessage = 'Failed to update interview';
+      $scope.updateMessageStyle = { color: 'red' };
+    })
+  }
 };
 
 export { batchCtrl };

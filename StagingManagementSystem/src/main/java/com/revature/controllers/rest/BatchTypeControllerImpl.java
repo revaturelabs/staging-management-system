@@ -34,9 +34,9 @@ public class BatchTypeControllerImpl {
 	 *            - batchType to be persisted.
 	 */
 	@PostMapping
-	public void addBatchType(@RequestBody BatchType batchType) {
+	public BatchType addBatchType(@RequestBody BatchType batchType) {
 		batchType.setId(0l);
-		batchTypeService.add(batchType);
+		return batchTypeService.add(batchType);
 	}
 
 	/**

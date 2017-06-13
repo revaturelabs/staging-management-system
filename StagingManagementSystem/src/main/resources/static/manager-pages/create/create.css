@@ -41,3 +41,26 @@ label{
 #country{
   overflow:visible;
 }
+
+.add-batch-type-container {
+  margin-top: 0.5em;
+  border-top: lightgray 1px solid;
+  padding-top: 0.5em;
+}
+
+.remove-batch-type-glyph {
+  color: red;
+  cursor: pointer;
+  margin-left: 0.3em;
+}
+
+.new-batchType-skills-title {
+  font-weight: 700;
+  text-align: center;
+  margin-top: 0.5em;
+}
+
+.invalid {
+  -webkit-box-shadow: inset 0 0 5px red !important;
+  box-shadow: inset 0 0 5px red !important;
+}
