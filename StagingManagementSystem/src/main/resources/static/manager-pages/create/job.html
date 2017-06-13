@@ -9,19 +9,17 @@
         <tr>
 		  <td>
               <label>Associate: </label>
-              <select ng-model="job.associate">
-                <option disabled selected value> -- Select an Associate -- </option>
-                <option value={{associate}} ng-repeat="associate in associates.data">{{associate.name}}</option>
-              </select>
+            <select class="manager-input" ng-model="job.associate" ng-options="associate as associate.name for associate in associates">
+            <option value=""> -- Select a Associate -- </option>
+            </select>
           </td>
         </tr>
         <tr>
           <td>
-              <label>Client: </label>
-              <select ng-model="job.client">
-                <option disabled selected value> -- Select a Client -- </option>
-                <option value={{client}} ng-repeat="client in clients.data">{{client.name}}</option>
-              </select>
+            <label>Client: </label>
+            <select class="manager-input" ng-model="job.client" ng-options="client as client.name for client in clients">
+            <option value=""> -- Select a Client -- </option>
+            </select>
           </td>
         </tr>
         <tr>
@@ -60,6 +58,6 @@
     </tbody>
 </table>
 
-
+<div ng-show="requestMade" ng-bind="createMessage" ng-style="createMessageStyle"></div>
 <button class="submit" ng-click="submit()">Submit</button>
  
