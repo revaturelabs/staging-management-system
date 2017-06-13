@@ -36,8 +36,7 @@ public class PermissionServiceImpl implements PermissionService {
 		if (permissionRepo.findByLevel(permission.getLevel()) != null) {
 			throw new NonUniqueException("Permission level already exists.");
 		}
-		permission = permissionRepo.saveAndFlush(permission);
-		return permission;
+		return permissionRepo.saveAndFlush(permission);
 
 	}
 

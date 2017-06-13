@@ -48,19 +48,11 @@ public class AssociateServiceImpl implements AssociateService {
 	@Transactional
 	public void add(Associate associate) {
 		credentialRepo.save(associate.getCredential());
-		associate = associateRepo.saveAndFlush(associate);
+		associateRepo.saveAndFlush(associate);
 	}
 
 	@Override
 	public void delete(Associate associate) {
-//		if(associate == null){
-//			throw new NullReferenceException("Manager is null.");
-//		}
-		Credential credential = associate.getCredential();
-		
-//		if(credential == null){
-//			throw new NullReferenceException("Credential is null.");
-//		}
 		associateRepo.delete(associate);
 		credentialRepo.delete(associate.getCredential());
 	}
@@ -83,6 +75,6 @@ public class AssociateServiceImpl implements AssociateService {
 
 	@Override
 	public Set<Associate> getAll() {
-		return new HashSet<Associate>(associateRepo.findAll());
+		return new HashSet<>(associateRepo.findAll());
 	}
 }

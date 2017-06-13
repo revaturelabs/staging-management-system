@@ -33,7 +33,7 @@ public class BatchTypeServiceImpl implements BatchTypeService {
 			if (retreivedSkill != null) {
 				skill.setId(retreivedSkill.getId());
 			} else {
-				skill = skillRepo.saveAndFlush(skill);
+				skillRepo.saveAndFlush(skill);
 			}
 		}
 		return batchTypeRepo.saveAndFlush(batchType);

@@ -6,6 +6,7 @@ import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -80,6 +81,7 @@ public class CheckinControllerImpl {
             checkinService.checkIn(associate, LocalDateTime.now());
             return ResponseEntity.ok(true);
         }catch(AlreadyCheckedInException e){
+            Logger.getRootLogger().error(e);
             return ResponseEntity.status(HttpStatus.CONFLICT).body(false);
         }
     }

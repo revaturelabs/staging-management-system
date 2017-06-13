@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -50,7 +51,7 @@ public class SmsSettings extends HashMap<String,String>{
 				settings.put(key, prop.getProperty(key));
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			Logger.getRootLogger().error(e);
 		}
 	}
 	
