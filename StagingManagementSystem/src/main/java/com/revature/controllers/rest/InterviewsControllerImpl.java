@@ -30,7 +30,7 @@ public class InterviewsControllerImpl {
 
 	@PostMapping
 	public void add(@RequestBody Interview interviews) {
-		interviews.setInterviewStatus(new InterviewStatuses(55, "SCHEDULED"));
+		interviews.setInterviewStatus(new InterviewStatuses(56, "SCHEDULED"));
 		interviewsService.add(interviews);
 	}
 
