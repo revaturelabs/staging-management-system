@@ -20,8 +20,6 @@ import com.revature.markers.SmsValidatable;
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Trainer implements SmsValidatable {
 
-	transient private static SmsSettings settings = SmsSettings.getInstance();
-
 	@Id
 	@Column(name = "TRAINER_ID")
 	@SequenceGenerator(name = "TRAINER_ID_SEQ", sequenceName = "TRAINER_ID_SEQ")
