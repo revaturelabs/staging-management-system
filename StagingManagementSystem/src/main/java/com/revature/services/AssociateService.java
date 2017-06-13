@@ -14,4 +14,6 @@ public interface AssociateService {
 	public void update(Associate associate);
 
 	public Set<Associate> getAll();
+
+	public Set<Associate> getAllActive();
 }

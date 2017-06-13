@@ -75,4 +75,9 @@ public class AssociateServiceImpl implements AssociateService {
 	public Set<Associate> getAll() {
 		return new HashSet<>(associateRepo.findAll());
 	}
+
+	@Override
+	public Set<Associate> getAllActive() {
+		return new HashSet<>(associateRepo.getAssociatesByActiveExists());
+	}
 }
