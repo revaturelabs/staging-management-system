@@ -84,4 +84,5 @@ public class BatchTypeControllerImpl {
 	public Set<BatchType> findAll() {
 		return batchTypeService.getAll();
 	}
+
 }

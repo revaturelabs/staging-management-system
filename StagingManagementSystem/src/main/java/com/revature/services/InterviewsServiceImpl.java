@@ -1,6 +1,8 @@
 package com.revature.services;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -66,12 +68,8 @@ public class InterviewsServiceImpl implements InterviewsService {
 
 	@Override
 	public Set<Interview> nextFiveDays() {
-		LocalDateTime now = LocalDateTime.now();
-
-		// Subtracted the hours so we see all interviews that were today even if
-		// they happened before the current time
-		// Then look at 5 days in the future of the current time
-		return interviewsRepo.findByScheduledBetween(now.minusHours(now.getHour()), now.plusDays(5l));
+		LocalDateTime endOfToday = LocalDateTime.of(LocalDate.now(), LocalTime.MAX);
+		return interviewsRepo.findByScheduledBetween(LocalDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT), endOfToday.plusDays(5l));
 	}
 
 }

@@ -230,8 +230,6 @@ function setWeekly($scope, tarDate) {
   if (date === undefined) {
     date = moment();
   }
-  console.log("hello");
-  alert(date.format('YYYY-MM-DDTHH:MM:SS'));
   const currDay = date.day();
 
   date.subtract(currDay, 'days');
@@ -285,7 +283,7 @@ function buildMonthlyForEach(item) {
   } else {
     const existing = monthlyData[index];
     existing.hourCount = parseFloat(existing.hourCount) + parseFloat(item.hourCount);
-    existing.hourCount = parseFloat(existing.hourEstimate) + parseFloat(item.hourEstimate);
+    existing.hourEstimate = parseFloat(existing.hourEstimate) + parseFloat(item.hourEstimate);
   }
 }
 
@@ -356,7 +354,18 @@ function monthlyColumnClick(ev, props, $scope) {
 function buildYearlyForEach(item) {
   const identityString = convertToFirstOfQuarter(moment(item.time));
   const index = binarySearchHelper(yearlyData, moment(identityString), cmpDay);
+  
 
+  console.log(`Identity String: ${identityString}`);
+  console.log(`COUNT/ESTAMATE: ${item.hourCount}/${item.hourEstimate}`);
+  console.log(`Item: ${JSON.stringify(item, null, 2)}`)
+  console.log(`Data: ${JSON.stringify(yearlyData, null, 2)}`)
+
+  
+  
+  
+
+  
   if (index < 0 || index >= yearlyData.length || yearlyData.length === 0) {
     const itemCpy = JSON.parse(JSON.stringify(item));
     itemCpy.time = identityString;
@@ -364,7 +373,7 @@ function buildYearlyForEach(item) {
   } else {
     const existing = yearlyData[index];
     existing.hourCount = parseFloat(existing.hourCount) + parseFloat(item.hourCount);
-    existing.hourCount = parseFloat(existing.hourEstimate) + parseFloat(item.hourEstimate);
+    existing.hourEstimate = parseFloat(existing.hourEstimate) + parseFloat(item.hourEstimate);
   }
 }
 
