@@ -134,10 +134,10 @@ public class CheckinReportServiceImpl {
   public ArrayList<DailyReport> process(Set<Checkin> checkins) {
     this.reports = new HashMap<String, DailyReport>();
     associates = associateService.getAll();
-    //TODO: making a db call for every associate is inefficient should do a join call in associates.
-    for(Associate a : associates){
-      a.setJobs(jobService.findByAssociate(a));
-    }
+//    //TODO: making a db call for every associate is inefficient should do a join call in associates.
+//    for(Associate a : associates){
+//      a.setJobs(jobService.findByAssociate(a));
+//    }
     
     for(Checkin c : checkins){
       this.addCheckin(c);

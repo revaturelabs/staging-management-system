@@ -118,8 +118,10 @@ public class AssociateControllerImpl {
 	
 	@GetMapping(path="/totaldata")
 	public ResponseEntity<Collection<TotalData>> getAssocaites(){
-		return ResponseEntity.ok(totalReport.process(associateService.getAll()));
+		return ResponseEntity.ok(totalReport.process(associateService.getAllActive()));
 	}
+	
+	
 	
 }
 

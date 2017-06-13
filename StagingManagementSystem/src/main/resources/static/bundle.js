@@ -120,6 +120,8 @@
 
 	var _login = __webpack_require__(108);
 
+	var _login2 = _interopRequireDefault(_login);
+
 	var _employed = __webpack_require__(230);
 
 	var _barGraph = __webpack_require__(107);
@@ -129,6 +131,9 @@
 	var _piegraph2D = __webpack_require__(231);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	alert("here");
+
 
 	__webpack_require__(110)(_fusioncharts2.default);
 
@@ -173,7 +178,7 @@
 	  .state('login', {
 	    url: '/login',
 	    templateUrl: 'login/login.html',
-	    controller: _login.loginCtrl
+	    controller: _login2.default
 	  }).state('manager', {
 	    url: '/manager',
 	    templateUrl: 'manager-pages/manager.html',
@@ -64959,8 +64964,103 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	var chart = {
+	  caption: "Asscoiates Available vs. Associate Confirmed",
+	  subCaption: "Revature LLC",
+	  xAxisname: "Batch Type",
+	  yAxisName: "Number of Associate",
+	  paletteColors: "#ff0000,#0075c2",
+	  bgColor: "#ffffff",
+	  borderAlpha: "20",
+	  showCanvasBorder: "0",
+	  usePlotGradientColor: "0",
+	  plotBorderAlpha: "10",
+	  legendBorderAlpha: "0",
+	  legendShadow: "0",
+	  valueFontColor: "#ffffff",
+	  showXAxisLine: "1",
+	  xAxisLineColor: "#999999",
+	  divlineColor: "#999999",
+	  divLineDashed: "1",
+	  showAlternateHGridColor: "0",
+	  subcaptionFontBold: "0",
+	  subcaptionFontSize: "14",
+	  showHoverEffect: "1"
+	};
+
+	var categories = void 0;
+	var dataset = void 0;
+
+	function graphBuilder($scope, $http) {
+	  $http({
+	    method: 'GET',
+	    url: '/associate/totaldata'
+	  }).then(function (response) {
+	    console.log("new stuff: " + JSON.stringify(response.data));
+	    var stuff1 = [];
+	    var stuff2 = [];
+	    var stuff3 = [];
+	    var value = response.data;
+	    value.forEach(function (item) {
+	      stuff1.push({ "label": item.batchName });
+	      stuff2.push({ "value": item.totalAvailable - item.totalUnavailable });
+	      stuff3.push({ "value": item.totalUnavailable });
+	    });
+	    categories = [{
+	      "category": stuff1
+	    }];
+	    dataset = [{
+	      "seriesname": "Confirmed Associates",
+	      "data": stuff3
+	    }, {
+	      "seriesname": " Available Associates",
+	      "data": stuff2
+	    }];
+	    plainBarChart2($scope, chart, categories, dataset);
+	  });
+	}
+
+	function ColumnClick(ev, props, $scope) {
+
+	  $scope.selectedValue = props.displayValue + "/" + props.categoryLabel + "/" + props.dataIndex;
+	}
+
+	function plainBarChart2($scope, chartstuff, categories, dataset) {
+
+	  var myDataSource = {
+	    chart: chartstuff,
+	    categories: categories,
+	    dataset: dataset
+	  };
+
+	  $scope.selectedValue = 'nothing';
+
+	  var chart = new FusionCharts({
+	    type: 'stackedcolumn3d',
+	    renderAt: 'chart-container',
+	    width: '650',
+	    height: '450',
+	    dataFormat: 'json',
+	    dataSource: myDataSource,
+	    events: {
+	      dataplotclick: function dataplotclick(ev, props) {
+	        $scope.$apply(function () {
+	          switch (scale) {
+	            case Stuff1:
+	              ColumnClick(ev, props, $scope);
+	              break;
+	            default:
+	          }
+	        });
+	      }
+	    }
+	  });
+
+	  chart.render();
+	}
+
 	var stagingGraphController = function stagingGraphController($scope, $http) {
-	  // alert('started');
+	  graphBuilder($scope, $http);
 	};
 
 	exports.default = stagingGraphController;

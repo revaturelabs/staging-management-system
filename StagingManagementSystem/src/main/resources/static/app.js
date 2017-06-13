@@ -1,3 +1,4 @@
+alert("here")
 import angular from 'angular';
 import angularCookies from 'angular-cookies';
 import uiRouter from 'angular-ui-router';
@@ -23,7 +24,7 @@ import associateInterviewCtrl from './associate-pages/interview/interview';
 import associateCtrl from './associate-pages/associate';
 import { reportCtrl } from './reports/reports';
 import { nestedCtrl } from './reports/nestedGraph';
-import { loginCtrl } from './login/login';
+import loginCtrl from './login/login';
 import { employedCtrl } from './reports/employed'
 import { barCtrl } from './reports/barGraph';
 import { attendanceBarGraphCtrl } from './reports/attendance/attendanceBarGraph';

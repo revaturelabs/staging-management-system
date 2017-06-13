@@ -108,9 +108,8 @@ public class Associate implements SmsValidatable {
 	 * any jobs. Leaving it possible for associates to participate in multiple training
 	 * batches only after they have had atleast one job.
 	 */
-	public boolean hasNotStartedOnDate(LocalDateTime date) {
-		boolean hasNotBegunTraining = date.compareTo(batch.getStartDate()) < 0;
-		Logger.getRootLogger().info(batch.getStartDate() + ") before " + hasNotBegunTraining);
+	public boolean hasStartedOnDate(LocalDateTime date) {
+		boolean hasBegunTraining = date.compareTo(batch.getStartDate()) > 0;
 
 		if(hasBegunTraining)
 			     return true;
