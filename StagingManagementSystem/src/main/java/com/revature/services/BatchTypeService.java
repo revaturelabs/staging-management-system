@@ -9,7 +9,7 @@ import com.revature.entities.BatchType;
 @Service
 public interface BatchTypeService {
 
-	public void add(BatchType batchType);
+	public BatchType add(BatchType batchType);
 
 	public void delete(BatchType batchType);
 

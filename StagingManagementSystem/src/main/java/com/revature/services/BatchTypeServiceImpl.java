@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.revature.entities.BatchType;
+import com.revature.entities.Skill;
 import com.revature.repositories.BatchTypeRepo;
+import com.revature.repositories.SkillRepo;
 
 @Service
 public class BatchTypeServiceImpl implements BatchTypeService {
@@ -15,14 +17,26 @@ public class BatchTypeServiceImpl implements BatchTypeService {
 	@Autowired
 	BatchTypeRepo batchTypeRepo;
 
-	public BatchTypeServiceImpl(BatchTypeRepo batchTypeRepo) {
+	@Autowired
+	SkillRepo skillRepo;
+
+	public BatchTypeServiceImpl(BatchTypeRepo batchTypeRepo, SkillRepo skillRepo) {
 		super();
 		this.batchTypeRepo = batchTypeRepo;
+		this.skillRepo = skillRepo;
 	}
 
 	@Override
-	public void add(BatchType batchType) {
-		batchTypeRepo.saveAndFlush(batchType);
+	public BatchType add(BatchType batchType) {
+		for (Skill skill : batchType.getSkills()) {
+			Skill retreivedSkill = skillRepo.findFirstByValueIgnoreCase(skill.getValue());
+			if (retreivedSkill != null) {
+				skill.setId(retreivedSkill.getId());
+			} else {
+				skill = skillRepo.saveAndFlush(skill);
+			}
+		}
+		return batchTypeRepo.saveAndFlush(batchType);
 	}
 
 	@Override
