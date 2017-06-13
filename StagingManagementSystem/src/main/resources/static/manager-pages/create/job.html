@@ -1,0 +1,63 @@
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th class="create-th" scope="col">Create a Job</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+		  <td>
+              <label>Associate: </label>
+            <select class="manager-input" ng-model="job.associate" ng-options="associate as associate.name for associate in associates">
+            <option value=""> -- Select an Associate -- </option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label>Client: </label>
+            <select class="manager-input" ng-model="job.client" ng-options="client as client.name for client in clients">
+            <option value=""> -- Select a Client -- </option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+            <td><label>Start Date: </label>
+              <input type='text' class="manager-input" ng-model="job.startDate" id='datetimepicker1'/>
+              <div ng-click="showDateTimePicker()">
+              </div>
+            </td>
+        </tr>
+        <tr>
+            <td><label>Projected End Date: </label>
+              <input type='text' class="manager-input" ng-model="job.projectedEndDate" id='datetimepicker2'/>
+              <div ng-click="showDateTimePicker()">
+             </div>
+            </td>
+        </tr>
+            <td><label>End Date: </label>
+              <input type='text' class="manager-input" ng-model="job.endDate" id='datetimepicker3'/>
+              <div ng-click="showDateTimePicker()">
+             </div>
+            </td>
+        </tr>
+        <tr>
+            <td><label>Buyout Date: </label>
+              <input type='text' class="manager-input" ng-model="job.buyoutDate" id='datetimepicker4'/>
+              <div ng-click="showDateTimePicker()">
+             </div>
+            </td>
+        </tr>
+            <td><label>Confirmed Date: </label>
+              <input type='text' class="manager-input" ng-model="job.confirmedDate" id='datetimepicker5'/>
+              <div ng-click="showDateTimePicker()">
+             </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<div ng-show="requestMade" ng-bind="createMessage" ng-style="createMessageStyle"></div>
+<button class="submit" ng-click="submit()">Submit</button>
+ 
