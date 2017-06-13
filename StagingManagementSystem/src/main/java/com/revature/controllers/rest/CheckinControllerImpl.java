@@ -106,9 +106,9 @@ public class CheckinControllerImpl {
     @GetMapping(path="/report")
     public ResponseEntity<ArrayList<DailyReport>> getCheckins(HttpSession session){// For managers only.
         Manager manager = (Manager) session.getAttribute("login_manager");
-        if(manager == null){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-        }
+//        if(manager == null){
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+//        }
         return ResponseEntity.ok(checkinReport.process(checkinService.getAll()));
     }
 }

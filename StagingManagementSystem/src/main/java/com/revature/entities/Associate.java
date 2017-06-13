@@ -182,8 +182,11 @@ public class Associate implements SmsValidatable {
 		return active;
 	}
 
-	public void setActive(boolean active) {
-		this.active = active;
+	public void setActive() {
+		if(this.isTrackedOnDate(LocalDateTime.now()))
+			this.active = true;
+		else
+			this.active = false;
 	}
 
 	public Client getLockedTo() {

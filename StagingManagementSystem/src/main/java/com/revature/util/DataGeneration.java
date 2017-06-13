@@ -155,6 +155,7 @@ public class DataGeneration
 	   * @return - super instance
 	   */
 	  Associate getAssocaite(){
+		  this.setActive();
 	    return new Associate(getId(), getCredential(), getName(), getPortfolioLink(), getBatch(), isActive(), getLockedTo(), getSkills(), getJobs());
 	  }
 	}
@@ -175,8 +176,6 @@ public class DataGeneration
 
 	  for(Associate a : associates){
       AssociateP ap = new AssociateP(a); //Create a probability associate.
-	    if(!ap.isActive())
-	      ap.setActive(true); // When generating data associates should be active
 
 	    LocalDateTime endDate = a.getBatch().getEndDate();
 	    LocalDateTime currDate = endDate.minusDays(7); //Hiring date is from a week before batch end date to confirmed date. 
@@ -185,7 +184,6 @@ public class DataGeneration
 	    while(confirmDate == null && currDate.compareTo(LocalDateTime.now()) < 0){
 	      if(currDate.compareTo(endDate.plusMonths(5)) > 0){ //If associate does not get hired after 5 months.
 	        log.warn("Associate didint get a job in 5 months!!!");
-	        ap.setActive(false);
 	        break;
 	      }
 	      
@@ -266,7 +264,8 @@ public class DataGeneration
 	        }
 	      }
 	    }
-
+	    
+	    
 	    associateService.update(ap.getAssocaite());
 
 	  }
