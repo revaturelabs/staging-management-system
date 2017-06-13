@@ -35,6 +35,13 @@ const associateInterviewCtrl = ($scope, $http, userService) => {
 		url: `interviews/associate/${userService.getUser().id}`,
 	})
 	.then((response) => {
+
+		response.data.forEach(function(e) {
+			let day = new Date(response.data[0].scheduled[0], response.data[0].scheduled[1], response.data[0].scheduled[2], response.data[0].scheduled[3],
+					response.data[0].scheduled[4], response.data[0].scheduled[5], 0);
+			e['day'] = dateformat(day, "dddd, mmmm dS, yyyy, h:MM TT");
+		});
+
 		$scope.associateInterviews = response.data;
 		$scope.associateInterviews.sort(function(a,b) {
 	    return new Date(b.scheduled).getTime() - new Date(a.scheduled).getTime();

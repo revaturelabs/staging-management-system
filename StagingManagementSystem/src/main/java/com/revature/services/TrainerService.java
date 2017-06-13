@@ -16,4 +16,5 @@ public interface TrainerService {
 	public Set<Trainer> getAll();
 
 	void addTrainers(Set<Trainer> trainers);
+	
 }
