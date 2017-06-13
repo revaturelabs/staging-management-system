@@ -46,6 +46,7 @@ public class BatchControllerImpl {
 	 */
 	@PostMapping("/mockdata/addmultiple")
 	public void addMockBatches(@RequestBody Set<Batch> batches) {
+		System.out.println("Batches: " + batches);
 		batchService.addMockBatches(batches);
 	}
 	

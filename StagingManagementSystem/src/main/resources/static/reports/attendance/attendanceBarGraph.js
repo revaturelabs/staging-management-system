@@ -62,7 +62,7 @@ const yearlyLabels = [
  * Chart display setup.
  */
 const chartPoperties = {
-  caption: 'Attendance Associates in Stagging',
+  caption: 'Attendance Associates in Staging',
   subCaption: scale,
   xAxisname: scale,
   yAxisName: 'Percentage of Attendance',
@@ -230,7 +230,8 @@ function setWeekly($scope, tarDate) {
   if (date === undefined) {
     date = moment();
   }
-
+  console.log("hello");
+  alert(date.format('YYYY-MM-DDTHH:MM:SS'));
   const currDay = date.day();
 
   date.subtract(currDay, 'days');

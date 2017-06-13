@@ -29,7 +29,7 @@ const associateInterviewCtrl = ($scope, $http, userService) => {
 		response.data.forEach(function(e) {
 			let day = new Date(response.data[0].scheduled[0], response.data[0].scheduled[1], response.data[0].scheduled[2], response.data[0].scheduled[3],
 					response.data[0].scheduled[4], response.data[0].scheduled[5], 0);
-			e['day'] = dateformat(day, "dddd, mmmm dS, yyyy, h:MM TT");;
+			e['day'] = dateformat(day, "dddd, mmmm dS, yyyy, h:MM TT");
 		});
 		$scope.associateInterviews = response.data;
 	});
