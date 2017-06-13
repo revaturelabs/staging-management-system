@@ -46892,29 +46892,29 @@
 	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 	/**
 	 * Created by colts on 6/8/2017.
 	 */
 	var managerCheckinsCtrl = function managerCheckinsCtrl($scope, $http) {
-	    console.log("started");
+	  console.log("started");
 
-	    $http.get("checkin/allTodays").then(function (result) {
-	        $scope.checkins = result.data;
+	  $http.get("checkin/allTodays").then(function (result) {
+	    $scope.checkins = result.data;
+	  });
+
+	  $scope.checkIfAllSelected = function (checkin) {
+	    window.checkin = checkin;
+	  };
+
+	  $scope.isSelectAll = function () {
+	    $scope.checkins.forEach(function (checkin) {
+	      checkin.selected = true;
 	    });
+	  };
 
-	    $scope.checkIfAllSelected = function (checkin) {
-	        window.checkin = checkin;
-	    };
-
-	    $scope.isSelectAll = function () {
-	        $scope.checkins.forEach(function (checkin) {
-	            checkin.selected = true;
-	        });
-	    };
-
-	    $scope.selectAll = true;
+	  $scope.selectAll = true;
 	};
 
 	exports.default = managerCheckinsCtrl;
