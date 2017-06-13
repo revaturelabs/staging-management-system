@@ -1,4 +1,4 @@
-const managerCtrl = ($scope, $state, $location, $http) => {
+const managerCtrl = ($scope, $state, $location, $http, userService) => {
 	$http({
 		method: 'GET',
 		url: '/login/isManager',
