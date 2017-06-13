@@ -5,6 +5,11 @@
     flex-direction: row;
 }
 
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
 .footer-line {
     width: 90%;
     border-color: rgba(55, 71, 79, 0.75);

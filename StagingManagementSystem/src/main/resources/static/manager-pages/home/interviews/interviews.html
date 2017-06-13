@@ -53,7 +53,7 @@
           <div class="interview-status-label">Status: </div>
           <select class="manager-input" ng-model="interviewSideTable.interview.interviewStatus" ng-options="status as status.value for status in interviewStatuses">
             <option value=""></option>
-          </select><br>
+          </select>
         </div>
         <div style="height:0.3em"></div>
         <div class="update-message" ng-show="edit && requestMade" ng-bind="updateMessage" ng-style="updateMessageStyle"></div>

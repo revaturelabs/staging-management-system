@@ -46899,6 +46899,18 @@
 	    $http.get("checkin/allTodays").then(function (result) {
 	        $scope.checkins = result.data;
 	    });
+
+	    $scope.checkIfAllSelected = function (checkin) {
+	        window.checkin = checkin;
+	    };
+
+	    $scope.isSelectAll = function () {
+	        $scope.checkins.forEach(function (checkin) {
+	            checkin.selected = true;
+	        });
+	    };
+
+	    $scope.selectAll = true;
 	};
 
 	exports.default = managerCheckinsCtrl;
@@ -46958,7 +46970,7 @@
 	  $scope.updateInterview = function () {
 	    $scope.requestMade = true;
 	    $scope.updateMessage = 'Attempting to update interview';
-	    $scope.updateMessageStyle = { color: 'white' };
+	    $scope.updateMessageStyle = { color: 'black' };
 	    $scope.interviewSideTable.interview.scheduled = moment($scope.interviewSideTable.interview.scheduled).toDate();
 	    $http.put('interviews', $scope.interviewSideTable.interview).then(function () {
 	      $scope.updateMessage = 'Successfully updated interview';
@@ -46997,54 +47009,71 @@
 	  value: true
 	});
 	var batchCtrl = function batchCtrl($scope, $http) {
-	  console.log('starting');
+	  window.scope = $scope;
+	  $('#datetimepicker1').datetimepicker();
+	  $('#datetimepicker2').datetimepicker();
 
-	  $(function () {
-	    $('#datetimepicker1').datetimepicker();
-	  });
-
-	  $(function () {
-	    $('#datetimepicker2').datetimepicker();
-	  });
-
-	  $http.get('batchtype/all.json').then(function (response) {
-	    // console.log(response.data[0].id)
-	    console.log(response);
-	    $scope.posts2 = response;
+	  $http.get('batchtype/all').then(function (response) {
+	    $scope.batchTypes = response.data;
 	  }, function () {
-	    console.log("failure");
+	    console.log('failure');
 	  });
 
-	  $http.get('location/all.json').then(function (response) {
-	    $scope.posts = response;
+	  $http.get('location/all').then(function (response) {
+	    $scope.locations = response.data;
 	  }, function () {
-	    console.log("failure");
+	    console.log('failure');
 	  });
 
 	  $scope.submit = function () {
+	    $scope.requestMade = true;
+	    $scope.createMessage = 'Attempting to create batch';
+	    $scope.createMessageStyle = { color: 'black' };
 
-	    var item = JSON.stringify($scope.batch);
-	    console.log(item);
-	    console.log($scope.batch.startDate);
-	    var now = new Date($scope.batch.startDate).toISOString();
-	    $scope.batch.startDate = now;
-	    var now2 = new Date($scope.batch.endDate).toISOString();
-	    $scope.batch.endDate = now2;
-	    console.log(now);
-	    //var now_utc = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(),  now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
-	    var str = item.replace(/\\/g, '');
-	    var str2 = str.replace('"{', '{');
-	    var str3 = str2.replace('}"', '}');
-	    var str4 = str3.replace('"{', '{');
-	    var str5 = str4.replace('}"', '}');
-	    var str6 = str5.replace('"{', '{');
-	    var str7 = str6.replace('}"', '}');
-	    console.log(str7);
-	    $http.post('/batch', str7).then(function (response) {
-	      console.log("success");
-	      console.log(response);
+	    $scope.batch.startDate = moment($scope.batch.startDate).toDate();
+	    $scope.batch.endDate = moment($scope.batch.endDate).toDate();
+
+	    $http.post('/batch', JSON.stringify($scope.batch)).then(function (response) {
+	      $scope.createMessage = 'Successfully created batch';
+	      $scope.createMessageStyle = { color: 'green' };
 	    }, function () {
-	      console.log("failure");
+	      $scope.createMessage = 'Failed to create batch';
+	      $scope.createMessageStyle = { color: 'red' };
+	    });
+	  };
+	  $scope.openNewBatchTypeForm = function () {
+	    $scope.newBatchTypeShow = true;
+	    $scope.newBatchType = {};
+	    $scope.newBatchType.skills = [];
+
+	    $scope.addSkill = function (newBatchTypeSkill) {
+	      if (!newBatchTypeSkill) {
+	        return;
+	      }
+	      if ($scope.newBatchType.skills.filter(function (skill) {
+	        return skill.value.toUpperCase() === newBatchTypeSkill.toUpperCase();
+	      }).length === 0) {
+	        $scope.newBatchType.skills.push({ value: newBatchTypeSkill });
+	      }
+	      $scope.newBatchTypeSkill = '';
+	    };
+	    $scope.removeSkill = function (skill) {
+	      $scope.newBatchType.skills = $scope.newBatchType.skills.filter(function (skl) {
+	        return skill.value != skl.value;
+	      });
+	    };
+	  };
+	  $scope.addBatchType = function (batchType) {
+	    $scope.batchTypeRequestMade = true;
+	    $scope.addBatchTypeMessage = 'Attempting to create batch type';
+	    $scope.addBatchTypeMessageStyle = { color: 'black' };
+	    $http.post('batchtype', batchType).then(function (response) {
+	      $scope.addBatchTypeMessage = 'Successfully created batch type';
+	      $scope.addBatchTypeMessageStyle = { color: 'green' };
+	      $scope.batchTypes.push(response.data);
+	    }, function () {
+	      $scope.addBatchTypeMessage = 'Failed to create batch type';
+	      $scope.addBatchTypeMessageStyle = { color: 'red' };
 	    });
 	  };
 	};
@@ -47055,23 +47084,27 @@
 /* 98 */
 /***/ (function(module, exports) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	var clientCtrl = function clientCtrl($scope, $http) {
+	  // $scope.requestMade = false;
 	  $scope.submit = function () {
+	    $scope.requestMade = true;
+	    $scope.createMessage = 'Attempting to create client';
+	    $scope.createMessageStyle = { color: 'black' };
 	    var item = JSON.stringify($scope.client);
-	    console.log(item);
-	    $http.post('/client', item).then(function (response) {
-	      console.log("success");
+	    $http.post('/client', item).then(function () {
+	      $scope.createMessage = 'Successfully created client';
+	      $scope.createMessageStyle = { color: 'green' };
 	    }, function () {
-	      console.log("failure");
+	      $scope.createMessage = 'Failed to create client';
+	      $scope.createMessageStyle = { color: 'red' };
 	    });
 	  };
 	};
-
 	exports.clientCtrl = clientCtrl;
 
 /***/ }),
@@ -47091,21 +47124,27 @@
 	  });
 
 	  $scope.submit = function () {
-	    var item = JSON.stringify($scope.user);
+	    $scope.requestMade = true;
+	    $scope.createMessage = 'Attempting to create client';
+	    $scope.createMessageStyle = { color: 'black' };
 
 	    //need 2 different post requests for manager and associate
 	    if ($scope.user.type == 'associate') {
-	      $http.post('/associate', item).then(function (response) {
-	        console.log('success');
+	      $http.post('/associate', $scope.user).then(function (response) {
+	        $scope.createMessage = 'Successfully created client';
+	        $scope.createMessageStyle = { color: 'green' };
 	      }, function () {
-	        console.log('failure');
+	        $scope.createMessage = 'Failed to create client';
+	        $scope.createMessageStyle = { color: 'red' };
 	      });
 	    };
 	    if ($scope.user.type == 'manager') {
-	      $http.post('/manager', item).then(function (response) {
-	        console.log('success');
+	      $http.post('/manager', $scope.user).then(function (response) {
+	        $scope.createMessage = 'Successfully created client';
+	        $scope.createMessageStyle = { color: 'green' };
 	      }, function () {
-	        console.log('failure');
+	        $scope.createMessage = 'Failed to create client';
+	        $scope.createMessageStyle = { color: 'red' };
 	      });
 	    };
 	  };
@@ -47293,6 +47332,13 @@
 	      $('#additionalSkillsModal').modal('hide');
 	    });
 	  };
+
+	  $scope.associateHasNoSkills = function () {
+	    if ($scope.associate === undefined) {
+	      return true;
+	    }
+	    return $scope.associate.batch.batchType.skills.concat($scope.associate.skills).length === 0;
+	  };
 	};
 
 	exports.default = profileCtrl;
@@ -47306,7 +47352,6 @@
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
-
 	var associateInterviewCtrl = function associateInterviewCtrl($scope, $http, userService) {
 		var addInterviewBtn = document.getElementById('addInterviewBtn');
 
@@ -47318,7 +47363,7 @@
 		$("#datetimepicker1").on("dp.change", function () {
 			$scope.selectedDate = $("#datetimepicker1").val();
 		});
-		//
+
 		$http({
 			method: 'GET',
 			url: '/client/all'
@@ -47327,6 +47372,14 @@
 			$scope.clients.sort(function (pre, cur) {
 				return pre.name.localeCompare(cur.name);
 			});
+		});
+
+		$http({
+			method: 'GET',
+			url: '/interviewStatus/all'
+		}).then(function (response) {
+			console.log(response);
+			$scope.interviewStatuses = response.data;
 		});
 
 		$http({
@@ -47340,12 +47393,8 @@
 			console.log(response.data);
 		});
 
-		//	$scope.errorMsgShow = true;
-		//	$scope.successMsgShow = true;
-
 		$scope.addInterviewClick = function () {
-			addInterviewBtn.disabled = true;
-			addInterviewBtn.innerHTML = 'Adding...';
+
 			$scope.errorMsgShow = false;
 			$scope.successMsgShow = false;
 
@@ -47357,6 +47406,8 @@
 				$scope.errorMsgShow = true;
 			} else {
 				var newDate = moment($scope.selectedDate).toDate();
+				addInterviewBtn.disabled = true;
+				addInterviewBtn.innerHTML = 'Adding...';
 				$http({
 					method: 'POST',
 					url: '/interviews',
@@ -47377,6 +47428,15 @@
 					});
 				});
 			}
+		};
+
+		$scope.interviewClick = function (interview) {
+			console.log(interview);
+			$scope.clickedInterview = interview;
+			for (var i = 0; i < $scope.interviewStatuses.length; i++) {
+				if ($scope.interviewStatuses[i].value === interview.interviewStatus.value) $scope.modalStatus = $scope.interviewStatuses[i];
+			}
+			$('#interviewModal').modal('show');
 		};
 	};
 

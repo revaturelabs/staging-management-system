@@ -46,15 +46,18 @@ public class Interview implements SmsValidatable {
         super();
     }
 
-    public Interview(Associate associate, Client client, Marketer marketer, InterviewStatuses interviewStatus, LocalDateTime scheduled) {
-        this.associate = associate;
-        this.client = client;
-        this.marketer = marketer;
-        this.interviewStatus = interviewStatus;
-        this.scheduled = scheduled;
-    }
+    public Interview(long id, Associate associate, Client client, Marketer marketer, InterviewStatuses interviewStatus,
+			LocalDateTime scheduled) {
+		super();
+		this.id = id;
+		this.associate = associate;
+		this.client = client;
+		this.marketer = marketer;
+		this.interviewStatus = interviewStatus;
+		this.scheduled = scheduled;
+	}
 
-    public long getId() {
+	public long getId() {
         return id;
     }
 
@@ -113,7 +116,6 @@ public class Interview implements SmsValidatable {
         if (id != interview.id) return false;
         if (!associate.equals(interview.associate)) return false;
         if (!client.equals(interview.client)) return false;
-        if (!marketer.equals(interview.marketer)) return false;
         if (!interviewStatus.equals(interview.interviewStatus)) return false;
         return scheduled != null ? scheduled.equals(interview.scheduled) : interview.scheduled == null;
     }
@@ -123,7 +125,6 @@ public class Interview implements SmsValidatable {
         int result = (int) (id ^ (id >>> 32));
         result = 31 * result + associate.hashCode();
         result = 31 * result + client.hashCode();
-        result = 31 * result + marketer.hashCode();
         result = 31 * result + interviewStatus.hashCode();
         result = 31 * result + (scheduled != null ? scheduled.hashCode() : 0);
         return result;
