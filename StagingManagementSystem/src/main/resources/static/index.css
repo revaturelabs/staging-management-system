@@ -37,10 +37,6 @@ body{
     overflow-y:scroll;
 }
 
-.navbar{
-    padding:0.5em;
-}
-
 .navbar-brand
 {
     position: absolute;
