@@ -50,16 +50,16 @@ const batchCtrl = ($scope, $http) => {
     }
   }
   $scope.addBatchType = (batchType) => {
-    $scope.requestMade = true;
-    $scope.updateMessage = 'Attempting to update interview';
-    $scope.updateMessageStyle = { color: 'black' };
+    $scope.batchTypeRequestMade = true;
+    $scope.addBatchTypeMessage = 'Attempting to create batch type';
+    $scope.addBatchTypeMessageStyle = { color: 'black' };
     $http.post('batchtype', batchType).then((response) => {
-      $scope.updateMessage = 'Successfully updated interview';
-      $scope.updateMessageStyle = { color: 'green' };
+      $scope.addBatchTypeMessage = 'Successfully created batch type';
+      $scope.addBatchTypeMessageStyle = { color: 'green' };
       $scope.batchTypes.push(response.data)
     }, () => {
-      $scope.updateMessage = 'Failed to update interview';
-      $scope.updateMessageStyle = { color: 'red' };
+      $scope.addBatchTypeMessage = 'Failed to create batch type';
+      $scope.addBatchTypeMessageStyle = { color: 'red' };
     })
   }
 };
