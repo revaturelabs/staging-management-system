@@ -15,10 +15,10 @@ import com.revature.repositories.SkillRepo;
 public class BatchTypeServiceImpl implements BatchTypeService {
 
 	@Autowired
-	BatchTypeRepo batchTypeRepo;
+	private BatchTypeRepo batchTypeRepo;
 
 	@Autowired
-	SkillRepo skillRepo;
+	private SkillRepo skillRepo;
 
 	public BatchTypeServiceImpl(BatchTypeRepo batchTypeRepo, SkillRepo skillRepo) {
 		super();
@@ -41,7 +41,7 @@ public class BatchTypeServiceImpl implements BatchTypeService {
 
 	@Override
 	public Set<BatchType> getAll() {
-		return new HashSet<BatchType>(batchTypeRepo.findAll());
+		return new HashSet<>(batchTypeRepo.findAll());
 	}
 
 	@Override

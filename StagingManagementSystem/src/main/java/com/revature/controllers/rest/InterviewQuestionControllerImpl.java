@@ -24,10 +24,12 @@ import com.revature.services.InterviewQuestionService;
 public class InterviewQuestionControllerImpl {
 
 	@Autowired
-	InterviewQuestionService interviewQuestionService;
+	private InterviewQuestionService interviewQuestionService;
 
 	@Autowired
-	BatchTypeService batchTypeService;
+	private BatchTypeService batchTypeService;
+
+	private static final int probContainer = 100000;
 	
 	public InterviewQuestionControllerImpl(InterviewQuestionService interviewQuestionService) {
 		super();
@@ -38,13 +40,12 @@ public class InterviewQuestionControllerImpl {
 	public void addInterviewQuestion(@RequestBody InterviewQuestion interviewQ) {
 		interviewQuestionService.add(interviewQ);
 	}
-	
-	  int probContainer = 100000;
+
 	 @PostMapping("/add/all")
 	  public void addMockInterviewQuestion(@RequestBody Set<InterviewQuestion> interviewQs) {
 	   
 	   Set<BatchType> batches = batchTypeService.getAll();
-	   ArrayList<BatchType> batchList = new ArrayList<BatchType>(batches);
+	   ArrayList<BatchType> batchList = new ArrayList<>(batches);
 	   Random r = new Random();
 	   for(InterviewQuestion iq : interviewQs)
 	   {

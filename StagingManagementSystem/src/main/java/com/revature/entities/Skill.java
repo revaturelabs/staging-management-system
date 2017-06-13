@@ -9,7 +9,6 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.revature.config.SmsSettings;
 import com.revature.exceptions.SmsCustomException;
 import com.revature.markers.SmsValidatable;
 

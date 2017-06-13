@@ -21,11 +21,9 @@ import javax.persistence.Table;
 
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters.LocalDateTimeConverter;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
-import com.revature.config.SmsSettings;
 import com.revature.exceptions.SmsCustomException;
 import com.revature.markers.SmsValidatable;
 
@@ -33,8 +31,6 @@ import com.revature.markers.SmsValidatable;
 @Table(name = "BATCHES")
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Batch implements SmsValidatable {
-
-	transient private static SmsSettings settings = SmsSettings.getInstance();
 
 	@Id
 	@Column(name = "BATCH_ID")
@@ -68,8 +64,8 @@ public class Batch implements SmsValidatable {
 
 	public Batch() {
 		super();
-		this.trainers = new HashSet<Trainer>();
-		this.associates = new HashSet<Associate>();
+		this.trainers = new HashSet<>();
+		this.associates = new HashSet<>();
 	}
 
 	public Batch(long id, BatchType batchType, LocalDateTime startDate, LocalDateTime endDate, Location location,
@@ -154,7 +150,7 @@ public class Batch implements SmsValidatable {
 	  }
 	
 	@Override
-	final public boolean equals(Object obj) {
+	public final boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
