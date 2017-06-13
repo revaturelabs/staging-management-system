@@ -23,6 +23,7 @@ import { loginCtrl } from './login/login';
 import { employedCtrl } from './reports/employed'
 import { barCtrl } from './reports/barGraph';
 import { attendanceBarGraphCtrl } from './reports/attendance/attendanceBarGraph';
+import { pie2DCtrl } from './reports/piegraph2D';
 
 require('fusioncharts/fusioncharts.charts')(FusionCharts);
 console.log();
@@ -174,7 +175,12 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       url: '/barGraph',
       templateUrl: 'reports/barGraph.html',
       controller: barCtrl,
-    });
+    })
+    .state('reports.piegraph2D', {
+    	url: '/piegraph2D',
+    	templateUrl: 'reports/piegraph2D.html',
+    	controller: pie2DCtrl,
+    })
 });
 
 console.log();
