@@ -1,7 +1,6 @@
 package com.revature.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.revature.config.SmsSettings;
 import com.revature.exceptions.SmsCustomException;
 import com.revature.markers.SmsValidatable;
 import com.revature.util.LocalDateTimeConverter;
@@ -13,8 +12,6 @@ import java.time.LocalDateTime;
 @Table(name = "INTERVIEWS")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Interview implements SmsValidatable {
-
-    transient private static SmsSettings settings = SmsSettings.getInstance();
 
     @Id
     @Column(name = "INTERVIEW_ID")
@@ -117,25 +114,29 @@ public class Interview implements SmsValidatable {
 	}
 
 	@Override
-    final public boolean equals(Object o) {
+    public final boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Interview)) return false;
 
         Interview interview = (Interview) o;
 
-        if (id != interview.id) return false;
-        if (!associate.equals(interview.associate)) return false;
-        if (!client.equals(interview.client)) return false;
-        if (!interviewStatus.equals(interview.interviewStatus)) return false;
+        if (id != interview.id)
+            return false;
+        if (!associate.equals(interview.associate))
+            return false;
+        if (!client.equals(interview.client))
+            return false;
+        if (!interviewStatus.equals(interview.interviewStatus))
+            return false;
         return scheduled != null ? scheduled.equals(interview.scheduled) : interview.scheduled == null;
     }
 
     @Override
     public int hashCode() {
         int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + associate.hashCode();
-        result = 31 * result + client.hashCode();
-        result = 31 * result + interviewStatus.hashCode();
+        result = 31 * result + (associate != null ? associate.hashCode() : 0);
+        result = 31 * result + (client != null ? client.hashCode() : 0);
+        result = 31 * result + (interviewStatus != null ? interviewStatus.hashCode() : 0);
         result = 31 * result + (scheduled != null ? scheduled.hashCode() : 0);
         return result;
     }

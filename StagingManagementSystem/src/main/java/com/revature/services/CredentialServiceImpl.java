@@ -31,12 +31,12 @@ public class CredentialServiceImpl implements CredentialService {
 
 	@Override
 	public void add(Credential credential) {
-		credential = credentialRepo.saveAndFlush(credential);
+		credentialRepo.saveAndFlush(credential);
 	}
 
 	@Override
 	public Set<Credential> getAll() {
-		return new HashSet<Credential>(credentialRepo.findAll());
+		return new HashSet<>(credentialRepo.findAll());
 	}
 
 	@Override
@@ -51,7 +51,7 @@ public class CredentialServiceImpl implements CredentialService {
 
 	@Override
 	public void update(Credential credential) {
-		credential = credentialRepo.saveAndFlush(credential);
+		credentialRepo.saveAndFlush(credential);
 	}
 
 	@Override
