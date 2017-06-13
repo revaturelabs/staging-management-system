@@ -26,8 +26,16 @@ const associateInterviewCtrl = ($scope, $http, userService) => {
 		url: '/interviewStatus/all',
 	})
 	.then((response) => {
-		console.log(response)
 		$scope.interviewStatuses = response.data;
+	});
+	
+	$http ({
+		method: 'GET',
+		url: '/marketer/all',
+	})
+	.then((response) => {
+		console.log(response)
+		$scope.marketers = response.data;
 	});
 
 	$http ({
@@ -57,6 +65,10 @@ const associateInterviewCtrl = ($scope, $http, userService) => {
 			$scope.errorMsg = 'Please select a Date.';
       $scope.errorMsgShow = true;
 		}
+		else if($scope.selectedDate == undefined) {
+			$scope.errorMsg = 'Please select a Marketer.';
+      $scope.errorMsgShow = true;
+		}
 		else {
 			let newDate = moment($scope.selectedDate).toDate();
 			addInterviewBtn.disabled = true;
@@ -64,7 +76,7 @@ const associateInterviewCtrl = ($scope, $http, userService) => {
 			$http({
 				method: 'POST',
 				url: '/interviews',
-				data: { associate: userService.getUser(), client: $scope.selectedClient, scheduled: newDate},
+				data: { associate: userService.getUser(), client: $scope.selectedClient, scheduled: newDate, marketer: $scope.selectedMarketer},
 			})
 			.then((response) => {
 				$scope.successMsgShow = true;
@@ -85,12 +97,19 @@ const associateInterviewCtrl = ($scope, $http, userService) => {
 		}
 	}
 	
+	$scope.showAddModal = function() {
+		$('#addModal').modal('show');
+	}
+	
 	$scope.interviewClick = function(interview) {
-		console.log(interview)
 		$scope.clickedInterview = interview;
 		for(let i=0;i<$scope.interviewStatuses.length;i++) {
 			if($scope.interviewStatuses[i].value === interview.interviewStatus.value)
 				$scope.modalStatus = $scope.interviewStatuses[i];
+		}
+		for(let i=0;i<$scope.marketers.length;i++) {
+			if($scope.marketers[i].name === interview.marketer.name)
+				$scope.modalMarketer = $scope.marketers[i];
 		}
 		$('#interviewModal').modal('show');
 	}

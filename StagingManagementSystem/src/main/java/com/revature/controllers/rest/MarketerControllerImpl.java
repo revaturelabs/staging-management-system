@@ -16,6 +16,7 @@ public class MarketerControllerImpl {
 
     @GetMapping("/all")
     public ResponseEntity<Set<Marketer>> getEverythingDude(){
+    	System.out.println("here!");
         return ResponseEntity.ok(marketerService.getAllMarketers());
     }
 
