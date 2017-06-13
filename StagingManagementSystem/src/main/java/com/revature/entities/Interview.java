@@ -1,161 +1,151 @@
 package com.revature.entities;
 
-import java.time.LocalDateTime;
-
-import javax.persistence.Column;
-import javax.persistence.Convert;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.revature.config.SmsSettings;
 import com.revature.exceptions.SmsCustomException;
 import com.revature.markers.SmsValidatable;
 import com.revature.util.LocalDateTimeConverter;
 
+import javax.persistence.*;
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "INTERVIEWS")
-@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Interview implements SmsValidatable {
 
-	transient private static SmsSettings settings = SmsSettings.getInstance();
+    transient private static SmsSettings settings = SmsSettings.getInstance();
 
-	@Id
-	@Column(name = "INTERVIEW_ID")
-	@SequenceGenerator(name = "INTERVIEW_ID_SEQ", sequenceName = "INTERVIEW_ID_SEQ")
-	@GeneratedValue(generator = "INTERVIEW_ID_SEQ", strategy = GenerationType.SEQUENCE)
-	private long id;
+    @Id
+    @Column(name = "INTERVIEW_ID")
+    @SequenceGenerator(name = "INTERVIEW_ID_SEQ", sequenceName = "INTERVIEW_ID_SEQ")
+    @GeneratedValue(generator = "INTERVIEW_ID_SEQ", strategy = GenerationType.SEQUENCE)
+    private long id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "ASSOCIATE_ID")
-	private Associate associate;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ASSOCIATE_ID")
+    private Associate associate;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "CLIENT_ID")
-	private Client client;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "CLIENT_ID")
+    private Client client;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "INTERVIEW_STATUS_ID")
-	private InterviewStatuses interviewStatus;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "MARKETER_ID")
+    private Marketer marketer;
 
-	@Column(name = "INTERVIEW_TIME")
-	@Convert(converter = LocalDateTimeConverter.class)
-	private LocalDateTime scheduled;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "INTERVIEW_STATUS_ID")
+    private InterviewStatuses interviewStatus;
 
-	public Interview() {
-		super();
-	}
+    @Column(name = "INTERVIEW_TIME")
+    @Convert(converter = LocalDateTimeConverter.class)
+    private LocalDateTime scheduled;
 
-	public Interview(long id, Associate associate, Client client, InterviewStatuses interviewStatus,
+    public Interview() {
+        super();
+    }
+
+    public Interview(long id, Associate associate, Client client, Marketer marketer, InterviewStatuses interviewStatus,
 			LocalDateTime scheduled) {
 		super();
 		this.id = id;
 		this.associate = associate;
 		this.client = client;
+		this.marketer = marketer;
 		this.interviewStatus = interviewStatus;
 		this.scheduled = scheduled;
 	}
 
 	public long getId() {
-		return id;
-	}
+        return id;
+    }
 
-	public void setId(long id) {
-		this.id = id;
-	}
+    public void setId(long id) {
+        this.id = id;
+    }
 
-	public Associate getAssociate() {
-		return associate;
-	}
+    public Associate getAssociate() {
+        return associate;
+    }
 
-	public void setAssociate(Associate associate) {
-		this.associate = associate;
-	}
+    public void setAssociate(Associate associate) {
+        this.associate = associate;
+    }
 
-	public Client getClient() {
-		return client;
-	}
+    public Client getClient() {
+        return client;
+    }
 
-	public void setClient(Client client) {
-		this.client = client;
-	}
+    public void setClient(Client client) {
+        this.client = client;
+    }
 
-	public InterviewStatuses getInterviewStatus() {
-		return interviewStatus;
-	}
+    public Marketer getMarketer() {
+        return marketer;
+    }
 
-	public void setInterviewStatus(InterviewStatuses interviewStatus) {
-		this.interviewStatus = interviewStatus;
-	}
+    public void setMarketer(Marketer marketer) {
+        this.marketer = marketer;
+    }
 
-	public LocalDateTime getScheduled() {
-		return scheduled;
-	}
+    public InterviewStatuses getInterviewStatus() {
+        return interviewStatus;
+    }
 
-	public void setScheduled(LocalDateTime scheduled) {
-		this.scheduled = scheduled;
-	}
+    public void setInterviewStatus(InterviewStatuses interviewStatus) {
+        this.interviewStatus = interviewStatus;
+    }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((associate == null) ? 0 : associate.hashCode());
-		result = prime * result + ((client == null) ? 0 : client.hashCode());
-		result = prime * result + ((interviewStatus == null) ? 0 : interviewStatus.hashCode());
-		result = prime * result + ((scheduled == null) ? 0 : scheduled.hashCode());
-		return result;
-	}
+    public LocalDateTime getScheduled() {
+        return scheduled;
+    }
 
-	@Override
-	final public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (!(obj instanceof Interview))
-			return false;
-		Interview other = (Interview) obj;
-		if (associate == null) {
-			if (other.associate != null)
-				return false;
-		} else if (!associate.equals(other.associate))
-			return false;
-		if (client == null) {
-			if (other.client != null)
-				return false;
-		} else if (!client.equals(other.client))
-			return false;
-		if (interviewStatus == null) {
-			if (other.interviewStatus != null)
-				return false;
-		} else if (!interviewStatus.equals(other.interviewStatus))
-			return false;
-		if (scheduled == null) {
-			if (other.scheduled != null)
-				return false;
-		} else if (!scheduled.equals(other.scheduled))
-			return false;
-		return true;
-	}
+    public void setScheduled(LocalDateTime scheduled) {
+        this.scheduled = scheduled;
+    }
 
-	@Override
-	public String toString() {
-		return "Interview [id=" + id + ", associate=" + associate + ", client=" + client + ", interviewStatus="
-				+ interviewStatus + ", scheduled=" + scheduled + "]";
-	}
 
-	@Override
-	public void validate() throws SmsCustomException {
-		// TODO Validate your members.
+    @Override
+    final public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Interview)) return false;
 
-	}
+        Interview interview = (Interview) o;
+
+        if (id != interview.id) return false;
+        if (!associate.equals(interview.associate)) return false;
+        if (!client.equals(interview.client)) return false;
+        if (!interviewStatus.equals(interview.interviewStatus)) return false;
+        return scheduled != null ? scheduled.equals(interview.scheduled) : interview.scheduled == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + associate.hashCode();
+        result = 31 * result + client.hashCode();
+        result = 31 * result + interviewStatus.hashCode();
+        result = 31 * result + (scheduled != null ? scheduled.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Interview{" +
+                "id=" + id +
+                ", associate=" + associate +
+                ", client=" + client +
+                ", marketer=" + marketer +
+                ", interviewStatus=" + interviewStatus +
+                ", scheduled=" + scheduled +
+                '}';
+    }
+
+    @Override
+    public void validate() throws SmsCustomException {
+        // TODO Validate your members.
+
+    }
 
 }

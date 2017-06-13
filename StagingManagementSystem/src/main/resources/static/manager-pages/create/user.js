@@ -7,21 +7,27 @@ const userCtrl = ($scope, $http) => {
     });
 
   $scope.submit = () => {
-  	let item = JSON.stringify($scope.user);
-    
+    $scope.requestMade = true;
+    $scope.createMessage = 'Attempting to create client';
+    $scope.createMessageStyle = { color: 'black' };
+
   	//need 2 different post requests for manager and associate
   	if ($scope.user.type == 'associate'){
-    	$http.post('/associate', item).then( (response) => {
-    		console.log('success')
+    	$http.post('/associate', $scope.user).then((response) => {
+        $scope.createMessage = 'Successfully created client';
+        $scope.createMessageStyle = { color: 'green' };
     	}, () => {
-    		console.log('failure')
+        $scope.createMessage = 'Failed to create client';
+        $scope.createMessageStyle = { color: 'red' };
     	})
     };
   	if ($scope.user.type == 'manager'){
-    	$http.post('/manager', item).then( (response) => {
-    		console.log('success')
+    	$http.post('/manager', $scope.user).then( (response) => {
+        $scope.createMessage = 'Successfully created client';
+        $scope.createMessageStyle = { color: 'green' };
     	}, () => {
-    		console.log('failure')
+        $scope.createMessage = 'Failed to create client';
+        $scope.createMessageStyle = { color: 'red' };
     	})
     };
   };

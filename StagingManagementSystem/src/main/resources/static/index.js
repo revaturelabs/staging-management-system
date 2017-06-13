@@ -88,17 +88,23 @@
 
 	var _user = __webpack_require__(99);
 
+<<<<<<< HEAD:StagingManagementSystem/src/main/resources/static/bundle.js
 	var _location = __webpack_require__(229);
 
 	var _associates = __webpack_require__(100);
+=======
+	var _location = __webpack_require__(100);
+
+	var _associates = __webpack_require__(101);
+>>>>>>> 69022ae6e6e70fbd5c7c94e836afd1a5d04fb553:StagingManagementSystem/src/main/resources/static/index.js
 
 	var _associates2 = _interopRequireDefault(_associates);
 
-	var _profile = __webpack_require__(101);
+	var _profile = __webpack_require__(102);
 
 	var _profile2 = _interopRequireDefault(_profile);
 
-	var _interview = __webpack_require__(102);
+	var _interview = __webpack_require__(103);
 
 	var _interview2 = _interopRequireDefault(_interview);
 
@@ -151,7 +157,11 @@
 
 	  //Global Functions
 	  $rootScope.dateConverter = function (time) {
+<<<<<<< HEAD:StagingManagementSystem/src/main/resources/static/bundle.js
 	    return (0, _moment2.default)(time).format('MMM D, hh:mm a');
+=======
+	    return moment(time).format('MMM D, hh:mm a');
+>>>>>>> 69022ae6e6e70fbd5c7c94e836afd1a5d04fb553:StagingManagementSystem/src/main/resources/static/index.js
 	  };
 	});
 
@@ -46898,6 +46908,7 @@
 	 * Created by colts on 6/8/2017.
 	 */
 	var managerCheckinsCtrl = function managerCheckinsCtrl($scope, $http) {
+<<<<<<< HEAD:StagingManagementSystem/src/main/resources/static/bundle.js
 	  console.log("started");
 
 	  $http.get("checkin/allTodays").then(function (result) {
@@ -46907,14 +46918,32 @@
 	  $scope.checkIfAllSelected = function (checkin) {
 	    window.checkin = checkin;
 	  };
+=======
+	    console.log("started");
+>>>>>>> 69022ae6e6e70fbd5c7c94e836afd1a5d04fb553:StagingManagementSystem/src/main/resources/static/index.js
 
 	  $scope.isSelectAll = function () {
 	    $scope.checkins.forEach(function (checkin) {
 	      checkin.selected = true;
 	    });
+<<<<<<< HEAD:StagingManagementSystem/src/main/resources/static/bundle.js
 	  };
 
 	  $scope.selectAll = true;
+=======
+
+	    $scope.checkIfAllSelected = function (checkin) {
+	        window.checkin = checkin;
+	    };
+
+	    $scope.isSelectAll = function () {
+	        $scope.checkins.forEach(function (checkin) {
+	            checkin.selected = true;
+	        });
+	    };
+
+	    $scope.selectAll = true;
+>>>>>>> 69022ae6e6e70fbd5c7c94e836afd1a5d04fb553:StagingManagementSystem/src/main/resources/static/index.js
 	};
 
 	exports.default = managerCheckinsCtrl;
@@ -46974,7 +47003,11 @@
 	  $scope.updateInterview = function () {
 	    $scope.requestMade = true;
 	    $scope.updateMessage = 'Attempting to update interview';
+<<<<<<< HEAD:StagingManagementSystem/src/main/resources/static/bundle.js
 	    $scope.updateMessageStyle = { color: 'white' };
+=======
+	    $scope.updateMessageStyle = { color: 'black' };
+>>>>>>> 69022ae6e6e70fbd5c7c94e836afd1a5d04fb553:StagingManagementSystem/src/main/resources/static/index.js
 	    $scope.interviewSideTable.interview.scheduled = moment($scope.interviewSideTable.interview.scheduled).toDate();
 	    $http.put('interviews', $scope.interviewSideTable.interview).then(function () {
 	      $scope.updateMessage = 'Successfully updated interview';
@@ -47013,12 +47046,11 @@
 	  value: true
 	});
 	var batchCtrl = function batchCtrl($scope, $http) {
-	  console.log('starting');
+	  window.scope = $scope;
+	  $('#datetimepicker1').datetimepicker();
+	  $('#datetimepicker2').datetimepicker();
 
-	  $(function () {
-	    $('#datetimepicker1').datetimepicker();
-	  });
-
+<<<<<<< HEAD:StagingManagementSystem/src/main/resources/static/bundle.js
 	  $(function () {
 	    $('#datetimepicker2').datetimepicker();
 	  });
@@ -47027,17 +47059,22 @@
 	    // console.log(response.data[0].id)
 	    console.log(response);
 	    $scope.posts2 = response;
+=======
+	  $http.get('batchtype/all').then(function (response) {
+	    $scope.batchTypes = response.data;
+>>>>>>> 69022ae6e6e70fbd5c7c94e836afd1a5d04fb553:StagingManagementSystem/src/main/resources/static/index.js
 	  }, function () {
-	    console.log("failure");
+	    console.log('failure');
 	  });
 
-	  $http.get('location/all.json').then(function (response) {
-	    $scope.posts = response;
+	  $http.get('location/all').then(function (response) {
+	    $scope.locations = response.data;
 	  }, function () {
-	    console.log("failure");
+	    console.log('failure');
 	  });
 
 	  $scope.submit = function () {
+<<<<<<< HEAD:StagingManagementSystem/src/main/resources/static/bundle.js
 
 	    var item = JSON.stringify($scope.batch);
 	    console.log(item);
@@ -47059,8 +47096,56 @@
 	    $http.post('/batch', str7).then(function (response) {
 	      console.log("success");
 	      console.log(response);
+=======
+	    $scope.requestMade = true;
+	    $scope.createMessage = 'Attempting to create batch';
+	    $scope.createMessageStyle = { color: 'black' };
+
+	    $scope.batch.startDate = moment($scope.batch.startDate).toDate();
+	    $scope.batch.endDate = moment($scope.batch.endDate).toDate();
+
+	    $http.post('/batch', JSON.stringify($scope.batch)).then(function (response) {
+	      $scope.createMessage = 'Successfully created batch';
+	      $scope.createMessageStyle = { color: 'green' };
+>>>>>>> 69022ae6e6e70fbd5c7c94e836afd1a5d04fb553:StagingManagementSystem/src/main/resources/static/index.js
 	    }, function () {
-	      console.log("failure");
+	      $scope.createMessage = 'Failed to create batch';
+	      $scope.createMessageStyle = { color: 'red' };
+	    });
+	  };
+	  $scope.openNewBatchTypeForm = function () {
+	    $scope.newBatchTypeShow = true;
+	    $scope.newBatchType = {};
+	    $scope.newBatchType.skills = [];
+
+	    $scope.addSkill = function (newBatchTypeSkill) {
+	      if (!newBatchTypeSkill) {
+	        return;
+	      }
+	      if ($scope.newBatchType.skills.filter(function (skill) {
+	        return skill.value.toUpperCase() === newBatchTypeSkill.toUpperCase();
+	      }).length === 0) {
+	        $scope.newBatchType.skills.push({ value: newBatchTypeSkill });
+	      }
+	      $scope.newBatchTypeSkill = '';
+	    };
+	    $scope.removeSkill = function (skill) {
+	      $scope.newBatchType.skills = $scope.newBatchType.skills.filter(function (skl) {
+	        return skill.value != skl.value;
+	      });
+	    };
+	  };
+	  $scope.addBatchType = function (batchType) {
+	    $scope.batchTypeRequestMade = true;
+	    $scope.addBatchTypeMessage = 'Attempting to create batch type';
+	    $scope.addBatchTypeMessageStyle = { color: 'black' };
+	    $http.post('batchtype', batchType).then(function (response) {
+	      $scope.addBatchTypeMessage = 'Successfully created batch type';
+	      $scope.addBatchTypeMessageStyle = { color: 'green' };
+	      $scope.batchTypes.push(response.data);
+	    }, function () {
+	      $scope.addBatchTypeMessage = 'Failed to create batch type';
+	      $scope.addBatchTypeMessageStyle = { color: 'red' };
 	    });
 	  };
 	};
@@ -47071,23 +47156,27 @@
 /* 98 */
 /***/ (function(module, exports) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	var clientCtrl = function clientCtrl($scope, $http) {
+	  // $scope.requestMade = false;
 	  $scope.submit = function () {
+	    $scope.requestMade = true;
+	    $scope.createMessage = 'Attempting to create client';
+	    $scope.createMessageStyle = { color: 'black' };
 	    var item = JSON.stringify($scope.client);
-	    console.log(item);
-	    $http.post('/client', item).then(function (response) {
-	      console.log("success");
+	    $http.post('/client', item).then(function () {
+	      $scope.createMessage = 'Successfully created client';
+	      $scope.createMessageStyle = { color: 'green' };
 	    }, function () {
-	      console.log("failure");
+	      $scope.createMessage = 'Failed to create client';
+	      $scope.createMessageStyle = { color: 'red' };
 	    });
 	  };
 	};
-
 	exports.clientCtrl = clientCtrl;
 
 /***/ }),
@@ -47107,6 +47196,7 @@
 	  });
 
 	  $scope.submit = function () {
+<<<<<<< HEAD:StagingManagementSystem/src/main/resources/static/bundle.js
 	    var item = JSON.stringify($scope.user);
 
 	    //need 2 different post requests for manager and associate
@@ -47122,6 +47212,29 @@
 	        console.log('success');
 	      }, function () {
 	        console.log('failure');
+=======
+	    $scope.requestMade = true;
+	    $scope.createMessage = 'Attempting to create client';
+	    $scope.createMessageStyle = { color: 'black' };
+
+	    //need 2 different post requests for manager and associate
+	    if ($scope.user.type == 'associate') {
+	      $http.post('/associate', $scope.user).then(function (response) {
+	        $scope.createMessage = 'Successfully created client';
+	        $scope.createMessageStyle = { color: 'green' };
+	      }, function () {
+	        $scope.createMessage = 'Failed to create client';
+	        $scope.createMessageStyle = { color: 'red' };
+	      });
+	    };
+	    if ($scope.user.type == 'manager') {
+	      $http.post('/manager', $scope.user).then(function (response) {
+	        $scope.createMessage = 'Successfully created client';
+	        $scope.createMessageStyle = { color: 'green' };
+	      }, function () {
+	        $scope.createMessage = 'Failed to create client';
+	        $scope.createMessageStyle = { color: 'red' };
+>>>>>>> 69022ae6e6e70fbd5c7c94e836afd1a5d04fb553:StagingManagementSystem/src/main/resources/static/index.js
 	      });
 	    };
 	  };
@@ -47131,6 +47244,29 @@
 
 /***/ }),
 /* 100 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var locCtrl = function locCtrl($scope, $http) {
+	  $scope.submit = function () {
+	    var item = JSON.stringify($scope.location);
+	    console.log(item);
+	    $http.post('/location', item).then(function (response) {
+	      console.log("success");
+	    }, function () {
+	      console.log("failure");
+	    });
+	  };
+	};
+
+	exports.locCtrl = locCtrl;
+
+/***/ }),
+/* 101 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -47190,7 +47326,7 @@
 	exports.default = managerAdvancedAssociatesCtrl;
 
 /***/ }),
-/* 101 */
+/* 102 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -47298,7 +47434,11 @@
 	exports.default = profileCtrl;
 
 /***/ }),
+<<<<<<< HEAD:StagingManagementSystem/src/main/resources/static/bundle.js
 /* 102 */
+=======
+/* 103 */
+>>>>>>> 69022ae6e6e70fbd5c7c94e836afd1a5d04fb553:StagingManagementSystem/src/main/resources/static/index.js
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -47348,6 +47488,7 @@
 		});
 
 		$scope.addInterviewClick = function () {
+<<<<<<< HEAD:StagingManagementSystem/src/main/resources/static/bundle.js
 			$scope.errorMsgShow = false;
 			$scope.successMsgShow = false;
 
@@ -47383,6 +47524,44 @@
 			}
 		};
 
+=======
+
+			$scope.errorMsgShow = false;
+			$scope.successMsgShow = false;
+
+			if ($scope.selectedClient == undefined) {
+				$scope.errorMsg = 'Please select a Client.';
+				$scope.errorMsgShow = true;
+			} else if ($scope.selectedDate == undefined) {
+				$scope.errorMsg = 'Please select a Date.';
+				$scope.errorMsgShow = true;
+			} else {
+				var newDate = moment($scope.selectedDate).toDate();
+				addInterviewBtn.disabled = true;
+				addInterviewBtn.innerHTML = 'Adding...';
+				$http({
+					method: 'POST',
+					url: '/interviews',
+					data: { associate: userService.getUser(), client: $scope.selectedClient, scheduled: newDate }
+				}).then(function (response) {
+					$scope.successMsgShow = true;
+					addInterviewBtn.disabled = false;
+					addInterviewBtn.innerHTML = 'Add Interview';
+
+					$http({
+						method: 'GET',
+						url: 'interviews/associate/' + userService.getUser().id
+					}).then(function (response) {
+						$scope.associateInterviews = response.data;
+						$scope.associateInterviews.sort(function (a, b) {
+							return new Date(b.scheduled).getTime() - new Date(a.scheduled).getTime();
+						});
+					});
+				});
+			}
+		};
+
+>>>>>>> 69022ae6e6e70fbd5c7c94e836afd1a5d04fb553:StagingManagementSystem/src/main/resources/static/index.js
 		$scope.interviewClick = function (interview) {
 			console.log(interview);
 			$scope.clickedInterview = interview;
@@ -47410,6 +47589,7 @@
 	  var checkBtnDOM = document.getElementById('checkBtn');
 	  $scope.checkInBtn = 'Loading...';
 	  checkBtnDOM.disabled = true;
+<<<<<<< HEAD:StagingManagementSystem/src/main/resources/static/bundle.js
 
 	  if (authenticatedUser.id === undefined) {
 	    $state.go('login');
@@ -47446,6 +47626,44 @@
 	    });
 	  };
 
+=======
+
+	  if (authenticatedUser.id === undefined) {
+	    $state.go('login');
+	    return;
+	  }
+
+	  $http({
+	    method: 'GET',
+	    url: '/checkin'
+	  }).then(function (response) {
+	    if (response.data === true) {
+	      $scope.checkInBtn = 'Checked In';
+	      $scope.hasCheckedIn = true;
+	    } else {
+	      $scope.checkInBtn = 'Check In';
+	      checkBtnDOM.disabled = false;
+	    }
+	  });
+
+	  $scope.hasCheckedIn = false;
+	  $scope.isActive = function (viewLocation) {
+	    return viewLocation === $location.path();
+	  };
+
+	  $scope.checkIn = function () {
+	    $http({
+	      method: 'PUT',
+	      url: '/checkin'
+	    }).then(function (response) {
+	      if (response.data === true) {
+	        $scope.checkInBtn = 'Checked In';
+	        $scope.hasCheckedIn = true;
+	      }
+	    });
+	  };
+
+>>>>>>> 69022ae6e6e70fbd5c7c94e836afd1a5d04fb553:StagingManagementSystem/src/main/resources/static/index.js
 	  $scope.logout = function () {
 	    $http({
 	      method: 'GET',
