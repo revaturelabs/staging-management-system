@@ -1,5 +1,3 @@
-import dateformat from 'dateformat';
-
 const associateInterviewCtrl = ($scope, $http, userService) => {
 	const addInterviewBtn = document.getElementById('addInterviewBtn');
 	
@@ -22,6 +20,15 @@ const associateInterviewCtrl = ($scope, $http, userService) => {
 			return pre.name.localeCompare(cur.name);
 		});
 	});
+	
+	$http({
+		method: 'GET',
+		url: '/interviewStatus/all',
+	})
+	.then((response) => {
+		console.log(response)
+		$scope.interviewStatuses = response.data;
+	});
 
 	$http ({
 		method: 'GET',
@@ -35,12 +42,7 @@ const associateInterviewCtrl = ($scope, $http, userService) => {
 		console.log(response.data)
 	});
 
-//	$scope.errorMsgShow = true;
-//	$scope.successMsgShow = true;
-
 	$scope.addInterviewClick = function() {
-		addInterviewBtn.disabled = true;
-		addInterviewBtn.innerHTML = 'Adding...';
 		$scope.errorMsgShow = false;
 		$scope.successMsgShow = false;
 	
@@ -54,6 +56,8 @@ const associateInterviewCtrl = ($scope, $http, userService) => {
 		}
 		else {
 			let newDate = moment($scope.selectedDate).toDate();
+			addInterviewBtn.disabled = true;
+			addInterviewBtn.innerHTML = 'Adding...';
 			$http({
 				method: 'POST',
 				url: '/interviews',
@@ -76,6 +80,16 @@ const associateInterviewCtrl = ($scope, $http, userService) => {
 				});
 			});
 		}
+	}
+	
+	$scope.interviewClick = function(interview) {
+		console.log(interview)
+		$scope.clickedInterview = interview;
+		for(let i=0;i<$scope.interviewStatuses.length;i++) {
+			if($scope.interviewStatuses[i].value === interview.interviewStatus.value)
+				$scope.modalStatus = $scope.interviewStatuses[i];
+		}
+		$('#interviewModal').modal('show');
 	}
 };
 
