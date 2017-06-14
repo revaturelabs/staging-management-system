@@ -23,7 +23,7 @@ public class AssociateServiceImpl implements AssociateService {
 
 	@Autowired
 	private CredentialRepo credentialRepo;
-	
+
 	@Autowired
 	private SkillRepo skillRepo;
 
@@ -79,5 +79,10 @@ public class AssociateServiceImpl implements AssociateService {
 	@Override
 	public Set<Associate> getAllActive() {
 		return associateRepo.findAssociatesByActiveTrue();
+	}
+
+	@Override
+	public Set<Associate> haveNoBatch() {
+		return associateRepo.findByBatchIsNull();
 	}
 }

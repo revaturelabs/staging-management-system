@@ -1,6 +1,6 @@
 const batchCtrl = ($scope, $http) => {
   window.scope = $scope;
-  $scope.batch = {}
+  $scope.batch = {associates: []}
   $('#datetimepicker1').datetimepicker();
 	$('#datetimepicker2').datetimepicker();
 
@@ -20,6 +20,25 @@ const batchCtrl = ($scope, $http) => {
   		console.log('failure')
   	})
 
+  $http.get('associate/no-batch').then((response) => {
+		$scope.associates = response.data
+  	}, () => {
+  		console.log('failure')
+  	})
+
+  $scope.addAssociate = () => {
+    if(!$scope.selectedAssociate) {
+      return;
+    }
+    $scope.batch.associates.push($scope.selectedAssociate);
+    $scope.associates = $scope.associates.filter((associate) => associate.id !== $scope.selectedAssociate.id);
+  }
+
+  $scope.removeAssociate = (selected) => {
+    $scope.batch.associates = $scope.batch.associates.filter((associate) => associate.id !== selected.id)
+    $scope.associates.push(selected);
+  }
+
 
   $('#datetimepicker1').on('dp.change', () => {
     $scope.batch.startDate = $('#datetimepicker1').val();
@@ -36,7 +55,7 @@ const batchCtrl = ($scope, $http) => {
     $scope.createMessage = 'Attempting to create batch';
     $scope.createMessageStyle = { color: 'black' };
 
-    let batchCreation = JSON.parse(JSON.stringify($scope.batch))
+    const batchCreation = JSON.parse(JSON.stringify($scope.batch))
 		batchCreation.startDate = moment($scope.batch.startDate).toDate();
 		batchCreation.endDate = moment($scope.batch.endDate).toDate();
 

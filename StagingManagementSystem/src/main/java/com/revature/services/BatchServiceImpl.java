@@ -63,7 +63,12 @@ public class BatchServiceImpl implements BatchService {
 
 	@Override
 	public void add(Batch batch) {
-		batchRepo.saveAndFlush(batch);
+		Batch b = batchRepo.saveAndFlush(batch);
+		batch.getAssociates().forEach((Associate associate) -> {
+	        Associate ass = associateRepo.findOne(associate.getId());
+	        ass.setBatch(b);
+	        associateRepo.saveAndFlush(ass);
+	      });
 	}
 
 	@Override

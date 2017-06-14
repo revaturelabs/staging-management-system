@@ -114,4 +114,9 @@ public class AssociateControllerImpl {
 	public Set<Associate> getAllActiveAssociates(HttpSession session) {
 		return associateService.getAllActive();
 	}
+	
+	@GetMapping("no-batch")
+	public Set<Associate> haveNoBatch() {
+		return associateService.haveNoBatch();
+	}
 }

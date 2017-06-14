@@ -56,6 +56,23 @@
         </select>
 			</td>
     </tr>
+    <tr>
+      <td>
+        <div class="flex-column">
+          <div class="flex-row">
+    				<label>Associates: </label>
+            <select class="manager-input" ng-model="selectedAssociate" ng-options="associate as associate.name for associate in associates" ng-change="addAssociate()">
+              <option value=""> -- Select an Associate -- </option>
+            </select>
+          </div>
+          <div class="new-batchType-skills-title"> Added Associates </div>
+          <div class="flex-row" style="justify-content: center" ng-repeat="associate in batch.associates">
+            <div style="text-align:center" ng-bind="associate.name"></div>
+            <span class="glyphicon glyphicon-minus remove-batch-type-glyph" ng-click="removeAssociate(associate)"></span>
+          </div>
+        </div>
+			</td>
+    </tr>
   </tbody>
 </table>
 

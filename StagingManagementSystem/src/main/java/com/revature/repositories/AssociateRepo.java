@@ -1,11 +1,11 @@
 package com.revature.repositories;
 
-import com.revature.entities.Credential;
+import java.util.Set;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.revature.entities.Associate;
-
-import java.util.Set;
+import com.revature.entities.Credential;
 
 
 public interface AssociateRepo extends JpaRepository<Associate, Long> {
@@ -14,4 +14,6 @@ public interface AssociateRepo extends JpaRepository<Associate, Long> {
     Associate getByCredential(Credential credential);
 
     Set<Associate> findAssociatesByActiveTrue();
+
+	Set<Associate> findByBatchIsNull();
 }

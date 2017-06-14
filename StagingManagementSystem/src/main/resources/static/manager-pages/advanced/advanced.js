@@ -1,4 +1,4 @@
-const managerAdvancedAssociatesCtrl = ($scope, $http) => {
+const managerAdvancedCtrl = ($scope, $http, $state, batchService) => {
   window.scope = $scope
 
   $http.get('batchtype/all')
@@ -11,10 +11,34 @@ const managerAdvancedAssociatesCtrl = ($scope, $http) => {
   $http.get('associate/all')
     .then((data) => {
       $scope.associates = data.data;
-      window.associates = data.data;
     }, (data) => {
       console.log('failed');
     })
+
+  $http.get('batch/all')
+    .then((data) => {
+      $scope.batches = data.data;
+    }, (data) => {
+      console.log('failed');
+    })
+
+  $scope.isAssociates = () => {
+    if($state.is('manager.advanced.allassociates'))
+      return true;
+    return false;
+  }
+
+  $scope.isBatches = () => {
+    if($state.is('manager.advanced.batches'))
+      return true;
+    return false;
+  }
+
+  $scope.isInterviews = () => {
+    if($state.is('manager.advanced.interviews'))
+      return true;
+    return false;
+  }
 
   $scope.trainerFilter = (associate) => {
     return true;
@@ -38,9 +62,18 @@ const managerAdvancedAssociatesCtrl = ($scope, $http) => {
     }
   }
 
-  $scope.batchFilter = (associate) => {
+  $scope.associateBatchFilter = (associate) => {
     return $scope.selectedBatchTypes.filter((batchType) => batchType.value === associate.batch.batchType.value).length >= 1;
+  }
+
+  $scope.batchBatchFilter = (batch) => {
+    return $scope.selectedBatchTypes.filter((batchType) => batchType.value === batch.batchType.value).length >= 1;
+  }
+
+  $scope.setBatch = (batch) => {
+    batchService.batch = batch;
+    $scope.$apply();
   }
 };
 
-export default managerAdvancedAssociatesCtrl;
+export default managerAdvancedCtrl;
