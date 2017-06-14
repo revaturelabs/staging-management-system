@@ -109,4 +109,9 @@ public class AssociateControllerImpl {
 		}
 		return ResponseEntity.ok(associateService.getAll());
 	}
+
+	@GetMapping("/allActive")
+	public Set<Associate> getAllActiveAssociates(HttpSession session) {
+		return associateService.getAllActive();
+	}
 }
