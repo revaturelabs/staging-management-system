@@ -7,7 +7,9 @@ import { managerCtrl } from './manager-pages/manager';
 import { managerHomeCtrl } from './manager-pages/home/home';
 import managerCheckinsCtrl from './manager-pages/home/checkin/checkin';
 import { interviewsCtrl } from './manager-pages/home/interviews/interviews';
-import stagingGraphController from './manager-pages/home/staging-graph/staging-graph'
+import stagingGraphController from './manager-pages/home/staging-graph/staging-graph';
+import attendanceGraphCtrl from './manager-pages/home/attendance-graph/attendance-graph';
+import employmentGraphCtrl from './manager-pages/home/employment-graph/employment-graph';
 import managerCreateCtrl from './manager-pages/create/create';
 import { batchCtrl } from './manager-pages/create/batch';
 import { clientCtrl } from './manager-pages/create/client';
@@ -113,8 +115,13 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
           templateUrl: 'manager-pages/home/staging-graph/staging-graph.html',
           controller: stagingGraphController,
         },
-        'priorityMapped@manager.home': {
-          templateUrl: 'manager-pages/home/priorityMapped.html',
+        'attendance-graph@manager.home': {
+          templateUrl: 'manager-pages/home/attendance-graph/attendance-graph.html',
+          controller: attendanceGraphCtrl,
+        },
+        'employment-graph@manager.home': {
+          templateUrl: 'manager-pages/home/employment-graph/employment-graph.html',
+          controller: employmentGraphCtrl,
         },
         'interviews@manager.home': {
           templateUrl: 'manager-pages/home/interviews/interviews.html',

@@ -74,53 +74,63 @@
 
 	var _interviews = __webpack_require__(95);
 
-	var _stagingGraph = __webpack_require__(111);
+	var _stagingGraph = __webpack_require__(96);
 
 	var _stagingGraph2 = _interopRequireDefault(_stagingGraph);
 
-	var _create = __webpack_require__(96);
+	var _attendanceGraph = __webpack_require__(97);
+
+	var _attendanceGraph2 = _interopRequireDefault(_attendanceGraph);
+
+	var _employmentGraph = __webpack_require__(98);
+
+	var _employmentGraph2 = _interopRequireDefault(_employmentGraph);
+
+	var _create = __webpack_require__(99);
 
 	var _create2 = _interopRequireDefault(_create);
 
-	var _batch = __webpack_require__(97);
+	var _batch = __webpack_require__(100);
 
-	var _client = __webpack_require__(98);
+	var _client = __webpack_require__(101);
 
-	var _user = __webpack_require__(99);
+	var _user = __webpack_require__(102);
 
-	var _location = __webpack_require__(100);
+	var _location = __webpack_require__(103);
 
-	var _associates = __webpack_require__(101);
+	var _job = __webpack_require__(104);
+
+	var _associates = __webpack_require__(105);
 
 	var _associates2 = _interopRequireDefault(_associates);
 
-	var _profile = __webpack_require__(102);
+	var _profile = __webpack_require__(106);
 
 	var _profile2 = _interopRequireDefault(_profile);
 
-	var _interview = __webpack_require__(103);
+	var _interview = __webpack_require__(107);
 
 	var _interview2 = _interopRequireDefault(_interview);
 
-	var _associate = __webpack_require__(104);
+	var _associate = __webpack_require__(108);
 
 	var _associate2 = _interopRequireDefault(_associate);
 
-	var _reports = __webpack_require__(105);
+	var _reports = __webpack_require__(109);
 
-	var _nestedGraph = __webpack_require__(106);
+	var _nestedGraph = __webpack_require__(110);
 
-	var _barGraph = __webpack_require__(107);
+	var _barGraph = __webpack_require__(111);
 
-	var _login = __webpack_require__(108);
+	var _login = __webpack_require__(112);
 
 	var _login2 = _interopRequireDefault(_login);
 
-	var _attendanceBarGraph = __webpack_require__(109);
+	var _attendanceBarGraph = __webpack_require__(113);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	__webpack_require__(110)(_fusioncharts2.default);
+	__webpack_require__(114)(_fusioncharts2.default);
 
 	var Visualizer = window['ui-router-visualizer'].Visualizer;
 
@@ -189,6 +199,11 @@
 	    url: '/location',
 	    templateUrl: 'manager-pages/create/location.html',
 	    controller: _location.locCtrl
+	  }).state('manager.create.job', {
+	    url: '/job',
+	    templateUrl: 'manager-pages/create/job.html',
+	    controller: _job.jobCtrl
+
 	  }).state('manager.home', {
 	    url: '/home',
 	    views: {
@@ -200,8 +215,13 @@
 	        templateUrl: 'manager-pages/home/staging-graph/staging-graph.html',
 	        controller: _stagingGraph2.default
 	      },
-	      'priorityMapped@manager.home': {
-	        templateUrl: 'manager-pages/home/priorityMapped.html'
+	      'attendance-graph@manager.home': {
+	        templateUrl: 'manager-pages/home/attendance-graph/attendance-graph.html',
+	        controller: _attendanceGraph2.default
+	      },
+	      'employment-graph@manager.home': {
+	        templateUrl: 'manager-pages/home/employment-graph/employment-graph.html',
+	        controller: _employmentGraph2.default
 	      },
 	      'interviews@manager.home': {
 	        templateUrl: 'manager-pages/home/interviews/interviews.html',
@@ -46820,7 +46840,7 @@
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
-	var managerCtrl = function managerCtrl($scope, $state, $location, $http) {
+	var managerCtrl = function managerCtrl($scope, $state, $location, $http, userService) {
 		$http({
 			method: 'GET',
 			url: '/login/isManager'
@@ -46837,6 +46857,7 @@
 				method: 'GET',
 				url: '/logout/'
 			}).then(function (response) {
+				userService.setUser({});
 				$state.go('login');
 			});
 		};
@@ -46856,33 +46877,8 @@
 	  value: true
 	});
 	var managerHomeCtrl = function managerHomeCtrl($scope) {
+	  $scope.view1 = 'staging';
 	  $scope.view2 = 'interviews';
-	  $scope.selectView1 = function (selectedView) {
-	    if (selectedView === 'available') {
-	      $scope.availableSelecter = { 'background-color': 'gray' };
-	      $scope.prioritySelecter = { 'background-color': '#f8f8f8' };
-	      $scope.view1 = 'available';
-	    } else if (selectedView === 'priority') {
-	      $scope.availableSelecter = { 'background-color': '#f8f8f8' };
-	      $scope.prioritySelecter = { 'background-color': 'gray' };
-	      $scope.view1 = 'priorityMapped';
-	    }
-	  };
-	  $scope.selectView2 = function (selectedView) {
-	    if (selectedView === 'interviews') {
-	      $scope.interviewsSelecter = { 'background-color': 'gray' };
-	      $scope.checkinsSelecter = { 'background-color': '#f8f8f8' };
-	      $scope.view2 = 'interviews';
-	    } else if (selectedView === 'checkins') {
-	      $scope.interviewsSelecter = { 'background-color': '#f8f8f8' };
-	      $scope.checkinsSelecter = { 'background-color': 'gray' };
-	      $scope.view2 = 'checkins';
-	    }
-	  };
-
-	  // initialize our named views
-	  $scope.selectView1('available');
-	  $scope.selectView2('interviews');
 	};
 
 	exports.managerHomeCtrl = managerHomeCtrl;
@@ -46999,6 +46995,49 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	var stagingGraphController = function stagingGraphController($scope, $http) {
+	  // alert('started');
+	};
+
+	exports.default = stagingGraphController;
+
+/***/ }),
+/* 97 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var attendanceGraphCtrl = function attendanceGraphCtrl($scope, $http) {};
+
+	exports.default = attendanceGraphCtrl;
+
+/***/ }),
+/* 98 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var employmentGraphCtrl = function employmentGraphCtrl($scope, $http) {
+	  $scope.test = 'test success';
+	};
+
+	exports.default = employmentGraphCtrl;
+
+/***/ }),
+/* 99 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
 	var managerCreateCtrl = function managerCreateCtrl($scope, $state) {
 	  $scope.$state = $state;
 	};
@@ -47006,7 +47045,7 @@
 	exports.default = managerCreateCtrl;
 
 /***/ }),
-/* 97 */
+/* 100 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -47031,13 +47070,25 @@
 	    console.log('failure');
 	  });
 
+	  $('#datetimepicker1').on('dp.change', function () {
+	    $scope.batch.startDate = $('#datetimepicker1').val();
+	    var now = new Date($scope.batch.startDate).toISOString();
+	    $scope.batch.startDate = now;
+	  });
+
+	  $('#datetimepicker2').on('dp.change', function () {
+	    $scope.batch.endDate = $('#datetimepicker2').val();
+	    var now2 = new Date($scope.batch.endDate).toISOString();
+	    $scope.batch.endDate = now2;
+	  });
+
 	  $scope.submit = function () {
 	    $scope.requestMade = true;
 	    $scope.createMessage = 'Attempting to create batch';
 	    $scope.createMessageStyle = { color: 'black' };
 
-	    $scope.batch.startDate = moment($scope.batch.startDate).toDate();
-	    $scope.batch.endDate = moment($scope.batch.endDate).toDate();
+	    // $scope.batch.startDate = moment($scope.batch.startDate).toDate();
+	    // $scope.batch.endDate = moment($scope.batch.endDate).toDate();
 
 	    $http.post('/batch', JSON.stringify($scope.batch)).then(function (response) {
 	      $scope.createMessage = 'Successfully created batch';
@@ -47087,7 +47138,7 @@
 	exports.batchCtrl = batchCtrl;
 
 /***/ }),
-/* 98 */
+/* 101 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -47114,7 +47165,7 @@
 	exports.clientCtrl = clientCtrl;
 
 /***/ }),
-/* 99 */
+/* 102 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -47159,22 +47210,25 @@
 	exports.userCtrl = userCtrl;
 
 /***/ }),
-/* 100 */
+/* 103 */
 /***/ (function(module, exports) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	var locCtrl = function locCtrl($scope, $http) {
 	  $scope.submit = function () {
-	    var item = JSON.stringify($scope.location);
-	    console.log(item);
-	    $http.post('/location', item).then(function (response) {
-	      console.log("success");
+	    $scope.requestMade = true;
+	    $scope.createMessage = 'Attempting to create location';
+	    $scope.createMessageStyle = { color: 'black' };
+	    $http.post('/location', JSON.stringify($scope.location)).then(function (response) {
+	      $scope.createMessage = 'Successfully created location';
+	      $scope.createMessageStyle = { color: 'green' };
 	    }, function () {
-	      console.log("failure");
+	      $scope.createMessage = 'Failed to create location';
+	      $scope.createMessageStyle = { color: 'red' };
 	    });
 	  };
 	};
@@ -47182,7 +47236,89 @@
 	exports.locCtrl = locCtrl;
 
 /***/ }),
-/* 101 */
+/* 104 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var jobCtrl = function jobCtrl($scope, $http) {
+	  window.scope = $scope;
+	  $('#datetimepicker1').datetimepicker();
+	  $('#datetimepicker2').datetimepicker();
+	  $('#datetimepicker3').datetimepicker();
+	  $('#datetimepicker4').datetimepicker();
+	  $('#datetimepicker5').datetimepicker();
+
+	  $http.get('associate/all').then(function (response) {
+	    //takes a while for associates to load...
+	    $scope.associates = response.data;
+	  }, function () {
+	    console.log("failure");
+	  });
+
+	  $http.get('client/all').then(function (response) {
+	    $scope.clients = response.data;
+	  }, function () {
+	    console.log("failure");
+	  });
+
+	  $('#datetimepicker1').on('dp.change', function () {
+	    $scope.job.startDate = $('#datetimepicker1').val();
+	    var now = new Date($scope.job.startDate).toISOString();
+	    $scope.job.startDate = now;
+	  });
+
+	  $('#datetimepicker2').on('dp.change', function () {
+	    $scope.job.projectedEndDate = $('#datetimepicker2').val();
+	    var now2 = new Date($scope.job.projectedEndDate).toISOString();
+	    $scope.job.projectedEndDate = now2;
+	  });
+
+	  $('#datetimepicker3').on('dp.change', function () {
+	    $scope.job.endDate = $('#datetimepicker3').val();
+	    var now3 = new Date($scope.job.endDate).toISOString();
+	    $scope.job.endDate = now3;
+	  });
+
+	  $('#datetimepicker4').on('dp.change', function () {
+	    $scope.job.buyoutDate = $('#datetimepicker4').val();
+	    var now4 = new Date($scope.job.buyoutDate).toISOString();
+	    $scope.job.buyoutDate = now4;
+	  });
+
+	  $('#datetimepicker5').on('dp.change', function () {
+	    $scope.job.confirmedDate = $('#datetimepicker5').val();
+	    var now5 = new Date($scope.job.confirmedDate).toISOString();
+	    $scope.job.confirmedDate = now5;
+	  });
+
+	  $scope.submit = function () {
+	    $scope.requestMade = true;
+	    $scope.createMessage = 'Attempting to create job';
+	    $scope.createMessageStyle = { color: 'black' };
+	    $scope.job.startDate = moment($scope.job.startDate).toDate();
+	    $scope.job.projectedEndDate = moment($scope.job.projectedEndDate).toDate();
+	    $scope.job.endDate = moment($scope.job.endDate).toDate();
+	    $scope.job.buyoutDate = moment($scope.job.buyoutDate).toDate();
+	    $scope.job.confirmedDate = moment($scope.job.confirmedDate).toDate();
+
+	    $http.post('/job', JSON.stringify($scope.job)).then(function (response) {
+	      $scope.createMessage = 'Successfully created job';
+	      $scope.createMessageStyle = { color: 'green' };
+	    }, function () {
+	      $scope.createMessage = 'Failed to create job';
+	      $scope.createMessageStyle = { color: 'red' };
+	    });
+	  };
+	};
+
+	exports.jobCtrl = jobCtrl;
+
+/***/ }),
+/* 105 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -47242,7 +47378,7 @@
 	exports.default = managerAdvancedAssociatesCtrl;
 
 /***/ }),
-/* 102 */
+/* 106 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -47255,7 +47391,7 @@
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
-	var profileCtrl = function profileCtrl($scope, $http, userService, $stateParams, $state) {
+	var profileCtrl = function profileCtrl($scope, $http, userService, $stateParams, $state, $window) {
 	  var associateId = $state.includes('manager') ? $stateParams.id : userService.getUser().id;
 
 	  if (associateId === undefined) {
@@ -47339,6 +47475,10 @@
 	    });
 	  };
 
+	  $scope.openPortfolioLink = function () {
+	    $window.open($scope.associate.portfolioLink);
+	  };
+
 	  $scope.associateHasNoSkills = function () {
 	    if ($scope.associate === undefined) {
 	      return true;
@@ -47350,7 +47490,7 @@
 	exports.default = profileCtrl;
 
 /***/ }),
-/* 103 */
+/* 107 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -47384,8 +47524,15 @@
 			method: 'GET',
 			url: '/interviewStatus/all'
 		}).then(function (response) {
-			console.log(response);
 			$scope.interviewStatuses = response.data;
+		});
+
+		$http({
+			method: 'GET',
+			url: '/marketer/all'
+		}).then(function (response) {
+			console.log(response);
+			$scope.marketers = response.data;
 		});
 
 		$http({
@@ -47410,6 +47557,9 @@
 			} else if ($scope.selectedDate == undefined) {
 				$scope.errorMsg = 'Please select a Date.';
 				$scope.errorMsgShow = true;
+			} else if ($scope.selectedDate == undefined) {
+				$scope.errorMsg = 'Please select a Marketer.';
+				$scope.errorMsgShow = true;
 			} else {
 				var newDate = moment($scope.selectedDate).toDate();
 				addInterviewBtn.disabled = true;
@@ -47417,7 +47567,7 @@
 				$http({
 					method: 'POST',
 					url: '/interviews',
-					data: { associate: userService.getUser(), client: $scope.selectedClient, scheduled: newDate }
+					data: { associate: userService.getUser(), client: $scope.selectedClient, scheduled: newDate, marketer: $scope.selectedMarketer }
 				}).then(function (response) {
 					$scope.successMsgShow = true;
 					addInterviewBtn.disabled = false;
@@ -47436,11 +47586,17 @@
 			}
 		};
 
+		$scope.showAddModal = function () {
+			$('#addModal').modal('show');
+		};
+
 		$scope.interviewClick = function (interview) {
-			console.log(interview);
 			$scope.clickedInterview = interview;
 			for (var i = 0; i < $scope.interviewStatuses.length; i++) {
 				if ($scope.interviewStatuses[i].value === interview.interviewStatus.value) $scope.modalStatus = $scope.interviewStatuses[i];
+			}
+			for (var _i = 0; _i < $scope.marketers.length; _i++) {
+				if ($scope.marketers[_i].name === interview.marketer.name) $scope.modalMarketer = $scope.marketers[_i];
 			}
 			$('#interviewModal').modal('show');
 		};
@@ -47449,7 +47605,7 @@
 	exports.default = associateInterviewCtrl;
 
 /***/ }),
-/* 104 */
+/* 108 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -47512,7 +47668,7 @@
 	exports.default = associateCtrl;
 
 /***/ }),
-/* 105 */
+/* 109 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -47527,7 +47683,7 @@
 	exports.reportCtrl = reportCtrl;
 
 /***/ }),
-/* 106 */
+/* 110 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -47732,7 +47888,7 @@
 	exports.nestedCtrl = nestedCtrl;
 
 /***/ }),
-/* 107 */
+/* 111 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -47836,7 +47992,7 @@
 	exports.barCtrl = barCtrl;
 
 /***/ }),
-/* 108 */
+/* 112 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -47849,6 +48005,17 @@
 	  $scope.username = '';
 	  $scope.password = '';
 	  $scope.errorMsgShow = false;
+
+	  var authenticatedUser = userService.getUser();
+
+	  var isAssociate = authenticatedUser.id !== undefined;
+	  var isManager = authenticatedUser.permission !== undefined;
+
+	  if (isManager) {
+	    $state.go('manager.home');
+	  } else if (isAssociate) {
+	    $state.go('associate.home');
+	  }
 
 	  $scope.submit = function () {
 	    loginBtn.disabled = true;
@@ -47890,7 +48057,7 @@
 	exports.default = loginCtrl;
 
 /***/ }),
-/* 109 */
+/* 113 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -48428,7 +48595,7 @@
 	// ----------------------------------- End Main ----------------------------------- //
 
 /***/ }),
-/* 110 */
+/* 114 */
 /***/ (function(module, exports) {
 
 	/*
@@ -48676,21 +48843,6 @@
 	c,b){var f=.5*b,k=a-b,h=a+b,l=a-f,m=a+f,n=a+.5,p=n+1,r=n+1.5,t=c-b,u=c+f,v=c-f,f=c+(b-f);return["M",k,t,"L",l,v,l,f,k,u,a-.5,u,a,c+b+.5,n,u,h,u,m,f,m,v,h,t,r,t,r,v,r,f,p,f,p,v,r,v,r,t,"Z"]},zoomOutIcon:function(a,c,b){a-=.2*b;c-=.2*b;var f=.8*b,k=w.rad(43),h=w.rad(48),l=a+f*ya(k),k=c+f*va(k),m=a+f*ya(h),h=c+f*va(h),n=w.rad(45),p=l+b*ya(n),r=k+b*va(n),t=m+b*ya(n);b=h+b*va(n);return["M",l,k,"A",f,f,0,1,0,m,h,"Z","M",l+1,k+1,"L",p,r,t,b,m+1,h+1,"Z","M",a-2,c,"L",a+2,c,"Z"]},resetIcon:function(a,c,b){var f=
 	a-b,k=(da.PI/2+da.PI)/2;a+=b*ya(k);var k=c+b*va(k),h=2*b/3;return["M",f,c,"A",b,b,0,1,1,a,k,"L",a+h,k-1,a+2,k+h-.5,a,k]}})}])});
 
-
-/***/ }),
-/* 111 */
-/***/ (function(module, exports) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var stagingGraphController = function stagingGraphController($scope, $http) {
-	  // alert('started');
-	};
-
-	exports.default = stagingGraphController;
 
 /***/ })
 /******/ ]);
