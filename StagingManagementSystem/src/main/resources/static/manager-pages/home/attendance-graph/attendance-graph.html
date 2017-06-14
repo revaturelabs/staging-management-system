@@ -1,33 +1,30 @@
-<div class="interviews-container">
-  <div>
-    <table class="table table-striped interviews-table selectable-table">
-      <thead>
-      <tr>
-        <th class="interview-th" scope="col">Associate</th>
-        <th class="interview-th" scope="col">Client</th>
-        <th class="interview-th" scope="col">Scheduled Time</th>
-        <th class="interview-th" scope="col">Status</th>
-      </tr>
-      </thead>
-      <tbody>
-      <!-- <tr ng-repeat="interview in interviews" data-toggle="modal" data-target="#interviewModal" ng-click="interviewSelect(interview)" ng-class="{selectedTableRow : interview.id === idSelectedInterview}" >-->
-      <tr ng-repeat="interview in interviews" data-toggle="modal" data-target="#interviewModal" ng-click="interviewSelect(interview)">
-        <td class="interview-td" ng-bind="interview.associate.name"></td>
-        <td class="interview-td" ng-bind="interview.client.name"></td>
-        <td class="interview-td" ng-bind="dateConverter(interview.scheduled)"></td>
-        <td class="interview-td" ng-bind="interview.interviewStatus.value"></td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
+<div class=attn-report-container>
+	<div class="flex-column" style="align-items:center">
+		<div>
+			<button type="button" ng-show='canZoom' id="zoom-btn" class="manager-view-selecter" ng-click='zoomOut()' ng-style="availableSelecter" >{{zoomOutStr}}</button>		
+		</div>
+		<!-- The `selectedValue` variable is defined to store the label and the value of the data plot that is clicked. -->
+	
+		<div class='flex-row' style="align-items:center">
+			<div class="graph-nav-btn">
+			<button class="manager-view-selecter glyphicon glyphicon-step-backward" ng-click='step(-1)'></button>			
+			</div>
+			<div id="attn-chart-container" fusioncharts width="600" height="400" type="column2d" , datasource="{{dataSource}}" events=attn_event>	
+				<p>Loading Graph...</p>
+			</div>
+			<div class="graph-nav-btn">
+				<button class="manager-view-selecter glyphicon glyphicon-step-forward graph-nav-btn" ng-click='step(1)'></button>			
+			</div>
+		</div>
+	</div>
 </div>
 
 <!-- Modal -->
-<div id="interviewModal" class="modal fade" role="dialog">
+<div id="interviewModal" class="modal fade" ng-show='show' role="dialog">
   <div class="modal-dialog">
 
     <!-- Modal content-->
-    <div class="modal-content">
+    <div class="modal-content" >
       <div class="modal-header interview-modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title">Interview
@@ -53,9 +50,9 @@
         </div>
         <div class="interview-side-table-row flex-row" class="interview-status-container" ng-show="edit">
           <div class="interview-status-label">Status: </div>
-          <select class="manager-input" ng-model="interviewSideTable.interview.interviewStatus" ng-options="status as status.value for status in interviewStatuses">
+          <select class="manager-input" ng-model="showModal" ng-options="status as status.value for status in interviewStatuses">
             <option value=""></option>
-          </select>
+          </select><br>
         </div>
         <div style="height:0.3em"></div>
         <div class="update-message" ng-show="edit && requestMade" ng-bind="updateMessage" ng-style="updateMessageStyle"></div>

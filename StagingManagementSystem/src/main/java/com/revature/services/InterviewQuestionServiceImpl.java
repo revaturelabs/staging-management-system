@@ -13,7 +13,7 @@ import com.revature.repositories.InterviewQuestionRepo;
 public class InterviewQuestionServiceImpl implements InterviewQuestionService {
 
 	@Autowired
-	InterviewQuestionRepo interviewQuestionRepo;
+	private InterviewQuestionRepo interviewQuestionRepo;
 
 	public InterviewQuestionServiceImpl(InterviewQuestionRepo interviewQuestionRepo) {
 		super();
@@ -22,7 +22,7 @@ public class InterviewQuestionServiceImpl implements InterviewQuestionService {
 
 	@Override
 	public void add(InterviewQuestion interviewQ) {
-		interviewQ = interviewQuestionRepo.saveAndFlush(interviewQ);
+		interviewQuestionRepo.saveAndFlush(interviewQ);
 	}
 
 	@Override
@@ -32,13 +32,12 @@ public class InterviewQuestionServiceImpl implements InterviewQuestionService {
 
 	@Override
 	public void update(InterviewQuestion interviewQ){
-		interviewQ = interviewQuestionRepo.saveAndFlush(interviewQ);
+		interviewQuestionRepo.saveAndFlush(interviewQ);
 	}
 
 	@Override
 	public InterviewQuestion findById(long id){
-		InterviewQuestion interviewQ = interviewQuestionRepo.getOne(id);
-		return interviewQ;
+		return interviewQuestionRepo.getOne(id);
 	}
 
 	@Override

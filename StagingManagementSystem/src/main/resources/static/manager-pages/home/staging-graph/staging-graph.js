@@ -25,14 +25,14 @@ const chart = {
 let categories;
 let dataset;
 
-
+let responseData;
 
 function graphBuilder($scope, $http){
   $http ({
     method: 'GET',
     url: '/associate/totaldata',   
   }).then ((response) => {
-      console.log("new stuff: " + JSON.stringify(response.data));
+      responseData = response.data;
       var stuff1 = [];
       var stuff2 = [];
       var stuff3 = [];
@@ -52,20 +52,30 @@ function graphBuilder($scope, $http){
           "data": stuff3
         },
         {
-          "seriesname": " Available Associates",
+          "seriesname": "Available Associates",
           "data": stuff2
         }];
+      
         plainBarChart2($scope, chart, categories, dataset );
-
       });
  
 }
 
 function ColumnClick(ev, props, $scope) {
+  $('.availAssModal').modal('toggle');
   
-  
-  
-  $scope.selectedValue = `${props.displayValue}/${props.categoryLabel}/${props.dataIndex}`;
+  let columnData;
+  responseData.forEach(function(item){
+    if(props.categoryLabel === item.batchName) {
+      columnData = item;
+    }
+  });
+  if (props.datasetName === 'Available Associates') {
+    $scope.associates = columnData.availible;
+  }
+  if (props.datasetName === 'Confirmed Associates') {
+    $scope.associates = columnData.mapped;
+  }
 }
 
 
@@ -89,12 +99,7 @@ function plainBarChart2($scope, chartstuff, categories, dataset ) {
     events: {
       dataplotclick: function dataplotclick(ev, props) {
         $scope.$apply(() => {
-          switch (scale) {
-          case Stuff1:
             ColumnClick(ev, props, $scope);
-            break;
-            default:
-          }
         });
       },
     },

@@ -1,6 +1,5 @@
 package com.revature.controllers.rest;
 
-import java.util.Random;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -34,13 +33,13 @@ public class ClientControllerImpl {
 	/**
 	 * When called this will always persist a unique Client in the database.
 	 * 
-	 * @param Client
+	 * @param client
 	 *            - Client to be persisted.
 	 */
 	@PostMapping
-	public void addClient(@RequestBody Client Client) {
-		Client.setId(0l);
-		clientService.add(Client);
+	public void addClient(@RequestBody Client client) {
+		client.setId(0l);
+		clientService.add(client);
 	}
 	
   @PostMapping("/add/all")
@@ -54,12 +53,12 @@ public class ClientControllerImpl {
 	/**
 	 * Deletes Client with Client.id
 	 * 
-	 * @param Client
+	 * @param client
 	 *            - holds the id to be deleted
 	 */
 	@DeleteMapping
-	public void deleteClient(@RequestBody Client Client) {
-		clientService.delete(Client);
+	public void deleteClient(@RequestBody Client client) {
+		clientService.delete(client);
 	}
 
 	@PostMapping("/multiple")
@@ -71,12 +70,12 @@ public class ClientControllerImpl {
 	 * If the id exists, updates information. else creates a new row with
 	 * genrated id.
 	 * 
-	 * @param Client
+	 * @param client
 	 *            - data to be persisted.
 	 */
 	@PutMapping
-	public void updateClient(@RequestBody Client Client) {
-		clientService.update(Client);
+	public void updateClient(@RequestBody Client client) {
+		clientService.update(client);
 	}
 
 	/**

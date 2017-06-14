@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 
 import com.revature.markers.SmsHasMessageAndStatus;
 
-public class SmsCustomException extends Throwable implements SmsHasMessageAndStatus {
+public class SmsCustomException extends Exception implements SmsHasMessageAndStatus {
 
 	private static final long serialVersionUID = -5013114105102502435L;
 

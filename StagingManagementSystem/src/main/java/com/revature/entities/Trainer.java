@@ -11,7 +11,6 @@ import javax.persistence.Table;
 import org.springframework.data.jpa.repository.Query;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.revature.config.SmsSettings;
 import com.revature.exceptions.SmsCustomException;
 import com.revature.markers.SmsValidatable;
 
@@ -22,8 +21,6 @@ import com.revature.markers.SmsValidatable;
 @Table(name = "TRAINERS")
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Trainer implements SmsValidatable {
-
-	transient private static SmsSettings settings = SmsSettings.getInstance();
 
 	@Id
 	@Column(name = "TRAINER_ID")

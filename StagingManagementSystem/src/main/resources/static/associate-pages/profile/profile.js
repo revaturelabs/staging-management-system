@@ -1,4 +1,4 @@
-const profileCtrl = ($scope, $http, userService, $stateParams, $state) => {
+const profileCtrl = ($scope, $http, userService, $stateParams, $state, $window) => {
   const associateId = $state.includes('manager') ? $stateParams.id : userService.getUser().id;
 
   if (associateId === undefined) {
@@ -77,6 +77,10 @@ const profileCtrl = ($scope, $http, userService, $stateParams, $state) => {
     }, () => {
       $('#additionalSkillsModal').modal('hide');
     });
+  };
+
+  $scope.openPortfolioLink = () => {
+    $window.open($scope.associate.portfolioLink);
   };
 
   $scope.associateHasNoSkills = () => {

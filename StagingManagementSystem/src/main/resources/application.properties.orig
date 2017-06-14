@@ -1,9 +1,9 @@
 spring.datasource.driverClassName=oracle.jdbc.OracleDriver
 <<<<<<< HEAD
-spring.datasource.url=jdbc:oracle:thin:@192.168.60.176:1521:xe
+spring.datasource.url=jdbc:oracle:thin:@localhost:1521:XE
 =======
-spring.datasource.url=jdbc:oracle:thin:@192.168.60.168:1521:XE
->>>>>>> 1fb18c9d97928530b3625cdcb8d9b7c83d5d4607
+spring.datasource.url=jdbc:oracle:thin:@192.168.60.176:1521:XE
+>>>>>>> d51e734547a3c9049184d6a5514d8af6c7ddf527
 spring.jpa.database-platform=org.hibernate.dialect.Oracle10gDialect
 spring.datasource.username=sms
 spring.datasource.password=swordfish

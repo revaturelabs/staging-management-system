@@ -1,5 +1,6 @@
 package com.revature.util;
 
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Random;
@@ -18,6 +19,7 @@ import com.revature.entities.InterviewQuestion;
 import com.revature.entities.InterviewStatuses;
 import com.revature.entities.Job;
 import com.revature.entities.Manager;
+import com.revature.entities.Marketer;
 import com.revature.services.AssociateService;
 import com.revature.services.BatchService;
 import com.revature.services.CheckinService;
@@ -28,6 +30,7 @@ import com.revature.services.InterviewStatusService;
 import com.revature.services.InterviewsService;
 import com.revature.services.JobService;
 import com.revature.services.ManagerService;
+import com.revature.services.MarketerService;
 
 @Service
 public class DataGeneration
@@ -53,6 +56,9 @@ public class DataGeneration
   ManagerService managerService;
   @Autowired
   AssociateService associateService;
+  @Autowired
+  MarketerService marketerService;
+  
 
   
 	//Dependent Stages
@@ -170,7 +176,8 @@ public class DataGeneration
 		associates.addAll(associateService.getAll());
 		interviewQuestions.addAll(interviewQuestionService.getAll());
 		managers.addAll(managerService.getAll());
-
+		
+		ArrayList<Marketer> marketers = new ArrayList<Marketer>(marketerService.getAllMarketers());
 		Set<Client> allClients = clientService.getAll();
 		for (Client c : allClients) {
 			if (c.isPriority())
@@ -184,11 +191,13 @@ public class DataGeneration
 
 	    LocalDateTime endDate = a.getBatch().getEndDate();
 	    LocalDateTime currDate = endDate.minusDays(7); //Hiring date is from a week before batch end date to confirmed date. 
+	    LocalDateTime jobStartDate = null;
 	    LocalDateTime confirmDate = null;
 	    
 	    while(confirmDate == null && currDate.compareTo(LocalDateTime.now()) < 0){
 	      if(currDate.compareTo(endDate.plusMonths(5)) > 0){ //If associate does not get hired after 5 months.
 	        log.warn("Associate didint get a job in 5 months!!!");
+	        jobStartDate = currDate; // This is set to create checkins for the associate, they did not receive a job.
 	        break;
 	      }
 	      
@@ -216,11 +225,18 @@ public class DataGeneration
 	        
 	        int clientIndex = logRythmicConvergence(0, priorityClients.size(), .6);
 	        ClientP client = priorityClients.get(clientIndex);
-	        InterviewStatuses is = client.evaluateAssociate(ap);
+	        
+	        InterviewStatuses is;
+	        if(currDate.compareTo(LocalDateTime.now()) <= 0)
+	          is = client.evaluateAssociate(ap);
+	        else
+	          is = interviewStatusService.findByStatus("MAPPED");
+	          
 	        log.debug("Client Decision: " + is);
+	        Marketer m = marketers.get(rand.nextInt(marketers.size()));
 	        
 	        //Save Interview
-	        Interview i = new Interview(0l, ap, client, null, is, currDate);
+	        Interview i = new Interview(0l, ap, client, m, is, currDate);
 	        interviewsService.add(i);
 	        
 	        submitInterviewQuestions(ap, client);
@@ -230,8 +246,6 @@ public class DataGeneration
 	          
 	            LocalDateTime startDate = currDate.plusWeeks(2);
 	            confirmDate = createJob(ap, currDate, startDate, client);
-	            
-	            createCheckins(endDate, startDate, ap);
 	        }
 	      }
 	      else 
@@ -247,10 +261,17 @@ public class DataGeneration
 	          
 	          int clientIndex = logRythmicConvergence(0, regularClients.size(), .3);
 	          ClientP client = regularClients.get(clientIndex);
-	          InterviewStatuses is = client.evaluateAssociate(ap);
 	          
+	          InterviewStatuses is;
+	          if(currDate.compareTo(LocalDateTime.now()) <= 0)
+	            is = client.evaluateAssociate(ap);
+	          else
+	            is = interviewStatusService.findByStatus("MAPPED");
+	          
+	          Marketer m = marketers.get(rand.nextInt(marketers.size()));
+
 	          //Save Interview
-	          Interview i = new Interview(0l, ap, client, null, is, currDate);
+	          Interview i = new Interview(0l, ap, client, m, is, currDate);
 	          interviewsService.add(i);
 	          
 	          submitInterviewQuestions(ap, client);
@@ -261,16 +282,17 @@ public class DataGeneration
 	             int daysToDecide = logRythmicConvergence(0, 7, .5);
 	             currDate = currDate.plusDays(daysToDecide);
 
-	             LocalDateTime startDate = currDate.plusWeeks(2);
-	             confirmDate = createJob(ap, currDate, startDate, client);
-	             
-	             createCheckins(endDate, startDate, ap);
+	             jobStartDate = currDate.plusWeeks(2);
+	             confirmDate = createJob(ap, currDate, jobStartDate, client);
 	          }
 	        }
 	      }
 	    }
+	    if(jobStartDate == null)
+	      jobStartDate = currDate;
 	    
-	    
+	    createCheckins(endDate, jobStartDate, ap);
+
 	    associateService.update(ap.getAssocaite());
 
 	  }
@@ -302,15 +324,19 @@ public class DataGeneration
    */
 	private void createCheckins(LocalDateTime batchEndDate, LocalDateTime startDate, Associate associate){
 	  LocalDateTime currDate = batchEndDate;
-	  while(currDate.compareTo(startDate) < 0 && currDate.compareTo(LocalDateTime.now()) < 0){
-	    currDate = currDate.plusDays(1);
-	    int managerIndex = rand.nextInt(managers.size());
+	  while(currDate.compareTo(startDate) <= 0 && currDate.compareTo(LocalDateTime.now()) <= 0){
+
 	    
-	    Checkin checkin = new Checkin(0l, currDate.withHour(8), currDate.withHour(16), managers.get(managerIndex),
-	        currDate.withHour(10), associate);
-	    
-	    checkinService.add(checkin);
-	    log.debug("Created checkin: " + checkin);
+	    DayOfWeek day = currDate.getDayOfWeek();
+	    if(day != DayOfWeek.SUNDAY && day != DayOfWeek.SATURDAY)   
+	    {
+	        Checkin checkin = new Checkin(0l, currDate.withHour(9), currDate.withHour(17), null,
+	            null, associate);
+	      
+	        checkinService.add(checkin);
+	        log.debug("Created checkin: " + checkin);
+	    }
+      currDate = currDate.plusDays(1);
 	  }
 	}
 

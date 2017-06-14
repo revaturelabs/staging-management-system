@@ -67,7 +67,7 @@ public class CheckinServiceImpl implements CheckinService {
                         LocalDate.now(), LocalTime.MIDNIGHT
                 ), LocalDateTime.now()
         );
-        return (checkins != null && checkins.size() != 0);
+        return (checkins != null && checkins.isEmpty());
     }
 
     @Override
@@ -88,7 +88,7 @@ public class CheckinServiceImpl implements CheckinService {
                             LocalDate.now(), LocalTime.MIDNIGHT
                     ), LocalDateTime.now()
             );
-            if (checkins != null && checkins.size() != 0)
+            if (checkins != null && checkins.isEmpty())
                 throw new AlreadyCheckedInException();
             when = LocalDateTime.now();
         }
@@ -114,7 +114,7 @@ public class CheckinServiceImpl implements CheckinService {
                 LocalDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT),
                 LocalDateTime.now()
         );
-        if(checkins == null || checkins.size() == 0)
+        if(checkins == null || checkins.isEmpty())
             throw new NotCheckedInException();
         // We assume that there's exactly one, but don't complain if there's more than one for today.
         for (Checkin checkin: checkins) {

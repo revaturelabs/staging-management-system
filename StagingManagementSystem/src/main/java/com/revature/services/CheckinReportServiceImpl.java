@@ -1,9 +1,7 @@
 package com.revature.services;
 
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import com.revature.entities.Associate;
 import com.revature.entities.Checkin;
-import com.revature.entities.Job;
 
 @Service
 public class CheckinReportServiceImpl {
@@ -33,7 +30,7 @@ public class CheckinReportServiceImpl {
     }
     
     public void addCheckin(Checkin checkin){
-      hourCount += ChronoUnit.HOURS.between(checkin.getCheckinTime(), checkin.getCheckoutTime());
+      hourCount += 1;
     }
     
     public LocalDateTime getTime() {
@@ -89,7 +86,6 @@ public class CheckinReportServiceImpl {
     }
     else {
       int hourEstimate = calculateHourEstimate(checkin.getCheckinTime());
-      System.out.println("Estamate: " + hourEstimate);
       reports.put(getKey(checkin), new DailyReport(checkin, hourEstimate));
     }
   }
@@ -111,7 +107,7 @@ public class CheckinReportServiceImpl {
     	
      if(a.isTrackedOnDate(date))
      {    		
-        total += 8;
+        total += 1;
      }
     }
     return total;

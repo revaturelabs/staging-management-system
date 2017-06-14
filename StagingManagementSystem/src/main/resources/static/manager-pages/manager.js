@@ -1,5 +1,4 @@
-const managerCtrl = ($scope, $state, $location, $http) => {
-  alert('manager')
+const managerCtrl = ($scope, $state, $location, $http, userService) => {
 	$http({
 		method: 'GET',
 		url: '/login/isManager',
@@ -8,7 +7,7 @@ const managerCtrl = ($scope, $state, $location, $http) => {
 		if(!response.data)
 			$state.go('login');
 	});
-	
+
 	$scope.isActive = function (viewLocation) {
 			return viewLocation === $location.path();
 	};
@@ -19,6 +18,7 @@ const managerCtrl = ($scope, $state, $location, $http) => {
 			url: '/logout/',
 		})
 		.then((response) => {
+      userService.setUser({});
 			$state.go('login');
 		});
 	};

@@ -1,4 +1,3 @@
-alert("here")
 import angular from 'angular';
 import angularCookies from 'angular-cookies';
 import uiRouter from 'angular-ui-router';
@@ -12,12 +11,15 @@ import { managerCtrl } from './manager-pages/manager';
 import { managerHomeCtrl } from './manager-pages/home/home';
 import managerCheckinsCtrl from './manager-pages/home/checkin/checkin';
 import { interviewsCtrl } from './manager-pages/home/interviews/interviews';
-import stagingGraphController from './manager-pages/home/staging-graph/staging-graph'
+import stagingGraphController from './manager-pages/home/staging-graph/staging-graph';
+import attendanceGraphCtrl from './manager-pages/home/attendance-graph/attendance-graph';
+import employmentGraphCtrl from './manager-pages/home/employment-graph/employment-graph';
 import managerCreateCtrl from './manager-pages/create/create';
 import { batchCtrl } from './manager-pages/create/batch';
 import { clientCtrl } from './manager-pages/create/client';
 import { userCtrl } from './manager-pages/create/user';
 import { locCtrl } from './manager-pages/create/location';
+import { jobCtrl } from './manager-pages/create/job';
 import managerAdvancedAssociatesCtrl from './manager-pages/advanced/associates';
 import profileCtrl from './associate-pages/profile/profile';
 import associateInterviewCtrl from './associate-pages/interview/interview';
@@ -102,6 +104,12 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       templateUrl: 'manager-pages/create/location.html',
       controller: locCtrl,
     })
+    .state('manager.create.job', {
+      url: '/job',
+      templateUrl: 'manager-pages/create/job.html',
+      controller: jobCtrl,
+
+    })
     .state('manager.home', {
       url: '/home',
       views: {
@@ -113,8 +121,13 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
           templateUrl: 'manager-pages/home/staging-graph/staging-graph.html',
           controller: stagingGraphController,
         },
-        'priorityMapped@manager.home': {
-          templateUrl: 'manager-pages/home/priorityMapped.html',
+        'attendance-graph@manager.home': {
+          templateUrl: 'manager-pages/home/attendance-graph/attendance-graph.html',
+          controller: attendanceGraphCtrl,
+        },
+        'employment-graph@manager.home': {
+          templateUrl: 'manager-pages/home/employment-graph/employment-graph.html',
+          controller: employmentGraphCtrl,
         },
         'interviews@manager.home': {
           templateUrl: 'manager-pages/home/interviews/interviews.html',
