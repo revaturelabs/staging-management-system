@@ -22,9 +22,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.revature.entities.Associate;
 import com.revature.entities.Checkin;
 import com.revature.entities.Manager;
-import com.revature.entities.data.CheckinReport;
-import com.revature.entities.data.CheckinReport.DailyReport;
 import com.revature.exceptions.AlreadyCheckedInException;
+import com.revature.services.CheckinReportServiceImpl;
+import com.revature.services.CheckinReportServiceImpl.DailyReport;
 import com.revature.services.CheckinService;
 
 @RestController
@@ -32,43 +32,15 @@ import com.revature.services.CheckinService;
 public class CheckinControllerImpl {
 	@Autowired
 	private CheckinService checkinService;
+
 	@Autowired
-	private CheckinReport checkinReport;
+	private CheckinReportServiceImpl checkinReport;
 
 	private static final String lm = "login_manager";
 	private static final String la = "login_associate";
 
 	public CheckinControllerImpl(CheckinService checkinService) {
 		this.checkinService = checkinService;
-	}
-
-	@GetMapping(path = "checkin/{username}")
-	public ResponseEntity<Set<Checkin>> getCheckins(@PathVariable String username, HttpSession session) {
-		Associate associate = (Associate) session.getAttribute(la);
-		if (associate != null) { // If you're not an associate..
-			if (username.equals(associate.getCredential().getUsername())) // If
-																			// you're
-																			// asking
-																			// for
-																			// your
-																			// own
-																			// details..
-				return ResponseEntity.ok(checkinService.getAllForAssociate(associate)); // You're
-																						// welcome
-																						// to
-																						// your
-																						// own
-																						// data.
-			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null); // Otherwise,
-																			// go
-																			// away!
-		}
-		Manager manager = (Manager) session.getAttribute(lm);
-		if (manager == null) { // And if you're not a manager..
-			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null); // Go
-																			// away!
-		}
-		return ResponseEntity.ok(checkinService.getAllForAssociate(username));
 	}
 
 	@GetMapping
@@ -107,7 +79,7 @@ public class CheckinControllerImpl {
 	 * Marks a given checkin as having been verified by the currently logged in
 	 * manager Accessible through POST:/checkin and requires a checkin to be
 	 * given.
-	 * 
+	 *
 	 * @param session
 	 * @param checkin
 	 * @return
@@ -124,17 +96,6 @@ public class CheckinControllerImpl {
 		return ResponseEntity.ok(true);
 	}
 
-	@GetMapping(path = "/report")
-	public ResponseEntity<ArrayList<DailyReport>> getCheckins(HttpSession session) {// For
-																					// managers
-																					// only.
-		Manager manager = (Manager) session.getAttribute(lm);
-		if (manager == null) {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-		}
-		return ResponseEntity.ok(checkinReport.process(checkinService.getAll()));
-	}
-
 	@PatchMapping("approve-multiple")
 	public ResponseEntity<Boolean> approveMultiple(HttpSession session, @RequestBody Set<Checkin> checkins) {
 		Manager manager = (Manager) session.getAttribute(lm);
@@ -146,5 +107,45 @@ public class CheckinControllerImpl {
 
 		checkinService.approveMultiple(checkins, manager);
 		return ResponseEntity.ok(true);
+	}
+
+	@GetMapping(path = "checkin/{username}")
+	public ResponseEntity<Set<Checkin>> getCheckins(@PathVariable String username, HttpSession session) {
+		Associate associate = (Associate) session.getAttribute(la);
+		if (associate != null) { // If you're not an associate..
+			if (username.equals(associate.getCredential().getUsername())) // If
+																			// you're
+																			// asking
+																			// for
+																			// your
+																			// own
+																			// details..
+				return ResponseEntity.ok(checkinService.getAllForAssociate(associate)); // You're
+																						// welcome
+																						// to
+																						// your
+																						// own
+																						// data.
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null); // Otherwise,
+																			// go
+																			// away!
+		}
+		Manager manager = (Manager) session.getAttribute(lm);
+		if (manager == null) { // And if you're not a manager..
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null); // Go
+																			// away!
+		}
+		return ResponseEntity.ok(checkinService.getAllForAssociate(username));
+	}
+
+	@GetMapping(path = "/report")
+	public ResponseEntity<ArrayList<DailyReport>> getCheckins(HttpSession session) {// For
+																					// managers
+																					// only.
+		Manager manager = (Manager) session.getAttribute(lm);
+		if (manager == null) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+		}
+		return ResponseEntity.ok(checkinReport.process(checkinService.getAll()));
 	}
 }

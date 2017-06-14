@@ -1,7 +1,6 @@
-package com.revature.entities.data;
+package com.revature.services;
 
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -13,13 +12,11 @@ import org.springframework.stereotype.Service;
 
 import com.revature.entities.Associate;
 import com.revature.entities.Checkin;
-import com.revature.services.AssociateService;
-import com.revature.services.JobService;
 
 @Service
-public class CheckinReport {
+public class CheckinReportServiceImpl {
   
-  public class DailyReport implements Comparable{
+  public class DailyReport implements Comparable<DailyReport>{
     LocalDateTime time;
     int hourCount;
     int hourEstimate;
@@ -33,7 +30,7 @@ public class CheckinReport {
     }
     
     public void addCheckin(Checkin checkin){
-      hourCount += ChronoUnit.HOURS.between(checkin.getCheckinTime(), checkin.getCheckoutTime());
+      hourCount += 1;
     }
     
     public LocalDateTime getTime() {
@@ -61,10 +58,7 @@ public class CheckinReport {
     }
 
     @Override
-    public int compareTo(Object arg0) {
-      if(!(arg0 instanceof DailyReport))
-        return 1;
-      DailyReport other = (DailyReport)arg0;
+    public int compareTo(DailyReport other) {
       return this.getTime().compareTo(other.getTime());
     }
   }
@@ -77,7 +71,7 @@ public class CheckinReport {
   Map<String, DailyReport> reports;
   Set<Associate> associates;
   
-  public CheckinReport(){
+  public CheckinReportServiceImpl(){
     super();
   }
 
@@ -110,10 +104,11 @@ public class CheckinReport {
   private int calculateHourEstimate(LocalDateTime date){
     int total = 0;
     for(Associate a : associates){
-      if(!a.isTrainingOnDate(date) && !a.hasJobOnDate(date))
-      {
-        total += 8;
-      }
+    	
+     if(a.isTrackedOnDate(date))
+     {    		
+        total += 1;
+     }
     }
     return total;
   }
@@ -135,10 +130,10 @@ public class CheckinReport {
   public ArrayList<DailyReport> process(Set<Checkin> checkins) {
     this.reports = new HashMap<String, DailyReport>();
     associates = associateService.getAll();
-    //TODO: making a db call for every associate is inefficient should do a join call in associates.
-    for(Associate a : associates){
-      a.setJobs(jobService.findByAssociate(a));
-    }
+//    //TODO: making a db call for every associate is inefficient should do a join call in associates.
+//    for(Associate a : associates){
+//      a.setJobs(jobService.findByAssociate(a));
+//    }
     
     for(Checkin c : checkins){
       this.addCheckin(c);
