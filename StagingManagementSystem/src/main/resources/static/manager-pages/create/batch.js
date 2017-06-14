@@ -1,6 +1,9 @@
 const batchCtrl = ($scope, $http) => {
-  window.scope = $scope;
+  $scope.batch = {}
   $('#datetimepicker1').datetimepicker();
+  $scope.showDateTimePicker = (id) => {
+		$('#datetimepicker' + id ).datetimepicker("show");
+	}
 	$('#datetimepicker2').datetimepicker();
 
   $http.get('batchtype/all').then((response) => {
@@ -18,13 +21,13 @@ const batchCtrl = ($scope, $http) => {
 
   $('#datetimepicker1').on('dp.change', () => {
     $scope.batch.startDate = $('#datetimepicker1').val();
-   var now = new Date($scope.batch.startDate).toISOString(); 
+   var now = new Date($scope.batch.startDate).toISOString();
    $scope.batch.startDate = now;
   });
 
   $('#datetimepicker2').on('dp.change', () => {
     $scope.batch.endDate = $('#datetimepicker2').val();
-    var now2 = new Date($scope.batch.endDate).toISOString(); 
+    var now2 = new Date($scope.batch.endDate).toISOString();
     $scope.batch.endDate = now2;
   });
 

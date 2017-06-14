@@ -46887,32 +46887,63 @@
 /* 94 */
 /***/ (function(module, exports) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 	/**
 	 * Created by colts on 6/8/2017.
 	 */
 	var managerCheckinsCtrl = function managerCheckinsCtrl($scope, $http) {
-	    console.log("started");
+	  $http.get('checkin/allTodays').then(function (result) {
+	    $scope.checkins = result.data;
+	    $http.get('associate/allActive').then(function (result) {
+	      $scope.associates = result.data;
 
-	    $http.get("checkin/allTodays").then(function (result) {
-	        $scope.checkins = result.data;
+	      $scope.associates.forEach(function (associate) {
+	        associate.checkin = {};
+	        var associatesCheckin = $scope.checkins.some(function (checkin) {
+	          if (checkin.associate.name === associate.name) {
+	            associate.checkin = checkin;
+	            return true;
+	          }
+	        });
+	      });
+	      window.associates = $scope.associates;
+	    });
+	  });
+
+	  $scope.approvedFilter = function (associate) {
+	    if (associate.checkin.approvedBy) {
+	      return false;
+	    } else {
+	      return true;
+	    }
+	  };
+
+	  $scope.selectAllAssociatesWhoCheckedIn = function () {
+	    $scope.checkins.forEach(function (checkin) {
+	      checkin.selected = true;
+	    });
+	  };
+
+	  $scope.approveSelectedCheckins = function () {
+	    var approvedCheckins = [];
+	    $scope.checkins.forEach(function (checkin) {
+	      if (!checkin.approvedBy) {
+	        if (checkin.selected) {
+	          approvedCheckins.push(checkin);
+	        }
+	      }
 	    });
 
-	    $scope.checkIfAllSelected = function (checkin) {
-	        window.checkin = checkin;
-	    };
-
-	    $scope.isSelectAll = function () {
-	        $scope.checkins.forEach(function (checkin) {
-	            checkin.selected = true;
-	        });
-	    };
-
-	    $scope.selectAll = true;
+	    $http.patch('checkin/approve-multiple', approvedCheckins).then(function () {
+	      approvedCheckins.forEach(function (checkin) {
+	        checkin.approvedBy = true;
+	      });
+	    });
+	  };
 	};
 
 	exports.default = managerCheckinsCtrl;
@@ -47054,8 +47085,11 @@
 	  value: true
 	});
 	var batchCtrl = function batchCtrl($scope, $http) {
-	  window.scope = $scope;
+	  $scope.batch = {};
 	  $('#datetimepicker1').datetimepicker();
+	  $scope.showDateTimePicker = function (id) {
+	    $('#datetimepicker' + id).datetimepicker("show");
+	  };
 	  $('#datetimepicker2').datetimepicker();
 
 	  $http.get('batchtype/all').then(function (response) {

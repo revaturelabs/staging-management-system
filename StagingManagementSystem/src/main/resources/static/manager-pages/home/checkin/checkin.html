@@ -1,25 +1,23 @@
-<table class="table table-striped">
+<div style="height: 25em; overflow: auto;">
+  <table class="table table-striped" height="120em">
     <thead>
     <tr>
-        <th class="interview-th" scope="col"><input type="checkbox"
-          ng-model="selectedAll" ng-click="isSelectAll()"> Select All</th>
-        <th class="interview-th" scope="col">Associate</th>
-        <th class="interview-th" scope="col">Checked In Time</th>
-
+      <th class="interview-th" scope="col">
+        <input type="checkbox" ng-click="selectAllAssociatesWhoCheckedIn()"> Select All
+      </th>
+      <th class="interview-th" scope="col">Associate</th>
+      <th class="interview-th" scope="col">Checked In Time</th>
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="checkin in checkins" class="associate">
-        <td class="interview-td"><input type="checkbox"
-          ng-model="checkin.selected" ng-click="checkIfAllSelected(checkin)">
+    <tr ng-repeat="associate in associates | filter: approvedFilter" class="associate">
+        <td class="interview-td">
+          <input ng-style="associate.checkin.checkinTime ? {'cursor':'pointer'} : {}" type="checkbox" ng-disabled="!associate.checkin.checkinTime" ng-model="associate.checkin.selected">
          </td>
-
-        <td class="interview-td" ng-bind="checkin.associate.name"></td>
-
-        <td class="interview-td" ng-bind="checkin.checkinTime"
-        value="{{ checkin.checkinTime | date: 'DD-MON-RR HH:MI:SSX AM' }}"></td>
+        <td class="interview-td" ng-bind="associate.name"></td>
+        <td style="text-align:center" class="interview-td" ng-bind="associate.checkin.checkinTime ? dateConverter(associate.checkin.checkinTime) : '----'"></td>
       </tr>
     </tbody>
-</table>
-<button class="btn btn-lg btn-primary btn-block" type="submit"
-        ng-click="approve()">Submit</button>
+  </table>
+</div>
+<button class="btn btn-lg btn-success btn-block" type="submit" ng-click="approveSelectedCheckins()">Submit</button>

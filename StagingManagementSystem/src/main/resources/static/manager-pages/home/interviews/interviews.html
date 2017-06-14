@@ -1,25 +1,23 @@
 <div class="interviews-container">
-  <div>
-    <table class="table table-striped interviews-table selectable-table">
-      <thead>
-      <tr>
-        <th class="interview-th" scope="col">Associate</th>
-        <th class="interview-th" scope="col">Client</th>
-        <th class="interview-th" scope="col">Scheduled Time</th>
-        <th class="interview-th" scope="col">Status</th>
-      </tr>
-      </thead>
-      <tbody>
-      <!-- <tr ng-repeat="interview in interviews" data-toggle="modal" data-target="#interviewModal" ng-click="interviewSelect(interview)" ng-class="{selectedTableRow : interview.id === idSelectedInterview}" >-->
-      <tr ng-repeat="interview in interviews" data-toggle="modal" data-target="#interviewModal" ng-click="interviewSelect(interview)">
-        <td class="interview-td" ng-bind="interview.associate.name"></td>
-        <td class="interview-td" ng-bind="interview.client.name"></td>
-        <td class="interview-td" ng-bind="dateConverter(interview.scheduled)"></td>
-        <td class="interview-td" ng-bind="interview.interviewStatus.value"></td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
+  <table class="table table-striped interviews-table selectable-table">
+    <thead>
+    <tr>
+      <th class="interview-th" scope="col">Associate</th>
+      <th class="interview-th" scope="col">Client</th>
+      <th class="interview-th" scope="col">Scheduled Time</th>
+      <th class="interview-th" scope="col">Status</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- <tr ng-repeat="interview in interviews" data-toggle="modal" data-target="#interviewModal" ng-click="interviewSelect(interview)" ng-class="{selectedTableRow : interview.id === idSelectedInterview}" >-->
+    <tr ng-repeat="interview in interviews" data-toggle="modal" data-target="#interviewModal" ng-click="interviewSelect(interview)">
+      <td class="interview-td" ng-bind="interview.associate.name"></td>
+      <td class="interview-td" ng-bind="interview.client.name"></td>
+      <td class="interview-td" ng-bind="dateConverter(interview.scheduled)"></td>
+      <td class="interview-td" ng-bind="interview.interviewStatus.value"></td>
+    </tr>
+    </tbody>
+  </table>
 </div>
 
 <!-- Modal -->

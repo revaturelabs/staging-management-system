@@ -2,28 +2,55 @@
  * Created by colts on 6/8/2017.
  */
 const managerCheckinsCtrl = ($scope, $http) => {
-    console.log("started");
+  $http.get('checkin/allTodays').then((result) => {
+      $scope.checkins = result.data;
+      $http.get('associate/allActive').then((result) => {
+        $scope.associates = result.data;
 
+        $scope.associates.forEach((associate) => {
+          associate.checkin = {};
+          let associatesCheckin = $scope.checkins.some((checkin) => {
+            if(checkin.associate.name === associate.name) {
+              associate.checkin = checkin;
+              return true;
+            }
+          })
+        })
+        window.associates = $scope.associates;
+      })
+  });
 
-    $http.get("checkin/allTodays").then(function(result) {
-        $scope.checkins = result.data;
-
-    });
-
-    $scope.checkIfAllSelected = (checkin) => {
-      window.checkin = checkin
+  $scope.approvedFilter = (associate) => {
+    if(associate.checkin.approvedBy) {
+      return false;
+    } else {
+      return true;
     }
+  }
+
+  $scope.selectAllAssociatesWhoCheckedIn = () => {
+    $scope.checkins.forEach((checkin) => {
+      checkin.selected = true;
+    });
+  };
 
 
-    $scope.isSelectAll = function() {
-      $scope.checkins.forEach((checkin) => {
-        checkin.selected = true;
-      });
-    };
+  $scope.approveSelectedCheckins = () => {
+    let approvedCheckins = [];
+    $scope.checkins.forEach((checkin) => {
+      if (!checkin.approvedBy) {
+        if (checkin.selected) {
+          approvedCheckins.push(checkin);
+        }
+      }
+    })
 
-
-$scope.selectAll = true;
-
+    $http.patch('checkin/approve-multiple', approvedCheckins).then(() => {
+      approvedCheckins.forEach((checkin) => {
+        checkin.approvedBy = true;
+      })
+    })
+  }
 };
 
 export default managerCheckinsCtrl;
