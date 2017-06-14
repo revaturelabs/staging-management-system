@@ -1,10 +1,11 @@
 const batchCtrl = ($scope, $http) => {
   $scope.batch = {}
   $('#datetimepicker1').datetimepicker();
+	$('#datetimepicker2').datetimepicker();
+
   $scope.showDateTimePicker = (id) => {
 		$('#datetimepicker' + id ).datetimepicker("show");
 	}
-	$('#datetimepicker2').datetimepicker();
 
   $http.get('batchtype/all').then((response) => {
 			$scope.batchTypes = response.data

@@ -23,36 +23,56 @@
           </td>
         </tr>
         <tr>
-            <td><label>Start Date: </label>
-              <input type='text' class="manager-input" ng-model="job.startDate" id='datetimepicker1'/>
-              <div ng-click="showDateTimePicker()">
+            <td>
+              <label>Start Date: </label>
+              <div class="input-group" ng-click="showDateTimePicker(1)">
+                <input type='text' class="manager-input form-control" ng-model="job.startDate" id='datetimepicker1'/>
+                <span class="input-group-addon" style="cursor:pointer">
+    							<span class="glyphicon glyphicon-calendar"></span>
+                </span>
               </div>
             </td>
         </tr>
         <tr>
-            <td><label>Projected End Date: </label>
-              <input type='text' class="manager-input" ng-model="job.projectedEndDate" id='datetimepicker2'/>
-              <div ng-click="showDateTimePicker()">
-             </div>
+            <td>
+              <label>Projected End Date: </label>
+              <div class="input-group" ng-click="showDateTimePicker(2)">
+                <input type='text' class="manager-input form-control" ng-model="job.projectedEndDate" id='datetimepicker2'/>
+                <span class="input-group-addon" style="cursor:pointer">
+    							<span class="glyphicon glyphicon-calendar"></span>
+                </span>
+              </div>
             </td>
         </tr>
-            <td><label>End Date: </label>
-              <input type='text' class="manager-input" ng-model="job.endDate" id='datetimepicker3'/>
-              <div ng-click="showDateTimePicker()">
-             </div>
+            <td>
+              <label>End Date: </label>
+              <div class="input-group" ng-click="showDateTimePicker(3)">
+                <input type='text' class="manager-input form-control" ng-model="job.endDate" id='datetimepicker3'/>
+                <span class="input-group-addon" style="cursor:pointer">
+    							<span class="glyphicon glyphicon-calendar"></span>
+                </span>
+              </div>
             </td>
         </tr>
         <tr>
-            <td><label>Buyout Date: </label>
-              <input type='text' class="manager-input" ng-model="job.buyoutDate" id='datetimepicker4'/>
-              <div ng-click="showDateTimePicker()">
-             </div>
+            <td>
+              <label>Buyout Date: </label>
+              <div class="input-group" ng-click="showDateTimePicker(4)">
+                <input type='text' class="manager-input form-control" ng-model="job.buyoutDate" id='datetimepicker4'/>
+                <span class="input-group-addon" style="cursor:pointer">
+    							<span class="glyphicon glyphicon-calendar"></span>
+                </span>
+              </div>
             </td>
         </tr>
-            <td><label>Confirmed Date: </label>
-              <input type='text' class="manager-input" ng-model="job.confirmedDate" id='datetimepicker5'/>
-              <div ng-click="showDateTimePicker()">
-             </div>
+            <td>
+              <label>Confirmed Date: </label>
+              <div class="input-group" ng-click="showDateTimePicker(5)">
+                <input type='text' class="manager-input form-control" ng-model="batch.startDate" id='datetimepicker5'/>
+                <span class="input-group-addon" style="cursor:pointer">
+    							<span class="glyphicon glyphicon-calendar"></span>
+                </span>
+              </div>
             </td>
         </tr>
     </tbody>
@@ -60,4 +80,3 @@
 
 <div ng-show="requestMade" ng-bind="createMessage" ng-style="createMessageStyle"></div>
 <button class="submit" ng-click="submit()">Submit</button>
- 

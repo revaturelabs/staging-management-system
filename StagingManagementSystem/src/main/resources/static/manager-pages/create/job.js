@@ -1,10 +1,14 @@
 const jobCtrl = ($scope, $http) => {
-  window.scope = $scope;
+  $scope.job = {};
   $('#datetimepicker1').datetimepicker();
   $('#datetimepicker2').datetimepicker();
   $('#datetimepicker3').datetimepicker();
   $('#datetimepicker4').datetimepicker();
   $('#datetimepicker5').datetimepicker();
+
+  $scope.showDateTimePicker = (id) => {
+		$('#datetimepicker' + id ).datetimepicker("show");
+	}
 
   $http.get('associate/all').then( (response) => {
   	//takes a while for associates to load...
@@ -21,31 +25,31 @@ const jobCtrl = ($scope, $http) => {
 
   $('#datetimepicker1').on('dp.change', () => {
     $scope.job.startDate = $('#datetimepicker1').val();
-   var now = new Date($scope.job.startDate).toISOString(); 
+   var now = new Date($scope.job.startDate).toISOString();
    $scope.job.startDate = now;
   });
 
   $('#datetimepicker2').on('dp.change', () => {
     $scope.job.projectedEndDate = $('#datetimepicker2').val();
-    var now2 = new Date($scope.job.projectedEndDate).toISOString(); 
+    var now2 = new Date($scope.job.projectedEndDate).toISOString();
     $scope.job.projectedEndDate = now2;
   });
 
   $('#datetimepicker3').on('dp.change', () => {
     $scope.job.endDate = $('#datetimepicker3').val();
-    var now3 = new Date($scope.job.endDate).toISOString(); 
+    var now3 = new Date($scope.job.endDate).toISOString();
     $scope.job.endDate = now3;
   });
 
   $('#datetimepicker4').on('dp.change', () => {
     $scope.job.buyoutDate = $('#datetimepicker4').val();
-    var now4 = new Date($scope.job.buyoutDate).toISOString(); 
+    var now4 = new Date($scope.job.buyoutDate).toISOString();
     $scope.job.buyoutDate = now4;
   });
 
   $('#datetimepicker5').on('dp.change', () => {
     $scope.job.confirmedDate = $('#datetimepicker5').val();
-    var now5 = new Date($scope.job.confirmedDate).toISOString(); 
+    var now5 = new Date($scope.job.confirmedDate).toISOString();
     $scope.job.confirmedDate = now5;
   });
 
