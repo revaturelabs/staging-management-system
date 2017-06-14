@@ -23,7 +23,6 @@ public class InterviewsControllerImpl {
 
 	@Autowired
 	private InterviewsService interviewsService;
-	
 	@Autowired
 	private InterviewStatusService interviewStatusService;
 

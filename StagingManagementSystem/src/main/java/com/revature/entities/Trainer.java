@@ -9,14 +9,12 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.revature.exceptions.SmsCustomException;
-import com.revature.markers.SmsValidatable;
 
 
 @Entity
 @Table(name = "TRAINERS")
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-public class Trainer implements SmsValidatable {
+public class Trainer {
 
 	@Id
 	@Column(name = "TRAINER_ID")
@@ -99,9 +97,4 @@ public class Trainer implements SmsValidatable {
 		return "Trainer [id=" + id + ", name=" + name + ", active=" + active + "]";
 	}
 
-	@Override
-	public void validate() throws SmsCustomException {
-		// TODO Validate your members.
-
-	}
 }

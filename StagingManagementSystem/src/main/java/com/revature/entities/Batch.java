@@ -1,8 +1,9 @@
 package com.revature.entities;
 
-import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters.LocalDateTimeConverter;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -18,189 +19,179 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-
-import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters.LocalDateTimeConverter;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonProperty.Access;
-import com.revature.exceptions.SmsCustomException;
-import com.revature.markers.SmsValidatable;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "BATCHES")
-@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-public class Batch implements SmsValidatable {
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class Batch {
 
-	@Id
-	@Column(name = "BATCH_ID")
-	@SequenceGenerator(name = "BATCH_ID_SEQ", sequenceName = "BATCH_ID_SEQ")
-	@GeneratedValue(generator = "BATCH_ID_SEQ", strategy = GenerationType.SEQUENCE)
-	private long id;
+    @Id
+    @Column(name = "BATCH_ID")
+    @SequenceGenerator(name = "BATCH_ID_SEQ", sequenceName = "BATCH_ID_SEQ")
+    @GeneratedValue(generator = "BATCH_ID_SEQ", strategy = GenerationType.SEQUENCE)
+    private long id;
 
-	@ManyToOne
-	@JoinColumn(name = "BATCH_TYPE_ID")
-	private BatchType batchType;
+    @ManyToOne
+    @JoinColumn(name = "BATCH_TYPE_ID")
+    private BatchType batchType;
 
-	@Column(name = "BATCH_START_DATE")
-	@Convert(converter = LocalDateTimeConverter.class)
-	private LocalDateTime startDate;
+    @Column(name = "BATCH_START_DATE")
+    @Convert(converter = LocalDateTimeConverter.class)
+    private LocalDateTime startDate;
 
-	@Column(name = "BATCH_END_DATE")
-	@Convert(converter = LocalDateTimeConverter.class)
-	private LocalDateTime endDate;
+    @Column(name = "BATCH_END_DATE")
+    @Convert(converter = LocalDateTimeConverter.class)
+    private LocalDateTime endDate;
 
-	@ManyToOne
-	@JoinColumn(name = "LOCATION_ID")
-	private Location location;
+    @ManyToOne
+    @JoinColumn(name = "LOCATION_ID")
+    private Location location;
 
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "BATCH_TRAINER", joinColumns = @JoinColumn(name = "BATCH_ID"), inverseJoinColumns = @JoinColumn(name = "TRAINER_ID"))
-	private Set<Trainer> trainers;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "BATCH_TRAINER", joinColumns = @JoinColumn(name = "BATCH_ID"), inverseJoinColumns = @JoinColumn(name = "TRAINER_ID"))
+    private Set<Trainer> trainers;
 
-	@OneToMany(mappedBy = "batch", fetch = FetchType.LAZY)
-	@JsonProperty(access=Access.WRITE_ONLY)
-	private Set<Associate> associates;
+    @OneToMany(mappedBy = "batch", fetch = FetchType.LAZY)
+    @JsonProperty(access = Access.WRITE_ONLY)
+    private Set<Associate> associates;
 
-	public Batch() {
-		super();
-		this.trainers = new HashSet<>();
-		this.associates = new HashSet<>();
-	}
+    public Batch() {
 
-	public Batch(long id, BatchType batchType, LocalDateTime startDate, LocalDateTime endDate, Location location,
-			Set<Trainer> trainers, Set<Associate> associates) {
-		super();
-		this.id = id;
-		this.batchType = batchType;
-		this.startDate = startDate;
-		this.endDate = endDate;
-		this.location = location;
-		this.trainers = trainers;
-		this.associates = associates;
-	}
+        super();
+        this.trainers = new HashSet<>();
+        this.associates = new HashSet<>();
+    }
 
-	public long getId() {
-		return id;
-	}
+    public Batch(long id, BatchType batchType, LocalDateTime startDate, LocalDateTime endDate, Location location, Set<Trainer> trainers, Set<Associate> associates) {
 
-	public void setId(long id) {
-		this.id = id;
-	}
+        super();
+        this.id = id;
+        this.batchType = batchType;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.location = location;
+        this.trainers = trainers;
+        this.associates = associates;
+    }
 
-	public BatchType getBatchType() {
-		return batchType;
-	}
+    public long getId() {
 
-	public void setBatchType(BatchType batchType) {
-		this.batchType = batchType;
-	}
+        return id;
+    }
 
-	public LocalDateTime getStartDate() {
-		return startDate;
-	}
+    public void setId(long id) {
 
-	public void setStartDate(LocalDateTime startDate) {
-		this.startDate = startDate;
-	}
+        this.id = id;
+    }
 
-	public LocalDateTime getEndDate() {
-		return endDate;
-	}
+    public BatchType getBatchType() {
 
-	public void setEndDate(LocalDateTime endDate) {
-		this.endDate = endDate;
-	}
+        return batchType;
+    }
 
-	public Location getLocation() {
-		return location;
-	}
+    public void setBatchType(BatchType batchType) {
 
-	public void setLocation(Location location) {
-		this.location = location;
-	}
+        this.batchType = batchType;
+    }
 
-	public Set<Trainer> getTrainers() {
-		return trainers;
-	}
+    public LocalDateTime getStartDate() {
 
-	public void setTrainers(Set<Trainer> trainers) {
-		this.trainers = trainers;
-	}
+        return startDate;
+    }
 
-	public Set<Associate> getAssociates() {
-		return associates;
-	}
+    public void setStartDate(LocalDateTime startDate) {
 
-	public void setAssociates(Set<Associate> associates) {
-		this.associates = associates;
-	}
+        this.startDate = startDate;
+    }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((associates == null) ? 0 : associates.hashCode());
-	    result = prime * result + ((batchType == null) ? 0 : batchType.hashCode());
-	    result = prime * result + ((endDate == null) ? 0 : endDate.hashCode());
-	    result = prime * result + ((location == null) ? 0 : location.hashCode());
-	    result = prime * result + ((startDate == null) ? 0 : startDate.hashCode());
-	    result = prime * result + ((trainers == null) ? 0 : trainers.hashCode());
-	    return result;
-	  }
-	
-	@Override
-	public final boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (!(obj instanceof Batch))
-			return false;
-		Batch other = (Batch) obj;
-		if (associates == null) {
-			if (other.associates != null)
-				return false;
-		} else if (!associates.equals(other.associates))
-			return false;
-		if (batchType == null) {
-			if (other.batchType != null)
-				return false;
-		} else if (!batchType.equals(other.batchType))
-			return false;
-		if (endDate == null) {
-			if (other.endDate != null)
-				return false;
-		} else if (!endDate.equals(other.endDate))
-			return false;
-		if (location == null) {
-			if (other.location != null)
-				return false;
-		} else if (!location.equals(other.location))
-			return false;
-		if (startDate == null) {
-			if (other.startDate != null)
-				return false;
-		} else if (!startDate.equals(other.startDate))
-			return false;
-		if (trainers == null) {
-			if (other.trainers != null)
-				return false;
-		} else if (!trainers.equals(other.trainers))
-			return false;
-		return true;
-	}
+    public LocalDateTime getEndDate() {
 
-	@Override
-	public String toString() {
-		return "Batch [id=" + id + ", batchType=" + batchType + ", startDate=" + startDate + ", endDate=" + endDate
-				+ ", location=" + location + ", trainers=" + trainers + ", associates=" + associates + "]";
-	}
+        return endDate;
+    }
 
-	@Override
-	public void validate() throws SmsCustomException {
-		// TODO Validate your members.
+    public void setEndDate(LocalDateTime endDate) {
 
-	}
+        this.endDate = endDate;
+    }
 
+    public Location getLocation() {
+
+        return location;
+    }
+
+    public void setLocation(Location location) {
+
+        this.location = location;
+    }
+
+    public Set<Trainer> getTrainers() {
+
+        return trainers;
+    }
+
+    public void setTrainers(Set<Trainer> trainers) {
+
+        this.trainers = trainers;
+    }
+
+    public Set<Associate> getAssociates() {
+
+        return associates;
+    }
+
+    public void setAssociates(Set<Associate> associates) {
+
+        this.associates = associates;
+    }
+
+    @Override
+    public int hashCode() {
+
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((associates == null) ? 0 : associates.hashCode());
+        result = prime * result + ((batchType == null) ? 0 : batchType.hashCode());
+        result = prime * result + ((endDate == null) ? 0 : endDate.hashCode());
+        result = prime * result + ((location == null) ? 0 : location.hashCode());
+        result = prime * result + ((startDate == null) ? 0 : startDate.hashCode());
+        result = prime * result + ((trainers == null) ? 0 : trainers.hashCode());
+        return result;
+    }
+
+    @Override
+    public final boolean equals(Object obj) {
+
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (!(obj instanceof Batch)) return false;
+        Batch other = (Batch) obj;
+        if (associates == null) {
+            if (other.associates != null) return false;
+        } else if (!associates.equals(other.associates)) return false;
+        if (batchType == null) {
+            if (other.batchType != null) return false;
+        } else if (!batchType.equals(other.batchType)) return false;
+        if (endDate == null) {
+            if (other.endDate != null) return false;
+        } else if (!endDate.equals(other.endDate)) return false;
+        if (location == null) {
+            if (other.location != null) return false;
+        } else if (!location.equals(other.location)) return false;
+        if (startDate == null) {
+            if (other.startDate != null) return false;
+        } else if (!startDate.equals(other.startDate)) return false;
+        if (trainers == null) {
+            if (other.trainers != null) return false;
+        } else if (!trainers.equals(other.trainers)) return false;
+        return true;
+    }
+
+    @Override
+    public String toString() {
+
+        return "Batch [id=" + id + ", batchType=" + batchType + ", startDate=" + startDate + ", endDate=" + endDate + ", location=" + location + ", trainers=" + trainers + ", associates=" + associates + "]";
+    }
 }

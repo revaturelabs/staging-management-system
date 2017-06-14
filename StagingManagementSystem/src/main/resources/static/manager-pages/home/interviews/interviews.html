@@ -35,19 +35,19 @@
         </h4>
       </div>
       <div class="modal-body">
-        <div class="interview-side-table-row">Associate: {{ interviewSideTable.interview.associate.name }}</div>
-        <div class="interview-side-table-row" ng-hide="edit">Date: {{ dateConverter(interviewSideTable.interview.scheduled) }}</div>
+        <div class="interview-side-table-row"><b>Associate</b>: {{ interviewSideTable.interview.associate.name }}</div>
+        <div class="interview-side-table-row" ng-hide="edit"><b>Date</b>: {{ dateConverter(interviewSideTable.interview.scheduled) }}</div>
         <div class="interview-side-table-row flex-row" ng-show="edit">
-          Date:
+          <b>Date</b>:
               <input type='text' class="manager-input" ng-model="selectedDate.value" id='datetimepicker1'/>
               <div ng-click="showDateTimePicker()" class="interview-input-addon">
                   <span class="glyphicon glyphicon-calendar"></span>
               </div>
         </div>
-        <div class="interview-side-table-row">Skill: {{ interviewSideTable.interview.associate.batch.batchType.value }}</div>
-        <div class="interview-side-table-row">Client: {{ interviewSideTable.interview.client.name }}</div>
+        <div class="interview-side-table-row"><b>Skill</b>:[{{interviewSideTable.interview.associate.batch.batchType.value}}] <span ng-repeat="skill in skills = interviewSideTable.interview.associate.batch.batchType.skills.concat(interviewSideTable.interview.associate.skills)">{{skill.value}}{{$last ? "" : ", "}}</span></div>
+        <div class="interview-side-table-row"><b>Client</b>: {{ interviewSideTable.interview.client.name }}</div>
         <div class="interview-side-table-row" ng-hide="edit">
-          Status: {{ interviewSideTable.interview.interviewStatus.value }}
+          <b>Status</b>: {{ interviewSideTable.interview.interviewStatus.value }}
         </div>
         <div class="interview-side-table-row flex-row" class="interview-status-container" ng-show="edit">
           <div class="interview-status-label">Status: </div>

@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("test")
 public class TestImpl {
 
-	@GetMapping("/testone")
-	public void permissionTest() {
+    @GetMapping("/testone")
+    public void permissionTest() {
 
-	}
+    }
 }

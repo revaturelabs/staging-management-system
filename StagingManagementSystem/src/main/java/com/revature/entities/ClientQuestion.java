@@ -1,5 +1,7 @@
 package com.revature.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,123 +13,116 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.revature.exceptions.SmsCustomException;
-import com.revature.markers.SmsValidatable;
-
 @Entity
 @Table(name = "CLIENT_QUESTIONS")
-@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-public class ClientQuestion implements SmsValidatable {
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class ClientQuestion {
 
-	@Id
-	@Column(name = "CLIENT_QUESTION_ID")
-	@SequenceGenerator(name = "CLIENT_QUESTION_ID_SEQ", sequenceName = "CLIENT_QUESTION_ID_SEQ")
-	@GeneratedValue(generator = "CLIENT_QUESTION_ID_SEQ", strategy = GenerationType.SEQUENCE)
-	private long id;
+    @Id
+    @Column(name = "CLIENT_QUESTION_ID")
+    @SequenceGenerator(name = "CLIENT_QUESTION_ID_SEQ", sequenceName = "CLIENT_QUESTION_ID_SEQ")
+    @GeneratedValue(generator = "CLIENT_QUESTION_ID_SEQ", strategy = GenerationType.SEQUENCE)
+    private long id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "CLIENT_ID")
-	private Client client;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "CLIENT_ID")
+    private Client client;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "INTERVIEW_QUESTION_ID")
-	private InterviewQuestion interviewQ;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "INTERVIEW_QUESTION_ID")
+    private InterviewQuestion interviewQ;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "ASSOCIATE_ID")
-	private Associate associate;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ASSOCIATE_ID")
+    private Associate associate;
 
-	public ClientQuestion() {
-		super();
-	}
+    public ClientQuestion() {
 
-	public ClientQuestion(long id, Client client, InterviewQuestion interviewQ, Associate associate) {
-		super();
-		this.id = id;
-		this.client = client;
-		this.interviewQ = interviewQ;
-		this.associate = associate;
-	}
+        super();
+    }
 
-	public long getId() {
-		return id;
-	}
+    public ClientQuestion(long id, Client client, InterviewQuestion interviewQ, Associate associate) {
 
-	public void setId(long id) {
-		this.id = id;
-	}
+        super();
+        this.id = id;
+        this.client = client;
+        this.interviewQ = interviewQ;
+        this.associate = associate;
+    }
 
-	public Client getClient() {
-		return client;
-	}
+    public long getId() {
 
-	public void setClient(Client client) {
-		this.client = client;
-	}
+        return id;
+    }
 
-	public InterviewQuestion getInterviewQ() {
-		return interviewQ;
-	}
+    public void setId(long id) {
 
-	public void setInterviewQ(InterviewQuestion interviewQ) {
-		this.interviewQ = interviewQ;
-	}
+        this.id = id;
+    }
 
-	public Associate getAssociate() {
-		return associate;
-	}
+    public Client getClient() {
 
-	public void setAssociate(Associate associate) {
-		this.associate = associate;
-	}
+        return client;
+    }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((associate == null) ? 0 : associate.hashCode());
-		result = prime * result + ((client == null) ? 0 : client.hashCode());
-		result = prime * result + ((interviewQ == null) ? 0 : interviewQ.hashCode());
-		return result;
-	}
+    public void setClient(Client client) {
 
-	@Override
-	public final boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (!(obj instanceof ClientQuestion))
-			return false;
-		ClientQuestion other = (ClientQuestion) obj;
-		if (associate == null) {
-			if (other.associate != null)
-				return false;
-		} else if (!associate.equals(other.associate))
-			return false;
-		if (client == null) {
-			if (other.client != null)
-				return false;
-		} else if (!client.equals(other.client))
-			return false;
-		if (interviewQ == null) {
-			if (other.interviewQ != null)
-				return false;
-		} else if (!interviewQ.equals(other.interviewQ))
-			return false;
-		return true;
-	}
+        this.client = client;
+    }
 
-	@Override
-	public String toString() {
-		return "ClientQuestion [id=" + id + ", client=" + client + ", interviewQ=" + interviewQ + ", associate="
-				+ associate + "]";
-	}
+    public InterviewQuestion getInterviewQ() {
 
-	@Override
-	public void validate() throws SmsCustomException {
-		// TODO Validate your members.
+        return interviewQ;
+    }
 
-	}
+    public void setInterviewQ(InterviewQuestion interviewQ) {
+
+        this.interviewQ = interviewQ;
+    }
+
+    public Associate getAssociate() {
+
+        return associate;
+    }
+
+    public void setAssociate(Associate associate) {
+
+        this.associate = associate;
+    }
+
+    @Override
+    public int hashCode() {
+
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((associate == null) ? 0 : associate.hashCode());
+        result = prime * result + ((client == null) ? 0 : client.hashCode());
+        result = prime * result + ((interviewQ == null) ? 0 : interviewQ.hashCode());
+        return result;
+    }
+
+    @Override
+    public final boolean equals(Object obj) {
+
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (!(obj instanceof ClientQuestion)) return false;
+        ClientQuestion other = (ClientQuestion) obj;
+        if (associate == null) {
+            if (other.associate != null) return false;
+        } else if (!associate.equals(other.associate)) return false;
+        if (client == null) {
+            if (other.client != null) return false;
+        } else if (!client.equals(other.client)) return false;
+        if (interviewQ == null) {
+            if (other.interviewQ != null) return false;
+        } else if (!interviewQ.equals(other.interviewQ)) return false;
+        return true;
+    }
+
+    @Override
+    public String toString() {
+
+        return "ClientQuestion [id=" + id + ", client=" + client + ", interviewQ=" + interviewQ + ", associate=" + associate + "]";
+    }
 }

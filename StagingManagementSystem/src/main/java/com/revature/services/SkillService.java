@@ -1,13 +1,11 @@
 package com.revature.services;
 
-import java.util.List;
-
 import com.revature.entities.Skill;
+
+import java.util.List;
 
 public interface SkillService {
 
-	List<Skill> getAllSkills();
-
-	Skill addSkill(Skill skill);
-
+    List<Skill> getAllSkills();
+    Skill addSkill(Skill skill);
 }
