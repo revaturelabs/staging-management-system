@@ -174,31 +174,48 @@ public class Job {
     @Override
     public final boolean equals(Object obj) {
 
-        if (this == obj) return true;
-        if (obj == null) return false;
-        if (!(obj instanceof Job)) return false;
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (!(obj instanceof Job))
+            return false;
         Job other = (Job) obj;
         if (associate == null) {
-            if (other.associate != null) return false;
-        } else if (!associate.equals(other.associate)) return false;
+            if (other.associate != null)
+                return false;
+        } else if (!associate.equals(other.associate))
+            return false;
         if (buyoutDate == null) {
-            if (other.buyoutDate != null) return false;
-        } else if (!buyoutDate.equals(other.buyoutDate)) return false;
+            if (other.buyoutDate != null)
+                return false;
+        } else if (!buyoutDate.equals(other.buyoutDate))
+            return false;
         if (client == null) {
-            if (other.client != null) return false;
-        } else if (!client.equals(other.client)) return false;
+            if (other.client != null)
+                return false;
+        } else if (!client.equals(other.client))
+            return false;
         if (confirmedDate == null) {
-            if (other.confirmedDate != null) return false;
-        } else if (!confirmedDate.equals(other.confirmedDate)) return false;
+            if (other.confirmedDate != null)
+                return false;
+        } else if (!confirmedDate.equals(other.confirmedDate))
+            return false;
         if (endDate == null) {
-            if (other.endDate != null) return false;
-        } else if (!endDate.equals(other.endDate)) return false;
+            if (other.endDate != null)
+                return false;
+        } else if (!endDate.equals(other.endDate))
+            return false;
         if (projectedEndDate == null) {
-            if (other.projectedEndDate != null) return false;
-        } else if (!projectedEndDate.equals(other.projectedEndDate)) return false;
+            if (other.projectedEndDate != null)
+                return false;
+        } else if (!projectedEndDate.equals(other.projectedEndDate))
+            return false;
         if (startDate == null) {
-            if (other.startDate != null) return false;
-        } else if (!startDate.equals(other.startDate)) return false;
+            if (other.startDate != null)
+                return false;
+        } else if (!startDate.equals(other.startDate))
+            return false;
         return true;
     }
 

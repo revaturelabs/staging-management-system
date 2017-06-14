@@ -68,13 +68,18 @@ public class InterviewStatuses {
     @Override
     public final boolean equals(Object obj) {
 
-        if (this == obj) return true;
-        if (obj == null) return false;
-        if (!(obj instanceof InterviewStatuses)) return false;
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (!(obj instanceof InterviewStatuses))
+            return false;
         InterviewStatuses other = (InterviewStatuses) obj;
         if (value == null) {
-            if (other.value != null) return false;
-        } else if (!value.equals(other.value)) return false;
+            if (other.value != null)
+                return false;
+        } else if (!value.equals(other.value))
+            return false;
         return true;
     }
 

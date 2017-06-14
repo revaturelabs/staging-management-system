@@ -139,25 +139,38 @@ public class Checkin {
     @Override
     public final boolean equals(Object obj) {
 
-        if (this == obj) return true;
-        if (obj == null) return false;
-        if (!(obj instanceof Checkin)) return false;
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (!(obj instanceof Checkin))
+            return false;
         Checkin other = (Checkin) obj;
         if (approveTime == null) {
-            if (other.approveTime != null) return false;
-        } else if (!approveTime.equals(other.approveTime)) return false;
+            if (other.approveTime != null)
+                return false;
+        } else if (!approveTime.equals(other.approveTime))
+            return false;
         if (approvedBy == null) {
-            if (other.approvedBy != null) return false;
-        } else if (!approvedBy.equals(other.approvedBy)) return false;
+            if (other.approvedBy != null)
+                return false;
+        } else if (!approvedBy.equals(other.approvedBy))
+            return false;
         if (associate == null) {
-            if (other.associate != null) return false;
-        } else if (!associate.equals(other.associate)) return false;
+            if (other.associate != null)
+                return false;
+        } else if (!associate.equals(other.associate))
+            return false;
         if (checkinTime == null) {
-            if (other.checkinTime != null) return false;
-        } else if (!checkinTime.equals(other.checkinTime)) return false;
+            if (other.checkinTime != null)
+                return false;
+        } else if (!checkinTime.equals(other.checkinTime))
+            return false;
         if (checkoutTime == null) {
-            if (other.checkoutTime != null) return false;
-        } else if (!checkoutTime.equals(other.checkoutTime)) return false;
+            if (other.checkoutTime != null)
+                return false;
+        } else if (!checkoutTime.equals(other.checkoutTime))
+            return false;
         return true;
     }
 

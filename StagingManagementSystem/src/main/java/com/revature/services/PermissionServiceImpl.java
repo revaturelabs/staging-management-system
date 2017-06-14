@@ -66,8 +66,7 @@ public class PermissionServiceImpl implements PermissionService {
     @Override
     public Set<Permission> getAll() {
 
-        Set<Permission> permissions = new HashSet<Permission>(permissionRepo.findAll());
-        return permissions;
+        return new HashSet<>(permissionRepo.findAll());
     }
 
     @Override
