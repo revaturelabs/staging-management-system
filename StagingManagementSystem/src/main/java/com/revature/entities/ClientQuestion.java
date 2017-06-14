@@ -2,7 +2,16 @@ package com.revature.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "CLIENT_QUESTIONS")
@@ -28,10 +37,12 @@ public class ClientQuestion {
     private Associate associate;
 
     public ClientQuestion() {
+
         super();
     }
 
     public ClientQuestion(long id, Client client, InterviewQuestion interviewQ, Associate associate) {
+
         super();
         this.id = id;
         this.client = client;
@@ -40,39 +51,48 @@ public class ClientQuestion {
     }
 
     public long getId() {
+
         return id;
     }
 
     public void setId(long id) {
+
         this.id = id;
     }
 
     public Client getClient() {
+
         return client;
     }
 
     public void setClient(Client client) {
+
         this.client = client;
     }
 
     public InterviewQuestion getInterviewQ() {
+
         return interviewQ;
     }
 
     public void setInterviewQ(InterviewQuestion interviewQ) {
+
         this.interviewQ = interviewQ;
     }
 
     public Associate getAssociate() {
+
         return associate;
     }
 
     public void setAssociate(Associate associate) {
+
         this.associate = associate;
     }
 
     @Override
     public int hashCode() {
+
         final int prime = 31;
         int result = 1;
         result = prime * result + ((associate == null) ? 0 : associate.hashCode());
@@ -83,35 +103,26 @@ public class ClientQuestion {
 
     @Override
     public final boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (!(obj instanceof ClientQuestion))
-            return false;
+
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (!(obj instanceof ClientQuestion)) return false;
         ClientQuestion other = (ClientQuestion) obj;
         if (associate == null) {
-            if (other.associate != null)
-                return false;
-        } else if (!associate.equals(other.associate))
-            return false;
+            if (other.associate != null) return false;
+        } else if (!associate.equals(other.associate)) return false;
         if (client == null) {
-            if (other.client != null)
-                return false;
-        } else if (!client.equals(other.client))
-            return false;
+            if (other.client != null) return false;
+        } else if (!client.equals(other.client)) return false;
         if (interviewQ == null) {
-            if (other.interviewQ != null)
-                return false;
-        } else if (!interviewQ.equals(other.interviewQ))
-            return false;
+            if (other.interviewQ != null) return false;
+        } else if (!interviewQ.equals(other.interviewQ)) return false;
         return true;
     }
 
     @Override
     public String toString() {
-        return "ClientQuestion [id=" + id + ", client=" + client + ", interviewQ=" + interviewQ + ", associate="
-                + associate + "]";
-    }
 
+        return "ClientQuestion [id=" + id + ", client=" + client + ", interviewQ=" + interviewQ + ", associate=" + associate + "]";
+    }
 }

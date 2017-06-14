@@ -2,7 +2,18 @@ package com.revature.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "MANAGERS")
@@ -30,11 +41,13 @@ public class Manager {
     private boolean active;
 
     public Manager() {
+
         super();
         this.active = true;
     }
 
     public Manager(long id, String name, Credential credential, Permission permission, boolean active) {
+
         super();
         this.id = id;
         this.name = name;
@@ -44,47 +57,58 @@ public class Manager {
     }
 
     public long getId() {
+
         return id;
     }
 
     public void setId(long id) {
+
         this.id = id;
     }
 
     public String getName() {
+
         return name;
     }
 
     public void setName(String name) {
+
         this.name = name;
     }
 
     public Credential getCredential() {
+
         return credential;
     }
 
     public void setCredential(Credential credential) {
+
         this.credential = credential;
     }
 
     public Permission getPermission() {
+
         return permission;
     }
 
     public void setPermission(Permission permission) {
+
         this.permission = permission;
     }
 
     public boolean isActive() {
+
         return active;
     }
 
     public void setActive(boolean active) {
+
         this.active = active;
     }
 
     @Override
     public int hashCode() {
+
         final int prime = 31;
         int result = 1;
         result = prime * result + (active ? 1231 : 1237);
@@ -96,36 +120,27 @@ public class Manager {
 
     @Override
     public final boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (!(obj instanceof Manager))
-            return false;
+
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (!(obj instanceof Manager)) return false;
         Manager other = (Manager) obj;
-        if (active != other.active)
-            return false;
+        if (active != other.active) return false;
         if (credential == null) {
-            if (other.credential != null)
-                return false;
-        } else if (!credential.equals(other.credential))
-            return false;
+            if (other.credential != null) return false;
+        } else if (!credential.equals(other.credential)) return false;
         if (name == null) {
-            if (other.name != null)
-                return false;
-        } else if (!name.equals(other.name))
-            return false;
+            if (other.name != null) return false;
+        } else if (!name.equals(other.name)) return false;
         if (permission == null) {
-            if (other.permission != null)
-                return false;
-        } else if (!permission.equals(other.permission))
-            return false;
+            if (other.permission != null) return false;
+        } else if (!permission.equals(other.permission)) return false;
         return true;
     }
 
     @Override
     public String toString() {
-        return "Manager [id=" + id + ", name=" + name + ", credential=" + credential + ", permission=" + permission
-                + ", active=" + active + "]";
+
+        return "Manager [id=" + id + ", name=" + name + ", credential=" + credential + ", permission=" + permission + ", active=" + active + "]";
     }
 }

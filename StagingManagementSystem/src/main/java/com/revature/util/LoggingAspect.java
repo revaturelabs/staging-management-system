@@ -9,19 +9,23 @@ import org.aspectj.lang.annotation.Pointcut;
 
 @Aspect
 public class LoggingAspect {
-	private Logger log = Logger.getRootLogger();
 
-	@Pointcut("execution(* com.revature..*(..)) && !execution(* com.revature.config.AspectJConfiguration.*(..))")
-	public void mostEverything() {
-		/* Nope!~ */}
+    private Logger log = Logger.getRootLogger();
 
-	@Before("mostEverything()")
-	public void logCall(JoinPoint joinPoint) {
-		log.trace("Call made to: " + joinPoint.getSignature().getName());
-	}
+    @Pointcut("execution(* com.revature..*(..)) && !execution(* com.revature.config.AspectJConfiguration.*(..))")
+    public void mostEverything() {
+        /* Nope!~ */
+    }
 
-	@AfterThrowing("mostEverything()")
-	public void thrown(JoinPoint joinPoint) {
-		log.error("Exception thrown: " + joinPoint.getSignature().getName());
-	}
+    @Before("mostEverything()")
+    public void logCall(JoinPoint joinPoint) {
+
+        log.trace("Call made to: " + joinPoint.getSignature().getName());
+    }
+
+    @AfterThrowing("mostEverything()")
+    public void thrown(JoinPoint joinPoint) {
+
+        log.error("Exception thrown: " + joinPoint.getSignature().getName());
+    }
 }

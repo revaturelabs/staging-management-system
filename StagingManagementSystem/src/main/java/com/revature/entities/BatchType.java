@@ -2,7 +2,17 @@ package com.revature.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,44 +35,52 @@ public class BatchType {
     private Set<Skill> skills;
 
     public BatchType() {
+
         super();
         this.skills = new HashSet<>();
     }
 
     public BatchType(long id, String value, Set<Skill> skills) {
+
         super();
         this.id = id;
         this.value = value;
         this.skills = skills;
-
     }
 
     public long getId() {
+
         return id;
     }
 
     public void setId(long id) {
+
         this.id = id;
     }
 
     public String getValue() {
+
         return value;
     }
 
     public void setValue(String value) {
+
         this.value = value;
     }
 
     public Set<Skill> getSkills() {
+
         return skills;
     }
 
     public void setSkills(Set<Skill> skills) {
+
         this.skills = skills;
     }
 
     @Override
     public int hashCode() {
+
         final int prime = 31;
         int result = 1;
         result = prime * result + ((skills == null) ? 0 : skills.hashCode());
@@ -72,29 +90,23 @@ public class BatchType {
 
     @Override
     public final boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (!(obj instanceof BatchType))
-            return false;
+
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (!(obj instanceof BatchType)) return false;
         BatchType other = (BatchType) obj;
         if (skills == null) {
-            if (other.skills != null)
-                return false;
-        } else if (!skills.equals(other.skills))
-            return false;
+            if (other.skills != null) return false;
+        } else if (!skills.equals(other.skills)) return false;
         if (value == null) {
-            if (other.value != null)
-                return false;
-        } else if (!value.equals(other.value))
-            return false;
+            if (other.value != null) return false;
+        } else if (!value.equals(other.value)) return false;
         return true;
     }
 
     @Override
     public String toString() {
+
         return "BatchType [id=" + id + ", value=" + value + ", skills=" + skills + "]";
     }
-
 }

@@ -4,7 +4,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "CREDENTIALS")
@@ -27,10 +33,12 @@ public class Credential {
     private String password;
 
     public Credential() {
+
         super();
     }
 
     public Credential(long id, String username, String password) {
+
         super();
         this.id = id;
         this.username = username;
@@ -38,31 +46,38 @@ public class Credential {
     }
 
     public long getId() {
+
         return id;
     }
 
     public void setId(long id) {
+
         this.id = id;
     }
 
     public String getUsername() {
+
         return username;
     }
 
     public void setUsername(String username) {
+
         this.username = username;
     }
 
     public String getPassword() {
+
         return password;
     }
 
     public void setPassword(String password) {
+
         this.password = password;
     }
 
     @Override
     public int hashCode() {
+
         final int prime = 31;
         int result = 1;
         result = prime * result + ((password == null) ? 0 : password.hashCode());
@@ -72,29 +87,23 @@ public class Credential {
 
     @Override
     public final boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (!(obj instanceof Credential))
-            return false;
+
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (!(obj instanceof Credential)) return false;
         Credential other = (Credential) obj;
         if (password == null) {
-            if (other.password != null)
-                return false;
-        } else if (!password.equals(other.password))
-            return false;
+            if (other.password != null) return false;
+        } else if (!password.equals(other.password)) return false;
         if (username == null) {
-            if (other.username != null)
-                return false;
-        } else if (!username.equals(other.username))
-            return false;
+            if (other.username != null) return false;
+        } else if (!username.equals(other.username)) return false;
         return true;
     }
 
     @Override
     public String toString() {
+
         return "Credential [id=" + id + ", username=" + username + ", password=" + password + "]";
     }
-
 }

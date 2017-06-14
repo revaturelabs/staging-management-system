@@ -3,7 +3,17 @@ package com.revature.entities;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.revature.util.LocalDateTimeConverter;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import java.time.LocalDateTime;
 
 @Entity
@@ -41,11 +51,12 @@ public class Interview {
     private String comment;
 
     public Interview() {
+
         super();
     }
 
-    public Interview(long id, Associate associate, Client client, Marketer marketer, InterviewStatuses interviewStatus,
-                     LocalDateTime scheduled) {
+    public Interview(long id, Associate associate, Client client, Marketer marketer, InterviewStatuses interviewStatus, LocalDateTime scheduled) {
+
         super();
         this.id = id;
         this.associate = associate;
@@ -56,99 +67,105 @@ public class Interview {
     }
 
     public long getId() {
+
         return id;
     }
 
     public void setId(long id) {
+
         this.id = id;
     }
 
     public Associate getAssociate() {
+
         return associate;
     }
 
     public void setAssociate(Associate associate) {
+
         this.associate = associate;
     }
 
     public Client getClient() {
+
         return client;
     }
 
     public void setClient(Client client) {
+
         this.client = client;
     }
 
     public Marketer getMarketer() {
+
         return marketer;
     }
 
     public void setMarketer(Marketer marketer) {
+
         this.marketer = marketer;
     }
 
     public InterviewStatuses getInterviewStatus() {
+
         return interviewStatus;
     }
 
     public void setInterviewStatus(InterviewStatuses interviewStatus) {
+
         this.interviewStatus = interviewStatus;
     }
 
     public LocalDateTime getScheduled() {
+
         return scheduled;
     }
 
     public void setScheduled(LocalDateTime scheduled) {
+
         this.scheduled = scheduled;
     }
 
     public String getComment() {
+
         return comment;
     }
 
     public void setComment(String comment) {
+
         this.comment = comment;
     }
 
     @Override
-    public final boolean equals(Object o) {
+    public boolean equals(Object o) {
+
         if (this == o) return true;
         if (!(o instanceof Interview)) return false;
-
         Interview interview = (Interview) o;
-
-        if (id != interview.id)
+        if (associate != null ? !associate.equals(interview.associate) : interview.associate != null) return false;
+        if (client != null ? !client.equals(interview.client) : interview.client != null) return false;
+        if (marketer != null ? !marketer.equals(interview.marketer) : interview.marketer != null) return false;
+        if (interviewStatus != null ? !interviewStatus.equals(interview.interviewStatus) : interview.interviewStatus != null)
             return false;
-        if (!associate.equals(interview.associate))
-            return false;
-        if (!client.equals(interview.client))
-            return false;
-        if (!interviewStatus.equals(interview.interviewStatus))
-            return false;
-        return scheduled != null ? scheduled.equals(interview.scheduled) : interview.scheduled == null;
+        if (scheduled != null ? !scheduled.equals(interview.scheduled) : interview.scheduled != null) return false;
+        return comment != null ? comment.equals(interview.comment) : interview.comment == null;
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (associate != null ? associate.hashCode() : 0);
+
+        int result = associate != null ? associate.hashCode() : 0;
         result = 31 * result + (client != null ? client.hashCode() : 0);
+        result = 31 * result + (marketer != null ? marketer.hashCode() : 0);
         result = 31 * result + (interviewStatus != null ? interviewStatus.hashCode() : 0);
         result = 31 * result + (scheduled != null ? scheduled.hashCode() : 0);
+        result = 31 * result + (comment != null ? comment.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        return "Interview{" +
-                "id=" + id +
-                ", associate=" + associate +
-                ", client=" + client +
-                ", marketer=" + marketer +
-                ", interviewStatus=" + interviewStatus +
-                ", scheduled=" + scheduled +
-                '}';
-    }
 
+        return "Interview{" + "id=" + id + ", associate=" + associate + ", client=" + client + ", marketer=" + marketer + ", interviewStatus=" + interviewStatus + ", scheduled=" + scheduled + '}';
+    }
 }

@@ -5,7 +5,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.revature.util.LocalDateTimeConverter;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import java.time.LocalDateTime;
 
 @Entity
@@ -49,11 +59,12 @@ public class Job {
     private LocalDateTime confirmedDate;
 
     public Job() {
+
         super();
     }
 
-    public Job(long id, Associate associate, Client client, LocalDateTime startDate, LocalDateTime projectedEndDate,
-               LocalDateTime endDate, LocalDateTime buyoutDate, LocalDateTime confirmedDate) {
+    public Job(long id, Associate associate, Client client, LocalDateTime startDate, LocalDateTime projectedEndDate, LocalDateTime endDate, LocalDateTime buyoutDate, LocalDateTime confirmedDate) {
+
         super();
         this.id = id;
         this.associate = associate;
@@ -66,71 +77,88 @@ public class Job {
     }
 
     public long getId() {
+
         return id;
     }
 
     public void setId(long id) {
+
         this.id = id;
     }
 
     public Associate getAssociate() {
+
         return associate;
     }
 
     public void setAssociate(Associate associate) {
+
         this.associate = associate;
     }
 
     public Client getClient() {
+
         return client;
     }
 
     public void setClient(Client client) {
+
         this.client = client;
     }
 
     public LocalDateTime getStartDate() {
+
         return startDate;
     }
 
     public void setStartDate(LocalDateTime startDate) {
+
         this.startDate = startDate;
     }
 
     public LocalDateTime getProjectedEndDate() {
+
         return projectedEndDate;
     }
 
     public void setProjectedEndDate(LocalDateTime projectedEndDate) {
+
         this.projectedEndDate = projectedEndDate;
     }
 
     public LocalDateTime getEndDate() {
+
         return endDate;
     }
 
     public void setEndDate(LocalDateTime endDate) {
+
         this.endDate = endDate;
     }
 
     public LocalDateTime getBuyoutDate() {
+
         return buyoutDate;
     }
 
     public void setBuyoutDate(LocalDateTime buyoutDate) {
+
         this.buyoutDate = buyoutDate;
     }
 
     public LocalDateTime getConfirmedDate() {
+
         return confirmedDate;
     }
 
     public void setConfirmedDate(LocalDateTime confirmedDate) {
+
         this.confirmedDate = confirmedDate;
     }
 
     @Override
     public int hashCode() {
+
         final int prime = 31;
         int result = 1;
         result = prime * result + ((associate == null) ? 0 : associate.hashCode());
@@ -145,56 +173,38 @@ public class Job {
 
     @Override
     public final boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (!(obj instanceof Job))
-            return false;
+
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (!(obj instanceof Job)) return false;
         Job other = (Job) obj;
         if (associate == null) {
-            if (other.associate != null)
-                return false;
-        } else if (!associate.equals(other.associate))
-            return false;
+            if (other.associate != null) return false;
+        } else if (!associate.equals(other.associate)) return false;
         if (buyoutDate == null) {
-            if (other.buyoutDate != null)
-                return false;
-        } else if (!buyoutDate.equals(other.buyoutDate))
-            return false;
+            if (other.buyoutDate != null) return false;
+        } else if (!buyoutDate.equals(other.buyoutDate)) return false;
         if (client == null) {
-            if (other.client != null)
-                return false;
-        } else if (!client.equals(other.client))
-            return false;
+            if (other.client != null) return false;
+        } else if (!client.equals(other.client)) return false;
         if (confirmedDate == null) {
-            if (other.confirmedDate != null)
-                return false;
-        } else if (!confirmedDate.equals(other.confirmedDate))
-            return false;
+            if (other.confirmedDate != null) return false;
+        } else if (!confirmedDate.equals(other.confirmedDate)) return false;
         if (endDate == null) {
-            if (other.endDate != null)
-                return false;
-        } else if (!endDate.equals(other.endDate))
-            return false;
+            if (other.endDate != null) return false;
+        } else if (!endDate.equals(other.endDate)) return false;
         if (projectedEndDate == null) {
-            if (other.projectedEndDate != null)
-                return false;
-        } else if (!projectedEndDate.equals(other.projectedEndDate))
-            return false;
+            if (other.projectedEndDate != null) return false;
+        } else if (!projectedEndDate.equals(other.projectedEndDate)) return false;
         if (startDate == null) {
-            if (other.startDate != null)
-                return false;
-        } else if (!startDate.equals(other.startDate))
-            return false;
+            if (other.startDate != null) return false;
+        } else if (!startDate.equals(other.startDate)) return false;
         return true;
     }
 
     @Override
     public String toString() {
-        return "Job [id=" + id + ", associate=" + associate + ", client=" + client + ", startDate=" + startDate
-                + ", projectedEndDate=" + projectedEndDate + ", endDate=" + endDate + ", buyoutDate=" + buyoutDate
-                + ", confirmedDate=" + confirmedDate + "]";
-    }
 
+        return "Job [id=" + id + ", associate=" + associate + ", client=" + client + ", startDate=" + startDate + ", projectedEndDate=" + projectedEndDate + ", endDate=" + endDate + ", buyoutDate=" + buyoutDate + ", confirmedDate=" + confirmedDate + "]";
+    }
 }

@@ -36,30 +36,27 @@ public class CredentialDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+
         Associate associate = associateRepo.getByCredential_Username(s);
         Manager manager = managerRepo.getByCredential_Username(s);
         Credential credential = null;
         List<String> auths = new ArrayList<>();
-        if(associate != null) {
+        if (associate != null) {
             auths.add("ASSOCIATE");
             credential = associate.getCredential();
         }
-        if(manager != null) {
+        if (manager != null) {
             auths.add(manager.getPermission().getLevel());
             credential = manager.getCredential();
         }
-        if(credential == null)
-            throw new UsernameNotFoundException("Unable to find user " + s);
-        return new User(credential.getUsername(), credential.getPassword(),true,
-                true,
-                true,
-                true,
-                buildAuthority(auths));
+        if (credential == null) throw new UsernameNotFoundException("Unable to find user " + s);
+        return new User(credential.getUsername(), credential.getPassword(), true, true, true, true, buildAuthority(auths));
     }
 
-    private List<GrantedAuthority> buildAuthority(List<String> auths){
+    private List<GrantedAuthority> buildAuthority(List<String> auths) {
+
         List<GrantedAuthority> authorities = new ArrayList<>();
-        for (String role : auths){
+        for (String role : auths) {
             authorities.add(new SimpleGrantedAuthority(role));
         }
         return authorities;

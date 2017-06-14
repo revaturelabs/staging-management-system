@@ -3,7 +3,17 @@ package com.revature.entities;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.revature.util.LocalDateTimeConverter;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import java.time.LocalDateTime;
 
 @Entity
@@ -38,11 +48,12 @@ public class Checkin {
     private Associate associate;
 
     public Checkin() {
+
         super();
     }
 
-    public Checkin(long id, LocalDateTime checkinTime, LocalDateTime checkoutTime, Manager approvedBy,
-                   LocalDateTime approveTime, Associate associate) {
+    public Checkin(long id, LocalDateTime checkinTime, LocalDateTime checkoutTime, Manager approvedBy, LocalDateTime approveTime, Associate associate) {
+
         super();
         this.id = id;
         this.checkinTime = checkinTime;
@@ -53,55 +64,68 @@ public class Checkin {
     }
 
     public long getId() {
+
         return id;
     }
 
     public void setId(long id) {
+
         this.id = id;
     }
 
     public LocalDateTime getCheckinTime() {
+
         return checkinTime;
     }
 
     public void setCheckinTime(LocalDateTime checkinTime) {
+
         this.checkinTime = checkinTime;
     }
 
     public LocalDateTime getCheckoutTime() {
+
         return checkoutTime;
     }
 
     public void setCheckoutTime(LocalDateTime checkoutTime) {
+
         this.checkoutTime = checkoutTime;
     }
 
     public Manager getApprovedBy() {
+
         return approvedBy;
     }
 
     public void setApprovedBy(Manager approvedBy) {
+
         this.approvedBy = approvedBy;
     }
 
     public LocalDateTime getApproveTime() {
+
         return approveTime;
     }
 
     public void setApproveTime(LocalDateTime approveTime) {
+
         this.approveTime = approveTime;
     }
 
     public Associate getAssociate() {
+
         return associate;
     }
 
     public void setAssociate(Associate associate) {
+
         this.associate = associate;
     }
 
     @Override
     public int hashCode() {
+
         final int prime = 31;
         int result = 1;
         result = prime * result + ((approveTime == null) ? 0 : approveTime.hashCode());
@@ -114,45 +138,32 @@ public class Checkin {
 
     @Override
     public final boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (!(obj instanceof Checkin))
-            return false;
+
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (!(obj instanceof Checkin)) return false;
         Checkin other = (Checkin) obj;
         if (approveTime == null) {
-            if (other.approveTime != null)
-                return false;
-        } else if (!approveTime.equals(other.approveTime))
-            return false;
+            if (other.approveTime != null) return false;
+        } else if (!approveTime.equals(other.approveTime)) return false;
         if (approvedBy == null) {
-            if (other.approvedBy != null)
-                return false;
-        } else if (!approvedBy.equals(other.approvedBy))
-            return false;
+            if (other.approvedBy != null) return false;
+        } else if (!approvedBy.equals(other.approvedBy)) return false;
         if (associate == null) {
-            if (other.associate != null)
-                return false;
-        } else if (!associate.equals(other.associate))
-            return false;
+            if (other.associate != null) return false;
+        } else if (!associate.equals(other.associate)) return false;
         if (checkinTime == null) {
-            if (other.checkinTime != null)
-                return false;
-        } else if (!checkinTime.equals(other.checkinTime))
-            return false;
+            if (other.checkinTime != null) return false;
+        } else if (!checkinTime.equals(other.checkinTime)) return false;
         if (checkoutTime == null) {
-            if (other.checkoutTime != null)
-                return false;
-        } else if (!checkoutTime.equals(other.checkoutTime))
-            return false;
+            if (other.checkoutTime != null) return false;
+        } else if (!checkoutTime.equals(other.checkoutTime)) return false;
         return true;
     }
 
     @Override
     public String toString() {
-        return "Checkin [id=" + id + ", checkinTime=" + checkinTime + ", checkoutTime=" + checkoutTime + ", approvedBy="
-                + approvedBy + ", approveTime=" + approveTime + ", associate=" + associate + "]";
-    }
 
+        return "Checkin [id=" + id + ", checkinTime=" + checkinTime + ", checkoutTime=" + checkoutTime + ", approvedBy=" + approvedBy + ", approveTime=" + approveTime + ", associate=" + associate + "]";
+    }
 }

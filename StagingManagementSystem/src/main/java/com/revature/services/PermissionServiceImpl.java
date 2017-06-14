@@ -18,16 +18,19 @@ public class PermissionServiceImpl implements PermissionService {
     private PermissionRepo permissionRepo;
 
     public PermissionServiceImpl() {
+
         super();
     }
 
     public PermissionServiceImpl(PermissionRepo permissionRepo) {
+
         super();
         this.permissionRepo = permissionRepo;
     }
 
     @Override
     public Permission add(Permission permission) throws SmsCustomException {
+
         if (permission == null) {
             throw new NullReferenceException("Permission is null.");
         }
@@ -35,11 +38,11 @@ public class PermissionServiceImpl implements PermissionService {
             throw new NonUniqueException("Permission level already exists.");
         }
         return permissionRepo.saveAndFlush(permission);
-
     }
 
     @Override
     public Permission getById(long id) throws SmsCustomException {
+
         Permission permission = permissionRepo.findOne(id);
         if (permission == null) {
             throw new NullReferenceException("Permission ID could not be found.");
@@ -49,6 +52,7 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Override
     public Permission getByLevel(String level) throws SmsCustomException {
+
         if (level == null) {
             throw new NullReferenceException("Passed in level argument is null.");
         }
@@ -61,21 +65,23 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Override
     public Set<Permission> getAll() {
+
         Set<Permission> permissions = new HashSet<Permission>(permissionRepo.findAll());
         return permissions;
     }
 
     @Override
     public Permission update(Permission permission) throws SmsCustomException {
+
         if (permission == null) {
             throw new NullReferenceException("Permission is null.");
         }
-        permission = permissionRepo.saveAndFlush(permission);
-        return permission;
+        return permissionRepo.saveAndFlush(permission);
     }
 
     @Override
     public void remove(Permission permission) throws SmsCustomException {
+
         if (permission == null) {
             throw new NullReferenceException("Permission is null.");
         }

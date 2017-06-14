@@ -2,7 +2,13 @@ package com.revature.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "Clients")
@@ -25,11 +31,13 @@ public class Client {
     private boolean active;
 
     public Client() {
+
         super();
         this.active = true;
     }
 
     public Client(long id, String name, boolean priority, boolean active) {
+
         super();
         this.id = id;
         this.name = name;
@@ -38,39 +46,48 @@ public class Client {
     }
 
     public long getId() {
+
         return id;
     }
 
     public void setId(long id) {
+
         this.id = id;
     }
 
     public String getName() {
+
         return name;
     }
 
     public void setName(String name) {
+
         this.name = name;
     }
 
     public boolean isPriority() {
+
         return priority;
     }
 
     public void setPriority(boolean priority) {
+
         this.priority = priority;
     }
 
     public boolean isActive() {
+
         return active;
     }
 
     public void setActive(boolean active) {
+
         this.active = active;
     }
 
     @Override
     public int hashCode() {
+
         final int prime = 31;
         int result = 1;
         result = prime * result + (active ? 1231 : 1237);
@@ -81,28 +98,22 @@ public class Client {
 
     @Override
     public final boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (!(obj instanceof Client))
-            return false;
+
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (!(obj instanceof Client)) return false;
         Client other = (Client) obj;
-        if (active != other.active)
-            return false;
+        if (active != other.active) return false;
         if (name == null) {
-            if (other.name != null)
-                return false;
-        } else if (!name.equals(other.name))
-            return false;
-        if (priority != other.priority)
-            return false;
+            if (other.name != null) return false;
+        } else if (!name.equals(other.name)) return false;
+        if (priority != other.priority) return false;
         return true;
     }
 
     @Override
     public String toString() {
+
         return "Client [id=" + id + ", name=" + name + ", priority=" + priority + ", active=" + active + "]";
     }
-
 }

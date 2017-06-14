@@ -2,7 +2,20 @@ package com.revature.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -47,14 +60,15 @@ public class Associate {
     private Set<Job> jobs;
 
     public Associate() {
+
         super();
         this.skills = new HashSet<>();
         this.jobs = new HashSet<>();
         this.active = true;
     }
 
-    public Associate(long id, Credential credential, String name, String portfolioLink, Batch batch, boolean active,
-                     Client lockedTo, Set<Skill> skills, Set<Job> jobs) {
+    public Associate(long id, Credential credential, String name, String portfolioLink, Batch batch, boolean active, Client lockedTo, Set<Skill> skills, Set<Job> jobs) {
+
         super();
         this.id = id;
         this.credential = credential;
@@ -71,13 +85,12 @@ public class Associate {
      * Returns true if associate was on job during the given date.
      */
     public boolean hasJobOnDate(LocalDateTime date) {
+
         for (Job j : jobs) {
             boolean beforeEnd = j.getEndDate() == null || date.compareTo(j.getEndDate()) < 0;
             boolean hasentStopped = j.getEndDate() == null;
             boolean afterStart = date.compareTo(j.getStartDate()) > 0;
-
-            if (afterStart && (hasentStopped || beforeEnd))
-                return true;
+            if (afterStart && (hasentStopped || beforeEnd)) return true;
         }
         return false;
     }
@@ -88,23 +101,21 @@ public class Associate {
      * batches only after they have had atleast one job.
      */
     public boolean hasStartedOnDate(LocalDateTime date) {
-        boolean hasBegunTraining = date.compareTo(batch.getStartDate()) > 0;
 
-        if (hasBegunTraining)
-            return true;
+        boolean hasBegunTraining = date.compareTo(batch.getStartDate()) > 0;
+        if (hasBegunTraining) return true;
         return false;
     }
 
     /**
      * Returns true if associate was in training during the given date.
      */
-    public boolean isTrainingOnDate(LocalDateTime date) {
-        date = date.withHour(12); //Set mid day all other events should be the beginning of the day.
+    public boolean isTrainingOnDate(LocalDateTime adate) {
+
+        LocalDateTime date = adate.withHour(12); //Set mid day all other events should be the beginning of the day.
         boolean afterBatchStart = date.compareTo(batch.getStartDate()) > 0;
         boolean beforeBatchEnd = date.compareTo(batch.getEndDate()) < 0;
-        if (afterBatchStart && beforeBatchEnd)
-            return true;
-
+        if (afterBatchStart && beforeBatchEnd) return true;
         return false;
     }
 
@@ -112,88 +123,105 @@ public class Associate {
      * This function returns true if the associate was in staging on the given date.
      */
     public boolean isTrackedOnDate(LocalDateTime date) {
-        if (hasStartedOnDate(date) && !isTrainingOnDate(date) && !hasJobOnDate(date))
-            return true;
+
+        if (hasStartedOnDate(date) && !isTrainingOnDate(date) && !hasJobOnDate(date)) return true;
         return false;
     }
 
     public long getId() {
+
         return id;
     }
 
     public void setId(long id) {
+
         this.id = id;
     }
 
     public Credential getCredential() {
+
         return credential;
     }
 
     public void setCredential(Credential credential) {
+
         this.credential = credential;
     }
 
     public String getName() {
+
         return name;
     }
 
     public void setName(String name) {
+
         this.name = name;
     }
 
     public String getPortfolioLink() {
+
         return portfolioLink;
     }
 
     public void setPortfolioLink(String portfolioLink) {
+
         this.portfolioLink = portfolioLink;
     }
 
     public Batch getBatch() {
+
         return batch;
     }
 
     public void setBatch(Batch batch) {
+
         this.batch = batch;
     }
 
     public boolean isActive() {
+
         return active;
     }
 
     public void setActive() {
-        if (this.isTrackedOnDate(LocalDateTime.now()))
-            this.active = true;
-        else
-            this.active = false;
+
+        if (this.isTrackedOnDate(LocalDateTime.now())) this.active = true;
+        else this.active = false;
     }
 
     public Client getLockedTo() {
+
         return lockedTo;
     }
 
     public void setLockedTo(Client lockedTo) {
+
         this.lockedTo = lockedTo;
     }
 
     public Set<Skill> getSkills() {
+
         return skills;
     }
 
     public void setSkills(Set<Skill> skills) {
+
         this.skills = skills;
     }
 
     public Set<Job> getJobs() {
+
         return jobs;
     }
 
     public void setJobs(Set<Job> jobs) {
+
         this.jobs = jobs;
     }
 
     @Override
     public int hashCode() {
+
         final int prime = 31;
         int result = 1;
         result = prime * result + (active ? 1231 : 1237);
@@ -207,48 +235,33 @@ public class Associate {
 
     @Override
     public final boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (!(obj instanceof Associate))
-            return false;
+
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (!(obj instanceof Associate)) return false;
         Associate other = (Associate) obj;
-        if (active != other.active)
-            return false;
+        if (active != other.active) return false;
         if (credential == null) {
-            if (other.credential != null)
-                return false;
-        } else if (!credential.equals(other.credential))
-            return false;
+            if (other.credential != null) return false;
+        } else if (!credential.equals(other.credential)) return false;
         if (lockedTo == null) {
-            if (other.lockedTo != null)
-                return false;
-        } else if (!lockedTo.equals(other.lockedTo))
-            return false;
+            if (other.lockedTo != null) return false;
+        } else if (!lockedTo.equals(other.lockedTo)) return false;
         if (name == null) {
-            if (other.name != null)
-                return false;
-        } else if (!name.equals(other.name))
-            return false;
+            if (other.name != null) return false;
+        } else if (!name.equals(other.name)) return false;
         if (portfolioLink == null) {
-            if (other.portfolioLink != null)
-                return false;
-        } else if (!portfolioLink.equals(other.portfolioLink))
-            return false;
+            if (other.portfolioLink != null) return false;
+        } else if (!portfolioLink.equals(other.portfolioLink)) return false;
         if (skills == null) {
-            if (other.skills != null)
-                return false;
-        } else if (!skills.equals(other.skills))
-            return false;
+            if (other.skills != null) return false;
+        } else if (!skills.equals(other.skills)) return false;
         return true;
     }
 
     @Override
     public String toString() {
-        return "Associate [id=" + id + ", credential=" + credential + ", name=" + name + ", portfolioLink="
-                + portfolioLink + ", batch=" + (batch == null ? null : batch.getBatchType().getValue()) + ", active=" + active + ", lockedTo="
-                + lockedTo + ", skills=" + skills + "]";
-    }
 
+        return "Associate [id=" + id + ", credential=" + credential + ", name=" + name + ", portfolioLink=" + portfolioLink + ", batch=" + (batch == null ? null : batch.getBatchType().getValue()) + ", active=" + active + ", lockedTo=" + lockedTo + ", skills=" + skills + "]";
+    }
 }

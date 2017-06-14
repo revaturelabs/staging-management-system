@@ -25,11 +25,12 @@ public class ManagerServiceImpl implements ManagerService {
     private PermissionService permissionService;
 
     public ManagerServiceImpl() {
+
         super();
     }
 
-    public ManagerServiceImpl(ManagerRepo managerRepo, CredentialService credentialService,
-                              PermissionService permissionService) {
+    public ManagerServiceImpl(ManagerRepo managerRepo, CredentialService credentialService, PermissionService permissionService) {
+
         super();
         this.managerRepo = managerRepo;
         this.credentialService = credentialService;
@@ -39,6 +40,7 @@ public class ManagerServiceImpl implements ManagerService {
     // c
     @Override
     public Manager add(Manager manager) throws SmsCustomException {
+
         if (manager == null) {
             throw new NullReferenceException("Manager is null.");
         }
@@ -56,6 +58,7 @@ public class ManagerServiceImpl implements ManagerService {
     // r
     @Override
     public Manager getById(long id) throws SmsCustomException {
+
         Manager manager = managerRepo.getOne(id);
         if (manager == null) {
             throw new NullReferenceException("Manager ID could not be found.");
@@ -65,11 +68,11 @@ public class ManagerServiceImpl implements ManagerService {
 
     @Override
     public Manager getByCredential(Credential credential) throws SmsCustomException {
+
         if (credential == null) {
             throw new NullReferenceException("Passed in credential argument is null.");
         }
-        Manager manager = managerRepo.findByCredentialUsernameAndCredentialPassword(credential.getUsername(),
-                credential.getPassword());
+        Manager manager = managerRepo.findByCredentialUsernameAndCredentialPassword(credential.getUsername(), credential.getPassword());
         if (manager == null) {
             throw new NullReferenceException("No manager found with given credential.");
         }
@@ -78,12 +81,14 @@ public class ManagerServiceImpl implements ManagerService {
 
     @Override
     public Set<Manager> getAll() {
+
         return new HashSet<>(managerRepo.findAll());
     }
 
     // u
     @Override
     public Manager update(Manager manager) throws SmsCustomException {
+
         if (manager == null) {
             throw new NullReferenceException("Manager is null.");
         }
@@ -96,6 +101,7 @@ public class ManagerServiceImpl implements ManagerService {
     // d
     @Override
     public void remove(Manager manager) throws SmsCustomException {
+
         if (manager == null) {
             throw new NullReferenceException("Manager is null.");
         }

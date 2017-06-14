@@ -2,7 +2,13 @@ package com.revature.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 /**
  * Created by mnikitin on 5/31/17.
@@ -25,11 +31,13 @@ public class Trainer {
     private boolean active;
 
     public Trainer() {
+
         super();
         this.active = true;
     }
 
     public Trainer(long id, String name, boolean active) {
+
         super();
         this.id = id;
         this.name = name;
@@ -37,31 +45,38 @@ public class Trainer {
     }
 
     public long getId() {
+
         return id;
     }
 
     public void setId(long id) {
+
         this.id = id;
     }
 
     public String getName() {
+
         return name;
     }
 
     public void setName(String name) {
+
         this.name = name;
     }
 
     public boolean isActive() {
+
         return active;
     }
 
     public void setActive(boolean active) {
+
         this.active = active;
     }
 
     @Override
     public int hashCode() {
+
         final int prime = 31;
         int result = 1;
         result = prime * result + (active ? 1231 : 1237);
@@ -71,26 +86,21 @@ public class Trainer {
 
     @Override
     final public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (!(obj instanceof Trainer))
-            return false;
+
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (!(obj instanceof Trainer)) return false;
         Trainer other = (Trainer) obj;
-        if (active != other.active)
-            return false;
+        if (active != other.active) return false;
         if (name == null) {
-            if (other.name != null)
-                return false;
-        } else if (!name.equals(other.name))
-            return false;
+            if (other.name != null) return false;
+        } else if (!name.equals(other.name)) return false;
         return true;
     }
 
     @Override
     public String toString() {
+
         return "Trainer [id=" + id + ", name=" + name + ", active=" + active + "]";
     }
-
 }

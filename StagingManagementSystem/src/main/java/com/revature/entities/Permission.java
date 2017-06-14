@@ -2,7 +2,13 @@ package com.revature.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "PERMISSIONS")
@@ -19,33 +25,40 @@ public class Permission {
     private String level;
 
     public Permission() {
+
         super();
     }
 
     public Permission(long id, String level) {
+
         super();
         this.id = id;
         this.level = level;
     }
 
     public long getId() {
+
         return id;
     }
 
     public void setId(long id) {
+
         this.id = id;
     }
 
     public String getLevel() {
+
         return level;
     }
 
     public void setLevel(String level) {
+
         this.level = level;
     }
 
     @Override
     public int hashCode() {
+
         final int prime = 31;
         int result = 1;
         result = prime * result + ((level == null) ? 0 : level.hashCode());
@@ -54,24 +67,20 @@ public class Permission {
 
     @Override
     final public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (!(obj instanceof Permission))
-            return false;
+
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (!(obj instanceof Permission)) return false;
         Permission other = (Permission) obj;
         if (level == null) {
-            if (other.level != null)
-                return false;
-        } else if (!level.equals(other.level))
-            return false;
+            if (other.level != null) return false;
+        } else if (!level.equals(other.level)) return false;
         return true;
     }
 
     @Override
     public String toString() {
+
         return "Permission [id=" + id + ", level=" + level + "]";
     }
-
 }

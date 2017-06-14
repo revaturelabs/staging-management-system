@@ -31,7 +31,9 @@
     flex-direction: row;
 }
 
-
+#associate-body {
+  margin-top: 60px;
+}
 
 body{
     display:flex;
