@@ -2,6 +2,7 @@ package com.revature.controllers.rest;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpSession;
@@ -36,8 +37,8 @@ public class CheckinControllerImpl {
 	@Autowired
 	private CheckinReportServiceImpl checkinReport;
 
-	private static final String lm = "login_manager";
-	private static final String la = "login_associate";
+	private static final String LM = "login_manager";
+	private static final String LA = "login_associate";
 
 	public CheckinControllerImpl(CheckinService checkinService) {
 		this.checkinService = checkinService;
@@ -45,7 +46,7 @@ public class CheckinControllerImpl {
 
 	@GetMapping
 	public ResponseEntity<Boolean> isCheckedIn(HttpSession session) {
-		Associate associate = (Associate) session.getAttribute(la);
+		Associate associate = (Associate) session.getAttribute(LA);
 		if (associate == null)
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(false);
 		return ResponseEntity.ok(checkinService.hasCheckedInToday(associate));
@@ -54,7 +55,7 @@ public class CheckinControllerImpl {
 
 	@GetMapping("/allTodays")
 	public ResponseEntity<Set<Checkin>> getTodaysCheckins(HttpSession session) {
-		Manager manager = (Manager) session.getAttribute(lm);
+		Manager manager = (Manager) session.getAttribute(LM);
 		if (manager == null) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 		}
@@ -63,7 +64,7 @@ public class CheckinControllerImpl {
 
 	@PutMapping
 	public ResponseEntity<Boolean> checkIn(HttpSession session) {
-		Associate associate = (Associate) session.getAttribute(la);
+		Associate associate = (Associate) session.getAttribute(LA);
 		if (associate == null)
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(false);
 		try {
@@ -86,7 +87,7 @@ public class CheckinControllerImpl {
 	 */
 	@PostMapping
 	public ResponseEntity<Boolean> managerModification(HttpSession session, @RequestBody Checkin checkin) {
-		Manager manager = (Manager) session.getAttribute(lm);
+		Manager manager = (Manager) session.getAttribute(LM);
 		if (manager == null) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(false);
 		}
@@ -98,7 +99,7 @@ public class CheckinControllerImpl {
 
 	@PatchMapping("approve-multiple")
 	public ResponseEntity<Boolean> approveMultiple(HttpSession session, @RequestBody Set<Checkin> checkins) {
-		Manager manager = (Manager) session.getAttribute(lm);
+		Manager manager = (Manager) session.getAttribute(LM);
 		if (manager == null) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(false);
 		}
@@ -111,7 +112,7 @@ public class CheckinControllerImpl {
 
 	@GetMapping(path = "checkin/{username}")
 	public ResponseEntity<Set<Checkin>> getCheckins(@PathVariable String username, HttpSession session) {
-		Associate associate = (Associate) session.getAttribute(la);
+		Associate associate = (Associate) session.getAttribute(LA);
 		if (associate != null) { // If you're not an associate..
 			if (username.equals(associate.getCredential().getUsername())) // If
 																			// you're
@@ -130,7 +131,7 @@ public class CheckinControllerImpl {
 																			// go
 																			// away!
 		}
-		Manager manager = (Manager) session.getAttribute(lm);
+		Manager manager = (Manager) session.getAttribute(LM);
 		if (manager == null) { // And if you're not a manager..
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null); // Go
 																			// away!
@@ -139,10 +140,10 @@ public class CheckinControllerImpl {
 	}
 
 	@GetMapping(path = "/report")
-	public ResponseEntity<ArrayList<DailyReport>> getCheckins(HttpSession session) {// For
+	public ResponseEntity<List<DailyReport>> getCheckins(HttpSession session) {// For
 																					// managers
 																					// only.
-		Manager manager = (Manager) session.getAttribute(lm);
+		Manager manager = (Manager) session.getAttribute(LM);
 		if (manager == null) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 		}

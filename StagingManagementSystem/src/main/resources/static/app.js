@@ -38,18 +38,36 @@ routerApp.service('userService', function ($cookies) {
   };
 });
 
+routerApp.directive('scrollToBottom', ($timeout, $window) => {
+  return {
+    scope: {
+        scrollToBottom: "="
+    },
+    restrict: 'A',
+    link: (scope, element, attr) => {
+      scope.$watchCollection('scrollToBottom', (newVal) => {
+        if (newVal) {
+          $timeout(() => {
+            element[0].scrollTop = element[0].scrollHeight;
+          }, 0);
+        }
+      });
+    }
+  };
+});
+
 routerApp.run(($uiRouter, $trace, $rootScope) => {
 
 	//Ui Visualizer
   // Auto-collapse children in state visualizer
-  const registry = $uiRouter.stateRegistry;
-  $uiRouter.stateRegistry.get().map(s => s.$$state())
-      .filter(s => s.path.length === 2 || s.path.length === 3)
-      .forEach(s => s._collapsed = true);
-
-  const pluginInstance = $uiRouter.plugin(Visualizer);
-
-  $trace.enable('TRANSITION');
+  // const registry = $uiRouter.stateRegistry;
+  // $uiRouter.stateRegistry.get().map(s => s.$$state())
+  //     .filter(s => s.path.length === 2 || s.path.length === 3)
+  //     .forEach(s => s._collapsed = true);
+  //
+  // const pluginInstance = $uiRouter.plugin(Visualizer);
+  //
+  // $trace.enable('TRANSITION');
 
 	//Global Functions
 	$rootScope.dateConverter = (time) => {

@@ -104,13 +104,13 @@ public interface CheckinService {
 
     /**
      * Creates or updates checkin.
-     * @param checkins - id and values to be created or updated.
+     * @param checkin - id and values to be created or updated.
      */
     public void update(Checkin checkin);
 
     /**
      * Creates or updates checkin.
-     * @param checkins - id and values to be created or updated.
+     * @param checkin - id and values to be created or updated.
      */
     public void add(Checkin checkin);
 

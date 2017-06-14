@@ -145,22 +145,36 @@
 	  };
 	});
 
+	routerApp.directive('scrollToBottom', function ($timeout, $window) {
+	  return {
+	    scope: {
+	      scrollToBottom: "="
+	    },
+	    restrict: 'A',
+	    link: function link(scope, element, attr) {
+	      scope.$watchCollection('scrollToBottom', function (newVal) {
+	        if (newVal) {
+	          $timeout(function () {
+	            element[0].scrollTop = element[0].scrollHeight;
+	          }, 0);
+	        }
+	      });
+	    }
+	  };
+	});
+
 	routerApp.run(function ($uiRouter, $trace, $rootScope) {
 
 	  //Ui Visualizer
 	  // Auto-collapse children in state visualizer
-	  var registry = $uiRouter.stateRegistry;
-	  $uiRouter.stateRegistry.get().map(function (s) {
-	    return s.$$state();
-	  }).filter(function (s) {
-	    return s.path.length === 2 || s.path.length === 3;
-	  }).forEach(function (s) {
-	    return s._collapsed = true;
-	  });
-
-	  var pluginInstance = $uiRouter.plugin(Visualizer);
-
-	  $trace.enable('TRANSITION');
+	  // const registry = $uiRouter.stateRegistry;
+	  // $uiRouter.stateRegistry.get().map(s => s.$$state())
+	  //     .filter(s => s.path.length === 2 || s.path.length === 3)
+	  //     .forEach(s => s._collapsed = true);
+	  //
+	  // const pluginInstance = $uiRouter.plugin(Visualizer);
+	  //
+	  // $trace.enable('TRANSITION');
 
 	  //Global Functions
 	  $rootScope.dateConverter = function (time) {
@@ -62643,31 +62657,37 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-		value: true
+	  value: true
 	});
 	var managerCtrl = function managerCtrl($scope, $state, $location, $http, userService) {
-		$http({
-			method: 'GET',
-			url: '/login/isManager'
-		}).then(function (response) {
-			if (!response.data) $state.go('login');
-		});
+	  $http({
+	    method: 'GET',
+	    url: '/login/user'
+	  }).then(function (response) {
+	    userService.setUser(response.data);
+	    if (response.data.permission === undefined) {
+	      $state.go('associate.home');
+	    }
+	  }, function () {
+	    userService.setUser({});
+	    $state.go('login');
+	  });
 
-		$scope.isActive = function (viewLocation) {
-			return viewLocation === $location.path();
-		};
+	  $scope.isActive = function (viewLocation) {
+	    return viewLocation === $location.path();
+	  };
 
-		$scope.logout = function () {
-			$http({
-				method: 'GET',
-				url: '/logout/'
-			}).then(function (response) {
-				userService.setUser({});
-				$state.go('login');
-			});
-		};
+	  $scope.logout = function () {
+	    $http({
+	      method: 'GET',
+	      url: '/logout/'
+	    }).then(function (response) {
+	      userService.setUser({});
+	      $state.go('login');
+	    });
+	  };
 
-		$scope.manager = { name: 'Joe' };
+	  $scope.manager = { name: 'Joe' };
 	};
 
 	exports.managerCtrl = managerCtrl;
@@ -62832,7 +62852,7 @@
 	  value: true
 	});
 	var chart = {
-	  caption: "Asscoiates Available vs. Associate Confirmed",
+	  caption: "Associates Available vs. Associates Confirmed",
 	  subCaption: "Revature LLC",
 	  xAxisname: "Batch Type",
 	  yAxisName: "Number of Associate",
@@ -63955,7 +63975,13 @@
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 	var profileCtrl = function profileCtrl($scope, $http, userService, $stateParams, $state, $window) {
-	  var associateId = $state.includes('manager') ? $stateParams.id : userService.getUser().id;
+	  if ($state.includes('manager')) {
+	    $scope.isManager = true;
+	    $http.get('client/priority').then(function (response) {
+	      $scope.clients = response.data;
+	    });
+	  }
+	  var associateId = $scope.isManager ? $stateParams.id : userService.getUser().id;
 
 	  if (associateId === undefined) {
 	    return;
@@ -64004,6 +64030,22 @@
 	    $('#portfolioUrlModal').modal('show');
 	  };
 
+	  $scope.toggleMappedModal = function () {
+	    window.scope = $scope;
+	    $scope.sendingRequest = false;
+	    $scope.mappedModalButtonValue = 'Save';
+	    if ($scope.associate.lockedTo) {
+	      $scope.clients.some(function (client) {
+	        if (client.name === $scope.associate.lockedTo.name) {
+	          $scope.associate.lockedTo = client;
+	          return true;
+	        }
+	      });
+	    }
+
+	    $('#mappedToClientModal').modal('show');
+	  };
+
 	  $scope.submitPortfolioUrl = function () {
 	    $scope.associate.portfolioLink = $scope.portfolioUrlInput;
 
@@ -64038,6 +64080,20 @@
 	    });
 	  };
 
+	  $scope.updateLockedTo = function () {
+	    $scope.sendingRequest = true;
+	    $scope.mappedModalButtonValue = 'Saving...';
+	    $http({
+	      method: 'PUT',
+	      url: '/associate/',
+	      data: $scope.associate
+	    }).then(function () {
+	      $('#mappedToClientModal').modal('hide');
+	    }, function () {
+	      $('#mappedToClientModal').modal('hide');
+	    });
+	  };
+
 	  $scope.openPortfolioLink = function () {
 	    $window.open($scope.associate.portfolioLink);
 	  };
@@ -64047,6 +64103,12 @@
 	      return true;
 	    }
 	    return $scope.associate.batch.batchType.skills.concat($scope.associate.skills).length === 0;
+	  };
+
+	  $scope.onEnterAddSkill = function (event) {
+	    if (event.which === 13) {
+	      $scope.addSkill();
+	    }
 	  };
 	};
 
@@ -64221,7 +64283,9 @@
 	  $scope.checkInBtn = 'Loading...';
 	  checkBtnDOM.disabled = true;
 
-	  if (authenticatedUser.id === undefined) {
+	  var isAssociate = authenticatedUser.id !== undefined && authenticatedUser.permission === undefined;
+
+	  if (!isAssociate) {
 	    $state.go('login');
 	    return;
 	  }
@@ -64262,7 +64326,7 @@
 	      url: '/logout/'
 	    }).then(function () {
 	      userService.setUser({});
-	      $state.go('login');
+	      $state.transitionTo('login');
 	    });
 	  };
 	};

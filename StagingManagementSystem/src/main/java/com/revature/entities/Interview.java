@@ -115,8 +115,10 @@ public class Interview implements SmsValidatable {
 
 	@Override
     public final boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Interview)) return false;
+        if (this == o)
+            return true;
+        if (!(o instanceof Interview))
+            return false;
 
         Interview interview = (Interview) o;
 

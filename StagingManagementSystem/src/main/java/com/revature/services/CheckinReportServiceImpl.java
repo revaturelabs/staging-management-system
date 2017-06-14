@@ -1,11 +1,7 @@
 package com.revature.services;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -92,8 +88,6 @@ public class CheckinReportServiceImpl {
   AssociateService associateService;
   
   Map<String, DailyReport> reports;
-  Map<String, ArrayList<String>> namesCheckedin;
-  Map<String, ArrayList<String>> namesNotCheckedin;
   Set<Associate> associates;
   
   public CheckinReportServiceImpl(){

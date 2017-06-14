@@ -1,10 +1,6 @@
 package com.revature.services;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import org.springframework.stereotype.Service;
 
@@ -93,19 +89,19 @@ public class TotalReport {
     private String batchName;
     private long totalAvailable;
     private long totalUnavailable;
-    private ArrayList<Tuple<String, String>> availibleAssociates = new ArrayList<Tuple<String, String>>();
-    private ArrayList<Tuple<String, String>> mappedAssociates = new ArrayList<Tuple<String, String>>();
+    private List<Tuple<String, String>> availibleAssociates = new ArrayList<>();
+    private List<Tuple<String, String>> mappedAssociates = new ArrayList<>();
 
 
-    public ArrayList<Tuple<String, String>> getAvailible() {
+    public List<Tuple<String, String>> getAvailible() {
       return availibleAssociates;
     }
     
-    public ArrayList<Tuple<String, String>> getMapped() {
+    public List<Tuple<String, String>> getMapped() {
       return mappedAssociates;
     }
 
-    public void setAvailible(ArrayList<Tuple<String, String>> associates) {
+    public void setAvailible(List<Tuple<String, String>> associates) {
       this.availibleAssociates = associates;
     }
 
@@ -165,7 +161,7 @@ public class TotalReport {
         && associate.getLockedTo().isPriority();
 
     boolean totalAvailable = associate.isActive();
-    if (totalAvailable == true) {
+    if (totalAvailable) {
       t.totalAvailable++;
       if (unAvialable) {
         t.totalUnavailable++;
@@ -194,7 +190,7 @@ public class TotalReport {
   }
 
   public Collection<TotalData> process(Set<Associate> associates) {
-    this.totaldata = new HashMap<String, TotalData>();
+    this.totaldata = new HashMap<>();
     for (Associate a : associates) {
       this.addBatch(a);
     }
