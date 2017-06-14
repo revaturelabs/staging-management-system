@@ -21,13 +21,7 @@ import managerAdvancedCtrl from './manager-pages/advanced/advanced';
 import profileCtrl from './associate-pages/profile/profile';
 import associateInterviewCtrl from './associate-pages/interview/interview';
 import associateCtrl from './associate-pages/associate';
-import { reportCtrl } from './reports/reports';
-import { nestedCtrl } from './reports/nestedGraph';
 import loginCtrl from './login/login';
-import { employedCtrl } from './reports/employed'
-import { barCtrl } from './reports/barGraph';
-import { attendanceBarGraphCtrl } from './reports/attendance/attendanceBarGraph';
-import { pie2DCtrl } from './reports/piegraph2D';
 
 require('fusioncharts/fusioncharts.charts')(FusionCharts);
 
@@ -182,37 +176,4 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       templateUrl: 'associate-pages/profile/profile.html',
       controller: profileCtrl,
     })
-    .state('reports', {
-      url: '/reports',
-      templateUrl: 'reports/reports.html',
-      controller: reportCtrl,
-    })
-    .state('reports.nestedGraph', {
-      url: '/nestedGraph',
-      templateUrl: 'reports/nestedGraph.html',
-      controller: nestedCtrl,
-    })
-    .state('reports.employed', {
-    	url: '/employed',
-    	templateUrl: 'reports/employed.html',
-    	controller: employedCtrl,
-    	//controller: attendanceCtrl,
-    })
-    .state('reports.attendanceBarGraph', {
-      url: '/graph',
-      templateUrl: 'reports/attendance/attendanceBarGraph.html',
-      controller: attendanceBarGraphCtrl,
-    })
-    .state('reports.barGraph', {
-      url: '/barGraph',
-      templateUrl: 'reports/barGraph.html',
-      controller: barCtrl,
-    })
-    .state('reports.piegraph2D', {
-    	url: '/piegraph2D',
-    	templateUrl: 'reports/piegraph2D.html',
-    	controller: pie2DCtrl,
-    })
 });
-
-console.log();
