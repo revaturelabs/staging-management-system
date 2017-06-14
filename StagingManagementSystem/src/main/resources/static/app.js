@@ -3,26 +3,34 @@ import angularCookies from 'angular-cookies';
 import uiRouter from 'angular-ui-router';
 import FusionCharts from 'fusioncharts';
 
+import dateformat from 'dateformat';
+
+import moment from 'moment';
+
 import { managerCtrl } from './manager-pages/manager';
 import { managerHomeCtrl } from './manager-pages/home/home';
 import managerCheckinsCtrl from './manager-pages/home/checkin/checkin';
 import { interviewsCtrl } from './manager-pages/home/interviews/interviews';
-import stagingGraphController from './manager-pages/home/staging-graph/staging-graph'
+import stagingGraphController from './manager-pages/home/staging-graph/staging-graph';
+import attendanceGraphCtrl from './manager-pages/home/attendance-graph/attendance-graph';
+import employmentGraphCtrl from './manager-pages/home/employment-graph/employment-graph';
 import managerCreateCtrl from './manager-pages/create/create';
 import { batchCtrl } from './manager-pages/create/batch';
 import { clientCtrl } from './manager-pages/create/client';
 import { userCtrl } from './manager-pages/create/user';
 import { locCtrl } from './manager-pages/create/location';
 import { jobCtrl } from './manager-pages/create/job';
-import managerAdvancedAssociatesCtrl from './manager-pages/advanced/associates';
+import managerAdvancedCtrl from './manager-pages/advanced/advanced';
 import profileCtrl from './associate-pages/profile/profile';
 import associateInterviewCtrl from './associate-pages/interview/interview';
 import associateCtrl from './associate-pages/associate';
 import { reportCtrl } from './reports/reports';
 import { nestedCtrl } from './reports/nestedGraph';
-import { barCtrl } from './reports/barGraph';
 import loginCtrl from './login/login';
+import { employedCtrl } from './reports/employed'
+import { barCtrl } from './reports/barGraph';
 import { attendanceBarGraphCtrl } from './reports/attendance/attendanceBarGraph';
+import { pie2DCtrl } from './reports/piegraph2D';
 
 require('fusioncharts/fusioncharts.charts')(FusionCharts);
 
@@ -44,6 +52,9 @@ routerApp.run(($uiRouter, $trace, $rootScope) => {
 	//Ui Visualizer
   // Auto-collapse children in state visualizer
   const registry = $uiRouter.stateRegistry;
+  $uiRouter.stateRegistry.get().map(s => s.$$state())
+      .filter(s => s.path.length === 2 || s.path.length === 3)
+      .forEach(s => s._collapsed = true);
 
   const pluginInstance = $uiRouter.plugin(Visualizer);
 
@@ -113,8 +124,13 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
           templateUrl: 'manager-pages/home/staging-graph/staging-graph.html',
           controller: stagingGraphController,
         },
-        'priorityMapped@manager.home': {
-          templateUrl: 'manager-pages/home/priorityMapped.html',
+        'attendance-graph@manager.home': {
+          templateUrl: 'manager-pages/home/attendance-graph/attendance-graph.html',
+          controller: attendanceGraphCtrl,
+        },
+        'employment-graph@manager.home': {
+          templateUrl: 'manager-pages/home/employment-graph/employment-graph.html',
+          controller: employmentGraphCtrl,
         },
         'interviews@manager.home': {
           templateUrl: 'manager-pages/home/interviews/interviews.html',
@@ -134,11 +150,20 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
     .state('manager.advanced', {
       url: '/advanced',
       templateUrl: 'manager-pages/advanced/advanced.html',
-      controller: managerAdvancedAssociatesCtrl,
+      controller: managerAdvancedCtrl,
     })
     .state('manager.advanced.allassociates', {
       url: '/associates',
-      templateUrl: 'manager-pages/advanced/associates.html',
+      templateUrl: 'manager-pages/advanced/associates/associates.html',
+    })
+    .state('manager.advanced.batches', {
+      url: '/batches',
+      templateUrl: 'manager-pages/advanced/batches/batches.html'
+    })
+    .state('manager.advanced.batches.edit', {
+      url: '/edit/:id',
+      templateUrl: 'manager-pages/create/batch.html',
+      controller: batchCtrl,
     })
     .state('associate', {
       url: '/associate',
@@ -170,9 +195,10 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       templateUrl: 'reports/nestedGraph.html',
       controller: nestedCtrl,
     })
-    .state('reports.attendance', {
-    	url: '/attendance',
+    .state('reports.employed', {
+    	url: '/employed',
     	templateUrl: 'reports/employed.html',
+    	controller: employedCtrl,
     	//controller: attendanceCtrl,
     })
     .state('reports.attendanceBarGraph', {
@@ -184,7 +210,12 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       url: '/barGraph',
       templateUrl: 'reports/barGraph.html',
       controller: barCtrl,
-    });
+    })
+    .state('reports.piegraph2D', {
+    	url: '/piegraph2D',
+    	templateUrl: 'reports/piegraph2D.html',
+    	controller: pie2DCtrl,
+    })
 });
 
 console.log();

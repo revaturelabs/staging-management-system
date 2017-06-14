@@ -1,5 +1,6 @@
 package com.revature.util;
 
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Random;
@@ -18,6 +19,7 @@ import com.revature.entities.InterviewQuestion;
 import com.revature.entities.InterviewStatuses;
 import com.revature.entities.Job;
 import com.revature.entities.Manager;
+import com.revature.entities.Marketer;
 import com.revature.services.AssociateService;
 import com.revature.services.BatchService;
 import com.revature.services.CheckinService;
@@ -28,32 +30,38 @@ import com.revature.services.InterviewStatusService;
 import com.revature.services.InterviewsService;
 import com.revature.services.JobService;
 import com.revature.services.ManagerService;
+import com.revature.services.MarketerService;
 
 @Service
-public class DataGeneration {
+public class DataGeneration
+{
+  
+  @Autowired
+  CheckinService checkinService;
+  @Autowired 
+  ClientQService clientQService;
+  @Autowired
+  InterviewsService interviewsService;
+  @Autowired
+  InterviewStatusService interviewStatusService;
+  @Autowired
+  InterviewQuestionService interviewQuestionService;
+  @Autowired
+  BatchService batchService;
+  @Autowired
+  JobService jobService;
+  @Autowired
+  ClientService clientService;
+  @Autowired
+  ManagerService managerService;
+  @Autowired
+  AssociateService associateService;
+  @Autowired
+  MarketerService marketerService;
+  
 
-	@Autowired
-	CheckinService checkinService;
-	@Autowired
-	ClientQService clientQService;
-	@Autowired
-	InterviewsService interviewsService;
-	@Autowired
-	InterviewStatusService interviewStatusService;
-	@Autowired
-	InterviewQuestionService interviewQuestionService;
-	@Autowired
-	BatchService batchService;
-	@Autowired
-	JobService jobService;
-	@Autowired
-	ClientService clientService;
-	@Autowired
-	ManagerService managerService;
-	@Autowired
-	AssociateService associateService;
-
-	// Dependent Stages
+  
+	//Dependent Stages
 	ArrayList<Checkin> checkins = new ArrayList<Checkin>();
 	ArrayList<ClientQuestion> clientQs = new ArrayList<ClientQuestion>();
 	ArrayList<Interview> interviews = new ArrayList<Interview>();
@@ -137,46 +145,39 @@ public class DataGeneration {
 	 * @author jozse
 	 *
 	 */
-	class AssociateP extends Associate {
-		double clientProbabilityMultiplier;
-
-		AssociateP(Associate a) {
-			super(a.getId(), a.getCredential(), a.getName(), a.getPortfolioLink(), a.getBatch(), a.isActive(),
-					a.getLockedTo(), a.getSkills(), a.getJobs());
-			int qualityOfAssociate = rand.nextInt(100);
-
-			if (qualityOfAssociate < 20) // 20 percent chance of being half as
-											// hirable as the average associate.
-				clientProbabilityMultiplier = .5;
-			else if (qualityOfAssociate > 99) // 1 percent chance of being one
-												// eight as hirable as the
-												// average associate.
-				clientProbabilityMultiplier = .125;
-			else
-				clientProbabilityMultiplier = 1; // The average associate
-													// corresponds with the
-													// client probabilities.
-
-			log.debug("Associate ClientProbabilityMultiplier: " + clientProbabilityMultiplier);
-		}
-
-		/**
-		 * Spring does not know about this class so this creates a super class
-		 * to avoid errors.
-		 * 
-		 * @return - super instance
-		 */
-		Associate getAssocaite() {
-			return new Associate(getId(), getCredential(), getName(), getPortfolioLink(), getBatch(), isActive(),
-					getLockedTo(), getSkills(), getJobs());
-		}
+	class AssociateP extends Associate{
+	  double clientProbabilityMultiplier;
+	  
+	  AssociateP(Associate a){
+	    super(a.getId(), a.getCredential(), a.getName(), a.getPortfolioLink(), a.getBatch(), a.isActive(), a.getLockedTo(), a.getSkills(), a.getJobs());
+	    int qualityOfAssociate = rand.nextInt(100); 
+	    
+	    if(qualityOfAssociate < 20)    //20 percent chance of being half as hirable as the average associate.
+	      clientProbabilityMultiplier = .5;  
+	    else if (qualityOfAssociate > 99)  //1 percent chance of being one eight as hirable as the average associate.
+	      clientProbabilityMultiplier = .125;
+	    else
+	      clientProbabilityMultiplier = 1; //The average associate corresponds with the client probabilities.
+	    
+	    log.debug("Associate ClientProbabilityMultiplier: " + clientProbabilityMultiplier);
+	  }
+	
+	  /**
+	   * Spring does not know about this class so this creates a super class to avoid errors.
+	   * @return - super instance
+	   */
+	  Associate getAssocaite(){
+		  this.setActive();
+	    return new Associate(getId(), getCredential(), getName(), getPortfolioLink(), getBatch(), isActive(), getLockedTo(), getSkills(), getJobs());
+	  }
 	}
 
 	public void generate() {
 		associates.addAll(associateService.getAll());
 		interviewQuestions.addAll(interviewQuestionService.getAll());
 		managers.addAll(managerService.getAll());
-
+		
+		ArrayList<Marketer> marketers = new ArrayList<Marketer>(marketerService.getAllMarketers());
 		Set<Client> allClients = clientService.getAll();
 		for (Client c : allClients) {
 			if (c.isPriority())
@@ -185,169 +186,158 @@ public class DataGeneration {
 				regularClients.add(new ClientP(c));
 		}
 
-		for (Associate a : associates) {
-			AssociateP ap = new AssociateP(a); // Create a probability
-												// associate.
-			if (!ap.isActive())
-				ap.setActive(true); // When generating data associates should be
-									// active
+	  for(Associate a : associates){
+      AssociateP ap = new AssociateP(a); //Create a probability associate.
 
-			LocalDateTime endDate = a.getBatch().getEndDate();
-			LocalDateTime currDate = endDate.minusDays(7); // Hiring date is
-															// from a week
-															// before batch end
-															// date to confirmed
-															// date.
-			LocalDateTime confirmDate = null;
+	    LocalDateTime endDate = a.getBatch().getEndDate();
+	    LocalDateTime currDate = endDate.minusDays(7); //Hiring date is from a week before batch end date to confirmed date. 
+	    LocalDateTime jobStartDate = null;
+	    LocalDateTime confirmDate = null;
+	    
+	    while(confirmDate == null && currDate.compareTo(LocalDateTime.now()) < 0){
+	      if(currDate.compareTo(endDate.plusMonths(5)) > 0){ //If associate does not get hired after 5 months.
+	        log.warn("Associate didint get a job in 5 months!!!");
+	        jobStartDate = currDate; // This is set to create checkins for the associate, they did not receive a job.
+	        break;
+	      }
+	      
+	      log.debug("Current Date: " + currDate + "\tAssociate name: " + ap.getName());
+	      
+	      int nextPossibleInterview = rand.nextInt(10) + 2; //next Possible date i between 2 and 12 days away averaging 1 a week.
+	      currDate = currDate.plusDays(nextPossibleInterview);
+	      log.debug("Interview gap/adjustedDate: " + nextPossibleInterview + "/" + currDate);
+	      
+	      // Determines if on this currDate a priority Interview is scheduled.
+	      int rollDiceInterview = rand.nextInt(100); 
+	      
+	      //Halve the probability if it is before batch endDate.
+	      double probabilityOfInterview = probabilityOfPriorityInterview * ap.clientProbabilityMultiplier * (0 < currDate.compareTo(endDate)  ? .5 : 1.0);
+	      boolean interview = rollDiceInterview < probabilityOfInterview;
+	      log.debug("priority interview diceRoll/probabilityOfInterview/boolean: " + rollDiceInterview + "/" + probabilityOfInterview + "/" + interview);
+	      
+	      // If client has priority interview simulate process for that interview, else roll the dice for regular client interview.
+	      if(interview){
+	        // For priority clients revature awaits their decision before more interviews.
+	        int daysToDecide = logRythmicConvergence(0, 7, .5);
+	        currDate = currDate.plusDays(daysToDecide);
+	        log.debug("Priority Client decision days days/date: " + daysToDecide + "/" + currDate);
+	        
+	        
+	        int clientIndex = logRythmicConvergence(0, priorityClients.size(), .6);
+	        ClientP client = priorityClients.get(clientIndex);
+	        
+	        InterviewStatuses is;
+	        if(currDate.compareTo(LocalDateTime.now()) <= 0)
+	          is = client.evaluateAssociate(ap);
+	        else
+	          is = interviewStatusService.findByStatus("MAPPED");
+	          
+	        log.debug("Client Decision: " + is);
+	        Marketer m = marketers.get(rand.nextInt(marketers.size()));
+	        
+	        //Save Interview
+	        Interview i = new Interview(0l, ap, client, m, is, currDate);
+	        interviewsService.add(i);
+	        
+	        submitInterviewQuestions(ap, client);
+	        
+	        // Create Job.
+	        if(is.getValue().equals("CONFIRMED")){
+	          
+	            LocalDateTime startDate = currDate.plusWeeks(2);
+	            confirmDate = createJob(ap, currDate, startDate, client);
+	        }
+	      }
+	      else 
+	      {
+	        // Determines if on this currDate a regular Interview is scheduled.
+	        rollDiceInterview = rand.nextInt(100); 
+	        //Halve the probability if it is before batch endDate.
+	        probabilityOfInterview = probabilityOfPriorityInterview * ap.clientProbabilityMultiplier * (0 < currDate.compareTo(endDate)  ? .5 : 1.0);
+	        interview = rollDiceInterview < probabilityOfInterview;
+	        log.debug("regular interview diceRoll/probabilityOfInterview/boolean: " + rollDiceInterview + "/" + probabilityOfInterview + "/" + interview);
 
-			while (confirmDate == null && currDate.compareTo(LocalDateTime.now()) < 0) {
-				if (currDate.compareTo(endDate.plusMonths(5)) > 0) { // If
-																		// associate
-																		// does
-																		// not
-																		// get
-																		// hired
-																		// after
-																		// 5
-																		// months.
-					log.warn("Associate didint get a job in 5 months!!!");
-					ap.setActive(false);
-					break;
-				}
+	        if(interview){
+	          
+	          int clientIndex = logRythmicConvergence(0, regularClients.size(), .3);
+	          ClientP client = regularClients.get(clientIndex);
+	          
+	          InterviewStatuses is;
+	          if(currDate.compareTo(LocalDateTime.now()) <= 0)
+	            is = client.evaluateAssociate(ap);
+	          else
+	            is = interviewStatusService.findByStatus("MAPPED");
+	          
+	          Marketer m = marketers.get(rand.nextInt(marketers.size()));
 
-				log.debug("Current Date: " + currDate + "\tAssociate name: " + ap.getName());
+	          //Save Interview
+	          Interview i = new Interview(0l, ap, client, m, is, currDate);
+	          interviewsService.add(i);
+	          
+	          submitInterviewQuestions(ap, client);
+	          
+	          // Create Job.
+	          if(is.getValue().equals("CONFIRMED")){
+	            
+	             int daysToDecide = logRythmicConvergence(0, 7, .5);
+	             currDate = currDate.plusDays(daysToDecide);
 
-				int nextPossibleInterview = rand.nextInt(10) + 2; // next
-																	// Possible
-																	// date i
-																	// between 2
-																	// and 12
-																	// days away
-																	// averaging
-																	// 1 a week.
-				currDate = currDate.plusDays(nextPossibleInterview);
-				log.debug("Interview gap/adjustedDate: " + nextPossibleInterview + "/" + currDate);
+	             jobStartDate = currDate.plusWeeks(2);
+	             confirmDate = createJob(ap, currDate, jobStartDate, client);
+	          }
+	        }
+	      }
+	    }
+	    if(jobStartDate == null)
+	      jobStartDate = currDate;
+	    
+	    createCheckins(endDate, jobStartDate, ap);
 
-				// Determines if on this currDate a priority Interview is
-				// scheduled.
-				int rollDiceInterview = rand.nextInt(100);
-				// Halve the probability if it is before batch endDate.
-				double probabilityOfInterview = probabilityOfPriorityInterview * ap.clientProbabilityMultiplier
-						* (0 < currDate.compareTo(endDate) ? .5 : 1.0);
-				boolean interview = rollDiceInterview < probabilityOfInterview;
-				log.debug("priority interview diceRoll/probabilityOfInterview/boolean: " + rollDiceInterview + "/"
-						+ probabilityOfInterview + "/" + interview);
+	    associateService.update(ap.getAssocaite());
 
-				// If client has priority interview simulate process for that
-				// interview, else roll the dice for regular client interview.
-				if (interview) {
-					// For priority clients revature awaits their decision
-					// before more interviews.
-					int daysToDecide = logRythmicConvergence(0, 7, .5);
-					currDate = currDate.plusDays(daysToDecide);
-					log.debug("Priority Client decision days days/date: " + daysToDecide + "/" + currDate);
+	  }
+	 }
 
-					int clientIndex = logRythmicConvergence(0, priorityClients.size(), .6);
-					ClientP client = priorityClients.get(clientIndex);
-					InterviewStatuses is = client.evaluateAssociate(ap);
-					log.debug("Client Decision: " + is);
+  private LocalDateTime createJob(AssociateP ap, LocalDateTime currDate, LocalDateTime startDate, ClientP client) {
+    // projectedEndDate and EndDate are the same for more realistic data randomize end date and buyoutDate.
 
-					// Save Interview
-					Interview i = new Interview(0l, ap, client, null, is, currDate);
-					interviewsService.add(i);
+    LocalDateTime projectedEndDate = currDate.plusYears(rand.nextBoolean() ? 1 : 2);
+    LocalDateTime confirmDate = currDate;
+    //Should randomize actual endDate by creating a bias in the client.
+    
+    Job j = new Job(0l, ap, client, startDate, projectedEndDate,
+        projectedEndDate, null, confirmDate);
+    jobService.add(j);
+    log.debug("Created Job: " + j);
+    
+    ap.setLockedTo(client);
+    
+    return confirmDate;
+  }
+	
+  /**
+   * Checkin creation between the batch endDate and the startDate.
+   * 
+   * @param batchEndDate - date marking the end of training.
+   * @param startDate - date marking the start of client employment.
+   * @param associate - associate that is checking in.
+   */
+	private void createCheckins(LocalDateTime batchEndDate, LocalDateTime startDate, Associate associate){
+	  LocalDateTime currDate = batchEndDate;
+	  while(currDate.compareTo(startDate) <= 0 && currDate.compareTo(LocalDateTime.now()) <= 0){
 
-					submitInterviewQuestions(ap, client);
-
-					// Create Job.
-					if (is.getValue().equals("CONFIRMED")) {
-
-						LocalDateTime startDate = currDate.plusWeeks(2);
-						confirmDate = createJob(ap, currDate, startDate, client);
-
-						createCheckins(endDate, startDate, ap);
-					}
-				} else {
-					// Determines if on this currDate a regular Interview is
-					// scheduled.
-					rollDiceInterview = rand.nextInt(100);
-					// Halve the probability if it is before batch endDate.
-					probabilityOfInterview = probabilityOfPriorityInterview * ap.clientProbabilityMultiplier
-							* (0 < currDate.compareTo(endDate) ? .5 : 1.0);
-					interview = rollDiceInterview < probabilityOfInterview;
-					log.debug("regular interview diceRoll/probabilityOfInterview/boolean: " + rollDiceInterview + "/"
-							+ probabilityOfInterview + "/" + interview);
-
-					if (interview) {
-
-						int clientIndex = logRythmicConvergence(0, regularClients.size(), .3);
-						ClientP client = regularClients.get(clientIndex);
-						InterviewStatuses is = client.evaluateAssociate(ap);
-
-						// Save Interview
-						Interview i = new Interview(0l, ap, client, null, is, currDate);
-						interviewsService.add(i);
-
-						submitInterviewQuestions(ap, client);
-
-						// Create Job.
-						if (is.getValue().equals("CONFIRMED")) {
-
-							int daysToDecide = logRythmicConvergence(0, 7, .5);
-							currDate = currDate.plusDays(daysToDecide);
-
-							LocalDateTime startDate = currDate.plusWeeks(2);
-							confirmDate = createJob(ap, currDate, startDate, client);
-
-							createCheckins(endDate, startDate, ap);
-						}
-					}
-				}
-			}
-
-			associateService.update(ap.getAssocaite());
-
-		}
-	}
-
-	private LocalDateTime createJob(AssociateP ap, LocalDateTime currDate, LocalDateTime startDate, ClientP client) {
-		// projectedEndDate and EndDate are the same for more realistic data
-		// randomize end date and buyoutDate.
-
-		LocalDateTime projectedEndDate = currDate.plusYears(rand.nextBoolean() ? 1 : 2);
-		LocalDateTime confirmDate = currDate;
-		// Should randomize actual endDate by creating a bias in the client.
-
-		Job j = new Job(0l, ap, client, startDate, projectedEndDate, projectedEndDate, null, confirmDate);
-		jobService.add(j);
-		log.debug("Created Job: " + j);
-
-		ap.setLockedTo(client);
-
-		return confirmDate;
-	}
-
-	/**
-	 * Checkin creation between the batch endDate and the startDate.
-	 * 
-	 * @param batchEndDate
-	 *            - date marking the end of training.
-	 * @param startDate
-	 *            - date marking the start of client employment.
-	 * @param associate
-	 *            - associate that is checking in.
-	 */
-	private void createCheckins(LocalDateTime batchEndDate, LocalDateTime startDate, Associate associate) {
-		LocalDateTime currDate = batchEndDate;
-		while (currDate.compareTo(startDate) < 0) {
-			currDate = currDate.plusDays(1);
-			int managerIndex = rand.nextInt(managers.size());
-
-			Checkin checkin = new Checkin(0l, currDate.withHour(8), currDate.withHour(16), managers.get(managerIndex),
-					currDate.withHour(10), associate);
-
-			checkinService.add(checkin);
-			log.debug("Created checkin: " + checkin);
-		}
+	    
+	    DayOfWeek day = currDate.getDayOfWeek();
+	    if(day != DayOfWeek.SUNDAY && day != DayOfWeek.SATURDAY)   
+	    {
+	        Checkin checkin = new Checkin(0l, currDate.withHour(9), currDate.withHour(17), null,
+	            null, associate);
+	      
+	        checkinService.add(checkin);
+	        log.debug("Created checkin: " + checkin);
+	    }
+      currDate = currDate.plusDays(1);
+	  }
 	}
 
 	private void submitInterviewQuestions(AssociateP ap, ClientP client) {

@@ -63,7 +63,51 @@ public class BatchServiceImpl implements BatchService {
 
 	@Override
 	public void add(Batch batch) {
-		batchRepo.saveAndFlush(batch);
+		if(batch.getId() == 0) {
+			Batch b = batchRepo.saveAndFlush(batch);
+			batch.getAssociates().forEach((Associate associate) -> {
+		        Associate ass = associateRepo.findOne(associate.getId());
+		        ass.setBatch(b);
+		        associateRepo.saveAndFlush(ass);
+		      });
+		} else {
+			Batch b = batchRepo.saveAndFlush(batch);
+			Set<Associate> associates = b.getAssociates();
+			associates.forEach((Associate associate) -> {
+				Associate ass = associateRepo.findOne(associate.getId());
+				boolean contains = false;
+				for(Associate retreivedAssociate : batch.getAssociates()) {
+					if(ass.getId() == retreivedAssociate.getId()) {
+						contains = true;
+					}
+				}
+				if(!contains) {
+					ass.setBatch(null);
+					associateRepo.saveAndFlush(ass);
+				}
+			});
+			
+//			Set<Trainer> trainers = b.getTrainers();
+//			trainers.forEach((Trainer trainer) -> {
+//				Trainer train = trainerRepo.findOne(trainer.getId());
+//				boolean contains = false;
+//				for(Trainer retreivedTrainer : batch.getTrainers()) {
+//					if(train.getId() == retreivedTrainer.getId()) {
+//						contains = true;
+//					}
+//				}
+//				
+//				train
+//			});
+			
+			batch.getAssociates().forEach((Associate associate) -> {
+		        Associate ass = associateRepo.findOne(associate.getId());
+		        ass.setBatch(b);
+		        associateRepo.saveAndFlush(ass);
+		      });
+			
+		}
+		
 	}
 
 	@Override

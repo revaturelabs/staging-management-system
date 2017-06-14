@@ -68,9 +68,8 @@ table{
 }
 
 .interviews-container {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
+  height: 25em;
+  overflow: auto;
 }
 
 .interview-status-container {

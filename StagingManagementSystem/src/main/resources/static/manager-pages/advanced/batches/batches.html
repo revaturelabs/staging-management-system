@@ -1,0 +1,53 @@
+<div>
+  <table class="table table-striped manager-advanced-associates-table selectable-table">
+    <thead>
+    <tr>
+      <div class="table-header-buttons">
+        <div>Select Batch Types</div>
+        <div class="manager-advanced-row">
+          <div ng-repeat="batchtype in batchtypes">
+            <input
+              type="checkbox"
+              value="{{batchtype}}"
+              ng-checked="selectedBatchTypes.indexOf(batchtype) > -1"
+              ng-click="toggleSelectedBatchTypes(batchtype)"
+            > {{batchtype.value}}
+          </div>
+        </div>
+      </div>
+      <th scope="col">Batch Type</th>
+      <th scope="col">Trainer</th>
+      <th scope="col">Start Date</th>
+      <th scope="col">End Date</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="batch in batches | filter: batchBatchFilter" ui-sref="manager.advanced.batches.edit({id: batch.id})" data-toggle="modal" data-target="#batchModal">
+      <td ng-bind="batch.batchType.value"></td>
+      <td>
+        <div ng-repeat="trainer in batch.trainers">
+          <div ng-bind="trainer.name"></div>
+        </div>
+      </td>
+      <td ng-bind="dateConverter(batch.startDate)"></td>
+      <td ng-bind="dateConverter(batch.endDate)"></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Modal -->
+<div id="batchModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div ui-view></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,4 +1,4 @@
-<nav class="navbar navbar-default" role="navigation">
+<nav class="navbar" role="navigation">
 	<div class="navbar navbar-fixed-top navbar-default">
 		<div class="navbar-header">
 			<a class="navbar-left img-center">
@@ -14,7 +14,7 @@
 		<div class="navbar-collapse collapse navbar-right">
 			<ul class="nav navbar-nav">
 				<li ng-class="{ active: isActive('/manager/home')}"><a ui-sref="manager.home">Home</a></li>
-				<li ng-class="{ active: isActive('/stats')}"><a ui-sref="manager.stats">Statistics</a></li>
+				<li ng-class="{ active: isActive('/stats')}"><a ui-sref="manager.advanced">Advanced</a></li>
 				<li ng-class="{ active: isActive('/manager/create') || isActive('/manager/create/batch')
 						|| isActive('/manager/create/user') || isActive('/manager/create/client') || isActive('/manager/create/location') || isActive('/manager/create/job')}">
 						<a ui-sref="manager.create">Add (user/batch/client/location/job)</a></li>

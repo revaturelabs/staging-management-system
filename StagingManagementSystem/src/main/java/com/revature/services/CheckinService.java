@@ -119,5 +119,11 @@ public interface CheckinService {
      * @return checkins.
      */
     public Set<Checkin> getTodaysCheckins();
+    
+    /**
+     * Approves multiple checkins
+     * @param checkins manager
+     */
+	public void approveMultiple(Set<Checkin> checkins, Manager manager);
 
 }
