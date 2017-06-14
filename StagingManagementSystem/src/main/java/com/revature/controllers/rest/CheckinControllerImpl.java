@@ -2,6 +2,7 @@ package com.revature.controllers.rest;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpSession;
@@ -139,7 +140,7 @@ public class CheckinControllerImpl {
 	}
 
 	@GetMapping(path = "/report")
-	public ResponseEntity<ArrayList<DailyReport>> getCheckins(HttpSession session) {// For
+	public ResponseEntity<List<DailyReport>> getCheckins(HttpSession session) {// For
 																					// managers
 																					// only.
 		Manager manager = (Manager) session.getAttribute(LM);

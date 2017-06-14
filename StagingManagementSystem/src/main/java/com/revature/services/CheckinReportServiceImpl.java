@@ -1,11 +1,7 @@
 package com.revature.services;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,10 +22,10 @@ public class CheckinReportServiceImpl {
       this.hourEstimate = hourEstimate;
       this.time = checkin.getCheckinTime();
       this.hourCount = 0;
-      addCheckin(checkin);
+      addCheckin();
     }
     
-    public void addCheckin(Checkin checkin){
+    public void addCheckin(){
       hourCount += 1;
     }
     
@@ -106,7 +102,7 @@ public class CheckinReportServiceImpl {
   public void addCheckin(Checkin checkin){
     String key = getKey(checkin);
     if(reports.containsKey(key)){
-      reports.get(key).addCheckin(checkin);
+      reports.get(key).addCheckin();
     }
     else {
       int hourEstimate = calculateHourEstimate(checkin.getCheckinTime());
@@ -151,13 +147,10 @@ public class CheckinReportServiceImpl {
    * Call this function to empty hash map and re-pull associates from the database.
    * @return 
    */
-  public ArrayList<DailyReport> process(Set<Checkin> checkins) {
-    this.reports = new HashMap<String, DailyReport>();
+  public List<DailyReport> process(Set<Checkin> checkins) {
+    this.reports = new HashMap<>();
     associates = associateService.getAll();
 //    //TODO: making a db call for every associate is inefficient should do a join call in associates.
-//    for(Associate a : associates){
-//      a.setJobs(jobService.findByAssociate(a));
-//    }
     
     for(Checkin c : checkins){
       this.addCheckin(c);
@@ -165,8 +158,8 @@ public class CheckinReportServiceImpl {
     return convertAndOrder(reports);
   }
 
-  private ArrayList<DailyReport> convertAndOrder(Map<String, DailyReport> reports2) {
-    ArrayList<DailyReport> drs = new ArrayList<DailyReport>();
+  private List<DailyReport> convertAndOrder(Map<String, DailyReport> reports2) {
+    ArrayList<DailyReport> drs = new ArrayList<>();
     drs.addAll(reports2.values());
     Collections.sort(drs);
     return drs;
