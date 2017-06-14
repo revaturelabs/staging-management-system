@@ -47085,12 +47085,14 @@
 	  value: true
 	});
 	var batchCtrl = function batchCtrl($scope, $http) {
+	  window.scope = $scope;
 	  $scope.batch = {};
 	  $('#datetimepicker1').datetimepicker();
+	  $('#datetimepicker2').datetimepicker();
+
 	  $scope.showDateTimePicker = function (id) {
 	    $('#datetimepicker' + id).datetimepicker("show");
 	  };
-	  $('#datetimepicker2').datetimepicker();
 
 	  $http.get('batchtype/all').then(function (response) {
 	    $scope.batchTypes = response.data;
@@ -47106,14 +47108,10 @@
 
 	  $('#datetimepicker1').on('dp.change', function () {
 	    $scope.batch.startDate = $('#datetimepicker1').val();
-	    var now = new Date($scope.batch.startDate).toISOString();
-	    $scope.batch.startDate = now;
 	  });
 
 	  $('#datetimepicker2').on('dp.change', function () {
 	    $scope.batch.endDate = $('#datetimepicker2').val();
-	    var now2 = new Date($scope.batch.endDate).toISOString();
-	    $scope.batch.endDate = now2;
 	  });
 
 	  $scope.submit = function () {
@@ -47121,10 +47119,11 @@
 	    $scope.createMessage = 'Attempting to create batch';
 	    $scope.createMessageStyle = { color: 'black' };
 
-	    // $scope.batch.startDate = moment($scope.batch.startDate).toDate();
-	    // $scope.batch.endDate = moment($scope.batch.endDate).toDate();
+	    var batchCreation = JSON.parse(JSON.stringify($scope.batch));
+	    batchCreation.startDate = moment($scope.batch.startDate).toDate();
+	    batchCreation.endDate = moment($scope.batch.endDate).toDate();
 
-	    $http.post('/batch', JSON.stringify($scope.batch)).then(function (response) {
+	    $http.post('/batch', batchCreation).then(function (response) {
 	      $scope.createMessage = 'Successfully created batch';
 	      $scope.createMessageStyle = { color: 'green' };
 	    }, function () {
@@ -47279,12 +47278,16 @@
 	  value: true
 	});
 	var jobCtrl = function jobCtrl($scope, $http) {
-	  window.scope = $scope;
+	  $scope.job = {};
 	  $('#datetimepicker1').datetimepicker();
 	  $('#datetimepicker2').datetimepicker();
 	  $('#datetimepicker3').datetimepicker();
 	  $('#datetimepicker4').datetimepicker();
 	  $('#datetimepicker5').datetimepicker();
+
+	  $scope.showDateTimePicker = function (id) {
+	    $('#datetimepicker' + id).datetimepicker("show");
+	  };
 
 	  $http.get('associate/all').then(function (response) {
 	    //takes a while for associates to load...
@@ -47301,45 +47304,37 @@
 
 	  $('#datetimepicker1').on('dp.change', function () {
 	    $scope.job.startDate = $('#datetimepicker1').val();
-	    var now = new Date($scope.job.startDate).toISOString();
-	    $scope.job.startDate = now;
 	  });
 
 	  $('#datetimepicker2').on('dp.change', function () {
 	    $scope.job.projectedEndDate = $('#datetimepicker2').val();
-	    var now2 = new Date($scope.job.projectedEndDate).toISOString();
-	    $scope.job.projectedEndDate = now2;
 	  });
 
 	  $('#datetimepicker3').on('dp.change', function () {
 	    $scope.job.endDate = $('#datetimepicker3').val();
-	    var now3 = new Date($scope.job.endDate).toISOString();
-	    $scope.job.endDate = now3;
 	  });
 
 	  $('#datetimepicker4').on('dp.change', function () {
 	    $scope.job.buyoutDate = $('#datetimepicker4').val();
-	    var now4 = new Date($scope.job.buyoutDate).toISOString();
-	    $scope.job.buyoutDate = now4;
 	  });
 
 	  $('#datetimepicker5').on('dp.change', function () {
 	    $scope.job.confirmedDate = $('#datetimepicker5').val();
-	    var now5 = new Date($scope.job.confirmedDate).toISOString();
-	    $scope.job.confirmedDate = now5;
 	  });
 
 	  $scope.submit = function () {
 	    $scope.requestMade = true;
 	    $scope.createMessage = 'Attempting to create job';
 	    $scope.createMessageStyle = { color: 'black' };
-	    $scope.job.startDate = moment($scope.job.startDate).toDate();
-	    $scope.job.projectedEndDate = moment($scope.job.projectedEndDate).toDate();
-	    $scope.job.endDate = moment($scope.job.endDate).toDate();
-	    $scope.job.buyoutDate = moment($scope.job.buyoutDate).toDate();
-	    $scope.job.confirmedDate = moment($scope.job.confirmedDate).toDate();
 
-	    $http.post('/job', JSON.stringify($scope.job)).then(function (response) {
+	    var jobCreation = JSON.parse(JSON.stringify($scope.job));
+	    jobCreation.startDate = moment($scope.job.startDate).toDate();
+	    jobCreation.projectedEndDate = moment($scope.job.projectedEndDate).toDate();
+	    jobCreation.endDate = moment($scope.job.endDate).toDate();
+	    jobCreation.buyoutDate = moment($scope.job.buyoutDate).toDate();
+	    jobCreation.confirmedDate = moment($scope.job.confirmedDate).toDate();
+
+	    $http.post('/job', jobCreation).then(function (response) {
 	      $scope.createMessage = 'Successfully created job';
 	      $scope.createMessageStyle = { color: 'green' };
 	    }, function () {

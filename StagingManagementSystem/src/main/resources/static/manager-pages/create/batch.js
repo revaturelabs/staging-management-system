@@ -1,4 +1,5 @@
 const batchCtrl = ($scope, $http) => {
+  window.scope = $scope;
   $scope.batch = {}
   $('#datetimepicker1').datetimepicker();
 	$('#datetimepicker2').datetimepicker();
@@ -22,14 +23,10 @@ const batchCtrl = ($scope, $http) => {
 
   $('#datetimepicker1').on('dp.change', () => {
     $scope.batch.startDate = $('#datetimepicker1').val();
-   var now = new Date($scope.batch.startDate).toISOString();
-   $scope.batch.startDate = now;
   });
 
   $('#datetimepicker2').on('dp.change', () => {
     $scope.batch.endDate = $('#datetimepicker2').val();
-    var now2 = new Date($scope.batch.endDate).toISOString();
-    $scope.batch.endDate = now2;
   });
 
 
@@ -39,10 +36,11 @@ const batchCtrl = ($scope, $http) => {
     $scope.createMessage = 'Attempting to create batch';
     $scope.createMessageStyle = { color: 'black' };
 
-		// $scope.batch.startDate = moment($scope.batch.startDate).toDate();
-		// $scope.batch.endDate = moment($scope.batch.endDate).toDate();
+    let batchCreation = JSON.parse(JSON.stringify($scope.batch))
+		batchCreation.startDate = moment($scope.batch.startDate).toDate();
+		batchCreation.endDate = moment($scope.batch.endDate).toDate();
 
-  	$http.post('/batch', JSON.stringify($scope.batch)).then( (response) => {
+  	$http.post('/batch', batchCreation).then( (response) => {
 			$scope.createMessage = 'Successfully created batch';
   		$scope.createMessageStyle = { color: 'green' };
   	}, () => {
