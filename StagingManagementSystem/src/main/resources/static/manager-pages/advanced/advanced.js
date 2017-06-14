@@ -63,10 +63,16 @@ const managerAdvancedCtrl = ($scope, $http, $state) => {
   }
 
   $scope.associateBatchFilter = (associate) => {
+    if(!associate.batch) {
+      return false;
+    }
     return $scope.selectedBatchTypes.filter((batchType) => batchType.value === associate.batch.batchType.value).length >= 1;
   }
 
   $scope.batchBatchFilter = (batch) => {
+    if(!batch) {
+      return false;
+    }
     return $scope.selectedBatchTypes.filter((batchType) => batchType.value === batch.batchType.value).length >= 1;
   }
 };

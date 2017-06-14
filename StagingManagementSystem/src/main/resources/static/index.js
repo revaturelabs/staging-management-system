@@ -62851,7 +62851,7 @@
 	  value: true
 	});
 	var chart = {
-	  caption: "Asscoiates Available vs. Associate Confirmed",
+	  caption: "Associates Available vs. Associates Confirmed",
 	  subCaption: "Revature LLC",
 	  xAxisname: "Batch Type",
 	  yAxisName: "Number of Associate",
@@ -64030,12 +64030,18 @@
 	  };
 
 	  $scope.associateBatchFilter = function (associate) {
+	    if (!associate.batch) {
+	      return false;
+	    }
 	    return $scope.selectedBatchTypes.filter(function (batchType) {
 	      return batchType.value === associate.batch.batchType.value;
 	    }).length >= 1;
 	  };
 
 	  $scope.batchBatchFilter = function (batch) {
+	    if (!batch) {
+	      return false;
+	    }
 	    return $scope.selectedBatchTypes.filter(function (batchType) {
 	      return batchType.value === batch.batchType.value;
 	    }).length >= 1;
