@@ -1,8 +1,11 @@
 package com.revature.repositories;
 
-import com.revature.entities.Client;
+import java.util.Set;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ClientRepo extends JpaRepository<Client, Long> {
+import com.revature.entities.Client;
+
+public interface ClientRepo extends JpaRepository<Client, Long>{
+	Set<Client> findByPriorityTrue();
 
 }
