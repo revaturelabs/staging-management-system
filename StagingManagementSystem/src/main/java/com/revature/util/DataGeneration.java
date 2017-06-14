@@ -190,11 +190,11 @@ public class DataGeneration
       AssociateP ap = new AssociateP(a); //Create a probability associate.
 
 	    LocalDateTime endDate = a.getBatch().getEndDate();
-	    LocalDateTime currDate = endDate.minusDays(7); //Hiring date is from a week before batch end date to confirmed date. 
+	    LocalDateTime currDate = endDate.minusDays(7).withHour(8); //Hiring date is from a week before batch end date to confirmed date. 
 	    LocalDateTime jobStartDate = null;
 	    LocalDateTime confirmDate = null;
 	    
-	    while(confirmDate == null && currDate.compareTo(LocalDateTime.now()) < 0){
+	    while(confirmDate == null && currDate.compareTo(LocalDateTime.now().plusDays(1).withHour(9).withMinute(0)) <= 0){
 	      if(currDate.compareTo(endDate.plusMonths(5)) > 0){ //If associate does not get hired after 5 months.
 	        log.warn("Associate didint get a job in 5 months!!!");
 	        jobStartDate = currDate; // This is set to create checkins for the associate, they did not receive a job.
@@ -227,7 +227,7 @@ public class DataGeneration
 	        ClientP client = priorityClients.get(clientIndex);
 	        
 	        InterviewStatuses is;
-	        if(currDate.compareTo(LocalDateTime.now()) <= 0)
+	        if(currDate.compareTo(LocalDateTime.now().plusDays(1).withHour(9)) <= 0)
 	          is = client.evaluateAssociate(ap);
 	        else
 	          is = interviewStatusService.findByStatus("MAPPED");
@@ -263,7 +263,7 @@ public class DataGeneration
 	          ClientP client = regularClients.get(clientIndex);
 	          
 	          InterviewStatuses is;
-	          if(currDate.compareTo(LocalDateTime.now()) <= 0)
+	          if(currDate.compareTo(LocalDateTime.now().plusDays(1).withHour(9)) <= 0)
 	            is = client.evaluateAssociate(ap);
 	          else
 	            is = interviewStatusService.findByStatus("MAPPED");
@@ -324,7 +324,7 @@ public class DataGeneration
    */
 	private void createCheckins(LocalDateTime batchEndDate, LocalDateTime startDate, Associate associate){
 	  LocalDateTime currDate = batchEndDate;
-	  while(currDate.compareTo(startDate) <= 0 && currDate.compareTo(LocalDateTime.now()) <= 0){
+	  while(currDate.compareTo(startDate) <= 0 && currDate.compareTo(LocalDateTime.now().plusDays(1).withHour(9)) <= 0){
 
 	    
 	    DayOfWeek day = currDate.getDayOfWeek();
