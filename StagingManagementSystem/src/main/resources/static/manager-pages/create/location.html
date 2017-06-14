@@ -7,20 +7,20 @@
     </thead>
     <tbody>
         <tr>
-		  <td><label>Name: </label> <input ng-model="location.name"></td>
+		  <td><label>Name: </label> <input class="manager-input" ng-model="location.name"></td>
         </tr>
         <tr>
-		  <td><label>Country: </label> <input ng-model="location.country"></td>
+		  <td><label>Country: </label> <input class="manager-input" ng-model="location.country"></td>
         </tr>
         <tr>
-            <td><label>State: </label> <input ng-model="location.state"></td>
+            <td><label>State: </label> <input class="manager-input" ng-model="location.state"></td>
         </tr>
         <tr>
-            <td><label>City: </label> <input ng-model="location.city"></td>
+            <td><label>City: </label> <input class="manager-input" ng-model="location.city"></td>
         </tr>
     </tbody>
 </table>
 
-
+<div ng-show="requestMade" ng-bind="createMessage" ng-style="createMessageStyle"></div>
 <button class="submit" ng-click="submit()">Submit</button>
  

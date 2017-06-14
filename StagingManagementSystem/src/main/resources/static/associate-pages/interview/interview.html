@@ -5,34 +5,8 @@
 
 <div class="form-group addInterview">     
 	
-	<div class="col-sm-5">
-		Client Name
-		<select class="form-control" ng-model="selectedClient" ng-options="x.name for x in clients" title="Client"></select>
-	</div>
-	<div class="col-sm-5">
-		Interview Date & Time
-		<div class="form-group" >
-	           <div class='input-group date' >
-	               <input type='text' class="form-control" ng-model="selectedDate.value" id='datetimepicker1'/>
-	               <span ng-click="showDateTimePicker()" class="input-group-addon">
-	                   <span class="glyphicon glyphicon-calendar"></span>
-	               </span>
-	           </div>
-	       </div>
-	</div>
-	<div class="col-sm-2">
-		<br>
-		<button type="button" id="addInterviewBtn" ng-click="addInterviewClick()" class="btn btn-primary">Add Interview</button>
-	</div>  
-	
-	</div>
-	<div class="alert alert-success" ng-show="successMsgShow">
-	  Successfully added an Interview!
-	</div>
-	<div class="alert alert-danger" ng-bind="errorMsg" ng-show="errorMsgShow">
-	  Failed to add an Interview.
-	</div>
-	
+	<button type="button" ng-click="showAddModal()" class="btn btn-primary">Add Interview</button>
+
 	<hr class="colorgraph">
 	<h2 class="interviewH2">Interviews</h2>          
 	<table class="table table-striped interviews-table selectable-table">
@@ -53,6 +27,50 @@
 	</table>
 </div>
 
+<div id="addModal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Add Interview</h4>
+      </div>
+      
+      <div class="modal-body">
+      <div>
+	    <h5 class="newH5">Client Name</h5>
+		<select class="form-control" ng-model="selectedClient" ng-options="x.name for x in clients" title="Client"></select>
+		</div>
+		
+		<div>
+		<h5 class="newH5">Interview Date & Time</h5>
+		<div class="form-group" >
+           <div class='input-group date' >
+               <input type='text' class="form-control" ng-model="selectedDate.value" id='datetimepicker1'/>
+               <span ng-click="showDateTimePicker()" class="input-group-addon">
+                   <span class="glyphicon glyphicon-calendar"></span>
+               </span>
+           </div>
+      	</div>
+      	</div>
+      	<div>
+      	<h5 class="newH5">Marketer</h5>
+				<select class="form-control" ng-model="selectedMarketer" ng-options="x.name for x in marketers"></select>
+      </div>
+      </div>
+      <div class="modal-footer">
+        <div class="alert alert-success" ng-show="successMsgShow" style="text-align: left;">
+		  Successfully added an Interview!
+		</div>
+		<div class="alert alert-danger" ng-bind="errorMsg" ng-show="errorMsgShow" style="text-align: left;">
+		  Failed to add an Interview.
+		</div>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" id="addInterviewBtn" ng-click="addInterviewClick()" class="btn btn-primary">Add Interview</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 <div id="interviewModal" class="modal fade" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -65,7 +83,7 @@
       	<div class="row">
 	      	<div class="col-sm-6" style="text-align: center;">
 	      		Marketer
-				<select class="form-control" ng-model="modalClient" ng-options="x.name for x in clients" title="Client"></select>
+				<select class="form-control" ng-model="modalMarketer" ng-options="x.name for x in marketers"></select>
 			</div>
 			<div class="col-sm-6" style="text-align: center;">
 				Status
