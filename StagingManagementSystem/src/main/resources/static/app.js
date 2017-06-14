@@ -42,14 +42,14 @@ routerApp.run(($uiRouter, $trace, $rootScope) => {
 
 	//Ui Visualizer
   // Auto-collapse children in state visualizer
-  const registry = $uiRouter.stateRegistry;
-  $uiRouter.stateRegistry.get().map(s => s.$$state())
-      .filter(s => s.path.length === 2 || s.path.length === 3)
-      .forEach(s => s._collapsed = true);
-
-  const pluginInstance = $uiRouter.plugin(Visualizer);
-
-  $trace.enable('TRANSITION');
+  // const registry = $uiRouter.stateRegistry;
+  // $uiRouter.stateRegistry.get().map(s => s.$$state())
+  //     .filter(s => s.path.length === 2 || s.path.length === 3)
+  //     .forEach(s => s._collapsed = true);
+  //
+  // const pluginInstance = $uiRouter.plugin(Visualizer);
+  //
+  // $trace.enable('TRANSITION');
 
 	//Global Functions
 	$rootScope.dateConverter = (time) => {

@@ -21,4 +21,6 @@ public interface ClientService {
 	public Client findById(long id);
 
 	public Set<Client> getAll();
+
+	Set<Client> findPriority();
 }

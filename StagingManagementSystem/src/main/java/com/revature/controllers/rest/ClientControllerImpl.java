@@ -100,5 +100,10 @@ public class ClientControllerImpl {
 	public Set<Client> findAll() {
 		return clientService.getAll();
 	}
+	
+	@GetMapping("/priority")
+	public Set<Client> findPriority() {
+		return clientService.findPriority();
+	}
 
 }
