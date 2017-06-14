@@ -62,7 +62,7 @@ public class CheckinServiceImpl implements CheckinService {
 	public boolean hasCheckedInToday(Associate associate) {
 		Set<Checkin> checkins = checkinRepo
 				.getAllByCheckinTimeBetween(LocalDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT), LocalDateTime.now());
-		return (checkins != null && checkins.isEmpty());
+		return (checkins != null && !checkins.isEmpty());
 	}
 
 	@Override

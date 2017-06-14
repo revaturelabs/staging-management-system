@@ -4,7 +4,10 @@ const associateCtrl = ($scope, $location, $http, $state, userService) => {
   $scope.checkInBtn = 'Loading...';
   checkBtnDOM.disabled = true;
 
-  if (authenticatedUser.id === undefined) {
+  const isAssociate = authenticatedUser.id !== undefined &&
+    authenticatedUser.permission === undefined;
+
+  if (!isAssociate) {
     $state.go('login');
     return;
   }
@@ -46,7 +49,7 @@ const associateCtrl = ($scope, $location, $http, $state, userService) => {
     })
       .then(() => {
         userService.setUser({});
-        $state.go('login');
+        $state.transitionTo('login');
       });
   };
 };

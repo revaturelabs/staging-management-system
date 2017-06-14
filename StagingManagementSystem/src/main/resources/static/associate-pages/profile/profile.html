@@ -85,7 +85,7 @@
         <h4 class="modal-title">Add or remove skills</h4>
       </div>
       <div class="modal-body">
-        <div id="modal-skills-wrapper">
+        <div scroll-to-bottom="additionalSkillsValues" id="modal-skills-wrapper">
           <ul class="list-group">
             <li ng-repeat="skill in additionalSkillsValues" class="list-group-item">
               <span ng-bind="skill.value"></span>
@@ -99,7 +99,7 @@
         </div>
         <div id="new-skill-input" class="input-group">
           <span class="input-group-addon"><i class="glyphicon glyphicon-plus"></i></span>
-          <input ng-model="newSkillValue" type="text" class="form-control" placeholder="Add new skill">
+          <input ng-keypress="onEnterAddSkill($event)" ng-model="newSkillValue" type="text" class="form-control" placeholder="Add new skill">
           <span class="input-group-btn">
              <button ng-click="addSkill()" class="btn btn-default" type="button">Add</button>
           </span>

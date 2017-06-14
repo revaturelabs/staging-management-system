@@ -64210,7 +64210,6 @@
 			method: 'GET',
 			url: '/marketer/all'
 		}).then(function (response) {
-			console.log(response);
 			$scope.marketers = response.data;
 		});
 
@@ -64218,17 +64217,10 @@
 			method: 'GET',
 			url: 'interviews/associate/' + userService.getUser().id
 		}).then(function (response) {
-
-			response.data.forEach(function (e) {
-				var day = new Date(response.data[0].scheduled[0], response.data[0].scheduled[1], response.data[0].scheduled[2], response.data[0].scheduled[3], response.data[0].scheduled[4], response.data[0].scheduled[5], 0);
-				e['day'] = dateformat(day, "dddd, mmmm dS, yyyy, h:MM TT");
-			});
-
 			$scope.associateInterviews = response.data;
 			$scope.associateInterviews.sort(function (a, b) {
 				return new Date(b.scheduled).getTime() - new Date(a.scheduled).getTime();
 			});
-			console.log(response.data);
 		});
 
 		$scope.addInterviewClick = function () {
@@ -64236,13 +64228,15 @@
 			$scope.errorMsgShow = false;
 			$scope.successMsgShow = false;
 
+			$scope.selectedDate = $("#datetimepicker1").val();
+
 			if ($scope.selectedClient == undefined) {
 				$scope.errorMsg = 'Please select a Client.';
 				$scope.errorMsgShow = true;
-			} else if ($scope.selectedDate == undefined) {
+			} else if ($scope.selectedDate == undefined || $scope.selectedDate === "") {
 				$scope.errorMsg = 'Please select a Date.';
 				$scope.errorMsgShow = true;
-			} else if ($scope.selectedDate == undefined) {
+			} else if ($scope.selectedMarketer == undefined) {
 				$scope.errorMsg = 'Please select a Marketer.';
 				$scope.errorMsgShow = true;
 			} else {
@@ -64272,18 +64266,57 @@
 		};
 
 		$scope.showAddModal = function () {
+			$scope.errorMsgShow = false;
+			$scope.successMsgShow = false;
+
+			$scope.selectedClient = undefined;
+			$("#datetimepicker1").val("");
+			$scope.selectedMarketer = undefined;
+
 			$('#addModal').modal('show');
 		};
 
 		$scope.interviewClick = function (interview) {
 			$scope.clickedInterview = interview;
 			for (var i = 0; i < $scope.interviewStatuses.length; i++) {
-				if ($scope.interviewStatuses[i].value === interview.interviewStatus.value) $scope.modalStatus = $scope.interviewStatuses[i];
+				if ($scope.interviewStatuses[i].value === interview.interviewStatus.value) $scope.updateStatus = $scope.interviewStatuses[i];
 			}
 			for (var _i = 0; _i < $scope.marketers.length; _i++) {
-				if ($scope.marketers[_i].name === interview.marketer.name) $scope.modalMarketer = $scope.marketers[_i];
+				if ($scope.marketers[_i].name === interview.marketer.name) $scope.updateMarketer = $scope.marketers[_i];
 			}
+			$scope.updateComment = $scope.clickedInterview.comment;
+
+			$scope.errorUpdateMsgShow = false;
+			$scope.successUpdateMsgShow = false;
 			$('#interviewModal').modal('show');
+		};
+
+		$scope.updateInterviewClick = function () {
+			$scope.errorUpdateMsgShow = false;
+			$scope.successUpdateMsgShow = false;
+
+			if ($scope.updateComment === undefined || $scope.updateComment === "") {
+				$scope.errorUpdateMsg = 'Please add a comment.';
+				$scope.errorUpdateMsgShow = true;
+			} else {
+				$http({
+					method: 'PUT',
+					url: '/interviews',
+					data: { id: $scope.clickedInterview.id, associate: $scope.clickedInterview.associate, client: $scope.clickedInterview.client,
+						scheduled: $scope.clickedInterview.scheduled, marketer: $scope.updateMarketer, interviewStatus: $scope.updateStatus, comment: $scope.updateComment }
+				}).then(function (response) {
+					$scope.successUpdateMsgShow = true;
+					$http({
+						method: 'GET',
+						url: 'interviews/associate/' + userService.getUser().id
+					}).then(function (response) {
+						$scope.associateInterviews = response.data;
+						$scope.associateInterviews.sort(function (a, b) {
+							return new Date(b.scheduled).getTime() - new Date(a.scheduled).getTime();
+						});
+					});
+				});
+			}
 		};
 	};
 
