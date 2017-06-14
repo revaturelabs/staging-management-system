@@ -6,6 +6,7 @@
         <th class="interview-th" scope="col">Associate</th>
         <th class="interview-th" scope="col">Client</th>
         <th class="interview-th" scope="col">Scheduled Time</th>
+        <th class="interview-th" scope="col">Status</th>
       </tr>
       </thead>
       <tbody>
@@ -14,6 +15,7 @@
         <td class="interview-td" ng-bind="interview.associate.name"></td>
         <td class="interview-td" ng-bind="interview.client.name"></td>
         <td class="interview-td" ng-bind="dateConverter(interview.scheduled)"></td>
+        <td class="interview-td" ng-bind="interview.interviewStatus.value"></td>
       </tr>
       </tbody>
     </table>
