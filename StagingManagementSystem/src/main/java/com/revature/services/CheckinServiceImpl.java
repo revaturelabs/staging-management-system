@@ -75,8 +75,9 @@ public class CheckinServiceImpl implements CheckinService {
 	}
 
 	@Override
-	public void checkIn(Associate associate, LocalDateTime when) throws AlreadyCheckedInException {
+	public void checkIn(Associate associate, LocalDateTime nwhen) throws AlreadyCheckedInException {
 		// Have we already checked in today?
+		LocalDateTime when = nwhen;
 		if (when == null) {
 			Set<Checkin> checkins = checkinRepo.getAllByCheckinTimeBetween(
 					LocalDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT), LocalDateTime.now());

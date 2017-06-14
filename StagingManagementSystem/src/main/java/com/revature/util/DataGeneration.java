@@ -62,16 +62,16 @@ public class DataGeneration
 
   
 	//Dependent Stages
-	ArrayList<Checkin> checkins = new ArrayList<Checkin>();
-	ArrayList<ClientQuestion> clientQs = new ArrayList<ClientQuestion>();
-	ArrayList<Interview> interviews = new ArrayList<Interview>();
-	ArrayList<Job> jobs = new ArrayList<Job>();
+	ArrayList<Checkin> checkins = new ArrayList<>();
+	ArrayList<ClientQuestion> clientQs = new ArrayList<>();
+	ArrayList<Interview> interviews = new ArrayList<>();
+	ArrayList<Job> jobs = new ArrayList<>();
 
-	ArrayList<ClientP> priorityClients = new ArrayList<ClientP>();
-	ArrayList<ClientP> regularClients = new ArrayList<ClientP>();
-	ArrayList<Associate> associates = new ArrayList<Associate>();
-	ArrayList<InterviewQuestion> interviewQuestions = new ArrayList<InterviewQuestion>();
-	ArrayList<Manager> managers = new ArrayList<Manager>();
+	ArrayList<ClientP> priorityClients = new ArrayList<>();
+	ArrayList<ClientP> regularClients = new ArrayList<>();
+	ArrayList<Associate> associates = new ArrayList<>();
+	ArrayList<InterviewQuestion> interviewQuestions = new ArrayList<>();
+	ArrayList<Manager> managers = new ArrayList<>();
 
 	String[] jobTitles = new String[] { "Janitor", "DishWasher" };
 
@@ -242,7 +242,7 @@ public class DataGeneration
 	        submitInterviewQuestions(ap, client);
 	        
 	        // Create Job.
-	        if(is.getValue().equals("CONFIRMED")){
+	        if("CONFIRMED".equals(is.getValue())){
 	          
 	            LocalDateTime startDate = currDate.plusWeeks(2);
 	            confirmDate = createJob(ap, currDate, startDate, client);
@@ -277,7 +277,7 @@ public class DataGeneration
 	          submitInterviewQuestions(ap, client);
 	          
 	          // Create Job.
-	          if(is.getValue().equals("CONFIRMED")){
+	          if("CONFIRMED".equals(is.getValue())){
 	            
 	             int daysToDecide = logRythmicConvergence(0, 7, .5);
 	             currDate = currDate.plusDays(daysToDecide);
@@ -363,17 +363,18 @@ public class DataGeneration
 
 	private int logRythmicConvergence(int start, int end, double convergenceFactor) {
 		double totalProbability = convergenceFactor;
+		int tval = start;
 		while (totalProbability < 1) {
-			start++;
+			tval++;
 			int rollDice = rand.nextInt(100);
 
 			log.debug("Accept if: " + totalProbability * 100 + " > " + rollDice);
 			if (totalProbability * 100 > rollDice)
-				return start % end;
+				return tval % end;
 
 			totalProbability += (1 - totalProbability) * convergenceFactor;
 		}
 		log.warn("Convergence did not yeald result, This should never happen.");
-		return start % end;
+		return tval % end;
 	}
 }
