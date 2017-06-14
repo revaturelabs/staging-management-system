@@ -38,6 +38,24 @@ routerApp.service('userService', function ($cookies) {
   };
 });
 
+routerApp.directive('scrollToBottom', ($timeout, $window) => {
+  return {
+    scope: {
+        scrollToBottom: "="
+    },
+    restrict: 'A',
+    link: (scope, element, attr) => {
+      scope.$watchCollection('scrollToBottom', (newVal) => {
+        if (newVal) {
+          $timeout(() => {
+            element[0].scrollTop = element[0].scrollHeight;
+          }, 0);
+        }
+      });
+    }
+  };
+});
+
 routerApp.run(($uiRouter, $trace, $rootScope) => {
 
 	//Ui Visualizer

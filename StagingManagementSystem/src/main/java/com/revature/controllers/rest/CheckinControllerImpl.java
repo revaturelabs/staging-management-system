@@ -1,12 +1,12 @@
 package com.revature.controllers.rest;
 
-import com.revature.entities.Associate;
-import com.revature.entities.Checkin;
-import com.revature.entities.Manager;
-import com.revature.exceptions.AlreadyCheckedInException;
-import com.revature.services.CheckinReportServiceImpl;
-import com.revature.services.CheckinReportServiceImpl.DailyReport;
-import com.revature.services.CheckinService;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+import javax.servlet.http.HttpSession;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,133 +20,133 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpSession;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Set;
+import com.revature.entities.Associate;
+import com.revature.entities.Checkin;
+import com.revature.entities.Manager;
+import com.revature.exceptions.AlreadyCheckedInException;
+import com.revature.services.CheckinReportServiceImpl;
+import com.revature.services.CheckinReportServiceImpl.DailyReport;
+import com.revature.services.CheckinService;
 
 @RestController
 @RequestMapping("checkin")
 public class CheckinControllerImpl {
+	@Autowired
+	private CheckinService checkinService;
 
-    @Autowired
-    private CheckinService checkinService;
+	@Autowired
+	private CheckinReportServiceImpl checkinReport;
 
-    @Autowired
-    private CheckinReportServiceImpl checkinReport;
+	private static final String LM = "login_manager";
+	private static final String LA = "login_associate";
 
-    private static final String lm = "login_manager";
+	public CheckinControllerImpl(CheckinService checkinService) {
+		this.checkinService = checkinService;
+	}
 
-    private static final String la = "login_associate";
+	@GetMapping
+	public ResponseEntity<Boolean> isCheckedIn(HttpSession session) {
+		Associate associate = (Associate) session.getAttribute(LA);
+		if (associate == null)
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(false);
+		return ResponseEntity.ok(checkinService.hasCheckedInToday(associate));
 
-    public CheckinControllerImpl(CheckinService checkinService) {
+	}
 
-        this.checkinService = checkinService;
-    }
+	@GetMapping("/allTodays")
+	public ResponseEntity<Set<Checkin>> getTodaysCheckins(HttpSession session) {
+		Manager manager = (Manager) session.getAttribute(LM);
+		if (manager == null) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+		}
+		return ResponseEntity.ok(checkinService.getTodaysCheckins());
+	}
 
-    @GetMapping
-    public ResponseEntity<Boolean> isCheckedIn(HttpSession session) {
+	@PutMapping
+	public ResponseEntity<Boolean> checkIn(HttpSession session) {
+		Associate associate = (Associate) session.getAttribute(LA);
+		if (associate == null)
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(false);
+		try {
+			checkinService.checkIn(associate, LocalDateTime.now());
+			return ResponseEntity.ok(true);
+		} catch (AlreadyCheckedInException e) {
+			Logger.getRootLogger().error(e);
+			return ResponseEntity.status(HttpStatus.CONFLICT).body(false);
+		}
+	}
 
-        Associate associate = (Associate) session.getAttribute(la);
-        if (associate == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(false);
-        return ResponseEntity.ok(checkinService.hasCheckedInToday(associate));
-    }
+	/**
+	 * Marks a given checkin as having been verified by the currently logged in
+	 * manager Accessible through POST:/checkin and requires a checkin to be
+	 * given.
+	 *
+	 * @param session
+	 * @param checkin
+	 * @return
+	 */
+	@PostMapping
+	public ResponseEntity<Boolean> managerModification(HttpSession session, @RequestBody Checkin checkin) {
+		Manager manager = (Manager) session.getAttribute(LM);
+		if (manager == null) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(false);
+		}
+		if (checkin == null)
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
+		checkinService.approveCheckin(manager, checkin);
+		return ResponseEntity.ok(true);
+	}
 
-    @GetMapping("/allTodays")
-    public ResponseEntity<Set<Checkin>> getTodaysCheckins(HttpSession session) {
+	@PatchMapping("approve-multiple")
+	public ResponseEntity<Boolean> approveMultiple(HttpSession session, @RequestBody Set<Checkin> checkins) {
+		Manager manager = (Manager) session.getAttribute(LM);
+		if (manager == null) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(false);
+		}
+		if (checkins == null)
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
 
-        Manager manager = (Manager) session.getAttribute(lm);
-        if (manager == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-        }
-        return ResponseEntity.ok(checkinService.getTodaysCheckins());
-    }
+		checkinService.approveMultiple(checkins, manager);
+		return ResponseEntity.ok(true);
+	}
 
-    @PutMapping
-    public ResponseEntity<Boolean> checkIn(HttpSession session) {
+	@GetMapping(path = "checkin/{username}")
+	public ResponseEntity<Set<Checkin>> getCheckins(@PathVariable String username, HttpSession session) {
+		Associate associate = (Associate) session.getAttribute(LA);
+		if (associate != null) { // If you're not an associate..
+			if (username.equals(associate.getCredential().getUsername())) // If
+																			// you're
+																			// asking
+																			// for
+																			// your
+																			// own
+																			// details..
+				return ResponseEntity.ok(checkinService.getAllForAssociate(associate)); // You're
+																						// welcome
+																						// to
+																						// your
+																						// own
+																						// data.
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null); // Otherwise,
+																			// go
+																			// away!
+		}
+		Manager manager = (Manager) session.getAttribute(LM);
+		if (manager == null) { // And if you're not a manager..
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null); // Go
+																			// away!
+		}
+		return ResponseEntity.ok(checkinService.getAllForAssociate(username));
+	}
 
-        Associate associate = (Associate) session.getAttribute(la);
-        if (associate == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(false);
-        try {
-            checkinService.checkIn(associate, LocalDateTime.now());
-            return ResponseEntity.ok(true);
-        } catch (AlreadyCheckedInException e) {
-            Logger.getRootLogger().error(e);
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(false);
-        }
-    }
-
-    /**
-     * Marks a given checkin as having been verified by the currently logged in
-     * manager Accessible through POST:/checkin and requires a checkin to be
-     * given.
-     *
-     * @param session
-     * @param checkin
-     * @return
-     */
-    @PostMapping
-    public ResponseEntity<Boolean> managerModification(HttpSession session, @RequestBody Checkin checkin) {
-
-        Manager manager = (Manager) session.getAttribute(lm);
-        if (manager == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(false);
-        }
-        if (checkin == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
-        checkinService.approveCheckin(manager, checkin);
-        return ResponseEntity.ok(true);
-    }
-
-    @PatchMapping("approve-multiple")
-    public ResponseEntity<Boolean> approveMultiple(HttpSession session, @RequestBody Set<Checkin> checkins) {
-
-        Manager manager = (Manager) session.getAttribute(lm);
-        if (manager == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(false);
-        }
-        if (checkins == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
-        checkinService.approveMultiple(checkins, manager);
-        return ResponseEntity.ok(true);
-    }
-
-    @GetMapping(path = "checkin/{username}")
-    public ResponseEntity<Set<Checkin>> getCheckins(@PathVariable String username, HttpSession session) {
-
-        Associate associate = (Associate) session.getAttribute(la);
-        if (associate != null) { // If you're not an associate..
-            if (username.equals(associate.getCredential().getUsername())) // If
-                // you're
-                // asking
-                // for
-                // your
-                // own
-                // details..
-                return ResponseEntity.ok(checkinService.getAllForAssociate(associate)); // You're
-            // welcome
-            // to
-            // your
-            // own
-            // data.
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null); // Otherwise,
-            // go
-            // away!
-        }
-        Manager manager = (Manager) session.getAttribute(lm);
-        if (manager == null) { // And if you're not a manager..
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null); // Go
-            // away!
-        }
-        return ResponseEntity.ok(checkinService.getAllForAssociate(username));
-    }
-
-    @GetMapping(path = "/report")
-    public ResponseEntity<ArrayList<DailyReport>> getCheckins(HttpSession session) {// For
-        // managers
-        // only.
-        Manager manager = (Manager) session.getAttribute(lm);
-        if (manager == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-        }
-        return ResponseEntity.ok(checkinReport.process(checkinService.getAll()));
-    }
+	@GetMapping(path = "/report")
+	public ResponseEntity<List<DailyReport>> getCheckins(HttpSession session) {// For
+																					// managers
+																					// only.
+		Manager manager = (Manager) session.getAttribute(LM);
+		if (manager == null) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+		}
+		return ResponseEntity.ok(checkinReport.process(checkinService.getAll()));
+	}
 }

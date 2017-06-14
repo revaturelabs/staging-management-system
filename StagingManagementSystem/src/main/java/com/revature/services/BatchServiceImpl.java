@@ -1,5 +1,16 @@
 package com.revature.services;
 
+import java.time.LocalDateTime;
+import java.time.temporal.WeekFields;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Random;
+import java.util.Set;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.revature.entities.Associate;
 import com.revature.entities.Batch;
 import com.revature.entities.BatchType;
@@ -11,176 +22,163 @@ import com.revature.repositories.BatchTypeRepo;
 import com.revature.repositories.CredentialRepo;
 import com.revature.repositories.LocationRepo;
 import com.revature.repositories.TrainerRepo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.time.temporal.WeekFields;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Random;
-import java.util.Set;
 
 @Service
 public class BatchServiceImpl implements BatchService {
 
-    @Autowired
-    private AssociateRepo associateRepo;
+	@Autowired
+	private AssociateRepo associateRepo;
 
-    @Autowired
-    private BatchRepo batchRepo;
+	@Autowired
+	private BatchRepo batchRepo;
 
-    @Autowired
-    private BatchTypeRepo batchTypeRepo;
+	@Autowired
+	private BatchTypeRepo batchTypeRepo;
 
-    @Autowired
-    private TrainerRepo trainerRepo;
+	@Autowired
+	private TrainerRepo trainerRepo;
 
-    @Autowired
-    private CredentialRepo credentialRepo;
+	@Autowired
+	private CredentialRepo credentialRepo;
 
-    @Autowired
-    private LocationRepo locationRepo;
+	@Autowired
+	private LocationRepo locationRepo;
 
-    public BatchServiceImpl(BatchRepo batchRepo, BatchTypeRepo batchTypeRepo, TrainerRepo trainerRepo, AssociateRepo associateRepo, CredentialRepo credentialRepo, LocationRepo locationRepo) {
+	public BatchServiceImpl(BatchRepo batchRepo, BatchTypeRepo batchTypeRepo, TrainerRepo trainerRepo,
+			AssociateRepo associateRepo, CredentialRepo credentialRepo, LocationRepo locationRepo) {
+		super();
+		this.batchRepo = batchRepo;
+		this.batchTypeRepo = batchTypeRepo;
+		this.trainerRepo = trainerRepo;
+		this.associateRepo = associateRepo;
+		this.credentialRepo = credentialRepo;
+		this.locationRepo = locationRepo;
+	}
 
-        super();
-        this.batchRepo = batchRepo;
-        this.batchTypeRepo = batchTypeRepo;
-        this.trainerRepo = trainerRepo;
-        this.associateRepo = associateRepo;
-        this.credentialRepo = credentialRepo;
-        this.locationRepo = locationRepo;
-    }
+	@Override
+	public void addAssociateToBatch(Batch batch, Associate associate) {
+		batch.getAssociates().add(associate);
+		batchRepo.saveAndFlush(batch);
+	}
 
-    @Override
-    public void addAssociateToBatch(Batch batch, Associate associate) {
+	@Override
+	public void add(Batch batch) {
+		if(batch.getId() == 0) {
+			Batch b = batchRepo.saveAndFlush(batch);
+			batch.getAssociates().forEach((Associate associate) -> {
+		        Associate ass = associateRepo.findOne(associate.getId());
+		        ass.setBatch(b);
+		        associateRepo.saveAndFlush(ass);
+		      });
+		} else {
+			Batch b = batchRepo.saveAndFlush(batch);
+			Set<Associate> associates = b.getAssociates();
+			associates.forEach((Associate associate) -> {
+				Associate ass = associateRepo.findOne(associate.getId());
+				boolean contains = false;
+				for(Associate retreivedAssociate : batch.getAssociates()) {
+					if(ass.getId() == retreivedAssociate.getId()) {
+						contains = true;
+					}
+				}
+				if(!contains) {
+					ass.setBatch(null);
+					associateRepo.saveAndFlush(ass);
+				}
+			});
+			
 
-        batch.getAssociates().add(associate);
-        batchRepo.saveAndFlush(batch);
-    }
+			
+			batch.getAssociates().forEach((Associate associate) -> {
+		        Associate ass = associateRepo.findOne(associate.getId());
+		        ass.setBatch(b);
+		        associateRepo.saveAndFlush(ass);
+		      });
+			
+		}
+		
+	}
 
-    @Override
-    public void add(Batch batch) {
+	@Override
+	public void addBatchTypes(Set<BatchType> batchTypes) {
+		batchTypes.forEach((BatchType batchType) -> batchTypeRepo.saveAndFlush(batchType));
+	}
 
-        if (batch.getId() == 0) {
-            Batch b = batchRepo.saveAndFlush(batch);
-            batch.getAssociates().forEach((Associate associate) -> {
-                Associate ass = associateRepo.findOne(associate.getId());
-                ass.setBatch(b);
-                associateRepo.saveAndFlush(ass);
-            });
-        } else {
-            Batch b = batchRepo.saveAndFlush(batch);
-            Set<Associate> associates = b.getAssociates();
-            associates.forEach((Associate associate) -> {
-                Associate ass = associateRepo.findOne(associate.getId());
-                boolean contains = false;
-                for (Associate retreivedAssociate : batch.getAssociates()) {
-                    if (ass.getId() == retreivedAssociate.getId()) {
-                        contains = true;
-                    }
-                }
-                if (!contains) {
-                    ass.setBatch(null);
-                    associateRepo.saveAndFlush(ass);
-                }
-            });
-//			Set<Trainer> trainers = b.getTrainers();
-//			trainers.forEach((Trainer trainer) -> {
-//				Trainer train = trainerRepo.findOne(trainer.getId());
-//				boolean contains = false;
-//				for(Trainer retreivedTrainer : batch.getTrainers()) {
-//					if(train.getId() == retreivedTrainer.getId()) {
-//						contains = true;
-//					}
-//				}
-//				
-//				train
-//			});
-            batch.getAssociates().forEach((Associate associate) -> {
-                Associate ass = associateRepo.findOne(associate.getId());
-                ass.setBatch(b);
-                associateRepo.saveAndFlush(ass);
-            });
-        }
-    }
+	@Override
+	public void addMockBatches(Set<Batch> batches) {
+		List<Trainer> trainers = trainerRepo.findAll();
+		int trainerIndex = 0;
+		List<BatchType> batchTypes = batchTypeRepo.findAll();
 
-    @Override
-    public void addBatchTypes(Set<BatchType> batchTypes) {
+		Location revature = locationRepo.findByName("Revature VA");
 
-        batchTypes.forEach((BatchType batchType) -> batchTypeRepo.saveAndFlush(batchType));
-    }
+		// Initialize a date to being the first monday of 2017
+		int week = 1;
+		int year = 2017;
+		WeekFields weekFields = WeekFields.of(Locale.getDefault());
+		LocalDateTime ldt = LocalDateTime.now().withYear(year).with(weekFields.weekOfYear(), week)
+				.with(weekFields.dayOfWeek(), 2);
 
-    @Override
-    public void addMockBatches(Set<Batch> batches) {
+		for (Batch batch : batches) {
+			// Assign start and end dates to the batch
+			batch.setStartDate(ldt);
+			batch.setEndDate(ldt.plusDays(70));
 
-        List<Trainer> trainers = trainerRepo.findAll();
-        int trainerIndex = 0;
-        List<BatchType> batchTypes = batchTypeRepo.findAll();
-        Location revature = locationRepo.findByName("Revature VA");
-        // Initialize a date to being the first monday of 2017
-        int week = 1;
-        int year = 2017;
-        WeekFields weekFields = WeekFields.of(Locale.getDefault());
-        LocalDateTime ldt = LocalDateTime.now().withYear(year).with(weekFields.weekOfYear(), week).with(weekFields.dayOfWeek(), 2);
-        for (Batch batch : batches) {
-            // Assign start and end dates to the batch
-            batch.setStartDate(ldt);
-            batch.setEndDate(ldt.plusDays(70));
-            // Add 7 days to the start date for next batch to use
-            ldt = ldt.plusDays(7);
-            // Assign the batch a trainer and increment so the next batch gets
-            // the next trainer
-            Set<Trainer> batchTrainers = new HashSet<>();
-            batchTrainers.add(trainers.get(trainerIndex));
-            batch.setTrainers(batchTrainers);
-            if (trainerIndex == trainers.size() - 1) {
-                trainerIndex = 0;
-            } else {
-                trainerIndex++;
-            }
-            // assing the batch a random type
-            Random rand = new Random();
-            int value = rand.nextInt(batchTypes.size());
-            batch.setBatchType(batchTypes.get(value));
-            // Set batch location to revature
-            batch.setLocation(revature);
-            batchRepo.saveAndFlush(batch);
-            batch.getAssociates().forEach((Associate associate) -> {
-                String portfolio = associate.getPortfolioLink();
-                if (portfolio.length() > 128) {
-                    associate.setPortfolioLink(portfolio.substring(0, 128));
-                }
-                associate.setBatch(batch);
-                associate.setCredential(credentialRepo.saveAndFlush(associate.getCredential()));
-                associateRepo.saveAndFlush(associate);
-            });
-        }
-    }
+			// Add 7 days to the start date for next batch to use
+			ldt = ldt.plusDays(7);
 
-    @Override
-    public void delete(Batch batch) {
+			// Assign the batch a trainer and increment so the next batch gets
+			// the next trainer
+			Set<Trainer> batchTrainers = new HashSet<>();
+			batchTrainers.add(trainers.get(trainerIndex));
+			batch.setTrainers(batchTrainers);
+			if (trainerIndex == trainers.size() - 1) {
+				trainerIndex = 0;
+			} else {
+				trainerIndex++;
+			}
 
-        batchRepo.delete(batch);
-    }
+			// assing the batch a random type
+			Random rand = new Random();
+			int value = rand.nextInt(batchTypes.size());
+			batch.setBatchType(batchTypes.get(value));
 
-    @Override
-    public void update(Batch batch) {
+			// Set batch location to revature
+			batch.setLocation(revature);
 
-        batchRepo.saveAndFlush(batch);
-    }
+			batchRepo.saveAndFlush(batch);
+			
+	     batch.getAssociates().forEach((Associate associate) -> {
+	        String portfolio = associate.getPortfolioLink();
+	        if (portfolio.length() > 128) {
+	          associate.setPortfolioLink(portfolio.substring(0, 128));
+	        }
+	        associate.setBatch(batch);
+	        associate.setCredential(credentialRepo.saveAndFlush(associate.getCredential()));
+	        associateRepo.saveAndFlush(associate);
+	      });
+		}
 
-    @Override
-    public List<Batch> getAll() {
+	}
 
-        return batchRepo.findAll();
-    }
+	@Override
+	public void delete(Batch batch) {
+		batchRepo.delete(batch);
+	}
 
-    @Override
-    public Batch findById(long id) {
+	@Override
+	public void update(Batch batch) {
+		batchRepo.saveAndFlush(batch);
+	}
 
-        return batchRepo.getOne(id);
-    }
+	@Override
+	public List<Batch> getAll() {
+		return batchRepo.findAll();
+	}
+
+	@Override
+	public Batch findById(long id) {	
+		return batchRepo.getOne(id);
+	}
+
 }

@@ -89,6 +89,12 @@ const profileCtrl = ($scope, $http, userService, $stateParams, $state, $window) 
     }
     return $scope.associate.batch.batchType.skills.concat($scope.associate.skills).length === 0;
   };
+
+  $scope.onEnterAddSkill = (event) => {
+    if (event.which === 13) {
+      $scope.addSkill();
+    }
+  };
 };
 
 export default profileCtrl;
