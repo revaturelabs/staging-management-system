@@ -1,5 +1,6 @@
 package com.revature.controllers.rest;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -15,7 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.entities.Batch;
 import com.revature.entities.BatchType;
+import com.revature.entities.Skill;
 import com.revature.services.BatchService;
+import com.revature.services.SkillService;
 
 @RestController
 @RequestMapping("batch")
@@ -23,6 +26,10 @@ public class BatchControllerImpl {
 
 	@Autowired
 	private BatchService batchService;
+		 
+  @Autowired
+  private SkillService skillService;
+
 
 	public BatchControllerImpl(BatchService batchService) {
 		super();
@@ -36,7 +43,17 @@ public class BatchControllerImpl {
 
 	@PostMapping("/types")
 	public void addBatchTypes(@RequestBody Set<BatchType> batchTypes) {
-		batchService.addBatchTypes(batchTypes);
+	  for(BatchType bt : batchTypes) {
+	    Set<Skill> skills = bt.getSkills();
+      Set<Skill> persistantSkill = new HashSet<Skill>();
+      for(Skill s : skills) {
+        persistantSkill.add(skillService.addSkill(s));
+      }
+      
+      bt.setSkills(persistantSkill);
+	  }
+    batchService.addBatchTypes(batchTypes);
+
 	}
 
 	/**
