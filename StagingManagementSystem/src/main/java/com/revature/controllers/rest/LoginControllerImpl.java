@@ -23,12 +23,12 @@ public class LoginControllerImpl {
 	@Autowired
 	CredentialService credService;
 
-	private static final la = "login_associate";
-	private static final lm = "login_manager";
+	private static final String LA = "login_associate";
+	private static final String LM = "login_manager";
 	
 	@GetMapping("isAssociate")
 	public ResponseEntity<Boolean> isAssociate(HttpSession session) {
-		Associate associate = (Associate)session.getAttribute(la);
+		Associate associate = (Associate)session.getAttribute(LA);
 		if(associate == null)
 			return ResponseEntity.ok(false);
 		else
@@ -37,7 +37,7 @@ public class LoginControllerImpl {
 	
 	@GetMapping("isManager")
 	public ResponseEntity<Boolean> isManager(HttpSession session) {
-		Manager manager = (Manager)session.getAttribute(lm);
+		Manager manager = (Manager)session.getAttribute(LM);
 		if(manager == null)
 			return ResponseEntity.ok(false);
 		else
@@ -62,10 +62,10 @@ public class LoginControllerImpl {
 	public ResponseEntity<Object> dualLogin(@RequestBody Credential creds, HttpSession session){
 		Object obj = credService.login(creds);
 		if(obj instanceof Associate){
-			session.setAttribute(la, (Associate)obj);
+			session.setAttribute(LA, (Associate)obj);
 			return ResponseEntity.ok((Associate)obj);
 		}else if(obj instanceof Manager){
-			session.setAttribute(lm, (Manager)obj);
+			session.setAttribute(LM, (Manager)obj);
 			return ResponseEntity.ok((Manager)obj);
 		}
 		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);

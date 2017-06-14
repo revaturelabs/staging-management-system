@@ -87,19 +87,6 @@ public class BatchServiceImpl implements BatchService {
 				}
 			});
 			
-//			Set<Trainer> trainers = b.getTrainers();
-//			trainers.forEach((Trainer trainer) -> {
-//				Trainer train = trainerRepo.findOne(trainer.getId());
-//				boolean contains = false;
-//				for(Trainer retreivedTrainer : batch.getTrainers()) {
-//					if(train.getId() == retreivedTrainer.getId()) {
-//						contains = true;
-//					}
-//				}
-//				
-//				train
-//			});
-			
 			batch.getAssociates().forEach((Associate associate) -> {
 		        Associate ass = associateRepo.findOne(associate.getId());
 		        ass.setBatch(b);

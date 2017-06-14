@@ -24,7 +24,7 @@ public class MarketerServiceImpl implements MarketerService {
 
     @Override
     public Set<Marketer> getAllMarketers() {
-        return new HashSet<Marketer>(marketerRepo.findAll());
+        return new HashSet<>(marketerRepo.findAll());
     }
     
     @Override
