@@ -63883,7 +63883,7 @@
 	});
 	var batchCtrl = function batchCtrl($scope, $http, $state, $stateParams) {
 	  window.scope = $scope;
-	  $scope.batch = { associates: [] };
+	  $scope.batch = { associates: [], trainers: [] };
 
 	  $('#datetimepicker1').datetimepicker();
 	  $('#datetimepicker2').datetimepicker();
@@ -63901,23 +63901,34 @@
 	      $http.get('associate/no-batch').then(function (response3) {
 	        $scope.associates = response3.data;
 
-	        if ($state.includes('manager.advanced')) {
-	          $http.get('batch/' + $stateParams.id).then(function (response4) {
-	            $http.get('associate/by-batch/' + $stateParams.id).then(function (response5) {
-	              $scope.batch.associates = response5.data;
-	            });
+	        $http.get('trainer/all').then(function (response4) {
+	          $scope.trainers = response4.data;
 
-	            $scope.batch = response4.data;
-	            $scope.batch.batchType = $scope.batchTypes.filter(function (batchType) {
-	              return batchType.value === response4.data.batchType.value;
-	            })[0];
-	            $scope.batch.location = $scope.locations.filter(function (location) {
-	              return location.name === response4.data.location.name;
-	            })[0];
-	          }, function () {
-	            // console.log('failure')
-	          });
-	        }
+	          if ($state.includes('manager.advanced')) {
+	            $http.get('batch/' + $stateParams.id).then(function (response5) {
+	              $http.get('associate/by-batch/' + $stateParams.id).then(function (response6) {
+	                $scope.batch.associates = response6.data;
+	              });
+
+	              $scope.batch = response5.data;
+	              $scope.batch.batchType = $scope.batchTypes.filter(function (batchType) {
+	                return batchType.value === response5.data.batchType.value;
+	              })[0];
+	              $scope.batch.location = $scope.locations.filter(function (location) {
+	                return location.name === response5.data.location.name;
+	              })[0];
+	              $scope.batch.trainers.forEach(function (trainer) {
+	                $scope.trainers.forEach(function (batchTrainer) {
+	                  if (batchTrainer.name === trainer.name) {
+	                    trainer = batchTrainer;
+	                  }
+	                });
+	              });
+	            }, function () {
+	              // console.log('failure')
+	            });
+	          }
+	        });
 	      }, function () {
 	        console.log('failure');
 	      });
@@ -63938,11 +63949,28 @@
 	    });
 	  };
 
+	  $scope.addTrainer = function () {
+	    if (!$scope.selectedTrainer) {
+	      return;
+	    }
+	    $scope.batch.trainers.push($scope.selectedTrainer);
+	    $scope.trainers = $scope.trainers.filter(function (trainer) {
+	      return trainer.id !== $scope.selectedTrainer.id;
+	    });
+	  };
+
 	  $scope.removeAssociate = function (selected) {
 	    $scope.batch.associates = $scope.batch.associates.filter(function (associate) {
 	      return associate.id !== selected.id;
 	    });
 	    $scope.associates.push(selected);
+	  };
+
+	  $scope.removeTrainer = function (selected) {
+	    $scope.batch.trainers = $scope.batch.trainers.filter(function (trainer) {
+	      return trainer.id !== selected.id;
+	    });
+	    $scope.trainers.push(selected);
 	  };
 
 	  $('#datetimepicker1').on('dp.change', function () {

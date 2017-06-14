@@ -71,17 +71,14 @@ public class BatchServiceImpl implements BatchService {
 		        associateRepo.saveAndFlush(ass);
 		      });
 		} else {
-			Batch b = batchRepo.getOne(batch.getId());
+			Batch b = batchRepo.saveAndFlush(batch);
 			Set<Associate> associates = b.getAssociates();
-			System.out.println(batch.getAssociates());
 			associates.forEach((Associate associate) -> {
 				Associate ass = associateRepo.findOne(associate.getId());
 				boolean contains = false;
-				System.out.println(ass.getName());
 				for(Associate retreivedAssociate : batch.getAssociates()) {
 					if(ass.getId() == retreivedAssociate.getId()) {
 						contains = true;
-						System.out.println("yes");
 					}
 				}
 				if(!contains) {
@@ -90,11 +87,25 @@ public class BatchServiceImpl implements BatchService {
 				}
 			});
 			
+//			Set<Trainer> trainers = b.getTrainers();
+//			trainers.forEach((Trainer trainer) -> {
+//				Trainer train = trainerRepo.findOne(trainer.getId());
+//				boolean contains = false;
+//				for(Trainer retreivedTrainer : batch.getTrainers()) {
+//					if(train.getId() == retreivedTrainer.getId()) {
+//						contains = true;
+//					}
+//				}
+//				
+//				train
+//			});
+			
 			batch.getAssociates().forEach((Associate associate) -> {
 		        Associate ass = associateRepo.findOne(associate.getId());
 		        ass.setBatch(b);
 		        associateRepo.saveAndFlush(ass);
 		      });
+			
 		}
 		
 	}
