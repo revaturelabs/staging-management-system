@@ -59,13 +59,17 @@ public class CheckinReportServiceImpl {
 
     @Override
     public boolean equals(Object o) {
-      if (this == o) return true;
-      if (o == null || getClass() != o.getClass()) return false;
+      if (this == o)
+        return true;
+      if (o == null || getClass() != o.getClass())
+        return false;
 
       DailyReport that = (DailyReport) o;
 
-      if (hourCount != that.hourCount) return false;
-      if (hourEstimate != that.hourEstimate) return false;
+      if (hourCount != that.hourCount)
+        return false;
+      if (hourEstimate != that.hourEstimate)
+        return false;
       return time != null ? time.equals(that.time) : that.time == null;
     }
 
