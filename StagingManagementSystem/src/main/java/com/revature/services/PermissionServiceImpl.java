@@ -73,8 +73,7 @@ public class PermissionServiceImpl implements PermissionService {
 			throw new NullReferenceException("Permission is null.");
 		}
 		permission.validate();
-		permission = permissionRepo.saveAndFlush(permission);
-		return permission;
+		return permissionRepo.saveAndFlush(permission);
 	}
 
 	@Override

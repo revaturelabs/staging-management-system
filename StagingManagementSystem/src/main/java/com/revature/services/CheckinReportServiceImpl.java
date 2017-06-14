@@ -58,6 +58,26 @@ public class CheckinReportServiceImpl {
     }
 
     @Override
+    public boolean equals(Object o) {
+      if (this == o) return true;
+      if (o == null || getClass() != o.getClass()) return false;
+
+      DailyReport that = (DailyReport) o;
+
+      if (hourCount != that.hourCount) return false;
+      if (hourEstimate != that.hourEstimate) return false;
+      return time != null ? time.equals(that.time) : that.time == null;
+    }
+
+    @Override
+    public int hashCode() {
+      int result = time != null ? time.hashCode() : 0;
+      result = 31 * result + hourCount;
+      result = 31 * result + hourEstimate;
+      return result;
+    }
+
+    @Override
     public int compareTo(DailyReport other) {
       return this.getTime().compareTo(other.getTime());
     }
