@@ -166,6 +166,13 @@
 	  //Ui Visualizer
 	  // Auto-collapse children in state visualizer
 	  var registry = $uiRouter.stateRegistry;
+	  $uiRouter.stateRegistry.get().map(function (s) {
+	    return s.$$state();
+	  }).filter(function (s) {
+	    return s.path.length === 2 || s.path.length === 3;
+	  }).forEach(function (s) {
+	    return s._collapsed = true;
+	  });
 
 	  var pluginInstance = $uiRouter.plugin(Visualizer);
 
