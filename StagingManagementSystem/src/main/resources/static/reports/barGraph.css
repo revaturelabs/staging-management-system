@@ -1,9 +1,0 @@
-body {
-    padding: 5px;
-    margin: 0 auto;
-}
-.modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    padding-left:80;

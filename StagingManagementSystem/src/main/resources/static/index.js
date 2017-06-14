@@ -64,10 +64,6 @@
 
 	var _fusioncharts2 = _interopRequireDefault(_fusioncharts);
 
-	var _dateformat = __webpack_require__(92);
-
-	var _dateformat2 = _interopRequireDefault(_dateformat);
-
 	var _moment = __webpack_require__(93);
 
 	var _moment2 = _interopRequireDefault(_moment);
@@ -108,7 +104,7 @@
 
 	var _job = __webpack_require__(223);
 
-	var _advanced = __webpack_require__(224);
+	var _advanced = __webpack_require__(236);
 
 	var _advanced2 = _interopRequireDefault(_advanced);
 
@@ -124,21 +120,9 @@
 
 	var _associate2 = _interopRequireDefault(_associate);
 
-	var _reports = __webpack_require__(228);
-
-	var _nestedGraph = __webpack_require__(229);
-
 	var _login = __webpack_require__(230);
 
 	var _login2 = _interopRequireDefault(_login);
-
-	var _employed = __webpack_require__(231);
-
-	var _barGraph = __webpack_require__(232);
-
-	var _attendanceBarGraph = __webpack_require__(233);
-
-	var _piegraph2D = __webpack_require__(234);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -285,35 +269,8 @@
 	    url: '/profile',
 	    templateUrl: 'associate-pages/profile/profile.html',
 	    controller: _profile2.default
-	  }).state('reports', {
-	    url: '/reports',
-	    templateUrl: 'reports/reports.html',
-	    controller: _reports.reportCtrl
-	  }).state('reports.nestedGraph', {
-	    url: '/nestedGraph',
-	    templateUrl: 'reports/nestedGraph.html',
-	    controller: _nestedGraph.nestedCtrl
-	  }).state('reports.employed', {
-	    url: '/employed',
-	    templateUrl: 'reports/employed.html',
-	    controller: _employed.employedCtrl
-	    //controller: attendanceCtrl,
-	  }).state('reports.attendanceBarGraph', {
-	    url: '/graph',
-	    templateUrl: 'reports/attendance/attendanceBarGraph.html',
-	    controller: _attendanceBarGraph.attendanceBarGraphCtrl
-	  }).state('reports.barGraph', {
-	    url: '/barGraph',
-	    templateUrl: 'reports/barGraph.html',
-	    controller: _barGraph.barCtrl
-	  }).state('reports.piegraph2D', {
-	    url: '/piegraph2D',
-	    templateUrl: 'reports/piegraph2D.html',
-	    controller: _piegraph2D.pie2DCtrl
 	  });
 	});
-
-	console.log();
 
 /***/ }),
 /* 1 */
@@ -46863,238 +46820,7 @@
 
 
 /***/ }),
-/* 92 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_RESULT__;/*
-	 * Date Format 1.2.3
-	 * (c) 2007-2009 Steven Levithan <stevenlevithan.com>
-	 * MIT license
-	 *
-	 * Includes enhancements by Scott Trenda <scott.trenda.net>
-	 * and Kris Kowal <cixar.com/~kris.kowal/>
-	 *
-	 * Accepts a date, a mask, or a date and a mask.
-	 * Returns a formatted version of the given date.
-	 * The date defaults to the current date/time.
-	 * The mask defaults to dateFormat.masks.default.
-	 */
-
-	(function(global) {
-	  'use strict';
-
-	  var dateFormat = (function() {
-	      var token = /d{1,4}|m{1,4}|yy(?:yy)?|([HhMsTt])\1?|[LloSZWN]|'[^']*'|'[^']*'/g;
-	      var timezone = /\b(?:[PMCEA][SDP]T|(?:Pacific|Mountain|Central|Eastern|Atlantic) (?:Standard|Daylight|Prevailing) Time|(?:GMT|UTC)(?:[-+]\d{4})?)\b/g;
-	      var timezoneClip = /[^-+\dA-Z]/g;
-	  
-	      // Regexes and supporting functions are cached through closure
-	      return function (date, mask, utc, gmt) {
-	  
-	        // You can't provide utc if you skip other args (use the 'UTC:' mask prefix)
-	        if (arguments.length === 1 && kindOf(date) === 'string' && !/\d/.test(date)) {
-	          mask = date;
-	          date = undefined;
-	        }
-	  
-	        date = date || new Date;
-	  
-	        if(!(date instanceof Date)) {
-	          date = new Date(date);
-	        }
-	  
-	        if (isNaN(date)) {
-	          throw TypeError('Invalid date');
-	        }
-	  
-	        mask = String(dateFormat.masks[mask] || mask || dateFormat.masks['default']);
-	  
-	        // Allow setting the utc/gmt argument via the mask
-	        var maskSlice = mask.slice(0, 4);
-	        if (maskSlice === 'UTC:' || maskSlice === 'GMT:') {
-	          mask = mask.slice(4);
-	          utc = true;
-	          if (maskSlice === 'GMT:') {
-	            gmt = true;
-	          }
-	        }
-	  
-	        var _ = utc ? 'getUTC' : 'get';
-	        var d = date[_ + 'Date']();
-	        var D = date[_ + 'Day']();
-	        var m = date[_ + 'Month']();
-	        var y = date[_ + 'FullYear']();
-	        var H = date[_ + 'Hours']();
-	        var M = date[_ + 'Minutes']();
-	        var s = date[_ + 'Seconds']();
-	        var L = date[_ + 'Milliseconds']();
-	        var o = utc ? 0 : date.getTimezoneOffset();
-	        var W = getWeek(date);
-	        var N = getDayOfWeek(date);
-	        var flags = {
-	          d:    d,
-	          dd:   pad(d),
-	          ddd:  dateFormat.i18n.dayNames[D],
-	          dddd: dateFormat.i18n.dayNames[D + 7],
-	          m:    m + 1,
-	          mm:   pad(m + 1),
-	          mmm:  dateFormat.i18n.monthNames[m],
-	          mmmm: dateFormat.i18n.monthNames[m + 12],
-	          yy:   String(y).slice(2),
-	          yyyy: y,
-	          h:    H % 12 || 12,
-	          hh:   pad(H % 12 || 12),
-	          H:    H,
-	          HH:   pad(H),
-	          M:    M,
-	          MM:   pad(M),
-	          s:    s,
-	          ss:   pad(s),
-	          l:    pad(L, 3),
-	          L:    pad(Math.round(L / 10)),
-	          t:    H < 12 ? 'a'  : 'p',
-	          tt:   H < 12 ? 'am' : 'pm',
-	          T:    H < 12 ? 'A'  : 'P',
-	          TT:   H < 12 ? 'AM' : 'PM',
-	          Z:    gmt ? 'GMT' : utc ? 'UTC' : (String(date).match(timezone) || ['']).pop().replace(timezoneClip, ''),
-	          o:    (o > 0 ? '-' : '+') + pad(Math.floor(Math.abs(o) / 60) * 100 + Math.abs(o) % 60, 4),
-	          S:    ['th', 'st', 'nd', 'rd'][d % 10 > 3 ? 0 : (d % 100 - d % 10 != 10) * d % 10],
-	          W:    W,
-	          N:    N
-	        };
-	  
-	        return mask.replace(token, function (match) {
-	          if (match in flags) {
-	            return flags[match];
-	          }
-	          return match.slice(1, match.length - 1);
-	        });
-	      };
-	    })();
-
-	  dateFormat.masks = {
-	    'default':               'ddd mmm dd yyyy HH:MM:ss',
-	    'shortDate':             'm/d/yy',
-	    'mediumDate':            'mmm d, yyyy',
-	    'longDate':              'mmmm d, yyyy',
-	    'fullDate':              'dddd, mmmm d, yyyy',
-	    'shortTime':             'h:MM TT',
-	    'mediumTime':            'h:MM:ss TT',
-	    'longTime':              'h:MM:ss TT Z',
-	    'isoDate':               'yyyy-mm-dd',
-	    'isoTime':               'HH:MM:ss',
-	    'isoDateTime':           'yyyy-mm-dd\'T\'HH:MM:sso',
-	    'isoUtcDateTime':        'UTC:yyyy-mm-dd\'T\'HH:MM:ss\'Z\'',
-	    'expiresHeaderFormat':   'ddd, dd mmm yyyy HH:MM:ss Z'
-	  };
-
-	  // Internationalization strings
-	  dateFormat.i18n = {
-	    dayNames: [
-	      'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat',
-	      'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
-	    ],
-	    monthNames: [
-	      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
-	      'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'
-	    ]
-	  };
-
-	function pad(val, len) {
-	  val = String(val);
-	  len = len || 2;
-	  while (val.length < len) {
-	    val = '0' + val;
-	  }
-	  return val;
-	}
-
-	/**
-	 * Get the ISO 8601 week number
-	 * Based on comments from
-	 * http://techblog.procurios.nl/k/n618/news/view/33796/14863/Calculate-ISO-8601-week-and-year-in-javascript.html
-	 *
-	 * @param  {Object} `date`
-	 * @return {Number}
-	 */
-	function getWeek(date) {
-	  // Remove time components of date
-	  var targetThursday = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-
-	  // Change date to Thursday same week
-	  targetThursday.setDate(targetThursday.getDate() - ((targetThursday.getDay() + 6) % 7) + 3);
-
-	  // Take January 4th as it is always in week 1 (see ISO 8601)
-	  var firstThursday = new Date(targetThursday.getFullYear(), 0, 4);
-
-	  // Change date to Thursday same week
-	  firstThursday.setDate(firstThursday.getDate() - ((firstThursday.getDay() + 6) % 7) + 3);
-
-	  // Check if daylight-saving-time-switch occured and correct for it
-	  var ds = targetThursday.getTimezoneOffset() - firstThursday.getTimezoneOffset();
-	  targetThursday.setHours(targetThursday.getHours() - ds);
-
-	  // Number of weeks between target Thursday and first Thursday
-	  var weekDiff = (targetThursday - firstThursday) / (86400000*7);
-	  return 1 + Math.floor(weekDiff);
-	}
-
-	/**
-	 * Get ISO-8601 numeric representation of the day of the week
-	 * 1 (for Monday) through 7 (for Sunday)
-	 * 
-	 * @param  {Object} `date`
-	 * @return {Number}
-	 */
-	function getDayOfWeek(date) {
-	  var dow = date.getDay();
-	  if(dow === 0) {
-	    dow = 7;
-	  }
-	  return dow;
-	}
-
-	/**
-	 * kind-of shortcut
-	 * @param  {*} val
-	 * @return {String}
-	 */
-	function kindOf(val) {
-	  if (val === null) {
-	    return 'null';
-	  }
-
-	  if (val === undefined) {
-	    return 'undefined';
-	  }
-
-	  if (typeof val !== 'object') {
-	    return typeof val;
-	  }
-
-	  if (Array.isArray(val)) {
-	    return 'array';
-	  }
-
-	  return {}.toString.call(val)
-	    .slice(8, -1).toLowerCase();
-	};
-
-
-
-	  if (true) {
-	    !(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
-	      return dateFormat;
-	    }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	  } else if (typeof exports === 'object') {
-	    module.exports = dateFormat;
-	  } else {
-	    global.dateFormat = dateFormat;
-	  }
-	})(this);
-
-
-/***/ }),
+/* 92 */,
 /* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -64214,92 +63940,7 @@
 	exports.jobCtrl = jobCtrl;
 
 /***/ }),
-/* 224 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var managerAdvancedCtrl = function managerAdvancedCtrl($scope, $http, $state) {
-	  window.scope = $scope;
-
-	  $http.get('batchtype/all').then(function (data) {
-	    $scope.batchtypes = data.data;
-	    $scope.selectedBatchTypes = [];
-	    $scope.batchtypes.forEach(function (type) {
-	      return $scope.selectedBatchTypes.push(type);
-	    });
-	  });
-
-	  $http.get('associate/all').then(function (data) {
-	    $scope.associates = data.data;
-	  }, function (data) {
-	    console.log('failed');
-	  });
-
-	  $http.get('batch/all').then(function (data) {
-	    $scope.batches = data.data;
-	  }, function (data) {
-	    console.log('failed');
-	  });
-
-	  $scope.isAssociates = function () {
-	    if ($state.is('manager.advanced.allassociates')) return true;
-	    return false;
-	  };
-
-	  $scope.isBatches = function () {
-	    if ($state.is('manager.advanced.batches')) return true;
-	    return false;
-	  };
-
-	  $scope.isInterviews = function () {
-	    if ($state.is('manager.advanced.interviews')) return true;
-	    return false;
-	  };
-
-	  $scope.trainerFilter = function (associate) {
-	    return true;
-	  };
-
-	  $scope.isSelectedBatchType = function (batchType) {
-	    return $scope.selectedBatchType.filter(function (type) {
-	      return type.value === batchType.value;
-	    }) >= 1;
-	  };
-
-	  $scope.toggleSelectedBatchTypes = function (selectedBatch) {
-	    var idx = $scope.selectedBatchTypes.indexOf(selectedBatch);
-
-	    // Is currently selected
-	    if (idx > -1) {
-	      $scope.selectedBatchTypes.splice(idx, 1);
-	    }
-
-	    // Is newly selected
-	    else {
-	        $scope.selectedBatchTypes.push(selectedBatch);
-	      }
-	  };
-
-	  $scope.associateBatchFilter = function (associate) {
-	    return $scope.selectedBatchTypes.filter(function (batchType) {
-	      return batchType.value === associate.batch.batchType.value;
-	    }).length >= 1;
-	  };
-
-	  $scope.batchBatchFilter = function (batch) {
-	    return $scope.selectedBatchTypes.filter(function (batchType) {
-	      return batchType.value === batch.batchType.value;
-	    }).length >= 1;
-	  };
-	};
-
-	exports.default = managerAdvancedCtrl;
-
-/***/ }),
+/* 224 */,
 /* 225 */
 /***/ (function(module, exports) {
 
@@ -64596,226 +64237,8 @@
 	exports.default = associateCtrl;
 
 /***/ }),
-/* 228 */
-/***/ (function(module, exports) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var reportCtrl = function reportCtrl($scope, $http) {
-	  console.log();
-	};
-
-	exports.reportCtrl = reportCtrl;
-
-/***/ }),
-/* 229 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _chart, _chart2, _chart3, _chart4, _chart5;
-
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-	var data = [{
-	  label: 'Q1',
-	  value: '1950000',
-	  link: 'newchart-json-q1'
-	}, {
-	  label: 'Q2',
-	  value: '1970000',
-	  link: 'newchart-json-q2'
-	}, {
-	  label: 'Q3',
-	  value: '1910000',
-	  link: 'newchart-json-q3'
-	}, {
-	  label: 'Q4',
-	  value: '2120000',
-	  link: 'newchart-json-q4'
-	}];
-
-	var linkedData = [{
-	  id: 'q1',
-	  linkedchart: {
-	    chart: (_chart = {
-	      caption: 'Monthly Revenue',
-	      subcaption: 'First Quarter',
-	      xAxisName: 'Month',
-	      yAxisName: 'Amount',
-	      numberPrefix: '$',
-	      paletteColors: '#008ee4',
-	      showBorder: '1',
-	      borderAlpha: '20',
-	      divLineAlpha: '50',
-	      showValues: '0',
-	      bgAlpha: '0',
-	      canvasBorderAlpha: '0'
-	    }, _defineProperty(_chart, 'showBorder', '0'), _defineProperty(_chart, 'plotBorderAlpha', '0'), _defineProperty(_chart, 'usePlotGradientColor', '0'), _defineProperty(_chart, 'showAlternateHgridcolor', '0'), _chart),
-	    data: [{
-	      label: 'Jan',
-	      value: '420000'
-	    }, {
-	      label: 'Feb',
-	      value: '810000'
-	    }, {
-	      label: 'Mar',
-	      value: '720000'
-	    }]
-	  }
-	}, {
-	  id: 'q2',
-	  linkedchart: {
-	    chart: (_chart2 = {
-	      caption: 'Monthly Revenue',
-	      subcaption: 'Second Quarter',
-	      xAxisName: 'Month',
-	      yAxisName: 'Amount',
-	      numberPrefix: '$',
-	      paletteColors: '#008ee4',
-	      showBorder: '1',
-	      borderAlpha: '20',
-	      divLineAlpha: '50',
-	      showValues: '0',
-	      bgAlpha: '0',
-	      canvasBorderAlpha: '0'
-	    }, _defineProperty(_chart2, 'showBorder', '0'), _defineProperty(_chart2, 'plotBorderAlpha', '0'), _defineProperty(_chart2, 'usePlotGradientColor', '0'), _defineProperty(_chart2, 'showAlternateHgridcolor', '0'), _chart2),
-	    data: [{
-	      label: 'Apr',
-	      value: '550000'
-	    }, {
-	      label: 'May',
-	      value: '910000'
-	    }, {
-	      label: 'Jun',
-	      value: '510000'
-	    }]
-	  }
-	}, {
-	  id: 'q3',
-	  linkedchart: {
-	    chart: (_chart3 = {
-	      caption: 'Monthly Revenue',
-	      subcaption: 'Third Quarter',
-	      xAxisName: 'Month',
-	      yAxisName: 'Amount',
-	      numberPrefix: '$',
-	      paletteColors: '#008ee4',
-	      showBorder: '1',
-	      borderAlpha: '20',
-	      divLineAlpha: '50',
-	      showValues: '0',
-	      bgAlpha: '0',
-	      canvasBorderAlpha: '0'
-	    }, _defineProperty(_chart3, 'showBorder', '0'), _defineProperty(_chart3, 'plotBorderAlpha', '0'), _defineProperty(_chart3, 'usePlotGradientColor', '0'), _defineProperty(_chart3, 'showAlternateHgridcolor', '0'), _chart3),
-	    data: [{
-	      label: 'Jul',
-	      value: '680000'
-	    }, {
-	      label: 'Aug',
-	      value: '620000'
-	    }, {
-	      label: 'Sep',
-	      value: '610000'
-	    }]
-	  }
-	}, {
-	  id: 'q4',
-	  linkedchart: {
-	    chart: (_chart4 = {
-	      caption: 'Monthly Revenue',
-	      subcaption: 'Fourth Quarter',
-	      xAxisName: 'Month',
-	      yAxisName: 'Amount',
-	      numberPrefix: '$',
-	      paletteColors: '#008ee4',
-	      showBorder: '1',
-	      borderAlpha: '20',
-	      divLineAlpha: '50',
-	      showValues: '0',
-	      bgAlpha: '0',
-	      canvasBorderAlpha: '0'
-	    }, _defineProperty(_chart4, 'showBorder', '0'), _defineProperty(_chart4, 'plotBorderAlpha', '0'), _defineProperty(_chart4, 'usePlotGradientColor', '0'), _defineProperty(_chart4, 'showAlternateHgridcolor', '0'), _chart4),
-	    data: [{
-	      label: 'Oct',
-	      value: '490000'
-	    }, {
-	      label: 'Nov',
-	      value: '900000'
-	    }, {
-	      label: 'Dec',
-	      value: '730000'
-	    }]
-	  }
-	}];
-
-	var chart = (_chart5 = {
-	  caption: 'Quarterly revenue',
-	  subCaption: 'Last year',
-	  xAxisName: 'Quarter',
-	  yAxisName: 'Amount',
-	  numberPrefix: '$',
-	  paletteColors: '#008ee4',
-	  showBorder: '1',
-	  borderAlpha: '20',
-	  divLineAlpha: '50',
-	  showValues: '0',
-	  bgAlpha: '0',
-	  canvasBorderAlpha: '0'
-	}, _defineProperty(_chart5, 'showBorder', '0'), _defineProperty(_chart5, 'plotBorderAlpha', '0'), _defineProperty(_chart5, 'usePlotGradientColor', '0'), _defineProperty(_chart5, 'showAlternateHgridcolor', '0'), _chart5);
-
-	var nestedCtrl = function nestedCtrl($scope, $http) {
-	  $http({
-	    method: 'GET',
-	    url: 'http://localhost:8090/interviewQuestions/all'
-	  }).then(function (response) {
-	    console.log("Hello World" + JSON.stringify(response));
-	  });
-
-	  plainBarChart($scope, chart, data, linkedData);
-	};
-
-	function sortQuestions() {}
-
-	function plainBarChart($scope, chartInfo, data, linkedData) {
-	  $scope.greeting = 'test';
-	  var myDataSource = {
-	    chart: chartInfo,
-	    data: data,
-	    linkedData: linkedData
-	  };
-	  console.log('hello console: ' + linkedData);
-
-	  var chart = new FusionCharts({
-	    type: 'column2d',
-	    width: '500',
-	    height: '300',
-	    renderAt: 'chartContainer',
-	    dataFormat: 'json',
-	    dataSource: myDataSource
-	  });
-
-	  chart.addEventListener('chartrollover', function () {
-	    $('#slide-in').show('slow');
-	  });
-
-	  chart.addEventListener('chartrollout', function () {
-	    $('#slide-in').hide('slow');
-	  });
-
-	  chart.render();
-	}
-
-	exports.nestedCtrl = nestedCtrl;
-
-/***/ }),
+/* 228 */,
+/* 229 */,
 /* 230 */
 /***/ (function(module, exports) {
 
@@ -64881,849 +64304,10 @@
 	exports.default = loginCtrl;
 
 /***/ }),
-/* 231 */
-/***/ (function(module, exports) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	var chart = {
-		caption: "Employed Percentage versus Those awaiting placement",
-		subcaption: "Revature, LLC",
-		startingangle: "120",
-		showlabels: "0",
-		showlegend: "1",
-		enablemultislicing: "0",
-		slicingdistance: "25",
-		showpercentvalues: "1",
-		showpercentintooltip: "0",
-		palettecolors: "#0075c2,#ff0000",
-		plottooltext: "$label Total: $datavalue",
-		theme: "fint"
-	};
-
-	var employedCtrl = function employedCtrl($scope, $http, $cacheFactory) {
-		$scope.cache = $cacheFactory.get('myCache') || $cacheFactory('myCache');
-
-		//Init controller Data
-		if (angular.isUndefined($scope.cache.get('chartData'))) {
-			httpRequest();
-		} else {
-			var cachedData = $scope.cache.get('chartData');
-			renderChart(cachedData);
-		}
-
-		function httpRequest() {
-			$http({
-				method: 'GET',
-				url: '/associate/all'
-			}).then(function (response) {
-				processChartData(response);
-			}, function (error) {
-				console.log('Unable to render chart');
-			});
-		}
-		function processChartData(responseData) {
-			var chartData = [{
-				label: "Employed",
-				value: 0
-			}, {
-				label: "Awaiting placement",
-				value: 0
-			}];
-
-			for (var i = 0; i < responseData.data.length; i++) {
-				if (responseData.data[i].active) {
-					chartData[0].value = chartData[0].value + 1;
-				} else {
-					chartData[1].value = chartData[1].value + 1;
-				}
-			}
-			$scope.cache.put('chartData', chartData);
-			renderChart(chartData);
-		}
-		function renderChart(chartData) {
-			var pieChart = new FusionCharts({
-				type: 'pie3d',
-				width: '600',
-				height: '400',
-				renderAt: 'chartContainer',
-				dataFormat: 'json',
-				dataSource: {
-					'chart': chart,
-					'data': chartData
-				}
-			});
-			pieChart.render();
-		}
-	};
-	exports.employedCtrl = employedCtrl;
-
-/***/ }),
-/* 232 */
-/***/ (function(module, exports) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var chart = {
-	  caption: "Asscoiates Available vs. Associate Confirmed",
-	  subCaption: "Revature LLC",
-	  xAxisname: "Batch Type",
-	  yAxisName: "Number of Associate",
-	  paletteColors: "#ff0000,#0075c2",
-	  bgColor: "#ffffff",
-	  borderAlpha: "20",
-	  showCanvasBorder: "0",
-	  usePlotGradientColor: "0",
-	  plotBorderAlpha: "10",
-	  legendBorderAlpha: "0",
-	  legendShadow: "0",
-	  valueFontColor: "#ffffff",
-	  showXAxisLine: "1",
-	  xAxisLineColor: "#999999",
-	  divlineColor: "#999999",
-	  divLineDashed: "1",
-	  showAlternateHGridColor: "0",
-	  subcaptionFontBold: "0",
-	  subcaptionFontSize: "14",
-	  showHoverEffect: "1"
-	};
-
-	var categories = void 0;
-	var dataset = void 0;
-
-	var barCtrl = function barCtrl($scope, $http) {
-	  graphBuilder($scope, $http);
-	};
-
-	function graphBuilder($scope, $http) {
-	  $http({
-	    method: 'GET',
-	    url: '/associate/totaldata'
-	  }).then(function (response) {
-	    console.log("new stuff: " + JSON.stringify(response.data));
-	    var stuff1 = [];
-	    var stuff2 = [];
-	    var stuff3 = [];
-	    var value = response.data;
-	    value.forEach(function (item) {
-	      stuff1.push({ "label": item.batchName });
-	      stuff2.push({ "value": item.totalAvailable - item.totalUnavailable });
-	      stuff3.push({ "value": item.totalUnavailable });
-	    });
-	    categories = [{
-	      "category": stuff1
-	    }];
-	    dataset = [{
-	      "seriesname": "Confirmed Associates",
-	      "data": stuff3
-	    }, {
-	      "seriesname": " Available Associates",
-	      "data": stuff2
-	    }];
-	    plainBarChart2($scope, chart, categories, dataset);
-	  });
-	}
-
-	function ColumnClick(ev, props, $scope) {
-
-	  $scope.selectedValue = props.displayValue + "/" + props.categoryLabel + "/" + props.dataIndex;
-	}
-
-	function plainBarChart2($scope, chartstuff, categories, dataset) {
-
-	  var myDataSource = {
-	    chart: chartstuff,
-	    categories: categories,
-	    dataset: dataset
-	  };
-
-	  $scope.selectedValue = 'nothing';
-
-	  var chart = new FusionCharts({
-	    type: 'stackedcolumn3d',
-	    renderAt: 'chart-container',
-	    width: '650',
-	    height: '450',
-	    dataFormat: 'json',
-	    dataSource: myDataSource,
-	    events: {
-	      dataplotclick: function dataplotclick(ev, props) {
-	        $scope.$apply(function () {
-	          switch (scale) {
-	            case Stuff1:
-	              ColumnClick(ev, props, $scope);
-	              break;
-	            default:
-	          }
-	        });
-	      }
-	    }
-	  });
-
-	  chart.render();
-	}
-
-	exports.barCtrl = barCtrl;
-
-/***/ }),
-/* 233 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	// ----------------------------------- Start Variables ----------------------------------- //
-
-	var YEAR = 'Year';
-	var MONTH = 'Month';
-	var WEEK = 'Week';
-
-	var scale = void 0; // The scale of the graph equal to the constant values WEEK, MONTH, or YEAR.
-	var focalDate = void 0; // The date that was used to create graph view.
-	var firstColumnIndex = void 0; // The index of the first column relative dataSet the view was built from.
-
-	var originalData = void 0; // The data retrieved from the data Base.
-	var displayData = void 0; // A window of the data set being displayed determined by the focal Date.
-	var diaplayLabels = void 0; // The column labels for displayData.
-
-	var weeklyData = void 0; // Data grouped by day and displayed by week.
-	var monthlyData = void 0; // Data grouped by week and displayed 5 weeks at a time with focal date
-	// determining the center.
-	var yearlyData = void 0; // Data grouped by quarter year displaying the year focal point resides in.
-
-	var displayChart = void 0;
-
-	var weeklyLabels = [{
-	  label: 'Sunday'
-	}, {
-	  label: 'Monday'
-	}, {
-	  label: 'Tuesday'
-	}, {
-	  label: 'Wednesday'
-	}, {
-	  label: 'Thursday'
-	}, {
-	  label: 'Friday'
-	}, {
-	  label: 'Saturday'
-	}];
-
-	var yearlyLabels = [{
-	  label: '1st Quarter'
-	}, {
-	  label: '2nd Quarter'
-	}, {
-	  label: '3rd Quarter'
-	}, {
-	  label: '4th Quarter'
-	}];
-
-	/**
-	 * Chart display setup.
-	 */
-	var chartPoperties = {
-	  caption: 'Attendance Associates in Staging',
-	  subCaption: scale,
-	  xAxisname: scale,
-	  yAxisName: 'Percentage of Attendance',
-	  numberPrefix: '%',
-	  paletteColors: '#0075c2',
-	  bgColor: '#ffffff',
-	  borderAlpha: '20',
-	  showCanvasBorder: '0',
-	  usePlotGradientColor: '0',
-	  plotBorderAlpha: '10',
-	  legendBorderAlpha: '0',
-	  legendShadow: '0',
-	  valueFontColor: '#ffffff',
-	  showXAxisLine: '1',
-	  xAxisLineColor: '#999999',
-	  divlineColor: '#999999',
-	  divLineDashed: '1',
-	  showAlternateHGridColor: '0',
-	  subcaptionFontBold: '0',
-	  subcaptionFontSize: '14',
-	  showHoverEffect: '1'
-	};
-
-	// ----------------------------------- End Variables ----------------------------------- //
-
-
-	// ----------------------------------- Start Utilities ----------------------------------- //
-
-	/**
-	 * This function will conduct a recursive binary search on a section of an array.
-	 *
-	 * @param data - array to be searched
-	 * @param searchVal - value searching for
-	 * @param start - starting index
-	 * @param stop - stopping index
-	 * @param cmpFunction - a function of the form foo(searchVal, data[i]) that returns an integer
-	 *                      comparison value
-	 * @returns - the index corresponding to the closest value to searchVal.
-	 */
-	function binarySearch(data, searchVal, start, stop, cmpFunction) {
-	  if (start >= stop) {
-	    return undefined;
-	  }
-	  var midpoint = Math.floor((start + stop) / 2);
-
-	  var value = cmpFunction(searchVal, data[midpoint]);
-	  if (value === 0) {
-	    return data[midpoint];
-	  } else if (value > 0) {
-	    return binarySearch(data, searchVal, midpoint + 1, stop, cmpFunction);
-	  }
-
-	  return binarySearch(data, searchVal, start, midpoint, cmpFunction);
-	}
-
-	/**
-	 * This is a wrapper function for the binary search it searches an entire array.
-	 *
-	 * @param data - array to be searched
-	 * @param searchVal - value searching for
-	 * @param cmpFunction - a function of the form foo(searchVal, data[i]) that returns an integer
-	 *                      comparison value
-	 * @returns - the index corresponding to the closest value to searchVal.
-	 */
-	function binarySearchHelper(data, searchVal, cmpFunction) {
-	  return binarySearch(data, searchVal, 0, data.length, cmpFunction);
-	}
-
-	function getObj(data, time) {
-	  var obj = binarySearchHelper(data, time, cmpDay);
-	  if (obj) return obj;
-
-	  return {
-	    time: time,
-	    hourCount: 0,
-	    hourEstimate: 1
-	  };
-	}
-
-	/**
-	 * Converts a moment object to the first of the week.
-	 *
-	 * @param momentObj - date of interest.
-	 * @returns - sunday of the week containing momentObj.
-	 */
-	function convertToFirstOfTheWeek(momentObj) {
-	  var dayValue = momentObj.day();
-	  var newMoment = momentObj.subtract(dayValue, 'days');
-	  return moment(newMoment.format('YYYY-MM-DD'));
-	}
-
-	/**
-	 * Converts a moment object to a moment representing the first of the
-	 * month.
-	 *
-	 * @param momentObj - moment object to be evaluated
-	 * @returns - if momentObj is in month A then it returns the first of month A
-	 *            with time zeroed.
-	 */
-	function convertToFirstOfMonth(momentObj) {
-	  var dayValue = momentObj.format('DD') - 1;
-	  var newMoment = momentObj.subtract(dayValue, 'days');
-	  return moment(newMoment.format('YYYY-MM-DD'));
-	}
-
-	/**
-	 * Converts a moment object to the first day of the quarter year momentObj(A) is within.
-	 *
-	 * @param momentObj - date of interest.
-	 * @returns - jan 1st <= (A) <= mar 31st : jan 1st
-	 *            apr 1st <= (A) <= jun 30st : jun 1st
-	 *            jul 1st <= (A) <= sep 30st : jul 1st
-	 *            oct 1st <= (A) <= dec 31st : oct 1st
-	 *            (Time is zeroed)
-	 */
-	function convertToFirstOfQuarter(momentObj) {
-	  var monthValue = momentObj.month() % 3;
-	  var newMoment = momentObj.subtract(monthValue, 'months');
-	  newMoment = convertToFirstOfMonth(momentObj);
-
-	  return moment(newMoment.format('YYYY-MM-DD'));
-	}
-
-	/**
-	 * Converts to the first of the year that is contained in month.
-	 *
-	 * @param momentObj - moment object to be evaluated
-	 * @returns - if momentObj is in year A then it returns the jan 1st of year A
-	 *            with time zeroed.
-	 */
-	function convertToFirstOfYear(momentObj) {
-	  var monthValue = momentObj.month();
-	  var newMoment = momentObj.subtract(monthValue, 'months');
-	  newMoment = convertToFirstOfMonth(momentObj);
-	  return moment(newMoment.format('YYYY-MM-DD'));
-	}
-
-	/**
-	 * Compares searchVal(a) to currentVal.time(b) by creating date objects that ignore time.
-	 *
-	 * @searchVal - a moment object to be searched.
-	 * @currentVal - an object with an attribute time that can be parsed by moment.
-	 *
-	 * @return a == b (0), a < b (positive value), a > b (negative value)
-	 */
-	function cmpDay(searchVal, currentVal) {
-	  var parseMoment = moment(moment(currentVal.time).format('YYYY-MM-DD'));
-	  var zeroSearch = moment(searchVal.format('YYYY-MM-DD'));
-
-	  return zeroSearch.diff(parseMoment);
-	}
-
-	// ----------------------------------- End Utilities ----------------------------------- //
-
-
-	// ----------------------------------- Start Weekly ----------------------------------- //
-
-	/**
-	 * Function that "builds" weeklyData, for current implementation originalData is already in the
-	 * correct form. A Copy should be made if weeklyData needs to be edited in the future.
-	 */
-	function buildWeekly() {
-	  weeklyData = originalData;
-	}
-
-	/**
-	 * Creates a view of weeklyData using date as the focal point, if date is undefined it uses
-	 * todays date.
-	 *
-	 * @param $scope
-	 * @param date - a date within week to be viewed.
-	 * @returns
-	 */
-	function setWeekly($scope, tarDate) {
-	  var date = tarDate;
-	  if (date === undefined) {
-	    date = moment();
-	  }
-	  var currDay = date.day();
-
-	  date.subtract(currDay, 'days');
-
-	  // Set global view properties.
-	  focalDate = moment(date.format());
-	  $scope.zoomOutStr = 'Monthly';
-	  $scope.canZoom = 'true';
-	  scale = WEEK;
-
-	  var dataString = '[{"seriesname":"Weekly","data":[';
-	  console.log();
-	  var i = void 0;
-	  var currDate = moment(date.format());
-	  for (i = 0; i < 7; i += 1) {
-	    var currObj = getObj(weeklyData, currDate);
-
-	    var hourCount = currObj.hourCount;
-	    var hourEstimate = currObj.hourEstimate;
-
-	    var value = Math.floor(hourCount / hourEstimate * 100);
-	    dataString += '{"value":"' + value + '"}';
-	    if (i !== 6) {
-	      dataString += ',';
-	    }
-	    currDate.add(1, 'days');
-	  }
-	  dataString += ']}]';
-
-	  displayData = JSON.parse(dataString);
-	  diaplayLabels = weeklyLabels;
-
-	  displayChart($scope);
-	}
-
-	function weeklyColumnClick(ev, props, $scope) {
-
-	  // incase edit mode was enabled from previously viewing a different interview
-	  $scope.edit = true;
-	  $scope.requestMade = true;
-	  $scope.showModal = true;
-	  $scope.show = true;
-
-	  console.log("heyrow");
-	}
-
-	// ----------------------------------- End Weekly ----------------------------------- //
-
-
-	// ----------------------------------- Start Monthly ----------------------------------- //
-
-	function buildMonthlyForEach(item) {
-	  var identityString = convertToFirstOfTheWeek(moment(item.time));
-	  var dataObj = binarySearchHelper(monthlyData, moment(identityString), cmpDay);
-
-	  if (!dataObj) {
-	    var itemCpy = JSON.parse(JSON.stringify(item));
-	    itemCpy.time = identityString;
-	    monthlyData.push(itemCpy);
-	  } else {
-	    dataObj.hourCount = parseFloat(dataObj.hourCount) + parseFloat(item.hourCount);
-	    dataObj.hourEstimate = parseFloat(dataObj.hourEstimate) + parseFloat(item.hourEstimate);
-	  }
-	}
-
-	function buildMonthly() {
-	  monthlyData = [];
-	  originalData.forEach(buildMonthlyForEach);
-	}
-
-	function setMonthly($scope, tarDate) {
-	  var date = tarDate;
-	  if (date === undefined) {
-	    date = moment();
-	  }
-
-	  date = convertToFirstOfTheWeek(date);
-	  console.log('returnded data: ' + JSON.stringify(monthlyData));
-
-	  // Set global view properties
-	  focalDate = moment(date.format());
-	  $scope.zoomOutStr = 'Yearly';
-	  $scope.canZoom = 'true';
-	  scale = MONTH;
-	  console.log();
-	  var dataString = '[{"seriesname":"Monthly","data":[';
-	  var valueString = '[';
-
-	  var i = void 0;
-	  var currDate = moment(date.format());
-	  for (i = 0; i < 5; i += 1) {
-	    var currObj = getObj(monthlyData, currDate);
-	    var nextObj = getObj(monthlyData, currDate.add(7, 'days'));
-
-	    var hourCount = currObj.hourCount;
-	    var hourEstimate = currObj.hourEstimate;
-
-	    var start = moment(currObj.time).format('MM/DD');
-	    var stop = moment(nextObj.time).subtract(1, 'days').format('MM/DD');
-	    valueString += '{"label":"' + start + '-' + stop + '"}';
-
-	    var value = Math.floor(hourCount / hourEstimate * 100);
-	    dataString += '{"value":"' + value + '"}';
-	    if (i !== 4) {
-	      dataString += ',';
-	      valueString += ',';
-	    }
-	    currDate.add(7, 'days');
-	  }
-	  dataString += ']}]';
-	  valueString += ']';
-
-	  displayData = JSON.parse(dataString);
-	  diaplayLabels = JSON.parse(valueString);
-
-	  displayChart($scope);
-	}
-
-	function monthlyColumnClick(ev, props, $scope) {
-	  var newDateIndex = props.dataIndex + firstColumnIndex;
-	  setWeekly($scope, moment(focalDate.add(props.dataIndex * 7, 'days')));
-
-	  $scope.selectedValue = '$props.displayValue}/' + props.categoryLabel + '/' + props.dataIndex;
-	}
-
-	// ----------------------------------- End Monthly ----------------------------------- //
-
-
-	// ----------------------------------- Start Yearly ----------------------------------- //
-
-	/**
-	 * Checks if an item exists in  the yearlyData obj, creates one if not and increments values
-	 * within existing obj if it exists.
-	 * (This function requires items to be inserted in order for binary search to be effective)
-	 *
-	 * @param item - data object with a time attribute.
-	 */
-	function buildYearlyForEach(item) {
-	  var identityString = convertToFirstOfQuarter(moment(item.time));
-	  var dataObj = binarySearchHelper(yearlyData, moment(identityString), cmpDay);
-
-	  if (!dataObj) {
-	    var itemCpy = JSON.parse(JSON.stringify(item));
-	    itemCpy.time = identityString;
-	    yearlyData.push(itemCpy);
-	  } else {
-	    dataObj.hourCount = parseFloat(dataObj.hourCount) + parseFloat(item.hourCount);
-	    dataObj.hourEstimate = parseFloat(dataObj.hourEstimate) + parseFloat(item.hourEstimate);
-	  }
-	}
-
-	/*
-	 * Loops through original data recieved from ajax call and calls build.
-	 */
-	function buildYearly() {
-	  yearlyData = [];
-	  originalData.forEach(buildYearlyForEach);
-	}
-
-	function setYearly($scope, tarDate) {
-	  var date = tarDate;
-	  if (date === undefined) {
-	    date = moment();
-	  }
-
-	  date = convertToFirstOfYear(date);
-	  console.log();
-
-	  // Set global view properties.
-	  focalDate = moment(date.format());
-	  $scope.zoomOutStr = 'Not Visible';
-	  $scope.canZoom = '';
-	  scale = YEAR;
-
-	  var dataString = '[{"seriesname":"Yearly","data":[';
-
-	  var i = void 0;
-	  var currDate = moment(date.format());
-	  for (i = 0; i < 4; i += 1) {
-	    var currObj = getObj(yearlyData, currDate);
-
-	    var hourCount = currObj.hourCount;
-	    var hourEstimate = currObj.hourEstimate;
-
-	    var value = Math.floor(hourCount / hourEstimate * 100);
-	    dataString += '{"value":"' + value + '"}';
-	    if (i !== 3) {
-	      dataString += ',';
-	    }
-	    currDate = currDate.add(3, 'months'); //Go to next quarter
-	  }
-	  dataString += ']}]';
-
-	  displayData = JSON.parse(dataString);
-	  diaplayLabels = yearlyLabels;
-
-	  displayChart($scope);
-	}
-
-	function yearlyColumnClick(ev, props, $scope) {
-	  setMonthly($scope, moment(focalDate.add(props.dataIndex * 3, 'months')));
-
-	  $scope.selectedValue = '$props.displayValue}/' + props.categoryLabel + '/' + props.dataIndex;
-	}
-
-	// ----------------------------------- End Yearly ----------------------------------- //
-
-
-	// ----------------------------------- Start Nav ----------------------------------- //
-
-	function setNavFunctions($scope) {
-	  $scope.step = function step(steps) {
-	    switch (scale) {
-	      case WEEK:
-	        focalDate = focalDate.add(steps * 7, 'days');
-	        setWeekly($scope, focalDate);
-	        break;
-	      case MONTH:
-	        focalDate = focalDate.add(steps, 'months');
-	        setMonthly($scope, focalDate);
-	        break;
-	      case YEAR:
-	        focalDate = focalDate.add(steps, 'years');
-	        setYearly($scope, focalDate);
-	        break;
-	      default:
-	    }
-	  };
-
-	  $scope.zoomOut = function zoomOut() {
-	    if (scale === WEEK) {
-	      setMonthly($scope, focalDate);
-	    } else if (scale === MONTH) {
-	      setYearly($scope, focalDate);
-	    }
-	  };
-	}
-
-	// ----------------------------------- End Nav ----------------------------------- //
-
-
-	// ----------------------------------- Start Main ----------------------------------- //
-
-	displayChart = function displayChartFunc($scope) {
-	  var categories = [{
-	    category: diaplayLabels
-	  }];
-
-	  var dataset = displayData;
-
-	  var myDataSource = {
-	    chart: chartPoperties,
-	    categories: categories,
-	    dataset: dataset
-	  };
-
-	  $scope.selectedValue = 'nothing';
-
-	  var chart = new FusionCharts({
-	    type: 'stackedcolumn3d',
-	    renderAt: 'attn-chart-container',
-	    width: '550',
-	    height: '350',
-	    dataFormat: 'json',
-	    dataSource: myDataSource,
-	    events: {
-	      dataplotclick: function dataplotclick(ev, props) {
-	        $scope.$apply(function () {
-	          switch (scale) {
-	            case WEEK:
-	              weeklyColumnClick(ev, props, $scope);
-	              break;
-	            case MONTH:
-	              monthlyColumnClick(ev, props, $scope);
-	              break;
-	            case YEAR:
-	              yearlyColumnClick(ev, props, $scope);
-	              break;
-	            default:
-	          }
-	        });
-	      }
-	    }
-	  });
-
-	  chart.render();
-	};
-
-	/**
-	 * Build all graphs and set default graph to current week view.
-	 */
-	function buildGraphs($scope) {
-	  buildWeekly();
-	  setWeekly($scope);
-
-	  buildMonthly();
-	  buildYearly();
-	}
-
-	/**
-	 * Request checkin data from rest controller.
-	 */
-	function attendanceRequest($scope, $http) {
-	  $http({
-	    method: 'GET',
-	    url: '/checkin/report'
-	  }).then(function (response) {
-	    originalData = response.data;
-	    buildGraphs($scope);
-	  });
-	}
-
-	/**
-	 * Request data and set scope bindings.
-	 */
-	var attendanceBarGraphCtrl = function attendanceBarGraphCtrl($scope, $http) {
-	  $scope.zoomOutStr = 'ZoomOut';
-	  attendanceRequest($scope, $http);
-	  setNavFunctions($scope);
-
-	  console.log();
-	};
-
-	exports.attendanceBarGraphCtrl = attendanceBarGraphCtrl;
-
-	// ----------------------------------- End Main ----------------------------------- //
-
-/***/ }),
-/* 234 */
-/***/ (function(module, exports) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	var chart = {
-		caption: "",
-		showvalues: "0",
-		showlabels: "0",
-		showlegend: "1",
-		showborder: "0",
-		showpercentageinlabel: "1",
-		palettecolors: "#0075c2,#ff0000",
-		bgAlpha: "0",
-		theme: "fint"
-	};
-
-	var pie2DCtrl = function pie2DCtrl($http, $scope, $cacheFactory) {
-
-		$scope.cache = $cacheFactory.get('employmentCache') || $cacheFactory('employmentCache');
-
-		//Init controller Data
-		if (angular.isUndefined($scope.cache.get('chartData'))) {
-			getHttpRequest();
-		} else {
-			var cachedData = $scope.cache.get('chartData');
-			renderChart(cachedData);
-		}
-
-		/**********************************************/
-		function getHttpRequest() {
-			$http({
-				method: 'GET',
-				url: '/associate/all'
-			}).then(function (response) {
-				processChartData(response);
-			}, function (error) {
-				console.log('Unable to render chart');
-			});
-		}
-
-		function processChartData(responseData) {
-			var chartData = [{
-				label: "",
-				value: 0
-			}, {
-				label: "",
-				value: 0
-			}];
-
-			for (var i = 0; i < responseData.data.length; i++) {
-				if (responseData.data[i].active) {
-					chartData[0].value = chartData[0].value + 1;
-				} else {
-					chartData[1].value = chartData[1].value + 1;
-				}
-			}
-
-			$scope.cache.put('chartData', chartData);
-
-			renderChart(chartData);
-		}
-
-		function renderChart(chartData) {
-
-			var pieChart = new FusionCharts({
-				type: 'pie2d',
-				width: '600',
-				height: '400',
-				renderAt: 'chartContainer',
-				dataFormat: 'json',
-				dataSource: {
-					'chart': chart,
-					'data': chartData
-				}
-			});
-			pieChart.render();
-		}
-		/**********************************************/
-	};
-	exports.pie2DCtrl = pie2DCtrl;
-
-/***/ }),
+/* 231 */,
+/* 232 */,
+/* 233 */,
+/* 234 */,
 /* 235 */
 /***/ (function(module, exports) {
 
@@ -65972,6 +64556,92 @@
 	c,b){var f=.5*b,k=a-b,h=a+b,l=a-f,m=a+f,n=a+.5,p=n+1,r=n+1.5,t=c-b,u=c+f,v=c-f,f=c+(b-f);return["M",k,t,"L",l,v,l,f,k,u,a-.5,u,a,c+b+.5,n,u,h,u,m,f,m,v,h,t,r,t,r,v,r,f,p,f,p,v,r,v,r,t,"Z"]},zoomOutIcon:function(a,c,b){a-=.2*b;c-=.2*b;var f=.8*b,k=w.rad(43),h=w.rad(48),l=a+f*ya(k),k=c+f*va(k),m=a+f*ya(h),h=c+f*va(h),n=w.rad(45),p=l+b*ya(n),r=k+b*va(n),t=m+b*ya(n);b=h+b*va(n);return["M",l,k,"A",f,f,0,1,0,m,h,"Z","M",l+1,k+1,"L",p,r,t,b,m+1,h+1,"Z","M",a-2,c,"L",a+2,c,"Z"]},resetIcon:function(a,c,b){var f=
 	a-b,k=(da.PI/2+da.PI)/2;a+=b*ya(k);var k=c+b*va(k),h=2*b/3;return["M",f,c,"A",b,b,0,1,1,a,k,"L",a+h,k-1,a+2,k+h-.5,a,k]}})}])});
 
+
+/***/ }),
+/* 236 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var managerAdvancedCtrl = function managerAdvancedCtrl($scope, $http, $state) {
+	  window.scope = $scope;
+
+	  $http.get('batchtype/all').then(function (data) {
+	    $scope.batchtypes = data.data;
+	    $scope.selectedBatchTypes = [];
+	    $scope.batchtypes.forEach(function (type) {
+	      return $scope.selectedBatchTypes.push(type);
+	    });
+	  });
+
+	  $http.get('associate/all').then(function (data) {
+	    $scope.associates = data.data;
+	  }, function (data) {
+	    console.log('failed');
+	  });
+
+	  $http.get('batch/all').then(function (data) {
+	    $scope.batches = data.data;
+	  }, function (data) {
+	    console.log('failed');
+	  });
+
+	  $scope.isAssociates = function () {
+	    if ($state.is('manager.advanced.allassociates')) return true;
+	    return false;
+	  };
+
+	  $scope.isBatches = function () {
+	    if ($state.is('manager.advanced.batches')) return true;
+	    return false;
+	  };
+
+	  $scope.isInterviews = function () {
+	    if ($state.is('manager.advanced.interviews')) return true;
+	    return false;
+	  };
+
+	  $scope.trainerFilter = function (associate) {
+	    return true;
+	  };
+
+	  $scope.isSelectedBatchType = function (batchType) {
+	    return $scope.selectedBatchType.filter(function (type) {
+	      return type.value === batchType.value;
+	    }) >= 1;
+	  };
+
+	  $scope.toggleSelectedBatchTypes = function (selectedBatch) {
+	    var idx = $scope.selectedBatchTypes.indexOf(selectedBatch);
+
+	    // Is currently selected
+	    if (idx > -1) {
+	      $scope.selectedBatchTypes.splice(idx, 1);
+	    }
+
+	    // Is newly selected
+	    else {
+	        $scope.selectedBatchTypes.push(selectedBatch);
+	      }
+	  };
+
+	  $scope.associateBatchFilter = function (associate) {
+	    return $scope.selectedBatchTypes.filter(function (batchType) {
+	      return batchType.value === associate.batch.batchType.value;
+	    }).length >= 1;
+	  };
+
+	  $scope.batchBatchFilter = function (batch) {
+	    return $scope.selectedBatchTypes.filter(function (batchType) {
+	      return batchType.value === batch.batchType.value;
+	    }).length >= 1;
+	  };
+	};
+
+	exports.default = managerAdvancedCtrl;
 
 /***/ })
 /******/ ]);
