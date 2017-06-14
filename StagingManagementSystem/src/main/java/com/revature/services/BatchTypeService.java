@@ -18,4 +18,5 @@ public interface BatchTypeService {
 	public BatchType findById(long id);
 
 	public Set<BatchType> getAll();
+
 }

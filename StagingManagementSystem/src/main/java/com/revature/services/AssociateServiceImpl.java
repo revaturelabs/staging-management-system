@@ -80,4 +80,5 @@ public class AssociateServiceImpl implements AssociateService {
 	public Set<Associate> getAllActive() {
 		return associateRepo.findAssociatesByActiveTrue();
 	}
+
 }

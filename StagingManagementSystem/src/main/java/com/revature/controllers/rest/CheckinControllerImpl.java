@@ -21,9 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.revature.entities.Associate;
 import com.revature.entities.Checkin;
 import com.revature.entities.Manager;
-import com.revature.entities.data.CheckinReport;
-import com.revature.entities.data.CheckinReport.DailyReport;
 import com.revature.exceptions.AlreadyCheckedInException;
+import com.revature.services.CheckinReportServiceImpl;
+import com.revature.services.CheckinReportServiceImpl.DailyReport;
 import com.revature.services.CheckinService;
 
 @RestController
@@ -32,7 +32,7 @@ public class CheckinControllerImpl {
     @Autowired
     private CheckinService checkinService;
     @Autowired
-    private CheckinReport checkinReport;
+    private CheckinReportServiceImpl checkinReport;
 
     private static final String lm = "login_manager";
     private static final String la = "login_associate";

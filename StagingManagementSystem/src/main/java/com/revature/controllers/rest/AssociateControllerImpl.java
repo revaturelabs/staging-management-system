@@ -1,9 +1,11 @@
 package com.revature.controllers.rest;
 
+import java.util.Collection;
 import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
+import com.revature.entities.Manager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.revature.entities.Associate;
 import com.revature.entities.Manager;
 import com.revature.services.AssociateService;
+import com.revature.services.TotalReport;
+import com.revature.services.TotalReport.TotalData;
 import com.revature.util.DataGeneration;
 
 @RestController
@@ -29,6 +33,9 @@ public class AssociateControllerImpl {
 	private AssociateService associateService;
 	@Autowired
 	private DataGeneration dataGen;
+	@Autowired
+	TotalReport totalReport;
+
 
 	private static final String lm = "login_manager";
 	private static final String la = "login_associate";
@@ -74,7 +81,9 @@ public class AssociateControllerImpl {
 
 	@PutMapping
 	public ResponseEntity<Object> updateAssociate(@RequestBody Associate associate, HttpSession session) {
-		Associate authenticatedAssociate = (Associate)session.getAttribute(la);
+		Associate authenticatedAssociate = (Associate)session.getAttribute("login_associate");
+		Manager authenticatedManager = (Manager)session.getAttribute("login_manager");
+		
 		if (authenticatedAssociate != null) { // Associate edits their profile
 			// Now we block any changes we don't want, by cherry picking the associate information
 			// from the passed in associate into the session associate.
@@ -114,4 +123,10 @@ public class AssociateControllerImpl {
 	public Set<Associate> getAllActiveAssociates(HttpSession session) {
 		return associateService.getAllActive();
 	}
+	
+	 @GetMapping(path="/totaldata")
+	  public ResponseEntity<Collection<TotalData>> getAssocaites(){
+	    return ResponseEntity.ok(totalReport.process(associateService.getAllActive()));
+	  }
+
 }

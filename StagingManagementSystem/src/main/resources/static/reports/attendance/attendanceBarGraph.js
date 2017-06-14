@@ -62,7 +62,7 @@ const yearlyLabels = [
  * Chart display setup.
  */
 const chartPoperties = {
-  caption: 'Attendance Associates in Stagging',
+  caption: 'Attendance Associates in Staging',
   subCaption: scale,
   xAxisname: scale,
   yAxisName: 'Percentage of Attendance',
@@ -104,13 +104,13 @@ const chartPoperties = {
  */
 function binarySearch(data, searchVal, start, stop, cmpFunction) {
   if (start >= stop) {
-    return stop;
+    return undefined;
   }
   const midpoint = Math.floor((start + stop) / 2);
 
   const value = cmpFunction(searchVal, data[midpoint]);
   if (value === 0) {
-    return midpoint;
+    return data[midpoint];
   } else if (value > 0) {
     return binarySearch(data, searchVal, midpoint + 1, stop, cmpFunction);
   }
@@ -129,6 +129,18 @@ function binarySearch(data, searchVal, start, stop, cmpFunction) {
  */
 function binarySearchHelper(data, searchVal, cmpFunction) {
   return binarySearch(data, searchVal, 0, data.length, cmpFunction);
+}
+
+function getObj(data, time) {
+  const obj = binarySearchHelper(data, time, cmpDay);
+  if (obj)
+    return obj;
+  
+  return {
+      time: time,
+      hourCount: 0,
+      hourEstimate: 1,
+    };
 }
 
 /**
@@ -234,25 +246,28 @@ function setWeekly($scope, tarDate) {
 
   date.subtract(currDay, 'days');
 
-  let index = binarySearchHelper(weeklyData, date, cmpDay);
-
   // Set global view properties.
-  firstColumnIndex = index;
   focalDate = moment(date.format());
+  $scope.zoomOutStr = 'Monthly';
+  $scope.canZoom = 'true';
   scale = WEEK;
 
   let dataString = '[{"seriesname":"Weekly","data":[';
-
+console.log();
   let i;
+  let currDate = moment(date.format());
   for (i = 0; i < 7; i += 1) {
-    const hourCount = weeklyData[index].hourCount;
-    const hourEstimate = weeklyData[index].hourEstimate;
-    index += 1;
+    const currObj = getObj(weeklyData, currDate);
+    
+    const hourCount = currObj.hourCount;
+    const hourEstimate = currObj.hourEstimate;
+
     const value = Math.floor((hourCount / hourEstimate) * 100);
     dataString += `{"value":"${value}"}`;
     if (i !== 6) {
       dataString += ',';
     }
+    currDate.add(1, 'days');
   }
   dataString += ']}]';
 
@@ -263,9 +278,27 @@ function setWeekly($scope, tarDate) {
 }
 
 function weeklyColumnClick(ev, props, $scope) {
-  // TODO: display modal.
-  $scope.selectedValue = `$props.displayValue}/${props.categoryLabel}/${props.dataIndex}`;
+
+
+    
+  // incase edit mode was enabled from previously viewing a different interview
+  $scope.edit = true;
+  $scope.requestMade = true;
+  $scope.showModal = true;
+  $scope.show = true;
+
+  console.log("heyrow");
+
 }
+
+
+
+
+
+
+
+
+
 
 // ----------------------------------- End Weekly ----------------------------------- //
 
@@ -274,16 +307,15 @@ function weeklyColumnClick(ev, props, $scope) {
 
 function buildMonthlyForEach(item) {
   const identityString = convertToFirstOfTheWeek(moment(item.time));
-  const index = binarySearchHelper(monthlyData, moment(identityString), cmpDay);
+  const dataObj = binarySearchHelper(monthlyData, moment(identityString), cmpDay);
 
-  if (index < 0 || index >= monthlyData.length || monthlyData.length === 0) {
+  if (!dataObj) {
     const itemCpy = JSON.parse(JSON.stringify(item));
     itemCpy.time = identityString;
     monthlyData.push(itemCpy);
   } else {
-    const existing = monthlyData[index];
-    existing.hourCount = parseFloat(existing.hourCount) + parseFloat(item.hourCount);
-    existing.hourEstimate = parseFloat(existing.hourEstimate) + parseFloat(item.hourEstimate);
+    dataObj.hourCount = parseFloat(dataObj.hourCount) + parseFloat(item.hourCount);
+    dataObj.hourEstimate = parseFloat(dataObj.hourEstimate) + parseFloat(item.hourEstimate);
   }
 }
 
@@ -299,28 +331,30 @@ function setMonthly($scope, tarDate) {
   }
 
   date = convertToFirstOfTheWeek(date);
+  console.log(`returnded data: ${JSON.stringify(monthlyData)}`);
 
-  let index = binarySearchHelper(monthlyData, date, cmpDay) - 3;
-  if (index < 0) {
-    index = 0;
-  }
+
 
   // Set global view properties
-  firstColumnIndex = index;
   focalDate = moment(date.format());
+  $scope.zoomOutStr = 'Yearly';
+  $scope.canZoom = 'true';
   scale = MONTH;
-
+  console.log();
   let dataString = '[{"seriesname":"Monthly","data":[';
   let valueString = '[';
 
   let i;
+  let currDate = moment(date.format());
   for (i = 0; i < 5; i += 1) {
-    const hourCount = monthlyData[index].hourCount;
-    const hourEstimate = monthlyData[index].hourEstimate;
-    index += 1;
+    const currObj = getObj(monthlyData, currDate);
+    const nextObj = getObj(monthlyData, currDate.add(7, 'days'));
+    
+    const hourCount = currObj.hourCount;
+    const hourEstimate = currObj.hourEstimate;
 
-    const start = moment(monthlyData[index].time).format('MM/DD');
-    const stop = moment(monthlyData[index + 1].time).subtract(1, 'days').format('MM/DD');
+    const start = moment(currObj.time).format('MM/DD');
+    const stop = moment(nextObj.time).subtract(1, 'days').format('MM/DD');
     valueString += `{"label":"${start}-${stop}"}`;
 
     const value = Math.floor((hourCount / hourEstimate) * 100);
@@ -329,6 +363,7 @@ function setMonthly($scope, tarDate) {
       dataString += ',';
       valueString += ',';
     }
+    currDate.add(7, 'days');
   }
   dataString += ']}]';
   valueString += ']';
@@ -341,7 +376,7 @@ function setMonthly($scope, tarDate) {
 
 function monthlyColumnClick(ev, props, $scope) {
   const newDateIndex = props.dataIndex + firstColumnIndex;
-  setWeekly($scope, moment(monthlyData[newDateIndex].time));
+  setWeekly($scope, moment(focalDate.add(props.dataIndex * 7, 'days')));
 
   $scope.selectedValue = `$props.displayValue}/${props.categoryLabel}/${props.dataIndex}`;
 }
@@ -351,36 +386,35 @@ function monthlyColumnClick(ev, props, $scope) {
 
 // ----------------------------------- Start Yearly ----------------------------------- //
 
+/**
+ * Checks if an item exists in  the yearlyData obj, creates one if not and increments values
+ * within existing obj if it exists.
+ * (This function requires items to be inserted in order for binary search to be effective)
+ *
+ * @param item - data object with a time attribute.
+ */
 function buildYearlyForEach(item) {
   const identityString = convertToFirstOfQuarter(moment(item.time));
-  const index = binarySearchHelper(yearlyData, moment(identityString), cmpDay);
-  
+  const dataObj = binarySearchHelper(yearlyData, moment(identityString), cmpDay);
 
-  console.log(`Identity String: ${identityString}`);
-  console.log(`COUNT/ESTAMATE: ${item.hourCount}/${item.hourEstimate}`);
-  console.log(`Item: ${JSON.stringify(item, null, 2)}`)
-  console.log(`Data: ${JSON.stringify(yearlyData, null, 2)}`)
-
-  
-  
-  
-
-  
-  if (index < 0 || index >= yearlyData.length || yearlyData.length === 0) {
+  if (!dataObj) {
     const itemCpy = JSON.parse(JSON.stringify(item));
     itemCpy.time = identityString;
     yearlyData.push(itemCpy);
   } else {
-    const existing = yearlyData[index];
-    existing.hourCount = parseFloat(existing.hourCount) + parseFloat(item.hourCount);
-    existing.hourEstimate = parseFloat(existing.hourEstimate) + parseFloat(item.hourEstimate);
+    dataObj.hourCount = parseFloat(dataObj.hourCount) + parseFloat(item.hourCount);
+    dataObj.hourEstimate = parseFloat(dataObj.hourEstimate) + parseFloat(item.hourEstimate);
   }
 }
 
+/*
+ * Loops through original data recieved from ajax call and calls build.
+ */
 function buildYearly() {
   yearlyData = [];
   originalData.forEach(buildYearlyForEach);
 }
+
 
 function setYearly($scope, tarDate) {
   let date = tarDate;
@@ -389,27 +423,30 @@ function setYearly($scope, tarDate) {
   }
 
   date = convertToFirstOfYear(date);
-
-  let index = binarySearchHelper(yearlyData, date, cmpDay);
+  console.log();
 
   // Set global view properties.
-  firstColumnIndex = index;
   focalDate = moment(date.format());
+  $scope.zoomOutStr = 'Not Visible';
+  $scope.canZoom = '';
   scale = YEAR;
 
   let dataString = '[{"seriesname":"Yearly","data":[';
 
   let i;
-  for (i = 0; i < 3; i += 1) {
-    const hourCount = yearlyData[index].hourCount;
-    const hourEstimate = yearlyData[index].hourEstimate;
-    index += 1;
+  let currDate = moment(date.format());
+  for (i = 0; i < 4; i += 1) {
+    const currObj = getObj(yearlyData, currDate);
+
+    const hourCount = currObj.hourCount;
+    const hourEstimate = currObj.hourEstimate;
 
     const value = Math.floor((hourCount / hourEstimate) * 100);
     dataString += `{"value":"${value}"}`;
-    if (i !== 2) {
+    if (i !== 3) {
       dataString += ',';
     }
+    currDate = currDate.add(3, 'months'); //Go to next quarter
   }
   dataString += ']}]';
 
@@ -420,8 +457,7 @@ function setYearly($scope, tarDate) {
 }
 
 function yearlyColumnClick(ev, props, $scope) {
-  const newDateIndex = props.dataIndex + firstColumnIndex;
-  setMonthly($scope, moment(yearlyData[newDateIndex].time));
+  setMonthly($scope, moment(focalDate.add(props.dataIndex * 3, 'months')));
 
   $scope.selectedValue = `$props.displayValue}/${props.categoryLabel}/${props.dataIndex}`;
 }
@@ -435,7 +471,7 @@ function setNavFunctions($scope) {
   $scope.step = function step(steps) {
     switch (scale) {
       case WEEK:
-        focalDate = focalDate.add(steps, 'days');
+        focalDate = focalDate.add(steps * 7, 'days');
         setWeekly($scope, focalDate);
         break;
       case MONTH:
@@ -539,9 +575,12 @@ function attendanceRequest($scope, $http) {
  * Request data and set scope bindings.
  */
 const attendanceBarGraphCtrl = ($scope, $http) => {
-  $scope.zoomOutStr = 'Zoom Out';
+  $scope.zoomOutStr = 'ZoomOut';
   attendanceRequest($scope, $http);
   setNavFunctions($scope);
+
+  
+  console.log();
 };
 
 export { attendanceBarGraphCtrl };

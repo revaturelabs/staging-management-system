@@ -88,13 +88,12 @@ public class Associate implements SmsValidatable {
 	 *  Returns true if associate was on job during the given date.
 	 */
 	public boolean hasJobOnDate(LocalDateTime date){
-	  LocalDateTime ndate = date.withHour(12); //Set mid day all other events should be the beginning of the day.
 	  for(Job j : jobs){
-	    boolean afterEnd = j.getEndDate() == null || ndate.compareTo(j.getEndDate()) < 0;
+	    boolean beforeEnd = j.getEndDate() == null || date.compareTo(j.getEndDate()) < 0;
 	    boolean hasentStopped = j.getEndDate() == null;
-	    boolean afterStart = ndate.compareTo(j.getStartDate()) > 0;
+	    boolean afterStart = date.compareTo(j.getStartDate()) > 0;
 	    
-	    if(afterStart && (hasentStopped || !afterEnd))
+	    if(afterStart && (hasentStopped || beforeEnd))
 	      return true;
 	  }
 	  return false;
@@ -105,11 +104,10 @@ public class Associate implements SmsValidatable {
 	 * any jobs. Leaving it possible for associates to participate in multiple training
 	 * batches only after they have had atleast one job.
 	 */
-	public boolean hasNotStartedOnDate(LocalDateTime date) {
-		boolean hasNotBegunTraining = date.compareTo(batch.getStartDate()) < 0;
-		Logger.getRootLogger().info(batch.getStartDate() + ") before " + hasNotBegunTraining);
+	public boolean hasStartedOnDate(LocalDateTime date) {
+		boolean hasBegunTraining = date.compareTo(batch.getStartDate()) > 0;
 
-		if(hasNotBegunTraining && jobs.isEmpty())
+		if(hasBegunTraining)
 			     return true;
 		return false;
 	}
@@ -126,6 +124,16 @@ public class Associate implements SmsValidatable {
 	  
 	  return false;
 	}
+	
+	/**
+	 * This function returns true if the associate was in staging on the given date.
+	 */
+	public boolean isTrackedOnDate(LocalDateTime date) {
+	     if(hasStartedOnDate(date) && !isTrainingOnDate(date) && !hasJobOnDate(date))
+	    	 return true;
+	     return false;
+	}
+
 	public long getId() {
 		return id;
 	}
@@ -170,8 +178,11 @@ public class Associate implements SmsValidatable {
 		return active;
 	}
 
-	public void setActive(boolean active) {
-		this.active = active;
+	public void setActive() {
+		if(this.isTrackedOnDate(LocalDateTime.now()))
+			this.active = true;
+		else
+			this.active = false;
 	}
 
 	public Client getLockedTo() {
