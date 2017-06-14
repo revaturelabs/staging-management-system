@@ -29,7 +29,7 @@ public class InterviewQuestionControllerImpl {
 	@Autowired
 	private BatchTypeService batchTypeService;
 
-	private static final int probContainer = 100000;
+	private static final int PROB_CONTAINER = 100000;
 	
 	public InterviewQuestionControllerImpl(InterviewQuestionService interviewQuestionService) {
 		super();
@@ -49,7 +49,7 @@ public class InterviewQuestionControllerImpl {
 	   Random r = new Random();
 	   for(InterviewQuestion iq : interviewQs)
 	   {
-	     int prob = r.nextInt()%probContainer/2 + probContainer/2;
+	     int prob = r.nextInt()% PROB_CONTAINER /2 + PROB_CONTAINER /2;
 	     iq.setBatchType(functionGetBatchType(prob, batchList));
 	     addInterviewQuestion(iq);
 	   }
@@ -64,7 +64,7 @@ public class InterviewQuestionControllerImpl {
 	   int usedProb = 0;
 	   for(int rank = 0; rank < setSize; rank++)
 	   {
-	     int rankProb = (probContainer - usedProb)*6/10;
+	     int rankProb = (PROB_CONTAINER - usedProb)*6/10;
 	      if(usedProb < i && i < rankProb + usedProb)//60% of the remaining probability that a batch at rank index is chosen
 	      {
 	        return batches.get(rank);
