@@ -44,7 +44,7 @@
                   <span class="glyphicon glyphicon-calendar"></span>
               </div>
         </div>
-        <div class="interview-side-table-row"><b>Skill</b>:[{{interviewSideTable.interview.associate.batch.batchType.value}}] <span ng-repeat="skill in interviewSideTable.interview.associate.batch.batchType.skills"> {{skill.value}},</span> <span ng-repeat="skill in interviewSideTable.interview.associate.skills"> {{skill.value}},</span></div>
+        <div class="interview-side-table-row"><b>Skill</b>:[{{interviewSideTable.interview.associate.batch.batchType.value}}] <span ng-repeat="skill in skills = interviewSideTable.interview.associate.batch.batchType.skills.concat(interviewSideTable.interview.associate.skills)">{{skill.value}}{{$last ? "" : ", "}}</span></div>
         <div class="interview-side-table-row"><b>Client</b>: {{ interviewSideTable.interview.client.name }}</div>
         <div class="interview-side-table-row" ng-hide="edit">
           <b>Status</b>: {{ interviewSideTable.interview.interviewStatus.value }}
