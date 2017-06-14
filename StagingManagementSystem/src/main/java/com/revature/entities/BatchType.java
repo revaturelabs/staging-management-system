@@ -1,7 +1,6 @@
 package com.revature.entities;
 
-import java.util.HashSet;
-import java.util.Set;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,105 +13,107 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.revature.exceptions.SmsCustomException;
-import com.revature.markers.SmsValidatable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "BATCH_TYPES")
-@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-public class BatchType implements SmsValidatable {
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class BatchType {
 
-	@Id
-	@Column(name = "BATCH_TYPE_ID")
-	@SequenceGenerator(name = "BATCH_TYPE_ID_SEQ", sequenceName = "BATCH_TYPE_ID_SEQ")
-	@GeneratedValue(generator = "BATCH_TYPE_ID_SEQ", strategy = GenerationType.SEQUENCE)
-	private long id;
+    @Id
+    @Column(name = "BATCH_TYPE_ID")
+    @SequenceGenerator(name = "BATCH_TYPE_ID_SEQ", sequenceName = "BATCH_TYPE_ID_SEQ")
+    @GeneratedValue(generator = "BATCH_TYPE_ID_SEQ", strategy = GenerationType.SEQUENCE)
+    private long id;
 
-	@Column(name = "BATCH_TYPE_VALUE")
-	private String value;
+    @Column(name = "BATCH_TYPE_VALUE")
+    private String value;
 
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "BATCH_TYPE_SKILLS", joinColumns = @JoinColumn(name = "BATCH_TYPE_ID"), inverseJoinColumns = @JoinColumn(name = "SKILL_ID"))
-	private Set<Skill> skills;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "BATCH_TYPE_SKILLS", joinColumns = @JoinColumn(name = "BATCH_TYPE_ID"), inverseJoinColumns = @JoinColumn(name = "SKILL_ID"))
+    private Set<Skill> skills;
 
-	public BatchType() {
-		super();
-		this.skills = new HashSet<>();
-	}
+    public BatchType() {
 
-	public BatchType(long id, String value, Set<Skill> skills) {
-		super();
-		this.id = id;
-		this.value = value;
-		this.skills = skills;
-		
-	}
+        super();
+        this.skills = new HashSet<>();
+    }
 
-	public long getId() {
-		return id;
-	}
+    public BatchType(long id, String value, Set<Skill> skills) {
 
-	public void setId(long id) {
-		this.id = id;
-	}
+        super();
+        this.id = id;
+        this.value = value;
+        this.skills = skills;
+    }
 
-	public String getValue() {
-		return value;
-	}
+    public long getId() {
 
-	public void setValue(String value) {
-		this.value = value;
-	}
+        return id;
+    }
 
-	public Set<Skill> getSkills() {
-		return skills;
-	}
+    public void setId(long id) {
 
-	public void setSkills(Set<Skill> skills) {
-		this.skills = skills;
-	}
+        this.id = id;
+    }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((skills == null) ? 0 : skills.hashCode());
-		result = prime * result + ((value == null) ? 0 : value.hashCode());
-		return result;
-	}
+    public String getValue() {
 
-	@Override
-	public final boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (!(obj instanceof BatchType))
-			return false;
-		BatchType other = (BatchType) obj;
-		if (skills == null) {
-			if (other.skills != null)
-				return false;
-		} else if (!skills.equals(other.skills))
-			return false;
-		if (value == null) {
-			if (other.value != null)
-				return false;
-		} else if (!value.equals(other.value))
-			return false;
-		return true;
-	}
+        return value;
+    }
 
-	@Override
-	public String toString() {
-		return "BatchType [id=" + id + ", value=" + value + ", skills=" + skills + "]";
-	}
+    public void setValue(String value) {
 
-	@Override
-	public void validate() throws SmsCustomException {
-		// TODO Validate your members.
+        this.value = value;
+    }
 
-	}
+    public Set<Skill> getSkills() {
+
+        return skills;
+    }
+
+    public void setSkills(Set<Skill> skills) {
+
+        this.skills = skills;
+    }
+
+    @Override
+    public int hashCode() {
+
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((skills == null) ? 0 : skills.hashCode());
+        result = prime * result + ((value == null) ? 0 : value.hashCode());
+        return result;
+    }
+
+    @Override
+    public final boolean equals(Object obj) {
+
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (!(obj instanceof BatchType))
+            return false;
+        BatchType other = (BatchType) obj;
+        if (skills == null) {
+            if (other.skills != null)
+                return false;
+        } else if (!skills.equals(other.skills))
+            return false;
+        if (value == null) {
+            if (other.value != null)
+                return false;
+        } else if (!value.equals(other.value))
+            return false;
+        return true;
+    }
+
+    @Override
+    public String toString() {
+
+        return "BatchType [id=" + id + ", value=" + value + ", skills=" + skills + "]";
+    }
 }

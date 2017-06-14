@@ -1,52 +1,58 @@
 package com.revature.services;
 
-import java.util.HashSet;
-import java.util.Set;
-
+import com.revature.entities.InterviewStatuses;
+import com.revature.repositories.InterviewStatusRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.revature.entities.InterviewStatuses;
-import com.revature.repositories.InterviewStatusRepo;
+import java.util.HashSet;
+import java.util.Set;
 
 @Service
 public class InterviewStatusServiceImpl implements InterviewStatusService {
-	@Autowired
-	InterviewStatusRepo interviewStatusRepo;
 
-	public InterviewStatusServiceImpl(InterviewStatusRepo interviewStatusRepo) {
-		super();
-		this.interviewStatusRepo = interviewStatusRepo;
-	}
+    @Autowired
+    InterviewStatusRepo interviewStatusRepo;
 
-	@Override
-	public void add(InterviewStatuses interviewStatus) {
-		interviewStatusRepo.saveAndFlush(interviewStatus);
-	}
+    public InterviewStatusServiceImpl(InterviewStatusRepo interviewStatusRepo) {
 
-	@Override
-	public InterviewStatuses findById(long id) {
-		return interviewStatusRepo.getOne(id);
-	}
+        super();
+        this.interviewStatusRepo = interviewStatusRepo;
+    }
 
-	@Override
-	public Set<InterviewStatuses> getAll() {
-		return new HashSet<InterviewStatuses>(interviewStatusRepo.findAll());
-	}
+    @Override
+    public void add(InterviewStatuses interviewStatus) {
 
-	@Override
-	public void update(InterviewStatuses interviewStatus) {
-		interviewStatusRepo.saveAndFlush(interviewStatus);
-	}
+        interviewStatusRepo.saveAndFlush(interviewStatus);
+    }
 
-	@Override
-	public void delete(InterviewStatuses interviewStatus) {
-		interviewStatusRepo.delete(interviewStatus);
-	}
+    @Override
+    public InterviewStatuses findById(long id) {
 
-	@Override
-	public InterviewStatuses findByStatus(String status) {
-		return interviewStatusRepo.findByValue(status);
-	}
+        return interviewStatusRepo.getOne(id);
+    }
 
+    @Override
+    public Set<InterviewStatuses> getAll() {
+
+        return new HashSet<InterviewStatuses>(interviewStatusRepo.findAll());
+    }
+
+    @Override
+    public void update(InterviewStatuses interviewStatus) {
+
+        interviewStatusRepo.saveAndFlush(interviewStatus);
+    }
+
+    @Override
+    public void delete(InterviewStatuses interviewStatus) {
+
+        interviewStatusRepo.delete(interviewStatus);
+    }
+
+    @Override
+    public InterviewStatuses findByStatus(String status) {
+
+        return interviewStatusRepo.findByValue(status);
+    }
 }
