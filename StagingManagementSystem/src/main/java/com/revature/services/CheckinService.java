@@ -125,5 +125,6 @@ public interface CheckinService {
      * @param checkins manager
      */
 	public void approveMultiple(Set<Checkin> checkins, Manager manager);
+  public boolean hasCheckedInOnDate(Associate associate, LocalDateTime date);
 
 }

@@ -64,6 +64,16 @@ public class CheckinServiceImpl implements CheckinService {
 				.getAllByCheckinTimeBetween(LocalDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT), LocalDateTime.now());
 		return (checkins != null && checkins.isEmpty());
 	}
+	
+	 @Override
+	  public boolean hasCheckedInOnDate(Associate associate, LocalDateTime date) {
+	   LocalDateTime start = LocalDateTime.of(date.toLocalDate(), LocalTime.MIN);
+	   LocalDateTime end = LocalDateTime.of(date.toLocalDate(), LocalTime.MAX);
+	    Set<Checkin> checkins = checkinRepo
+	        .getAllByCheckinTimeBetween(start, end);
+	    
+	    return (checkins != null && checkins.isEmpty());
+	  }
 
 	@Override
 	public boolean hasCheckedInToday() throws NotLoggedInException {

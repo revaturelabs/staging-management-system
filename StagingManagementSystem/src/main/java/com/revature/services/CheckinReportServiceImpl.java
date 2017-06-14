@@ -16,6 +16,11 @@ import com.revature.entities.Checkin;
 @Service
 public class CheckinReportServiceImpl {
   
+  /**
+   * This class represents count totals for a given day.
+   * @author jozse
+   *
+   */
   public class DailyReport implements Comparable<DailyReport>{
     LocalDateTime time;
     int hourCount;
@@ -85,10 +90,10 @@ public class CheckinReportServiceImpl {
   
   @Autowired
   AssociateService associateService;
-  @Autowired
-  JobService jobService;
   
   Map<String, DailyReport> reports;
+  Map<String, ArrayList<String>> namesCheckedin;
+  Map<String, ArrayList<String>> namesNotCheckedin;
   Set<Associate> associates;
   
   public CheckinReportServiceImpl(){
@@ -107,6 +112,17 @@ public class CheckinReportServiceImpl {
     else {
       int hourEstimate = calculateHourEstimate(checkin.getCheckinTime());
       reports.put(getKey(checkin), new DailyReport(checkin, hourEstimate));
+    }
+  }
+  
+  public void addToMap(String key, Map<String, ArrayList<String>> map, String name) {
+    if(reports.containsKey(key)){
+      map.get(key).add(name);
+    }
+    else {
+      ArrayList<String> names = new ArrayList<String>();
+      map.put(key, names);
+      names.add(name);
     }
   }
   
@@ -150,15 +166,16 @@ public class CheckinReportServiceImpl {
   public ArrayList<DailyReport> process(Set<Checkin> checkins) {
     this.reports = new HashMap<String, DailyReport>();
     associates = associateService.getAll();
-//    //TODO: making a db call for every associate is inefficient should do a join call in associates.
-//    for(Associate a : associates){
-//      a.setJobs(jobService.findByAssociate(a));
-//    }
     
     for(Checkin c : checkins){
       this.addCheckin(c);
     }
     return convertAndOrder(reports);
+  }
+  
+  public ArrayList<ArrayList<String>> getCheckinNamesOnDate() {
+    
+    return null;
   }
 
   private ArrayList<DailyReport> convertAndOrder(Map<String, DailyReport> reports2) {

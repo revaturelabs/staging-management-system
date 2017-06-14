@@ -67,7 +67,7 @@ public class Associate implements SmsValidatable {
 		super();
 		this.skills = new HashSet<>();
 		this.jobs = new HashSet<>();
-		this.active = true;
+		this.active = false;
 	}
 
 	public Associate(long id, Credential credential, String name, String portfolioLink, Batch batch, boolean active,
