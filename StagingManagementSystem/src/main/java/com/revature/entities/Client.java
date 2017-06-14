@@ -99,15 +99,22 @@ public class Client {
     @Override
     public final boolean equals(Object obj) {
 
-        if (this == obj) return true;
-        if (obj == null) return false;
-        if (!(obj instanceof Client)) return false;
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (!(obj instanceof Client))
+            return false;
         Client other = (Client) obj;
-        if (active != other.active) return false;
+        if (active != other.active)
+            return false;
         if (name == null) {
-            if (other.name != null) return false;
-        } else if (!name.equals(other.name)) return false;
-        if (priority != other.priority) return false;
+            if (other.name != null)
+                return false;
+        } else if (!name.equals(other.name))
+            return false;
+        if (priority != other.priority)
+            return false;
         return true;
     }
 

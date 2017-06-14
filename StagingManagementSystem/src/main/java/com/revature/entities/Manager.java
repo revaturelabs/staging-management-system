@@ -121,20 +121,30 @@ public class Manager {
     @Override
     public final boolean equals(Object obj) {
 
-        if (this == obj) return true;
-        if (obj == null) return false;
-        if (!(obj instanceof Manager)) return false;
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (!(obj instanceof Manager))
+            return false;
         Manager other = (Manager) obj;
-        if (active != other.active) return false;
+        if (active != other.active)
+            return false;
         if (credential == null) {
-            if (other.credential != null) return false;
-        } else if (!credential.equals(other.credential)) return false;
+            if (other.credential != null)
+                return false;
+        } else if (!credential.equals(other.credential))
+            return false;
         if (name == null) {
-            if (other.name != null) return false;
-        } else if (!name.equals(other.name)) return false;
+            if (other.name != null)
+                return false;
+        } else if (!name.equals(other.name))
+            return false;
         if (permission == null) {
-            if (other.permission != null) return false;
-        } else if (!permission.equals(other.permission)) return false;
+            if (other.permission != null)
+                return false;
+        } else if (!permission.equals(other.permission))
+            return false;
         return true;
     }
 

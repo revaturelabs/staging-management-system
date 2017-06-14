@@ -68,13 +68,18 @@ public class Skill {
     @Override
     final public boolean equals(Object obj) {
 
-        if (this == obj) return true;
-        if (obj == null) return false;
-        if (!(obj instanceof Skill)) return false;
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (!(obj instanceof Skill))
+            return false;
         Skill other = (Skill) obj;
         if (value == null) {
-            if (other.value != null) return false;
-        } else if (!value.equals(other.value)) return false;
+            if (other.value != null)
+                return false;
+        } else if (!value.equals(other.value))
+            return false;
         return true;
     }
 

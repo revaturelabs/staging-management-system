@@ -104,19 +104,28 @@ public class ClientQuestion {
     @Override
     public final boolean equals(Object obj) {
 
-        if (this == obj) return true;
-        if (obj == null) return false;
-        if (!(obj instanceof ClientQuestion)) return false;
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (!(obj instanceof ClientQuestion))
+            return false;
         ClientQuestion other = (ClientQuestion) obj;
         if (associate == null) {
-            if (other.associate != null) return false;
-        } else if (!associate.equals(other.associate)) return false;
+            if (other.associate != null)
+                return false;
+        } else if (!associate.equals(other.associate))
+            return false;
         if (client == null) {
-            if (other.client != null) return false;
-        } else if (!client.equals(other.client)) return false;
+            if (other.client != null)
+                return false;
+        } else if (!client.equals(other.client))
+            return false;
         if (interviewQ == null) {
-            if (other.interviewQ != null) return false;
-        } else if (!interviewQ.equals(other.interviewQ)) return false;
+            if (other.interviewQ != null)
+                return false;
+        } else if (!interviewQ.equals(other.interviewQ))
+            return false;
         return true;
     }
 

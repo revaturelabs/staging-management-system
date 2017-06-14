@@ -88,16 +88,23 @@ public class Credential {
     @Override
     public final boolean equals(Object obj) {
 
-        if (this == obj) return true;
-        if (obj == null) return false;
-        if (!(obj instanceof Credential)) return false;
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (!(obj instanceof Credential))
+            return false;
         Credential other = (Credential) obj;
         if (password == null) {
-            if (other.password != null) return false;
-        } else if (!password.equals(other.password)) return false;
+            if (other.password != null)
+                return false;
+        } else if (!password.equals(other.password))
+            return false;
         if (username == null) {
-            if (other.username != null) return false;
-        } else if (!username.equals(other.username)) return false;
+            if (other.username != null)
+                return false;
+        } else if (!username.equals(other.username))
+            return false;
         return true;
     }
 

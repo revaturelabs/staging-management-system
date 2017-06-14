@@ -113,22 +113,33 @@ public class Location {
     @Override
     public final boolean equals(Object obj) {
 
-        if (this == obj) return true;
-        if (obj == null) return false;
-        if (!(obj instanceof Location)) return false;
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (!(obj instanceof Location))
+            return false;
         Location other = (Location) obj;
         if (city == null) {
-            if (other.city != null) return false;
-        } else if (!city.equals(other.city)) return false;
+            if (other.city != null)
+                return false;
+        } else if (!city.equals(other.city))
+            return false;
         if (country == null) {
-            if (other.country != null) return false;
-        } else if (!country.equals(other.country)) return false;
+            if (other.country != null)
+                return false;
+        } else if (!country.equals(other.country))
+            return false;
         if (name == null) {
-            if (other.name != null) return false;
-        } else if (!name.equals(other.name)) return false;
+            if (other.name != null)
+                return false;
+        } else if (!name.equals(other.name))
+            return false;
         if (state == null) {
-            if (other.state != null) return false;
-        } else if (!state.equals(other.state)) return false;
+            if (other.state != null)
+                return false;
+        } else if (!state.equals(other.state))
+            return false;
         return true;
     }
 

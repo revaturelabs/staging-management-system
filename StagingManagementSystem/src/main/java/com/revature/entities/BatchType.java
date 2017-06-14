@@ -91,16 +91,23 @@ public class BatchType {
     @Override
     public final boolean equals(Object obj) {
 
-        if (this == obj) return true;
-        if (obj == null) return false;
-        if (!(obj instanceof BatchType)) return false;
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (!(obj instanceof BatchType))
+            return false;
         BatchType other = (BatchType) obj;
         if (skills == null) {
-            if (other.skills != null) return false;
-        } else if (!skills.equals(other.skills)) return false;
+            if (other.skills != null)
+                return false;
+        } else if (!skills.equals(other.skills))
+            return false;
         if (value == null) {
-            if (other.value != null) return false;
-        } else if (!value.equals(other.value)) return false;
+            if (other.value != null)
+                return false;
+        } else if (!value.equals(other.value))
+            return false;
         return true;
     }
 

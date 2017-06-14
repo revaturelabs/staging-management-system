@@ -84,16 +84,23 @@ public class InterviewQuestion {
     @Override
     public final boolean equals(Object obj) {
 
-        if (this == obj) return true;
-        if (obj == null) return false;
-        if (!(obj instanceof InterviewQuestion)) return false;
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (!(obj instanceof InterviewQuestion))
+            return false;
         InterviewQuestion other = (InterviewQuestion) obj;
         if (batchType == null) {
-            if (other.batchType != null) return false;
-        } else if (!batchType.equals(other.batchType)) return false;
+            if (other.batchType != null)
+                return false;
+        } else if (!batchType.equals(other.batchType))
+            return false;
         if (value == null) {
-            if (other.value != null) return false;
-        } else if (!value.equals(other.value)) return false;
+            if (other.value != null)
+                return false;
+        } else if (!value.equals(other.value))
+            return false;
         return true;
     }
 

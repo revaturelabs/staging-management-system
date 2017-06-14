@@ -164,28 +164,43 @@ public class Batch {
     @Override
     public final boolean equals(Object obj) {
 
-        if (this == obj) return true;
-        if (obj == null) return false;
-        if (!(obj instanceof Batch)) return false;
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (!(obj instanceof Batch))
+            return false;
         Batch other = (Batch) obj;
         if (associates == null) {
-            if (other.associates != null) return false;
-        } else if (!associates.equals(other.associates)) return false;
+            if (other.associates != null)
+                return false;
+        } else if (!associates.equals(other.associates))
+            return false;
         if (batchType == null) {
-            if (other.batchType != null) return false;
-        } else if (!batchType.equals(other.batchType)) return false;
+            if (other.batchType != null)
+                return false;
+        } else if (!batchType.equals(other.batchType))
+            return false;
         if (endDate == null) {
-            if (other.endDate != null) return false;
-        } else if (!endDate.equals(other.endDate)) return false;
+            if (other.endDate != null)
+                return false;
+        } else if (!endDate.equals(other.endDate))
+            return false;
         if (location == null) {
-            if (other.location != null) return false;
-        } else if (!location.equals(other.location)) return false;
+            if (other.location != null)
+                return false;
+        } else if (!location.equals(other.location))
+            return false;
         if (startDate == null) {
-            if (other.startDate != null) return false;
-        } else if (!startDate.equals(other.startDate)) return false;
+            if (other.startDate != null)
+                return false;
+        } else if (!startDate.equals(other.startDate))
+            return false;
         if (trainers == null) {
-            if (other.trainers != null) return false;
-        } else if (!trainers.equals(other.trainers)) return false;
+            if (other.trainers != null)
+                return false;
+        } else if (!trainers.equals(other.trainers))
+            return false;
         return true;
     }
 
