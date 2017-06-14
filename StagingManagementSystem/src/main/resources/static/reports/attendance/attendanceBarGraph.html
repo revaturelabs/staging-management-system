@@ -1,16 +1,20 @@
 <div class=attn-report-container>
 
-	<div class="text-center">
+	<div class="flex-column" style="align-items:center">
 		<div>
 			<button type="button" ng-show='canZoom' id="zoom-btn" class="manager-view-selecter" ng-click='zoomOut()' ng-style="availableSelecter" >{{zoomOutStr}}</button>		
 		</div>
 		<!-- The `selectedValue` variable is defined to store the label and the value of the data plot that is clicked. -->
 	
-		<span class='graph-span'>
-			<button class="manager-view-selecter glyphicon glyphicon-step-backward graph-nav-btn" ng-click='step(-1)'></button>
+		<div class='flex-row' style="align-items:center">
+			<div class="graph-nav-btn">
+			<button class="manager-view-selecter glyphicon glyphicon-step-backward" ng-click='step(-1)'></button>			
+			</div>
 			<div id="attn-chart-container" fusioncharts width="600" height="400" type="column2d" , datasource="{{dataSource}}" events=attn_event></div>
-			<button class="manager-view-selecter glyphicon glyphicon-step-forward graph-nav-btn" ng-click='step(1)'></button>
-		</span>
+			<div class="graph-nav-btn">
+				<button class="manager-view-selecter glyphicon glyphicon-step-forward graph-nav-btn" ng-click='step(1)'></button>			
+			</div>
+		</div>
 	</div>
 </div>
 
