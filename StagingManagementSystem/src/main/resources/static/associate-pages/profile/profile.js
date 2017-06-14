@@ -1,5 +1,11 @@
 const profileCtrl = ($scope, $http, userService, $stateParams, $state, $window) => {
-  const associateId = $state.includes('manager') ? $stateParams.id : userService.getUser().id;
+  if($state.includes('manager')) {
+    $scope.isManager = true;
+    $http.get('client/priority').then((response) => {
+      $scope.clients = response.data;
+    })
+  }
+  const associateId = $scope.isManager ? $stateParams.id : userService.getUser().id;
 
   if (associateId === undefined) {
     return;
@@ -46,6 +52,22 @@ const profileCtrl = ($scope, $http, userService, $stateParams, $state, $window) 
     $('#portfolioUrlModal').modal('show');
   };
 
+  $scope.toggleMappedModal = () => {
+    window.scope = $scope;
+    $scope.sendingRequest = false;
+    $scope.mappedModalButtonValue = 'Save';
+    if($scope.associate.lockedTo) {
+      $scope.clients.some((client) => {
+        if(client.name === $scope.associate.lockedTo.name) {
+          $scope.associate.lockedTo = client;
+          return true;
+        }
+      });
+    }
+
+    $('#mappedToClientModal').modal('show');
+  }
+
   $scope.submitPortfolioUrl = () => {
     $scope.associate.portfolioLink = $scope.portfolioUrlInput;
 
@@ -78,6 +100,20 @@ const profileCtrl = ($scope, $http, userService, $stateParams, $state, $window) 
       $('#additionalSkillsModal').modal('hide');
     });
   };
+
+  $scope.updateLockedTo = () => {
+    $scope.sendingRequest = true;
+    $scope.mappedModalButtonValue = 'Saving...';
+    $http({
+      method: 'PUT',
+      url: '/associate/',
+      data: $scope.associate,
+    }).then(() => {
+      $('#mappedToClientModal').modal('hide');
+    }, () => {
+      $('#mappedToClientModal').modal('hide');
+    });
+  }
 
   $scope.openPortfolioLink = () => {
     $window.open($scope.associate.portfolioLink);

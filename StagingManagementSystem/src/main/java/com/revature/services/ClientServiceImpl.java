@@ -62,6 +62,11 @@ public class ClientServiceImpl implements ClientService {
 		return null;
 	}
 
+	@Override
+	public Set<Client> findPriority() {
+		return clientRepo.findByPriorityTrue();
+	}
+
 
 	}
 
