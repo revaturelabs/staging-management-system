@@ -132,15 +132,13 @@ public class CheckinServiceImpl implements CheckinService {
 
 	@Override
 	public Set<Checkin> getAll() {
-		Set<Checkin> checkin = new HashSet<Checkin>(checkinRepo.findAll());
-		return checkin;
+		return new HashSet<>(checkinRepo.findAll());
 	}
 
 	@Override
 	public Set<Checkin> getTodaysCheckins() {
-		Set<Checkin> checkins = checkinRepo
+		return checkinRepo
 				.getAllByCheckinTimeBetween(LocalDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT), LocalDateTime.now());
-		return checkins;
 	}
 
 	@Override
