@@ -4,8 +4,10 @@ const managerCtrl = ($scope, $state, $location, $http, userService) => {
 		url: '/login/isManager',
 	})
 	.then((response) => {
-		if(!response.data)
+		if(!response.data) {
+      userService.setUser({});
 			$state.go('login');
+    }
 	});
 
 	$scope.isActive = function (viewLocation) {
