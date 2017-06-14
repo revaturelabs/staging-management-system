@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping("/")
 public class SPAControllerImpl {
 
-	@RequestMapping(method = RequestMethod.GET)
-	public String getSPA() {
-		return "index.html";
-	}
+    @RequestMapping(method = RequestMethod.GET)
+    public String getSPA() {
 
+        return "index.html";
+    }
 }

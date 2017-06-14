@@ -17,7 +17,8 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationFa
  */
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter{
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
     @Autowired
     @Qualifier("userDetailsService")
     private UserDetailsService userDetailsService;
@@ -27,26 +28,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService)
-        .passwordEncoder(new BCryptPasswordEncoder()); // We need a password encoder, for which we use BCrypt.
+
+        auth.userDetailsService(userDetailsService).passwordEncoder(new BCryptPasswordEncoder()); // We need a password encoder, for which we use BCrypt.
     }
 
     @Override
-    protected void configure(HttpSecurity httpSecurity) throws Exception{//TODO un-break this
-        httpSecurity
-                .csrf().disable() // Disable cross site request forgery
+    protected void configure(HttpSecurity httpSecurity) throws Exception {//TODO un-break this
+        httpSecurity.csrf().disable() // Disable cross site request forgery
                 .formLogin() // We want to use form-based authentication.
-                .loginPage("/")
-                    .successHandler(authenticationSuccessHandler) // Use the monstrosity of a class we have to handle successes.
-                    .failureHandler(new SimpleUrlAuthenticationFailureHandler()) // Handle failures with a 401.
-                    .and()
-                .logout() // Let anyone log out.
-                    .permitAll()
-                    .and()
-                .authorizeRequests()
-                    .antMatchers("/","/home","/static/**","/**").permitAll() // Let anyone access static content, and root.
-                    .antMatchers("/profile","/checkin","/checkout").hasRole("ASSOCIATE") // Let associates look at their profile, and check in/out.
-                    .antMatchers("/checkin/approve").hasAnyRole("MANAGER","ADMIN") // Let managers and admins approve checkins, and do anything.
-                    .anyRequest().authenticated();
+                .loginPage("/").successHandler(authenticationSuccessHandler) // Use the monstrosity of a class we have to handle successes.
+                .failureHandler(new SimpleUrlAuthenticationFailureHandler()) // Handle failures with a 401.
+                .and().logout() // Let anyone log out.
+                .permitAll().and().authorizeRequests().antMatchers("/", "/home", "/static/**", "/**").permitAll() // Let anyone access static content, and root.
+                .antMatchers("/profile", "/checkin", "/checkout").hasRole("ASSOCIATE") // Let associates look at their profile, and check in/out.
+                .antMatchers("/checkin/approve").hasAnyRole("MANAGER", "ADMIN") // Let managers and admins approve checkins, and do anything.
+                .anyRequest().authenticated();
     }
 }

@@ -1,7 +1,7 @@
 package com.revature.controllers.rest;
 
-import java.util.Set;
-
+import com.revature.entities.Credential;
+import com.revature.services.CredentialService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,76 +12,77 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.revature.entities.Credential;
-import com.revature.services.CredentialService;
+import java.util.Set;
 
 @RestController
 @RequestMapping("credential")
 public class CredentialControllerImpl {
 
-	@Autowired
-	private CredentialService credentialService;
+    @Autowired
+    private CredentialService credentialService;
 
-	public CredentialControllerImpl(CredentialService credentialService) {
-		super();
-		this.credentialService = credentialService;
-	}
+    public CredentialControllerImpl(CredentialService credentialService) {
 
-	/**
-	 * When called this will always persist a unique credential in the database.
-	 * 
-	 * @param credential
-	 *            - credential to be persisted.
-	 */
-	@PostMapping
-	public void addcredential(@RequestBody Credential credential) {
-		credential.setId(0l);
-		credentialService.add(credential);
-	}
+        super();
+        this.credentialService = credentialService;
+    }
 
-	/**
-	 * Deletes credential with credential.id
-	 * 
-	 * @param credential
-	 *            - holds the id to be deleted
-	 */
-	@DeleteMapping
-	public void deletecredential(@RequestBody Credential credential) {
-		credentialService.remove(credential);
-	}
+    /**
+     * When called this will always persist a unique credential in the database.
+     *
+     * @param credential - credential to be persisted.
+     */
+    @PostMapping
+    public void addcredential(@RequestBody Credential credential) {
 
-	/**
-	 * If the id exists, updates information. else creates a new row with
-	 * genrated id.
-	 * 
-	 * @param credential
-	 *            - data to be persisted.
-	 */
-	@PutMapping
-	public void updatecredential(@RequestBody Credential credential) {
-		credentialService.update(credential);
-	}
+        credential.setId(0l);
+        credentialService.add(credential);
+    }
 
-	/**
-	 * Gets a credential with id.
-	 * 
-	 * @param id
-	 *            - id of credential to be retrieved.
-	 * @return credential object from dataBase.
-	 */
-	@GetMapping("/{id}")
-	public Credential findById(@PathVariable long id) {
-		return credentialService.findById(id);
-	}
+    /**
+     * Deletes credential with credential.id
+     *
+     * @param credential - holds the id to be deleted
+     */
+    @DeleteMapping
+    public void deletecredential(@RequestBody Credential credential) {
 
-	/**
-	 * Gets all credentials.
-	 * 
-	 * @param all
-	 * @return all credential objects from dataBase.
-	 */
-	@GetMapping("/all")
-	public Set<Credential> findAll() {
-		return credentialService.getAll();
-	}
+        credentialService.remove(credential);
+    }
+
+    /**
+     * If the id exists, updates information. else creates a new row with
+     * genrated id.
+     *
+     * @param credential - data to be persisted.
+     */
+    @PutMapping
+    public void updatecredential(@RequestBody Credential credential) {
+
+        credentialService.update(credential);
+    }
+
+    /**
+     * Gets a credential with id.
+     *
+     * @param id - id of credential to be retrieved.
+     * @return credential object from dataBase.
+     */
+    @GetMapping("/{id}")
+    public Credential findById(@PathVariable long id) {
+
+        return credentialService.findById(id);
+    }
+
+    /**
+     * Gets all credentials.
+     *
+     * @param all
+     * @return all credential objects from dataBase.
+     */
+    @GetMapping("/all")
+    public Set<Credential> findAll() {
+
+        return credentialService.getAll();
+    }
 }

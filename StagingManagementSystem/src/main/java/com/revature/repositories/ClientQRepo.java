@@ -1,8 +1,8 @@
 package com.revature.repositories;
 
+import com.revature.entities.ClientQuestion;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.revature.entities.ClientQuestion;
-
 public interface ClientQRepo extends JpaRepository<ClientQuestion, Long> {
+
 }

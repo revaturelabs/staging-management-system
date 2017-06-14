@@ -1,8 +1,6 @@
 package com.revature.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.revature.exceptions.SmsCustomException;
-import com.revature.markers.SmsValidatable;
 import com.revature.util.LocalDateTimeConverter;
 
 import javax.persistence.*;
@@ -11,7 +9,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "INTERVIEWS")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Interview implements SmsValidatable {
+public class Interview {
 
     @Id
     @Column(name = "INTERVIEW_ID")
@@ -155,10 +153,5 @@ public class Interview implements SmsValidatable {
                 '}';
     }
 
-    @Override
-    public void validate() throws SmsCustomException {
-        // TODO Validate your members.
-
-    }
 
 }

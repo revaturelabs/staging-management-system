@@ -1,12 +1,12 @@
 package com.revature.repositories;
 
-import java.util.Set;
-
-import org.springframework.data.jpa.repository.JpaRepository;
-
 import com.revature.entities.Associate;
 import com.revature.entities.Job;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface JobRepo extends JpaRepository<Job, Long>{
-  Set<Job> getByAssociate(Associate associate);
+import java.util.Set;
+
+public interface JobRepo extends JpaRepository<Job, Long> {
+
+    Set<Job> getByAssociate(Associate associate);
 }

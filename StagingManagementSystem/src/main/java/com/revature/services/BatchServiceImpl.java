@@ -87,6 +87,8 @@ public class BatchServiceImpl implements BatchService {
 				}
 			});
 			
+
+			
 			batch.getAssociates().forEach((Associate associate) -> {
 		        Associate ass = associateRepo.findOne(associate.getId());
 		        ass.setBatch(b);
