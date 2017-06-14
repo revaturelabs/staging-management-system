@@ -115,8 +115,8 @@ public class Associate implements SmsValidatable {
 	/**
 	 * Returns true if associate was in training during the given date.
 	 */
-	public boolean isTrainingOnDate(LocalDateTime date) {
-	   date = date.withHour(12); //Set mid day all other events should be the beginning of the day.
+	public boolean isTrainingOnDate(LocalDateTime adate) {
+	   LocalDateTime date = adate.withHour(12); //Set mid day all other events should be the beginning of the day.
 	   boolean afterBatchStart = date.compareTo(batch.getStartDate()) > 0;
 	   boolean beforeBatchEnd = date.compareTo(batch.getEndDate()) < 0;
 	   if(afterBatchStart && beforeBatchEnd)
