@@ -1,6 +1,6 @@
 const batchCtrl = ($scope, $http, $state, $stateParams) => {
   window.scope = $scope;
-  $scope.batch = {associates: []}
+  $scope.batch = {associates: [], trainers: []}
 
   $('#datetimepicker1').datetimepicker();
 	$('#datetimepicker2').datetimepicker();
@@ -18,19 +18,31 @@ const batchCtrl = ($scope, $http, $state, $stateParams) => {
         $http.get('associate/no-batch').then((response3) => {
       		$scope.associates = response3.data;
 
-          if($state.includes('manager.advanced')) {
-            $http.get('batch/' + $stateParams.id).then((response4) => {
-                $http.get('associate/by-batch/' + $stateParams.id).then((response5) => {
-                  $scope.batch.associates = response5.data;
-                })
+          $http.get('trainer/all').then((response4) => {
+            $scope.trainers = response4.data;
 
-          			$scope.batch = response4.data;
-                $scope.batch.batchType = $scope.batchTypes.filter((batchType) => batchType.value === response4.data.batchType.value)[0];
-                $scope.batch.location = $scope.locations.filter((location) => location.name === response4.data.location.name)[0];
-            	}, () => {
-            		// console.log('failure')
-            	})
-          }
+            if($state.includes('manager.advanced')) {
+              $http.get('batch/' + $stateParams.id).then((response5) => {
+                  $http.get('associate/by-batch/' + $stateParams.id).then((response6) => {
+                    $scope.batch.associates = response6.data;
+                  })
+
+            			$scope.batch = response5.data;
+                  $scope.batch.batchType = $scope.batchTypes.filter((batchType) => batchType.value === response5.data.batchType.value)[0];
+                  $scope.batch.location = $scope.locations.filter((location) => location.name === response5.data.location.name)[0];
+                  $scope.batch.trainers.forEach((trainer) => {
+                    $scope.trainers.forEach((batchTrainer) => {
+                      if(batchTrainer.name === trainer.name) {
+                        trainer = batchTrainer;
+                      }
+                    })
+                  })
+              	}, () => {
+              		// console.log('failure')
+              	})
+            }
+          })
+
         	}, () => {
         		console.log('failure')
         	})
@@ -53,9 +65,22 @@ const batchCtrl = ($scope, $http, $state, $stateParams) => {
     $scope.associates = $scope.associates.filter((associate) => associate.id !== $scope.selectedAssociate.id);
   }
 
+  $scope.addTrainer = () => {
+    if(!$scope.selectedTrainer) {
+      return;
+    }
+    $scope.batch.trainers.push($scope.selectedTrainer);
+    $scope.trainers = $scope.trainers.filter((trainer) => trainer.id !== $scope.selectedTrainer.id);
+  }
+
   $scope.removeAssociate = (selected) => {
     $scope.batch.associates = $scope.batch.associates.filter((associate) => associate.id !== selected.id)
     $scope.associates.push(selected);
+  }
+
+  $scope.removeTrainer = (selected) => {
+    $scope.batch.trainers = $scope.batch.trainers.filter((trainer) => trainer.id !== selected.id)
+    $scope.trainers.push(selected);
   }
 
 
