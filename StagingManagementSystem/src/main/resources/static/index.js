@@ -145,6 +145,24 @@
 	  };
 	});
 
+	routerApp.directive('scrollToBottom', function ($timeout, $window) {
+	  return {
+	    scope: {
+	      scrollToBottom: "="
+	    },
+	    restrict: 'A',
+	    link: function link(scope, element, attr) {
+	      scope.$watchCollection('scrollToBottom', function (newVal) {
+	        if (newVal) {
+	          $timeout(function () {
+	            element[0].scrollTop = element[0].scrollHeight;
+	          }, 0);
+	        }
+	      });
+	    }
+	  };
+	});
+
 	routerApp.run(function ($uiRouter, $trace, $rootScope) {
 
 	  //Ui Visualizer
@@ -62638,31 +62656,37 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-		value: true
+	  value: true
 	});
 	var managerCtrl = function managerCtrl($scope, $state, $location, $http, userService) {
-		$http({
-			method: 'GET',
-			url: '/login/isManager'
-		}).then(function (response) {
-			if (!response.data) $state.go('login');
-		});
+	  $http({
+	    method: 'GET',
+	    url: '/login/user'
+	  }).then(function (response) {
+	    userService.setUser(response.data);
+	    if (response.data.permission === undefined) {
+	      $state.go('associate.home');
+	    }
+	  }, function () {
+	    userService.setUser({});
+	    $state.go('login');
+	  });
 
-		$scope.isActive = function (viewLocation) {
-			return viewLocation === $location.path();
-		};
+	  $scope.isActive = function (viewLocation) {
+	    return viewLocation === $location.path();
+	  };
 
-		$scope.logout = function () {
-			$http({
-				method: 'GET',
-				url: '/logout/'
-			}).then(function (response) {
-				userService.setUser({});
-				$state.go('login');
-			});
-		};
+	  $scope.logout = function () {
+	    $http({
+	      method: 'GET',
+	      url: '/logout/'
+	    }).then(function (response) {
+	      userService.setUser({});
+	      $state.go('login');
+	    });
+	  };
 
-		$scope.manager = { name: 'Joe' };
+	  $scope.manager = { name: 'Joe' };
 	};
 
 	exports.managerCtrl = managerCtrl;
@@ -64164,6 +64188,12 @@
 	    }
 	    return $scope.associate.batch.batchType.skills.concat($scope.associate.skills).length === 0;
 	  };
+
+	  $scope.onEnterAddSkill = function (event) {
+	    if (event.which === 13) {
+	      $scope.addSkill();
+	    }
+	  };
 	};
 
 	exports.default = profileCtrl;
@@ -64337,7 +64367,9 @@
 	  $scope.checkInBtn = 'Loading...';
 	  checkBtnDOM.disabled = true;
 
-	  if (authenticatedUser.id === undefined) {
+	  var isAssociate = authenticatedUser.id !== undefined && authenticatedUser.permission === undefined;
+
+	  if (!isAssociate) {
 	    $state.go('login');
 	    return;
 	  }
@@ -64378,7 +64410,7 @@
 	      url: '/logout/'
 	    }).then(function () {
 	      userService.setUser({});
-	      $state.go('login');
+	      $state.transitionTo('login');
 	    });
 	  };
 	};
