@@ -12,6 +12,11 @@ import com.revature.entities.Checkin;
 @Service
 public class CheckinReportServiceImpl {
   
+  /**
+   * This class represents count totals for a given day.
+   * @author jozse
+   *
+   */
   public class DailyReport implements Comparable<DailyReport>{
     LocalDateTime time;
     int hourCount;
@@ -22,10 +27,10 @@ public class CheckinReportServiceImpl {
       this.hourEstimate = hourEstimate;
       this.time = checkin.getCheckinTime();
       this.hourCount = 0;
-      addCheckin();
+      addCheckin(checkin);
     }
     
-    public void addCheckin(){
+    public void addCheckin(Checkin checkin){
       hourCount += 1;
     }
     
@@ -55,17 +60,13 @@ public class CheckinReportServiceImpl {
 
     @Override
     public boolean equals(Object o) {
-      if (this == o)
-        return true;
-      if (o == null || getClass() != o.getClass())
-        return false;
+      if (this == o) return true;
+      if (o == null || getClass() != o.getClass()) return false;
 
       DailyReport that = (DailyReport) o;
 
-      if (hourCount != that.hourCount)
-        return false;
-      if (hourEstimate != that.hourEstimate)
-        return false;
+      if (hourCount != that.hourCount) return false;
+      if (hourEstimate != that.hourEstimate) return false;
       return time != null ? time.equals(that.time) : that.time == null;
     }
 
@@ -85,8 +86,6 @@ public class CheckinReportServiceImpl {
   
   @Autowired
   AssociateService associateService;
-  @Autowired
-  JobService jobService;
   
   Map<String, DailyReport> reports;
   Set<Associate> associates;
@@ -102,11 +101,22 @@ public class CheckinReportServiceImpl {
   public void addCheckin(Checkin checkin){
     String key = getKey(checkin);
     if(reports.containsKey(key)){
-      reports.get(key).addCheckin();
+      reports.get(key).addCheckin(checkin);
     }
     else {
       int hourEstimate = calculateHourEstimate(checkin.getCheckinTime());
       reports.put(getKey(checkin), new DailyReport(checkin, hourEstimate));
+    }
+  }
+  
+  public void addToMap(String key, Map<String, ArrayList<String>> map, String name) {
+    if(reports.containsKey(key)){
+      map.get(key).add(name);
+    }
+    else {
+      ArrayList<String> names = new ArrayList<String>();
+      map.put(key, names);
+      names.add(name);
     }
   }
   
@@ -125,7 +135,7 @@ public class CheckinReportServiceImpl {
     int total = 0;
     for(Associate a : associates){
     	
-     if(a.isTrackedOnDate(date))
+     if(a.getBatch() != null && a.isTrackedOnDate(date))
      {    		
         total += 1;
      }
@@ -147,19 +157,23 @@ public class CheckinReportServiceImpl {
    * Call this function to empty hash map and re-pull associates from the database.
    * @return 
    */
-  public List<DailyReport> process(Set<Checkin> checkins) {
-    this.reports = new HashMap<>();
+  public ArrayList<DailyReport> process(Set<Checkin> checkins) {
+    this.reports = new HashMap<String, DailyReport>();
     associates = associateService.getAll();
-//    //TODO: making a db call for every associate is inefficient should do a join call in associates.
     
     for(Checkin c : checkins){
       this.addCheckin(c);
     }
     return convertAndOrder(reports);
   }
+  
+  public ArrayList<ArrayList<String>> getCheckinNamesOnDate() {
+    
+    return null;
+  }
 
-  private List<DailyReport> convertAndOrder(Map<String, DailyReport> reports2) {
-    ArrayList<DailyReport> drs = new ArrayList<>();
+  private ArrayList<DailyReport> convertAndOrder(Map<String, DailyReport> reports2) {
+    ArrayList<DailyReport> drs = new ArrayList<DailyReport>();
     drs.addAll(reports2.values());
     Collections.sort(drs);
     return drs;
