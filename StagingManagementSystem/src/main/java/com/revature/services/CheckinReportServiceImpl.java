@@ -135,7 +135,7 @@ public class CheckinReportServiceImpl {
     int total = 0;
     for(Associate a : associates){
     	
-     if(a.isTrackedOnDate(date))
+     if(a.getBatch() != null && a.isTrackedOnDate(date))
      {    		
         total += 1;
      }
