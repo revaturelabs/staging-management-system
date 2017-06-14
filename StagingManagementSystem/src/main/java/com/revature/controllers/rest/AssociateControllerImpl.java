@@ -119,4 +119,9 @@ public class AssociateControllerImpl {
 	public Set<Associate> haveNoBatch() {
 		return associateService.haveNoBatch();
 	}
+	
+	@GetMapping("by-batch/{id}")
+	public Set<Associate> byBatch(@PathVariable Long id) {
+		return associateService.findByBatchId(id);
+	}
 }

@@ -41,10 +41,6 @@ routerApp.service('userService', function ($cookies) {
   };
 });
 
-routerApp.service('batchService', function () {
-  
-});
-
 routerApp.run(($uiRouter, $trace, $rootScope) => {
 
 	//Ui Visualizer
@@ -153,26 +149,13 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
     })
     .state('manager.advanced.batches', {
       url: '/batches',
-      views: {
-        '': {
-          templateUrl: 'manager-pages/advanced/batches/batches.html',
-        },
-        'edit@manager.advanced.batches': {
-          templateUrl: 'manager-pages/create/batch.html',
-          controller: batchCtrl,
-        }
-      }
-
+      templateUrl: 'manager-pages/advanced/batches/batches.html'
     })
-    // .state('manager.advanced.batches.edit', {
-    //   views: {
-    //     "edit@manager.advanced.batches": {
-    //       template: 'HELLOOOOOOOOO WORLD'
-    //       // templateUrl: 'manager-pages/create/batch.html',
-    //       // controller: batchCtrl,
-    //     }
-    //   }
-    // })
+    .state('manager.advanced.batches.edit', {
+      url: '/edit/:id',
+      templateUrl: 'manager-pages/create/batch.html',
+      controller: batchCtrl,
+    })
     .state('associate', {
       url: '/associate',
       templateUrl: 'associate-pages/associate.html',

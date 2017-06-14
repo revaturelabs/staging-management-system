@@ -22,7 +22,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="batch in batches | filter: batchBatchFilter" ng-click="setBatch(batch)" data-toggle="modal" data-target="#batchModal">
+    <tr ng-repeat="batch in batches | filter: batchBatchFilter" ui-sref="manager.advanced.batches.edit({id: batch.id})" data-toggle="modal" data-target="#batchModal">
       <td ng-bind="batch.batchType.value"></td>
       <td>
         <div ng-repeat="trainer in batch.trainers">
@@ -42,7 +42,7 @@
 
     <!-- Modal content-->
     <div class="modal-content">
-      <div ui-view="edit"></div>
+      <div ui-view></div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

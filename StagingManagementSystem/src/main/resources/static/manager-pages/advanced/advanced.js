@@ -1,4 +1,4 @@
-const managerAdvancedCtrl = ($scope, $http, $state, batchService) => {
+const managerAdvancedCtrl = ($scope, $http, $state) => {
   window.scope = $scope
 
   $http.get('batchtype/all')
@@ -68,11 +68,6 @@ const managerAdvancedCtrl = ($scope, $http, $state, batchService) => {
 
   $scope.batchBatchFilter = (batch) => {
     return $scope.selectedBatchTypes.filter((batchType) => batchType.value === batch.batchType.value).length >= 1;
-  }
-
-  $scope.setBatch = (batch) => {
-    batchService.batch = batch;
-    $scope.$apply();
   }
 };
 

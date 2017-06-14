@@ -100,37 +100,37 @@
 
 	var _job = __webpack_require__(104);
 
-	var _advanced = __webpack_require__(114);
+	var _advanced = __webpack_require__(105);
 
 	var _advanced2 = _interopRequireDefault(_advanced);
 
-	var _profile = __webpack_require__(105);
+	var _profile = __webpack_require__(106);
 
 	var _profile2 = _interopRequireDefault(_profile);
 
-	var _interview = __webpack_require__(106);
+	var _interview = __webpack_require__(107);
 
 	var _interview2 = _interopRequireDefault(_interview);
 
-	var _associate = __webpack_require__(107);
+	var _associate = __webpack_require__(108);
 
 	var _associate2 = _interopRequireDefault(_associate);
 
-	var _reports = __webpack_require__(108);
+	var _reports = __webpack_require__(109);
 
-	var _nestedGraph = __webpack_require__(109);
+	var _nestedGraph = __webpack_require__(110);
 
-	var _barGraph = __webpack_require__(110);
+	var _barGraph = __webpack_require__(111);
 
-	var _login = __webpack_require__(111);
+	var _login = __webpack_require__(112);
 
 	var _login2 = _interopRequireDefault(_login);
 
-	var _attendanceBarGraph = __webpack_require__(112);
+	var _attendanceBarGraph = __webpack_require__(113);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	__webpack_require__(113)(_fusioncharts2.default);
+	__webpack_require__(114)(_fusioncharts2.default);
 
 	var Visualizer = window['ui-router-visualizer'].Visualizer;
 
@@ -148,8 +148,6 @@
 	    _this.user = _extends({}, user);
 	  };
 	});
-
-	routerApp.service('batchService', function () {});
 
 	routerApp.run(function ($uiRouter, $trace, $rootScope) {
 
@@ -247,27 +245,12 @@
 	    templateUrl: 'manager-pages/advanced/associates/associates.html'
 	  }).state('manager.advanced.batches', {
 	    url: '/batches',
-	    views: {
-	      '': {
-	        templateUrl: 'manager-pages/advanced/batches/batches.html'
-	      },
-	      'edit@manager.advanced.batches': {
-	        templateUrl: 'manager-pages/create/batch.html',
-	        controller: _batch.batchCtrl
-	      }
-	    }
-
-	  }
-	  // .state('manager.advanced.batches.edit', {
-	  //   views: {
-	  //     "edit@manager.advanced.batches": {
-	  //       template: 'HELLOOOOOOOOO WORLD'
-	  //       // templateUrl: 'manager-pages/create/batch.html',
-	  //       // controller: batchCtrl,
-	  //     }
-	  //   }
-	  // })
-	  ).state('associate', {
+	    templateUrl: 'manager-pages/advanced/batches/batches.html'
+	  }).state('manager.advanced.batches.edit', {
+	    url: '/edit/:id',
+	    templateUrl: 'manager-pages/create/batch.html',
+	    controller: _batch.batchCtrl
+	  }).state('associate', {
 	    url: '/associate',
 	    templateUrl: 'associate-pages/associate.html',
 	    controller: _associate2.default
@@ -47108,9 +47091,10 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var batchCtrl = function batchCtrl($scope, $http) {
+	var batchCtrl = function batchCtrl($scope, $http, $state, $stateParams) {
 	  window.scope = $scope;
 	  $scope.batch = { associates: [] };
+
 	  $('#datetimepicker1').datetimepicker();
 	  $('#datetimepicker2').datetimepicker();
 
@@ -47118,22 +47102,40 @@
 	    $('#datetimepicker' + id).datetimepicker("show");
 	  };
 
-	  $http.get('batchtype/all').then(function (response) {
-	    $scope.batchTypes = response.data;
+	  $http.get('batchtype/all').then(function (response1) {
+	    $scope.batchTypes = response1.data;
+
+	    $http.get('location/all').then(function (response2) {
+	      $scope.locations = response2.data;
+
+	      $http.get('associate/no-batch').then(function (response3) {
+	        $scope.associates = response3.data;
+
+	        if ($state.includes('manager.advanced')) {
+	          $http.get('batch/' + $stateParams.id).then(function (response4) {
+	            $http.get('associate/by-batch/' + $stateParams.id).then(function (response5) {
+	              $scope.batch.associates = response5.data;
+	            });
+
+	            $scope.batch = response4.data;
+	            $scope.batch.batchType = $scope.batchTypes.filter(function (batchType) {
+	              return batchType.value === response4.data.batchType.value;
+	            })[0];
+	            $scope.batch.location = $scope.locations.filter(function (location) {
+	              return location.name === response4.data.location.name;
+	            })[0];
+	          }, function () {
+	            // console.log('failure')
+	          });
+	        }
+	      }, function () {
+	        console.log('failure');
+	      });
+	    }, function () {
+	      console.log('failure');
+	    });
 	  }, function () {
 	    // console.log('failure')
-	  });
-
-	  $http.get('location/all').then(function (response) {
-	    $scope.locations = response.data;
-	  }, function () {
-	    console.log('failure');
-	  });
-
-	  $http.get('associate/no-batch').then(function (response) {
-	    $scope.associates = response.data;
-	  }, function () {
-	    console.log('failure');
 	  });
 
 	  $scope.addAssociate = function () {
@@ -47402,6 +47404,92 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	var managerAdvancedCtrl = function managerAdvancedCtrl($scope, $http, $state) {
+	  window.scope = $scope;
+
+	  $http.get('batchtype/all').then(function (data) {
+	    $scope.batchtypes = data.data;
+	    $scope.selectedBatchTypes = [];
+	    $scope.batchtypes.forEach(function (type) {
+	      return $scope.selectedBatchTypes.push(type);
+	    });
+	  });
+
+	  $http.get('associate/all').then(function (data) {
+	    $scope.associates = data.data;
+	  }, function (data) {
+	    console.log('failed');
+	  });
+
+	  $http.get('batch/all').then(function (data) {
+	    $scope.batches = data.data;
+	  }, function (data) {
+	    console.log('failed');
+	  });
+
+	  $scope.isAssociates = function () {
+	    if ($state.is('manager.advanced.allassociates')) return true;
+	    return false;
+	  };
+
+	  $scope.isBatches = function () {
+	    if ($state.is('manager.advanced.batches')) return true;
+	    return false;
+	  };
+
+	  $scope.isInterviews = function () {
+	    if ($state.is('manager.advanced.interviews')) return true;
+	    return false;
+	  };
+
+	  $scope.trainerFilter = function (associate) {
+	    return true;
+	  };
+
+	  $scope.isSelectedBatchType = function (batchType) {
+	    return $scope.selectedBatchType.filter(function (type) {
+	      return type.value === batchType.value;
+	    }) >= 1;
+	  };
+
+	  $scope.toggleSelectedBatchTypes = function (selectedBatch) {
+	    var idx = $scope.selectedBatchTypes.indexOf(selectedBatch);
+
+	    // Is currently selected
+	    if (idx > -1) {
+	      $scope.selectedBatchTypes.splice(idx, 1);
+	    }
+
+	    // Is newly selected
+	    else {
+	        $scope.selectedBatchTypes.push(selectedBatch);
+	      }
+	  };
+
+	  $scope.associateBatchFilter = function (associate) {
+	    return $scope.selectedBatchTypes.filter(function (batchType) {
+	      return batchType.value === associate.batch.batchType.value;
+	    }).length >= 1;
+	  };
+
+	  $scope.batchBatchFilter = function (batch) {
+	    return $scope.selectedBatchTypes.filter(function (batchType) {
+	      return batchType.value === batch.batchType.value;
+	    }).length >= 1;
+	  };
+	};
+
+	exports.default = managerAdvancedCtrl;
+
+/***/ }),
+/* 106 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -47506,7 +47594,7 @@
 	exports.default = profileCtrl;
 
 /***/ }),
-/* 106 */
+/* 107 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -47621,7 +47709,7 @@
 	exports.default = associateInterviewCtrl;
 
 /***/ }),
-/* 107 */
+/* 108 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -47684,7 +47772,7 @@
 	exports.default = associateCtrl;
 
 /***/ }),
-/* 108 */
+/* 109 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -47699,7 +47787,7 @@
 	exports.reportCtrl = reportCtrl;
 
 /***/ }),
-/* 109 */
+/* 110 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -47904,7 +47992,7 @@
 	exports.nestedCtrl = nestedCtrl;
 
 /***/ }),
-/* 110 */
+/* 111 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -48008,7 +48096,7 @@
 	exports.barCtrl = barCtrl;
 
 /***/ }),
-/* 111 */
+/* 112 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -48073,7 +48161,7 @@
 	exports.default = loginCtrl;
 
 /***/ }),
-/* 112 */
+/* 113 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -48611,7 +48699,7 @@
 	// ----------------------------------- End Main ----------------------------------- //
 
 /***/ }),
-/* 113 */
+/* 114 */
 /***/ (function(module, exports) {
 
 	/*
@@ -48859,97 +48947,6 @@
 	c,b){var f=.5*b,k=a-b,h=a+b,l=a-f,m=a+f,n=a+.5,p=n+1,r=n+1.5,t=c-b,u=c+f,v=c-f,f=c+(b-f);return["M",k,t,"L",l,v,l,f,k,u,a-.5,u,a,c+b+.5,n,u,h,u,m,f,m,v,h,t,r,t,r,v,r,f,p,f,p,v,r,v,r,t,"Z"]},zoomOutIcon:function(a,c,b){a-=.2*b;c-=.2*b;var f=.8*b,k=w.rad(43),h=w.rad(48),l=a+f*ya(k),k=c+f*va(k),m=a+f*ya(h),h=c+f*va(h),n=w.rad(45),p=l+b*ya(n),r=k+b*va(n),t=m+b*ya(n);b=h+b*va(n);return["M",l,k,"A",f,f,0,1,0,m,h,"Z","M",l+1,k+1,"L",p,r,t,b,m+1,h+1,"Z","M",a-2,c,"L",a+2,c,"Z"]},resetIcon:function(a,c,b){var f=
 	a-b,k=(da.PI/2+da.PI)/2;a+=b*ya(k);var k=c+b*va(k),h=2*b/3;return["M",f,c,"A",b,b,0,1,1,a,k,"L",a+h,k-1,a+2,k+h-.5,a,k]}})}])});
 
-
-/***/ }),
-/* 114 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var managerAdvancedCtrl = function managerAdvancedCtrl($scope, $http, $state, batchService) {
-	  window.scope = $scope;
-
-	  $http.get('batchtype/all').then(function (data) {
-	    $scope.batchtypes = data.data;
-	    $scope.selectedBatchTypes = [];
-	    $scope.batchtypes.forEach(function (type) {
-	      return $scope.selectedBatchTypes.push(type);
-	    });
-	  });
-
-	  $http.get('associate/all').then(function (data) {
-	    $scope.associates = data.data;
-	  }, function (data) {
-	    console.log('failed');
-	  });
-
-	  $http.get('batch/all').then(function (data) {
-	    $scope.batches = data.data;
-	  }, function (data) {
-	    console.log('failed');
-	  });
-
-	  $scope.isAssociates = function () {
-	    if ($state.is('manager.advanced.allassociates')) return true;
-	    return false;
-	  };
-
-	  $scope.isBatches = function () {
-	    if ($state.is('manager.advanced.batches')) return true;
-	    return false;
-	  };
-
-	  $scope.isInterviews = function () {
-	    if ($state.is('manager.advanced.interviews')) return true;
-	    return false;
-	  };
-
-	  $scope.trainerFilter = function (associate) {
-	    return true;
-	  };
-
-	  $scope.isSelectedBatchType = function (batchType) {
-	    return $scope.selectedBatchType.filter(function (type) {
-	      return type.value === batchType.value;
-	    }) >= 1;
-	  };
-
-	  $scope.toggleSelectedBatchTypes = function (selectedBatch) {
-	    var idx = $scope.selectedBatchTypes.indexOf(selectedBatch);
-
-	    // Is currently selected
-	    if (idx > -1) {
-	      $scope.selectedBatchTypes.splice(idx, 1);
-	    }
-
-	    // Is newly selected
-	    else {
-	        $scope.selectedBatchTypes.push(selectedBatch);
-	      }
-	  };
-
-	  $scope.associateBatchFilter = function (associate) {
-	    return $scope.selectedBatchTypes.filter(function (batchType) {
-	      return batchType.value === associate.batch.batchType.value;
-	    }).length >= 1;
-	  };
-
-	  $scope.batchBatchFilter = function (batch) {
-	    return $scope.selectedBatchTypes.filter(function (batchType) {
-	      return batchType.value === batch.batchType.value;
-	    }).length >= 1;
-	  };
-
-	  $scope.setBatch = function (batch) {
-	    batchService.batch = batch;
-	    $scope.$apply();
-	  };
-	};
-
-	exports.default = managerAdvancedCtrl;
 
 /***/ })
 /******/ ]);

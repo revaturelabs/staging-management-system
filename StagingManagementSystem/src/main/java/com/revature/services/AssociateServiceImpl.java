@@ -85,4 +85,9 @@ public class AssociateServiceImpl implements AssociateService {
 	public Set<Associate> haveNoBatch() {
 		return associateRepo.findByBatchIsNull();
 	}
+
+	@Override
+	public Set<Associate> findByBatchId(Long id) {
+		return associateRepo.findByBatchId(id);
+	}
 }

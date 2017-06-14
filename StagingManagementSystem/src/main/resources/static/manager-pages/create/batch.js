@@ -1,6 +1,7 @@
-const batchCtrl = ($scope, $http) => {
+const batchCtrl = ($scope, $http, $state, $stateParams) => {
   window.scope = $scope;
   $scope.batch = {associates: []}
+
   $('#datetimepicker1').datetimepicker();
 	$('#datetimepicker2').datetimepicker();
 
@@ -8,23 +9,41 @@ const batchCtrl = ($scope, $http) => {
 		$('#datetimepicker' + id ).datetimepicker("show");
 	}
 
-  $http.get('batchtype/all').then((response) => {
-			$scope.batchTypes = response.data
+  $http.get('batchtype/all').then((response1) => {
+			$scope.batchTypes = response1.data;
+
+      $http.get('location/all').then((response2) => {
+    		$scope.locations = response2.data;
+
+        $http.get('associate/no-batch').then((response3) => {
+      		$scope.associates = response3.data;
+
+          if($state.includes('manager.advanced')) {
+            $http.get('batch/' + $stateParams.id).then((response4) => {
+                $http.get('associate/by-batch/' + $stateParams.id).then((response5) => {
+                  $scope.batch.associates = response5.data;
+                })
+
+          			$scope.batch = response4.data;
+                $scope.batch.batchType = $scope.batchTypes.filter((batchType) => batchType.value === response4.data.batchType.value)[0];
+                $scope.batch.location = $scope.locations.filter((location) => location.name === response4.data.location.name)[0];
+            	}, () => {
+            		// console.log('failure')
+            	})
+          }
+        	}, () => {
+        		console.log('failure')
+        	})
+      	}, () => {
+      		console.log('failure')
+      	})
   	}, () => {
   		// console.log('failure')
   	})
 
-  $http.get('location/all').then((response) => {
-		$scope.locations = response.data
-  	}, () => {
-  		console.log('failure')
-  	})
 
-  $http.get('associate/no-batch').then((response) => {
-		$scope.associates = response.data
-  	}, () => {
-  		console.log('failure')
-  	})
+
+
 
   $scope.addAssociate = () => {
     if(!$scope.selectedAssociate) {
