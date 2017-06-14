@@ -62851,7 +62851,7 @@
 	  value: true
 	});
 	var chart = {
-	  caption: "Asscoiates Available vs. Associate Confirmed",
+	  caption: "Associates Available vs. Associates Confirmed",
 	  subCaption: "Revature LLC",
 	  xAxisname: "Batch Type",
 	  yAxisName: "Number of Associate",
