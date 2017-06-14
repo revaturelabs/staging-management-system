@@ -108,9 +108,9 @@
 
 	var _job = __webpack_require__(223);
 
-	var _associates = __webpack_require__(224);
+	var _advanced = __webpack_require__(224);
 
-	var _associates2 = _interopRequireDefault(_associates);
+	var _advanced2 = _interopRequireDefault(_advanced);
 
 	var _profile = __webpack_require__(225);
 
@@ -251,10 +251,17 @@
 	  }).state('manager.advanced', {
 	    url: '/advanced',
 	    templateUrl: 'manager-pages/advanced/advanced.html',
-	    controller: _associates2.default
+	    controller: _advanced2.default
 	  }).state('manager.advanced.allassociates', {
 	    url: '/associates',
-	    templateUrl: 'manager-pages/advanced/associates.html'
+	    templateUrl: 'manager-pages/advanced/associates/associates.html'
+	  }).state('manager.advanced.batches', {
+	    url: '/batches',
+	    templateUrl: 'manager-pages/advanced/batches/batches.html'
+	  }).state('manager.advanced.batches.edit', {
+	    url: '/edit/:id',
+	    templateUrl: 'manager-pages/create/batch.html',
+	    controller: _batch.batchCtrl
 	  }).state('associate', {
 	    url: '/associate',
 	    templateUrl: 'associate-pages/associate.html',
@@ -62952,7 +62959,7 @@
 /* 213 */
 /***/ (function(module, exports) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -62961,23 +62968,54 @@
 	 * Created by colts on 6/8/2017.
 	 */
 	var managerCheckinsCtrl = function managerCheckinsCtrl($scope, $http) {
-	  console.log("started");
-
-	  $http.get("checkin/allTodays").then(function (result) {
+	  $http.get('checkin/allTodays').then(function (result) {
 	    $scope.checkins = result.data;
+	    $http.get('associate/allActive').then(function (result) {
+	      $scope.associates = result.data;
+
+	      $scope.associates.forEach(function (associate) {
+	        associate.checkin = {};
+	        var associatesCheckin = $scope.checkins.some(function (checkin) {
+	          if (checkin.associate.name === associate.name) {
+	            associate.checkin = checkin;
+	            return true;
+	          }
+	        });
+	      });
+	      window.associates = $scope.associates;
+	    });
 	  });
 
-	  $scope.checkIfAllSelected = function (checkin) {
-	    window.checkin = checkin;
+	  $scope.approvedFilter = function (associate) {
+	    if (associate.checkin.approvedBy) {
+	      return false;
+	    } else {
+	      return true;
+	    }
 	  };
 
-	  $scope.isSelectAll = function () {
+	  $scope.selectAllAssociatesWhoCheckedIn = function () {
 	    $scope.checkins.forEach(function (checkin) {
 	      checkin.selected = true;
 	    });
 	  };
 
-	  $scope.selectAll = true;
+	  $scope.approveSelectedCheckins = function () {
+	    var approvedCheckins = [];
+	    $scope.checkins.forEach(function (checkin) {
+	      if (!checkin.approvedBy) {
+	        if (checkin.selected) {
+	          approvedCheckins.push(checkin);
+	        }
+	      }
+	    });
+
+	    $http.patch('checkin/approve-multiple', approvedCheckins).then(function () {
+	      approvedCheckins.forEach(function (checkin) {
+	        checkin.approvedBy = true;
+	      });
+	    });
+	  };
 	};
 
 	exports.default = managerCheckinsCtrl;
@@ -63836,33 +63874,76 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var batchCtrl = function batchCtrl($scope, $http) {
+	var batchCtrl = function batchCtrl($scope, $http, $state, $stateParams) {
 	  window.scope = $scope;
+	  $scope.batch = { associates: [] };
+
 	  $('#datetimepicker1').datetimepicker();
 	  $('#datetimepicker2').datetimepicker();
 
-	  $http.get('batchtype/all').then(function (response) {
-	    $scope.batchTypes = response.data;
+	  $scope.showDateTimePicker = function (id) {
+	    $('#datetimepicker' + id).datetimepicker("show");
+	  };
+
+	  $http.get('batchtype/all').then(function (response1) {
+	    $scope.batchTypes = response1.data;
+
+	    $http.get('location/all').then(function (response2) {
+	      $scope.locations = response2.data;
+
+	      $http.get('associate/no-batch').then(function (response3) {
+	        $scope.associates = response3.data;
+
+	        if ($state.includes('manager.advanced')) {
+	          $http.get('batch/' + $stateParams.id).then(function (response4) {
+	            $http.get('associate/by-batch/' + $stateParams.id).then(function (response5) {
+	              $scope.batch.associates = response5.data;
+	            });
+
+	            $scope.batch = response4.data;
+	            $scope.batch.batchType = $scope.batchTypes.filter(function (batchType) {
+	              return batchType.value === response4.data.batchType.value;
+	            })[0];
+	            $scope.batch.location = $scope.locations.filter(function (location) {
+	              return location.name === response4.data.location.name;
+	            })[0];
+	          }, function () {
+	            // console.log('failure')
+	          });
+	        }
+	      }, function () {
+	        console.log('failure');
+	      });
+	    }, function () {
+	      console.log('failure');
+	    });
 	  }, function () {
 	    // console.log('failure')
 	  });
 
-	  $http.get('location/all').then(function (response) {
-	    $scope.locations = response.data;
-	  }, function () {
-	    console.log('failure');
-	  });
+	  $scope.addAssociate = function () {
+	    if (!$scope.selectedAssociate) {
+	      return;
+	    }
+	    $scope.batch.associates.push($scope.selectedAssociate);
+	    $scope.associates = $scope.associates.filter(function (associate) {
+	      return associate.id !== $scope.selectedAssociate.id;
+	    });
+	  };
+
+	  $scope.removeAssociate = function (selected) {
+	    $scope.batch.associates = $scope.batch.associates.filter(function (associate) {
+	      return associate.id !== selected.id;
+	    });
+	    $scope.associates.push(selected);
+	  };
 
 	  $('#datetimepicker1').on('dp.change', function () {
 	    $scope.batch.startDate = $('#datetimepicker1').val();
-	    var now = new Date($scope.batch.startDate).toISOString();
-	    $scope.batch.startDate = now;
 	  });
 
 	  $('#datetimepicker2').on('dp.change', function () {
 	    $scope.batch.endDate = $('#datetimepicker2').val();
-	    var now2 = new Date($scope.batch.endDate).toISOString();
-	    $scope.batch.endDate = now2;
 	  });
 
 	  $scope.submit = function () {
@@ -63870,10 +63951,11 @@
 	    $scope.createMessage = 'Attempting to create batch';
 	    $scope.createMessageStyle = { color: 'black' };
 
-	    // $scope.batch.startDate = moment($scope.batch.startDate).toDate();
-	    // $scope.batch.endDate = moment($scope.batch.endDate).toDate();
+	    var batchCreation = JSON.parse(JSON.stringify($scope.batch));
+	    batchCreation.startDate = moment($scope.batch.startDate).toDate();
+	    batchCreation.endDate = moment($scope.batch.endDate).toDate();
 
-	    $http.post('/batch', JSON.stringify($scope.batch)).then(function (response) {
+	    $http.post('/batch', batchCreation).then(function (response) {
 	      $scope.createMessage = 'Successfully created batch';
 	      $scope.createMessageStyle = { color: 'green' };
 	    }, function () {
@@ -64028,12 +64110,16 @@
 	  value: true
 	});
 	var jobCtrl = function jobCtrl($scope, $http) {
-	  window.scope = $scope;
+	  $scope.job = {};
 	  $('#datetimepicker1').datetimepicker();
 	  $('#datetimepicker2').datetimepicker();
 	  $('#datetimepicker3').datetimepicker();
 	  $('#datetimepicker4').datetimepicker();
 	  $('#datetimepicker5').datetimepicker();
+
+	  $scope.showDateTimePicker = function (id) {
+	    $('#datetimepicker' + id).datetimepicker("show");
+	  };
 
 	  $http.get('associate/all').then(function (response) {
 	    //takes a while for associates to load...
@@ -64050,45 +64136,37 @@
 
 	  $('#datetimepicker1').on('dp.change', function () {
 	    $scope.job.startDate = $('#datetimepicker1').val();
-	    var now = new Date($scope.job.startDate).toISOString();
-	    $scope.job.startDate = now;
 	  });
 
 	  $('#datetimepicker2').on('dp.change', function () {
 	    $scope.job.projectedEndDate = $('#datetimepicker2').val();
-	    var now2 = new Date($scope.job.projectedEndDate).toISOString();
-	    $scope.job.projectedEndDate = now2;
 	  });
 
 	  $('#datetimepicker3').on('dp.change', function () {
 	    $scope.job.endDate = $('#datetimepicker3').val();
-	    var now3 = new Date($scope.job.endDate).toISOString();
-	    $scope.job.endDate = now3;
 	  });
 
 	  $('#datetimepicker4').on('dp.change', function () {
 	    $scope.job.buyoutDate = $('#datetimepicker4').val();
-	    var now4 = new Date($scope.job.buyoutDate).toISOString();
-	    $scope.job.buyoutDate = now4;
 	  });
 
 	  $('#datetimepicker5').on('dp.change', function () {
 	    $scope.job.confirmedDate = $('#datetimepicker5').val();
-	    var now5 = new Date($scope.job.confirmedDate).toISOString();
-	    $scope.job.confirmedDate = now5;
 	  });
 
 	  $scope.submit = function () {
 	    $scope.requestMade = true;
 	    $scope.createMessage = 'Attempting to create job';
 	    $scope.createMessageStyle = { color: 'black' };
-	    $scope.job.startDate = moment($scope.job.startDate).toDate();
-	    $scope.job.projectedEndDate = moment($scope.job.projectedEndDate).toDate();
-	    $scope.job.endDate = moment($scope.job.endDate).toDate();
-	    $scope.job.buyoutDate = moment($scope.job.buyoutDate).toDate();
-	    $scope.job.confirmedDate = moment($scope.job.confirmedDate).toDate();
 
-	    $http.post('/job', JSON.stringify($scope.job)).then(function (response) {
+	    var jobCreation = JSON.parse(JSON.stringify($scope.job));
+	    jobCreation.startDate = moment($scope.job.startDate).toDate();
+	    jobCreation.projectedEndDate = moment($scope.job.projectedEndDate).toDate();
+	    jobCreation.endDate = moment($scope.job.endDate).toDate();
+	    jobCreation.buyoutDate = moment($scope.job.buyoutDate).toDate();
+	    jobCreation.confirmedDate = moment($scope.job.confirmedDate).toDate();
+
+	    $http.post('/job', jobCreation).then(function (response) {
 	      $scope.createMessage = 'Successfully created job';
 	      $scope.createMessageStyle = { color: 'green' };
 	    }, function () {
@@ -64109,7 +64187,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var managerAdvancedAssociatesCtrl = function managerAdvancedAssociatesCtrl($scope, $http) {
+	var managerAdvancedCtrl = function managerAdvancedCtrl($scope, $http, $state) {
 	  window.scope = $scope;
 
 	  $http.get('batchtype/all').then(function (data) {
@@ -64122,10 +64200,30 @@
 
 	  $http.get('associate/all').then(function (data) {
 	    $scope.associates = data.data;
-	    window.associates = data.data;
 	  }, function (data) {
 	    console.log('failed');
 	  });
+
+	  $http.get('batch/all').then(function (data) {
+	    $scope.batches = data.data;
+	  }, function (data) {
+	    console.log('failed');
+	  });
+
+	  $scope.isAssociates = function () {
+	    if ($state.is('manager.advanced.allassociates')) return true;
+	    return false;
+	  };
+
+	  $scope.isBatches = function () {
+	    if ($state.is('manager.advanced.batches')) return true;
+	    return false;
+	  };
+
+	  $scope.isInterviews = function () {
+	    if ($state.is('manager.advanced.interviews')) return true;
+	    return false;
+	  };
 
 	  $scope.trainerFilter = function (associate) {
 	    return true;
@@ -64151,14 +64249,20 @@
 	      }
 	  };
 
-	  $scope.batchFilter = function (associate) {
+	  $scope.associateBatchFilter = function (associate) {
 	    return $scope.selectedBatchTypes.filter(function (batchType) {
 	      return batchType.value === associate.batch.batchType.value;
 	    }).length >= 1;
 	  };
+
+	  $scope.batchBatchFilter = function (batch) {
+	    return $scope.selectedBatchTypes.filter(function (batchType) {
+	      return batchType.value === batch.batchType.value;
+	    }).length >= 1;
+	  };
 	};
 
-	exports.default = managerAdvancedAssociatesCtrl;
+	exports.default = managerAdvancedCtrl;
 
 /***/ }),
 /* 225 */

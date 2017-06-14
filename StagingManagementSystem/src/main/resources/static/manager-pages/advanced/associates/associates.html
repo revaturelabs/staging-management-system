@@ -3,8 +3,7 @@
     <thead>
     <tr>
       <div class="table-header-buttons">
-        <button class="btn" data-toggle="modal" data-target="#filterModal">Select Filters</button>
-        <p>Select Batch Types</p>
+        <div>Select Batch Types</div>
         <div class="manager-advanced-row">
           <div ng-repeat="batchtype in batchtypes">
             <input
@@ -22,7 +21,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="associate in associates | filter: batchFilter | filter: nameFilter | filter: trainerFilter">
+    <tr ng-repeat="associate in associates | filter: associateBatchFilter | filter: nameFilter | filter: trainerFilter" ui-sref="manager.associateView({id: associate.id})">
       <td ng-bind="associate.name"></td>
       <td ng-bind="associate.batch.batchType.value"></td>
       <td>

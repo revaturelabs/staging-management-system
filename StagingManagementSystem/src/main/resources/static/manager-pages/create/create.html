@@ -10,3 +10,46 @@
 
   <div ui-view></div>
 </div>
+
+<!-- Modal -->
+<div id="batchTypeModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content ... yes things are named new but it can handle updating too so code needs cleaning-->
+    <div class="modal-content">
+      <div class="modal-header interview-modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">BatchType</h4>
+      </div>
+      <div class="modal-body flex-column" style="align-items: center">
+        <div class="add-batch-type-container flex-column" style="align-items: center" ng-show="newBatchTypeShow">
+          <div class="input-group" style="width:100%">
+            <label>Batch Type: </label>
+            <input class="manager-input" placeholder="Enter Type Name" ng-model="newBatchType.value" ng-class="{'invalid': !newBatchType.value}"/>
+          </div>
+          <div>
+            <label>Add Skill: </label>
+            <div class="input-group" style="margin-top: 0.2em">
+
+              <input class="manager-input form-control" ng-keyup="$event.keyCode == 13 ? addSkill(newBatchTypeSkill) : null" placeholder="Enter Skill Name" ng-model="newBatchTypeSkill"/>
+              <div class="input-group-addon" style="cursor: pointer" ng-click="addSkill(newBatchTypeSkill)"> add </div>
+              <!-- <input class="manager-input" ng-model="newSkill.value"/> -->
+            </div>
+          </div>
+          <div class="new-batchType-skills-title">Added Skills </div>
+          <div class="flex-row" style="justify-content: center" ng-repeat="skill in newBatchType.skills">
+            <div style="text-align:center" ng-bind="skill.value"></div>
+            <span class="glyphicon glyphicon-minus remove-batch-type-glyph" ng-click="removeSkill(skill)"></span>
+          </div>
+        </div>
+        <div style="height: 0.5em"></div>
+        <button class="btn btn-success" ng-click="addBatchType(newBatchType)">Submit</button>
+        <div ng-show="batchTypeRequestMade" ng-bind="addBatchTypeMessage" ng-style="addBatchTypeMessageStyle"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>

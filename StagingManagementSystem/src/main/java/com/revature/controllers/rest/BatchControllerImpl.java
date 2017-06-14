@@ -31,6 +31,7 @@ public class BatchControllerImpl {
 
 	@PostMapping
 	public void addBatch(@RequestBody Batch batch) {
+		System.out.println(batch);
 		batchService.add(batch);
 	}
 

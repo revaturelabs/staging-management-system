@@ -1,31 +1,70 @@
-const batchCtrl = ($scope, $http) => {
+const batchCtrl = ($scope, $http, $state, $stateParams) => {
   window.scope = $scope;
+  $scope.batch = {associates: []}
+
   $('#datetimepicker1').datetimepicker();
 	$('#datetimepicker2').datetimepicker();
 
-  $http.get('batchtype/all').then((response) => {
-			$scope.batchTypes = response.data
+  $scope.showDateTimePicker = (id) => {
+		$('#datetimepicker' + id ).datetimepicker("show");
+	}
+
+  $http.get('batchtype/all').then((response1) => {
+			$scope.batchTypes = response1.data;
+
+      $http.get('location/all').then((response2) => {
+    		$scope.locations = response2.data;
+
+        $http.get('associate/no-batch').then((response3) => {
+      		$scope.associates = response3.data;
+
+          if($state.includes('manager.advanced')) {
+            $http.get('batch/' + $stateParams.id).then((response4) => {
+                $http.get('associate/by-batch/' + $stateParams.id).then((response5) => {
+                  $scope.batch.associates = response5.data;
+                })
+
+          			$scope.batch = response4.data;
+                $scope.batch.batchType = $scope.batchTypes.filter((batchType) => batchType.value === response4.data.batchType.value)[0];
+                $scope.batch.location = $scope.locations.filter((location) => location.name === response4.data.location.name)[0];
+            	}, () => {
+            		// console.log('failure')
+            	})
+          }
+        	}, () => {
+        		console.log('failure')
+        	})
+      	}, () => {
+      		console.log('failure')
+      	})
   	}, () => {
   		// console.log('failure')
   	})
 
-  $http.get('location/all').then((response) => {
-		$scope.locations = response.data
-  	}, () => {
-  		console.log('failure')
-  	})
+
+
+
+
+  $scope.addAssociate = () => {
+    if(!$scope.selectedAssociate) {
+      return;
+    }
+    $scope.batch.associates.push($scope.selectedAssociate);
+    $scope.associates = $scope.associates.filter((associate) => associate.id !== $scope.selectedAssociate.id);
+  }
+
+  $scope.removeAssociate = (selected) => {
+    $scope.batch.associates = $scope.batch.associates.filter((associate) => associate.id !== selected.id)
+    $scope.associates.push(selected);
+  }
 
 
   $('#datetimepicker1').on('dp.change', () => {
     $scope.batch.startDate = $('#datetimepicker1').val();
-   var now = new Date($scope.batch.startDate).toISOString(); 
-   $scope.batch.startDate = now;
   });
 
   $('#datetimepicker2').on('dp.change', () => {
     $scope.batch.endDate = $('#datetimepicker2').val();
-    var now2 = new Date($scope.batch.endDate).toISOString(); 
-    $scope.batch.endDate = now2;
   });
 
 
@@ -35,10 +74,11 @@ const batchCtrl = ($scope, $http) => {
     $scope.createMessage = 'Attempting to create batch';
     $scope.createMessageStyle = { color: 'black' };
 
-		// $scope.batch.startDate = moment($scope.batch.startDate).toDate();
-		// $scope.batch.endDate = moment($scope.batch.endDate).toDate();
+    const batchCreation = JSON.parse(JSON.stringify($scope.batch))
+		batchCreation.startDate = moment($scope.batch.startDate).toDate();
+		batchCreation.endDate = moment($scope.batch.endDate).toDate();
 
-  	$http.post('/batch', JSON.stringify($scope.batch)).then( (response) => {
+  	$http.post('/batch', batchCreation).then( (response) => {
 			$scope.createMessage = 'Successfully created batch';
   		$scope.createMessageStyle = { color: 'green' };
   	}, () => {

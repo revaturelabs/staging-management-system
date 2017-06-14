@@ -12,7 +12,7 @@
           <div>
             <label>Batch Type:</label>
             <div class="input-group">
-              <select class="manager-input form-control"ng-model="batch.batchType" ng-options="batchType as batchType.value for batchType in batchTypes">
+              <select class="manager-input form-control" ng-model="batch.batchType" ng-options="batchType as batchType.value for batchType in batchTypes">
                 <option value="">-- Select a Batch Type --</option>
               </select>
               <span class="input-group-addon" style="cursor: pointer" ng-click="openNewBatchTypeForm()" data-toggle="modal" data-target="#batchTypeModal">
@@ -25,17 +25,26 @@
     </tr>
     <tr>
       <tr>
-        <td><label>Start Date: </label>
-              <input type='text' class="manager-input" ng-model="batch.startDate" id='datetimepicker1'/>
-              <div ng-click="showDateTimePicker()">
-              </div>
+        <td>
+          <label>Start Date: </label>
+          <div class="input-group" ng-click="showDateTimePicker(1)">
+            <input type='text' class="manager-input form-control" ng-model="batch.startDate" id='datetimepicker1'/>
+            <span class="input-group-addon" style="cursor:pointer">
+							<span class="glyphicon glyphicon-calendar"></span>
+            </span>
+          </div>
+
         </td>
       </tr>
       <tr>
-        <td><label>End Date: </label>
-              <input type='text' class="manager-input" ng-model="batch.endDate" id='datetimepicker2'/>
-              <div ng-click="showDateTimePicker()">
-              </div>
+        <td>
+          <label>Start Date: </label>
+          <div class="input-group" ng-click="showDateTimePicker(2)">
+            <input type='text' class="manager-input form-control" ng-model="batch.endDate" id='datetimepicker2'/>
+            <span class="input-group-addon" style="cursor:pointer">
+							<span class="glyphicon glyphicon-calendar"></span>
+            </span>
+          </div>
         </td>
       </tr>
     </tr>
@@ -45,6 +54,23 @@
         <select class="manager-input" ng-model="batch.location" ng-options="location as location.name for location in locations">
           <option value=""> -- Select a Location -- </option>
         </select>
+			</td>
+    </tr>
+    <tr>
+      <td>
+        <div class="flex-column">
+          <div class="flex-row">
+    				<label>Associates: </label>
+            <select class="manager-input" ng-model="selectedAssociate" ng-options="associate as associate.name for associate in associates" ng-change="addAssociate()">
+              <option value=""> -- Select an Associate -- </option>
+            </select>
+          </div>
+          <div class="new-batchType-skills-title"> Added Associates </div>
+          <div class="flex-row" style="justify-content: center" ng-repeat="associate in batch.associates">
+            <div style="text-align:center" ng-bind="associate.name"></div>
+            <span class="glyphicon glyphicon-minus remove-batch-type-glyph" ng-click="removeAssociate(associate)"></span>
+          </div>
+        </div>
 			</td>
     </tr>
   </tbody>

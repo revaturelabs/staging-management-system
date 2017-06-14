@@ -20,7 +20,7 @@ import { clientCtrl } from './manager-pages/create/client';
 import { userCtrl } from './manager-pages/create/user';
 import { locCtrl } from './manager-pages/create/location';
 import { jobCtrl } from './manager-pages/create/job';
-import managerAdvancedAssociatesCtrl from './manager-pages/advanced/associates';
+import managerAdvancedCtrl from './manager-pages/advanced/advanced';
 import profileCtrl from './associate-pages/profile/profile';
 import associateInterviewCtrl from './associate-pages/interview/interview';
 import associateCtrl from './associate-pages/associate';
@@ -147,11 +147,20 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
     .state('manager.advanced', {
       url: '/advanced',
       templateUrl: 'manager-pages/advanced/advanced.html',
-      controller: managerAdvancedAssociatesCtrl,
+      controller: managerAdvancedCtrl,
     })
     .state('manager.advanced.allassociates', {
       url: '/associates',
-      templateUrl: 'manager-pages/advanced/associates.html',
+      templateUrl: 'manager-pages/advanced/associates/associates.html',
+    })
+    .state('manager.advanced.batches', {
+      url: '/batches',
+      templateUrl: 'manager-pages/advanced/batches/batches.html'
+    })
+    .state('manager.advanced.batches.edit', {
+      url: '/edit/:id',
+      templateUrl: 'manager-pages/create/batch.html',
+      controller: batchCtrl,
     })
     .state('associate', {
       url: '/associate',

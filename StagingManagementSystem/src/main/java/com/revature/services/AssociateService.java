@@ -16,4 +16,8 @@ public interface AssociateService {
 	public Set<Associate> getAll();
 
 	public Set<Associate> getAllActive();
+
+	public Set<Associate> haveNoBatch();
+
+	public Set<Associate> findByBatchId(Long id);
 }
