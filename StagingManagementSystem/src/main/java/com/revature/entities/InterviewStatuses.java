@@ -1,91 +1,77 @@
 package com.revature.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.revature.exceptions.SmsCustomException;
-import com.revature.markers.SmsValidatable;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name = "INTERVIEW_STATUSES")
-@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-public class InterviewStatuses implements SmsValidatable {
-	
-	@Id
-	@Column(name = "INTERVIEW_STATUS_ID")
-	@SequenceGenerator(name = "INTERVIEW_STATUS_ID_SEQ", sequenceName = "INTERVIEW_STATUS_ID_SEQ")
-	@GeneratedValue(generator = "INTERVIEW_STATUS_ID_SEQ", strategy = GenerationType.SEQUENCE)
-	private long id;
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class InterviewStatuses {
 
-	@Column(name = "INTERVIEW_STATUS_VALUE")
-	private String value;
+    @Id
+    @Column(name = "INTERVIEW_STATUS_ID")
+    @SequenceGenerator(name = "INTERVIEW_STATUS_ID_SEQ", sequenceName = "INTERVIEW_STATUS_ID_SEQ")
+    @GeneratedValue(generator = "INTERVIEW_STATUS_ID_SEQ", strategy = GenerationType.SEQUENCE)
+    private long id;
 
-	public InterviewStatuses() {
-		super();
-	}
+    @Column(name = "INTERVIEW_STATUS_VALUE")
+    private String value;
 
-	public InterviewStatuses(long id, String value) {
-		super();
-		this.id = id;
-		this.value = value;
-	}
+    public InterviewStatuses() {
+        super();
+    }
 
-	public long getId() {
-		return id;
-	}
+    public InterviewStatuses(long id, String value) {
+        super();
+        this.id = id;
+        this.value = value;
+    }
 
-	public void setId(long id) {
-		this.id = id;
-	}
+    public long getId() {
+        return id;
+    }
 
-	public String getValue() {
-		return value;
-	}
+    public void setId(long id) {
+        this.id = id;
+    }
 
-	public void setValue(String value) {
-		this.value = value;
-	}
+    public String getValue() {
+        return value;
+    }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((value == null) ? 0 : value.hashCode());
-		return result;
-	}
+    public void setValue(String value) {
+        this.value = value;
+    }
 
-	@Override
-	public final boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (!(obj instanceof InterviewStatuses))
-			return false;
-		InterviewStatuses other = (InterviewStatuses) obj;
-		if (value == null) {
-			if (other.value != null)
-				return false;
-		} else if (!value.equals(other.value))
-			return false;
-		return true;
-	}
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((value == null) ? 0 : value.hashCode());
+        return result;
+    }
 
-	@Override
-	public String toString() {
-		return "InterviewStatuses [id=" + id + ", value=" + value + "]";
-	}
+    @Override
+    public final boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (!(obj instanceof InterviewStatuses))
+            return false;
+        InterviewStatuses other = (InterviewStatuses) obj;
+        if (value == null) {
+            if (other.value != null)
+                return false;
+        } else if (!value.equals(other.value))
+            return false;
+        return true;
+    }
 
-	@Override
-	public void validate() throws SmsCustomException {
-		// TODO Validate your members.
-
-	}
+    @Override
+    public String toString() {
+        return "InterviewStatuses [id=" + id + ", value=" + value + "]";
+    }
 
 }

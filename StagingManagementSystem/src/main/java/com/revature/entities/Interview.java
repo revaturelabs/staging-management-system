@@ -1,8 +1,6 @@
 package com.revature.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.revature.exceptions.SmsCustomException;
-import com.revature.markers.SmsValidatable;
 import com.revature.util.LocalDateTimeConverter;
 
 import javax.persistence.*;
@@ -11,7 +9,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "INTERVIEWS")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Interview implements SmsValidatable {
+public class Interview {
 
     @Id
     @Column(name = "INTERVIEW_ID")
@@ -38,7 +36,7 @@ public class Interview implements SmsValidatable {
     @Column(name = "INTERVIEW_TIME")
     @Convert(converter = LocalDateTimeConverter.class)
     private LocalDateTime scheduled;
-    
+
     @Column(name = "INTERVIEW_COMMENT")
     private String comment;
 
@@ -47,17 +45,17 @@ public class Interview implements SmsValidatable {
     }
 
     public Interview(long id, Associate associate, Client client, Marketer marketer, InterviewStatuses interviewStatus,
-			LocalDateTime scheduled) {
-		super();
-		this.id = id;
-		this.associate = associate;
-		this.client = client;
-		this.marketer = marketer;
-		this.interviewStatus = interviewStatus;
-		this.scheduled = scheduled;
-	}
+                     LocalDateTime scheduled) {
+        super();
+        this.id = id;
+        this.associate = associate;
+        this.client = client;
+        this.marketer = marketer;
+        this.interviewStatus = interviewStatus;
+        this.scheduled = scheduled;
+    }
 
-	public long getId() {
+    public long getId() {
         return id;
     }
 
@@ -106,14 +104,14 @@ public class Interview implements SmsValidatable {
     }
 
     public String getComment() {
-		return comment;
-	}
+        return comment;
+    }
 
-	public void setComment(String comment) {
-		this.comment = comment;
-	}
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
 
-	@Override
+    @Override
     public final boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Interview)) return false;
@@ -151,12 +149,6 @@ public class Interview implements SmsValidatable {
                 ", interviewStatus=" + interviewStatus +
                 ", scheduled=" + scheduled +
                 '}';
-    }
-
-    @Override
-    public void validate() throws SmsCustomException {
-        // TODO Validate your members.
-
     }
 
 }

@@ -15,7 +15,7 @@ import com.revature.markers.SmsValidatable;
 @Entity
 @Table(name = "LOCATIONS")
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-public class Location implements SmsValidatable {
+public class Location {
 	
 	@Id
 	@Column(name = "LOCATION_ID")
@@ -136,12 +136,6 @@ public class Location implements SmsValidatable {
 	public String toString() {
 		return "Location [id=" + id + ", name=" + name + ", country=" + country + ", state=" + state + ", city=" + city
 				+ "]";
-	}
-
-	@Override
-	public void validate() throws SmsCustomException {
-		// TODO Validate your members.
-
 	}
 
 }
