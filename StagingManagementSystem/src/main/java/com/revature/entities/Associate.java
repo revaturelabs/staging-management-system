@@ -22,7 +22,6 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.revature.exceptions.SmsCustomException;
 import com.revature.markers.SmsValidatable;
-import org.apache.log4j.Logger;
 
 @Entity
 @Table(name = "ASSOCIATES")

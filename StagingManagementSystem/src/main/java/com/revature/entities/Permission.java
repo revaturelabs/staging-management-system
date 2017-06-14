@@ -10,8 +10,6 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.revature.exceptions.SmsCustomException;
-import com.revature.exceptions.badrequests.InvalidFieldException;
-import com.revature.exceptions.badrequests.NullReferenceException;
 import com.revature.markers.SmsValidatable;
 
 @Entity
