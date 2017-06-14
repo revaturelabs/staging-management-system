@@ -83,8 +83,6 @@ public class AssociateControllerImpl {
 	@PutMapping
 	public ResponseEntity<Object> updateAssociate(@RequestBody Associate associate, HttpSession session) {
 		Associate authenticatedAssociate = (Associate) session.getAttribute("login_associate");
-		Manager authenticatedManager = (Manager) session.getAttribute("login_manager");
-
 		if (authenticatedAssociate != null) { // Associate edits their profile
 			// Now we block any changes we don't want, by cherry picking the
 			// associate information
