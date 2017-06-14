@@ -49,7 +49,7 @@ const associateCtrl = ($scope, $location, $http, $state, userService) => {
     })
       .then(() => {
         userService.setUser({});
-        $state.go('login');
+        $state.transitionTo('login');
       });
   };
 };

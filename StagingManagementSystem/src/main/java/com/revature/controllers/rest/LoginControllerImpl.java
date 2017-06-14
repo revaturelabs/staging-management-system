@@ -40,6 +40,20 @@ public class LoginControllerImpl {
 		else
 			return ResponseEntity.ok(true);
 	}
+	
+	@GetMapping("user")
+	public ResponseEntity<Object> getUser(HttpSession session) {
+		Manager manager = (Manager)session.getAttribute("login_manager");
+		Associate associate = (Associate)session.getAttribute("login_associate");
+		
+		if (manager != null) {
+			return ResponseEntity.ok(manager);
+		}
+		if (associate != null) {
+			return ResponseEntity.ok(associate);
+		}
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+	}
 
 	@PostMapping
 	public ResponseEntity<Object> dualLogin(@RequestBody Credential creds, HttpSession session){
