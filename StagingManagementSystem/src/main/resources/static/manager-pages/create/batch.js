@@ -1,5 +1,4 @@
 const batchCtrl = ($scope, $http, $state, $stateParams) => {
-  window.scope = $scope;
   $scope.batch = {associates: [], trainers: []}
 
   $('#datetimepicker1').datetimepicker();
