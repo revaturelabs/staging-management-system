@@ -90,8 +90,8 @@
             <li ng-repeat="skill in additionalSkillsValues" class="list-group-item">
               <span ng-bind="skill.value"></span>
               <span class="pull-right">
-                <button class="btn btn-xs btn-danger">
-                  <span ng-click="removeSkill(skill)" class="glyphicon glyphicon-trash"></span>
+                <button ng-click="removeSkill(skill)" class="btn btn-xs btn-danger">
+                  <span class="glyphicon glyphicon-trash"></span>
                 </button>
               </span>
             </li>
