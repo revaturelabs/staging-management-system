@@ -64,6 +64,8 @@ public class CredentialServiceImpl implements CredentialService {
     public Object login(Credential creds) {
 
         Credential newCred = credentialRepo.findByUsername(creds.getUsername());
+        if(!newCred.getPassword().equals(creds.getPassword()))
+        	return null;
         if (newCred != null) {
             Associate associate = associateRepo.getByCredential(newCred);
             if (associate != null) return associate;
