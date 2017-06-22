@@ -1,7 +1,9 @@
 # Staging Management System
 * [Overview](#overview)
 * [Setup](#setup)
+* [Database](#database)
 * [API](#api)
+
 
 ## Overview
 
@@ -82,6 +84,22 @@ At this point if you have webpack bundling and eclipse automatically refreshing.
 Then any changes you make in the JavaScript should automatically be detected and will
 show up if you refresh your browser window. 
 
+
+## Database
+In this section I will not go over every detail of the  database. However I will go over portions I think
+are important but could be confusing. 
+### Tables
+
+#### Associates
+Associate_active is used to determine if an associate is actively in staging.
+this is essentially a boolean and if true they are available for hire if false they are not.
+
+#### Clients
+I don't think client_active is in use but rather than deleting clients if they ever need
+to be deleted it would be better to flag them as inactive rather than deleting.
+
+Some clients are priority. What this means is if an associate is "locked-to" a client we can not be given
+interviews with other clients until a manager goes in and puts the associate  back on the open market.
 
 ## API
 ## Note that this section is not complete
