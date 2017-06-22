@@ -1,4 +1,9 @@
 # Staging Management System
+* [Overview](#overview)
+* [Setup](#setup)
+* [Database](#database)
+* [API](#api)
+
 
 ## Overview
 
@@ -23,7 +28,8 @@ human resources and a Manager user to be able to View/Manage said data. Its purp
 client requests for staffing and ensuring that associates that are mapped to clients are not accidentally placed with
 other business clients.
 
-## Setup
+## Setup 
+## (!!!!!!!!!! THIS IS VERY IMPORTANT !!!!!!!!!!!!!!!!!!)
 
 ### Node, Webpack, and Babel
 1. Download node from https://nodejs.org/en/download/
@@ -45,7 +51,9 @@ What this does is allows Webpack and Babel to bundle and transpile all of the
 javascript code and it's required dependencies into one js file.
 So even though you are working in your individual js files it will all be
 bundled into bundle.js. Note everytime you make changes in a js file if webpack is not
-watching the code it will not update the bundle.js and the changes will not be reflected.
+watching the code it will not update the bundle.js and the changes will not be reflected.<br />
+!!!!!! IF YOU DO NOT HAVE THIS RUNNING YOU WILL NOT SEE THE CHANGES YOU MAKE IN JAVASCRIPT MAKE SURE TO READ THE ECLIPSE SETUP ALSO !!!!!!!!!!!
+
 
 Why is this a good thing?
 Our server now only has to serve up one js file for our entire application
@@ -53,22 +61,95 @@ and Bable transpiles it into an older version of JavaScript
 that runs on browsers that don't support the newest standard of JavaScript
 
 ### Eclipse
-All of the node modules will now be in your project. This can cause performance
-issues when building your project. However Eclipse does not need to worry about
-these. To do this follow the steps below.
-1. Go to Project -> Preferences. This will pop up a dialogue box.
-2. Expand the Resource tab and select Resource Filters.
-3. Select Add Filter on the right.
-4. Select Exclude All option.
-5. Select Folders option.
-6. In File and Folder Attributes the first dropdown should have Name and the
-    second should have matches. Type "node_modules" in the input box. (Without the quotes of course).
-7. Select OK and then OK again.
-8. Navigate to src/main/resources/static and node_modules should no longer appear there.
-9. Note this folder is also in the .gitignore so it will not be pushed to the repository
+Now that you have Webpack watching your code, eclipse doesn't like to automatically refresh
+So you have 2 options.
+i. Everytime your js code is changed webpack will bundle it and then you have to go into eclipse
+and do a manual refresh. The shortcut should be f5. This is the inefficient way.
+ii. The other option is to set up eclipse to automatically detect changes.
+1. In eclipse click on window -> preference. This will open up a dialogue. 
+2. In the search bar at the top type in workspace.
+3. Click on workspace.
+4. Now at the right should be a checkbox that says "Refresh using native hooks or polling"
+by default this is not selected but select it and then hit ok. 
+
 
 ## Launching the Application
 1. Open Eclipse ( or IDE of your choosing )
 2. Open the BootApp.java in the com.revature package
 3. Run as Spring Boot App
 This will launch a Tomcat server for you on port 8080.
+4. In your browser go to localhost:8080 and it should automatically redirect to the login page.
+
+At this point if you have webpack bundling and eclipse automatically refreshing. 
+Then any changes you make in the JavaScript should automatically be detected and will
+show up if you refresh your browser window. 
+
+
+## Database
+In this section I will not go over every detail of the  database. However I will go over portions I think
+are important but could be confusing. 
+### Tables
+
+#### Associates
+Associate_active is used to determine if an associate is actively in staging.
+this is essentially a boolean and if true they are available for hire if false they are not.
+
+#### Clients
+I don't think client_active is in use but rather than deleting clients if they ever need
+to be deleted it would be better to flag them as inactive rather than deleting.
+
+Some clients are priority. What this means is if an associate is "locked-to" a client we can not be given
+interviews with other clients until a manager goes in and puts the associate  back on the open market.
+
+## API
+## Note that this section is not complete
+- [GET /](#get)
+- [GET /assocaite/{id}]
+- [GET /assocaite/all]
+- [GET /assocaite/allActive]
+- [GET /assocaite/no-batch]
+- [GET /assocaite/by-batch/{id}]
+- [GET /assocaite/totaldata]
+- [GET /associate/generate/mock-data](#post-associategeneratemock-data)
+- [PUT /assocaite]
+- [POST /associate](#post-associate)
+- [POST /associate/add/all](#post-associateaddall)
+- [DELETE /assocaite]
+- [GET /batch/{id}]
+- [GET /batch/all]
+- [PUT /batch]
+- [POST /batch]
+- [POST /batch/types]
+- [POST /batch/mockdata/addmultiple]
+
+### GET
+Sending a get request to the root of the project will give us the single page application.
+This is the only endpoint in the SPAControllerImpl.
+
+### POST associate
+Checks the session object to see who is logged in and if ther session is attached to a 
+manager then a new associate will be created based on the associate object sent. 
+
+#### Request
+```javascript
+'Associate'
+```
+
+#### Response
+Will send a status code of FORBIDDEN if the session is not attached to a manger
+
+### POST     associate/add/all
+Checks the session object to see who is logged in and if ther session is attached to a 
+manager. If a manager is logged in then it will persist all associates in the set sent. 
+
+#### Request
+```javascript
+['Associate']
+```
+
+#### Response
+Will send a status code of FORBIDDEN if the session is not attached to a manger
+
+### GET associate/generate/mock-data
+Used to simulate the hiring process
+
