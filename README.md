@@ -78,4 +78,44 @@ At this point if you have webpack bundling and eclipse automatically refreshing.
 Then any changes you make in the JavaScript should automatically be detected and will
 show up if you refresh your browser window. 
 
+
 ## API
+
+### `GET`
+Sending a get request to the root of the project will give us the single page application.
+This is the only endpoint in the SPAControllerImpl.
+
+### `POST associate`
+Checks the session object to see who is logged in and if ther session is attached to a 
+manager then a new associate will be created based on the associate object sent. 
+
+#### Request
+```javascript
+'Associate'
+```
+
+#### Response
+Will send a status code of FORBIDDEN if the session is not attached to a manger
+
+### `POST     associate/add/all`
+Checks the session object to see who is logged in and if ther session is attached to a 
+manager. If a manager is logged in then it will persist all associates in the set sent. 
+
+#### Request
+```javascript
+['Associate']
+```
+
+#### Response
+Will send a status code of FORBIDDEN if the session is not attached to a manger
+
+#### Response
+```javascript
+['User']
+```
+
+### `POST    users`
+Creates a new user. If any required fields are missing or the `username` provided is already taken, an error should be sent in lieu of a response.
+
+If the given credentials match a previously-deleted user, re-activate the deleted user instead of creating a new one.
+
