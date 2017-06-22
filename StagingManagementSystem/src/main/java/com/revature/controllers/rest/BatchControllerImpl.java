@@ -26,10 +26,9 @@ public class BatchControllerImpl {
 
 	@Autowired
 	private BatchService batchService;
-		 
-  @Autowired
-  private SkillService skillService;
 
+	@Autowired
+	private SkillService skillService;
 
 	public BatchControllerImpl(BatchService batchService) {
 		super();
@@ -41,18 +40,24 @@ public class BatchControllerImpl {
 		batchService.add(batch);
 	}
 
+	/**
+	 * Adds a new batch type, adds its skills if they don't already exist.
+	 * 
+	 * @param batchTypes
+	 */
 	@PostMapping("/types")
 	public void addBatchTypes(@RequestBody Set<BatchType> batchTypes) {
-	  for(BatchType bt : batchTypes) {
-	    Set<Skill> skills = bt.getSkills();
-      Set<Skill> persistantSkill = new HashSet<Skill>();
-      for(Skill s : skills) {
-        persistantSkill.add(skillService.addSkill(s));
-      }
-      
-      bt.setSkills(persistantSkill);
-	  }
-    batchService.addBatchTypes(batchTypes);
+		// this is business logic that should be moved to the service
+		for (BatchType bt : batchTypes) {
+			Set<Skill> skills = bt.getSkills();
+			Set<Skill> persistantSkill = new HashSet<Skill>();
+			for (Skill s : skills) {
+				persistantSkill.add(skillService.addSkill(s));
+			}
+
+			bt.setSkills(persistantSkill);
+		}
+		batchService.addBatchTypes(batchTypes);
 
 	}
 
@@ -65,39 +70,42 @@ public class BatchControllerImpl {
 	public void addMockBatches(@RequestBody Set<Batch> batches) {
 		batchService.addMockBatches(batches);
 	}
-	
+
 	/**
 	 * Deletes batch with location.id
 	 * 
-	 * @param batch - holds the id to be deleted
+	 * @param batch
+	 *            - holds the id to be deleted
 	 */
 	@DeleteMapping
-	public void deleteTrainer(@RequestBody Batch batch) {
+	public void deleteBatch(@RequestBody Batch batch) {
 		batchService.delete(batch);
 	}
-	
+
 	/**
-	 * If the id exists, updates information.
-	 * else creates a new row with genrated id.
+	 * If the id exists, updates information. else creates a new row with
+	 * genrated id.
 	 * 
-	 * @param batch - data to be persisted.
+	 * @param batch
+	 *            - data to be persisted.
 	 */
 	@PutMapping
-	public void updateTrainer(@RequestBody Batch batch) {
+	public void updateBatch(@RequestBody Batch batch) {
 		batchService.update(batch);
 	}
-	
+
 	/**
 	 * Gets a batch with id.
 	 * 
-	 * @param id - id of batch to be retrieved.
+	 * @param id
+	 *            - id of batch to be retrieved.
 	 * @return batch object from dataBase.
 	 */
 	@GetMapping("/{id}")
 	public Batch findById(@PathVariable long id) {
 		return batchService.findById(id);
 	}
-	
+
 	/**
 	 * Gets all Batches.
 	 * 

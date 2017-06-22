@@ -34,7 +34,7 @@ const profileCtrl = ($scope, $http, userService, $stateParams, $state, $window) 
 
   $scope.removeSkill = (skillToDelete) => {
     $scope.additionalSkillsValues = $scope.additionalSkillsValues
-      .filter(skill => skill.id !== skillToDelete.id);
+      .filter(skill => skill.value !== skillToDelete.value);
   };
 
   $scope.toggleSkillsModal = () => {

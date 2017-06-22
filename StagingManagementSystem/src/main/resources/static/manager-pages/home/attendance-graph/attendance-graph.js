@@ -1,3 +1,6 @@
+import FusionCharts from 'fusioncharts';
+import moment from 'moment';
+
 // ----------------------------------- Start Variables ----------------------------------- //
 
 const YEAR = 'Year';
@@ -6,7 +9,6 @@ const WEEK = 'Week';
 
 let scale;              // The scale of the graph equal to the constant values WEEK, MONTH, or YEAR.
 let focalDate;          // The date that was used to create graph view.
-let firstColumnIndex;   // The index of the first column relative dataSet the view was built from.
 
 let originalData;       // The data retrieved from the data Base.
 let displayData;        // A window of the data set being displayed determined by the focal Date.
@@ -65,8 +67,7 @@ const chartPoperties = {
   caption: 'Attendance Associates in Staging',
   subCaption: scale,
   xAxisname: scale,
-  yAxisName: 'Percentage of Attendance',
-  numberPrefix: '%',
+  yAxisName: 'Attendance %',
   paletteColors: '#0075c2',
   bgColor: '#ffffff',
   borderAlpha: '20',
@@ -129,18 +130,6 @@ function binarySearch(data, searchVal, start, stop, cmpFunction) {
  */
 function binarySearchHelper(data, searchVal, cmpFunction) {
   return binarySearch(data, searchVal, 0, data.length, cmpFunction);
-}
-
-function getObj(data, time) {
-  const obj = binarySearchHelper(data, time, cmpDay);
-  if (obj)
-    return obj;
-  
-  return {
-      time: time,
-      hourCount: 0,
-      hourEstimate: 1,
-    };
 }
 
 /**
@@ -216,6 +205,17 @@ function cmpDay(searchVal, currentVal) {
   return zeroSearch.diff(parseMoment);
 }
 
+function getObj(data, time) {
+  const obj = binarySearchHelper(data, time, cmpDay);
+  if (obj) { return obj; }
+
+  return {
+    time,
+    hourCount: 0,
+    hourEstimate: 1,
+  };
+}
+
 // ----------------------------------- End Utilities ----------------------------------- //
 
 
@@ -254,10 +254,10 @@ function setWeekly($scope, tarDate) {
 
   let dataString = '[{"seriesname":"Weekly","data":[';
   let i;
-  let currDate = moment(date.format());
+  const currDate = moment(date.format());
   for (i = 0; i < 7; i += 1) {
     const currObj = getObj(weeklyData, currDate);
-    
+
     const hourCount = currObj.hourCount;
     const hourEstimate = currObj.hourEstimate;
 
@@ -277,24 +277,12 @@ function setWeekly($scope, tarDate) {
 }
 
 function weeklyColumnClick(ev, props, $scope) {
-
-
-    
   // incase edit mode was enabled from previously viewing a different interview
   $scope.edit = true;
   $scope.requestMade = true;
   $scope.showModal = true;
   $scope.show = true;
-
 }
-
-
-
-
-
-
-
-
 
 
 // ----------------------------------- End Weekly ----------------------------------- //
@@ -330,7 +318,6 @@ function setMonthly($scope, tarDate) {
   date = convertToFirstOfTheWeek(date);
 
 
-
   // Set global view properties
   focalDate = moment(date.format());
   $scope.zoomOutStr = 'Yearly';
@@ -341,11 +328,11 @@ function setMonthly($scope, tarDate) {
   let valueString = '[';
 
   let i;
-  let currDate = moment(date.format());
+  const currDate = moment(date.format());
   for (i = 0; i < 5; i += 1) {
     const currObj = getObj(monthlyData, currDate);
     const nextObj = getObj(monthlyData, currDate.add(7, 'days'));
-    
+
     const hourCount = currObj.hourCount;
     const hourEstimate = currObj.hourEstimate;
 
@@ -371,7 +358,6 @@ function setMonthly($scope, tarDate) {
 }
 
 function monthlyColumnClick(ev, props, $scope) {
-  const newDateIndex = props.dataIndex + firstColumnIndex;
   setWeekly($scope, moment(focalDate.add(props.dataIndex * 7, 'days')));
 
   $scope.selectedValue = `$props.displayValue}/${props.categoryLabel}/${props.dataIndex}`;
@@ -441,7 +427,7 @@ function setYearly($scope, tarDate) {
     if (i !== 3) {
       dataString += ',';
     }
-    currDate = currDate.add(3, 'months'); //Go to next quarter
+    currDate = currDate.add(3, 'months'); // Go to next quarter
   }
   dataString += ']}]';
 
@@ -573,7 +559,6 @@ const attendanceGraphCtrl = ($scope, $http) => {
   $scope.zoomOutStr = 'ZoomOut';
   attendanceRequest($scope, $http);
   setNavFunctions($scope);
-
 };
 
 
