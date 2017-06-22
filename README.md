@@ -84,6 +84,7 @@ show up if you refresh your browser window.
 
 
 ## API
+## Note that this section is not complete
 - [GET /](#get)
 - [GET /assocaite/{id}]
 - [GET /assocaite/all]
