@@ -26,7 +26,8 @@ human resources and a Manager user to be able to View/Manage said data. Its purp
 client requests for staffing and ensuring that associates that are mapped to clients are not accidentally placed with
 other business clients.
 
-## Setup (!!!!!!!!!! THIS IS VERY IMPORTANT !!!!!!!!!!!!!!!!!!)
+## Setup 
+##(!!!!!!!!!! THIS IS VERY IMPORTANT !!!!!!!!!!!!!!!!!!)
 
 ### Node, Webpack, and Babel
 1. Download node from https://nodejs.org/en/download/
@@ -85,13 +86,13 @@ show up if you refresh your browser window.
 ## API
 - [GET /](#get)
 - [POST /associate](#post-associate)
-- [POST /associate/add/all](#post-associate)
+- [POST /associate/add/all](#post-associateaddall)
 
-### `GET`
+### GET
 Sending a get request to the root of the project will give us the single page application.
 This is the only endpoint in the SPAControllerImpl.
 
-### `POST associate`
+### POST associate
 Checks the session object to see who is logged in and if ther session is attached to a 
 manager then a new associate will be created based on the associate object sent. 
 
@@ -103,7 +104,7 @@ manager then a new associate will be created based on the associate object sent.
 #### Response
 Will send a status code of FORBIDDEN if the session is not attached to a manger
 
-### `POST     associate/add/all`
+### POST     associate/add/all
 Checks the session object to see who is logged in and if ther session is attached to a 
 manager. If a manager is logged in then it will persist all associates in the set sent. 
 
