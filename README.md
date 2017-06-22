@@ -1,4 +1,7 @@
 # Staging Management System
+* [Overview](#overview)
+* [Setup](#setup)
+* [API](#api)
 
 ## Overview
 
@@ -80,6 +83,9 @@ show up if you refresh your browser window.
 
 
 ## API
+- [GET /](#get)
+- [POST /associate](#post-associate)
+- [POST /associate/add/all](#post-associate)
 
 ### `GET`
 Sending a get request to the root of the project will give us the single page application.
@@ -108,14 +114,4 @@ manager. If a manager is logged in then it will persist all associates in the se
 
 #### Response
 Will send a status code of FORBIDDEN if the session is not attached to a manger
-
-#### Response
-```javascript
-['User']
-```
-
-### `POST    users`
-Creates a new user. If any required fields are missing or the `username` provided is already taken, an error should be sent in lieu of a response.
-
-If the given credentials match a previously-deleted user, re-activate the deleted user instead of creating a new one.
 
