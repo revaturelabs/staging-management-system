@@ -27,7 +27,7 @@ client requests for staffing and ensuring that associates that are mapped to cli
 other business clients.
 
 ## Setup 
-##(!!!!!!!!!! THIS IS VERY IMPORTANT !!!!!!!!!!!!!!!!!!)
+## (!!!!!!!!!! THIS IS VERY IMPORTANT !!!!!!!!!!!!!!!!!!)
 
 ### Node, Webpack, and Babel
 1. Download node from https://nodejs.org/en/download/
