@@ -49,7 +49,7 @@ What this does is allows Webpack and Babel to bundle and transpile all of the
 javascript code and it's required dependencies into one js file.
 So even though you are working in your individual js files it will all be
 bundled into bundle.js. Note everytime you make changes in a js file if webpack is not
-watching the code it will not update the bundle.js and the changes will not be reflected.
+watching the code it will not update the bundle.js and the changes will not be reflected.<br />
 !!!!!! IF YOU DO NOT HAVE THIS RUNNING YOU WILL NOT SEE THE CHANGES YOU MAKE IN JAVASCRIPT MAKE SURE TO READ THE ECLIPSE SETUP ALSO !!!!!!!!!!!
 
 
@@ -64,11 +64,11 @@ So you have 2 options.
 i. Everytime your js code is changed webpack will bundle it and then you have to go into eclipse
 and do a manual refresh. The shortcut should be f5. This is the inefficient way.
 ii. The other option is to set up eclipse to automatically detect changes.
-    1. In eclipse click on window -> preference. This will open up a dialogue. 
-    2. In the search bar at the top type in workspace.
-    3. Click on workspace.
-    4. Now at the right should be a checkbox that says "Refresh using native hooks or polling"
-    by default this is not selected but select it and then hit ok. 
+1. In eclipse click on window -> preference. This will open up a dialogue. 
+2. In the search bar at the top type in workspace.
+3. Click on workspace.
+4. Now at the right should be a checkbox that says "Refresh using native hooks or polling"
+by default this is not selected but select it and then hit ok. 
 
 
 ## Launching the Application
