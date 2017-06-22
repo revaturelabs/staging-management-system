@@ -2,7 +2,7 @@
 	"variables": [],
 	"info": {
 		"name": "Mock SMS Data",
-		"_postman_id": "a0971021-4b85-e03e-bdbc-94a841db8950",
+		"_postman_id": "d30e69c0-6fd2-1c22-78da-ddfe5f4a70eb",
 		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
@@ -10,7 +10,7 @@
 		{
 			"name": "Sends a list of batch types to be created",
 			"request": {
-				"url": "http://localhost:8080/batch/types",
+				"url": "http://{{domain}}/batch/types",
 				"method": "POST",
 				"header": [
 					{
@@ -21,7 +21,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "[\n\t{\n\t  \"value\": \"Java\"\n\t},\n\t{\n\t \"value\": \".NET\"\n\t},\n\t{\n\t  \"value\": \"JTA\"\n\t},\n\t{\n\t  \"value\": \"SDET\"\n\t},\n\t{\n\t  \"value\": \"Big Data\"\n\t}\n]"
+					"raw": "[\n\t{\n\t  \"value\": \"Java\",\n\t  \"skills\": [\n\t \t{\n\t \t\t\"value\": \"Java\"\n\t \t},{\n\t \t\t\"value\": \"Spring\"\n\t \t},{\n\t \t\t\"value\": \"Hibernate\"\n\t \t},{\n\t \t\t\"value\": \"AWS\"\n\t \t},{\n\t \t\t\"value\": \"JavaScript\"\n\t \t},{\n\t \t\t\"value\": \"AngularJS\"\n\t \t}]\n\t  \n\t},\n\t{\n\t \"value\": \".NET\",\n\t \"skills\": [\n\t \t{\n\t \t\t\"value\": \"C#\"\n\t \t},{\n\t \t\t\"value\": \"Asp.Net MVC\"\n\t \t},{\n\t \t\t\"value\": \"Entity Framework\"\n\t \t},{\n\t \t\t\"value\": \"AWS\"\n\t \t},{\n\t \t\t\"value\": \"Java\"\n\t \t},{\n\t \t\t\"value\": \"AngularJS\"\n\t \t}]\n\t},\n\t{\n\t  \"value\": \"JTA\",\n\t  \"skills\": [\n\t \t{\n\t \t\t\"value\": \"Java\"\n\t \t},{\n\t \t\t\"value\": \"Servlets\"\n\t \t},{\n\t \t\t\"value\": \"JavaScript\"\n\t \t}]\n\t},\n\t{\n\t  \"value\": \"Big Data\",\n\t  \"skills\": [\n\t \t{\n\t \t\t\"value\": \"Java\"\n\t \t},{\n\t \t\t\"value\": \"Hadoop\"\n\t \t},{\n\t \t\t\"value\": \"JavaScript\"\n\t \t}]\n\t}\n]"
 				},
 				"description": "Create the Batch types"
 			},
@@ -30,7 +30,7 @@
 		{
 			"name": "Add trainers",
 			"request": {
-				"url": "http://localhost:8080/trainer/addmultiple",
+				"url": "http://{{domain}}/trainer/addmultiple",
 				"method": "POST",
 				"header": [
 					{
@@ -50,7 +50,7 @@
 		{
 			"name": "Add multiple clients",
 			"request": {
-				"url": "http://localhost:8080/client/add/all",
+				"url": "http://{{domain}}/client/add/all",
 				"method": "POST",
 				"header": [
 					{
@@ -70,7 +70,7 @@
 		{
 			"name": "Add multiple priority clients",
 			"request": {
-				"url": "http://localhost:8080/client/add/all",
+				"url": "http://{{domain}}/client/add/all",
 				"method": "POST",
 				"header": [
 					{
@@ -90,7 +90,7 @@
 		{
 			"name": "add revature as a location",
 			"request": {
-				"url": "http://localhost:8080/location/add/all",
+				"url": "http://{{domain}}/location/add/all",
 				"method": "POST",
 				"header": [
 					{
@@ -110,7 +110,7 @@
 		{
 			"name": "Add batches into the db",
 			"request": {
-				"url": "http://localhost:8080/batch/mockdata/addmultiple",
+				"url": "http://{{domain}}/batch/mockdata/addmultiple",
 				"method": "POST",
 				"header": [
 					{
@@ -130,7 +130,7 @@
 		{
 			"name": "add mgr admin assoc permissions",
 			"request": {
-				"url": "localhost:8080/permission/add/all",
+				"url": "http://{{domain}}/permission/add/all",
 				"method": "POST",
 				"header": [
 					{
@@ -150,7 +150,7 @@
 		{
 			"name": "Add interviewStatuses",
 			"request": {
-				"url": "localhost:8080/interviewStatus/add/all",
+				"url": "http://{{domain}}/interviewStatus/add/all",
 				"method": "POST",
 				"header": [
 					{
@@ -161,7 +161,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "[{\n\t\"value\": \"MAPPED\",\n\t\"id\": \"0\"\n},{\n\t\"value\": \"PENDING_RESPONSE\",\n\t\"id\": \"0\"\n},{\n\t\"value\": \"NOT_INTERESTED\",\n\t\"id\": \"0\"\n},{\n\t\"value\": \"LIKED\",\n\t\"id\": \"0\"\n},{\n\t\"value\": \"CONFIRMED\",\n\t\"id\": \"0\"\n}]"
+					"raw": "[{\n\t\"value\": \"MAPPED\",\n\t\"id\": \"0\"\n},{\n\t\"value\": \"PENDING_RESPONSE\",\n\t\"id\": \"0\"\n},{\n\t\"value\": \"SCHEDULED\",\n\t\"id\": \"0\"\n},{\n\t\"value\": \"NOT_INTERESTED\",\n\t\"id\": \"0\"\n},{\n\t\"value\": \"LIKED\",\n\t\"id\": \"0\"\n},{\n\t\"value\": \"CONFIRMED\",\n\t\"id\": \"0\"\n},{\n\t\"value\": \"CANCELLED\",\n\t\"id\": \"0\"\n}]"
 				},
 				"description": ""
 			},
@@ -170,7 +170,7 @@
 		{
 			"name": "Add interviewQuestions",
 			"request": {
-				"url": "http://localhost:8080/interviewQuestions/add/all",
+				"url": "http://{{domain}}/interviewQuestions/add/all",
 				"method": "POST",
 				"header": [
 					{
@@ -190,7 +190,7 @@
 		{
 			"name": "Add managers",
 			"request": {
-				"url": "http://localhost:8080/manager/add/all",
+				"url": "http://{{domain}}/manager/add/all",
 				"method": "POST",
 				"header": [
 					{
@@ -208,9 +208,29 @@
 			"response": []
 		},
 		{
+			"name": "Add Marketers",
+			"request": {
+				"url": "http://{{domain}}/marketer/all",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[{\r\n\t\"name\": \"Terry\",\r\n\t\"credential\":{\r\n\t\t\"username\": \"terr-bear@revature.com\",\r\n\t\t\"password\": \"password\"\r\n\t}\r\n},{\r\n\t\"name\": \"Tom\",\r\n\t\"credential\":{\r\n\t\t\"username\": \"herald\",\r\n\t\t\"password\": \"pass\"\r\n\t}\r\n},{\r\n\t\"name\": \"Freddy FourOclock\",\r\n\t\"credential\":{\r\n\t\t\"username\": \"sascaturan@revature.com\",\r\n\t\t\"password\": \"password\"\r\n\t}\r\n},{\r\n\t\"name\": \"Jim Geranamo\",\r\n\t\"credential\":{\r\n\t\t\"username\": \"cliff-jummping@revature.com\",\r\n\t\t\"password\": \"password\"\r\n\t}\r\n}]"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
 			"name": "Simulate hiring process",
 			"request": {
-				"url": "http://localhost:8080/associate/generate/mock-data",
+				"url": "http://{{domain}}/associate/generate/mock-data",
 				"method": "GET",
 				"header": [],
 				"body": {},
