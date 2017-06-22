@@ -23,7 +23,7 @@ human resources and a Manager user to be able to View/Manage said data. Its purp
 client requests for staffing and ensuring that associates that are mapped to clients are not accidentally placed with
 other business clients.
 
-## Setup
+## Setup (!!!!!!!!!! THIS IS VERY IMPORTANT !!!!!!!!!!!!!!!!!!)
 
 ### Node, Webpack, and Babel
 1. Download node from https://nodejs.org/en/download/
@@ -46,6 +46,8 @@ javascript code and it's required dependencies into one js file.
 So even though you are working in your individual js files it will all be
 bundled into bundle.js. Note everytime you make changes in a js file if webpack is not
 watching the code it will not update the bundle.js and the changes will not be reflected.
+!!!!!! IF YOU DO NOT HAVE THIS RUNNING YOU WILL NOT SEE THE CHANGES YOU MAKE IN JAVASCRIPT MAKE SURE TO READ THE ECLIPSE SETUP ALSO !!!!!!!!!!!
+
 
 Why is this a good thing?
 Our server now only has to serve up one js file for our entire application
@@ -53,22 +55,27 @@ and Bable transpiles it into an older version of JavaScript
 that runs on browsers that don't support the newest standard of JavaScript
 
 ### Eclipse
-All of the node modules will now be in your project. This can cause performance
-issues when building your project. However Eclipse does not need to worry about
-these. To do this follow the steps below.
-1. Go to Project -> Preferences. This will pop up a dialogue box.
-2. Expand the Resource tab and select Resource Filters.
-3. Select Add Filter on the right.
-4. Select Exclude All option.
-5. Select Folders option.
-6. In File and Folder Attributes the first dropdown should have Name and the
-    second should have matches. Type "node_modules" in the input box. (Without the quotes of course).
-7. Select OK and then OK again.
-8. Navigate to src/main/resources/static and node_modules should no longer appear there.
-9. Note this folder is also in the .gitignore so it will not be pushed to the repository
+Now that you have Webpack watching your code, eclipse doesn't like to automatically refresh
+So you have 2 options.
+i. Everytime your js code is changed webpack will bundle it and then you have to go into eclipse
+and do a manual refresh. The shortcut should be f5. This is the inefficient way.
+ii. The other option is to set up eclipse to automatically detect changes.
+    1. In eclipse click on window -> preference. This will open up a dialogue. 
+    2. In the search bar at the top type in workspace.
+    3. Click on workspace.
+    4. Now at the right should be a checkbox that says "Refresh using native hooks or polling"
+    by default this is not selected but select it and then hit ok. 
+
 
 ## Launching the Application
 1. Open Eclipse ( or IDE of your choosing )
 2. Open the BootApp.java in the com.revature package
 3. Run as Spring Boot App
 This will launch a Tomcat server for you on port 8080.
+4. In your browser go to localhost:8080 and it should automatically redirect to the login page.
+
+At this point if you have webpack bundling and eclipse automatically refreshing. 
+Then any changes you make in the JavaScript should automatically be detected and will
+show up if you refresh your browser window. 
+
+## API
