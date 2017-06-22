@@ -84,6 +84,7 @@ To generate Data we used three methods
   1. Creating Json objects by hand ex. PermissionLevels, Locations,...
   2. Json objects generated through with https://www.mockaroo.com/ ex. associates, credentials,...
   3. Randomized creation services. Batches, Interviews,...
+  
 #### Implementations
 This objects are delivered and methods are triggered by the postman collection located at misc/Mock-SMS-Data.postman_collection.json. This is what each request does...
 (note: json objects can be found under the body tag within postman)
@@ -107,8 +108,8 @@ This objects are delivered and methods are triggered by the postman collection l
 Realistically randomizing data is important for seeing what graphs will look like in the application is actually utilized and for detecting logic errors within the program. Good luck utilizing and improving the various generation implementations.
 
 #### Postman
-* [Triggering Data Generation Via Postman](#triggering data generation via postman)
-* [Postman set project url](#postman set project url)
+* [Triggering Data Generation Via Postman](#triggering\ data\ generation\ via postman)
+* [Postman set project url](#postman)
 
 ##### Triggering Data Generation Via Postman
 Data generation is triggered by a postman collection in order to run this collection you will need to...
