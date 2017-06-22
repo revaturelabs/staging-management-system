@@ -85,8 +85,23 @@ show up if you refresh your browser window.
 
 ## API
 - [GET /](#get)
+- [GET /assocaite/{id}]
+- [GET /assocaite/all]
+- [GET /assocaite/allActive]
+- [GET /assocaite/no-batch]
+- [GET /assocaite/by-batch/{id}]
+- [GET /assocaite/totaldata]
+- [GET /associate/generate/mock-data](#post-associategeneratemock-data)
+- [PUT /assocaite]
 - [POST /associate](#post-associate)
 - [POST /associate/add/all](#post-associateaddall)
+- [DELETE /assocaite]
+- [GET /batch/{id}]
+- [GET /batch/all]
+- [PUT /batch]
+- [POST /batch]
+- [POST /batch/types]
+- [POST /batch/mockdata/addmultiple]
 
 ### GET
 Sending a get request to the root of the project will give us the single page application.
@@ -115,4 +130,7 @@ manager. If a manager is logged in then it will persist all associates in the se
 
 #### Response
 Will send a status code of FORBIDDEN if the session is not attached to a manger
+
+### GET associate/generate/mock-data
+Used to simulate the hiring process
 
