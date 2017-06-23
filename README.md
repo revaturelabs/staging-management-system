@@ -82,7 +82,7 @@ by default this is not selected but select it and then hit ok.
 #### Methods
 To generate Data we used three methods
   1. Creating Json objects by hand ex. PermissionLevels, Locations,...
-  2. Json objects generated through with https://www.mockaroo.com/ ex. associates, credentials,...
+  2. Json objects generated with https://www.mockaroo.com/ ex. associates, credentials,...
   3. Randomized creation services. Batches, Interviews,...
 
 #### Implementations
@@ -92,18 +92,24 @@ Objects are delivered and methods are triggered by the postman collection locate
 
 1. Batch Types - Calls the rest controller addBatchTypes in BatchController for each element in the json list, it adds each skill from the contained skill list, and then creates a batch with those skills and value.
 2. Trainers - Creates a new trainer for each within the json list.
-3. Clients - Adds client objects to the data base. (Note: first two are priority the rest are not)
-4. Locations - Adds locations to the db (Data not accurate should be changed to real locations and names)
-5. Batches - Json object contains a list of objects with a list of associates we generated with Mockaroo and randomized the remaining batch properties. This calls the rest controller addMockBatches in BatchController which calls the service addMockBatches in BatchService.
-  * For each batch object...
+3. Clients - Adds client objects to the database. (Note: first two are priority the rest are not)
+4. Locations - Adds locations to the database (Data not accurate should be changed to real locations and names)
+5. Batches - Json object contains a list of objects with a list of associates we generated with Mockaroo and randomized the remaining batch properties. This calls the rest controller addMockBatches in BatchController which calls the service addMockBatches in BatchService. For each batch object...
     * Assigns a trainer.
-    * Makes the start dates one week apart beginning the first week of 2017.
+    * Makes the start dates one week apart beginning on monday of the first week of 2017.
     * Makes the end date 70 days after the start date.
     * Assigns a random batch type.
     * sets location to Revature VA (Should probably be randomized in the future).
     * Adds the list of associates to the db.
 6. PermissionLevels - Creates PermissionLevels: ADMIN, MGR, ASSOC
-7. InterviewStatuses - Creates InterviewStatuses: MAPPED, PENDING_RESPONSE, SCHEDULED, NOT_INTERESTED, LIKED, CONFIRMED, CANCELLED
+7. InterviewStatuses - Creates InterviewStatuses:
+  * MAPPED - For priority clients only when interview is in the future.
+  * PENDING_RESPONSE - Interview is over awaiting decision.
+  * SCHEDULED - For regular clients when interview is in the future.
+  * LIKED - Client liked associate but did not hire.
+  * CONFIRMED - Client hired associate.
+  * CANCELLED - Interview was cancelled.
+  * NOT_INTERESTED - Client failed the interview.
 8. InterviewQuestions - Creates a list of 50 OOP InterviewQuestions that could be applied to all batch types.
 9. Managers - Creates managers and an admin, first two are the most important with usernames admin and man and their passwords are pass
 10. Marketers - Creates Marketers the first one is most important having username/password = mark/pass.
