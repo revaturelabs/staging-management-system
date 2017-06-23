@@ -95,14 +95,13 @@ Objects are delivered and methods are triggered by the postman collection locate
 3. Clients - Adds client objects to the data base. (Note: first two are priority the rest are not)
 4. Locations - Adds locations to the db (Data not accurate should be changed to real locations and names)
 5. Batches - Json object contains a list of objects with a list of associates we generated with Mockaroo and randomized the remaining batch properties. This calls the rest controller addMockBatches in BatchController which calls the service addMockBatches in BatchService.
-
-  For each batch object...
-    - Assigns a trainer.
-    - Makes the start dates one week apart beginning the first week of 2017.
-    - Makes the end date 70 days after the start date.
-    - Assigns a random batch type.
-    - sets location to Revature VA (Should probably be randomized in the future).
-    - Adds the list of associates to the db.
+  * For each batch object...
+    * Assigns a trainer.
+    * Makes the start dates one week apart beginning the first week of 2017.
+    * Makes the end date 70 days after the start date.
+    * Assigns a random batch type.
+    * sets location to Revature VA (Should probably be randomized in the future).
+    * Adds the list of associates to the db.
 6. PermissionLevels - Creates PermissionLevels: ADMIN, MGR, ASSOC
 7. InterviewStatuses - Creates InterviewStatuses: MAPPED, PENDING_RESPONSE, SCHEDULED, NOT_INTERESTED, LIKED, CONFIRMED, CANCELLED
 8. InterviewQuestions - Creates a list of 50 OOP InterviewQuestions that could be applied to all batch types.
@@ -142,8 +141,8 @@ The url is defined as a postman environment variable 'domain' to set up this var
 #### LocalDatabase
 1. Download Oracle 11g http://www.oracle.com/technetwork/database/database-technologies/express-edition/downloads/index.html
 2. Ensure The Application Not Running (To avoid port conflicts make sure application is not running in eclipse)
-2. Run setup
-3. Find and run the 'SQL command line' program (Cortona), execute the following commands with $PORT a new port number like 8000.
+2. Run setup, remember your password
+3. Find and run the 'SQL command line' program (Cortona), execute the following commands with $PORT being a new port number like 8000.
   - connect (Connect with username: system and the password you set during installation)
   - Exec DBMS_XDB.SETHTTPPORT($PORT);
 
