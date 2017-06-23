@@ -96,13 +96,13 @@ Objects are delivered and methods are triggered by the postman collection locate
 4. Locations - Adds locations to the db (Data not accurate should be changed to real locations and names)
 5. Batches - Json object contains a list of objects with a list of associates we generated with Mockaroo and randomized the remaining batch properties. This calls the rest controller addMockBatches in BatchController which calls the service addMockBatches in BatchService.
 
-For each batch object...
-  - Assigns a trainer.
-  - Makes the start dates one week apart beginning the first week of 2017.
-  - Makes the end date 70 days after the start date.
-  - Assigns a random batch type.
-  - sets location to Revature VA (Should probably be randomized in the future).
-  - Adds the list of associates to the db.
+  For each batch object...
+    - Assigns a trainer.
+    - Makes the start dates one week apart beginning the first week of 2017.
+    - Makes the end date 70 days after the start date.
+    - Assigns a random batch type.
+    - sets location to Revature VA (Should probably be randomized in the future).
+    - Adds the list of associates to the db.
 6. PermissionLevels - Creates PermissionLevels: ADMIN, MGR, ASSOC
 7. InterviewStatuses - Creates InterviewStatuses: MAPPED, PENDING_RESPONSE, SCHEDULED, NOT_INTERESTED, LIKED, CONFIRMED, CANCELLED
 8. InterviewQuestions - Creates a list of 50 OOP InterviewQuestions that could be applied to all batch types.
