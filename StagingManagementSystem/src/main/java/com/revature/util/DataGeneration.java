@@ -411,11 +411,11 @@ public class DataGeneration
     state.setJobStart();
 
     LocalDateTime projectedEndDate = state.getProjEndDate();
-    LocalDateTime confirmDate = state.currentDate;
+    state.confirmDate = state.currentDate;
     //Should randomize actual endDate by creating a bias in the client.
     
     Job j = new Job(0l, state.associate, state.client, state.jobStartDate, projectedEndDate,
-        projectedEndDate, null, confirmDate);
+        projectedEndDate, null, state.confirmDate);
     jobService.add(j);
     
     state.associate.setLockedTo(state.client);
