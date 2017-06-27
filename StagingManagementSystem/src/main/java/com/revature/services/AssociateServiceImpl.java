@@ -2,9 +2,12 @@ package com.revature.services;
 
 import com.revature.entities.Associate;
 import com.revature.entities.Skill;
+import com.revature.entities.StaggingAssociate;
 import com.revature.repositories.AssociateRepo;
 import com.revature.repositories.CredentialRepo;
 import com.revature.repositories.SkillRepo;
+import com.revature.repositories.StaggingAssociateRepo;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +22,9 @@ public class AssociateServiceImpl implements AssociateService {
     @Autowired
     private AssociateRepo associateRepo;
 
+    @Autowired
+    private StaggingAssociateRepo staggingAssociateRepo;
+    
     @Autowired
     private CredentialRepo credentialRepo;
 
@@ -97,5 +103,10 @@ public class AssociateServiceImpl implements AssociateService {
     public Set<Associate> findByBatchId(Long id) {
 
         return associateRepo.findByBatchId(id);
+    }
+
+    @Override
+    public Set<StaggingAssociate> getAssociatesInStaggingOn(String date) {
+      return staggingAssociateRepo.getAssociatesInStaggingOn(date);
     }
 }

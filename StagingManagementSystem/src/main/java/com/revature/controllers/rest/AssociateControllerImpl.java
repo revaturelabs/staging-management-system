@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.entities.Associate;
 import com.revature.entities.Manager;
+import com.revature.entities.StaggingAssociate;
 import com.revature.services.AssociateService;
 import com.revature.services.TotalReport;
 import com.revature.services.TotalReport.TotalData;
@@ -138,5 +139,10 @@ public class AssociateControllerImpl {
 	public ResponseEntity<Collection<TotalData>> getAssocaites() {
 		return ResponseEntity.ok(totalReport.process(associateService.getAllActive()));
 	}
-
+	
+	@GetMapping(path = "/AssociatesInStaggin/{date}")
+	public Set<StaggingAssociate> getAssociatesInStaggingOn(@PathVariable String date){
+	  System.out.println("DATE!!!!    " + date);
+	  return associateService.getAssociatesInStaggingOn(date);
+	}
 }

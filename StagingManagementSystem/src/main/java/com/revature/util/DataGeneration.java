@@ -355,7 +355,8 @@ public class DataGeneration
         int daysToDecide = simulateInterview(state, .6, priorityClients);
         state.currentDate = state.currentDate.plusDays(daysToDecide);
       }
-      else if(state.hasInterview(probabilityOfRegularInterview)){
+      
+      if(state.confirmDate == null && state.hasInterview(probabilityOfRegularInterview)){
           simulateInterview(state, .3, regularClients);
       }
     }	    

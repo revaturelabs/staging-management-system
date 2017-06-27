@@ -21,6 +21,8 @@ let yearlyData;         // Data grouped by quarter year displaying the year foca
 
 let displayChart;
 
+let http;
+
 const weeklyLabels = [
   {
     label: 'Sunday',
@@ -276,12 +278,37 @@ function setWeekly($scope, tarDate) {
   displayChart($scope);
 }
 
+function toggleModal () {
+  $('.attendanceModal').modal('toggle');
+}
 function weeklyColumnClick(ev, props, $scope) {
-  // incase edit mode was enabled from previously viewing a different interview
-  $scope.edit = true;
-  $scope.requestMade = true;
-  $scope.showModal = true;
-  $scope.show = true;
+  toggleModal();
+  $scope.toggleModal = toggleModal;
+  $scope.showCheckedIn = false;
+  
+  const plusDays = props.dataIndex;
+  let date = moment(focalDate.format()).add(plusDays, 'days');
+  date = date.format('DD-MMM-YY').toUpperCase();
+  $scope.modalDate = date;
+  console.log('Date: ' + date);
+  
+  http({
+    method: 'GET',
+    url: '/associate/AssociatesInStaggin/' + date,
+  }).then((response) => {
+    $scope.checkedInAssociates = [];
+    $scope.notCheckedInAssociates = [];
+    response.data.forEach(function (item) {
+      item.checkinTime = moment(item.checkinTime).format('HH:MM');
+      console.log(JSON.stringify(response.data, null, 2));
+      if(item.checkinTime === 'Invalid date')
+        $scope.notCheckedInAssociates.push(item);
+      else
+        $scope.checkedInAssociates.push(item);
+    })
+
+    //$scope.checkedInAssociates = response.data;
+  });
 }
 
 
@@ -557,6 +584,7 @@ function attendanceRequest($scope, $http) {
  */
 const attendanceGraphCtrl = ($scope, $http) => {
   $scope.zoomOutStr = 'ZoomOut';
+  http = $http;
   attendanceRequest($scope, $http);
   setNavFunctions($scope);
 };

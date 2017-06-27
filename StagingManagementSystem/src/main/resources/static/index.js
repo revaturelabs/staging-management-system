@@ -63007,6 +63007,8 @@
 
 	var displayChart = void 0;
 
+	var http = void 0;
+
 	var weeklyLabels = [{
 	  label: 'Sunday'
 	}, {
@@ -63251,12 +63253,35 @@
 	  displayChart($scope);
 	}
 
+	function toggleModal() {
+	  $('.attendanceModal').modal('toggle');
+	}
 	function weeklyColumnClick(ev, props, $scope) {
-	  // incase edit mode was enabled from previously viewing a different interview
-	  $scope.edit = true;
-	  $scope.requestMade = true;
-	  $scope.showModal = true;
-	  $scope.show = true;
+	  toggleModal();
+	  $scope.toggleModal = toggleModal;
+	  $scope.showCheckedIn = false;
+
+	  var plusDays = props.dataIndex;
+	  var date = (0, _moment2.default)(focalDate.format()).add(plusDays, 'days');
+	  date = date.format('DD-MMM-YY').toUpperCase();
+	  $scope.modalDate = date;
+	  console.log('Date: ' + date);
+
+	  http({
+	    method: 'GET',
+	    url: '/associate/AssociatesInStaggin/' + date
+	  }).then(function (response) {
+	    $scope.checkedInAssociates = [];
+	    $scope.notCheckedInAssociates = [];
+	    response.data.forEach(function (item) {
+	      item.checkinTime = (0, _moment2.default)(item.checkinTime).format('HH:MM');
+	      console.log(JSON.stringify(response.data, null, 2));
+	      if (item.checkinTime === 'Invalid date') $scope.notCheckedInAssociates.push(item);else $scope.checkedInAssociates.push(item);
+	    }
+
+	    //$scope.checkedInAssociates = response.data;
+	    );
+	  });
 	}
 
 	// ----------------------------------- End Weekly ----------------------------------- //
@@ -63527,6 +63552,7 @@
 	 */
 	var attendanceGraphCtrl = function attendanceGraphCtrl($scope, $http) {
 	  $scope.zoomOutStr = 'ZoomOut';
+	  http = $http;
 	  attendanceRequest($scope, $http);
 	  setNavFunctions($scope);
 	};
