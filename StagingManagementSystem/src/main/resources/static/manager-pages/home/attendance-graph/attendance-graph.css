@@ -25,6 +25,10 @@
 
 .col {
   flex: 1;
+  cursor:default;
+}
+.col:hover {
+    text-decoration: underline;
 }
 
 .scrollableCheckins {

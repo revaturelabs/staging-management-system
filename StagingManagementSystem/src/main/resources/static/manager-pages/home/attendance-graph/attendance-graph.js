@@ -229,6 +229,7 @@ function getObj(data, time) {
  */
 function buildWeekly() {
   weeklyData = originalData;
+  console.log(JSON.stringify(originalData));
 }
 
 /**
@@ -290,7 +291,6 @@ function weeklyColumnClick(ev, props, $scope) {
   let date = moment(focalDate.format()).add(plusDays, 'days');
   date = date.format('DD-MMM-YY').toUpperCase();
   $scope.modalDate = date;
-  console.log('Date: ' + date);
   
   http({
     method: 'GET',
@@ -298,9 +298,9 @@ function weeklyColumnClick(ev, props, $scope) {
   }).then((response) => {
     $scope.checkedInAssociates = [];
     $scope.notCheckedInAssociates = [];
+    console.log(JSON.stringify(response.data, null, 2));
     response.data.forEach(function (item) {
       item.checkinTime = moment(item.checkinTime).format('HH:MM');
-      console.log(JSON.stringify(response.data, null, 2));
       if(item.checkinTime === 'Invalid date')
         $scope.notCheckedInAssociates.push(item);
       else
@@ -318,14 +318,15 @@ function weeklyColumnClick(ev, props, $scope) {
 // ----------------------------------- Start Monthly ----------------------------------- //
 
 function buildMonthlyForEach(item) {
-  const identityString = convertToFirstOfTheWeek(moment(item.time));
+  const timeMoment = moment(item.time);
+  const identityString = convertToFirstOfTheWeek(timeMoment);
   const dataObj = binarySearchHelper(monthlyData, moment(identityString), cmpDay);
-
-  if (!dataObj) {
+  
+  if (!dataObj && timeMoment.isoWeekday() < 6 && moment() > timeMoment) {
     const itemCpy = JSON.parse(JSON.stringify(item));
     itemCpy.time = identityString;
     monthlyData.push(itemCpy);
-  } else {
+  } else if (timeMoment.isoWeekday() < 6 && timeMoment < moment())// TODO: && moment() > timeMoment) {
     dataObj.hourCount = parseFloat(dataObj.hourCount) + parseFloat(item.hourCount);
     dataObj.hourEstimate = parseFloat(dataObj.hourEstimate) + parseFloat(item.hourEstimate);
   }

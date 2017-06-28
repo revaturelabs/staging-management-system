@@ -267,6 +267,7 @@ public class DataGeneration
 	 */
 	class AssociateP extends Associate{
 	  double clientProbabilityMultiplier;
+	  int immuneSystemHealth;
 	  
 	  AssociateP(Associate a){
 	    super(a.getId(), a.getCredential(), a.getName(), a.getPortfolioLink(), a.getBatch(), a.isActive(), a.getLockedTo(), a.getSkills(), a.getJobs());
@@ -279,6 +280,15 @@ public class DataGeneration
 	    else
 	      clientProbabilityMultiplier = 1; //The average associate corresponds with the client probabilities.
 	    
+	    int qualityImmuneSystem = rand.nextInt(100); 
+	      
+      if(qualityImmuneSystem < 20)    //20 percent chance of being absent 3 out of 100 days.
+        immuneSystemHealth = 97;  
+      else if (qualityImmuneSystem > 99)  //1 percent chance of being absent 1 in 10 days.
+        immuneSystemHealth = 90;
+      else
+        immuneSystemHealth = 100; //79 percent chance of never being absent.
+	    
 	    log.debug("Associate ClientProbabilityMultiplier: " + clientProbabilityMultiplier);
 	  }
 	
@@ -289,6 +299,14 @@ public class DataGeneration
 	  Associate getAssocaite(){
 		  this.setActive();
 	    return new Associate(getId(), getCredential(), getName(), getPortfolioLink(), getBatch(), isActive(), getLockedTo(), getSkills(), getJobs());
+	  }
+	  
+	  /*
+	   * Randomly returns true if an associate is determined to be health.
+	   */
+	  public boolean isHealthy() {
+	    int diceRoll = rand.nextInt(100);
+	    return diceRoll < immuneSystemHealth;
 	  }
 	}
 	
@@ -347,7 +365,7 @@ public class DataGeneration
         break;
       }
             
-      int nextPossibleInterview = rand.nextInt(10) + 2; //next Possible date i between 2 and 12 days away averaging 1 opportunity a week.
+      int nextPossibleInterview = rand.nextInt(4) + 2; //next Possible date i between 2 and 4 days away averaging 1 opportunity EVERY 3.
       state.currentDate = state.currentDate.plusDays(nextPossibleInterview);
       
       // If client has priority interview simulate process for that interview, else roll the dice for regular client interview.
@@ -435,7 +453,7 @@ public class DataGeneration
 	  	  
 	  while(currDate.compareTo(endDate) <= 0 && currDate.compareTo(state.genToDate) <= 0){	    
 	    DayOfWeek day = currDate.getDayOfWeek();
-	    if(day != DayOfWeek.SUNDAY && day != DayOfWeek.SATURDAY)   
+	    if(day != DayOfWeek.SUNDAY && day != DayOfWeek.SATURDAY && state.associate.isHealthy())   
 	    {
 	        Checkin checkin = new Checkin(0l, currDate.withHour(9), currDate.withHour(17), null,
 	            null, state.associate);
