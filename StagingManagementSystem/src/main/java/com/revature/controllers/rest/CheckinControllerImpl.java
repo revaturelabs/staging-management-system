@@ -1,8 +1,7 @@
 package com.revature.controllers.rest;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 import java.util.Set;
 
 import javax.servlet.http.HttpSession;
@@ -21,11 +20,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.entities.Associate;
+import com.revature.entities.AttendanceRecord;
 import com.revature.entities.Checkin;
 import com.revature.entities.Manager;
 import com.revature.exceptions.AlreadyCheckedInException;
 import com.revature.services.CheckinReportServiceImpl;
-import com.revature.services.CheckinReportServiceImpl.DailyReport;
 import com.revature.services.CheckinService;
 
 @RestController
@@ -140,13 +139,14 @@ public class CheckinControllerImpl {
 	}
 
 	@GetMapping(path = "/report")
-	public ResponseEntity<List<DailyReport>> getCheckins(HttpSession session) {// For
+	public ResponseEntity<Collection<AttendanceRecord>> getCheckins(HttpSession session) {// For
 																					// managers
 																					// only.
-		Manager manager = (Manager) session.getAttribute(LM);
-		if (manager == null) {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-		}
-		return ResponseEntity.ok(checkinReport.process(checkinService.getAll()));
+//		Manager manager = (Manager) session.getAttribute(LM);
+//		if (manager == null) {
+//			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+//		}
+		//return ResponseEntity.ok(checkinReport.process(checkinService.getAll()));
+    return ResponseEntity.ok(checkinReport.getReport());
 	}
 }
