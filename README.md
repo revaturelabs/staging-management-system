@@ -3,7 +3,7 @@
 * [Setup](#setup)
 * [Database](#database)
 * [API](#api)
-* [FusionCharts](#fusioncharts)
+* [Reports](#Reports)
 
 
 ## Overview
@@ -235,8 +235,63 @@ Will send a status code of FORBIDDEN if the session is not attached to a manger
 ### GET associate/generate/mock-data
 Used to simulate the hiring process
 
+## Reports
+I tried to get a complete example of a good implementation of a report but could not complete in time. This section will layout my intended goal and where to reference what I did complete.
 
-## FusionCharts
+### Key concepts to consider when making a new report.
+1. Consider what data can be cached and where.
+  * For an associate a graph is most likely personalized and graphing with on the client side should be all that is necessary.
+  * For a graph visible to managers defiantly cache the information on within the server. There are multiple managers that will all be referencing the same data. Also caching on the client side could be useful but will make updates more complicated.
+  * As for an admin, idk ask joe how many administrators will be looking and how often.
+
+2. Try not to pull data that will almost always be accurate and is not referenced often.
+  * A lot of graphs will contain historical data that does not normally change. The best option is to set up a method that checks your cache to see if the data should be contained within a reference and update if necessary.
+
+2. Make sure you are not pulling a lot of data that is not displayed from the database.
+  * Since graphs are a generalized representation of large amounts of data you will most likely always want to build the representation of data in sql. For instance an understandable pie chart has less than a dozen numbers with value tags that can represent thousands of rows in the data base, its much more efficient to send a dozen numbers.
+
+### Incomplete example
+I only had time to make one graph but I tried to make it contain good examples of how to do things.
+
+Attendance Graph (resources/static/manager-pages/home/attendance-graph)
+  1. The graph is multi tiered.
+    * As soon as the page is loaded with the graph the data set I pull in is used to represent weekly attendance. Then I build the monthly and annual graphs. so that the data is there to reference quickly.
+    * When I created this I did not understand angularjs very well but the data construction should be done in a service separate from the display function.
+    * To Fix: The monthly data's focal date is centered unlike the other graphs this is producing unintuitive left right transitions.
+  2. Data is built within the database.
+    * I wrote two sql functions that return tables.
+      - GET_STAGGING_ASSOC_BY_DATE
+        * Returns a list of associates that were in staging on a given date and their check in time or null if did not check in.
+      - GET_ATTENDANCE_REPORT
+        * Uses GET_STAGGING_ASSOC_BY_DATE to return a count of all associates who checked in on a given date and how many were supposed to check in.
+  3. caching (I didn't get to this but what should be implemented)
+    * Initially grabbing a reasonable window of data say this years attendance report.
+    * Updating the 'todays' attendance every time the graph is requested or better yet triggering it from the server on update... not sure how that would be done but it would be ideal.
+    * When I made the graph function I assumed all data was present and I just fill in zeros for the missing dates. But the functions I wrote will return the appropriate values for any dates requested. Its simply a matter of figuring out how to concatenate requested data on to the already existing data object.
+
+### Other fixes
+1. The pie chart and the staging I believe are pulling in all the associates and building there graphs off that data. That is bogging down the client with unnecessary memory allocation and computation. Should write a sql function to create this data, in fact the staging could probably use my function GET_STAGGING_ASSOC_BY_DATE and join the results with batch and batch type.
+2. The pie chart was intended to represent the success of associate placement. In order to more accurately portray that the widow of data being displayed should be the last month or quarter maybe weighting associates by the amount of time they have been in staging.
+
+### Other Graph Ideas
+1. Trainer success
+  * Give a numerical representation attached to a trainer of how quickly associates they trained were placed.
+  * Our data base currently isn't set up for it but... Rate trainers on how well they score in different subjects in their panel review.
+2. Batch success
+  * Rate the different batches on how well their associates are placed.
+3. Client Predictability (It saddens me that I couldn't get to this one)
+  * If you look at the job object it has start date, confirm date, projected end date, actual end date, buyout date.
+  * The idea behind this graph is that clients don't always keep associates for their projected amount of time.
+  * You would take and sum the associates predicted to be working for a specific client for all time(P). As well as the actual number of associates working for them for all time(A). Then (P/A) would be a percentage that described how likely a given client is to live up to or exceed their initial contract. This would be helpful to administration in determining which clients to give preference.
+
+note: One method of creating a rating system...
+  * Give 1/(2*n) points for an associate where n is the number of full weeks in staging.
+  * Add points up for a given pool(P).
+  * Divide by number of associates in pool.
+  * Solve for x (P_MAX*x=100) or (x=100/P_MAX) where P_MAX is the highest point pool.
+  * Multiply all P's by x to get their percentage based off the champ.
+
+### FusionCharts
 Fusion Charts look good are easy to use and are highly customizable. A huge number of examples can be found at http://www.fusioncharts.com/charts/.
 To create a chart there are three major components...
   1. dataSource - this consists of three objects.
@@ -254,3 +309,13 @@ Working examples can be found in StagingManagementSystem/src/main/resources/stat
 Tips: We did not have time to make our graphs efficient redundant calculations of non changing graphs is a waste of resources. Try to implement an effective means of caching data that should not be changing often.
 
 Reports are a powerful tool for administration and this project has been setup to make reporting fairly easy. Try to have fun and create useful graphical representations of relevant data.
+
+### Group Challenges
+There are Five key areas your group needs to understand in order for your to succeed.
+1. Data generation - Without good data in the database debugging can be difficult if not impossible. (See the data generation section)
+2. Sql - Writing sql functions or stored procedures to generate data is essential to an efficient implementation.
+3. Spring data/JPA repository - Someone needs to have a firm grasp on how to communicate with the database using spring data. (To call my function I used native sql, this is bad practice and should be converted to decouple our implementation from an oracle database)
+4. Angularjs - It is very different from JavaScript and JQuery, learning this can be a challenge.
+5. FusionCharts - Its a fairly easy library but can be overwhelming at first.
+
+I did not know these were the things I would have too learn and as a result I tried to tackle all of them myself. If you split the load up among your team members you should be able to accomplish more than we were able to. Good luck and have fun with it.
