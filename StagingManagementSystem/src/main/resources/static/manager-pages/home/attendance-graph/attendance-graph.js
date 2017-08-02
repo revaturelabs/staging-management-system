@@ -326,7 +326,7 @@ function buildMonthlyForEach(item) {
     const itemCpy = JSON.parse(JSON.stringify(item));
     itemCpy.time = identityString;
     monthlyData.push(itemCpy);
-  } else if (timeMoment.isoWeekday() < 6 && timeMoment < moment())// TODO: && moment() > timeMoment) {
+  } else if (timeMoment.isoWeekday() < 6 && timeMoment < moment()) {// TODO: && moment() > timeMoment) {
     dataObj.hourCount = parseFloat(dataObj.hourCount) + parseFloat(item.hourCount);
     dataObj.hourEstimate = parseFloat(dataObj.hourEstimate) + parseFloat(item.hourEstimate);
   }

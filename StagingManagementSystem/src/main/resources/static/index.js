@@ -82,7 +82,7 @@
 
 	var _stagingGraph2 = _interopRequireDefault(_stagingGraph);
 
-	var _attendanceGraph = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./manager-pages/home/attendance-graph/attendance-graph\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+	var _attendanceGraph = __webpack_require__(215);
 
 	var _attendanceGraph2 = _interopRequireDefault(_attendanceGraph);
 
@@ -63427,7 +63427,601 @@
 	exports.default = stagingGraphController;
 
 /***/ }),
-/* 215 */,
+/* 215 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _fusioncharts = __webpack_require__(91);
+
+	var _fusioncharts2 = _interopRequireDefault(_fusioncharts);
+
+	var _moment = __webpack_require__(92);
+
+	var _moment2 = _interopRequireDefault(_moment);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	// ----------------------------------- Start Variables ----------------------------------- //
+
+	var YEAR = 'Year';
+	var MONTH = 'Month';
+	var WEEK = 'Week';
+
+	var scale = void 0; // The scale of the graph equal to the constant values WEEK, MONTH, or YEAR.
+	var focalDate = void 0; // The date that was used to create graph view.
+
+	var originalData = void 0; // The data retrieved from the data Base.
+	var displayData = void 0; // A window of the data set being displayed determined by the focal Date.
+	var diaplayLabels = void 0; // The column labels for displayData.
+
+	var weeklyData = void 0; // Data grouped by day and displayed by week.
+	var monthlyData = void 0; // Data grouped by week and displayed 5 weeks at a time with focal date
+	// determining the center.
+	var yearlyData = void 0; // Data grouped by quarter year displaying the year focal point resides in.
+
+	var displayChart = void 0;
+
+	var http = void 0;
+
+	var weeklyLabels = [{
+	  label: 'Sunday'
+	}, {
+	  label: 'Monday'
+	}, {
+	  label: 'Tuesday'
+	}, {
+	  label: 'Wednesday'
+	}, {
+	  label: 'Thursday'
+	}, {
+	  label: 'Friday'
+	}, {
+	  label: 'Saturday'
+	}];
+
+	var yearlyLabels = [{
+	  label: '1st Quarter'
+	}, {
+	  label: '2nd Quarter'
+	}, {
+	  label: '3rd Quarter'
+	}, {
+	  label: '4th Quarter'
+	}];
+
+	/**
+	 * Chart display setup.
+	 */
+	var chartPoperties = {
+	  caption: 'Attendance Associates in Staging',
+	  subCaption: scale,
+	  xAxisname: scale,
+	  yAxisName: 'Attendance %',
+	  paletteColors: '#0075c2',
+	  bgColor: '#ffffff',
+	  borderAlpha: '20',
+	  showCanvasBorder: '0',
+	  usePlotGradientColor: '0',
+	  plotBorderAlpha: '10',
+	  legendBorderAlpha: '0',
+	  legendShadow: '0',
+	  valueFontColor: '#ffffff',
+	  showXAxisLine: '1',
+	  xAxisLineColor: '#999999',
+	  divlineColor: '#999999',
+	  divLineDashed: '1',
+	  showAlternateHGridColor: '0',
+	  subcaptionFontBold: '0',
+	  subcaptionFontSize: '14',
+	  showHoverEffect: '1'
+	};
+
+	// ----------------------------------- End Variables ----------------------------------- //
+
+
+	// ----------------------------------- Start Utilities ----------------------------------- //
+
+	/**
+	 * This function will conduct a recursive binary search on a section of an array.
+	 *
+	 * @param data - array to be searched
+	 * @param searchVal - value searching for
+	 * @param start - starting index
+	 * @param stop - stopping index
+	 * @param cmpFunction - a function of the form foo(searchVal, data[i]) that returns an integer
+	 *                      comparison value
+	 * @returns - the index corresponding to the closest value to searchVal.
+	 */
+	function binarySearch(data, searchVal, start, stop, cmpFunction) {
+	  if (start >= stop) {
+	    return undefined;
+	  }
+	  var midpoint = Math.floor((start + stop) / 2);
+
+	  var value = cmpFunction(searchVal, data[midpoint]);
+	  if (value === 0) {
+	    return data[midpoint];
+	  } else if (value > 0) {
+	    return binarySearch(data, searchVal, midpoint + 1, stop, cmpFunction);
+	  }
+
+	  return binarySearch(data, searchVal, start, midpoint, cmpFunction);
+	}
+
+	/**
+	 * This is a wrapper function for the binary search it searches an entire array.
+	 *
+	 * @param data - array to be searched
+	 * @param searchVal - value searching for
+	 * @param cmpFunction - a function of the form foo(searchVal, data[i]) that returns an integer
+	 *                      comparison value
+	 * @returns - the index corresponding to the closest value to searchVal.
+	 */
+	function binarySearchHelper(data, searchVal, cmpFunction) {
+	  return binarySearch(data, searchVal, 0, data.length, cmpFunction);
+	}
+
+	/**
+	 * Converts a moment object to the first of the week.
+	 *
+	 * @param momentObj - date of interest.
+	 * @returns - sunday of the week containing momentObj.
+	 */
+	function convertToFirstOfTheWeek(momentObj) {
+	  var dayValue = momentObj.day();
+	  var newMoment = momentObj.subtract(dayValue, 'days');
+	  return (0, _moment2.default)(newMoment.format('YYYY-MM-DD'));
+	}
+
+	/**
+	 * Converts a moment object to a moment representing the first of the
+	 * month.
+	 *
+	 * @param momentObj - moment object to be evaluated
+	 * @returns - if momentObj is in month A then it returns the first of month A
+	 *            with time zeroed.
+	 */
+	function convertToFirstOfMonth(momentObj) {
+	  var dayValue = momentObj.format('DD') - 1;
+	  var newMoment = momentObj.subtract(dayValue, 'days');
+	  return (0, _moment2.default)(newMoment.format('YYYY-MM-DD'));
+	}
+
+	/**
+	 * Converts a moment object to the first day of the quarter year momentObj(A) is within.
+	 *
+	 * @param momentObj - date of interest.
+	 * @returns - jan 1st <= (A) <= mar 31st : jan 1st
+	 *            apr 1st <= (A) <= jun 30st : jun 1st
+	 *            jul 1st <= (A) <= sep 30st : jul 1st
+	 *            oct 1st <= (A) <= dec 31st : oct 1st
+	 *            (Time is zeroed)
+	 */
+	function convertToFirstOfQuarter(momentObj) {
+	  var monthValue = momentObj.month() % 3;
+	  var newMoment = momentObj.subtract(monthValue, 'months');
+	  newMoment = convertToFirstOfMonth(momentObj);
+
+	  return (0, _moment2.default)(newMoment.format('YYYY-MM-DD'));
+	}
+
+	/**
+	 * Converts to the first of the year that is contained in month.
+	 *
+	 * @param momentObj - moment object to be evaluated
+	 * @returns - if momentObj is in year A then it returns the jan 1st of year A
+	 *            with time zeroed.
+	 */
+	function convertToFirstOfYear(momentObj) {
+	  var monthValue = momentObj.month();
+	  var newMoment = momentObj.subtract(monthValue, 'months');
+	  newMoment = convertToFirstOfMonth(momentObj);
+	  return (0, _moment2.default)(newMoment.format('YYYY-MM-DD'));
+	}
+
+	/**
+	 * Compares searchVal(a) to currentVal.time(b) by creating date objects that ignore time.
+	 *
+	 * @searchVal - a moment object to be searched.
+	 * @currentVal - an object with an attribute time that can be parsed by moment.
+	 *
+	 * @return a == b (0), a < b (positive value), a > b (negative value)
+	 */
+	function cmpDay(searchVal, currentVal) {
+	  var parseMoment = (0, _moment2.default)((0, _moment2.default)(currentVal.time).format('YYYY-MM-DD'));
+	  var zeroSearch = (0, _moment2.default)(searchVal.format('YYYY-MM-DD'));
+
+	  return zeroSearch.diff(parseMoment);
+	}
+
+	function getObj(data, time) {
+	  var obj = binarySearchHelper(data, time, cmpDay);
+	  if (obj) {
+	    return obj;
+	  }
+
+	  return {
+	    time: time,
+	    hourCount: 0,
+	    hourEstimate: 1
+	  };
+	}
+
+	// ----------------------------------- End Utilities ----------------------------------- //
+
+
+	// ----------------------------------- Start Weekly ----------------------------------- //
+
+	/**
+	 * Function that "builds" weeklyData, for current implementation originalData is already in the
+	 * correct form. A Copy should be made if weeklyData needs to be edited in the future.
+	 */
+	function buildWeekly() {
+	  weeklyData = originalData;
+	  console.log(JSON.stringify(originalData));
+	}
+
+	/**
+	 * Creates a view of weeklyData using date as the focal point, if date is undefined it uses
+	 * todays date.
+	 *
+	 * @param $scope
+	 * @param date - a date within week to be viewed.
+	 * @returns
+	 */
+	function setWeekly($scope, tarDate) {
+	  var date = tarDate;
+	  if (date === undefined) {
+	    date = (0, _moment2.default)();
+	  }
+	  var currDay = date.day();
+
+	  date.subtract(currDay, 'days');
+
+	  // Set global view properties.
+	  focalDate = (0, _moment2.default)(date.format());
+	  $scope.zoomOutStr = 'Monthly';
+	  $scope.canZoom = 'true';
+	  scale = WEEK;
+
+	  var dataString = '[{"seriesname":"Weekly","data":[';
+	  var i = void 0;
+	  var currDate = (0, _moment2.default)(date.format());
+	  for (i = 0; i < 7; i += 1) {
+	    var currObj = getObj(weeklyData, currDate);
+
+	    var hourCount = currObj.hourCount;
+	    var hourEstimate = currObj.hourEstimate;
+
+	    var value = Math.floor(hourCount / hourEstimate * 100);
+	    dataString += '{"value":"' + value + '"}';
+	    if (i !== 6) {
+	      dataString += ',';
+	    }
+	    currDate.add(1, 'days');
+	  }
+	  dataString += ']}]';
+
+	  displayData = JSON.parse(dataString);
+	  diaplayLabels = weeklyLabels;
+
+	  displayChart($scope);
+	}
+
+	function toggleModal() {
+	  $('.attendanceModal').modal('toggle');
+	}
+	function weeklyColumnClick(ev, props, $scope) {
+	  toggleModal();
+	  $scope.toggleModal = toggleModal;
+	  $scope.showCheckedIn = false;
+
+	  var plusDays = props.dataIndex;
+	  var date = (0, _moment2.default)(focalDate.format()).add(plusDays, 'days');
+	  date = date.format('DD-MMM-YY').toUpperCase();
+	  $scope.modalDate = date;
+
+	  http({
+	    method: 'GET',
+	    url: '/associate/AssociatesInStaggin/' + date
+	  }).then(function (response) {
+	    $scope.checkedInAssociates = [];
+	    $scope.notCheckedInAssociates = [];
+	    console.log(JSON.stringify(response.data, null, 2));
+	    response.data.forEach(function (item) {
+	      item.checkinTime = (0, _moment2.default)(item.checkinTime).format('HH:MM');
+	      if (item.checkinTime === 'Invalid date') $scope.notCheckedInAssociates.push(item);else $scope.checkedInAssociates.push(item);
+	    });
+
+	    //$scope.checkedInAssociates = response.data;
+	  });
+	}
+
+	// ----------------------------------- End Weekly ----------------------------------- //
+
+
+	// ----------------------------------- Start Monthly ----------------------------------- //
+
+	function buildMonthlyForEach(item) {
+	  var timeMoment = (0, _moment2.default)(item.time);
+	  var identityString = convertToFirstOfTheWeek(timeMoment);
+	  var dataObj = binarySearchHelper(monthlyData, (0, _moment2.default)(identityString), cmpDay);
+
+	  if (!dataObj && timeMoment.isoWeekday() < 6 && (0, _moment2.default)() > timeMoment) {
+	    var itemCpy = JSON.parse(JSON.stringify(item));
+	    itemCpy.time = identityString;
+	    monthlyData.push(itemCpy);
+	  } else if (timeMoment.isoWeekday() < 6 && timeMoment < (0, _moment2.default)()) {
+	    // TODO: && moment() > timeMoment) {
+	    dataObj.hourCount = parseFloat(dataObj.hourCount) + parseFloat(item.hourCount);
+	    dataObj.hourEstimate = parseFloat(dataObj.hourEstimate) + parseFloat(item.hourEstimate);
+	  }
+	}
+
+	function buildMonthly() {
+	  monthlyData = [];
+	  originalData.forEach(buildMonthlyForEach);
+	}
+
+	function setMonthly($scope, tarDate) {
+	  var date = tarDate;
+	  if (date === undefined) {
+	    date = (0, _moment2.default)();
+	  }
+
+	  date = convertToFirstOfTheWeek(date);
+
+	  // Set global view properties
+	  focalDate = (0, _moment2.default)(date.format());
+	  $scope.zoomOutStr = 'Yearly';
+	  $scope.canZoom = 'true';
+	  scale = MONTH;
+
+	  var dataString = '[{"seriesname":"Monthly","data":[';
+	  var valueString = '[';
+
+	  var i = void 0;
+	  var currDate = (0, _moment2.default)(date.format());
+	  for (i = 0; i < 5; i += 1) {
+	    var currObj = getObj(monthlyData, currDate);
+	    var nextObj = getObj(monthlyData, currDate.add(7, 'days'));
+
+	    var hourCount = currObj.hourCount;
+	    var hourEstimate = currObj.hourEstimate;
+
+	    var start = (0, _moment2.default)(currObj.time).format('MM/DD');
+	    var stop = (0, _moment2.default)(nextObj.time).subtract(1, 'days').format('MM/DD');
+	    valueString += '{"label":"' + start + '-' + stop + '"}';
+
+	    var value = Math.floor(hourCount / hourEstimate * 100);
+	    dataString += '{"value":"' + value + '"}';
+	    if (i !== 4) {
+	      dataString += ',';
+	      valueString += ',';
+	    }
+	    currDate.add(7, 'days');
+	  }
+	  dataString += ']}]';
+	  valueString += ']';
+
+	  displayData = JSON.parse(dataString);
+	  diaplayLabels = JSON.parse(valueString);
+
+	  displayChart($scope);
+	}
+
+	function monthlyColumnClick(ev, props, $scope) {
+	  setWeekly($scope, (0, _moment2.default)(focalDate.add(props.dataIndex * 7, 'days')));
+
+	  $scope.selectedValue = '$props.displayValue}/' + props.categoryLabel + '/' + props.dataIndex;
+	}
+
+	// ----------------------------------- End Monthly ----------------------------------- //
+
+
+	// ----------------------------------- Start Yearly ----------------------------------- //
+
+	/**
+	 * Checks if an item exists in  the yearlyData obj, creates one if not and increments values
+	 * within existing obj if it exists.
+	 * (This function requires items to be inserted in order for binary search to be effective)
+	 *
+	 * @param item - data object with a time attribute.
+	 */
+	function buildYearlyForEach(item) {
+	  var identityString = convertToFirstOfQuarter((0, _moment2.default)(item.time));
+	  var dataObj = binarySearchHelper(yearlyData, (0, _moment2.default)(identityString), cmpDay);
+
+	  if (!dataObj) {
+	    var itemCpy = JSON.parse(JSON.stringify(item));
+	    itemCpy.time = identityString;
+	    yearlyData.push(itemCpy);
+	  } else {
+	    dataObj.hourCount = parseFloat(dataObj.hourCount) + parseFloat(item.hourCount);
+	    dataObj.hourEstimate = parseFloat(dataObj.hourEstimate) + parseFloat(item.hourEstimate);
+	  }
+	}
+
+	/*
+	 * Loops through original data recieved from ajax call and calls build.
+	 */
+	function buildYearly() {
+	  yearlyData = [];
+	  originalData.forEach(buildYearlyForEach);
+	}
+
+	function setYearly($scope, tarDate) {
+	  var date = tarDate;
+	  if (date === undefined) {
+	    date = (0, _moment2.default)();
+	  }
+
+	  date = convertToFirstOfYear(date);
+
+	  // Set global view properties.
+	  focalDate = (0, _moment2.default)(date.format());
+	  $scope.zoomOutStr = 'Not Visible';
+	  $scope.canZoom = '';
+	  scale = YEAR;
+
+	  var dataString = '[{"seriesname":"Yearly","data":[';
+
+	  var i = void 0;
+	  var currDate = (0, _moment2.default)(date.format());
+	  for (i = 0; i < 4; i += 1) {
+	    var currObj = getObj(yearlyData, currDate);
+
+	    var hourCount = currObj.hourCount;
+	    var hourEstimate = currObj.hourEstimate;
+
+	    var value = Math.floor(hourCount / hourEstimate * 100);
+	    dataString += '{"value":"' + value + '"}';
+	    if (i !== 3) {
+	      dataString += ',';
+	    }
+	    currDate = currDate.add(3, 'months'); // Go to next quarter
+	  }
+	  dataString += ']}]';
+
+	  displayData = JSON.parse(dataString);
+	  diaplayLabels = yearlyLabels;
+
+	  displayChart($scope);
+	}
+
+	function yearlyColumnClick(ev, props, $scope) {
+	  setMonthly($scope, (0, _moment2.default)(focalDate.add(props.dataIndex * 3, 'months')));
+
+	  $scope.selectedValue = '$props.displayValue}/' + props.categoryLabel + '/' + props.dataIndex;
+	}
+
+	// ----------------------------------- End Yearly ----------------------------------- //
+
+
+	// ----------------------------------- Start Nav ----------------------------------- //
+
+	function setNavFunctions($scope) {
+	  $scope.step = function step(steps) {
+	    switch (scale) {
+	      case WEEK:
+	        focalDate = focalDate.add(steps * 7, 'days');
+	        setWeekly($scope, focalDate);
+	        break;
+	      case MONTH:
+	        focalDate = focalDate.add(steps, 'months');
+	        setMonthly($scope, focalDate);
+	        break;
+	      case YEAR:
+	        focalDate = focalDate.add(steps, 'years');
+	        setYearly($scope, focalDate);
+	        break;
+	      default:
+	    }
+	  };
+
+	  $scope.zoomOut = function zoomOut() {
+	    if (scale === WEEK) {
+	      setMonthly($scope, focalDate);
+	    } else if (scale === MONTH) {
+	      setYearly($scope, focalDate);
+	    }
+	  };
+	}
+
+	// ----------------------------------- End Nav ----------------------------------- //
+
+
+	// ----------------------------------- Start Main ----------------------------------- //
+
+	displayChart = function displayChartFunc($scope) {
+	  var categories = [{
+	    category: diaplayLabels
+	  }];
+
+	  var dataset = displayData;
+
+	  var myDataSource = {
+	    chart: chartPoperties,
+	    categories: categories,
+	    dataset: dataset
+	  };
+
+	  $scope.selectedValue = 'nothing';
+
+	  var chart = new _fusioncharts2.default({
+	    type: 'stackedcolumn3d',
+	    renderAt: 'attn-chart-container',
+	    width: '550',
+	    height: '350',
+	    dataFormat: 'json',
+	    dataSource: myDataSource,
+	    events: {
+	      dataplotclick: function dataplotclick(ev, props) {
+	        $scope.$apply(function () {
+	          switch (scale) {
+	            case WEEK:
+	              weeklyColumnClick(ev, props, $scope);
+	              break;
+	            case MONTH:
+	              monthlyColumnClick(ev, props, $scope);
+	              break;
+	            case YEAR:
+	              yearlyColumnClick(ev, props, $scope);
+	              break;
+	            default:
+	          }
+	        });
+	      }
+	    }
+	  });
+
+	  chart.render();
+	};
+
+	/**
+	 * Build all graphs and set default graph to current week view.
+	 */
+	function buildGraphs($scope) {
+	  buildWeekly();
+	  setWeekly($scope);
+
+	  buildMonthly();
+	  buildYearly();
+	}
+
+	/**
+	 * Request checkin data from rest controller.
+	 */
+	function attendanceRequest($scope, $http) {
+	  $http({
+	    method: 'GET',
+	    url: '/checkin/report'
+	  }).then(function (response) {
+	    originalData = response.data;
+	    buildGraphs($scope);
+	  });
+	}
+
+	/**
+	 * Request data and set scope bindings.
+	 */
+	var attendanceGraphCtrl = function attendanceGraphCtrl($scope, $http) {
+	  $scope.zoomOutStr = 'ZoomOut';
+	  http = $http;
+	  attendanceRequest($scope, $http);
+	  setNavFunctions($scope);
+	};
+
+	// ----------------------------------- End Main ----------------------------------- //
+
+	exports.default = attendanceGraphCtrl;
+
+/***/ }),
 /* 216 */
 /***/ (function(module, exports, __webpack_require__) {
 
