@@ -1,0 +1,32 @@
+body {
+    padding: 5px;
+    margin: 0 auto;
+}
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-left:80;
+}
+
+.availAssModal {
+	height: 50em;
+	overflow: auto;
+}
+
+.name-port {
+	  display: FLEX;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;}
+
+.white {
+	background-color: white;
+}
+
+.smoke {
+	  background-color: #f5f5f5;
+    border: rgba(128,128,128, 0.5) solid 1px;
+    border-left: none;
+    border-right: none;
+}

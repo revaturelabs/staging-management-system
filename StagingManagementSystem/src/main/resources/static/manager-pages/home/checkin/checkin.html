@@ -1,33 +1,23 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:ng-model="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="checkin.css">
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-</head>
-<body ng-app='checkin' ng-controller="checkinCtrl">
-<script src="checkin.js"></script>
-<table class="table table-striped">
+<div style="height: 25em; overflow: auto;">
+  <table class="table table-striped" height="120em">
     <thead>
     <tr>
-        <!--<th class="interview-th" scope="col"></th>-->
-        <th class="interview-th" scope="col">Associate</th>
-        <th class="interview-th" scope="col">Checked In Time</th>
+      <th class="interview-th" scope="col">
+        <input type="checkbox" ng-click="selectAllAssociatesWhoCheckedIn()"> Select All
+      </th>
+      <th class="interview-th" scope="col">Associate</th>
+      <th class="interview-th" scope="col">Checked In Time</th>
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="checkin in checkins"
-        class="associate">
-
-        <td class="interview-td" ng-bind="checkin.associate.name"></td>
-
-        <td class="interview-td" ng-bind="checkin.checkinTime"></td>
-    </tr>
+    <tr ng-repeat="associate in associates | filter: approvedFilter" class="associate">
+        <td class="interview-td">
+          <input ng-style="associate.checkin.checkinTime ? {'cursor':'pointer'} : {}" type="checkbox" ng-disabled="!associate.checkin.checkinTime" ng-model="associate.checkin.selected">
+         </td>
+        <td class="interview-td" ng-bind="associate.name"></td>
+        <td style="text-align:center" class="interview-td" ng-bind="associate.checkin.checkinTime ? dateConverter(associate.checkin.checkinTime) : '----'"></td>
+      </tr>
     </tbody>
-</table>
-<button class="btn btn-lg btn-primary btn-block" type="submit"
-        ng-click="approve()">Submit</button>
-</body>
-</html>
+  </table>
+</div>
+<button class="btn btn-lg btn-success btn-block" type="submit" ng-click="approveSelectedCheckins()">Submit</button>

@@ -1,25 +1,35 @@
 const userCtrl = ($scope, $http) => {
+  $http.get('batchtype/all.json')
+    .then((response) => {
+		  $scope.posts = response.data
+  	}, () => {
+  		console.log('failure')
+    });
+
   $scope.submit = () => {
-  	let item = JSON.stringify($scope.user);
+    $scope.requestMade = true;
+    $scope.createMessage = 'Attempting to create client';
+    $scope.createMessageStyle = { color: 'black' };
+
   	//need 2 different post requests for manager and associate
-  	console.log(item);
-  	console.log($scope.user.type == 'Associate');
-  	if ($scope.user.type == 'Associate'){
-  		console.log('in associate');
-  	$http.post('/associate', item).then( (response) => {
-  		console.log("success")
-  	}, () => {
-  		console.log("failure")
-  	})
-};
-	if ($scope.user.type == 'Manager'){
-		console.log('in manager');
-  	$http.post('/manager', item).then( (response) => {
-  		console.log("success")
-  	}, () => {
-  		console.log("failure")
-  	})
-};
+  	if ($scope.user.type == 'associate'){
+    	$http.post('/associate', $scope.user).then((response) => {
+        $scope.createMessage = 'Successfully created client';
+        $scope.createMessageStyle = { color: 'green' };
+    	}, () => {
+        $scope.createMessage = 'Failed to create client';
+        $scope.createMessageStyle = { color: 'red' };
+    	})
+    };
+  	if ($scope.user.type == 'manager'){
+    	$http.post('/manager', $scope.user).then( (response) => {
+        $scope.createMessage = 'Successfully created client';
+        $scope.createMessageStyle = { color: 'green' };
+    	}, () => {
+        $scope.createMessage = 'Failed to create client';
+        $scope.createMessageStyle = { color: 'red' };
+    	})
+    };
   };
 };
 

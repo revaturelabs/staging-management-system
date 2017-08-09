@@ -1,5 +1,6 @@
 package com.revature.entities;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,16 +20,12 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.revature.config.SmsSettings;
-import com.revature.exceptions.SmsCustomException;
-import com.revature.markers.SmsValidatable;
+
 
 @Entity
 @Table(name = "ASSOCIATES")
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-public class Associate implements SmsValidatable {
-
-	transient private static SmsSettings settings = SmsSettings.getInstance();
+public class Associate {
 
 	@Id
 	@Column(name = "ASSOCIATE_ID")
@@ -66,9 +63,9 @@ public class Associate implements SmsValidatable {
 
 	public Associate() {
 		super();
-		this.skills = new HashSet<Skill>();
-		this.jobs = new HashSet<Job>();
-		this.active = true;
+		this.skills = new HashSet<>();
+		this.jobs = new HashSet<>();
+		this.active = false;
 	}
 
 	public Associate(long id, Credential credential, String name, String portfolioLink, Batch batch, boolean active,
@@ -83,6 +80,56 @@ public class Associate implements SmsValidatable {
 		this.lockedTo = lockedTo;
 		this.skills = skills;
 		this.jobs = jobs;
+	}
+
+	/**
+	 *  Returns true if associate was on job during the given date.
+	 */
+	public boolean hasJobOnDate(LocalDateTime date){
+	  for(Job j : jobs){
+	    boolean beforeEnd = j.getEndDate() == null || date.compareTo(j.getEndDate()) < 0;
+	    boolean hasentStopped = j.getEndDate() == null;
+	    boolean afterStart = date.compareTo(j.getStartDate()) > 0;
+	    
+	    if(afterStart && (hasentStopped || beforeEnd))
+	      return true;
+	  }
+	  return false;
+	}
+	
+	/**
+	 * Returns true if associate has not started thier training and they have not had
+	 * any jobs. Leaving it possible for associates to participate in multiple training
+	 * batches only after they have had atleast one job.
+	 */
+	public boolean hasStartedOnDate(LocalDateTime date) {
+		boolean hasBegunTraining = date.compareTo(batch.getStartDate()) > 0;
+
+		if(hasBegunTraining)
+			     return true;
+		return false;
+	}
+	
+	/**
+	 * Returns true if associate was in training during the given date.
+	 */
+	public boolean isTrainingOnDate(LocalDateTime adate) {
+	   LocalDateTime date = adate.withHour(12); //Set mid day all other events should be the beginning of the day.
+	   boolean afterBatchStart = date.compareTo(batch.getStartDate()) > 0;
+	   boolean beforeBatchEnd = date.compareTo(batch.getEndDate()) < 0;
+	   if(afterBatchStart && beforeBatchEnd)
+	     return true;
+	  
+	  return false;
+	}
+	
+	/**
+	 * This function returns true if the associate was in staging on the given date.
+	 */
+	public boolean isTrackedOnDate(LocalDateTime date) {
+	     if(hasStartedOnDate(date) && !isTrainingOnDate(date) && !hasJobOnDate(date))
+	    	 return true;
+	     return false;
 	}
 
 	public long getId() {
@@ -129,8 +176,11 @@ public class Associate implements SmsValidatable {
 		return active;
 	}
 
-	public void setActive(boolean active) {
-		this.active = active;
+	public void setActive() {
+		if(this.isTrackedOnDate(LocalDateTime.now()))
+			this.active = true;
+		else
+			this.active = false;
 	}
 
 	public Client getLockedTo() {
@@ -171,7 +221,7 @@ public class Associate implements SmsValidatable {
 	}
 
 	@Override
-	final public boolean equals(Object obj) {
+	public final boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -212,13 +262,7 @@ public class Associate implements SmsValidatable {
 	@Override
 	public String toString() {
 		return "Associate [id=" + id + ", credential=" + credential + ", name=" + name + ", portfolioLink="
-				+ portfolioLink + ", batch=" + batch.getBatchType().getValue() + ", active=" + active + ", lockedTo="
+				+ portfolioLink + ", batch=" + (batch == null ? null : batch.getBatchType().getValue()) + ", active=" + active + ", lockedTo="
 				+ lockedTo + ", skills=" + skills + "]";
 	}
-
-	@Override
-	public void validate() throws SmsCustomException {
-		// TODO Validate your members.
-	}
-
 }

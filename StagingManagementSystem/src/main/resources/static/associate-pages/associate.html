@@ -1,27 +1,27 @@
-<nav class="navbar navbar-default" role="navigation">
-	<div class="navbar navbar-fixed-top navbar-default">
-		<div class="navbar-header">
-			<a class="navbar-left img-center">
-				<img src="./images/revature-logo.png" alt="Revature" width="90" height="35">
-			</a>
-			<div class="nav navbar-brand">
-				<button ng-class="{ disabled: hasCheckedIn }" ng-click="checkIn()" ng-bind="checkInBtn" type="button" class="btn btn-primary" ></button>
-			</div>	
-			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-				<span class="sr-only">Toggle navigation</span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</button> 
-		</div>
-		<div class="navbar-collapse collapse navbar-right">
-			<ul class="nav navbar-nav">
-				<li ng-class="{ active: isActive('/associate/home')}"><a ui-sref="associate.home">Home</a></li>
-				<li ng-class="{ active: isActive('/associate/interview')}"><a ui-sref="associate.associateInterview">Interview</a></li>
-				<li ng-click="logout()"><a ui-sref="">Logout</a></li>
-			</ul>
-		</div>
-	</div>
-</nav>
 
-<div ui-view></div>
+<div class="navbar navbar-fixed-top navbar-default">
+	<div class="navbar-header">
+		<a class="navbar-left img-center">
+			<img src="./images/revature-logo.png" alt="Revature" width="90" height="35">
+		</a>
+		<div class="nav navbar-brand">
+			<button ng-class="{ disabled: hasCheckedIn }" ng-click="checkIn()" ng-bind="checkInBtn" type="button" id="checkBtn" class="btn btn-primary" ></button>
+		</div>
+		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+			<span class="sr-only">Toggle navigation</span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+		</button>
+	</div>
+	<div class="navbar-collapse collapse navbar-right">
+		<ul class="nav navbar-nav">
+			<li ng-class="{ active: isActive('/associate/home')}"><a ui-sref="associate.home">Home</a></li>
+			<li ng-class="{ active: isActive('/associate/interview')}"><a ui-sref="associate.associateInterview">Interview</a></li>
+			<li ng-click="logout()"><a ui-sref="">Logout</a></li>
+		</ul>
+	</div>
+</div>
+
+
+<div id="associate-body" ui-view></div>

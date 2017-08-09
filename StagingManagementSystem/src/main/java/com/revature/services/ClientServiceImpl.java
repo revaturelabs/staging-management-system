@@ -9,8 +9,6 @@ import org.springframework.stereotype.Service;
 import com.revature.entities.Client;
 import com.revature.repositories.ClientRepo;
 
-import java.util.List;
-
 @Service
 public class ClientServiceImpl implements ClientService {
 
@@ -63,5 +61,9 @@ public class ClientServiceImpl implements ClientService {
 	}
 
 
+	@Override
+	public Set<Client> findPriority() {
+		return clientRepo.findByPriorityTrue();
+	}
 	}
 

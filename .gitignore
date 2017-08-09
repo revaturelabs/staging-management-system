@@ -36,7 +36,8 @@ hs_err_pid*
 /External Files/
 
 *pom.xml
-*/application.properties
+*.properties
+*.orig
 
 .idea
 *.idea

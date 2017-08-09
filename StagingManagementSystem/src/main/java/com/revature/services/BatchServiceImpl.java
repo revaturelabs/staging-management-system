@@ -27,22 +27,22 @@ import com.revature.repositories.TrainerRepo;
 public class BatchServiceImpl implements BatchService {
 
 	@Autowired
-	AssociateRepo associateRepo;
+	private AssociateRepo associateRepo;
 
 	@Autowired
-	BatchRepo batchRepo;
+	private BatchRepo batchRepo;
 
 	@Autowired
-	BatchTypeRepo batchTypeRepo;
+	private BatchTypeRepo batchTypeRepo;
 
 	@Autowired
-	TrainerRepo trainerRepo;
+	private TrainerRepo trainerRepo;
 
 	@Autowired
-	CredentialRepo credentialRepo;
+	private CredentialRepo credentialRepo;
 
 	@Autowired
-	LocationRepo locationRepo;
+	private LocationRepo locationRepo;
 
 	public BatchServiceImpl(BatchRepo batchRepo, BatchTypeRepo batchTypeRepo, TrainerRepo trainerRepo,
 			AssociateRepo associateRepo, CredentialRepo credentialRepo, LocationRepo locationRepo) {
@@ -63,15 +63,45 @@ public class BatchServiceImpl implements BatchService {
 
 	@Override
 	public void add(Batch batch) {
-	  System.out.println("Batch: " + batch);
-		batchRepo.saveAndFlush(batch);
+		if(batch.getId() == 0) {
+			Batch b = batchRepo.saveAndFlush(batch);
+			batch.getAssociates().forEach((Associate associate) -> {
+		        Associate ass = associateRepo.findOne(associate.getId());
+		        ass.setBatch(b);
+		        associateRepo.saveAndFlush(ass);
+		      });
+		} else {
+			Batch b = batchRepo.saveAndFlush(batch);
+			Set<Associate> associates = b.getAssociates();
+			associates.forEach((Associate associate) -> {
+				Associate ass = associateRepo.findOne(associate.getId());
+				boolean contains = false;
+				for(Associate retreivedAssociate : batch.getAssociates()) {
+					if(ass.getId() == retreivedAssociate.getId()) {
+						contains = true;
+					}
+				}
+				if(!contains) {
+					ass.setBatch(null);
+					associateRepo.saveAndFlush(ass);
+				}
+			});
+			
+
+			
+			batch.getAssociates().forEach((Associate associate) -> {
+		        Associate ass = associateRepo.findOne(associate.getId());
+		        ass.setBatch(b);
+		        associateRepo.saveAndFlush(ass);
+		      });
+			
+		}
+		
 	}
 
 	@Override
 	public void addBatchTypes(Set<BatchType> batchTypes) {
-		batchTypes.forEach((BatchType batchType) -> {
-			batchTypeRepo.saveAndFlush(batchType);
-		});
+		batchTypes.forEach((BatchType batchType) -> batchTypeRepo.saveAndFlush(batchType));
 	}
 
 	@Override
@@ -125,7 +155,7 @@ public class BatchServiceImpl implements BatchService {
 	        }
 	        associate.setBatch(batch);
 	        associate.setCredential(credentialRepo.saveAndFlush(associate.getCredential()));
-	        associate = associateRepo.saveAndFlush(associate);
+	        associateRepo.saveAndFlush(associate);
 	      });
 		}
 

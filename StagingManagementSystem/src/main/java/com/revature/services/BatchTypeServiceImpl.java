@@ -1,47 +1,66 @@
 package com.revature.services;
 
-import java.util.HashSet;
-import java.util.Set;
-
+import com.revature.entities.BatchType;
+import com.revature.entities.Skill;
+import com.revature.repositories.BatchTypeRepo;
+import com.revature.repositories.SkillRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.revature.entities.BatchType;
-import com.revature.repositories.BatchTypeRepo;
+import java.util.HashSet;
+import java.util.Set;
 
 @Service
 public class BatchTypeServiceImpl implements BatchTypeService {
 
-	@Autowired
-	BatchTypeRepo batchTypeRepo;
+    @Autowired
+    private BatchTypeRepo batchTypeRepo;
 
-	public BatchTypeServiceImpl(BatchTypeRepo batchTypeRepo) {
-		super();
-		this.batchTypeRepo = batchTypeRepo;
-	}
+    @Autowired
+    private SkillRepo skillRepo;
 
-	@Override
-	public void add(BatchType batchType) {
-		batchTypeRepo.saveAndFlush(batchType);
-	}
+    public BatchTypeServiceImpl(BatchTypeRepo batchTypeRepo, SkillRepo skillRepo) {
 
-	@Override
-	public Set<BatchType> getAll() {
-		return new HashSet<BatchType>(batchTypeRepo.findAll());
-	}
+        super();
+        this.batchTypeRepo = batchTypeRepo;
+        this.skillRepo = skillRepo;
+    }
 
-	@Override
-	public BatchType findById(long id) {
-		return batchTypeRepo.getOne(id);
-	}
+    @Override
+    public BatchType add(BatchType batchType) {
 
-	@Override
-	public void delete(BatchType batchType) {
-		batchTypeRepo.delete(batchType);
-	}
+        for (Skill skill : batchType.getSkills()) {
+            Skill retreivedSkill = skillRepo.findFirstByValueIgnoreCase(skill.getValue());
+            if (retreivedSkill != null) {
+                skill.setId(retreivedSkill.getId());
+            } else {
+                skillRepo.saveAndFlush(skill);
+            }
+        }
+        return batchTypeRepo.saveAndFlush(batchType);
+    }
 
-	@Override
-	public void update(BatchType batchType) {
-		batchTypeRepo.saveAndFlush(batchType);
-	}
+    @Override
+    public Set<BatchType> getAll() {
+
+        return new HashSet<>(batchTypeRepo.findAll());
+    }
+
+    @Override
+    public BatchType findById(long id) {
+
+        return batchTypeRepo.getOne(id);
+    }
+
+    @Override
+    public void delete(BatchType batchType) {
+
+        batchTypeRepo.delete(batchType);
+    }
+
+    @Override
+    public void update(BatchType batchType) {
+
+        batchTypeRepo.saveAndFlush(batchType);
+    }
 }

@@ -5,7 +5,7 @@ const config = {
   entry: './app',
   output: {
     path: path.join(__dirname, './StagingManagementSystem/src/main/resources/static'),
-    filename: 'bundle.js'
+    filename: 'index.js'
   },
   resolve: {
     extensions: ['', '.js']

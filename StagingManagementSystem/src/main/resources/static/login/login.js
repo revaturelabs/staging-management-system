@@ -4,6 +4,17 @@ const loginCtrl = ($scope, $http, $state, userService) => {
   $scope.password = '';
   $scope.errorMsgShow = false;
 
+  const authenticatedUser = userService.getUser();
+
+  const isAssociate = authenticatedUser.id !== undefined;
+  const isManager = authenticatedUser.permission !== undefined;
+
+  if (isManager) {
+    $state.go('manager.home');
+  } else if (isAssociate) {
+    $state.go('associate.home');
+  }
+
   $scope.submit = () => {
     loginBtn.disabled = true;
     loginBtn.innerHTML = 'Logging in...';

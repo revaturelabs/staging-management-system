@@ -2,21 +2,25 @@ import angular from 'angular';
 import angularCookies from 'angular-cookies';
 import uiRouter from 'angular-ui-router';
 import FusionCharts from 'fusioncharts';
+import moment from 'moment';
 
 import { managerCtrl } from './manager-pages/manager';
 import { managerHomeCtrl } from './manager-pages/home/home';
+import managerCheckinsCtrl from './manager-pages/home/checkin/checkin';
 import { interviewsCtrl } from './manager-pages/home/interviews/interviews';
+import stagingGraphController from './manager-pages/home/staging-graph/staging-graph';
+import attendanceGraphCtrl from './manager-pages/home/attendance-graph/attendance-graph';
+import employmentGraphCtrl from './manager-pages/home/employment-graph/employment-graph';
 import managerCreateCtrl from './manager-pages/create/create';
 import { batchCtrl } from './manager-pages/create/batch';
 import { clientCtrl } from './manager-pages/create/client';
 import { userCtrl } from './manager-pages/create/user';
-import managerAdvancedAssociatesCtrl from './manager-pages/advanced/associates';
+import { locCtrl } from './manager-pages/create/location';
+import { jobCtrl } from './manager-pages/create/job';
+import managerAdvancedCtrl from './manager-pages/advanced/advanced';
 import profileCtrl from './associate-pages/profile/profile';
 import associateInterviewCtrl from './associate-pages/interview/interview';
 import associateCtrl from './associate-pages/associate';
-import { reportCtrl } from './reports/reports';
-import { nestedCtrl } from './reports/nestedGraph';
-import { barCtrl } from './reports/barGraph';
 import loginCtrl from './login/login';
 
 require('fusioncharts/fusioncharts.charts')(FusionCharts);
@@ -34,16 +38,45 @@ routerApp.service('userService', function ($cookies) {
   };
 });
 
-routerApp.run(($uiRouter, $trace) => {
+routerApp.directive('scrollToBottom', ($timeout, $window) => {
+  return {
+    scope: {
+        scrollToBottom: "="
+    },
+    restrict: 'A',
+    link: (scope, element, attr) => {
+      scope.$watchCollection('scrollToBottom', (newVal) => {
+        if (newVal) {
+          $timeout(() => {
+            element[0].scrollTop = element[0].scrollHeight;
+          }, 0);
+        }
+      });
+    }
+  };
+});
+
+routerApp.run(($uiRouter, $trace, $rootScope) => {
+
+	//Ui Visualizer
   // Auto-collapse children in state visualizer
-  const registry = $uiRouter.stateRegistry;
+  // const registry = $uiRouter.stateRegistry;
+  // $uiRouter.stateRegistry.get().map(s => s.$$state())
+  //     .filter(s => s.path.length === 2 || s.path.length === 3)
+  //     .forEach(s => s._collapsed = true);
+  //
+  // const pluginInstance = $uiRouter.plugin(Visualizer);
+  //
+  // $trace.enable('TRANSITION');
 
-  const pluginInstance = $uiRouter.plugin(Visualizer);
-
-  $trace.enable('TRANSITION');
+	//Global Functions
+	$rootScope.dateConverter = (time) => {
+    return moment(time).format('MMM D, hh:mm a');
+	};
 });
 
 routerApp.config(($stateProvider, $urlRouterProvider) => {
+
   $urlRouterProvider.otherwise('/login');
 
   $stateProvider // HOME STATES AND NESTED VIEWS
@@ -78,6 +111,17 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       templateUrl: 'manager-pages/create/client.html',
       controller: clientCtrl,
     })
+    .state('manager.create.location', {
+      url: '/location',
+      templateUrl: 'manager-pages/create/location.html',
+      controller: locCtrl,
+    })
+    .state('manager.create.job', {
+      url: '/job',
+      templateUrl: 'manager-pages/create/job.html',
+      controller: jobCtrl,
+
+    })
     .state('manager.home', {
       url: '/home',
       views: {
@@ -85,27 +129,50 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
           templateUrl: 'manager-pages/home/home.html',
           controller: managerHomeCtrl,
         },
-        'available@manager.home': { templateUrl: 'manager-pages/home/available.html' },
-        'priorityMapped@manager.home': {
-          templateUrl: 'manager-pages/home/priorityMapped.html',
+        'staging-graph@manager.home': {
+          templateUrl: 'manager-pages/home/staging-graph/staging-graph.html',
+          controller: stagingGraphController,
+        },
+        'attendance-graph@manager.home': {
+          templateUrl: 'manager-pages/home/attendance-graph/attendance-graph.html',
+          controller: attendanceGraphCtrl,
+        },
+        'employment-graph@manager.home': {
+          templateUrl: 'manager-pages/home/employment-graph/employment-graph.html',
+          controller: employmentGraphCtrl,
         },
         'interviews@manager.home': {
           templateUrl: 'manager-pages/home/interviews/interviews.html',
           controller: interviewsCtrl,
         },
         'checkins@manager.home': {
-          templateUrl: 'manager-pages/home/checkins.html',
+          templateUrl: 'manager-pages/home/checkin/checkin.html',
+            controller: managerCheckinsCtrl,
         },
       },
+    })
+    .state('manager.associateView', {
+      url: '/associate/:id',
+      templateUrl: 'associate-pages/profile/profile.html',
+      controller: profileCtrl,
     })
     .state('manager.advanced', {
       url: '/advanced',
       templateUrl: 'manager-pages/advanced/advanced.html',
-      controller: managerAdvancedAssociatesCtrl,
+      controller: managerAdvancedCtrl,
     })
     .state('manager.advanced.allassociates', {
       url: '/associates',
-      templateUrl: 'manager-pages/advanced/associates.html',
+      templateUrl: 'manager-pages/advanced/associates/associates.html',
+    })
+    .state('manager.advanced.batches', {
+      url: '/batches',
+      templateUrl: 'manager-pages/advanced/batches/batches.html'
+    })
+    .state('manager.advanced.batches.edit', {
+      url: '/edit/:id',
+      templateUrl: 'manager-pages/create/batch.html',
+      controller: batchCtrl,
     })
     .state('associate', {
       url: '/associate',
@@ -127,57 +194,4 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       templateUrl: 'associate-pages/profile/profile.html',
       controller: profileCtrl,
     })
-    .state('reports', {
-      url: '/reports',
-      templateUrl: 'reports/reports.html',
-      controller: reportCtrl,
-    })
-    .state('reports.nestedGraph', {
-      url: '/nestedGraph',
-      templateUrl: 'reports/nestedGraph.html',
-      controller: nestedCtrl,
-    })
-    .state('reports.barGraph', {
-      url: '/barGraph',
-      templateUrl: 'reports/barGraph.html',
-      controller: barCtrl,
-    });
-
-
-    // views: {
-    //   '': { templateUrl: 'manager/manager.html' },
-    //   'top': { templateUrl: 'manager/top.html' },
-    //   'bottom': { templateUrl: 'manager/schedule.html'}
-    //   }
-    // }
-
-
-    // nested list with custom controller
-    // .state('home.list', {
-    //     url: '/list',
-    //     templateUrl: 'partial-home-list.html',
-    //     controller: function($scope) {
-    //         $scope.dogs = ['Bernese', 'Husky', 'Goldendoodle'];
-    //     }
-    // })
-
-    // nested list with just some random string data
-    // .state('home.paragraph', {
-    //     url: '/paragraph',
-    //     template: 'I could sure use a drink right now.'
-    // })
-
-    // ABOUT PAGE AND MULTIPLE NAMED VIEWS =================================
-    // .state('about', {
-    //     url: '/about',
-    //     views: {
-    //         '': { templateUrl: 'partial-about.html' },
-    //         'columnOne@about': { template: 'Look I am a column!' },
-    //         'columnTwo@about': {
-    //             templateUrl: 'table-data.html',
-    //             controller: 'scotchController'
-    //         }
-    //     }
-    //
-    // });
 });

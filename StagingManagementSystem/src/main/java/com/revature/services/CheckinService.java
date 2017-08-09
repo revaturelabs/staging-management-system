@@ -104,13 +104,13 @@ public interface CheckinService {
 
     /**
      * Creates or updates checkin.
-     * @param checkins - id and values to be created or updated.
+     * @param checkin - id and values to be created or updated.
      */
     public void update(Checkin checkin);
 
     /**
      * Creates or updates checkin.
-     * @param checkins - id and values to be created or updated.
+     * @param checkin - id and values to be created or updated.
      */
     public void add(Checkin checkin);
 
@@ -119,5 +119,12 @@ public interface CheckinService {
      * @return checkins.
      */
     public Set<Checkin> getTodaysCheckins();
+    
+    /**
+     * Approves multiple checkins
+     * @param checkins manager
+     */
+	public void approveMultiple(Set<Checkin> checkins, Manager manager);
+  public boolean hasCheckedInOnDate(Associate associate, LocalDateTime date);
 
 }

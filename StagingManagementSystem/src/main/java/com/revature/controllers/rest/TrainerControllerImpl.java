@@ -1,7 +1,7 @@
 package com.revature.controllers.rest;
 
-import java.util.Set;
-
+import com.revature.entities.Trainer;
+import com.revature.services.TrainerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,81 +12,83 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.revature.entities.Trainer;
-import com.revature.services.TrainerService;
+import java.util.Set;
 
 @RestController
 @RequestMapping("trainer")
 public class TrainerControllerImpl {
-	@Autowired
-	private TrainerService trainerService;
 
-	public TrainerControllerImpl(TrainerService trainerService) {
-		super();
-		this.trainerService = trainerService;
-	}
+    @Autowired
+    private TrainerService trainerService;
 
-	/**
-	 * When called this will always persist a unique Trainer in the database.
-	 * 
-	 * @param trainer
-	 *            - trainer to be persisted.
-	 */
-	@PostMapping
-	public void addTrainer(@RequestBody Trainer trainer) {
-		trainer.setId(0l);
-		trainerService.add(trainer);
-	}
+    public TrainerControllerImpl(TrainerService trainerService) {
 
-	/**
-	 * Deletes trainer with location.id
-	 * 
-	 * @param trainer
-	 *            - holds the id to be deleted
-	 */
-	@DeleteMapping
-	public void deleteTrainer(@RequestBody Trainer trainer) {
-		trainerService.delete(trainer);
-	}
+        super();
+        this.trainerService = trainerService;
+    }
 
-	/**
-	 * If the id exists, updates information. else creates a new row with
-	 * genrated id.
-	 * 
-	 * @param trainer
-	 *            - data to be persisted.
-	 */
-	@PutMapping
-	public void updateTrainer(@RequestBody Trainer trainer) {
-		trainerService.update(trainer);
-	}
+    /**
+     * When called this will always persist a unique Trainer in the database.
+     *
+     * @param trainer - trainer to be persisted.
+     */
+    @PostMapping
+    public void addTrainer(@RequestBody Trainer trainer) {
 
-	/**
-	 * Gets a trainer with id.
-	 * 
-	 * @param id
-	 *            - id of trainer to be retrieved.
-	 * @return trainer object from dataBase.
-	 */
-	@GetMapping("/{id}")
-	public Trainer findById(@PathVariable long id) {
-		return trainerService.findById(id);
-	}
+        trainer.setId(0l);
+        trainerService.add(trainer);
+    }
 
-	/**
-	 * Gets all trainers.
-	 * 
-	 * @param all
-	 * @return all trainer objects from dataBase.
-	 */
-	@GetMapping("/all")
-	public Set<Trainer> findAll() {
-		return trainerService.getAll();
-	}
+    /**
+     * Deletes trainer with location.id
+     *
+     * @param trainer - holds the id to be deleted
+     */
+    @DeleteMapping
+    public void deleteTrainer(@RequestBody Trainer trainer) {
 
-	@PostMapping("/addmultiple")
-	public void addTrainers(@RequestBody Set<Trainer> trainers) {
-		trainerService.addTrainers(trainers);
-	}
+        trainerService.delete(trainer);
+    }
 
+    /**
+     * If the id exists, updates information. else creates a new row with
+     * genrated id.
+     *
+     * @param trainer - data to be persisted.
+     */
+    @PutMapping
+    public void updateTrainer(@RequestBody Trainer trainer) {
+
+        trainerService.update(trainer);
+    }
+
+    /**
+     * Gets a trainer with id.
+     *
+     * @param id - id of trainer to be retrieved.
+     * @return trainer object from dataBase.
+     */
+    @GetMapping("/{id}")
+    public Trainer findById(@PathVariable long id) {
+
+        return trainerService.findById(id);
+    }
+
+    /**
+     * Gets all trainers.
+     *
+     * @param all
+     * @return all trainer objects from dataBase.
+     */
+    @GetMapping("/all")
+    public Set<Trainer> findAll() {
+
+        return trainerService.getAll();
+    }
+
+    @PostMapping("/addmultiple")
+    public void addTrainers(@RequestBody Set<Trainer> trainers) {
+
+        trainerService.addTrainers(trainers);
+    }
 }

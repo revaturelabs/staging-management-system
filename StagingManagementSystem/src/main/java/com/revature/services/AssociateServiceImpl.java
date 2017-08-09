@@ -1,83 +1,112 @@
 package com.revature.services;
 
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Set;
-
-import javax.transaction.Transactional;
+import com.revature.entities.Associate;
+import com.revature.entities.Skill;
+import com.revature.entities.StaggingAssociate;
+import com.revature.repositories.AssociateRepo;
+import com.revature.repositories.CredentialRepo;
+import com.revature.repositories.SkillRepo;
+import com.revature.repositories.StaggingAssociateRepo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.revature.entities.Associate;
-import com.revature.entities.Skill;
-import com.revature.repositories.AssociateRepo;
-import com.revature.repositories.CredentialRepo;
-import com.revature.repositories.SkillRepo;
+import javax.transaction.Transactional;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Service
 public class AssociateServiceImpl implements AssociateService {
 
-	@Autowired
-	private AssociateRepo associateRepo;
+    @Autowired
+    private AssociateRepo associateRepo;
 
-	@Autowired
-	private CredentialRepo credentialRepo;
-	
-	@Autowired
-	private SkillRepo skillRepo;
+    @Autowired
+    private StaggingAssociateRepo staggingAssociateRepo;
+    
+    @Autowired
+    private CredentialRepo credentialRepo;
 
-	public AssociateServiceImpl(AssociateRepo associateRepo, CredentialRepo credentialRepo) {
-		super();
-		this.associateRepo = associateRepo;
-		this.credentialRepo = credentialRepo;
-	}
+    @Autowired
+    private SkillRepo skillRepo;
 
-	public AssociateServiceImpl() {
-		super();
-	}
+    public AssociateServiceImpl(AssociateRepo associateRepo, CredentialRepo credentialRepo) {
 
-	@Override
-	public Associate getById(long id) {
-		Associate associate = associateRepo.getOne(id);
-		System.out.println("");
-		System.out.println("");
-		System.out.println(associate);
-		return associate;
-	}
+        super();
+        this.associateRepo = associateRepo;
+        this.credentialRepo = credentialRepo;
+    }
 
-	@Override
-	@Transactional
-	public void add(Associate associate) {
-		System.out.println(associate);
-		credentialRepo.save(associate.getCredential());
-		associateRepo.saveAndFlush(associate);
-	}
+    public AssociateServiceImpl() {
 
-	@Override
-	public void delete(Associate associate) {
-		associateRepo.delete(associate);
-		credentialRepo.delete(associate.getCredential());
-	}
+        super();
+    }
 
-	@Override
-	public void update(Associate associate) {
-		final Set<Skill> skills = new LinkedHashSet<>();
-		for (Skill associateSkill : associate.getSkills()) {
-			Skill skill = skillRepo.findFirstByValue(associateSkill.getValue());
-			if (skill != null) {
-				skills.add(skill);
-			} else {
-				skills.add(skillRepo.saveAndFlush(associateSkill));
-			}
-		}
-		associate.setSkills(skills);
-		associateRepo.saveAndFlush(associate);
-		credentialRepo.save(associate.getCredential());
-	}
+    @Override
+    public Associate getById(long id) {
 
-	@Override
-	public Set<Associate> getAll() {
-		return new HashSet<Associate>(associateRepo.findAll());
-	}
+        return associateRepo.getOne(id);
+    }
+
+    @Override
+    @Transactional
+    public void add(Associate associate) {
+
+        credentialRepo.save(associate.getCredential());
+        associateRepo.saveAndFlush(associate);
+    }
+
+    @Override
+    public void delete(Associate associate) {
+
+        associateRepo.delete(associate);
+        credentialRepo.delete(associate.getCredential());
+    }
+
+    @Override
+    public void update(Associate associate) {
+
+        final Set<Skill> skills = new LinkedHashSet<>();
+        for (Skill associateSkill : associate.getSkills()) {
+            Skill skill = skillRepo.findFirstByValueIgnoreCase(associateSkill.getValue());
+            if (skill != null) {
+                skills.add(skill);
+            } else {
+                skills.add(skillRepo.saveAndFlush(associateSkill));
+            }
+        }
+        associate.setSkills(skills);
+        associateRepo.saveAndFlush(associate);
+        credentialRepo.save(associate.getCredential());
+    }
+
+    @Override
+    public Set<Associate> getAll() {
+
+        return new HashSet<>(associateRepo.findAll());
+    }
+
+    @Override
+    public Set<Associate> getAllActive() {
+
+        return associateRepo.findAssociatesByActiveTrue();
+    }
+
+    @Override
+    public Set<Associate> haveNoBatch() {
+
+        return associateRepo.findByBatchIsNull();
+    }
+
+    @Override
+    public Set<Associate> findByBatchId(Long id) {
+
+        return associateRepo.findByBatchId(id);
+    }
+
+    @Override
+    public Set<StaggingAssociate> getAssociatesInStaggingOn(String date) {
+      return staggingAssociateRepo.getAssociatesInStaggingOn(date);
+    }
 }

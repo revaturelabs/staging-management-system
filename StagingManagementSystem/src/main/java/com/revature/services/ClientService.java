@@ -4,8 +4,6 @@ import java.util.Set;
 
 import com.revature.entities.Client;
 
-import java.util.List;
-
 public interface ClientService {
 
 	Client getClientbyId(long id);
@@ -21,4 +19,5 @@ public interface ClientService {
 	public Client findById(long id);
 
 	public Set<Client> getAll();
+	Set<Client> findPriority();
 }

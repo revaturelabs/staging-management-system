@@ -1,13 +1,17 @@
-const managerCtrl = ($scope, $state, $location, $http) => {
-	$http({
-		method: 'GET',
-		url: '/login/isManager',
-	})
-	.then((response) => {
-		if(!response.data)
-			$state.go('login');
-	});
-	
+const managerCtrl = ($scope, $state, $location, $http, userService) => {
+  $http({
+    method: 'GET',
+    url: '/login/user',
+  }).then((response) => {
+    userService.setUser(response.data);
+    if (response.data.permission === undefined) {
+      $state.go('associate.home');
+    }
+  }, () => {
+    userService.setUser({});
+    $state.go('login');
+  });
+
 	$scope.isActive = function (viewLocation) {
 			return viewLocation === $location.path();
 	};
@@ -18,6 +22,7 @@ const managerCtrl = ($scope, $state, $location, $http) => {
 			url: '/logout/',
 		})
 		.then((response) => {
+      userService.setUser({});
 			$state.go('login');
 		});
 	};

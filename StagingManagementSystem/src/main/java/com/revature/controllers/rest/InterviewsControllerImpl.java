@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.entities.Interview;
+import com.revature.entities.InterviewStatuses;
+import com.revature.services.InterviewStatusService;
 import com.revature.services.InterviewsService;
 
 @RestController
@@ -21,6 +23,8 @@ public class InterviewsControllerImpl {
 
 	@Autowired
 	private InterviewsService interviewsService;
+	@Autowired
+	private InterviewStatusService interviewStatusService;
 
 	public InterviewsControllerImpl(InterviewsService interviewsService) {
 		super();
@@ -29,6 +33,8 @@ public class InterviewsControllerImpl {
 
 	@PostMapping
 	public void add(@RequestBody Interview interviews) {
+		InterviewStatuses status = interviewStatusService.findByStatus("SCHEDULED");
+		interviews.setInterviewStatus(status);
 		interviewsService.add(interviews);
 	}
 

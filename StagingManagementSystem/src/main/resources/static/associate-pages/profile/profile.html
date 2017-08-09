@@ -9,11 +9,11 @@
     <div class="panel-body">
       <dl>
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-6 col-sm-6 col-xs-6">
             <dt>Name</dt>
             <dd ng-bind="associate.name"></dd>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-6 col-sm-6 col-xs-6">
             <dt>Batch</dt>
             <dd>
               <span ng-bind-template="{{associate.batch.batchType.value}} - "></span>
@@ -24,7 +24,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-6 col-sm-6 col-xs-6">
             <dt>
               Profile URL
               <span style="cursor: pointer;" ng-click="openPortfolioUrlModal()">
@@ -33,17 +33,17 @@
             </dt>
             <dd>
               <span>
-                <a ng-href="{{associate.portfolioLink}}">Profile Link</a>
+                <a ng-click="openPortfolioLink()" href="">Profile Link</a>
               </span>
             </dd>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-6 col-sm-6 col-xs-6">
             <dt>Status</dt>
             <dd ng-bind-template="{{associate.active === true ? 'Active': 'Not active'}}"></dd>
           </div>
         </div>
         <div class="row">
-          <div class="col-md-12">
+          <div class="col-md-12 col-sm-12 col-xs-12">
             <dt>
               Skills
               <span style="cursor: pointer;" ng-click="toggleSkillsModal()">
@@ -51,6 +51,7 @@
               </span>
             </dt>
             <dd>
+              <span ng-bind-template="{{associateHasNoSkills() ? 'None' : ''}}"></span>
               <span ng-repeat="skill in associate.batch.batchType.skills">
                 <span class="badge skill-badge batch-skill" ng-bind="skill.value"></span>
               </span>
@@ -59,6 +60,16 @@
               </span>
               <input class="form-control" ng-show="profileData.skillsInputShowing" />
             </dd>
+          </div>
+        </div>
+        <div class="row" ng-show="isManager">
+          <div class="col-md-12 col-sm-12 col-xs-12">
+            <dt>
+              {{(associate.lockedTo) ? 'Mapped To: ' + associate.lockedTo.name :'Not Mapped'}}
+              <span style="cursor: pointer;" ng-click="toggleMappedModal()">
+                <span class="glyphicon glyphicon-edit"></span>
+              </span>
+            </dt>
           </div>
         </div>
       </dl>
@@ -74,9 +85,24 @@
         <h4 class="modal-title">Add or remove skills</h4>
       </div>
       <div class="modal-body">
-        Add or remove skills, seperated by commas.
-        <div class="form-group">
-          <input ng-model="additionalSkillsInput" class="form-control" />
+        <div scroll-to-bottom="additionalSkillsValues" id="modal-skills-wrapper">
+          <ul class="list-group">
+            <li ng-repeat="skill in additionalSkillsValues" class="list-group-item">
+              <span ng-bind="skill.value"></span>
+              <span class="pull-right">
+                <button ng-click="removeSkill(skill)" class="btn btn-xs btn-danger">
+                  <span class="glyphicon glyphicon-trash"></span>
+                </button>
+              </span>
+            </li>
+          </ul>
+        </div>
+        <div id="new-skill-input" class="input-group">
+          <span class="input-group-addon"><i class="glyphicon glyphicon-plus"></i></span>
+          <input ng-keypress="onEnterAddSkill($event)" ng-model="newSkillValue" type="text" class="form-control" placeholder="Add new skill">
+          <span class="input-group-btn">
+             <button ng-click="addSkill()" class="btn btn-default" type="button">Add</button>
+          </span>
         </div>
       </div>
       <div class="modal-footer">
@@ -102,6 +128,28 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <button ng-click="submitPortfolioUrl()" ng-class="{ disabled: sendingRequest }" ng-bind="portfolioModalButtonValue" type="button" class="btn btn-primary"></button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="mappedToClientModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Edit Mapped Status</h4>
+      </div>
+      <div class="modal-body">
+        <label>Mapped To:</label>
+        <div class="input-group">
+          <select class="manager-input form-control" ng-model="associate.lockedTo" ng-options="client as client.name for client in clients">
+            <option value="">-- Not Mapped --</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button ng-click="updateLockedTo()" ng-class="{ disabled: sendingRequest }" ng-bind="mappedModalButtonValue" type="button" class="btn btn-primary"></button>
       </div>
     </div>
   </div>

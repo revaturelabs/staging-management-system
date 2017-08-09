@@ -1,10 +1,140 @@
-<p> test</p>
-		<div>
-		Batchtype: <input ng-model="batch.batchtype"> <br> <br>
-		Start Date: <input ng-model="batch.startdate"> <br> <br>
-		End Date: <input ng-model="batch.enddate"> <br> <br>
-		Location: <input ng-model="batch.location" <br> <br>
-		<h1>Test: {{batch.password}} {{batch.name}}</h1>
-		</div>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th class="create-th" scope="col">Create a Batch</th>
+    </tr>
+  </thead>
 
-<button ng-click="submit()">Submit</button>
+  <tbody>
+    <tr>
+      <td>
+        <div class="flex-column">
+          <div>
+            <label>Batch Type:</label>
+            <div class="input-group">
+              <select class="manager-input form-control" ng-model="batch.batchType" ng-options="batchType as batchType.value for batchType in batchTypes">
+                <option value="">-- Select a Batch Type --</option>
+              </select>
+              <span class="input-group-addon" style="cursor: pointer" ng-click="openNewBatchTypeForm()" data-toggle="modal" data-target="#batchTypeModal">
+                <span class="glyphicon glyphicon-plus"></span>
+              </span>
+            </div>
+          </div>
+        </div>
+			</td>
+    </tr>
+    <tr>
+      <tr>
+        <td>
+          <label>Start Date: </label>
+          <div class="input-group" ng-click="showDateTimePicker(1)">
+            <input type='text' class="manager-input form-control" ng-model="batch.startDate" id='datetimepicker1'/>
+            <span class="input-group-addon" style="cursor:pointer">
+							<span class="glyphicon glyphicon-calendar"></span>
+            </span>
+          </div>
+
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label>Start Date: </label>
+          <div class="input-group" ng-click="showDateTimePicker(2)">
+            <input type='text' class="manager-input form-control" ng-model="batch.endDate" id='datetimepicker2'/>
+            <span class="input-group-addon" style="cursor:pointer">
+							<span class="glyphicon glyphicon-calendar"></span>
+            </span>
+          </div>
+        </td>
+      </tr>
+    </tr>
+    <tr>
+      <td>
+				<label>Location: </label>
+        <select class="manager-input" ng-model="batch.location" ng-options="location as location.name for location in locations">
+          <option value=""> -- Select a Location -- </option>
+        </select>
+			</td>
+    </tr>
+    <tr>
+      <td>
+        <div class="flex-column">
+          <div class="flex-row">
+    				<label>Trainers: </label>
+            <select class="manager-input" ng-model="selectedTrainer" ng-options="trainer as trainer.name for trainer in trainers" ng-change="addTrainer()">
+              <option value=""> -- Select a Trainer-- </option>
+            </select>
+          </div>
+          <div class="new-batchType-skills-title"> Added Trainers </div>
+          <div class="flex-row" style="justify-content: center" ng-repeat="trainer in batch.trainers">
+            <div style="text-align:center" ng-bind="trainer.name"></div>
+            <span class="glyphicon glyphicon-minus remove-batch-type-glyph" ng-click="removeTrainer(trainer)"></span>
+          </div>
+        </div>
+			</td>
+    </tr>
+    <tr>
+      <td>
+        <div class="flex-column">
+          <div class="flex-row">
+    				<label>Associates: </label>
+            <select class="manager-input" ng-model="selectedAssociate" ng-options="associate as associate.name for associate in associates" ng-change="addAssociate()">
+              <option value=""> -- Select an Associate -- </option>
+            </select>
+          </div>
+          <div class="new-batchType-skills-title"> Added Associates </div>
+          <div class="flex-row" style="justify-content: center" ng-repeat="associate in batch.associates">
+            <div style="text-align:center" ng-bind="associate.name"></div>
+            <span class="glyphicon glyphicon-minus remove-batch-type-glyph" ng-click="removeAssociate(associate)"></span>
+          </div>
+        </div>
+			</td>
+    </tr>
+  </tbody>
+</table>
+
+<div ng-show="requestMade" ng-bind="createMessage" ng-style="createMessageStyle"></div>
+<button class="submit" ng-click="submit()">Submit</button>
+
+<!-- Modal -->
+<div id="batchTypeModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content ... yes things are named new but it can handle updating too so code needs cleaning-->
+    <div class="modal-content">
+      <div class="modal-header interview-modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">BatchType</h4>
+      </div>
+      <div class="modal-body flex-column" style="align-items: center">
+        <div class="add-batch-type-container flex-column" style="align-items: center" ng-show="newBatchTypeShow">
+          <div class="input-group" style="width:100%">
+            <label>Batch Type: </label>
+            <input class="manager-input" placeholder="Enter Type Name" ng-model="newBatchType.value" ng-class="{'invalid': !newBatchType.value}"/>
+          </div>
+          <div>
+            <label>Add Skill: </label>
+            <div class="input-group" style="margin-top: 0.2em">
+
+              <input class="manager-input form-control" ng-keyup="$event.keyCode == 13 ? addSkill(newBatchTypeSkill) : null" placeholder="Enter Skill Name" ng-model="newBatchTypeSkill"/>
+              <div class="input-group-addon" style="cursor: pointer" ng-click="addSkill(newBatchTypeSkill)"> add </div>
+              <!-- <input class="manager-input" ng-model="newSkill.value"/> -->
+            </div>
+          </div>
+          <div class="new-batchType-skills-title">Added Skills </div>
+          <div class="flex-row" style="justify-content: center" ng-repeat="skill in newBatchType.skills">
+            <div style="text-align:center" ng-bind="skill.value"></div>
+            <span class="glyphicon glyphicon-minus remove-batch-type-glyph" ng-click="removeSkill(skill)"></span>
+          </div>
+        </div>
+        <div style="height: 0.5em"></div>
+        <button class="btn btn-success" ng-click="addBatchType(newBatchType)">Submit</button>
+        <div ng-show="batchTypeRequestMade" ng-bind="addBatchTypeMessage" ng-style="addBatchTypeMessageStyle"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>

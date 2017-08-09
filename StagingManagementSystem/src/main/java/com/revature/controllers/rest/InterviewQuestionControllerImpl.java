@@ -24,10 +24,12 @@ import com.revature.services.InterviewQuestionService;
 public class InterviewQuestionControllerImpl {
 
 	@Autowired
-	InterviewQuestionService interviewQuestionService;
+	private InterviewQuestionService interviewQuestionService;
 
 	@Autowired
-	BatchTypeService batchTypeService;
+	private BatchTypeService batchTypeService;
+
+	private static final int PROB_CONTAINER = 100000;
 	
 	public InterviewQuestionControllerImpl(InterviewQuestionService interviewQuestionService) {
 		super();
@@ -38,17 +40,16 @@ public class InterviewQuestionControllerImpl {
 	public void addInterviewQuestion(@RequestBody InterviewQuestion interviewQ) {
 		interviewQuestionService.add(interviewQ);
 	}
-	
-	  int probContainer = 100000;
+
 	 @PostMapping("/add/all")
 	  public void addMockInterviewQuestion(@RequestBody Set<InterviewQuestion> interviewQs) {
 	   
 	   Set<BatchType> batches = batchTypeService.getAll();
-	   ArrayList<BatchType> batchList = new ArrayList<BatchType>(batches);
+	   ArrayList<BatchType> batchList = new ArrayList<>(batches);
 	   Random r = new Random();
 	   for(InterviewQuestion iq : interviewQs)
 	   {
-	     int prob = r.nextInt()%probContainer/2 + probContainer/2;
+	     int prob = r.nextInt()% PROB_CONTAINER /2 + PROB_CONTAINER /2;
 	     iq.setBatchType(functionGetBatchType(prob, batchList));
 	     addInterviewQuestion(iq);
 	   }
@@ -63,7 +64,7 @@ public class InterviewQuestionControllerImpl {
 	   int usedProb = 0;
 	   for(int rank = 0; rank < setSize; rank++)
 	   {
-	     int rankProb = (probContainer - usedProb)*6/10;
+	     int rankProb = (PROB_CONTAINER - usedProb)*6/10;
 	      if(usedProb < i && i < rankProb + usedProb)//60% of the remaining probability that a batch at rank index is chosen
 	      {
 	        return batches.get(rank);

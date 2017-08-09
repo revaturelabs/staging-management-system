@@ -1,8 +1,13 @@
 package com.revature.controllers.rest;
 
+import java.util.Collection;
 import java.util.Set;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,7 +18,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.entities.Associate;
+import com.revature.entities.Manager;
+import com.revature.entities.StaggingAssociate;
 import com.revature.services.AssociateService;
+import com.revature.services.TotalReport;
+import com.revature.services.TotalReport.TotalData;
 import com.revature.util.DataGeneration;
 
 @RestController
@@ -21,9 +30,14 @@ import com.revature.util.DataGeneration;
 public class AssociateControllerImpl {
 
 	@Autowired
-	AssociateService associateService;
+	private AssociateService associateService;
 	@Autowired
-	DataGeneration dataGen;
+	private DataGeneration dataGen;
+	@Autowired
+	TotalReport totalReport;
+
+	private static final String LM = "login_manager";
+	private static final String LA = "login_associate";
 
 	public AssociateControllerImpl(AssociateService associateService) {
 		super();
@@ -31,39 +45,104 @@ public class AssociateControllerImpl {
 	}
 
 	@PostMapping
-	public void addAssociate(@RequestBody Associate associate) {
+	public ResponseEntity addAssociate(@RequestBody Associate associate, HttpSession session) {
+		if (session.getAttribute(LM) == null) { // If you're not logged in as a
+												// manger..
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+		}
 		associateService.add(associate);
+		return ResponseEntity.ok(null);
 	}
-	
-	 @PostMapping("/add/all")
-	  public void addAssociates(@RequestBody Set<Associate> associates) {
-	   for(Associate a : associates){
-       associateService.add(a);       
-	   }
-	  }
-	 
-	 @GetMapping("/generate/mock-data")
-	 public void generateAssociateMockDate(){
-	  // dataGen.generate();
-	 }
+
+	@PostMapping("/add/all")
+	public ResponseEntity addAssociates(@RequestBody Set<Associate> associates, HttpSession session) {
+		if (session.getAttribute(LM) == null) { // If you're not logged in as a
+												// manger..
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+		}
+		for (Associate a : associates) {
+			associateService.add(a);
+		}
+		return ResponseEntity.ok(null);
+	}
+
+	@GetMapping("/generate/mock-data")
+	public void generateAssociateMockDate() {
+		dataGen.generate();
+	}
 
 	@DeleteMapping
-	public void deleteAssociate(@RequestBody Associate associate) {
+	public ResponseEntity deleteAssociate(@RequestBody Associate associate, HttpSession session) {
+		if (session.getAttribute(LM) == null) { // If you're not logged in as a
+												// manger..
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+		}
 		associateService.delete(associate);
+		return ResponseEntity.ok(null);
 	}
 
 	@PutMapping
-	public void updateAssociate(@RequestBody Associate associate) {
-		associateService.update(associate);
+	public ResponseEntity<Object> updateAssociate(@RequestBody Associate associate, HttpSession session) {
+		Associate authenticatedAssociate = (Associate) session.getAttribute("login_associate");
+		if (authenticatedAssociate != null) { // Associate edits their profile
+			// Now we block any changes we don't want, by cherry picking the
+			// associate information
+			// from the passed in associate into the session associate.
+			authenticatedAssociate.setSkills(associate.getSkills());
+			authenticatedAssociate.setPortfolioLink(associate.getPortfolioLink());
+			associateService.update(authenticatedAssociate);
+			return ResponseEntity.ok(null);
+		}
+		Manager manager = (Manager) session.getAttribute(LM);
+		if (manager != null) {// We trust managers. A lot.
+			associate.setCredential(associateService.getById(associate.getId()).getCredential());
+			associateService.update(associate);
+			return ResponseEntity.ok(null);
+		}
+
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 	}
 
 	@GetMapping("/{id}")
-	public Associate getAssociate(@PathVariable long id) {
-		return associateService.getById(id);
+	public ResponseEntity<Associate> getAssociate(@PathVariable long id, HttpSession session) {
+		Associate associate = (Associate) session.getAttribute(LA);
+		if (session.getAttribute(LM) == null && (associate == null || associate.getId() != id)) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+		}
+		return ResponseEntity.ok(associateService.getById(id));
 	}
 
 	@GetMapping("/all")
-	public Set<Associate> findById() {
-		return associateService.getAll();
+	public ResponseEntity<Set<Associate>> getAllAssociates(HttpSession session) {
+		if (session.getAttribute(LM) == null) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+		}
+		return ResponseEntity.ok(associateService.getAll());
+	}
+
+	@GetMapping("/allActive")
+	public Set<Associate> getAllActiveAssociates(HttpSession session) {
+		return associateService.getAllActive();
+	}
+
+	@GetMapping("no-batch")
+	public Set<Associate> haveNoBatch() {
+		return associateService.haveNoBatch();
+	}
+
+	@GetMapping("by-batch/{id}")
+	public Set<Associate> byBatch(@PathVariable Long id) {
+		return associateService.findByBatchId(id);
+	}
+
+	@GetMapping(path = "/totaldata")
+	public ResponseEntity<Collection<TotalData>> getAssocaites() {
+		return ResponseEntity.ok(totalReport.process(associateService.getAllActive()));
+	}
+	
+	@GetMapping(path = "/AssociatesInStaggin/{date}")
+	public Set<StaggingAssociate> getAssociatesInStaggingOn(@PathVariable String date){
+	  System.out.println("DATE!!!!    " + date);
+	  return associateService.getAssociatesInStaggingOn(date);
 	}
 }

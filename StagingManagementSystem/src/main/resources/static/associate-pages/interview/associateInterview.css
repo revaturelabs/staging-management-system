@@ -13,3 +13,140 @@
 	text-align: center;
 	margin-bottom: 7em;
 }
+
+.commentArea {
+	 resize: none;
+}
+
+.newH5 {
+	margin-top: 2em;
+}
+
+.associateInterviewTable {
+	cursor: pointer;
+	text-align: left;
+}
+
+
+
+table{
+    border: 1px solid black;
+    box-sizing: border-box;
+}
+
+/* To only work on chrome ans safari */
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  .selectable-table > tbody > tr:hover td:first-child {
+    box-shadow: inset 0px 11px 8px -10px #337AB7,
+      inset 0px -11px 8px -10px #337AB7,
+      inset 11px 0px 8px -10px #337AB7;
+  }
+
+  .selectable-table > tbody > tr:hover td {
+    box-shadow: inset 0px 11px 8px -10px #337AB7,
+      inset 0px -11px 8px -10px #337AB7;
+  }
+
+  .selectable-table > tbody > tr:hover td:last-child {
+    box-shadow: inset 0px 11px 8px -10px #337AB7,
+      inset 0px -11px 8px -10px #337AB7,
+      inset -11px 0px 8px -10px #337AB7;
+  }
+
+  .selectedTableRow > td:first-child {
+    box-shadow: inset 0px 11px 8px -10px #7ab733,
+      inset 0px -11px 8px -10px #7ab733,
+      inset 11px 0px 8px -10px #7ab733;
+  }
+
+  .selectedTableRow > td {
+    box-shadow: inset 0px 11px 8px -10px #7ab733,
+      inset 0px -11px 8px -10px #7ab733;
+  }
+
+  .selectedTableRow > td:last-child {
+    box-shadow: inset 0px 11px 8px -10px #7ab733,
+      inset 0px -11px 8px -10px #7ab733,
+      inset -11px 0px 8px -10px #7ab733;
+  }
+}
+
+/*To work on the others browsers*/
+.selectable-table > tbody > tr:hover {
+  outline: none;
+  -webkit-box-shadow: inset 0 0 10px #337AB7;
+  box-shadow: inset 0 0 10px #337AB7;
+}
+
+.selectedTableRow {
+  outline: none;
+  -webkit-box-shadow: inset 0 0 10px #7ab733;
+  box-shadow: inset 0 0 10px #7ab733;
+}
+
+.interviews-table {
+  margin-bottom: 0;
+}
+
+.table > thead > tr > th.interview-th, .table > tbody > tr > td.interview-td {
+    padding: 15px;
+    text-align: left;
+    font-family: 'Roboto', sans-serif;
+}
+
+.table > thead > tr > th.interview-th {
+    background-color: #FF8000;
+}
+
+.interviews-container {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+.interview-status-container {
+  display: flex;
+  flex-direction: row;
+}
+.interview-status-label {
+  margin-right: 0.2em;
+}
+
+.interview-side-table {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid black;
+  font-family: 'Roboto', sans-serif;
+  margin-left: 1em;
+}
+
+.interview-side-table-footer {
+  height: 1em;
+  background-color: #FF8000;
+  margin-top: 0.3em;
+}
+
+.interview-side-table-header, .interview-modal-header {
+  min-height: 1em;
+  background-color: #FF8000;
+}
+
+.interview-side-table-row {
+  margin-left: 0.2em;
+  margin-right: 0.2em;
+}
+
+.manager-input, .interview-input-addon {
+  padding: 0 0.5em;
+  margin-left: 0.2em;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+  -webkit-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+
+.interview-input-addon {
+  margin:0;
+}

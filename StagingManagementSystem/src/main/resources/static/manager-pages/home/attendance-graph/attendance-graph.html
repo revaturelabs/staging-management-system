@@ -1,0 +1,71 @@
+<div class=attn-report-container>
+	<div class="flex-column" style="align-items:center">
+		<div>
+			<button type="button" ng-show='canZoom' id="zoom-btn" class="manager-view-selecter" ng-click='zoomOut()' ng-style="availableSelecter" >{{zoomOutStr}}</button>
+		</div>
+		<!-- The `selectedValue` variable is defined to store the label and the value of the data plot that is clicked. -->
+
+		<div class='flex-row' style="align-items:center">
+			<div class="graph-nav-btn">
+			<button class="manager-view-selecter glyphicon glyphicon-step-backward" ng-click='step(-1)'></button>
+			</div>
+			<div id="attn-chart-container" fusioncharts width="600" height="400" type="column2d" , datasource="{{dataSource}}" events=attn_event>
+				<p>Loading Graph...</p>
+			</div>
+			<div class="graph-nav-btn">
+				<button class="manager-view-selecter glyphicon glyphicon-step-forward graph-nav-btn" ng-click='step(1)'></button>
+			</div>
+		</div>
+	</div>	
+</div>
+
+<!-- Modal -->
+<div id="barGraphModel" class="modal attendanceModal fade" role="dialog">
+ <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header interview-modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">{{modalDate}}
+        </h4>
+      </div>
+      
+      <div class="modal-body" >
+      	
+      	<div class="flex-grid">
+					<div ng-class="{true: 'white', false: 'checking-tab-higlight'}[showCheckedIn]" 
+							class='attnModalHeader col' 
+							ng-click="showCheckedIn = false">
+							Not Checked In
+					</div>
+		     	<div ng-class="{true: 'white', false: 'checking-tab-higlight'}[!showCheckedIn]"
+		     			class='attnModalHeader col'
+		     			ng-click="showCheckedIn = true">
+		     			Checked In</div>
+ 		    	</div>
+
+	      	<div class='scrollableCheckins' ng-hide="showCheckedIn">		    
+		     	<div class="flex-grid">
+	      	<div class="col" ng-repeat='associate in notCheckedInAssociates'>
+	      		<div ui-sref="manager.associateView({id: associate.id})" ng-click="toggleModal()">{{associate.name}}</div>
+	      	</div>
+	      </div>
+	      </div>
+
+	      <div class='scrollableCheckins' ng-show="showCheckedIn">	      
+	     	<div class="flex-grid" id='checkinModal'>
+	      <div class="col" ng-repeat='associate in checkedInAssociates'>
+	      			<div>{{associate.name}}</div>
+	      			<div>{{associate.checkinTime}}</div>
+	      </div>
+	      </div>
+	      </div>
+	      
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+</div>

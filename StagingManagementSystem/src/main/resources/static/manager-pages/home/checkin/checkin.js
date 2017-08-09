@@ -1,17 +1,56 @@
 /**
  * Created by colts on 6/8/2017.
  */
+const managerCheckinsCtrl = ($scope, $http) => {
+  $http.get('checkin/allTodays').then((result) => {
+      $scope.checkins = result.data;
+      $http.get('associate/allActive').then((result) => {
+        $scope.associates = result.data;
 
-var app = angular.module('myApp', []);
-app.controller('checkinCtrl', function($scope, $http) {
-    $http({
-        method : "GET",
-        url : "checkin/todaysCheckins"
-    }).then(function mySuccess(response) {
-        $scope.checkins = response.data;
-    }, function myError(response) {
-        console.log("error!");
+        $scope.associates.forEach((associate) => {
+          associate.checkin = {};
+          let associatesCheckin = $scope.checkins.some((checkin) => {
+            if(checkin.associate.name === associate.name) {
+              associate.checkin = checkin;
+              return true;
+            }
+          })
+        })
+        window.associates = $scope.associates;
+      })
+  });
+
+  $scope.approvedFilter = (associate) => {
+    if(associate.checkin.approvedBy) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  $scope.selectAllAssociatesWhoCheckedIn = () => {
+    $scope.checkins.forEach((checkin) => {
+      checkin.selected = true;
     });
+  };
 
 
-});
+  $scope.approveSelectedCheckins = () => {
+    let approvedCheckins = [];
+    $scope.checkins.forEach((checkin) => {
+      if (!checkin.approvedBy) {
+        if (checkin.selected) {
+          approvedCheckins.push(checkin);
+        }
+      }
+    })
+
+    $http.patch('checkin/approve-multiple', approvedCheckins).then(() => {
+      approvedCheckins.forEach((checkin) => {
+        checkin.approvedBy = true;
+      })
+    })
+  }
+};
+
+export default managerCheckinsCtrl;
