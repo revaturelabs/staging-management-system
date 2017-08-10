@@ -48,7 +48,7 @@ public class SalesforceAuthorization extends Helper implements Authorization {
 	private String clientId;
 	@Value("${sms.sf.clientsecret}")
 	private String clientSecret;
-	@Value("${sms.sfredirect}")
+	@Value("${sms.sf.redirect}")
 	private String redirectUri;
 	@Value("${sms.sf.smsurl}")
 	private String redirectUrl;
