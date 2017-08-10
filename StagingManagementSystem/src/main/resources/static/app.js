@@ -60,8 +60,6 @@ routerApp.service('userService', function ($cookies) {
 		if (role === trainerRole)
 			this.user={id:false,permisssion:true};
 	};
-
-	return auth;
 });
 
 routerApp.directive('scrollToBottom', ($timeout, $window) => {

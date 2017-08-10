@@ -164,8 +164,6 @@
 	    var role = getCookie();
 	    if (role === trainerRole) this.user = { id: false, permisssion: true };
 	  };
-
-	  return auth;
 	});
 
 	routerApp.directive('scrollToBottom', function ($timeout, $window) {
