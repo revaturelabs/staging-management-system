@@ -29,11 +29,7 @@ human resources and a Manager user to be able to View/Manage said data. Its purp
 client requests for staffing and ensuring that associates that are mapped to clients are not accidentally placed with
 other business clients.
 
-<<<<<<< HEAD
-## Setup 
-=======
 ## Setup
->>>>>>> staging
 ## (!!!!!!!!!! THIS IS VERY IMPORTANT !!!!!!!!!!!!!!!!!!)
 
 ### Node, Webpack, and Babel
@@ -166,15 +162,9 @@ This will be the port that your oracle database will listen to.
 This will launch a Tomcat server for you on port 8080.
 4. In your browser go to localhost:8080 and it should automatically redirect to the login page.
 
-<<<<<<< HEAD
 At this point if you have webpack bundling and eclipse automatically refreshing. 
 Then any changes you make in the JavaScript should automatically be detected and will
 show up if you refresh your browser window. 
-=======
-At this point if you have webpack bundling and eclipse automatically refreshing.
-Then any changes you make in the JavaScript should automatically be detected and will
-show up if you refresh your browser window.
->>>>>>> staging
 
 
 ## Database
