@@ -72,14 +72,14 @@ public class LoginControllerImpl {
 			return ResponseEntity.ok((Associate)obj);
 		}else if(obj instanceof Manager){
 			session.setAttribute(LM, (Manager)obj);
-			if(salesforce)
+			/*if(salesforce)
 			{
 				HttpHeaders headers = new HttpHeaders();
 				headers.add("Location", "/salesforce");
 				return new ResponseEntity<Object>(headers,HttpStatus.FOUND);
 			}
-			else
-				return ResponseEntity.ok((Manager)obj);
+			else*/
+			return ResponseEntity.ok((Manager)obj);
 		}
 		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 	}
