@@ -1,8 +1,11 @@
 package com.revature.sms.controllers.rest;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +25,9 @@ public class LoginControllerImpl {
 	
 	@Autowired
 	CredentialService credService;
+	@Value("${sms.salesforce}")
+	private boolean salesforce;
+	
 
 	private static final String LA = "login_associate";
 	private static final String LM = "login_manager";
@@ -59,14 +65,21 @@ public class LoginControllerImpl {
 	}
 
 	@PostMapping
-	public ResponseEntity<Object> dualLogin(@RequestBody Credential creds, HttpSession session){
+	public ResponseEntity<Object> dualLogin(@RequestBody Credential creds, HttpSession session, HttpServletResponse resp){
 		Object obj = credService.login(creds);
 		if(obj instanceof Associate){
 			session.setAttribute(LA, (Associate)obj);
 			return ResponseEntity.ok((Associate)obj);
 		}else if(obj instanceof Manager){
 			session.setAttribute(LM, (Manager)obj);
-			return ResponseEntity.ok((Manager)obj);
+			if(salesforce)
+			{
+				HttpHeaders headers = new HttpHeaders();
+				headers.add("Location", "/salesforce");
+				return new ResponseEntity<Object>(headers,HttpStatus.FOUND);
+			}
+			else
+				return ResponseEntity.ok((Manager)obj);
 		}
 		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 	}
