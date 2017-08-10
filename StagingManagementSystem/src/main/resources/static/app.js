@@ -195,3 +195,89 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       controller: profileCtrl,
     })
 });
+
+/* Code stolen from Patrick */
+angular.module("auth").factory("authFactory",
+		function($log, $http, $cookies, $state, $location) {
+			$log.debug("Booted Authentication Factory");
+
+			var auth = {};
+
+			// Roles
+			var trainerRole = "ROLE_TRAINER";
+
+			// home states
+			var trainerState = "manager.home";
+			var defaultState = "login"
+
+			// home
+			var trainerHome = "/home";
+			var defaultHome = "/login";
+
+			//
+			/**
+			 * Retrieves role from cookie
+			 * 
+			 * @returns A cookie that contains the role
+			 */
+			function getCookie() {
+				console.log("Let's see what my sf role is: "+$cookies.get("role"))
+				return $cookies.get("role");
+			}
+
+			//
+
+			/**
+			 * Moves user to home page when entering root
+			 */
+			auth.auth = function() {
+				var role = getCookie();
+				if (role === trainerRole)
+					$state.go(trainerState);
+				else 
+					$state.go(defaultState);
+			};
+
+			/**
+			 * Moves user to home page if user is not of role qc
+			 */
+			/*auth.authQC = function() {
+				var role = getCookie();
+				if (role === qcRole)
+					$log.debug("Authenticated user as QC");
+				else if (role === trainerRole)
+					$location.path(trainerHome);
+				else
+					$location.path(vpHome);
+			};*/
+
+			//
+
+			/**
+			 * moves user to home page if user is not of role vp
+			 */
+			/*auth.authVP = function() {
+				var role = getCookie();
+				if (role === vpRole)
+					$log.debug("Authenticate user as VP");
+				else if (role === trainerRole)
+					$location.path(trainerHome);
+				else
+					$location.path(qcHome);
+			};*/
+
+			/**
+			 * Moves user to home page if user is not of role trainer
+			 */
+			/*auth.authTrainer = function() {
+				var role = getCookie();
+				if (role === trainerRole)
+					$log.debug("Authenticated user as Trainer");
+				else if (role === qcRole)
+					$location.path(qcHome);
+				else
+					$location.path(vpHome);
+			};*/
+
+			return auth;
+		});
