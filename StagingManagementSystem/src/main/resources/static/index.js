@@ -130,20 +130,42 @@
 
 	var Visualizer = window['ui-router-visualizer'].Visualizer;
 
-	var authApp = _angular2.default.module("auth", []);
-	var routerApp = _angular2.default.module('routerApp', [auth, _angularUiRouter2.default, _angularCookies2.default]);
+	var routerApp = _angular2.default.module('routerApp', [_angularUiRouter2.default, _angularCookies2.default]);
 
 	routerApp.service('userService', function ($cookies) {
 	  var _this = this;
 
 	  this.user = $cookies.getObject('user') === undefined ? {} : $cookies.getObject('user');
 	  this.getUser = function () {
-	    return _extends({}, _this.user);
+	    checkCookies();
+	    return this.user;
 	  };
 	  this.setUser = function (user) {
 	    $cookies.putObject('user', user);
 	    _this.user = _extends({}, user);
 	  };
+
+	  // Roles
+	  var trainerRole = "ROLE_TRAINER";
+	  /**
+	   * Retrieves role from cookie
+	   * 
+	   * @returns A cookie that contains the role
+	   */
+	  function getCookie() {
+	    console.log("Let's see what my sf role is: " + $cookies.get("role"));
+	    return $cookies.get("role");
+	  }
+
+	  /**
+	   * Moves user to home page when entering root
+	   */
+	  function checkCookies() {
+	    var role = getCookie();
+	    if (role === trainerRole) this.user = { id: false, permisssion: true };
+	  };
+
+	  return auth;
 	});
 
 	routerApp.directive('scrollToBottom', function ($timeout, $window) {
@@ -285,88 +307,6 @@
 	    templateUrl: 'associate-pages/profile/profile.html',
 	    controller: _profile2.default
 	  });
-	});
-
-	/* Code stolen from Patrick */
-	authApp.factory("authFactory", function ($log, $http, $cookies, $state, $location) {
-	  $log.debug("Booted Authentication Factory");
-
-	  var auth = {};
-
-	  // Roles
-	  var trainerRole = "ROLE_TRAINER";
-
-	  // home states
-	  var trainerState = "manager.home";
-	  var defaultState = "login";
-
-	  // home
-	  var trainerHome = "/home";
-	  var defaultHome = "/login";
-
-	  //
-	  /**
-	   * Retrieves role from cookie
-	   * 
-	   * @returns A cookie that contains the role
-	   */
-	  function getCookie() {
-	    console.log("Let's see what my sf role is: " + $cookies.get("role"));
-	    return $cookies.get("role");
-	  }
-
-	  //
-
-	  /**
-	   * Moves user to home page when entering root
-	   */
-	  auth.auth = function () {
-	    var role = getCookie();
-	    if (role === trainerRole) $state.go(trainerState);else $state.go(defaultState);
-	  };
-
-	  /**
-	   * Moves user to home page if user is not of role qc
-	   */
-	  /*auth.authQC = function() {
-	  	var role = getCookie();
-	  	if (role === qcRole)
-	  		$log.debug("Authenticated user as QC");
-	  	else if (role === trainerRole)
-	  		$location.path(trainerHome);
-	  	else
-	  		$location.path(vpHome);
-	  };*/
-
-	  //
-
-	  /**
-	   * moves user to home page if user is not of role vp
-	   */
-	  /*auth.authVP = function() {
-	  	var role = getCookie();
-	  	if (role === vpRole)
-	  		$log.debug("Authenticate user as VP");
-	  	else if (role === trainerRole)
-	  		$location.path(trainerHome);
-	  	else
-	  		$location.path(qcHome);
-	  };*/
-
-	  /**
-	   * Moves user to home page if user is not of role trainer
-	   */
-	  /*auth.authTrainer = function() {
-	  	var role = getCookie();
-	  	if (role === trainerRole)
-	  		$log.debug("Authenticated user as Trainer");
-	  	else if (role === qcRole)
-	  		$location.path(qcHome);
-	  	else
-	  		$location.path(vpHome);
-	  };*/
-
-	  return auth;
 	});
 
 /***/ }),
