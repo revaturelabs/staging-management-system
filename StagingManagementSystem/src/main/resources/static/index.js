@@ -131,7 +131,7 @@
 	var Visualizer = window['ui-router-visualizer'].Visualizer;
 
 	var authApp = _angular2.default.module("auth", []);
-	var routerApp = _angular2.default.module('routerApp', [_angularUiRouter2.default, _angularCookies2.default]);
+	var routerApp = _angular2.default.module('routerApp', [auth, _angularUiRouter2.default, _angularCookies2.default]);
 
 	routerApp.service('userService', function ($cookies) {
 	  var _this = this;
