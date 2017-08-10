@@ -27,6 +27,7 @@ require('fusioncharts/fusioncharts.charts')(FusionCharts);
 
 const Visualizer = window['ui-router-visualizer'].Visualizer;
 
+const authApp= angular.module("auth",[]);
 const routerApp = angular.module('routerApp', [uiRouter, angularCookies]);
 
 routerApp.service('userService', function ($cookies) {
@@ -197,7 +198,7 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
 });
 
 /* Code stolen from Patrick */
-angular.module("auth").factory("authFactory",
+authApp.factory("authFactory",
 		function($log, $http, $cookies, $state, $location) {
 			$log.debug("Booted Authentication Factory");
 

@@ -130,6 +130,7 @@
 
 	var Visualizer = window['ui-router-visualizer'].Visualizer;
 
+	var authApp = _angular2.default.module("auth", []);
 	var routerApp = _angular2.default.module('routerApp', [_angularUiRouter2.default, _angularCookies2.default]);
 
 	routerApp.service('userService', function ($cookies) {
@@ -287,7 +288,7 @@
 	});
 
 	/* Code stolen from Patrick */
-	_angular2.default.module("auth").factory("authFactory", function ($log, $http, $cookies, $state, $location) {
+	authApp.factory("authFactory", function ($log, $http, $cookies, $state, $location) {
 	  $log.debug("Booted Authentication Factory");
 
 	  var auth = {};
