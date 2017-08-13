@@ -17,8 +17,9 @@ function toggle(elm) {
  while (e != null) {
   if (e.tagName == "OL" || e.tagName == "ol"){
 	  e.style.display = newDisplay;
-	  e = e.nextSibling;
   	}
+  e = e.nextSibling;
+  	
  }
 
 }
