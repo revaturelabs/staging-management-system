@@ -221,7 +221,7 @@ public class DataGeneration
 															// 80.
 			probabilityOfLiking = rand.nextInt(10); // Liking probability is
 													// between 0 and 10.
-			probabilityOfNotInterested = 100 - (probabilityOfHiring + probabilityOfLiking);
+			probabilityOfNotInterested = 100 - ((double)probabilityOfHiring + probabilityOfLiking);
 
 			log.debug("Client probibility hiring/liking/interested: " + probabilityOfHiring + "/" + probabilityOfLiking
 					+ "/" + probabilityOfNotInterested);
@@ -391,7 +391,7 @@ public class DataGeneration
    * @param clients
    * @return
    */
-  private int simulateInterview(SimulationState state, double convergenceFactor, ArrayList<ClientP> clients) {
+   private int simulateInterview(SimulationState state, double convergenceFactor, ArrayList<ClientP> clients) {
     // For priority clients revature awaits their decision before more interviews.
     int daysToDecide = logRythmicConvergence(0, 7, .5);    
     
