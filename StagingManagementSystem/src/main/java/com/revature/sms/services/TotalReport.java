@@ -184,10 +184,7 @@ public class TotalReport {
     this.totaldata = totaldata;
   }
 
-  public TotalReport() {
-    super();
-    
-  }
+  
 
   public Collection<TotalData> process(Set<Associate> associates) {
     this.totaldata = new HashMap<>();
