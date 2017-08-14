@@ -74,8 +74,7 @@ public class CredentialServiceImpl implements CredentialService {
 		if (associate != null)
 			return associate;
 		else {
-			Manager man = managerRepo.getByCredential(newCred);
-			return man;
+			return managerRepo.getByCredential(newCred);
 		}
 	}
 }
