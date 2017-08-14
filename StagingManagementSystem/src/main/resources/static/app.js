@@ -27,7 +27,7 @@ require('fusioncharts/fusioncharts.charts')(FusionCharts);
 
 const Visualizer = window['ui-router-visualizer'].Visualizer;
 
-const routerApp = angular.module('routerApp', [uiRouter, angularCookies]);
+const routerApp = angular.module('routerApp', [ui.router, angularCookies]);
 
 routerApp.service('userService', function ($cookies) {
   this.user = $cookies.getObject('user') === undefined ? {} : $cookies.getObject('user');
