@@ -63198,11 +63198,7 @@
 	  });
 
 	  $scope.approvedFilter = function (associate) {
-	    if (associate.checkin.approvedBy) {
-	      return false;
-	    } else {
-	      return true;
-	    }
+	    return associate.checkin.approvedBy ? false : true;
 	  };
 
 	  $scope.selectAllAssociatesWhoCheckedIn = function () {
