@@ -29,7 +29,7 @@ function collapseAll() {
  var lists = document.getElementsByTagName("ol");
  for (var i = 0; i < lists.length; i++) 
   lists[i].style.display = "none";
- e = document.getElementById("root");
+ let e = document.getElementById("root");
  e.style.display = "block";
 }
 
