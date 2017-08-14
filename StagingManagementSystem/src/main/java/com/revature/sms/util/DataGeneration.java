@@ -391,7 +391,7 @@ public class DataGeneration
    * @param clients
    * @return
    */
-  private int simulateInterview(SimulationState state, double convergenceFactor, ArrayList<ClientP> clients) {
+  private int simulateInterview(SimulationState state, double convergenceFactor) {
     // For priority clients revature awaits their decision before more interviews.
     int daysToDecide = logRythmicConvergence(0, 7, .5);    
     
