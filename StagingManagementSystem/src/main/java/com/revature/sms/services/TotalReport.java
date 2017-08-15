@@ -91,7 +91,11 @@ public class TotalReport {
     private long totalUnavailable;
     private List<Tuple<String, String>> availibleAssociates = new ArrayList<>();
     private List<Tuple<String, String>> mappedAssociates = new ArrayList<>();
-
+    
+    public TotalData(String batchName) {
+        super();
+        this.batchName = batchName;
+      }
 
     public List<Tuple<String, String>> getAvailible() {
       return availibleAssociates;
@@ -129,10 +133,7 @@ public class TotalReport {
       this.totalUnavailable = totalUnavailable;
     }
 
-    public TotalData(String batchName) {
-      super();
-      this.batchName = batchName;
-    }
+   
 
     public void addAvailible(String name, String portLink) {
       availibleAssociates.add(new Tuple<String, String>(name, portLink));
