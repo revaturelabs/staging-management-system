@@ -8,8 +8,14 @@ import com.revature.sms.entities.Associate;
 
 @Service
 public class TotalReport {
+	
 
-  public class Tuple<I, T> {
+  public TotalReport() {
+		super();
+		
+	}
+
+public class Tuple<I, T> {
     private I first;
     private T second;
 
