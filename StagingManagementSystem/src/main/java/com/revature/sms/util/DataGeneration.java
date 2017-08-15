@@ -370,12 +370,12 @@ public class DataGeneration
       
       // If client has priority interview simulate process for that interview, else roll the dice for regular client interview.
       if(state.hasInterview(probabilityOfPriorityInterview)){
-        int daysToDecide = simulateInterview(state, .6, priorityClients);
+        int daysToDecide = simulateInterview(state, .6);
         state.currentDate = state.currentDate.plusDays(daysToDecide);
       }
       
       if(state.confirmDate == null && state.hasInterview(probabilityOfRegularInterview)){
-          simulateInterview(state, .3, regularClients);
+          simulateInterview(state, .3);
       }
     }	    
 
@@ -385,13 +385,13 @@ public class DataGeneration
 
   /**
    * Simulates the interview process based on client and associate probabilities.
-   * 
+   *
    * @param state
    * @param convergenceFactor
-   * @param clients
+   * @param 
    * @return
    */
-   private int simulateInterview(SimulationState state, double convergenceFactor, ArrayList<ClientP> clients) {
+   private int simulateInterview(SimulationState state, double convergenceFactor) {
     // For priority clients revature awaits their decision before more interviews.
     int daysToDecide = logRythmicConvergence(0, 7, .5);    
     
