@@ -1,6 +1,6 @@
 import angular from 'angular';
 import angularCookies from 'angular-cookies';
-import uiRouter from 'angular-ui-router';
+import uiRouter from '@uirouter/angularjs';
 import FusionCharts from 'fusioncharts';
 import moment from 'moment';
 
