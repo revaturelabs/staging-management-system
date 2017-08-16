@@ -31,6 +31,7 @@ const routerApp = angular.module('routerApp', [uiRouter, angularCookies]);
 
 routerApp.service('userService', function ($cookies) {
   this.user = $cookies.getObject('user') === undefined ? {} : $cookies.getObject('user');
+  console.log(this.user.get("role"));
   this.getUser = function(){
 	  checkCookies();
 	  return this.user
