@@ -163,12 +163,13 @@
 	  }
 
 	  //TEST FUNCTION
-	  function getUserInfoFromSalesforce() {
+	  this.getUserInfoFromSalesforce = function () {
+	    console.log("HAPPENED, getUserInfoFromSalesforce");
 	    var token = $cookies.getObject('token');
 	    $http.get('getSalesforceUser', token, 'https://login.salesforce.com/services/oauth2/userinfo').then(function (response) {
-	      //
+	      console.log(response);
 	    });
-	  }
+	  };
 
 	  /**
 	   * Moves user to home page when entering root

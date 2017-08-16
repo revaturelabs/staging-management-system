@@ -58,11 +58,12 @@ routerApp.service('userService', function ($cookies) {
 	}
 	
 	//TEST FUNCTION
-	function getUserInfoFromSalesforce()
+	this.getUserInfoFromSalesforce = function ()
 	{
+		console.log("HAPPENED, getUserInfoFromSalesforce");
 		let token = $cookies.getObject('token');
 		$http.get('getSalesforceUser', token, 'https://login.salesforce.com/services/oauth2/userinfo').then((response) => {
-           //
+           console.log(response);
          })
 
 	}
