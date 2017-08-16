@@ -48,10 +48,15 @@ routerApp.service('userService', function ($cookies) {
 	 * @returns A cookie that contains the role
 	 */
 	function getCookie() {
+		//TEST
+		$cookies.getObject('token');
 		console.log("Let's see what my sf role is: "+$cookies.get("role"))
 		return $cookies.get("role");
 	}
-
+	//test
+	this.tokenCookie = $cookies.getObject('token');
+	
+	
 	/**
 	 * Moves user to home page when entering root
 	 */
