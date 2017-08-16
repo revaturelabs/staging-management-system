@@ -13,11 +13,9 @@ public interface PanelService {
 	// Read
 	Set<Panel> findByAssociate(Associate associate);
 	
+	public void update(Panel panel);
+	
+	public Panel getById(long id);
 	
 	
-	
-	// public void update(Job job);
-	// public Set<Job> findByAssociate(Associate associate);
-	// public Set<Job> getAll();
-
 }
