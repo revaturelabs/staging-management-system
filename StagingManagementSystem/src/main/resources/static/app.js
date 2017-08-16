@@ -53,13 +53,19 @@ routerApp.service('userService', function ($cookies) {
 		//TEST
 		console.log("TEST: Token Cookie:")
 		console.log($cookies.getObject('token'));
-		console.log("Let's see what my sf role is: "+$cookies.getObject("token").get('role'));
+		console.log("Let's see what my sf role is: "+$cookies.getObject("user").get('role'));
 		return $cookies.get("role");
 	}
-	//test
-	this.tokenCookie = $cookies.getObject('token');
-	console.log("this.tokenCookie is: " + this.tokenCookie);
 	
+	//TEST FUNCTION
+	function getUserInfoFromSalesforce()
+	{
+		let token = $cookies.getObject('token');
+		$http.get('getSalesforceUser', token, 'https://login.salesforce.com/services/oauth2/userinfo').then((response) => {
+           //
+         })
+
+	}
 	
 	/**
 	 * Moves user to home page when entering root
