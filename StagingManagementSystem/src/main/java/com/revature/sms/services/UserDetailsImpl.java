@@ -1,6 +1,6 @@
 package com.revature.sms.services;
 
-import com.revature.sms.services.UserDetails;
+import com.revature.sms.services.security.Helper;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;

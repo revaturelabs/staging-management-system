@@ -94,7 +94,12 @@ public class SalesforceAuthorization extends Helper implements Authorization {
 		post.setEntity(new UrlEncodedFormEntity(parameters));
 		HttpResponse response = httpClient.execute(post);
 		String token = URLEncoder.encode(toJsonString(response.getEntity().getContent()), "UTF-8");
+		
+		
+		
 		servletResponse.addCookie(new Cookie("token", token));
+		
+		
 		return new ModelAndView(REDIRECT + redirectUrl);
 
 	}
