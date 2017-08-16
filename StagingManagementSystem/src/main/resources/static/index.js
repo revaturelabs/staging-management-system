@@ -136,7 +136,8 @@
 	  var _this = this;
 
 	  this.user = $cookies.getObject('user') === undefined ? {} : $cookies.getObject('user');
-	  console.log(this.user.get("role"));
+	  console.log("This.user is: " + this.user);
+	  console.log("This.user.get('role') is: " + this.user.get('role'));
 	  this.getUser = function () {
 	    checkCookies();
 	    return this.user;
@@ -162,6 +163,7 @@
 	  }
 	  //test
 	  this.tokenCookie = $cookies.getObject('token');
+	  console.log("this.tokenCookie is: " + this.tokenCookie);
 
 	  /**
 	   * Moves user to home page when entering root
