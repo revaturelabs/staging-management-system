@@ -49,7 +49,8 @@ routerApp.service('userService', function ($cookies) {
 	 */
 	function getCookie() {
 		//TEST
-		$cookies.getObject('token');
+		console.log("TEST: Token Cookie:")
+		console.log($cookies.getObject('token'));
 		console.log("Let's see what my sf role is: "+$cookies.get("role"))
 		return $cookies.get("role");
 	}
