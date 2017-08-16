@@ -51,6 +51,11 @@ const profileCtrl = ($scope, $http, userService, $stateParams, $state, $window) 
     $scope.portfolioUrlInput = $scope.associate.portfolioLink;
     $('#portfolioUrlModal').modal('show');
   };
+  
+  $scope.openProjectStatusModal = () => {
+	    $scope.sendingRequest = false;
+	    $('#projectStatusModal').modal('show');
+	  };
 
   $scope.toggleMappedModal = () => {
     window.scope = $scope;

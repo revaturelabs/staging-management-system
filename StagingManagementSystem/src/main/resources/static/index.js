@@ -63611,6 +63611,11 @@
 	    $('#portfolioUrlModal').modal('show');
 	  };
 
+	  $scope.openProjectStatusModal = function () {
+	    $scope.sendingRequest = false;
+	    $('#projectStatusModal').modal('show');
+	  };
+
 	  $scope.toggleMappedModal = function () {
 	    window.scope = $scope;
 	    $scope.sendingRequest = false;

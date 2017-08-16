@@ -4,14 +4,21 @@
 
   <div class="panel panel-primary" id="profile-panel">
     <div class="panel-heading">
-      <h3 class="panel-title">User Profile Information</h3>
+      <h3 class="panel-title" ng-bind="associate.name">Associate Profile</h3>
     </div>
     <div class="panel-body">
       <dl>
         <div class="row">
           <div class="col-md-6 col-sm-6 col-xs-6">
-            <dt>Name</dt>
-            <dd ng-bind="associate.name"></dd>
+            <dt>
+            	Internal Project
+            	<span style="cursor: pointer;" ng-click="openProjectStatusModal()">
+                	<span class="glyphicon glyphicon-info-sign"></span>
+              	</span>
+            </dt>
+            <!-- change the ng-bind to project name once the db stuff is figured out -->
+            <!-- opens modal to display project description on click -->
+            <dd>Coming Soon!</dd>
           </div>
           <div class="col-md-6 col-sm-6 col-xs-6">
             <dt>Batch</dt>
@@ -128,6 +135,22 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <button ng-click="submitPortfolioUrl()" ng-class="{ disabled: sendingRequest }" ng-bind="portfolioModalButtonValue" type="button" class="btn btn-primary"></button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="projectStatusModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">[project name here]</h4>
+      </div>
+      <div class="modal-body">
+        [project description here]
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
