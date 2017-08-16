@@ -33,7 +33,6 @@ routerApp.service('userService', function ($cookies) {
   this.user = $cookies.getObject('user') === undefined ? {} : $cookies.getObject('user');
   console.log("The object 'this' is referencing is:"+this);
   console.log("This.user is: " + this.user);
-  console.log("This.user.get('role') is: " + this.user.get('role'));
   this.getUser = function(){
 	  checkCookies();
 	  return this.user
@@ -54,7 +53,7 @@ routerApp.service('userService', function ($cookies) {
 		//TEST
 		console.log("TEST: Token Cookie:")
 		console.log($cookies.getObject('token'));
-		console.log("Let's see what my sf role is: "+$cookies.get("role"))
+		console.log("Let's see what my sf role is: "+$cookies.getObject("token").get('role'));
 		return $cookies.get("role");
 	}
 	//test
