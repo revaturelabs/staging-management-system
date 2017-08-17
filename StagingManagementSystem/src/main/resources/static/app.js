@@ -37,7 +37,7 @@ var callRouterAppService = function(){
       console.log(response);
       this.user = response;
       console.log(this.user);
-  });
+   	});
    
 //  this.getUser = function(){
 //	  checkCookies();
@@ -47,6 +47,7 @@ var callRouterAppService = function(){
 //    $cookies.putObject('user', user);
 //    this.user = { ...user };
 //  };
+	});
 }
 
 	// Roles
