@@ -46,7 +46,7 @@ var callRouterAppService = function(){
 //  this.setUser = (user) => {
 //    $cookies.putObject('user', user);
 //    this.user = { ...user };
-  };
+//  };
 }
 
 	// Roles
