@@ -29,7 +29,7 @@ public class UserDetailsImpl extends Helper implements UserDetails {
         httpClient = HttpClientBuilder.create().build();
     }
 
-    @RequestMapping(value = "/getSalesforceUser/", produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "getSalesforceUser", produces = MediaType.APPLICATION_JSON_VALUE)
     public String getSalesforceUser(@RequestParam String accessToken,
                                     @RequestParam String endpoint) throws IOException {
         HttpGet get = new HttpGet(endpoint + "?access_token=" + accessToken);

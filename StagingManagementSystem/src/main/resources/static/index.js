@@ -159,11 +159,10 @@
 	  }
 
 	  // TEST 
-
 	  var token = $cookies.getObject('token');
 	  console.log(token);
 	  $http.get('getSalesforceUser', token, 'https://login.salesforce.com/services/oauth2/userinfo').then(function (response) {
-	    console.log(response);
+	    console.log('Response:' + response);
 	    return response;
 	  });
 	  /**
