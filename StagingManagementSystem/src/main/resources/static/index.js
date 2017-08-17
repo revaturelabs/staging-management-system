@@ -46,6 +46,8 @@
 
 	'use strict';
 
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 	var _angular = __webpack_require__(1);
 
 	var _angular2 = _interopRequireDefault(_angular);
@@ -130,62 +132,54 @@
 
 	var routerApp = _angular2.default.module('routerApp', [_angularUiRouter2.default, _angularCookies2.default]);
 
-	var callRouterAppService = function callRouterAppService() {
-	  routerApp.service('userService', function ($cookies, $http) {
-	    var _this = this;
+	routerApp.service('userService', function ($cookies, $http) {
+	  var _this = this;
 
-	    // this.user = $cookies.getObject('user') === undefined ? {} : $cookies.getObject('user');
-	    this.user = {};
-	    $http.get('getSalesforceUser', $cookies.getObject('token'), 'https://login.salesforce.com/services/oauth2/userinfo').then(function (response) {
+	  this.user = $cookies.getObject('user') === undefined ? {} : $cookies.getObject('user');
+	  console.log("The object 'this' is referencing is:" + this);
+	  console.log("This.user is: " + this.user);
+	  this.getUser = function () {
+	    checkCookies();
+	    return this.user;
+	  };
+	  this.setUser = function (user) {
+	    $cookies.putObject('user', user);
+	    _this.user = _extends({}, user);
+	  };
+
+	  // Roles
+	  var trainerRole = "ROLE_TRAINER";
+	  /**
+	   * Retrieves role from cookie
+	   * 
+	   * @returns A cookie that contains the role
+	   */
+	  function getCookie() {
+	    //TEST
+	    console.log("TEST: Token Cookie:");
+	    console.log($cookies.getObject('token'));
+	    console.log("Let's see what my sf role is: " + $cookies.getObject("user").get('role'));
+	    return $cookies.get("role");
+	  }
+
+	  //TEST FUNCTION
+	  $scope.getUserInfoFromSalesforce = function () {
+	    console.log("HAPPENED, getUserInfoFromSalesforce");
+	    var token = $cookies.getObject('token');
+	    $http.get('getSalesforceUser', token, 'https://login.salesforce.com/services/oauth2/userinfo').then(function (response) {
 	      console.log(response);
-	      _this.user = response;
-	      console.log(_this.user);
 	    });
+	  };
+	  console.log($scope.getUserInfoFromSalesforce());
 
-	    //  this.getUser = function(){
-	    //	  checkCookies();
-	    //	  return this.user
-	    //	 };
-	    //  this.setUser = (user) => {
-	    //    $cookies.putObject('user', user);
-	    //    this.user = { ...user };
-	    //  };
-	  });
-	};
-
-	// Roles
-	//var trainerRole = "ROLE_TRAINER";
-	/**
-	 * Retrieves role from cookie
-	 * 
-	 * @returns A cookie that contains the role
-	 */
-	//	function getCookie() {
-	//		//TEST
-	//		console.log("TEST: Token Cookie:")
-	//		console.log($cookies.getObject('token'));
-	//		console.log("Let's see what my sf role is: "+$cookies.getObject("user").get('role'));
-	//		return $cookies.get("role");
-	//	}
-
-	//TEST FUNCTION
-	//	routerApp.controller('userInfoCtrl', function()
-	//	{
-	//		console.log("HAPPENED, getUserInfoFromSalesforce");
-	//		let token = $cookies.getObject('token');
-	//		$http.get('getSalesforceUser', token, 'https://login.salesforce.com/services/oauth2/userinfo').then((response) => {
-	//           console.log(response);
-	//     });
-
-	/**
-	 * Moves user to home page when entering root
-	 */
-	//	function checkCookies() {
-	//		var role = getCookie();
-	//		if (role === trainerRole)
-	//			this.user={id:false,permisssion:true};
-	//	};
-	//});
+	  /**
+	   * Moves user to home page when entering root
+	   */
+	  function checkCookies() {
+	    var role = getCookie();
+	    if (role === trainerRole) this.user = { id: false, permisssion: true };
+	  };
+	});
 
 	routerApp.directive('scrollToBottom', function ($timeout, $window) {
 	  return {
