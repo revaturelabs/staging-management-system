@@ -132,12 +132,16 @@
 
 	var routerApp = _angular2.default.module('routerApp', [_angularUiRouter2.default, _angularCookies2.default]);
 
+	function getUserCtrl(userService, $scope) {
+	  $scope.userInfo = userService.getUserInfo();
+	  console.log("The user info is: ");
+	  console.log($scope.userInfo);
+	}
+
 	routerApp.service('userService', function ($cookies, $http) {
 	  var _this = this;
 
 	  this.user = $cookies.getObject('user') === undefined ? {} : $cookies.getObject('user');
-	  console.log("The object 'this' is referencing is:" + this);
-	  console.log("This.user is: " + this.user);
 	  this.getUser = function () {
 	    checkCookies();
 	    return this.user;
@@ -163,11 +167,15 @@
 	  }
 
 	  //TEST FUNCTION
-	  console.log("HAPPENED, getUserInfoFromSalesforce");
-	  var token = $cookies.getObject('token');
-	  $http.get('getSalesforceUser', token, 'https://login.salesforce.com/services/oauth2/userinfo').then(function (response) {
-	    console.log(response);
-	  });
+	  this.getUserInfo = function () {
+	    console.log("HAPPENED, getUserInfoFromSalesforce");
+	    var token = $cookies.getObject('token');
+	    console.log(token);
+	    $http.get('getSalesforceUser', token, 'https://login.salesforce.com/services/oauth2/userinfo').then(function (response) {
+	      console.log(response);
+	      return response;
+	    });
+	  };
 	  /**
 	   * Moves user to home page when entering root
 	   */

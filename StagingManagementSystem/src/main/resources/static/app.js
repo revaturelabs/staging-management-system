@@ -29,12 +29,12 @@ const Visualizer = window['ui-router-visualizer'].Visualizer;
 
 const routerApp = angular.module('routerApp', [uiRouter, angularCookies]);
 
-function getUser("getUserCtrl", function(userService, $scope){
+function getUserCtrl(userService, $scope){
 		$scope.userInfo = userService.getUserInfo();
 		console.log("The user info is: ");
 		console.log($scope.userInfo);
 	
-});
+}
 
 routerApp.service('userService', function ($cookies, $http) {
   this.user = $cookies.getObject('user') === undefined ? {} : $cookies.getObject('user');
