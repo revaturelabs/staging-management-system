@@ -29,10 +29,15 @@ const Visualizer = window['ui-router-visualizer'].Visualizer;
 
 const routerApp = angular.module('routerApp', [uiRouter, angularCookies]);
 
+function getUser("getUserCtrl", function(userService, $scope){
+		$scope.userInfo = userService.getUserInfo();
+		console.log("The user info is: ");
+		console.log($scope.userInfo);
+	
+});
+
 routerApp.service('userService', function ($cookies, $http) {
   this.user = $cookies.getObject('user') === undefined ? {} : $cookies.getObject('user');
-  console.log("The object 'this' is referencing is:"+this);
-  console.log("This.user is: " + this.user);
   this.getUser = function(){
 	  checkCookies();
 	  return this.user
@@ -57,12 +62,18 @@ routerApp.service('userService', function ($cookies, $http) {
 		return $cookies.get("role");
 	}
 	
+	
+	
 	//TEST FUNCTION
+	this.getUserInfo = function(){	
 		console.log("HAPPENED, getUserInfoFromSalesforce");
 		let token = $cookies.getObject('token');
+		console.log(token);
 		$http.get('getSalesforceUser', token, 'https://login.salesforce.com/services/oauth2/userinfo').then((response) => {
            console.log(response);
+           return response;
          })
+	}
 	/**
 	 * Moves user to home page when entering root
 	 */
