@@ -29,18 +29,25 @@ const Visualizer = window['ui-router-visualizer'].Visualizer;
 
 const routerApp = angular.module('routerApp', [uiRouter, angularCookies]);
 
-routerApp.service('userService', function ($cookies, $http) {
-  this.user = $cookies.getObject('user') === undefined ? {} : $cookies.getObject('user');
-  console.log("The object 'this' is referencing is:"+this);
-  console.log("This.user is: " + this.user);
-  this.getUser = function(){
-	  checkCookies();
-	  return this.user
-	 };
-  this.setUser = (user) => {
-    $cookies.putObject('user', user);
-    this.user = { ...user };
+var callRouterAppService = function(){
+	routerApp.service('userService', function ($cookies, $http) {
+  // this.user = $cookies.getObject('user') === undefined ? {} : $cookies.getObject('user');
+	this.user = {};
+   $http.get('getSalesforceUser', $cookies.getObject('token'), 'https://login.salesforce.com/services/oauth2/userinfo').then((response) => {
+      console.log(response);
+      this.user = response;
+      console.log(this.user);
+  });
+   
+//  this.getUser = function(){
+//	  checkCookies();
+//	  return this.user
+//	 };
+//  this.setUser = (user) => {
+//    $cookies.putObject('user', user);
+//    this.user = { ...user };
   };
+}
 
 	// Roles
 	var trainerRole = "ROLE_TRAINER";
@@ -56,17 +63,15 @@ routerApp.service('userService', function ($cookies, $http) {
 		console.log("Let's see what my sf role is: "+$cookies.getObject("user").get('role'));
 		return $cookies.get("role");
 	}
-	
+	 
 	//TEST FUNCTION
-	this.getUserInfoFromSalesforce = function ($http)
-	{
-		console.log("HAPPENED, getUserInfoFromSalesforce");
-		let token = $cookies.getObject('token');
-		$http.get('getSalesforceUser', token, 'https://login.salesforce.com/services/oauth2/userinfo').then((response) => {
-           console.log(response);
-         })
-
-	}
+//	routerApp.controller('userInfoCtrl', function()
+//	{
+//		console.log("HAPPENED, getUserInfoFromSalesforce");
+//		let token = $cookies.getObject('token');
+//		$http.get('getSalesforceUser', token, 'https://login.salesforce.com/services/oauth2/userinfo').then((response) => {
+//           console.log(response);
+//     });
 	
 	/**
 	 * Moves user to home page when entering root
