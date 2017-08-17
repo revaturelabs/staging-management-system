@@ -154,14 +154,18 @@
 	   */
 	  function getCookie() {
 	    // TEST
-	    console.log("Let's see what my sf role is: " + $cookies.getObject("user").get('role'));
+	    //console.log("Let's see what my sf role is: "+$cookies.getObject("user").get('role'));
 	    return $cookies.get("role");
 	  }
 
 	  // TEST 
 	  var token = $cookies.getObject('token');
 	  console.log(token);
-	  $http.get('getSalesforceUser', JSON.stringify(token), 'https://login.salesforce.com/services/oauth2/userinfo').then(function (response) {
+	  $http.get({ url: 'getSalesforceUser',
+	    method: "GET",
+	    params: { accessToken: token,
+	      endpoint: 'https://login.salesforce.com/services/oauth2/userinfo' }
+	  }).then(function (response) {
 	    console.log('Response:' + response);
 	    //return response;
 	  });

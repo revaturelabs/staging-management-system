@@ -49,7 +49,7 @@ routerApp.service('userService', function ($cookies, $http) {
 		 */
 	  function getCookie() {
 		// TEST
-		console.log("Let's see what my sf role is: "+$cookies.getObject("user").get('role'));
+		//console.log("Let's see what my sf role is: "+$cookies.getObject("user").get('role'));
 		return $cookies.get("role");
 	  }
 		
@@ -58,7 +58,11 @@ routerApp.service('userService', function ($cookies, $http) {
 		// TEST 
 	  let token = $cookies.getObject('token');
 	  console.log(token);
-	  $http.get('getSalesforceUser', JSON.stringify(token), 'https://login.salesforce.com/services/oauth2/userinfo').then((response) => {
+	  $http.get({url: 'getSalesforceUser', 
+			     method: "GET",
+			     params: {accessToken: token,
+			    	 		endpoint: 'https://login.salesforce.com/services/oauth2/userinfo' }
+			     }).then((response) => {
           console.log('Response:'+ response);
           //return response;
       })
