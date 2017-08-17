@@ -1,5 +1,11 @@
 package com.revature.sms.controllers.rest;
 
-public class PanelControllerImp {
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@Request
+public class PanelControllerImp 
+
+{
 
 }
