@@ -8,7 +8,7 @@ import com.revature.sms.entities.Panel;
 public interface PanelService {
 
 	// Create
-	public void add(Panel panel);
+	public void addPanel(Panel panel);
 
 	// Read
 	Set<Panel> findByAssociate(Associate associate);
@@ -16,6 +16,8 @@ public interface PanelService {
 	public void update(Panel panel);
 	
 	public Panel getById(long id);
+	
+	public Set<Panel> getAllPanel();
 	
 	
 }
