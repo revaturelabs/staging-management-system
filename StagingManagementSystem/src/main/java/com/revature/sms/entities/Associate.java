@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -53,6 +54,15 @@ public class Associate {
 	@ManyToOne
 	@JoinColumn(name = "CLIENT_ID")
 	private Client lockedTo;
+	
+	@OneToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="POSRTFOLIO_STATUS_ID")
+	private int portfolioStatusId;
+	
+	@OneToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="ASSOCIATE_STATUS_ID")
+	private int associateStatusId;
+	
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "ASSOCIATE_SKILLS", joinColumns = @JoinColumn(name = "ASSOCIATE_ID"), inverseJoinColumns = @JoinColumn(name = "SKILL_ID"))
@@ -69,7 +79,8 @@ public class Associate {
 	}
 
 	public Associate(long id, Credential credential, String name, String portfolioLink, Batch batch, boolean active,
-			Client lockedTo, Set<Skill> skills, Set<Job> jobs) {
+			Client lockedTo, int portfolioStatusId, int associateStatusId, Set<Skill> skills, Set<Job> jobs) 
+	{
 		super();
 		this.id = id;
 		this.credential = credential;
@@ -78,9 +89,13 @@ public class Associate {
 		this.batch = batch;
 		this.active = active;
 		this.lockedTo = lockedTo;
+		this.portfolioStatusId = portfolioStatusId;
+		this.associateStatusId = associateStatusId;
 		this.skills = skills;
 		this.jobs = jobs;
 	}
+
+
 
 	/**
 	 *  Returns true if associate was on job during the given date.
@@ -132,66 +147,88 @@ public class Associate {
 	     return false;
 	}
 
-	public long getId() {
+	public long getId() 
+	{
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(long id) 
+	{
 		this.id = id;
 	}
 
-	public Credential getCredential() {
+	public Credential getCredential() 
+	{
 		return credential;
 	}
 
-	public void setCredential(Credential credential) {
+	public void setCredential(Credential credential) 
+	{
 		this.credential = credential;
 	}
 
-	public String getName() {
+	public String getName() 
+	{
 		return name;
 	}
 
-	public void setName(String name) {
+	public void setName(String name) 
+	{
 		this.name = name;
 	}
 
-	public String getPortfolioLink() {
+	public String getPortfolioLink() 
+	{
 		return portfolioLink;
 	}
 
-	public void setPortfolioLink(String portfolioLink) {
+	public void setPortfolioLink(String portfolioLink) 
+	{
 		this.portfolioLink = portfolioLink;
 	}
 
-	public Batch getBatch() {
+	public Batch getBatch() 
+	{
 		return batch;
 	}
 
-	public void setBatch(Batch batch) {
+	public void setBatch(Batch batch) 
+	{
 		this.batch = batch;
 	}
 
-	public boolean isActive() {
-		return active;
-	}
-
-	public void setActive() {
-		if(this.isTrackedOnDate(LocalDateTime.now()))
-			this.active = true;
-		else
-			this.active = false;
-	}
-
-	public Client getLockedTo() {
+	public Client getLockedTo() 
+	{
 		return lockedTo;
 	}
 
-	public void setLockedTo(Client lockedTo) {
+	public void setLockedTo(Client lockedTo) 
+	{
 		this.lockedTo = lockedTo;
 	}
 
-	public Set<Skill> getSkills() {
+	public int getPortfolioStatusId() 
+	{
+		return portfolioStatusId;
+	}
+
+	public void setPortfolioStatusId(int portfolioStatusId) 
+	{
+		this.portfolioStatusId = portfolioStatusId;
+	}
+
+	public int getAssociateStatusId() 
+	{
+		return associateStatusId;
+	}
+
+	public void setAssociateStatusId(int associateStatusId) 
+	{
+		this.associateStatusId = associateStatusId;
+	}
+
+	public Set<Skill> getSkills() 
+	{
 		return skills;
 	}
 
@@ -207,62 +244,22 @@ public class Associate {
 		this.jobs = jobs;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + (active ? 1231 : 1237);
-		result = prime * result + ((credential == null) ? 0 : credential.hashCode());
-		result = prime * result + ((lockedTo == null) ? 0 : lockedTo.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((portfolioLink == null) ? 0 : portfolioLink.hashCode());
-		result = prime * result + ((skills == null) ? 0 : skills.hashCode());
-		return result;
+	public boolean isActive() {
+		return active;
 	}
 
-	@Override
-	public final boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (!(obj instanceof Associate))
-			return false;
-		Associate other = (Associate) obj;
-		if (active != other.active)
-			return false;
-		if (credential == null) {
-			if (other.credential != null)
-				return false;
-		} else if (!credential.equals(other.credential))
-			return false;
-		if (lockedTo == null) {
-			if (other.lockedTo != null)
-				return false;
-		} else if (!lockedTo.equals(other.lockedTo))
-			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		if (portfolioLink == null) {
-			if (other.portfolioLink != null)
-				return false;
-		} else if (!portfolioLink.equals(other.portfolioLink))
-			return false;
-		if (skills == null) {
-			if (other.skills != null)
-				return false;
-		} else if (!skills.equals(other.skills))
-			return false;
-		return true;
+	public void setActive() {
+		if(this.isTrackedOnDate(LocalDateTime.now()))
+			this.active = true;
+		else
+			this.active = false;
 	}
 
 	@Override
 	public String toString() {
 		return "Associate [id=" + id + ", credential=" + credential + ", name=" + name + ", portfolioLink="
-				+ portfolioLink + ", batch=" + (batch == null ? null : batch.getBatchType().getValue()) + ", active=" + active + ", lockedTo="
-				+ lockedTo + ", skills=" + skills + "]";
+				+ portfolioLink + ", batch=" + batch + ", active=" + active + ", lockedTo=" + lockedTo
+				+ ", portfolioStatusId=" + portfolioStatusId + ", associateStatusId=" + associateStatusId + ", skills="
+				+ skills + "]";
 	}
 }
