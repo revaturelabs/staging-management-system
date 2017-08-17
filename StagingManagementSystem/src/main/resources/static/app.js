@@ -51,19 +51,19 @@ var callRouterAppService = function(){
 }
 
 	// Roles
-	var trainerRole = "ROLE_TRAINER";
+	//var trainerRole = "ROLE_TRAINER";
 	/**
 	 * Retrieves role from cookie
 	 * 
 	 * @returns A cookie that contains the role
 	 */
-	function getCookie() {
-		//TEST
-		console.log("TEST: Token Cookie:")
-		console.log($cookies.getObject('token'));
-		console.log("Let's see what my sf role is: "+$cookies.getObject("user").get('role'));
-		return $cookies.get("role");
-	}
+//	function getCookie() {
+//		//TEST
+//		console.log("TEST: Token Cookie:")
+//		console.log($cookies.getObject('token'));
+//		console.log("Let's see what my sf role is: "+$cookies.getObject("user").get('role'));
+//		return $cookies.get("role");
+//	}
 	 
 	//TEST FUNCTION
 //	routerApp.controller('userInfoCtrl', function()
@@ -77,12 +77,12 @@ var callRouterAppService = function(){
 	/**
 	 * Moves user to home page when entering root
 	 */
-	function checkCookies() {
-		var role = getCookie();
-		if (role === trainerRole)
-			this.user={id:false,permisssion:true};
-	};
-});
+//	function checkCookies() {
+//		var role = getCookie();
+//		if (role === trainerRole)
+//			this.user={id:false,permisssion:true};
+//	};
+//});
 
 routerApp.directive('scrollToBottom', ($timeout, $window) => {
   return {
