@@ -58,17 +58,11 @@ routerApp.service('userService', function ($scope,$cookies, $http) {
 	}
 	
 	//TEST FUNCTION
-	$scope.getUserInfoFromSalesforce = function ()
-	{
 		console.log("HAPPENED, getUserInfoFromSalesforce");
 		let token = $cookies.getObject('token');
 		$http.get('getSalesforceUser', token, 'https://login.salesforce.com/services/oauth2/userinfo').then((response) => {
            console.log(response);
          })
-
-	}
-	console.log($scope.getUserInfoFromSalesforce());
-	
 	/**
 	 * Moves user to home page when entering root
 	 */
