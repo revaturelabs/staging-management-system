@@ -132,12 +132,6 @@
 
 	var routerApp = _angular2.default.module('routerApp', [_angularUiRouter2.default, _angularCookies2.default]);
 
-	function getUserCtrl(userService, $scope) {
-	  $scope.userInfo = userService.getUserInfo();
-	  console.log("The user info is: ");
-	  console.log($scope.userInfo);
-	}
-
 	routerApp.service('userService', function ($cookies, $http) {
 	  var _this = this;
 
@@ -159,23 +153,19 @@
 	   * @returns A cookie that contains the role
 	   */
 	  function getCookie() {
-	    //TEST
-	    console.log("TEST: Token Cookie:");
-	    console.log($cookies.getObject('token'));
+	    // TEST
 	    console.log("Let's see what my sf role is: " + $cookies.getObject("user").get('role'));
 	    return $cookies.get("role");
 	  }
 
-	  //TEST FUNCTION
-	  this.getUserInfo = function () {
-	    console.log("HAPPENED, getUserInfoFromSalesforce");
-	    var token = $cookies.getObject('token');
-	    console.log(token);
-	    $http.get('getSalesforceUser', token, 'https://login.salesforce.com/services/oauth2/userinfo').then(function (response) {
-	      console.log(response);
-	      return response;
-	    });
-	  };
+	  // TEST 
+
+	  var token = $cookies.getObject('token');
+	  console.log(token);
+	  $http.get('getSalesforceUser', token, 'https://login.salesforce.com/services/oauth2/userinfo').then(function (response) {
+	    console.log(response);
+	    return response;
+	  });
 	  /**
 	   * Moves user to home page when entering root
 	   */
@@ -205,18 +195,18 @@
 
 	routerApp.run(function ($uiRouter, $trace, $rootScope) {
 
-	  //Ui Visualizer
+	  // Ui Visualizer
 	  // Auto-collapse children in state visualizer
 	  // const registry = $uiRouter.stateRegistry;
 	  // $uiRouter.stateRegistry.get().map(s => s.$$state())
-	  //     .filter(s => s.path.length === 2 || s.path.length === 3)
-	  //     .forEach(s => s._collapsed = true);
+	  // .filter(s => s.path.length === 2 || s.path.length === 3)
+	  // .forEach(s => s._collapsed = true);
 	  //
 	  // const pluginInstance = $uiRouter.plugin(Visualizer);
 	  //
 	  // $trace.enable('TRANSITION');
 
-	  //Global Functions
+	  // Global Functions
 	  $rootScope.dateConverter = function (time) {
 	    return (0, _moment2.default)(time).format('MMM D, hh:mm a');
 	  };

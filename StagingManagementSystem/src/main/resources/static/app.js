@@ -29,59 +29,48 @@ const Visualizer = window['ui-router-visualizer'].Visualizer;
 
 const routerApp = angular.module('routerApp', [uiRouter, angularCookies]);
 
-function getUserCtrl(userService, $scope){
-		$scope.userInfo = userService.getUserInfo();
-		console.log("The user info is: ");
-		console.log($scope.userInfo);
-	
-}
-
 routerApp.service('userService', function ($cookies, $http) {
-  this.user = $cookies.getObject('user') === undefined ? {} : $cookies.getObject('user');
-  this.getUser = function(){
-	  checkCookies();
-	  return this.user
-	 };
-  this.setUser = (user) => {
-    $cookies.putObject('user', user);
-    this.user = { ...user };
-  };
-
-	// Roles
-	var trainerRole = "ROLE_TRAINER";
-	/**
-	 * Retrieves role from cookie
-	 * 
-	 * @returns A cookie that contains the role
-	 */
-	function getCookie() {
-		//TEST
-		console.log("TEST: Token Cookie:")
-		console.log($cookies.getObject('token'));
+	  this.user = $cookies.getObject('user') === undefined ? {} : $cookies.getObject('user');
+	  this.getUser = function(){
+		  checkCookies();
+		  return this.user
+		 };
+	  this.setUser = (user) => {
+	    $cookies.putObject('user', user);
+	    this.user = { ...user };
+	  };
+	
+		// Roles
+	  var trainerRole = "ROLE_TRAINER";
+		/**
+		 * Retrieves role from cookie
+		 * 
+		 * @returns A cookie that contains the role
+		 */
+	  function getCookie() {
+		// TEST
 		console.log("Let's see what my sf role is: "+$cookies.getObject("user").get('role'));
 		return $cookies.get("role");
-	}
-	
-	
-	
-	//TEST FUNCTION
-	this.getUserInfo = function(){	
-		console.log("HAPPENED, getUserInfoFromSalesforce");
-		let token = $cookies.getObject('token');
-		console.log(token);
-		$http.get('getSalesforceUser', token, 'https://login.salesforce.com/services/oauth2/userinfo').then((response) => {
-           console.log(response);
-           return response;
-         })
-	}
-	/**
-	 * Moves user to home page when entering root
-	 */
-	function checkCookies() {
+	  }
+		
+		
+		
+		// TEST 
+		 
+		  let token = $cookies.getObject('token');
+		  console.log(token);
+		  $http.get('getSalesforceUser', token, 'https://login.salesforce.com/services/oauth2/userinfo').then((response) => {
+	          console.log(response);
+	          return response;
+	      })
+		/**
+		 * Moves user to home page when entering root
+		 */
+	  function checkCookies() {
 		var role = getCookie();
 		if (role === trainerRole)
-			this.user={id:false,permisssion:true};
-	};
+		this.user={id:false,permisssion:true};
+	  };
 });
 
 routerApp.directive('scrollToBottom', ($timeout, $window) => {
@@ -104,18 +93,18 @@ routerApp.directive('scrollToBottom', ($timeout, $window) => {
 
 routerApp.run(($uiRouter, $trace, $rootScope) => {
 
-	//Ui Visualizer
+	// Ui Visualizer
   // Auto-collapse children in state visualizer
   // const registry = $uiRouter.stateRegistry;
   // $uiRouter.stateRegistry.get().map(s => s.$$state())
-  //     .filter(s => s.path.length === 2 || s.path.length === 3)
-  //     .forEach(s => s._collapsed = true);
+  // .filter(s => s.path.length === 2 || s.path.length === 3)
+  // .forEach(s => s._collapsed = true);
   //
   // const pluginInstance = $uiRouter.plugin(Visualizer);
   //
   // $trace.enable('TRANSITION');
 
-	//Global Functions
+	// Global Functions
 	$rootScope.dateConverter = (time) => {
     return moment(time).format('MMM D, hh:mm a');
 	};
