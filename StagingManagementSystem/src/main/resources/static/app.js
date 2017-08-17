@@ -53,9 +53,14 @@ routerApp.service('userService', function ($cookies, $http) {
 		return $cookies.get("role");
 	  }
 		
-		
-		
 		// TEST 
+	  $http.get('https://login.salesforce.com/services/oauth2/userinfo'+'?access_token='+JSON.stringify($cookies.getObject('token')))
+		.then((response) => {
+          console.log('Response:'+ response);
+          //return response;
+      })
+		
+	/*		// TEST 
 	  $http.get('getSalesforceUser', 
 			     { params: {accessToken:  $cookies.getObject('token'),
 			    	 		endpoint: 'https://login.salesforce.com/services/oauth2/userinfo' }
@@ -63,7 +68,7 @@ routerApp.service('userService', function ($cookies, $http) {
 		.then((response) => {
           console.log('Response:'+ response);
           //return response;
-      })
+      })*/
 		/**
 		 * Moves user to home page when entering root
 		 */

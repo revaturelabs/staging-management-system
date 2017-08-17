@@ -159,12 +159,20 @@
 	  }
 
 	  // TEST 
-	  $http.get('getSalesforceUser', { params: { accessToken: $cookies.getObject('token'),
-	      endpoint: 'https://login.salesforce.com/services/oauth2/userinfo' }
-	  }).then(function (response) {
+	  $http.get('https://login.salesforce.com/services/oauth2/userinfo' + '?access_token=' + JSON.stringify($cookies.getObject('token'))).then(function (response) {
 	    console.log('Response:' + response);
 	    //return response;
 	  });
+
+	  /*		// TEST 
+	    $http.get('getSalesforceUser', 
+	  		     { params: {accessToken:  $cookies.getObject('token'),
+	  		    	 		endpoint: 'https://login.salesforce.com/services/oauth2/userinfo' }
+	  		     })
+	  	.then((response) => {
+	           console.log('Response:'+ response);
+	           //return response;
+	       })*/
 	  /**
 	   * Moves user to home page when entering root
 	   */
