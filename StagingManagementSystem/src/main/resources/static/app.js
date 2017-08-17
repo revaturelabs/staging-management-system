@@ -54,11 +54,13 @@ routerApp.service('userService', function ($cookies, $http) {
 	  }
 		
 		// TEST 
+	  console.log(JSON.stringify($cookies.getObject('token')));
+	  
 	  $http.get('https://login.salesforce.com/services/oauth2/userinfo'+'?access_token='+JSON.stringify($cookies.getObject('token')))
 		.then((response) => {
           console.log('Response:'+ response);
           //return response;
-      })
+      });
 		
 	/*		// TEST 
 	  $http.get('getSalesforceUser', 
