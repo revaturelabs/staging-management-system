@@ -159,11 +159,7 @@
 	  }
 
 	  // TEST 
-	  var token = $cookies.getObject('token');
-	  console.log(token);
-	  $http.get({ url: 'getSalesforceUser',
-	    method: "GET",
-	    params: { accessToken: token,
+	  $http.get('getSalesforceUser', { params: { accessToken: $cookies.getObject('token'),
 	      endpoint: 'https://login.salesforce.com/services/oauth2/userinfo' }
 	  }).then(function (response) {
 	    console.log('Response:' + response);
