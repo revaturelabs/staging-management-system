@@ -263,6 +263,9 @@
 	  }).state('manager.advanced.batches', {
 	    url: '/batches',
 	    templateUrl: 'manager-pages/advanced/batches/batches.html'
+	  }).state('manager.advanced.projects', {
+	    url: '/projects',
+	    templateUrl: 'manager-pages/advanced/projects/projects.html'
 	  }).state('manager.advanced.batches.edit', {
 	    url: '/edit/:id',
 	    templateUrl: 'manager-pages/create/batch.html',
@@ -63488,6 +63491,12 @@
 
 	  $scope.isBatches = function () {
 	    if ($state.is('manager.advanced.batches')) return true;
+	    return false;
+	  };
+
+	  // button for internal projects
+	  $scope.isProjects = function () {
+	    if ($state.is('manager.advanced.projects')) return true;
 	    return false;
 	  };
 

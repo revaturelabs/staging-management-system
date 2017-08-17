@@ -33,6 +33,13 @@ const managerAdvancedCtrl = ($scope, $http, $state) => {
       return true;
     return false;
   }
+  
+  // button for internal projects
+  $scope.isProjects = () => {
+	if($state.is('manager.advanced.projects'))
+	  return true;
+	return false;
+  }
 
   $scope.isInterviews = () => {
     if($state.is('manager.advanced.interviews'))

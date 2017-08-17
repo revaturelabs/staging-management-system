@@ -169,6 +169,10 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       url: '/batches',
       templateUrl: 'manager-pages/advanced/batches/batches.html'
     })
+    .state('manager.advanced.projects', {
+      url: '/projects',
+      templateUrl: 'manager-pages/advanced/projects/projects.html'
+    })
     .state('manager.advanced.batches.edit', {
       url: '/edit/:id',
       templateUrl: 'manager-pages/create/batch.html',

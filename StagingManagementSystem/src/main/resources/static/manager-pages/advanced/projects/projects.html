@@ -1,0 +1,49 @@
+<div>
+  <table class="table table-striped manager-advanced-associates-table selectable-table">
+    <thead>
+    <tr>
+    	<!-- sorting for internal projects, would depend on whats showing-->
+      <!-- <div class="table-header-buttons">
+        <div>Select Batch Types</div>
+        <div class="manager-advanced-row">
+          <div ng-repeat="batchtype in batchtypes">
+            <input
+              type="checkbox"
+              value="{{batchtype}}"
+              ng-checked="selectedBatchTypes.indexOf(batchtype) > -1"
+              ng-click="toggleSelectedBatchTypes(batchtype)"
+            > {{batchtype.value}}
+          </div>
+        </div>
+      </div> -->
+      <th scope="col">Project Name</th>
+      <th scope="col">Description</th>
+      <th scope="col">Status</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- ng repeat for the project in projects -->
+    <tr ng-repeat="batch in batches | filter: batchBatchFilter" ui-sref="manager.advanced.batches.edit({id: batch.id})" data-toggle="modal" data-target="#projectModal">
+      <td ng-bind=""></td>
+      <td class="ellipsis" ng-bind=""></td>
+      <td ng-bind=""></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Modal -->
+<div id="projectModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div ui-view></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
