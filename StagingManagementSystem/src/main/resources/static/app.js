@@ -29,7 +29,7 @@ const Visualizer = window['ui-router-visualizer'].Visualizer;
 
 const routerApp = angular.module('routerApp', [uiRouter, angularCookies]);
 
-routerApp.service('userService', function ($scope,$cookies, $http) {
+routerApp.service('userService', function ($cookies, $http) {
   this.user = $cookies.getObject('user') === undefined ? {} : $cookies.getObject('user');
   console.log("The object 'this' is referencing is:"+this);
   console.log("This.user is: " + this.user);

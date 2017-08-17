@@ -132,7 +132,7 @@
 
 	var routerApp = _angular2.default.module('routerApp', [_angularUiRouter2.default, _angularCookies2.default]);
 
-	routerApp.service('userService', function ($scope, $cookies, $http) {
+	routerApp.service('userService', function ($cookies, $http) {
 	  var _this = this;
 
 	  this.user = $cookies.getObject('user') === undefined ? {} : $cookies.getObject('user');
