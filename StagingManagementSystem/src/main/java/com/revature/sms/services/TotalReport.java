@@ -161,7 +161,7 @@ public class Tuple<I, T> {
 	}
   
   public void addBatch(Associate associate) {
-    String batchName = associate.getBatch().getBatchType().getValue();
+    String batchName = associate.getBatch()==null?"None":associate.getBatch().getBatchType().getValue();
     String name = associate.getName();
     String portLink = associate.getPortfolioLink();
 

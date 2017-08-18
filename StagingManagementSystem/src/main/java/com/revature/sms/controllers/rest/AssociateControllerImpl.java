@@ -132,6 +132,11 @@ public class AssociateControllerImpl {
 	public Set<Associate> haveNoBatch() {
 		return associateService.haveNoBatch();
 	}
+	
+	@GetMapping("no-project")
+	public Set<Associate> haveNoProject(){
+		return associateService.haveNoProject();
+	}
 
 	@GetMapping("by-batch/{id}")
 	public Set<Associate> byBatch(@PathVariable Long id) {
