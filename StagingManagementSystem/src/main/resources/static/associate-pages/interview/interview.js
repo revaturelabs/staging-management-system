@@ -37,7 +37,7 @@ const associateInterviewCtrl = ($scope, $http, userService) => {
 		$scope.marketers = response.data;
 	});
 
-	$scope.getScheduledTime();
+	$scope.getScheduledTime;
 
 	$scope.addInterviewClick = function() {
 
@@ -72,7 +72,7 @@ const associateInterviewCtrl = ($scope, $http, userService) => {
 				addInterviewBtn.disabled = false;
 				addInterviewBtn.innerHTML = 'Add Interview';
 
-				$scope.getSchedueledTime();
+				$scope.getSchedueledTime;
 
 			});
 		}
@@ -124,7 +124,7 @@ const associateInterviewCtrl = ($scope, $http, userService) => {
 			.then ((response) => {
 				$scope.successUpdateMsgShow = true;
 
-				$scope.getScheduledTime();
+				$scope.getScheduledTime;
 
 			})
 		}
