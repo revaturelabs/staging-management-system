@@ -221,7 +221,7 @@ public class DataGeneration
 															// 80.
 			probabilityOfLiking = rand.nextInt(10); // Liking probability is
 													// between 0 and 10.
-			probabilityOfNotInterested = 100 - (probabilityOfHiring + probabilityOfLiking);
+			probabilityOfNotInterested = 100 - ((double)probabilityOfHiring + probabilityOfLiking);
 
 			log.debug("Client probibility hiring/liking/interested: " + probabilityOfHiring + "/" + probabilityOfLiking
 					+ "/" + probabilityOfNotInterested);
@@ -270,7 +270,7 @@ public class DataGeneration
 	  int immuneSystemHealth;
 	  
 	  AssociateP(Associate a){
-	    super(a.getId(), a.getCredential(), a.getName(), a.getPortfolioLink(), a.getBatch(), a.isActive(), a.getLockedTo(), a.getSkills(), a.getJobs());
+	    super(a.getId(), a.getCredential(), a.getName(), a.getPortfolioLink(), a.getBatch(), a.getProject(), a.isActive(), a.getLockedTo(), a.getSkills(), a.getJobs());
 	    int qualityOfAssociate = rand.nextInt(100); 
 	    
 	    if(qualityOfAssociate < 20)    //20 percent chance of being half as hirable as the average associate.
@@ -298,7 +298,7 @@ public class DataGeneration
 	   */
 	  Associate getAssocaite(){
 		  this.setActive();
-	    return new Associate(getId(), getCredential(), getName(), getPortfolioLink(), getBatch(), isActive(), getLockedTo(), getSkills(), getJobs());
+	    return new Associate(getId(), getCredential(), getName(), getPortfolioLink(), getBatch(), getProject(), isActive(), getLockedTo(), getSkills(), getJobs());
 	  }
 	  
 	  /*

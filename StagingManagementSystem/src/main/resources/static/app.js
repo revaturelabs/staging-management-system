@@ -1,6 +1,6 @@
 import angular from 'angular';
 import angularCookies from 'angular-cookies';
-import uiRouter from 'angular-ui-router';
+import uiRouter from '@uirouter/angularjs';
 import FusionCharts from 'fusioncharts';
 import moment from 'moment';
 
@@ -17,6 +17,7 @@ import { clientCtrl } from './manager-pages/create/client';
 import { userCtrl } from './manager-pages/create/user';
 import { locCtrl } from './manager-pages/create/location';
 import { jobCtrl } from './manager-pages/create/job';
+import { projectCtrl } from './manager-pages/create/project';
 import managerAdvancedCtrl from './manager-pages/advanced/advanced';
 import profileCtrl from './associate-pages/profile/profile';
 import associateInterviewCtrl from './associate-pages/interview/interview';
@@ -162,6 +163,11 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       controller: jobCtrl,
 
     })
+    .state('manager.create.project', {
+        url: '/project',
+        templateUrl: 'manager-pages/create/project.html',
+        controller: projectCtrl,
+     })
     .state('manager.home', {
       url: '/home',
       views: {

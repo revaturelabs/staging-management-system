@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +36,8 @@ public class AssociateControllerImpl {
 	private DataGeneration dataGen;
 	@Autowired
 	TotalReport totalReport;
+	
+	private static Logger logger = Logger.getRootLogger();
 
 	private static final String LM = "login_manager";
 	private static final String LA = "login_associate";
@@ -129,6 +132,11 @@ public class AssociateControllerImpl {
 	public Set<Associate> haveNoBatch() {
 		return associateService.haveNoBatch();
 	}
+	
+	@GetMapping("no-project")
+	public Set<Associate> haveNoProject(){
+		return associateService.haveNoProject();
+	}
 
 	@GetMapping("by-batch/{id}")
 	public Set<Associate> byBatch(@PathVariable Long id) {
@@ -142,7 +150,7 @@ public class AssociateControllerImpl {
 	
 	@GetMapping(path = "/AssociatesInStaggin/{date}")
 	public Set<StaggingAssociate> getAssociatesInStaggingOn(@PathVariable String date){
-	  System.out.println("DATE!!!!    " + date);
+		logger.trace("DATE!!!!    " + date);
 	  return associateService.getAssociatesInStaggingOn(date);
 	}
 }

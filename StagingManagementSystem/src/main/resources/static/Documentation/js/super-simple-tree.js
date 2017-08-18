@@ -15,11 +15,8 @@ function toggle(elm) {
  }
 
  while (e != null) {
-  if (e.tagName == "OL" || e.tagName == "ol"){
-	  e.style.display = newDisplay;
-  	}
+  if (e.tagName == "OL" || e.tagName == "ol") e.style.display = newDisplay;
   e = e.nextSibling;
-  	
  }
 
 }
@@ -29,7 +26,7 @@ function collapseAll() {
  var lists = document.getElementsByTagName("ol");
  for (var i = 0; i < lists.length; i++) 
   lists[i].style.display = "none";
- e = document.getElementById("root");
+ 	let e  = document.getElementById("root");
  e.style.display = "block";
 }
 
