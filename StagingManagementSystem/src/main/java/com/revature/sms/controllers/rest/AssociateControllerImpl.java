@@ -120,10 +120,10 @@ public class AssociateControllerImpl {
 		return ResponseEntity.ok(associateService.getAll());
 	}
 
-//	@GetMapping("/allActive")
-//	public Set<Associate> getAllActiveAssociates(HttpSession session) {
-//		return associateService.getAllActive();
-//	}
+	@GetMapping("/allActive")
+	public Set<Associate> getAllActiveAssociates(HttpSession session) {
+		return associateService.getAllActive();
+	}
 
 	@GetMapping("no-batch")
 	public Set<Associate> haveNoBatch() {
@@ -135,10 +135,10 @@ public class AssociateControllerImpl {
 		return associateService.findByBatchId(id);
 	}
 
-//	@GetMapping(path = "/totaldata")
-//	public ResponseEntity<Collection<TotalData>> getAssocaites() {
-//		return ResponseEntity.ok(totalReport.process(associateService.getAllActive()));
-//	}
+	@GetMapping(path = "/totaldata")
+	public ResponseEntity<Collection<TotalData>> getAssocaites() {
+		return ResponseEntity.ok(totalReport.process(associateService.getAllActive()));
+	}
 	
 	@GetMapping(path = "/AssociatesInStaggin/{date}")
 	public Set<StaggingAssociate> getAssociatesInStaggingOn(@PathVariable String date){

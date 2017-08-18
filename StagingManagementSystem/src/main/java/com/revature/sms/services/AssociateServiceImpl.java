@@ -87,11 +87,11 @@ public class AssociateServiceImpl implements AssociateService {
         return new HashSet<>(associateRepo.findAll());
     }
 
-//    @Override
-//    public Set<Associate> getAllActive() {
-//
-//        return associateRepo.findAssociatesByActiveTrue();
-//    }
+    @Override
+    public Set<Associate> getAllActive() {
+
+        return associateRepo.findAssociatesByActiveTrue();
+    }
 
     @Override
     public Set<Associate> haveNoBatch() {
