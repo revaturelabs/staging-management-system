@@ -22,6 +22,7 @@ const managerAdvancedCtrl = ($scope, $http, $state) => {
       console.log('failed');
     })
     
+    // fetching all project data
    $http.get('project/all')
     .then((data) => {
       $scope.projects = data.data;

@@ -63557,6 +63557,7 @@
 	    console.log('failed');
 	  });
 
+	  // fetching all project data
 	  $http.get('project/all').then(function (data) {
 	    $scope.projects = data.data;
 	    console.log($scope.projects);
