@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -48,20 +47,17 @@ public class Associate {
 	@JoinColumn(name = "BATCH_ID")
 	private Batch batch;
 
-	@Column(name = "ASSOCIATE_ACTIVE")
-	private boolean active;
-
 	@ManyToOne
 	@JoinColumn(name = "CLIENT_ID")
 	private Client lockedTo;
 	
 	@OneToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="POSRTFOLIO_STATUS_ID")
-	private int portfolioStatusId;
+	@JoinColumn(name="PORTFOLIO_STATUS_ID")
+	private PortfolioStatus portfolioStatus;
 	
 	@OneToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="ASSOCIATE_STATUS_ID")
-	private int associateStatusId;
+	private AssociatesStatus associateStatus;
 	
 
 	@ManyToMany(fetch = FetchType.EAGER)
@@ -75,11 +71,12 @@ public class Associate {
 		super();
 		this.skills = new HashSet<>();
 		this.jobs = new HashSet<>();
-		this.active = false;
+		this.associateStatus = new AssociatesStatus();
+		this.portfolioStatus = new PortfolioStatus();
 	}
 
-	public Associate(long id, Credential credential, String name, String portfolioLink, Batch batch, boolean active,
-			Client lockedTo, int portfolioStatusId, int associateStatusId, Set<Skill> skills, Set<Job> jobs) 
+	public Associate(long id, Credential credential, String name, String portfolioLink, Batch batch,
+			Client lockedTo, PortfolioStatus portfolioStatusId, AssociatesStatus associateStatusId, Set<Skill> skills, Set<Job> jobs) 
 	{
 		super();
 		this.id = id;
@@ -87,10 +84,9 @@ public class Associate {
 		this.name = name;
 		this.portfolioLink = portfolioLink;
 		this.batch = batch;
-		this.active = active;
 		this.lockedTo = lockedTo;
-		this.portfolioStatusId = portfolioStatusId;
-		this.associateStatusId = associateStatusId;
+		this.portfolioStatus = portfolioStatusId;
+		this.associateStatus = associateStatusId;
 		this.skills = skills;
 		this.jobs = jobs;
 	}
@@ -113,9 +109,9 @@ public class Associate {
 	}
 	
 	/**
-	 * Returns true if associate has not started thier training and they have not had
+	 * Returns true if associate has not started their training and they have not had
 	 * any jobs. Leaving it possible for associates to participate in multiple training
-	 * batches only after they have had atleast one job.
+	 * batches only after they have had at least one job.
 	 */
 	public boolean hasStartedOnDate(LocalDateTime date) {
 		boolean hasBegunTraining = date.compareTo(batch.getStartDate()) > 0;
@@ -145,6 +141,30 @@ public class Associate {
 	     if(hasStartedOnDate(date) && !isTrainingOnDate(date) && !hasJobOnDate(date))
 	    	 return true;
 	     return false;
+	}
+	
+	/**
+	 * This function returns true if the associate is in Staging and is available for hire
+	 */
+	public boolean isActive() {
+		return (associateStatus.getStatus().equals("Staging")) ? true : false;
+	}
+	
+	/**
+	 * This function sets the associate status to staging if associate is in
+	 */
+	public void setStatus() {
+		if(this.isTrainingOnDate(LocalDateTime.now()))
+			associateStatus.setStatus("Training");
+		
+		if(this.isTrackedOnDate(LocalDateTime.now()))
+			associateStatus.setStatus("Staging");
+		
+		if(this.hasJobOnDate(LocalDateTime.now()))
+			associateStatus.setStatus("Project");
+		
+		if(!this.hasJobOnDate(LocalDateTime.now()))
+			associateStatus.setStatus("Bench");
 	}
 
 	public long getId() 
@@ -207,24 +227,24 @@ public class Associate {
 		this.lockedTo = lockedTo;
 	}
 
-	public int getPortfolioStatusId() 
+	public PortfolioStatus getPortfolioStatus() 
 	{
-		return portfolioStatusId;
+		return portfolioStatus;
 	}
 
-	public void setPortfolioStatusId(int portfolioStatusId) 
+	public void setPortfolioStatus(PortfolioStatus portfolioStatus) 
 	{
-		this.portfolioStatusId = portfolioStatusId;
+		this.portfolioStatus = portfolioStatus;
 	}
 
-	public int getAssociateStatusId() 
+	public AssociatesStatus getAssociateStatus() 
 	{
-		return associateStatusId;
+		return associateStatus;
 	}
 
-	public void setAssociateStatusId(int associateStatusId) 
+	public void setAssociateStatus(AssociatesStatus associateStatus) 
 	{
-		this.associateStatusId = associateStatusId;
+		this.associateStatus = associateStatus;
 	}
 
 	public Set<Skill> getSkills() 
@@ -244,22 +264,12 @@ public class Associate {
 		this.jobs = jobs;
 	}
 
-	public boolean isActive() {
-		return active;
-	}
 
-	public void setActive() {
-		if(this.isTrackedOnDate(LocalDateTime.now()))
-			this.active = true;
-		else
-			this.active = false;
-	}
-
-	@Override
-	public String toString() {
-		return "Associate [id=" + id + ", credential=" + credential + ", name=" + name + ", portfolioLink="
-				+ portfolioLink + ", batch=" + batch + ", active=" + active + ", lockedTo=" + lockedTo
-				+ ", portfolioStatusId=" + portfolioStatusId + ", associateStatusId=" + associateStatusId + ", skills="
-				+ skills + "]";
-	}
+//	@Override
+//	public String toString() {
+//		return "Associate [id=" + id + ", credential=" + credential + ", name=" + name + ", portfolioLink="
+//				+ portfolioLink + ", batch=" + batch + ", active=" + active + ", lockedTo=" + lockedTo
+//				+ ", portfolioStatusId=" + portfolioStatusId + ", associateStatusId=" + associateStatusId + ", skills="
+//				+ skills + "]";
+//	}
 }

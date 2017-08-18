@@ -3,6 +3,7 @@ package com.revature.sms.services;
 import java.util.Set;
 
 import com.revature.sms.entities.Associate;
+import com.revature.sms.entities.AssociatesStatus;
 import com.revature.sms.entities.StaggingAssociate;
 
 public interface AssociateService {
@@ -12,8 +13,15 @@ public interface AssociateService {
     public void delete(Associate associate);
     public void update(Associate associate);
     public Set<Associate> getAll();
-    public Set<Associate> getAllActive();
+    
+    //We took out this
+    //public Set<Associate> getAllActive();
+    
     public Set<Associate> haveNoBatch();
     public Set<Associate> findByBatchId(Long id);
     public Set<StaggingAssociate> getAssociatesInStaggingOn(String date);
+    
+    //WE added this
+    public Set<Associate> getAllByStatus(AssociatesStatus status);
+    //public Set<Associate> getActive();
 }

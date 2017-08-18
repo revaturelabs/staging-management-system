@@ -270,7 +270,7 @@ public class DataGeneration
 	  int immuneSystemHealth;
 	  
 	  AssociateP(Associate a){
-	    super(a.getId(), a.getCredential(), a.getName(), a.getPortfolioLink(), a.getBatch(), a.isActive(), a.getLockedTo(),a.getPortfolioStatusId(),a.getAssociateStatusId(), a.getSkills(), a.getJobs());
+	    super(a.getId(), a.getCredential(), a.getName(), a.getPortfolioLink(), a.getBatch(), a.getLockedTo(),a.getPortfolioStatus(),a.getAssociateStatus(), a.getSkills(), a.getJobs());
 	    int qualityOfAssociate = rand.nextInt(100); 
 	    
 	    if(qualityOfAssociate < 20)    //20 percent chance of being half as hirable as the average associate.
@@ -297,8 +297,8 @@ public class DataGeneration
 	   * @return - super instance
 	   */
 	  Associate getAssocaite(){
-		  this.setActive();
-	    return new Associate(getId(), getCredential(), getName(), getPortfolioLink(), getBatch(), isActive(), getLockedTo(), getPortfolioStatusId(),getAssociateStatusId(), getSkills(), getJobs());
+		  this.setStatus();
+	    return new Associate(getId(), getCredential(), getName(), getPortfolioLink(), getBatch(), getLockedTo(), getPortfolioStatus(), getAssociateStatus(), getSkills(), getJobs());
 	  }
 	  
 	  /*

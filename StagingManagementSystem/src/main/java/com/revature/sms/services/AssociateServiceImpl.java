@@ -1,6 +1,7 @@
 package com.revature.sms.services;
 
 import com.revature.sms.entities.Associate;
+import com.revature.sms.entities.AssociatesStatus;
 import com.revature.sms.entities.Skill;
 import com.revature.sms.entities.StaggingAssociate;
 import com.revature.sms.repositories.AssociateRepo;
@@ -14,7 +15,9 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class AssociateServiceImpl implements AssociateService {
@@ -87,11 +90,13 @@ public class AssociateServiceImpl implements AssociateService {
         return new HashSet<>(associateRepo.findAll());
     }
 
-    @Override
-    public Set<Associate> getAllActive() {
-
-        return associateRepo.findAssociatesByActiveTrue();
-    }
+//	  We deleted this
+//    @Override
+//    public Set<Associate> getAllActive() {
+//
+//        return associateRepo.findAssociatesByActiveTrue();
+//    }
+    
 
     @Override
     public Set<Associate> haveNoBatch() {
@@ -109,4 +114,15 @@ public class AssociateServiceImpl implements AssociateService {
     public Set<StaggingAssociate> getAssociatesInStaggingOn(String date) {
       return staggingAssociateRepo.getAssociatesInStaggingOn(date);
     }
+
+    //We added this
+	@Override
+	public Set<Associate> getAllByStatus(AssociatesStatus status) {
+		return associateRepo.findByAssociateStatus(status);
+	}
+
+//	public Set<Associate> getActive() {
+//		return associateRepo.findAssociateByStatusIsStagingOrBench();
+//	}
+
 }

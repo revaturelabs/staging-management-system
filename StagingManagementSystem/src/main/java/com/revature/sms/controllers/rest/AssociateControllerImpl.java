@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.sms.entities.Associate;
+import com.revature.sms.entities.AssociatesStatus;
 import com.revature.sms.entities.Manager;
 import com.revature.sms.entities.StaggingAssociate;
 import com.revature.sms.services.AssociateService;
@@ -120,10 +121,21 @@ public class AssociateControllerImpl {
 		return ResponseEntity.ok(associateService.getAll());
 	}
 
-	@GetMapping("/allActive")
-	public Set<Associate> getAllActiveAssociates(HttpSession session) {
-		return associateService.getAllActive();
+//	@GetMapping("/allActive")
+//	public Set<Associate> getAllActiveAssociates(HttpSession session) {
+//		return associateService.getAllActive();
+//	}
+	
+	@GetMapping("/test")
+	public ResponseEntity<Set<Associate>> getAllActive(HttpSession session) {
+//		if (session.getAttribute(LM) == null) {
+//			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+//		}
+		AssociatesStatus stagingStatus = new AssociatesStatus(1, "STAGING");
+		return ResponseEntity.ok(associateService.getAllByStatus(stagingStatus));
 	}
+	
+	
 
 	@GetMapping("no-batch")
 	public Set<Associate> haveNoBatch() {
@@ -135,10 +147,10 @@ public class AssociateControllerImpl {
 		return associateService.findByBatchId(id);
 	}
 
-	@GetMapping(path = "/totaldata")
-	public ResponseEntity<Collection<TotalData>> getAssocaites() {
-		return ResponseEntity.ok(totalReport.process(associateService.getAllActive()));
-	}
+//	@GetMapping(path = "/totaldata")
+//	public ResponseEntity<Collection<TotalData>> getAssocaites() {
+//		return ResponseEntity.ok(totalReport.process(associateService.getAllActive()));
+//	}
 	
 	@GetMapping(path = "/AssociatesInStaggin/{date}")
 	public Set<StaggingAssociate> getAssociatesInStaggingOn(@PathVariable String date){
