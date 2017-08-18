@@ -109,4 +109,16 @@ public class AssociateServiceImpl implements AssociateService {
     public Set<StaggingAssociate> getAssociatesInStaggingOn(String date) {
       return staggingAssociateRepo.getAssociatesInStaggingOn(date);
     }
+
+	@Override
+	public Set<Associate> haveNoProject() {
+		Set<Associate> noProject = new HashSet<Associate>();
+		Set<Associate> allAssociate = associateRepo.findAssociatesByActiveTrue();
+		for(Associate a : allAssociate){
+			if(a.getProject()==null){
+				noProject.add(a);
+			}
+		}
+		return noProject;
+	}
 }

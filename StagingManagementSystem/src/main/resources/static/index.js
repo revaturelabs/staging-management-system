@@ -104,22 +104,27 @@
 
 	var _job = __webpack_require__(138);
 
-	var _advanced = __webpack_require__(139);
+	var _project = __webpack_require__(139);
+
+	var _advanced = __webpack_require__(140);
 
 	var _advanced2 = _interopRequireDefault(_advanced);
 
-	var _profile = __webpack_require__(140);
+	var _profile = __webpack_require__(141);
 
 	var _profile2 = _interopRequireDefault(_profile);
 
-	var _interview = __webpack_require__(141);
+	var _interview = __webpack_require__(142);
 
 	var _interview2 = _interopRequireDefault(_interview);
 
+<<<<<<< HEAD
 	var _associatePanel = __webpack_require__(146);
 
 	var _associatePanel2 = _interopRequireDefault(_associatePanel);
 
+=======
+>>>>>>> 3588d6be566ec060ff1b58bc3c03f4de1c0b82c2
 	var _associate = __webpack_require__(143);
 
 	var _associate2 = _interopRequireDefault(_associate);
@@ -225,6 +230,10 @@
 	    templateUrl: 'manager-pages/create/job.html',
 	    controller: _job.jobCtrl
 
+	  }).state('manager.create.project', {
+	    url: '/project',
+	    templateUrl: 'manager-pages/create/project.html',
+	    controller: _project.projectCtrl
 	  }).state('manager.home', {
 	    url: '/home',
 	    views: {
@@ -63464,6 +63473,69 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	var projectCtrl = function projectCtrl($scope, $http, $state, $stateParams) {
+		$scope.project = { associates: [] };
+
+		$http.get('associate/no-project').then(function (response1) {
+			$scope.associates = response1.data;
+			if ($state.includes('manager.advanced')) {
+				$http.get('project/' + $stateParams.id).then(function (response2) {
+					$http.get('associate/by-project/' + $stateParams.id).then(function (response3) {
+						$scope.project.associates = response3.data;
+					});
+					$scope.project = response2.data;
+				});
+			}
+		});
+
+		$scope.addAssociate = function () {
+			if (!$scope.selectedAssociate) {
+				return;
+			}
+			$scope.project.associates.push($scope.selectedAssociate);
+			$scope.associates = $scope.associates.filter(function (associate) {
+				return associate.id !== $scope.selectedAssociate.id;
+			});
+		};
+
+		$scope.removeAssociate = function (selected) {
+			$scope.project.associates = $scope.project.associates.filter(function (associate) {
+				return associate.id !== selected.id;
+			});
+			$scope.associates.push(selected);
+		};
+
+		$scope.submit = function () {
+			$scope.requestMade = true;
+			$scope.createMessage = 'Attempting to create project';
+			$scope.createMessageStyle = { color: 'black' };
+			if ($scope.project.projectDescription == null) {
+				$scope.project.projectDescription = "No project description.";
+			}
+
+			var projectCreation = JSON.parse(JSON.stringify($scope.project));
+
+			$http.post('/project', projectCreation).then(function (response) {
+				$scope.createMessage = 'Successfully created project';
+				$scope.createMessageStyle = { color: 'green' };
+			}, function () {
+				$scope.createMessage = 'Failed to create project';
+				$scope.createMessageStyle = { color: 'red' };
+			});
+		};
+	};
+
+	exports.projectCtrl = projectCtrl;
+
+/***/ }),
+/* 140 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	var managerAdvancedCtrl = function managerAdvancedCtrl($scope, $http, $state) {
@@ -63550,7 +63622,7 @@
 	exports.default = managerAdvancedCtrl;
 
 /***/ }),
-/* 140 */
+/* 141 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -63704,7 +63776,7 @@
 	exports.default = profileCtrl;
 
 /***/ }),
-/* 141 */
+/* 142 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -63714,6 +63786,18 @@
 	});
 	var associateInterviewCtrl = function associateInterviewCtrl($scope, $http, userService) {
 		var addInterviewBtn = document.getElementById('addInterviewBtn');
+
+		$scope.getScheduledTime = function () {
+			$http({
+				method: 'GET',
+				url: 'interviews/associate/' + userService.getUser().id
+			}).then(function (response) {
+				$scope.associateInterviews = response.data;
+				$scope.associateInterviews.sort(function (a, b) {
+					return new Date(b.scheduled).getTime() - new Date(a.scheduled).getTime();
+				});
+			});
+		};
 
 		$scope.associateInterviews;
 		$('#datetimepicker1').datetimepicker();
@@ -63779,7 +63863,7 @@
 					addInterviewBtn.disabled = false;
 					addInterviewBtn.innerHTML = 'Add Interview';
 
-					$scope.getSchedueledTime();
+					$scope.getScheduledTime();
 				});
 			}
 		};
@@ -63830,23 +63914,15 @@
 				});
 			}
 		};
-		$scope.getScheduledTime = function () {
-			$http({
-				method: 'GET',
-				url: 'interviews/associate/' + userService.getUser().id
-			}).then(function (response) {
-				$scope.associateInterviews = response.data;
-				$scope.associateInterviews.sort(function (a, b) {
-					return new Date(b.scheduled).getTime() - new Date(a.scheduled).getTime();
-				});
-			});
-		};
 	};
 
 	exports.default = associateInterviewCtrl;
 
 /***/ }),
+<<<<<<< HEAD
 /* 142 */,
+=======
+>>>>>>> 3588d6be566ec060ff1b58bc3c03f4de1c0b82c2
 /* 143 */
 /***/ (function(module, exports) {
 

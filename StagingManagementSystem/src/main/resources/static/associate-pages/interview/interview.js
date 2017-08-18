@@ -1,6 +1,19 @@
 const associateInterviewCtrl = ($scope, $http, userService) => {
 	const addInterviewBtn = document.getElementById('addInterviewBtn');
 
+	$scope.getScheduledTime = function (){
+		$http ({
+			method: 'GET',
+			url: `interviews/associate/${userService.getUser().id}`,
+		})
+		.then(function(response) {
+			$scope.associateInterviews = response.data;
+			$scope.associateInterviews.sort(function(a,b) {
+			return new Date(b.scheduled).getTime() - new Date(a.scheduled).getTime();
+			});
+		});
+	};
+	
 	$scope.associateInterviews;
 	$('#datetimepicker1').datetimepicker();
 	$scope.showDateTimePicker = () => {
@@ -72,7 +85,7 @@ const associateInterviewCtrl = ($scope, $http, userService) => {
 				addInterviewBtn.disabled = false;
 				addInterviewBtn.innerHTML = 'Add Interview';
 
-				$scope.getSchedueledTime();
+				$scope.getScheduledTime();
 
 			});
 		}
@@ -129,18 +142,7 @@ const associateInterviewCtrl = ($scope, $http, userService) => {
 			})
 		}
 	}
-	$scope.getScheduledTime = function(){
-		$http ({
-			method: 'GET',
-			url: `interviews/associate/${userService.getUser().id}`,
-		})
-		.then((response) => {
-			$scope.associateInterviews = response.data;
-			$scope.associateInterviews.sort(function(a,b) {
-			return new Date(b.scheduled).getTime() - new Date(a.scheduled).getTime();
-			});
-		});
-	};
+
 
 }
 

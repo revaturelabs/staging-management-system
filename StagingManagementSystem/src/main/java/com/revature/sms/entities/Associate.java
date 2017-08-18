@@ -46,6 +46,10 @@ public class Associate {
 	@ManyToOne
 	@JoinColumn(name = "BATCH_ID")
 	private Batch batch;
+	
+	@ManyToOne
+	@JoinColumn(name="PROJECT_ID")
+	private Project project;
 
 	@Column(name = "ASSOCIATE_ACTIVE")
 	private boolean active;
@@ -68,7 +72,7 @@ public class Associate {
 		this.active = false;
 	}
 
-	public Associate(long id, Credential credential, String name, String portfolioLink, Batch batch, boolean active,
+	public Associate(long id, Credential credential, String name, String portfolioLink, Batch batch, Project project, boolean active,
 			Client lockedTo, Set<Skill> skills, Set<Job> jobs) {
 		super();
 		this.id = id;
@@ -76,6 +80,7 @@ public class Associate {
 		this.name = name;
 		this.portfolioLink = portfolioLink;
 		this.batch = batch;
+		this.project = project;
 		this.active = active;
 		this.lockedTo = lockedTo;
 		this.skills = skills;
@@ -171,6 +176,14 @@ public class Associate {
 	public void setBatch(Batch batch) {
 		this.batch = batch;
 	}
+	
+	public Project getProject(){
+		return project;
+	}
+	
+	public void setProject(Project project){
+		this.project = project;
+	}
 
 	public boolean isActive() {
 		return active;
@@ -258,11 +271,12 @@ public class Associate {
 			return false;
 		return true;
 	}
-
+	
 	@Override
 	public String toString() {
 		return "Associate [id=" + id + ", credential=" + credential + ", name=" + name + ", portfolioLink="
-				+ portfolioLink + ", batch=" + (batch == null ? null : batch.getBatchType().getValue()) + ", active=" + active + ", lockedTo="
+				+ portfolioLink + ", batch=" + (batch == null ? null : batch.getBatchType().getValue()) + ", project=" + (project == null ? null : project.getProjectName()) + ", active=" + active + ", lockedTo="
 				+ lockedTo + ", skills=" + skills + "]";
 	}
+
 }
