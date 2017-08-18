@@ -1,119 +1,29 @@
 <link rel="stylesheet" href="./associate-pages/associatePanel/associatePanel.css"/>
 
 <div class="container">
-<h2 class="panelH2"> Panelling </h2>
+<h2 class="panelH2"> Paneling </h2>
 
 <div class="form-group addInterview">     
 	
-	<!-- <button type="button" ng-click="showAddModal()" class="btn btn-primary">Add Panelling Interview</button> -->
-
 	<hr class="colorgraph">
 	<h2 class="panelH2">Panel History</h2>          
 	<table class="table table-striped panels-table selectable-table">
 	  <thead>
 	    <tr>
-	      <th class="panel-th" scope="col">Panel ID</th>
-	      <th class="panel-th" scope="col">Date</th>
-	      <th class="panel-th" scope="col">Manager</th>
-	      <th class="panel-th" scope="col">Status</th>
+	      <th class="assPanel-th" scope="col">Panel ID</th>
+	      <th class="assPanel-th" scope="col">Date</th>
+	      <th class="assPanel-th" scope="col">Manager</th>
+	      <th class="assPanel-th" scope="col">Status</th>
 	    </tr>
 	  </thead>
 	  <tbody>
-	   <!--  <tr class="associateInterviewTable" ng-repeat="x in associateInterviews" ng-click="panelClick(x)"> -->
+	   <!--  <tr class="associatePanelTable" ng-repeat="x in associateInterviews" ng-click="panelClick(x)"> -->
 	      <tr class="associatePanelTable" ng-repeat="p in plist">
 	      <td>{{p.id}}</td>
 	      <td>{{ dateConverter(p.statusDate) }}</td>
 	      <td>{{p.manager.name}}</td>
 	      <td>{{p.status}}</td>
-	  <!--      <td><input type="button" ng-click="delOrder(t ,$event)"  value="Cancel"></td> -->
-	       
 	    </tr>
 	  </tbody>
 	</table>
 </div>
-
-<div id="addModal" class="modal fade" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Add Interview</h4>
-      </div>
-      
-      <div class="modal-body">
-      <div>
-	    <h5 class="newH5">Client Name</h5>
-		<select class="form-control" ng-model="selectedClient" ng-options="x.name for x in clients" title="Client"></select>
-		</div>
-		
-		<div>
-		<h5 class="newH5">Interview Date & Time</h5>
-		<div class="form-group" >
-           <div class='input-group date' >
-               <input type='text' class="form-control" ng-model="selectedDate.value" id='datetimepicker1'/>
-               <span ng-click="showDateTimePicker()" class="input-group-addon">
-                   <span class="glyphicon glyphicon-calendar"></span>
-               </span>
-           </div>
-      	</div>
-      	</div>
-      	<div>
-      	<h5 class="newH5">Marketer</h5>
-				<select class="form-control" ng-model="selectedMarketer" ng-options="x.name for x in marketers"></select>
-      </div>
-      </div>
-      <div class="modal-footer">
-        <div class="alert alert-success" ng-show="successMsgShow" style="text-align: left;">
-		  Successfully added an Interview!
-		</div>
-		<div class="alert alert-danger" ng-bind="errorMsg" ng-show="errorMsgShow" style="text-align: left;">
-		  Failed to add an Interview.
-		</div>
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" id="addInterviewBtn" ng-click="addInterviewClick()" class="btn btn-primary">Add Interview</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-
-<div id="panelModal" class="modal fade" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">{{clickedInterview.client.name}} - {{ dateConverter(clickedInterview.scheduled) }}</h4>
-      </div>
-      
-      <div class="modal-body">
-      	<div class="row">
-	      	<div class="col-sm-6" style="text-align: center;">
-	      		Marketer
-				<select class="form-control" ng-model="updateMarketer" ng-options="x.name for x in marketers"></select>
-			</div>
-			<div class="col-sm-6" style="text-align: center;">
-				Status
-				<select class="form-control" ng-model="updateStatus" ng-options="x.value for x in panelStatuses"></select>
-			</div>
-	    </div>
-		
-		<div class="row" style="margin-top: 2em;">
-			<div class="col-sm-12 col-xs-12" style="text-align: center;">
-				Comment
-				<textarea class="form-control commentArea" ng-model="updateComment" rows="8"></textarea>
-			</div>
-	    </div>	
-
-      </div>
-      <div class="modal-footer">
-      	<div class="alert alert-success" ng-show="successUpdateMsgShow" style="text-align: left;">
-		  Successfully updated the Interview!
-		</div>
-		<div class="alert alert-danger" ng-bind="errorUpdateMsg" ng-show="errorUpdateMsgShow" style="text-align: left;">
-		  Failed to add an Interview.
-		</div>
-       <!--  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" id="updateInterviewBtn" ng-click="updateInterviewClick()" class="btn btn-primary">Update Interview</button> -->
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->

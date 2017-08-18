@@ -4,7 +4,7 @@
   background: rgba(242, 105, 38, 1);
 }
 
-.assPanelH2 {
+.associatePanelH2 {
 	text-align: center;
 	color: rgba(55, 71, 79, 0.75);
 }
@@ -84,7 +84,7 @@ table{
   box-shadow: inset 0 0 10px #7ab733;
 }
 
-.assPanels-table {
+.associatePanel-table {
   margin-bottom: 0;
 }
 
@@ -98,21 +98,21 @@ table{
     background-color: #FF8000;
 }
 
-.assPanels-container {
+.associatePanel-container {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
 }
 
-.assPanel-status-container {
+.associatePanel-status-container {
   display: flex;
   flex-direction: row;
 }
-.assPanel-status-label {
+.associatePanel-status-label {
   margin-right: 0.2em;
 }
 
-.assPanel-side-table {
+.associatePanel-side-table {
   display: flex;
   flex-direction: column;
   border: 1px solid black;
@@ -120,23 +120,23 @@ table{
   margin-left: 1em;
 }
 
-.assPanel-side-table-footer {
+.associatePanel-side-table-footer {
   height: 1em;
   background-color: #FF8000;
   margin-top: 0.3em;
 }
 
-.assPanel-side-table-header, .assPanel-modal-header {
+.associatePanel-side-table-header, .associatePanel-modal-header {
   min-height: 1em;
   background-color: #FF8000;
 }
 
-.assPanel-side-table-row {
+.associatePanel-side-table-row {
   margin-left: 0.2em;
   margin-right: 0.2em;
 }
 
-.manager-input, .assPanel-input-addon {
+.manager-input, .associatePanel-input-addon {
   padding: 0 0.5em;
   margin-left: 0.2em;
   border: 1px solid #ccc;
@@ -147,6 +147,6 @@ table{
   transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 }
 
-.assPanel-input-addon {
+.associatePanel-input-addon {
   margin:0;
 }
