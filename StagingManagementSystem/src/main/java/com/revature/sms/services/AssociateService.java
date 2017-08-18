@@ -12,7 +12,7 @@ public interface AssociateService {
     public void delete(Associate associate);
     public void update(Associate associate);
     public Set<Associate> getAll();
-    public Set<Associate> getAllActive();
+    //public Set<Associate> getAllActive();
     public Set<Associate> haveNoBatch();
     public Set<Associate> findByBatchId(Long id);
     public Set<StaggingAssociate> getAssociatesInStaggingOn(String date);
