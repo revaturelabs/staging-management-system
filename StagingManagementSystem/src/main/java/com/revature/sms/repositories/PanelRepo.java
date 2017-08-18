@@ -11,6 +11,7 @@ public interface PanelRepo extends JpaRepository<Panel, Long> {
 	
 	//Read
 	 Set<Panel>  getByAssociate(Associate associate);
+	 Set<Panel> findByAssociateId(long id);
 
 
 	 

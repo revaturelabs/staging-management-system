@@ -20,7 +20,7 @@ import { jobCtrl } from './manager-pages/create/job';
 import managerAdvancedCtrl from './manager-pages/advanced/advanced';
 import profileCtrl from './associate-pages/profile/profile';
 import associateInterviewCtrl from './associate-pages/interview/interview';
-import associatePanelCtrl from './associate-pages/panel/panel';
+import associatePanelCtrl from './associate-pages/associatePanel/associatePanel';
 import associateCtrl from './associate-pages/associate';
 import loginCtrl from './login/login';
 
@@ -191,8 +191,8 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       controller: associateInterviewCtrl,
     })
     .state('associate.associatePanel', {
-      url: '/panel',
-      templateUrl: 'associate-pages/panel/panel.html',
+      url: '/associatePanel',
+      templateUrl: 'associate-pages/associatePanel/associatePanel.html',
       controller:associatePanelCtrl,
     })
     .state('associate.profile', {

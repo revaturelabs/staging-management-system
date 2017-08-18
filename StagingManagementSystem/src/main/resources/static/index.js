@@ -116,9 +116,9 @@
 
 	var _interview2 = _interopRequireDefault(_interview);
 
-	var _panel = __webpack_require__(142);
+	var _associatePanel = __webpack_require__(146);
 
-	var _panel2 = _interopRequireDefault(_panel);
+	var _associatePanel2 = _interopRequireDefault(_associatePanel);
 
 	var _associate = __webpack_require__(143);
 
@@ -284,9 +284,9 @@
 	    templateUrl: 'associate-pages/interview/interview.html',
 	    controller: _interview2.default
 	  }).state('associate.associatePanel', {
-	    url: '/panel',
-	    templateUrl: 'associate-pages/panel/panel.html',
-	    controller: _panel2.default
+	    url: '/associatePanel',
+	    templateUrl: 'associate-pages/associatePanel/associatePanel.html',
+	    controller: _associatePanel2.default
 	  }).state('associate.profile', {
 	    url: '/profile',
 	    templateUrl: 'associate-pages/profile/profile.html',
@@ -63846,176 +63846,7 @@
 	exports.default = associateInterviewCtrl;
 
 /***/ }),
-/* 142 */
-/***/ (function(module, exports) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var associatePanelCtrl = function associatePanelCtrl($scope, $http, userService) {
-	  //	const addInterviewBtn = document.getElementById('addInterviewBtn');
-	  //	
-	  //	$scope.associateInterviews;
-	  //	$('#datetimepicker1').datetimepicker();
-	  //	$scope.showDateTimePicker = () => {
-	  //		$('#datetimepicker1').datetimepicker("show");
-	  //	}
-	  //	$("#datetimepicker1").on("dp.change", function() {
-	  //    $scope.selectedDate = $("#datetimepicker1").val();
-	  //	});
-	  //
-	  //	$http({
-	  //		method: 'GET',
-	  //		url: '/client/all',
-	  //	})
-	  //	.then((response) => {
-	  //		$scope.clients = response.data;
-	  //		$scope.clients.sort( (pre, cur) => {
-	  //			return pre.name.localeCompare(cur.name);
-	  //		});
-	  //	});
-	  //
-	  //	$http ({
-	  //		method: 'GET',
-	  //		url: '/interviewStatus/all',
-	  //	})
-	  //	.then((response) => {
-	  //		$scope.interviewStatuses = response.data;
-	  //	});
-	  //	
-	  //	$http ({
-	  //		method: 'GET',
-	  //		url: '/marketer/all',
-	  //	})
-	  //	.then((response) => {
-	  //		$scope.marketers = response.data;
-	  //	});
-	  //
-	  //	$http ({
-	  //		method: 'GET',
-	  //		url: `interviews/associate/${userService.getUser().id}`,
-	  //	})
-	  //	.then((response) => {
-	  //		$scope.associateInterviews = response.data;
-	  //		$scope.associateInterviews.sort(function(a,b) {
-	  //	    return new Date(b.scheduled).getTime() - new Date(a.scheduled).getTime();
-	  //		});
-	  //	});
-	  //
-	  //
-	  //
-	  //	$scope.addInterviewClick = function() {
-	  //
-	  //		$scope.errorMsgShow = false;
-	  //		$scope.successMsgShow = false;
-	  //		
-	  //		$scope.selectedDate = $("#datetimepicker1").val();
-	  //	
-	  //		if($scope.selectedClient == undefined) {
-	  //			$scope.errorMsg = 'Please select a Client.';
-	  //      $scope.errorMsgShow = true;
-	  //		}
-	  //		else if($scope.selectedDate == undefined || $scope.selectedDate === "") {
-	  //			$scope.errorMsg = 'Please select a Date.';
-	  //      $scope.errorMsgShow = true;
-	  //		}
-	  //		else if($scope.selectedMarketer == undefined) {
-	  //			$scope.errorMsg = 'Please select a Marketer.';
-	  //      $scope.errorMsgShow = true;
-	  //		}
-	  //		else {
-	  //			let newDate = moment($scope.selectedDate).toDate();
-	  //			addInterviewBtn.disabled = true;
-	  //			addInterviewBtn.innerHTML = 'Adding...';
-	  //			$http({
-	  //				method: 'POST',
-	  //				url: '/interviews',
-	  //				data: { associate: userService.getUser(), client: $scope.selectedClient, scheduled: newDate, marketer: $scope.selectedMarketer},
-	  //			})
-	  //			.then((response) => {
-	  //				$scope.successMsgShow = true;
-	  //				addInterviewBtn.disabled = false;
-	  //				addInterviewBtn.innerHTML = 'Add Interview';
-	  //				
-	  //				$http ({
-	  //					method: 'GET',
-	  //					url: `interviews/associate/${userService.getUser().id}`,
-	  //				})
-	  //				.then((response) => {
-	  //					$scope.associateInterviews = response.data;
-	  //					$scope.associateInterviews.sort(function(a,b) {
-	  //				    return new Date(b.scheduled).getTime() - new Date(a.scheduled).getTime();
-	  //					});
-	  //				});
-	  //			});
-	  //		}
-	  //	}
-	  //	
-	  //	$scope.showAddModal = function() {
-	  //		$scope.errorMsgShow = false;
-	  //		$scope.successMsgShow = false;
-	  //		
-	  //		$scope.selectedClient = undefined;
-	  //		$("#datetimepicker1").val("");
-	  //		$scope.selectedMarketer = undefined;
-	  //		
-	  //		$('#addModal').modal('show');
-	  //	}
-	  //	
-	  //	$scope.interviewClick = function(interview) {
-	  //		$scope.clickedInterview = interview;
-	  //		for(let i=0;i<$scope.interviewStatuses.length;i++) {
-	  //			if($scope.interviewStatuses[i].value === interview.interviewStatus.value)
-	  //				$scope.updateStatus = $scope.interviewStatuses[i];
-	  //		}
-	  //		for(let i=0;i<$scope.marketers.length;i++) {
-	  //			if($scope.marketers[i].name === interview.marketer.name)
-	  //				$scope.updateMarketer = $scope.marketers[i];
-	  //		}
-	  //		$scope.updateComment = $scope.clickedInterview.comment;
-	  //		
-	  //		$scope.errorUpdateMsgShow = false;
-	  //		$scope.successUpdateMsgShow = false;
-	  //		$('#interviewModal').modal('show');
-	  //	}
-	  //	
-	  //	$scope.updateInterviewClick = function() {
-	  //		$scope.errorUpdateMsgShow = false;
-	  //		$scope.successUpdateMsgShow = false;
-	  //		
-	  //		if($scope.updateComment === undefined || $scope.updateComment === "") {
-	  //			$scope.errorUpdateMsg = 'Please add a comment.';
-	  //      $scope.errorUpdateMsgShow = true;
-	  //		}
-	  //		else {
-	  //			$http({ 
-	  //				method: 'PUT',
-	  //				url: '/interviews',
-	  //				data: { id: $scope.clickedInterview.id, associate: $scope.clickedInterview.associate, client: $scope.clickedInterview.client, 
-	  //					scheduled: $scope.clickedInterview.scheduled, marketer: $scope.updateMarketer, interviewStatus: $scope.updateStatus, comment: $scope.updateComment},
-	  //			})
-	  //			.then ((response) => {
-	  //	      $scope.successUpdateMsgShow = true;
-	  //	      $http ({
-	  //	    		method: 'GET',
-	  //	    		url: `interviews/associate/${userService.getUser().id}`,
-	  //	    	})
-	  //	    	.then((response) => {
-	  //	    		$scope.associateInterviews = response.data;
-	  //	    		$scope.associateInterviews.sort(function(a,b) {
-	  //	    	    return new Date(b.scheduled).getTime() - new Date(a.scheduled).getTime();
-	  //	    		});
-	  //	    	});
-	  //			})
-	  //		}
-	  //	}
-	};
-
-	exports.default = associatePanelCtrl;
-
-/***/ }),
+/* 142 */,
 /* 143 */
 /***/ (function(module, exports) {
 
@@ -64394,6 +64225,41 @@
 	c,b){var f=.5*b,k=a-b,h=a+b,l=a-f,m=a+f,n=a+.5,p=n+1,r=n+1.5,t=c-b,u=c+f,v=c-f,f=c+(b-f);return["M",k,t,"L",l,v,l,f,k,u,a-.5,u,a,c+b+.5,n,u,h,u,m,f,m,v,h,t,r,t,r,v,r,f,p,f,p,v,r,v,r,t,"Z"]},zoomOutIcon:function(a,c,b){a-=.2*b;c-=.2*b;var f=.8*b,k=w.rad(43),h=w.rad(48),l=a+f*ya(k),k=c+f*va(k),m=a+f*ya(h),h=c+f*va(h),n=w.rad(45),p=l+b*ya(n),r=k+b*va(n),t=m+b*ya(n);b=h+b*va(n);return["M",l,k,"A",f,f,0,1,0,m,h,"Z","M",l+1,k+1,"L",p,r,t,b,m+1,h+1,"Z","M",a-2,c,"L",a+2,c,"Z"]},resetIcon:function(a,c,b){var f=
 	a-b,k=(da.PI/2+da.PI)/2;a+=b*ya(k);var k=c+b*va(k),h=2*b/3;return["M",f,c,"A",b,b,0,1,1,a,k,"L",a+h,k-1,a+2,k+h-.5,a,k]}})}])});
 
+
+/***/ }),
+/* 146 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	var associatePanelCtrl = function associatePanelCtrl($scope, $http, userService) {
+
+		//	$http ({
+		//		method: 'GET',
+		//		url: '/panel/associatetepanel',
+		//	})
+		//	.then((response) => {
+		//		$scope.plist = response.data;
+		//	});
+		//	
+		//};
+
+
+		$http({
+			method: 'GET',
+			url: '/panel/associate/' + userService.getUser().id
+		}).then(function (response) {
+			$scope.plist = response.data;
+			//		$scope.associateInterviews.sort(function(a,b) {
+			//		return new Date(b.scheduled).getTime() - new Date(a.scheduled).getTime();
+			//		});
+		});
+	};
+
+	exports.default = associatePanelCtrl;
 
 /***/ })
 /******/ ]);

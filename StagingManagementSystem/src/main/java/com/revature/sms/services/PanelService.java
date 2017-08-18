@@ -11,13 +11,15 @@ public interface PanelService {
 	public void addPanel(Panel panel);
 
 	// Read
-	Set<Panel> findByAssociate(Associate associate);
+	public Set<Panel> findByAssociate(Associate associate);
+	public Set<Panel> findByAssociateId(long id);
+	public Panel getById(long id);
+	public Set<Panel> getAllPanel();
 	
+	// Update
 	public void update(Panel panel);
 	
-	public Panel getById(long id);
 	
-	public Set<Panel> getAllPanel();
 	
 	
 }

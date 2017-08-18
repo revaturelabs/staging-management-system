@@ -24,6 +24,13 @@ public class PanelServiceImpl implements PanelService
 	}
 
 	@Override
+	public Set<Panel> findByAssociateId(long id) {
+		return pr.findByAssociateId(id);
+	}
+	
+	
+	
+	@Override
 	public void update(Panel panel) 
 	{
 		pr.saveAndFlush(panel);
@@ -49,6 +56,7 @@ public class PanelServiceImpl implements PanelService
 	{
 		pr.saveAndFlush(panel);
 	}
-	
+
+
 	
 }

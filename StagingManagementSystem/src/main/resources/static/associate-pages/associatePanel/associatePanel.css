@@ -4,7 +4,7 @@
   background: rgba(242, 105, 38, 1);
 }
 
-.interviewH2 {
+.assPanelH2 {
 	text-align: center;
 	color: rgba(55, 71, 79, 0.75);
 }
@@ -22,7 +22,7 @@
 	margin-top: 2em;
 }
 
-.associateInterviewTable {
+.associatePanelTable {
 	cursor: pointer;
 	text-align: left;
 }
@@ -84,35 +84,35 @@ table{
   box-shadow: inset 0 0 10px #7ab733;
 }
 
-.interviews-table {
+.assPanels-table {
   margin-bottom: 0;
 }
 
-.table > thead > tr > th.interview-th, .table > tbody > tr > td.interview-td {
+.table > thead > tr > th.assPanel-th, .table > tbody > tr > td.assPanel-td {
     padding: 15px;
     text-align: left;
     font-family: 'Roboto', sans-serif;
 }
 
-.table > thead > tr > th.interview-th {
+.table > thead > tr > th.assPanel-th {
     background-color: #FF8000;
 }
 
-.interviews-container {
+.assPanels-container {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
 }
 
-.interview-status-container {
+.assPanel-status-container {
   display: flex;
   flex-direction: row;
 }
-.interview-status-label {
+.assPanel-status-label {
   margin-right: 0.2em;
 }
 
-.interview-side-table {
+.assPanel-side-table {
   display: flex;
   flex-direction: column;
   border: 1px solid black;
@@ -120,23 +120,23 @@ table{
   margin-left: 1em;
 }
 
-.interview-side-table-footer {
+.assPanel-side-table-footer {
   height: 1em;
   background-color: #FF8000;
   margin-top: 0.3em;
 }
 
-.interview-side-table-header, .interview-modal-header {
+.assPanel-side-table-header, .assPanel-modal-header {
   min-height: 1em;
   background-color: #FF8000;
 }
 
-.interview-side-table-row {
+.assPanel-side-table-row {
   margin-left: 0.2em;
   margin-right: 0.2em;
 }
 
-.manager-input, .interview-input-addon {
+.manager-input, .assPanel-input-addon {
   padding: 0 0.5em;
   margin-left: 0.2em;
   border: 1px solid #ccc;
@@ -147,6 +147,6 @@ table{
   transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 }
 
-.interview-input-addon {
+.assPanel-input-addon {
   margin:0;
 }

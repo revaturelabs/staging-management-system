@@ -6,6 +6,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,48 +19,38 @@ import com.revature.sms.services.PanelService;
 
 @RestController
 @RequestMapping("panel")
-public class PanelControllerImp 
-{
+public class PanelControllerImp {
 
-	@Autowired 
+	@Autowired
 	PanelService pr;
-	
-	
+
 	@GetMapping("associatetepanel")
-	public Set<Panel> getAssociatePanel(HttpSession session)
-	{
-		return pr.findByAssociate((Associate)session.getAttribute("LA"));
-			
-		
+	public Set<Panel> getAssociatePanel(HttpSession session) {
+		return pr.findByAssociate((Associate) session.getAttribute("LA"));
+
 	}
 	
+	@GetMapping("/associate/{associateId}")
+	public Set<Panel> findByAssociate(@PathVariable long associateId) {
+		return pr.findByAssociateId(associateId);
+	}
 
 	@GetMapping("allpanel")
-	public Set<Panel> SetgetAllPanel()
-	{
-				return pr.getAllPanel();
-	
+	public Set<Panel> SetgetAllPanel() {
+		return pr.getAllPanel();
+
 	}
 
 	@PostMapping
-	public void addPanel(@RequestBody Panel panel)
-	{
+	public void addPanel(@RequestBody Panel panel) {
 		pr.addPanel(panel);
-		
-	}
-	@PutMapping
-	public void update(@RequestBody Panel panel)
-	{
-		pr.update(panel);
-		
-	}
-	
-	
-}
-	
-	
-	
-	
-	
-	
 
+	}
+
+	@PutMapping
+	public void update(@RequestBody Panel panel) {
+		pr.update(panel);
+
+	}
+
+}

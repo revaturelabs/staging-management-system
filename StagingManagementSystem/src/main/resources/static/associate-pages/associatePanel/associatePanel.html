@@ -1,31 +1,30 @@
-<link rel="stylesheet" href="./associate-pages/interview/panel.css"/>
+<link rel="stylesheet" href="./associate-pages/associatePanel/associatePanel.css"/>
 
 <div class="container">
-<h2 class="interviewH2"> Panelling </h2>
+<h2 class="panelH2"> Panelling </h2>
 
 <div class="form-group addInterview">     
 	
 	<!-- <button type="button" ng-click="showAddModal()" class="btn btn-primary">Add Panelling Interview</button> -->
 
 	<hr class="colorgraph">
-	<h2 class="interviewH2">Panel History</h2>          
-	<table class="table table-striped interviews-table selectable-table">
+	<h2 class="panelH2">Panel History</h2>          
+	<table class="table table-striped panels-table selectable-table">
 	  <thead>
 	    <tr>
-	      <th class="interview-th" scope="col">Assioate Name</th>
-	      <th class="interview-th" scope="col">Time</th>
-	      <th class="interview-th" scope="col">Manager</th>
-	      <th class="interview-th" scope="col">Status</th>
-	     <!--  <th class="interview-th" scope="col"> ???? </th> -->
+	      <th class="panel-th" scope="col">Panel ID</th>
+	      <th class="panel-th" scope="col">Date</th>
+	      <th class="panel-th" scope="col">Manager</th>
+	      <th class="panel-th" scope="col">Status</th>
 	    </tr>
 	  </thead>
 	  <tbody>
-	   <!--  <tr class="associateInterviewTable" ng-repeat="x in associateInterviews" ng-click="interviewClick(x)"> -->
-	      <tr class="associateInterviewTable" ng-repeat="x in associateInterviews">
-	      <td>{{x.client.name}}</td>
-	      <td>{{ dateConverter(x.scheduled) }}</td>
-	      <td>{{ x.marketer.name }}</td>
-	      <td>{{x.interviewStatus.value}}</td>
+	   <!--  <tr class="associateInterviewTable" ng-repeat="x in associateInterviews" ng-click="panelClick(x)"> -->
+	      <tr class="associatePanelTable" ng-repeat="p in plist">
+	      <td>{{p.id}}</td>
+	      <td>{{ dateConverter(p.statusDate) }}</td>
+	      <td>{{p.manager.name}}</td>
+	      <td>{{p.status}}</td>
 	  <!--      <td><input type="button" ng-click="delOrder(t ,$event)"  value="Cancel"></td> -->
 	       
 	    </tr>
@@ -77,7 +76,7 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-<div id="interviewModal" class="modal fade" tabindex="-1" role="dialog">
+<div id="panelModal" class="modal fade" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -93,7 +92,7 @@
 			</div>
 			<div class="col-sm-6" style="text-align: center;">
 				Status
-				<select class="form-control" ng-model="updateStatus" ng-options="x.value for x in interviewStatuses"></select>
+				<select class="form-control" ng-model="updateStatus" ng-options="x.value for x in panelStatuses"></select>
 			</div>
 	    </div>
 		
