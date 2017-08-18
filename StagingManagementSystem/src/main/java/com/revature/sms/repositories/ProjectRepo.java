@@ -6,5 +6,5 @@ import com.revature.sms.entities.Project;
 
 public interface ProjectRepo extends JpaRepository<Project, Long>{
 	
-	Project getByProjectId(int projectId);
+
 }

@@ -63790,6 +63790,18 @@
 	var associateInterviewCtrl = function associateInterviewCtrl($scope, $http, userService) {
 		var addInterviewBtn = document.getElementById('addInterviewBtn');
 
+		$scope.getScheduledTime = function () {
+			$http({
+				method: 'GET',
+				url: 'interviews/associate/' + userService.getUser().id
+			}).then(function (response) {
+				$scope.associateInterviews = response.data;
+				$scope.associateInterviews.sort(function (a, b) {
+					return new Date(b.scheduled).getTime() - new Date(a.scheduled).getTime();
+				});
+			});
+		};
+
 		$scope.associateInterviews;
 		$('#datetimepicker1').datetimepicker();
 		$scope.showDateTimePicker = function () {
@@ -63823,7 +63835,7 @@
 			$scope.marketers = response.data;
 		});
 
-		$scope.getScheduledTime;
+		$scope.getScheduledTime();
 
 		$scope.addInterviewClick = function () {
 
@@ -63854,7 +63866,7 @@
 					addInterviewBtn.disabled = false;
 					addInterviewBtn.innerHTML = 'Add Interview';
 
-					$scope.getSchedueledTime;
+					$scope.getScheduledTime();
 				});
 			}
 		};
@@ -63901,20 +63913,9 @@
 				}).then(function (response) {
 					$scope.successUpdateMsgShow = true;
 
-					$scope.getScheduledTime;
+					$scope.getScheduledTime();
 				});
 			}
-		};
-		$scope.getScheduledTime = function () {
-			$http({
-				method: 'GET',
-				url: 'interviews/associate/' + userService.getUser().id
-			}).then(function (response) {
-				$scope.associateInterviews = response.data;
-				$scope.associateInterviews.sort(function (a, b) {
-					return new Date(b.scheduled).getTime() - new Date(a.scheduled).getTime();
-				});
-			});
 		};
 	};
 

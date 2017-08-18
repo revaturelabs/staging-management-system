@@ -21,6 +21,10 @@ public class ProjectControllerImpl {
 		this.projectService = projectService;
 	}
 	
+	public void setProjectService(ProjectService projectService) {
+		this.projectService = projectService;
+	}
+
 	@PostMapping
 	public void addProject(@RequestBody Project project) {
 		projectService.addProject(project);

@@ -37,6 +37,21 @@ public class Project {
     @JsonProperty(access = Access.WRITE_ONLY)
 	private Set<Associate> associates;
 
+	public Project() {
+		super();
+		this.associates = new HashSet<>();
+	}
+	
+	public Project(int projectId, String projectName, String projectDescription, String projectStatus,
+			Set<Associate> associates) {
+		super();
+		this.projectId = projectId;
+		this.projectName = projectName;
+		this.projectDescription = projectDescription;
+		this.projectStatus = projectStatus;
+		this.associates = associates;
+	}
+
 	public int getProjectId() {
 		return projectId;
 	}
@@ -128,20 +143,5 @@ public class Project {
 	public String toString() {
 		return "Project [projectId=" + projectId + ", projectName=" + projectName + ", projectDescription="
 				+ projectDescription + ", projectStatus=" + projectStatus + ", associates=" + associates + "]";
-	}
-
-	public Project(int projectId, String projectName, String projectDescription, String projectStatus,
-			Set<Associate> associates) {
-		super();
-		this.projectId = projectId;
-		this.projectName = projectName;
-		this.projectDescription = projectDescription;
-		this.projectStatus = projectStatus;
-		this.associates = associates;
-	}
-
-	public Project() {
-		super();
-		this.associates = new HashSet<>();
 	}
 }
