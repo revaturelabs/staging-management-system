@@ -23,7 +23,7 @@
     </thead>
     <tbody>
     <!-- ng repeat for the project in projects -->
-    <tr ng-repeat="batch in batches | filter: batchBatchFilter" ui-sref="manager.advanced.batches.edit({id: batch.id})" data-toggle="modal" data-target="#projectModal">
+    <tr ng-repeat="project in projects" ui-sref="manager.advanced.projects.edit({id: project.id})" data-toggle="modal" data-target="#projectModal">
       <td ng-bind=""></td>
       <td class="ellipsis" ng-bind=""></td>
       <td ng-bind=""></td>

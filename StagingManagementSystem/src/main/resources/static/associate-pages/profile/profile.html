@@ -18,7 +18,7 @@
             </dt>
             <!-- change the ng-bind to project name once the db stuff is figured out -->
             <!-- opens modal to display project description on click -->
-            <dd>Coming Soon!</dd>
+            <dd ng-bind="associate.project.projectName"></dd>
           </div>
           <div class="col-md-6 col-sm-6 col-xs-6">
             <dt>Batch</dt>
@@ -144,10 +144,10 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">[project name here]</h4>
+        <h4 class="modal-title">{{associate.project.projectName}}</h4>
       </div>
       <div class="modal-body">
-        [project description here]
+        {{associate.project.projectDescription}}
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
