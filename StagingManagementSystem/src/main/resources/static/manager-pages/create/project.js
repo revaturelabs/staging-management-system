@@ -13,28 +13,20 @@ const projectCtrl = function($scope, $http, $state, $stateParams) {
 		}
 	});
 	
-	$scope.active = function(){
-		
-	}
-	
-	$scope.addAssociate = function()  {
+	 $scope.addAssociate = () => {
 		    if(!$scope.selectedAssociate) {
 		      return;
 		    }
 		    $scope.project.associates.push($scope.selectedAssociate);
-		    $scope.associates = $scope.associates.filter(function(associate){ 
-		    	associate.id !== $scope.selectedAssociate.id
-		    	});
+		    $scope.associates = $scope.associates.filter((associate) => associate.id !== $scope.selectedAssociate.id);
 		  }
 
+		 
 
-
-    $scope.removeAssociate = function(selected) {
-    	$scope.project.associates = $scope.project.associates.filter(function(associate) {
-    		associate.id !== selected.id
-    	})
-    		$scope.associates.push(selected);
-    };
+		  $scope.removeAssociate = (selected) => {
+		    $scope.project.associates = $scope.project.associates.filter((associate) => associate.id !== selected.id)
+		    $scope.associates.push(selected);
+		  }
 
     $scope.submit = function() {
     	$scope.requestMade = true;
