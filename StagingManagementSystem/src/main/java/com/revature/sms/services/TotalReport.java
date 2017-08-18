@@ -21,7 +21,6 @@ public class TotalReport {
 
     public Tuple() {
       super();
-      // TODO Auto-generated constructor stub
     }
 
     public I getFirst() {

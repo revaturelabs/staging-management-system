@@ -158,9 +158,6 @@
 	    return $cookies.get("role");
 	  }
 
-	  // TEST 
-	  console.log(JSON.stringify($cookies.getObject('token')));
-
 	  $http.get('https://login.salesforce.com/services/oauth2/userinfo' + '?access_token=' + JSON.stringify($cookies.getObject('token'))).then(function (response) {
 	    console.log('Response:' + response);
 	    //return response;
@@ -168,7 +165,7 @@
 
 	  /*		// TEST 
 	    $http.get('getSalesforceUser', 
-	  		     { params: {accessToken:  $cookies.getObject('token'),
+	  		     { params: {accessToken:  $cookies.getObject('token').access_token,
 	  		    	 		endpoint: 'https://login.salesforce.com/services/oauth2/userinfo' }
 	  		     })
 	  	.then((response) => {
@@ -206,14 +203,18 @@
 
 	  // Ui Visualizer
 	  // Auto-collapse children in state visualizer
-	  // const registry = $uiRouter.stateRegistry;
-	  // $uiRouter.stateRegistry.get().map(s => s.$$state())
-	  // .filter(s => s.path.length === 2 || s.path.length === 3)
-	  // .forEach(s => s._collapsed = true);
-	  //
-	  // const pluginInstance = $uiRouter.plugin(Visualizer);
-	  //
-	  // $trace.enable('TRANSITION');
+	  var registry = $uiRouter.stateRegistry;
+	  $uiRouter.stateRegistry.get().map(function (s) {
+	    return s.$$state();
+	  }).filter(function (s) {
+	    return s.path.length === 2 || s.path.length === 3;
+	  }).forEach(function (s) {
+	    return s._collapsed = true;
+	  });
+
+	  var pluginInstance = $uiRouter.plugin(Visualizer);
+
+	  $trace.enable('TRANSITION');
 
 	  // Global Functions
 	  $rootScope.dateConverter = function (time) {
@@ -63156,8 +63157,10 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+
+
 	var managerCtrl = function managerCtrl($scope, $state, $location, $http, userService) {
-	  $http({
+	  $http({ //TODO: Convert to use salesforce instead
 	    method: 'GET',
 	    url: '/login/user'
 	  }).then(function (response) {
@@ -64995,7 +64998,7 @@
 	  } else if (isAssociate) {
 	    $state.go('associate.home');
 	  }
-
+	  //TODO: Remove any functionality that allows logging in as a manager outside of salesforce
 	  $scope.submit = function () {
 	    loginBtn.disabled = true;
 	    loginBtn.innerHTML = 'Logging in...';
@@ -65017,7 +65020,7 @@
 	        url: '/login',
 	        data: { username: $scope.username, password: $scope.password }
 	      }).then(function (response) {
-	        userService.setUser(response.data);
+	        userService.setUser(response.data); //Currently an SMS database check. Needs to do something with token instead?
 	        if (response.data.permission !== undefined) {
 	          $state.go('manager.home');
 	        } else {

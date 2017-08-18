@@ -32,7 +32,7 @@ public class ClientServiceImpl implements ClientService {
 
 	@Override
 	public Client getClientbyId(long id) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 

@@ -84,17 +84,22 @@ public class SalesforceAuthorization extends Helper implements Authorization {
 			HttpServletResponse servletResponse) throws IOException {
 
 		HttpClient httpClient = HttpClientBuilder.create().build();
+		
 		HttpPost post = new HttpPost(loginURL + accessTokenURL);
+		
 		List<NameValuePair> parameters = new ArrayList<>();
 		parameters.add(new BasicNameValuePair("grant_type", "authorization_code"));
 		parameters.add(new BasicNameValuePair("client_secret", clientSecret));
 		parameters.add(new BasicNameValuePair("client_id", clientId));
 		parameters.add(new BasicNameValuePair("redirect_uri", redirectUri));
 		parameters.add(new BasicNameValuePair("code", code));
+		
+		
 		post.setEntity(new UrlEncodedFormEntity(parameters));
+		
+		
 		HttpResponse response = httpClient.execute(post);
 		String token = URLEncoder.encode(toJsonString(response.getEntity().getContent()), "UTF-8");
-		
 		
 		
 		servletResponse.addCookie(new Cookie("token", token));

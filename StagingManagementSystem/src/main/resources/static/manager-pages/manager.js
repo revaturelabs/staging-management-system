@@ -1,5 +1,7 @@
+
+
 const managerCtrl = ($scope, $state, $location, $http, userService) => {
-  $http({
+  $http({ //TODO: Convert to use salesforce instead
     method: 'GET',
     url: '/login/user',
   }).then((response) => {
@@ -27,7 +29,7 @@ const managerCtrl = ($scope, $state, $location, $http, userService) => {
 		});
 	};
 
-  $scope.manager = { name:'Joe'};
+  $scope.manager = { name:'Joe'}; 
 };
 
 export { managerCtrl };

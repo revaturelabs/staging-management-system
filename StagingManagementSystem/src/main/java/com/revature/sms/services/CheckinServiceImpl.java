@@ -136,7 +136,7 @@ public class CheckinServiceImpl implements CheckinService {
 
 	@Override
 	public void addcheckins(Set<Checkin> checkins) {
-		// TODO Auto-generated method stub
+		//Empty
 
 	}
 

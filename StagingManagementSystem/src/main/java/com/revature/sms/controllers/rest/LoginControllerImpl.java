@@ -50,6 +50,7 @@ public class LoginControllerImpl {
 			return ResponseEntity.ok(true);
 	}
 	
+	//TODO: Tied to sms when it should not have any pull for managers
 	@GetMapping("user")
 	public ResponseEntity<Object> getUser(HttpSession session) {
 		Manager manager = (Manager)session.getAttribute("login_manager");
@@ -66,13 +67,16 @@ public class LoginControllerImpl {
 
 	@PostMapping
 	public ResponseEntity<Object> dualLogin(@RequestBody Credential creds, HttpSession session, HttpServletResponse resp){
+		
+		System.out.println("TEST: Login Test");
+		
 		Object obj = credService.login(creds);
 		if(obj instanceof Associate){
 			session.setAttribute(LA, (Associate)obj);
 			return ResponseEntity.ok((Associate)obj);
 		}else if(obj instanceof Manager){
 			session.setAttribute(LM, (Manager)obj);
-			/*if(salesforce)
+			/*if(salesforce) //May be disfunctional. Don't know if a thing exists to set sms.salesforce
 			{
 				HttpHeaders headers = new HttpHeaders();
 				headers.add("Location", "/salesforce");
