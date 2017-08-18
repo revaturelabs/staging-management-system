@@ -116,7 +116,7 @@
 
 	var _interview2 = _interopRequireDefault(_interview);
 
-	var _associatePanel = __webpack_require__(146);
+	var _associatePanel = __webpack_require__(142);
 
 	var _associatePanel2 = _interopRequireDefault(_associatePanel);
 
@@ -63748,7 +63748,7 @@
 			$scope.marketers = response.data;
 		});
 
-		$scope.getScheduledTime();
+		$scope.getScheduledTime;
 
 		$scope.addInterviewClick = function () {
 
@@ -63826,7 +63826,7 @@
 				}).then(function (response) {
 					$scope.successUpdateMsgShow = true;
 
-					$scope.getScheduledTime();
+					$scope.getScheduledTime;
 				});
 			}
 		};
@@ -63846,7 +63846,41 @@
 	exports.default = associateInterviewCtrl;
 
 /***/ }),
-/* 142 */,
+/* 142 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	var associatePanelCtrl = function associatePanelCtrl($scope, $http, userService) {
+
+		//	$http ({
+		//		method: 'GET',
+		//		url: '/panel/associatetepanel',
+		//	})
+		//	.then((response) => {
+		//		$scope.plist = response.data;
+		//	});
+		//	
+		//};
+
+
+		$http({
+			method: 'GET',
+			url: '/panel/associate/' + userService.getUser().id
+		}).then(function (response) {
+			$scope.plist = response.data;
+			//		$scope.associateInterviews.sort(function(a,b) {
+			//		return new Date(b.scheduled).getTime() - new Date(a.scheduled).getTime();
+			//		});
+		});
+	};
+
+	exports.default = associatePanelCtrl;
+
+/***/ }),
 /* 143 */
 /***/ (function(module, exports) {
 
@@ -64225,41 +64259,6 @@
 	c,b){var f=.5*b,k=a-b,h=a+b,l=a-f,m=a+f,n=a+.5,p=n+1,r=n+1.5,t=c-b,u=c+f,v=c-f,f=c+(b-f);return["M",k,t,"L",l,v,l,f,k,u,a-.5,u,a,c+b+.5,n,u,h,u,m,f,m,v,h,t,r,t,r,v,r,f,p,f,p,v,r,v,r,t,"Z"]},zoomOutIcon:function(a,c,b){a-=.2*b;c-=.2*b;var f=.8*b,k=w.rad(43),h=w.rad(48),l=a+f*ya(k),k=c+f*va(k),m=a+f*ya(h),h=c+f*va(h),n=w.rad(45),p=l+b*ya(n),r=k+b*va(n),t=m+b*ya(n);b=h+b*va(n);return["M",l,k,"A",f,f,0,1,0,m,h,"Z","M",l+1,k+1,"L",p,r,t,b,m+1,h+1,"Z","M",a-2,c,"L",a+2,c,"Z"]},resetIcon:function(a,c,b){var f=
 	a-b,k=(da.PI/2+da.PI)/2;a+=b*ya(k);var k=c+b*va(k),h=2*b/3;return["M",f,c,"A",b,b,0,1,1,a,k,"L",a+h,k-1,a+2,k+h-.5,a,k]}})}])});
 
-
-/***/ }),
-/* 146 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	var associatePanelCtrl = function associatePanelCtrl($scope, $http, userService) {
-
-		//	$http ({
-		//		method: 'GET',
-		//		url: '/panel/associatetepanel',
-		//	})
-		//	.then((response) => {
-		//		$scope.plist = response.data;
-		//	});
-		//	
-		//};
-
-
-		$http({
-			method: 'GET',
-			url: '/panel/associate/' + userService.getUser().id
-		}).then(function (response) {
-			$scope.plist = response.data;
-			//		$scope.associateInterviews.sort(function(a,b) {
-			//		return new Date(b.scheduled).getTime() - new Date(a.scheduled).getTime();
-			//		});
-		});
-	};
-
-	exports.default = associatePanelCtrl;
 
 /***/ })
 /******/ ]);
