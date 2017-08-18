@@ -21,6 +21,14 @@ const managerAdvancedCtrl = ($scope, $http, $state) => {
     }, (data) => {
       console.log('failed');
     })
+    
+   $http.get('project/all')
+    .then((data) => {
+      $scope.projects = data.data;
+      console.log($scope.projects)
+    }, (data) => {
+      console.log('failed');
+    })
 
   $scope.isAssociates = () => {
     if($state.is('manager.advanced.allassociates'))

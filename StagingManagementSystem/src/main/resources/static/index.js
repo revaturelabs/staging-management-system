@@ -169,14 +169,14 @@
 
 	  //Ui Visualizer
 	  // Auto-collapse children in state visualizer
-	  // const registry = $uiRouter.stateRegistry;
-	  // $uiRouter.stateRegistry.get().map(s => s.$$state())
-	  //     .filter(s => s.path.length === 2 || s.path.length === 3)
-	  //     .forEach(s => s._collapsed = true);
-	  //
-	  // const pluginInstance = $uiRouter.plugin(Visualizer);
-	  //
-	  // $trace.enable('TRANSITION');
+	  /*const registry = $uiRouter.stateRegistry;
+	  $uiRouter.stateRegistry.get().map(s => s.$$state())
+	      .filter(s => s.path.length === 2 || s.path.length === 3)
+	      .forEach(s => s._collapsed = false);
+	  
+	  const pluginInstance = $uiRouter.plugin(Visualizer);
+	  
+	  $trace.enable('TRANSITION');*/
 
 	  //Global Functions
 	  $rootScope.dateConverter = function (time) {
@@ -275,6 +275,10 @@
 	  }).state('manager.advanced.batches.edit', {
 	    url: '/edit/:id',
 	    templateUrl: 'manager-pages/create/batch.html',
+	    controller: _batch.batchCtrl
+	  }).state('manager.advanced.projects.edit', {
+	    url: '/edit/:id',
+	    templateUrl: 'manager-pages/create/project.html',
 	    controller: _batch.batchCtrl
 	  }).state('associate', {
 	    url: '/associate',
@@ -63549,6 +63553,13 @@
 
 	  $http.get('batch/all').then(function (data) {
 	    $scope.batches = data.data;
+	  }, function (data) {
+	    console.log('failed');
+	  });
+
+	  $http.get('project/all').then(function (data) {
+	    $scope.projects = data.data;
+	    console.log($scope.projects);
 	  }, function (data) {
 	    console.log('failed');
 	  });
