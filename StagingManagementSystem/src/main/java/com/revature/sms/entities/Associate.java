@@ -61,19 +61,27 @@ public class Associate {
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "ASSOCIATE_SKILLS", joinColumns = @JoinColumn(name = "ASSOCIATE_ID"), inverseJoinColumns = @JoinColumn(name = "SKILL_ID"))
 	private Set<Skill> skills;
+	
 
 	@OneToMany(mappedBy = "associate")
 	private Set<Job> jobs;
-
+	
+     @OneToMany(mappedBy="associate")
+     private Set<Certifications> certifications;
+     
 	public Associate() {
 		super();
 		this.skills = new HashSet<>();
 		this.jobs = new HashSet<>();
+		this.certifications=new HashSet<>();
 		this.active = false;
+		
 	}
 
-	public Associate(long id, Credential credential, String name, String portfolioLink, Batch batch, Project project, boolean active,
-			Client lockedTo, Set<Skill> skills, Set<Job> jobs) {
+	
+
+	public Associate(long id, Credential credential, String name, String portfolioLink, Batch batch, Project project,
+			boolean active, Client lockedTo, Set<Skill> skills, Set<Job> jobs, Set<Certifications> certifications) {
 		super();
 		this.id = id;
 		this.credential = credential;
@@ -85,6 +93,7 @@ public class Associate {
 		this.lockedTo = lockedTo;
 		this.skills = skills;
 		this.jobs = jobs;
+		this.certifications = certifications;
 	}
 
 	/**
@@ -220,6 +229,18 @@ public class Associate {
 		this.jobs = jobs;
 	}
 
+
+
+	public Set<Certifications> getCertifications() {
+		return certifications;
+	}
+
+
+
+	public void setCertifications(Set<Certifications> certifications) {
+		this.certifications = certifications;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -232,6 +253,8 @@ public class Associate {
 		result = prime * result + ((skills == null) ? 0 : skills.hashCode());
 		return result;
 	}
+
+
 
 	@Override
 	public final boolean equals(Object obj) {
@@ -272,6 +295,9 @@ public class Associate {
 		return true;
 	}
 	
+
+
+
 	@Override
 	public String toString() {
 		return "Associate [id=" + id + ", credential=" + credential + ", name=" + name + ", portfolioLink="
@@ -279,4 +305,7 @@ public class Associate {
 				+ lockedTo + ", skills=" + skills + "]";
 	}
 
+
+	
+	
 }

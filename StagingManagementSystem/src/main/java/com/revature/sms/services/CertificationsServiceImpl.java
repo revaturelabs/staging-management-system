@@ -8,33 +8,24 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
+import com.revature.sms.entities.Associate;
 import com.revature.sms.entities.Certifications;
 import com.revature.sms.repositories.AssociateRepo;
 import com.revature.sms.repositories.CertificationsRepo;
 
 @Service
 public class CertificationsServiceImpl implements CertificationsService {
-     @Autowired
-  private CertificationsRepo certRepo;
-           
-     @Autowired
-     AssociateRepo associateRepo;
-     
-     
-     
-     
+
+
+	@Autowired
+ CertificationsRepo certRepo;
+
+	
 	public CertificationsServiceImpl(CertificationsRepo certRepo) {
 		super();
 		this.certRepo = certRepo;
-	}
 	
-
-	public CertificationsServiceImpl() {
-		super();
-		
 	}
-
 
 	@Override
 	public void add(Certifications certifications) {
@@ -48,16 +39,15 @@ public class CertificationsServiceImpl implements CertificationsService {
 
 	@Override
 	public List<Certifications> getAllCertifications() {
-	List<Certifications> cert= new ArrayList<>();
-	    certRepo.findAll().forEach(cert::add);
+		List<Certifications> cert= new ArrayList<>();
+		certRepo.findAll().forEach(cert::add);
 		return cert;
 	}
 
 	@Override
-	
-	public Set<Certifications> findByAssociate(long id) {
-	
-		return certRepo.getByAssociate_Id(id);
+
+	public Set<Certifications> findByAssociate(Associate associate) {
+		return certRepo.getByAssociate_Id(associate);
 	}
 
 }

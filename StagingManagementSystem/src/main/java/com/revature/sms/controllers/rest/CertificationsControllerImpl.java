@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.revature.sms.entities.Associate;
 import com.revature.sms.entities.Certifications;
 
 import com.revature.sms.services.CertificationsService;
@@ -46,8 +47,8 @@ public class CertificationsControllerImpl {
 	}
 
 	//get associate by id who has a certifications
-	@GetMapping("/associate/{associateId}")
-	public Set<Certifications> findByAssociate(@PathVariable long id) {
-		return certService.findByAssociate(id);
+	@GetMapping("/associate")
+	public Set<Certifications> findByAssociate(@PathVariable Associate associate) {
+		return certService.findByAssociate(associate);
 	}
 }

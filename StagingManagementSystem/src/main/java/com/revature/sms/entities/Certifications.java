@@ -14,6 +14,8 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 @Entity
 @Table(name="CERTIFICATIONS")
@@ -30,11 +32,12 @@ public class Certifications {
          private String Cert_status;
          private String Cert_filename;
          private LocalDateTime Cert_testdate;
-         private String comments;
+         private String Cert_comments;
 //         @JoinColumn(name= "MANAGER_ID")
 //         private Manager manager_id;
          @ManyToOne(fetch= FetchType.LAZY)
          @JoinColumn(name = "ASSOCIATE_ID")
+         @JsonProperty(access = Access.WRITE_ONLY)
          private Associate associate;
          
          public Certifications() {
@@ -83,11 +86,11 @@ public class Certifications {
 		}
 
 		public String getComments() {
-			return comments;
+			return Cert_comments;
 		}
 
 		public void setComments(String comments) {
-			this.comments = comments;
+			this.Cert_comments = comments;
 		}
 
 		public Associate getAssociate_id() {
@@ -108,7 +111,7 @@ public class Certifications {
 			result = prime * result + ((Cert_testdate == null) ? 0 : Cert_testdate.hashCode());
 			result = prime * result + ((Cert_type == null) ? 0 : Cert_type.hashCode());
 			result = prime * result + ((associate == null) ? 0 : associate.hashCode());
-			result = prime * result + ((comments == null) ? 0 : comments.hashCode());
+			result = prime * result + ((Cert_comments == null) ? 0 : Cert_comments.hashCode());
 			return result;
 		}
 
@@ -148,10 +151,10 @@ public class Certifications {
 					return false;
 			} else if (!associate.equals(other.associate))
 				return false;
-			if (comments == null) {
-				if (other.comments != null)
+			if (Cert_comments == null) {
+				if (other.Cert_comments != null)
 					return false;
-			} else if (!comments.equals(other.comments))
+			} else if (!Cert_comments.equals(other.Cert_comments))
 				return false;
 			return true;
 		}
@@ -159,7 +162,7 @@ public class Certifications {
 		@Override
 		public String toString() {
 			return "Certifications [Cert_id=" + Cert_id + ", Cert_type=" + Cert_type + ", Cert_status=" + Cert_status
-					+ ", Cert_filename=" + Cert_filename + ", Cert_testdate=" + Cert_testdate + ", comments=" + comments
+					+ ", Cert_filename=" + Cert_filename + ", Cert_testdate=" + Cert_testdate + ", comments=" + Cert_comments
 					+ ", associate_id=" + associate + "]";
 		}
           
