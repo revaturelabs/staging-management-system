@@ -2,8 +2,11 @@ package com.revature.sms.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -15,6 +18,8 @@ public class AssociatesStatus
 {
 	@Id
 	@Column(name= "ASSOCIATE_STATUS_ID")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ASSOCIATE_STATUS_ID_SEQ")
+	@SequenceGenerator(name = "ASSOCIATE_STATUS_ID_SEQ", sequenceName = "ASSOCIATE_STATUS_ID_SEQ")
 	private int associateStatusId;
 	
 	@Column(name="STATUS")
@@ -32,12 +37,12 @@ public class AssociatesStatus
 		this.status = status;
 	}
 
-	public int getAssociateActive() 
+	public int getAssociatesStatusId() 
 	{
 		return associateStatusId;
 	}
 
-	public void setAssociateActive(int associateStatusId) 
+	public void setAssociatesStatusId(int associateStatusId) 
 	{
 		this.associateStatusId = associateStatusId;
 	}

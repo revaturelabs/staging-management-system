@@ -22,6 +22,6 @@ public interface AssociateService {
     public Set<StaggingAssociate> getAssociatesInStaggingOn(String date);
     
     //WE added this
-    public Set<Associate> getAllByStatus(AssociatesStatus status);
+    public Set<Associate> getAllByStatus(String status);
     //public Set<Associate> getActive();
 }

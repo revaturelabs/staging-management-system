@@ -270,7 +270,7 @@ public class DataGeneration
 	  int immuneSystemHealth;
 	  
 	  AssociateP(Associate a){
-	    super(a.getId(), a.getCredential(), a.getName(), a.getPortfolioLink(), a.getBatch(), a.getLockedTo(),a.getPortfolioStatus(),a.getAssociateStatus(), a.getSkills(), a.getJobs());
+	    super(a.getId(), a.getCredential(), a.getName(), a.getPortfolioLink(), a.getBatch(), a.getLockedTo(), a.getSkills(), a.getJobs(), a.getPortfolioStatus(), a.getAssociateStatus());
 	    int qualityOfAssociate = rand.nextInt(100); 
 	    
 	    if(qualityOfAssociate < 20)    //20 percent chance of being half as hirable as the average associate.
@@ -296,9 +296,11 @@ public class DataGeneration
 	   * Spring does not know about this class so this creates a super class to avoid errors.
 	   * @return - super instance
 	   */
+	  
+	  // I THINK THIS ALWASY RETURN 0 FOR GETASSOCIATE STATUS
 	  Associate getAssocaite(){
 		  this.setStatus();
-	    return new Associate(getId(), getCredential(), getName(), getPortfolioLink(), getBatch(), getLockedTo(), getPortfolioStatus(), getAssociateStatus(), getSkills(), getJobs());
+	    return new Associate(getId(), getCredential(), getName(), getPortfolioLink(), getBatch(), getLockedTo(), getSkills(), getJobs(), getPortfolioStatus(), getAssociateStatus());
 	  }
 	  
 	  /*

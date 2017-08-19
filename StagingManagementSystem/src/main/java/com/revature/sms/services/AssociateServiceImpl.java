@@ -117,8 +117,8 @@ public class AssociateServiceImpl implements AssociateService {
 
     //We added this
 	@Override
-	public Set<Associate> getAllByStatus(AssociatesStatus status) {
-		return associateRepo.findByAssociateStatus(status);
+	public Set<Associate> getAllByStatus(String status) {
+		return associateRepo.findByAssociateStatus_Status(status);
 	}
 
 //	public Set<Associate> getActive() {

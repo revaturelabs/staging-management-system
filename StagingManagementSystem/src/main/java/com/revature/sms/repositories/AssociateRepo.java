@@ -22,7 +22,7 @@ public interface AssociateRepo extends JpaRepository<Associate, Long> {
     Set<Associate> findByBatchId(Long id);
     
     //Our changes
-    Set<Associate> findByAssociateStatus(AssociatesStatus status);
+    Set<Associate> findByAssociateStatus_Status(String status);
     //Set<Associate> findAssociateByStatusIsStagingOrBench();
     
 }

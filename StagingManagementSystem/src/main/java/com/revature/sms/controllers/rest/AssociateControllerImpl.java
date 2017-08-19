@@ -126,17 +126,30 @@ public class AssociateControllerImpl {
 //		return associateService.getAllActive();
 //	}
 	
-	@GetMapping("/test")
+	@GetMapping("/allTraining")
 	public ResponseEntity<Set<Associate>> getAllActive(HttpSession session) {
 //		if (session.getAttribute(LM) == null) {
 //			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 //		}
-		AssociatesStatus stagingStatus = new AssociatesStatus(1, "STAGING");
-		return ResponseEntity.ok(associateService.getAllByStatus(stagingStatus));
+		//AssociatesStatus stagingStatus = new AssociatesStatus(1, "STAGING");
+		return ResponseEntity.ok(associateService.getAllByStatus("TRAINING"));
 	}
 	
+	@GetMapping("/allStaging")
+	public ResponseEntity<Set<Associate>> getAllInStaging(HttpSession session) {
+		return ResponseEntity.ok(associateService.getAllByStatus("STAGING"));
+	}
 	
-
+	@GetMapping("/allProject")
+	public ResponseEntity<Set<Associate>> getAllInProject(HttpSession session) {
+		return ResponseEntity.ok(associateService.getAllByStatus("PROJECT"));
+	}
+	
+	@GetMapping("/allBench")
+	public ResponseEntity<Set<Associate>> getAllInBench(HttpSession session) {
+		return ResponseEntity.ok(associateService.getAllByStatus("BENCH"));
+	}
+	
 	@GetMapping("no-batch")
 	public Set<Associate> haveNoBatch() {
 		return associateService.haveNoBatch();

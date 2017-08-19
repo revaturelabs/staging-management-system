@@ -76,7 +76,7 @@ public class Associate {
 	}
 
 	public Associate(long id, Credential credential, String name, String portfolioLink, Batch batch,
-			Client lockedTo, PortfolioStatus portfolioStatusId, AssociatesStatus associateStatusId, Set<Skill> skills, Set<Job> jobs) 
+			Client lockedTo, Set<Skill> skills, Set<Job> jobs, PortfolioStatus portfolioStatusId, AssociatesStatus associateStatusId) 
 	{
 		super();
 		this.id = id;
@@ -85,10 +85,10 @@ public class Associate {
 		this.portfolioLink = portfolioLink;
 		this.batch = batch;
 		this.lockedTo = lockedTo;
-		this.portfolioStatus = portfolioStatusId;
-		this.associateStatus = associateStatusId;
 		this.skills = skills;
 		this.jobs = jobs;
+		this.portfolioStatus = portfolioStatusId;
+		this.associateStatus = associateStatusId;
 	}
 
 
@@ -147,24 +147,33 @@ public class Associate {
 	 * This function returns true if the associate is in Staging and is available for hire
 	 */
 	public boolean isActive() {
-		return (associateStatus.getStatus().equals("Staging")) ? true : false;
+		return (associateStatus.getStatus().equals("STAGING")) ? true : false;
 	}
 	
 	/**
 	 * This function sets the associate status to staging if associate is in
 	 */
 	public void setStatus() {
-		if(this.isTrainingOnDate(LocalDateTime.now()))
-			associateStatus.setStatus("Training");
 		
-		if(this.isTrackedOnDate(LocalDateTime.now()))
-			associateStatus.setStatus("Staging");
+		if(this.isTrainingOnDate(LocalDateTime.now())) {
+			associateStatus.setAssociatesStatusId(0);
+			associateStatus.setStatus("TRAINING");
+		}
+			
+		if(this.isTrackedOnDate(LocalDateTime.now())) {
+			associateStatus.setAssociatesStatusId(1);
+			associateStatus.setStatus("STAGING");
+		}
 		
-		if(this.hasJobOnDate(LocalDateTime.now()))
-			associateStatus.setStatus("Project");
+		if(this.hasJobOnDate(LocalDateTime.now())) {
+			associateStatus.setAssociatesStatusId(2);
+			associateStatus.setStatus("PROJECT");
+		}
 		
-		if(!this.hasJobOnDate(LocalDateTime.now()))
-			associateStatus.setStatus("Bench");
+		if(!this.hasJobOnDate(LocalDateTime.now())) {
+			associateStatus.setAssociatesStatusId(3);
+			associateStatus.setStatus("BENCH");
+		}
 	}
 
 	public long getId() 
