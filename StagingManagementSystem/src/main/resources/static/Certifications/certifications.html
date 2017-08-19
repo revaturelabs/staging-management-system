@@ -5,6 +5,29 @@
 <title>Certifications</title>
 </head>
 <body>
-
+			<button  ng-click="ApplyCert()" type="button" id="checkBtn" class="btn btn-primary" >Take Certification</button>
+			
+<div class="modal fade" id="getCert" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Schedule a Certification</h4>
+      </div>
+      <div class="modal-body">
+        <label>Pick A Certification</label>
+        <div class="input-group">
+          <select class="manager-input form-control"  ng-options="">
+            <option value="">Certification</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button ng-click="updateCert()"  type="button" class="btn btn-primary"></button>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>

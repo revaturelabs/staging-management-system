@@ -6,7 +6,6 @@
 		</a>
 		<div class="nav navbar-brand">
 			<button ng-class="{ disabled: hasCheckedIn }" ng-click="checkIn()" ng-bind="checkInBtn" type="button" id="checkBtn" class="btn btn-primary" ></button>
-			<button  ng-click="ApplyCert()" type="button" id="checkBtn" class="btn btn-primary" >Take Certification</button>
 		</div>
 		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
 			<span class="sr-only">Toggle navigation</span>
@@ -26,3 +25,4 @@
 
 
 <div id="associate-body" ui-view></div>
+<div id="certification-body" ui-view></div>
