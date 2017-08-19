@@ -125,4 +125,15 @@ public class AssociateServiceImpl implements AssociateService {
 //		return associateRepo.findAssociateByStatusIsStagingOrBench();
 //	}
 
+	@Override
+	public Set<Associate> haveNoProject() {
+		Set<Associate> noProject = new HashSet<Associate>();
+		//Set<Associate> allAssociate = associateRepo.findAssociatesByActiveTrue();
+		for(Associate a : allAssociate){
+			if(a.getProject()==null){
+				noProject.add(a);
+			}
+		}
+		return noProject;
+	}
 }

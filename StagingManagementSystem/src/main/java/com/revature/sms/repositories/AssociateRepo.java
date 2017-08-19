@@ -20,9 +20,10 @@ public interface AssociateRepo extends JpaRepository<Associate, Long> {
    // Set<Associate> findAssociatesByActiveTrue();
     Set<Associate> findByBatchIsNull();
     Set<Associate> findByBatchId(Long id);
-    
+
     //Our changes
     Set<Associate> findByAssociateStatus_Status(String status);
     //Set<Associate> findAssociateByStatusIsStagingOrBench();
-    
+
+    Set<Associate> findByProjectIsNull();
 }

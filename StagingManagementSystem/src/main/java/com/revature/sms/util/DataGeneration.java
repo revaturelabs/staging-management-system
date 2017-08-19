@@ -221,7 +221,7 @@ public class DataGeneration
 															// 80.
 			probabilityOfLiking = rand.nextInt(10); // Liking probability is
 													// between 0 and 10.
-			probabilityOfNotInterested = 100 - (probabilityOfHiring + probabilityOfLiking);
+			probabilityOfNotInterested = 100 - ((double)probabilityOfHiring + probabilityOfLiking);
 
 			log.debug("Client probibility hiring/liking/interested: " + probabilityOfHiring + "/" + probabilityOfLiking
 					+ "/" + probabilityOfNotInterested);
@@ -270,7 +270,9 @@ public class DataGeneration
 	  int immuneSystemHealth;
 	  
 	  AssociateP(Associate a){
-	    super(a.getId(), a.getCredential(), a.getName(), a.getPortfolioLink(), a.getBatch(), a.getLockedTo(), a.getSkills(), a.getJobs(), a.getPortfolioStatus(), a.getAssociateStatus());
+	    super(a.getId(), a.getCredential(), a.getName(), a.getPortfolioLink(), a.getBatch(), a.getProject(), a.getLockedTo(),
+	    		a.getSkills(), a.getJobs(), a.getPortfolioStatus(), a.getAssociateStatus());
+
 	    int qualityOfAssociate = rand.nextInt(100); 
 	    
 	    if(qualityOfAssociate < 20)    //20 percent chance of being half as hirable as the average associate.
@@ -300,7 +302,8 @@ public class DataGeneration
 	  // I THINK THIS ALWASY RETURN 0 FOR GETASSOCIATE STATUS
 	  Associate getAssocaite(){
 		  this.setStatus();
-	    return new Associate(getId(), getCredential(), getName(), getPortfolioLink(), getBatch(), getLockedTo(), getSkills(), getJobs(), getPortfolioStatus(), getAssociateStatus());
+	    return new Associate(getId(), getCredential(), getName(), getPortfolioLink(), getBatch(), getProject(), getLockedTo(), 
+	    		getSkills(), getJobs(), getPortfolioStatus(), getAssociateStatus());
 	  }
 	  
 	  /*
@@ -387,10 +390,10 @@ public class DataGeneration
 
   /**
    * Simulates the interview process based on client and associate probabilities.
-   * 
+   *
    * @param state
    * @param convergenceFactor
-   * @param clients
+   * @param 
    * @return
    */
    private int simulateInterview(SimulationState state, double convergenceFactor) {

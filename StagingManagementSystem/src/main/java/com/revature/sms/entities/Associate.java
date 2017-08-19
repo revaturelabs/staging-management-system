@@ -46,6 +46,10 @@ public class Associate {
 	@ManyToOne
 	@JoinColumn(name = "BATCH_ID")
 	private Batch batch;
+	
+	@ManyToOne
+	@JoinColumn(name="PROJECT_ID")
+	private Project project;
 
 	@ManyToOne
 	@JoinColumn(name = "CLIENT_ID")
@@ -75,7 +79,7 @@ public class Associate {
 		this.portfolioStatus = new PortfolioStatus();
 	}
 
-	public Associate(long id, Credential credential, String name, String portfolioLink, Batch batch,
+	public Associate(long id, Credential credential, String name, String portfolioLink, Batch batch, Project project,
 			Client lockedTo, Set<Skill> skills, Set<Job> jobs, PortfolioStatus portfolioStatusId, AssociatesStatus associateStatusId) 
 	{
 		super();
@@ -84,6 +88,7 @@ public class Associate {
 		this.name = name;
 		this.portfolioLink = portfolioLink;
 		this.batch = batch;
+		this.project = project;
 		this.lockedTo = lockedTo;
 		this.skills = skills;
 		this.jobs = jobs;
@@ -225,6 +230,14 @@ public class Associate {
 	{
 		this.batch = batch;
 	}
+	
+	public Project getProject(){
+		return project;
+	}
+	
+	public void setProject(Project project){
+		this.project = project;
+	}
 
 	public Client getLockedTo() 
 	{
@@ -273,12 +286,93 @@ public class Associate {
 		this.jobs = jobs;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((associateStatus == null) ? 0 : associateStatus.hashCode());
+		result = prime * result + ((batch == null) ? 0 : batch.hashCode());
+		result = prime * result + ((credential == null) ? 0 : credential.hashCode());
+		result = prime * result + (int) (id ^ (id >>> 32));
+		result = prime * result + ((jobs == null) ? 0 : jobs.hashCode());
+		result = prime * result + ((lockedTo == null) ? 0 : lockedTo.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((portfolioLink == null) ? 0 : portfolioLink.hashCode());
+		result = prime * result + ((portfolioStatus == null) ? 0 : portfolioStatus.hashCode());
+		result = prime * result + ((project == null) ? 0 : project.hashCode());
+		result = prime * result + ((skills == null) ? 0 : skills.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Associate other = (Associate) obj;
+		if (associateStatus == null) {
+			if (other.associateStatus != null)
+				return false;
+		} else if (!associateStatus.equals(other.associateStatus))
+			return false;
+		if (batch == null) {
+			if (other.batch != null)
+				return false;
+		} else if (!batch.equals(other.batch))
+			return false;
+		if (credential == null) {
+			if (other.credential != null)
+				return false;
+		} else if (!credential.equals(other.credential))
+			return false;
+		if (id != other.id)
+			return false;
+		if (jobs == null) {
+			if (other.jobs != null)
+				return false;
+		} else if (!jobs.equals(other.jobs))
+			return false;
+		if (lockedTo == null) {
+			if (other.lockedTo != null)
+				return false;
+		} else if (!lockedTo.equals(other.lockedTo))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (portfolioLink == null) {
+			if (other.portfolioLink != null)
+				return false;
+		} else if (!portfolioLink.equals(other.portfolioLink))
+			return false;
+		if (portfolioStatus == null) {
+			if (other.portfolioStatus != null)
+				return false;
+		} else if (!portfolioStatus.equals(other.portfolioStatus))
+			return false;
+		if (project == null) {
+			if (other.project != null)
+				return false;
+		} else if (!project.equals(other.project))
+			return false;
+		if (skills == null) {
+			if (other.skills != null)
+				return false;
+		} else if (!skills.equals(other.skills))
+			return false;
+		return true;
+	}
 
 //	@Override
 //	public String toString() {
 //		return "Associate [id=" + id + ", credential=" + credential + ", name=" + name + ", portfolioLink="
-//				+ portfolioLink + ", batch=" + batch + ", active=" + active + ", lockedTo=" + lockedTo
-//				+ ", portfolioStatusId=" + portfolioStatusId + ", associateStatusId=" + associateStatusId + ", skills="
-//				+ skills + "]";
+//				+ portfolioLink + ", batch=" + (batch == null ? null : batch.getBatchType().getValue()) + ", project=" + (project == null ? null : project.getProjectName()) + ", active=" + active + ", lockedTo="
+//				+ lockedTo + ", skills=" + skills + "]";
 //	}
+
 }
