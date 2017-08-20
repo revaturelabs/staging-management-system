@@ -123,6 +123,6 @@ public class AssociateServiceImpl implements AssociateService {
 	}
 	@Override
 	public Set<Associate> findByNameLike(String name){
-		return  associateRepo.findByNameContaining(name);
+		return  associateRepo.findByNameContainingIgnoreCase(name);
 	}
 }
