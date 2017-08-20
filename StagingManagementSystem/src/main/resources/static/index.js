@@ -110,29 +110,33 @@
 
 	var _advanced2 = _interopRequireDefault(_advanced);
 
-	var _profile = __webpack_require__(141);
+	var _panel = __webpack_require__(141);
+
+	var _panel2 = _interopRequireDefault(_panel);
+
+	var _profile = __webpack_require__(142);
 
 	var _profile2 = _interopRequireDefault(_profile);
 
-	var _interview = __webpack_require__(142);
+	var _interview = __webpack_require__(143);
 
 	var _interview2 = _interopRequireDefault(_interview);
 
-	var _associatePanel = __webpack_require__(143);
+	var _associatePanel = __webpack_require__(144);
 
 	var _associatePanel2 = _interopRequireDefault(_associatePanel);
 
-	var _associate = __webpack_require__(144);
+	var _associate = __webpack_require__(145);
 
 	var _associate2 = _interopRequireDefault(_associate);
 
-	var _login = __webpack_require__(145);
+	var _login = __webpack_require__(146);
 
 	var _login2 = _interopRequireDefault(_login);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	__webpack_require__(146)(_fusioncharts2.default);
+	__webpack_require__(147)(_fusioncharts2.default);
 
 	var Visualizer = window['ui-router-visualizer'].Visualizer;
 
@@ -277,6 +281,10 @@
 	    url: '/edit/:id',
 	    templateUrl: 'manager-pages/create/batch.html',
 	    controller: _batch.batchCtrl
+	  }).state('manager.panel', {
+	    url: 'panel',
+	    templateUrl: 'manager-pages/panel/panel.html',
+	    controller: _panel2.default
 	  }).state('associate', {
 	    url: '/associate',
 	    templateUrl: 'associate-pages/associate.html',
@@ -63625,6 +63633,44 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	var managerPanelCtrl = function managerPanelCtrl($scope, $state, $location, $http, userService) {
+		$scope.PanelLoad = 'Loading Panel...';
+		$scope.search_disabled = true;
+		$scope.show_panel = false;
+		$http({
+			method: 'GET',
+			url: '/associate/all'
+		}).then(function (response) {
+
+			$scope.associates = response.data;
+			console.log(response.data);
+			$scope.PanelLoad = '';
+			$scope.search_disabled = false;
+		});
+		$scope.associatePanelClick = function (associate) {
+			console.log(associate);
+			$scope.search.name = '';
+			$scope.show_panel = true;
+			var associateId = associate.id;
+			$http({
+				method: 'GET',
+				url: '/panel/associate/' + associateId
+			}).then(function (response) {
+				console.log(response.data);
+			});
+		};
+	};
+	exports.default = managerPanelCtrl;
+
+/***/ }),
+/* 142 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 
@@ -63773,7 +63819,7 @@
 	exports.default = profileCtrl;
 
 /***/ }),
-/* 142 */
+/* 143 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -63916,7 +63962,7 @@
 	exports.default = associateInterviewCtrl;
 
 /***/ }),
-/* 143 */
+/* 144 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -63937,7 +63983,7 @@
 	exports.default = associatePanelCtrl;
 
 /***/ }),
-/* 144 */
+/* 145 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -64002,7 +64048,7 @@
 	exports.default = associateCtrl;
 
 /***/ }),
-/* 145 */
+/* 146 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -64067,7 +64113,7 @@
 	exports.default = loginCtrl;
 
 /***/ }),
-/* 146 */
+/* 147 */
 /***/ (function(module, exports) {
 
 	/*
