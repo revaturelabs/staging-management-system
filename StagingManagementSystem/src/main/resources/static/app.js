@@ -19,6 +19,7 @@ import { locCtrl } from './manager-pages/create/location';
 import { jobCtrl } from './manager-pages/create/job';
 import { projectCtrl } from './manager-pages/create/project';
 import managerAdvancedCtrl from './manager-pages/advanced/advanced';
+import managerPanelCtrl from './manager-pages/panel/panel';
 import profileCtrl from './associate-pages/profile/profile';
 import associateInterviewCtrl from './associate-pages/interview/interview';
 import associatePanelCtrl from './associate-pages/associatePanel/associatePanel';
@@ -180,6 +181,11 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       url: '/edit/:id',
       templateUrl: 'manager-pages/create/batch.html',
       controller: batchCtrl,
+    })
+    .state('manager.panel',{
+    	url: 'panel',
+    	templateUrl: 'manager-pages/panel/panel.html',
+    	controller: managerPanelCtrl,
     })
     .state('associate', {
       url: '/associate',

@@ -110,32 +110,33 @@
 
 	var _advanced2 = _interopRequireDefault(_advanced);
 
-	var _profile = __webpack_require__(141);
+	var _panel = __webpack_require__(141);
+
+	var _panel2 = _interopRequireDefault(_panel);
+
+	var _profile = __webpack_require__(142);
 
 	var _profile2 = _interopRequireDefault(_profile);
 
-	var _interview = __webpack_require__(142);
+	var _interview = __webpack_require__(143);
 
 	var _interview2 = _interopRequireDefault(_interview);
 
-<<<<<<< HEAD
-	var _associatePanel = __webpack_require__(146);
+	var _associatePanel = __webpack_require__(144);
 
 	var _associatePanel2 = _interopRequireDefault(_associatePanel);
 
-=======
->>>>>>> 3588d6be566ec060ff1b58bc3c03f4de1c0b82c2
-	var _associate = __webpack_require__(143);
+	var _associate = __webpack_require__(145);
 
 	var _associate2 = _interopRequireDefault(_associate);
 
-	var _login = __webpack_require__(144);
+	var _login = __webpack_require__(146);
 
 	var _login2 = _interopRequireDefault(_login);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	__webpack_require__(145)(_fusioncharts2.default);
+	__webpack_require__(147)(_fusioncharts2.default);
 
 	var Visualizer = window['ui-router-visualizer'].Visualizer;
 
@@ -280,6 +281,10 @@
 	    url: '/edit/:id',
 	    templateUrl: 'manager-pages/create/batch.html',
 	    controller: _batch.batchCtrl
+	  }).state('manager.panel', {
+	    url: 'panel',
+	    templateUrl: 'manager-pages/panel/panel.html',
+	    controller: _panel2.default
 	  }).state('associate', {
 	    url: '/associate',
 	    templateUrl: 'associate-pages/associate.html',
@@ -63628,6 +63633,44 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	var managerPanelCtrl = function managerPanelCtrl($scope, $state, $location, $http, userService) {
+		$scope.PanelLoad = 'Loading Panel...';
+		$scope.search_disabled = true;
+		$scope.show_panel = false;
+		$http({
+			method: 'GET',
+			url: '/associate/all'
+		}).then(function (response) {
+
+			$scope.associates = response.data;
+			console.log(response.data);
+			$scope.PanelLoad = '';
+			$scope.search_disabled = false;
+		});
+		$scope.associatePanelClick = function (associate) {
+			console.log(associate);
+			$scope.search.name = '';
+			$scope.show_panel = true;
+			var associateId = associate.id;
+			$http({
+				method: 'GET',
+				url: '/panel/associate/{associateId}'
+			}).then(function (response) {
+				console.log(response.data);
+			});
+		};
+	};
+	exports.default = managerPanelCtrl;
+
+/***/ }),
+/* 142 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 
@@ -63776,7 +63819,7 @@
 	exports.default = profileCtrl;
 
 /***/ }),
-/* 142 */
+/* 143 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -63919,11 +63962,42 @@
 	exports.default = associateInterviewCtrl;
 
 /***/ }),
-<<<<<<< HEAD
-/* 142 */,
-=======
->>>>>>> 3588d6be566ec060ff1b58bc3c03f4de1c0b82c2
-/* 143 */
+/* 144 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	var associatePanelCtrl = function associatePanelCtrl($scope, $http, userService) {
+
+		//	$http ({
+		//		method: 'GET',
+		//		url: '/panel/associatetepanel',
+		//	})
+		//	.then((response) => {
+		//		$scope.plist = response.data;
+		//	});
+		//	
+		//};
+
+
+		$http({
+			method: 'GET',
+			url: '/panel/associate/' + userService.getUser().id
+		}).then(function (response) {
+			$scope.plist = response.data;
+			//		$scope.associateInterviews.sort(function(a,b) {
+			//		return new Date(b.scheduled).getTime() - new Date(a.scheduled).getTime();
+			//		});
+		});
+	};
+
+	exports.default = associatePanelCtrl;
+
+/***/ }),
+/* 145 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -63988,7 +64062,7 @@
 	exports.default = associateCtrl;
 
 /***/ }),
-/* 144 */
+/* 146 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -64053,7 +64127,7 @@
 	exports.default = loginCtrl;
 
 /***/ }),
-/* 145 */
+/* 147 */
 /***/ (function(module, exports) {
 
 	/*
@@ -64301,41 +64375,6 @@
 	c,b){var f=.5*b,k=a-b,h=a+b,l=a-f,m=a+f,n=a+.5,p=n+1,r=n+1.5,t=c-b,u=c+f,v=c-f,f=c+(b-f);return["M",k,t,"L",l,v,l,f,k,u,a-.5,u,a,c+b+.5,n,u,h,u,m,f,m,v,h,t,r,t,r,v,r,f,p,f,p,v,r,v,r,t,"Z"]},zoomOutIcon:function(a,c,b){a-=.2*b;c-=.2*b;var f=.8*b,k=w.rad(43),h=w.rad(48),l=a+f*ya(k),k=c+f*va(k),m=a+f*ya(h),h=c+f*va(h),n=w.rad(45),p=l+b*ya(n),r=k+b*va(n),t=m+b*ya(n);b=h+b*va(n);return["M",l,k,"A",f,f,0,1,0,m,h,"Z","M",l+1,k+1,"L",p,r,t,b,m+1,h+1,"Z","M",a-2,c,"L",a+2,c,"Z"]},resetIcon:function(a,c,b){var f=
 	a-b,k=(da.PI/2+da.PI)/2;a+=b*ya(k);var k=c+b*va(k),h=2*b/3;return["M",f,c,"A",b,b,0,1,1,a,k,"L",a+h,k-1,a+2,k+h-.5,a,k]}})}])});
 
-
-/***/ }),
-/* 146 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	var associatePanelCtrl = function associatePanelCtrl($scope, $http, userService) {
-
-		//	$http ({
-		//		method: 'GET',
-		//		url: '/panel/associatetepanel',
-		//	})
-		//	.then((response) => {
-		//		$scope.plist = response.data;
-		//	});
-		//	
-		//};
-
-
-		$http({
-			method: 'GET',
-			url: '/panel/associate/' + userService.getUser().id
-		}).then(function (response) {
-			$scope.plist = response.data;
-			//		$scope.associateInterviews.sort(function(a,b) {
-			//		return new Date(b.scheduled).getTime() - new Date(a.scheduled).getTime();
-			//		});
-		});
-	};
-
-	exports.default = associatePanelCtrl;
 
 /***/ })
 /******/ ]);
