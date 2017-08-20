@@ -63659,6 +63659,7 @@
 				url: '/panel/associate/' + associateId
 			}).then(function (response) {
 				console.log(response.data);
+				$scope.plist = response.data;
 			});
 		};
 	};

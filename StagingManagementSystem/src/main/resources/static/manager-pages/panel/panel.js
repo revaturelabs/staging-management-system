@@ -22,6 +22,7 @@ const managerPanelCtrl = ($scope, $state, $location, $http, userService) => {
 			url: '/panel/associate/'+associateId,
 		}).then((response) =>{
 			console.log(response.data);
+			$scope.plist = response.data;
 		});
 	};
 	

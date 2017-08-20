@@ -27,11 +27,11 @@
 	  </thead>
 	  <tbody>
 	   <!--  <tr class="associatePanelTable" ng-repeat="x in associateInterviews" ng-click="panelClick(x)"> -->
-	      <tr class="associatePanelTable" >
-	      <td>p.id</td>
-	      <td> dateConverter(p.statusDate) </td>
-	      <td>p.manager.name</td>
-	      <td>p.status</td>
+	       <tr class="associatePanelTable" ng-repeat="p in plist">
+	      <td>{{p.id}}</td>
+	      <td> {{dateConverter(p.statusDate)}} </td>
+	      <td>{{p.manager.name}}</td>
+	      <td>{{p.status}}</td>
 	    </tr>
 	  </tbody>
 	</table>
