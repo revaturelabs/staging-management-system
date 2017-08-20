@@ -63660,30 +63660,36 @@
 	  	console.log(response.data);
 	  	$scope.plist = response.data;
 	  });*/
-			console.log(searchName);
-			$scope.disabled_search = true;
-			$scope.PanelLoad = 'Loading Panel...';
-			$http({
-				method: 'GET',
-				url: '/associate/search/' + searchName
-			}).then(function (response) {
-				$scope.PanelLoad = '';
-				$scope.disabled_search = false;
-				console.log(response.data);
-			});
-		};
-		$scope.associatePanelClick = function (associate) {
-			console.log(associate);
-			$scope.search.name = '';
-			$scope.show_panel = true;
-			var associateId = associate.id;
-			$http({
-				method: 'GET',
-				url: '/panel/associate/' + associateId
-			}).then(function (response) {
-				console.log(response.data);
-				$scope.plist = response.data;
-			});
+			if (searchName) {
+				console.log(searchName);
+				$scope.disabled_search = true;
+				$scope.show_panel = false;
+				$scope.PanelLoad = 'Loading Panel...';
+				$http({
+					method: 'GET',
+					url: '/associate/search/' + searchName
+				}).then(function (response) {
+					$scope.PanelLoad = '';
+					$scope.disabled_search = false;
+					console.log(response.data);
+					$scope.associates = response.data;
+					$scope.searchShowUp = true;
+				});
+			}
+
+			$scope.associatePanelClick = function (associate) {
+				console.log(associate);
+				$scope.searchShowUp = false;
+				$scope.show_panel = true;
+				var associateId = associate.id;
+				$http({
+					method: 'GET',
+					url: '/panel/associate/' + associateId
+				}).then(function (response) {
+					console.log(response.data);
+					$scope.plist = response.data;
+				});
+			};
 		};
 	};
 	exports.default = managerPanelCtrl;

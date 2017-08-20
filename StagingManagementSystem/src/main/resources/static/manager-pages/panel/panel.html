@@ -10,7 +10,7 @@
 		    </tr>
 		    </thead>
 		    <tbody>
-		    <tr ng-show="search.name" ng-repeat="associate in associates | filter:search" >
+		    <tr ng-show="searchShowUp" ng-repeat="associate in associates" >
 		      <td ng-click="associatePanelClick(associate)" ng-bind="associate.name"></td>
 		      
 		    </tr>

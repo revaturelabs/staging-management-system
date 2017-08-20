@@ -23,32 +23,41 @@ const managerPanelCtrl = ($scope, $state, $location, $http, userService) => {
 			console.log(response.data);
 			$scope.plist = response.data;
 		});*/
-		console.log(searchName);
-		$scope.disabled_search=true;
-		$scope.PanelLoad= 'Loading Panel...';
-		$http({
-			method: 'GET',
-			url: '/associate/search/'+searchName,
-		}).then((response)=>{
-			$scope.PanelLoad= '';
-			$scope.disabled_search = false;
-			console.log(response.data);
-		});
+		if(searchName){
+			console.log(searchName);
+			$scope.disabled_search=true;
+			$scope.show_panel = false;
+			$scope.PanelLoad= 'Loading Panel...';
+			$http({
+				method: 'GET',
+				url: '/associate/search/'+searchName,
+			}).then((response)=>{
+				$scope.PanelLoad= '';
+				$scope.disabled_search = false;
+				console.log(response.data);
+				$scope.associates = response.data;
+				$scope.searchShowUp = true;
+			});
+		}
+		
+		$scope.associatePanelClick =(associate)=>{
+			console.log(associate);
+			$scope.searchShowUp = false;
+			$scope.show_panel = true;
+			var associateId = associate.id;
+			$http({
+				method: 'GET',
+				url: '/panel/associate/'+associateId,
+			}).then((response) =>{
+				console.log(response.data);
+				$scope.plist = response.data;
+			});
+		};
+		
+		
 		
 	};
-	$scope.associatePanelClick =(associate)=>{
-		console.log(associate);
-		$scope.search.name='';
-		$scope.show_panel = true;
-		var associateId = associate.id;
-		$http({
-			method: 'GET',
-			url: '/panel/associate/'+associateId,
-		}).then((response) =>{
-			console.log(response.data);
-			$scope.plist = response.data;
-		});
-	};
+	
 	
 };
 export default managerPanelCtrl;
