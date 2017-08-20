@@ -1,15 +1,4 @@
 const associatePanelCtrl = ($scope, $http, userService) => {
-	
-//	$http ({
-//		method: 'GET',
-//		url: '/panel/associatetepanel',
-//	})
-//	.then((response) => {
-//		$scope.plist = response.data;
-//	});
-//	
-//};
-
 
 	$http ({
 		method: 'GET',
@@ -17,9 +6,6 @@ const associatePanelCtrl = ($scope, $http, userService) => {
 	})
 	.then((response) => {
 		$scope.plist = response.data;
-//		$scope.associateInterviews.sort(function(a,b) {
-//		return new Date(b.scheduled).getTime() - new Date(a.scheduled).getTime();
-//		});
 	});
 };
 
