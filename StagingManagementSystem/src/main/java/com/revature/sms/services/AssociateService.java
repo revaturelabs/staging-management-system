@@ -17,4 +17,5 @@ public interface AssociateService {
     public Set<Associate> haveNoProject();
     public Set<Associate> findByBatchId(Long id);
     public Set<StaggingAssociate> getAssociatesInStaggingOn(String date);
+    public Set<Associate> findByNameLike(String name);
 }

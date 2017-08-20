@@ -5,7 +5,8 @@
 		  <table class="table table-striped manager-advanced-associates-table selectable-table">
 		    <thead>
 		    <tr>
-		      <th scope="col">Associate <input ng-disabled="search_disabled" ng-model="search.name" type="text" placeholder="Name"/></th>
+		      <th scope="col">Associate <input ng-disabled="disabled_search" ng-model="searchName" type="text" placeholder="Name"/><button ng-click="searchClick(searchName)">Search</button></th>
+		      
 		    </tr>
 		    </thead>
 		    <tbody>
