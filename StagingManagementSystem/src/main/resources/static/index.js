@@ -63656,7 +63656,7 @@
 			var associateId = associate.id;
 			$http({
 				method: 'GET',
-				url: '/panel/associate/{associateId}'
+				url: '/panel/associate/' + associateId
 			}).then(function (response) {
 				console.log(response.data);
 			});

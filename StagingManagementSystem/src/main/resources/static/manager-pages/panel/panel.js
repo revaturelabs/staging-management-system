@@ -19,7 +19,7 @@ const managerPanelCtrl = ($scope, $state, $location, $http, userService) => {
 		var associateId = associate.id;
 		$http({
 			method: 'GET',
-			url: `/panel/associate/{associateId}`,
+			url: '/panel/associate/'+associateId,
 		}).then((response) =>{
 			console.log(response.data);
 		});
