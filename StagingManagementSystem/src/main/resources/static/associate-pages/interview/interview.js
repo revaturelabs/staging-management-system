@@ -3,10 +3,10 @@ function associateInterviewCtrl($scope, $http, userService) {
   $scope.getScheduledTime = function () {
     $http({
       method: 'GET',
-      url: 'interviews/associate/${userService.getUser().id}',
+      url: `interviews/associate/${userService.getUser().id}`,
     }).then(function (response) {
       $scope.associateInterviews = response.data;
-      $scope.associateInterviews.sort(function(a,b) {
+      $scope.associateInterviews.sort(function (a,b) {
         return new Date(b.scheduled).getTime() - new Date(a.scheduled).getTime();
       });
     });
