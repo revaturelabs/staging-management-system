@@ -138,7 +138,7 @@
 
 	__webpack_require__(147)(_fusioncharts2.default);
 
-	var Visualizer = window['ui-router-visualizer'].Visualizer;
+	// const Visualizer = window['ui-router-visualizer'].Visualizer;
 
 	var routerApp = _angular2.default.module('routerApp', [_angularjs2.default, _angularCookies2.default]);
 
@@ -158,7 +158,7 @@
 	routerApp.directive('scrollToBottom', function ($timeout, $window) {
 	  return {
 	    scope: {
-	      scrollToBottom: "="
+	      scrollToBottom: '='
 	    },
 	    restrict: 'A',
 	    link: function link(scope, element, attr) {
@@ -175,7 +175,7 @@
 
 	routerApp.run(function ($uiRouter, $trace, $rootScope) {
 
-	  //Ui Visualizer
+	  // Ui Visualizer
 	  // Auto-collapse children in state visualizer
 	  // const registry = $uiRouter.stateRegistry;
 	  // $uiRouter.stateRegistry.get().map(s => s.$$state())
@@ -186,7 +186,7 @@
 	  //
 	  // $trace.enable('TRANSITION');
 
-	  //Global Functions
+	  // Global Functions
 	  $rootScope.dateConverter = function (time) {
 	    return (0, _moment2.default)(time).format('MMM D, hh:mm a');
 	  };
@@ -62126,7 +62126,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var managerCtrl = function managerCtrl($scope, $state, $location, $http, userService) {
+	function managerCtrl($scope, $state, $location, $http, userService) {
 	  $http({
 	    method: 'GET',
 	    url: '/login/user'
@@ -62155,7 +62155,7 @@
 	  };
 
 	  $scope.manager = { name: 'Joe' };
-	};
+	}
 
 	exports.managerCtrl = managerCtrl;
 
@@ -63125,9 +63125,9 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var managerCreateCtrl = function managerCreateCtrl($scope, $state) {
+	function managerCreateCtrl($scope, $state) {
 	  $scope.$state = $state;
-	};
+	}
 
 	exports.default = managerCreateCtrl;
 
@@ -63304,7 +63304,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var clientCtrl = function clientCtrl($scope, $http) {
+	function clientCtrl($scope, $http) {
 	  // $scope.requestMade = false;
 	  $scope.submit = function () {
 	    $scope.requestMade = true;
@@ -63319,7 +63319,7 @@
 	      $scope.createMessageStyle = { color: 'red' };
 	    });
 	  };
-	};
+	}
 	exports.clientCtrl = clientCtrl;
 
 /***/ }),
@@ -63331,7 +63331,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var userCtrl = function userCtrl($scope, $http) {
+	function userCtrl($scope, $http) {
 	  $http.get('batchtype/all.json').then(function (response) {
 	    $scope.posts = response.data;
 	  }, function () {
@@ -63343,7 +63343,7 @@
 	    $scope.createMessage = 'Attempting to create client';
 	    $scope.createMessageStyle = { color: 'black' };
 
-	    //need 2 different post requests for manager and associate
+	    // need 2 different post requests for manager and associate
 	    if ($scope.user.type == 'associate') {
 	      $http.post('/associate', $scope.user).then(function (response) {
 	        $scope.createMessage = 'Successfully created client';
@@ -63352,7 +63352,7 @@
 	        $scope.createMessage = 'Failed to create client';
 	        $scope.createMessageStyle = { color: 'red' };
 	      });
-	    };
+	    }
 	    if ($scope.user.type == 'manager') {
 	      $http.post('/manager', $scope.user).then(function (response) {
 	        $scope.createMessage = 'Successfully created client';
@@ -63361,9 +63361,9 @@
 	        $scope.createMessage = 'Failed to create client';
 	        $scope.createMessageStyle = { color: 'red' };
 	      });
-	    };
+	    }
 	  };
-	};
+	}
 
 	exports.userCtrl = userCtrl;
 
@@ -63376,7 +63376,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var locCtrl = function locCtrl($scope, $http) {
+	function locCtrl($scope, $http) {
 	  $scope.submit = function () {
 	    $scope.requestMade = true;
 	    $scope.createMessage = 'Attempting to create location';
@@ -63389,7 +63389,7 @@
 	      $scope.createMessageStyle = { color: 'red' };
 	    });
 	  };
-	};
+	}
 
 	exports.locCtrl = locCtrl;
 
@@ -63402,7 +63402,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var jobCtrl = function jobCtrl($scope, $http) {
+	function jobCtrl($scope, $http) {
 	  $scope.job = {};
 	  $('#datetimepicker1').datetimepicker();
 	  $('#datetimepicker2').datetimepicker();
@@ -63411,20 +63411,20 @@
 	  $('#datetimepicker5').datetimepicker();
 
 	  $scope.showDateTimePicker = function (id) {
-	    $('#datetimepicker' + id).datetimepicker("show");
+	    $('#datetimepicker' + id).datetimepicker('show');
 	  };
 
 	  $http.get('associate/all').then(function (response) {
-	    //takes a while for associates to load...
+	    // takes a while for associates to load...
 	    $scope.associates = response.data;
 	  }, function () {
-	    console.log("failure");
+	    console.log('failure');
 	  });
 
 	  $http.get('client/all').then(function (response) {
 	    $scope.clients = response.data;
 	  }, function () {
-	    console.log("failure");
+	    console.log('failure');
 	  });
 
 	  $('#datetimepicker1').on('dp.change', function () {
@@ -63467,7 +63467,7 @@
 	      $scope.createMessageStyle = { color: 'red' };
 	    });
 	  };
-	};
+	}
 
 	exports.jobCtrl = jobCtrl;
 
@@ -63478,58 +63478,58 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-		value: true
+	  value: true
 	});
-	var projectCtrl = function projectCtrl($scope, $http, $state, $stateParams) {
-		$scope.project = { associates: [] };
+	function projectCtrl($scope, $http, $state, $stateParams) {
+	  $scope.project = { associates: [] };
 
-		$http.get('associate/no-project').then(function (response1) {
-			$scope.associates = response1.data;
-			if ($state.includes('manager.advanced')) {
-				$http.get('project/' + $stateParams.id).then(function (response2) {
-					$http.get('associate/by-project/' + $stateParams.id).then(function (response3) {
-						$scope.project.associates = response3.data;
-					});
-					$scope.project = response2.data;
-				});
-			}
-		});
+	  $http.get('associate/no-project').then(function (response1) {
+	    $scope.associates = response1.data;
+	    if ($state.includes('manager.advanced')) {
+	      $http.get('project/' + $stateParams.id).then(function (response2) {
+	        $http.get('associate/by-project/' + $stateParams.id).then(function (response3) {
+	          $scope.project.associates = response3.data;
+	        });
+	        $scope.project = response2.data;
+	      });
+	    }
+	  });
 
-		$scope.addAssociate = function () {
-			if (!$scope.selectedAssociate) {
-				return;
-			}
-			$scope.project.associates.push($scope.selectedAssociate);
-			$scope.associates = $scope.associates.filter(function (associate) {
-				return associate.id !== $scope.selectedAssociate.id;
-			});
-		};
+	  $scope.addAssociate = function () {
+	    if (!$scope.selectedAssociate) {
+	      return;
+	    }
+	    $scope.project.associates.push($scope.selectedAssociate);
+	    $scope.associates = $scope.associates.filter(function (associate) {
+	      return associate.id !== $scope.selectedAssociate.id;
+	    });
+	  };
 
-		$scope.removeAssociate = function (selected) {
-			$scope.project.associates = $scope.project.associates.filter(function (associate) {
-				return associate.id !== selected.id;
-			});
-			$scope.associates.push(selected);
-		};
+	  $scope.removeAssociate = function (selected) {
+	    $scope.project.associates = $scope.project.associates.filter(function (associate) {
+	      return associate.id !== selected.id;
+	    });
+	    $scope.associates.push(selected);
+	  };
 
-		$scope.submit = function () {
-			$scope.requestMade = true;
-			$scope.createMessage = 'Attempting to create project';
-			$scope.createMessageStyle = { color: 'black' };
-			if ($scope.project.projectDescription == null) {
-				$scope.project.projectDescription = "No project description.";
-			}
+	  $scope.submit = function () {
+	    $scope.requestMade = true;
+	    $scope.createMessage = 'Attempting to create project';
+	    $scope.createMessageStyle = { color: 'black' };
+	    if ($scope.project.projectDescription == null) {
+	      $scope.project.projectDescription = 'No project description.';
+	    }
 
-			var projectCreation = JSON.parse(JSON.stringify($scope.project));
+	    var projectCreation = JSON.parse(JSON.stringify($scope.project));
 
-			$http.post('/project', projectCreation).then(function (response) {
-				$scope.createMessage = 'Successfully created project';
-				$scope.createMessageStyle = { color: 'green' };
-			}, function () {
-				$scope.createMessage = 'Failed to create project';
-				$scope.createMessageStyle = { color: 'red' };
-			});
-		};
+	    $http.post('/project', projectCreation).then(function (response) {
+	      $scope.createMessage = 'Successfully created project';
+	      $scope.createMessageStyle = { color: 'green' };
+	    }, function () {
+	      $scope.createMessage = 'Failed to create project';
+	      $scope.createMessageStyle = { color: 'red' };
+	    });
+	  };
 	};
 
 	exports.projectCtrl = projectCtrl;
@@ -63543,14 +63543,14 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var managerAdvancedCtrl = function managerAdvancedCtrl($scope, $http, $state) {
+	function managerAdvancedCtrl($scope, $http, $state) {
 	  window.scope = $scope;
 
 	  $http.get('batchtype/all').then(function (data) {
 	    $scope.batchtypes = data.data;
 	    $scope.selectedBatchTypes = [];
 	    $scope.batchtypes.forEach(function (type) {
-	      return $scope.selectedBatchTypes.push(type);
+	      $scope.selectedBatchTypes.push(type);
 	    });
 	  });
 
@@ -63567,17 +63567,23 @@
 	  });
 
 	  $scope.isAssociates = function () {
-	    if ($state.is('manager.advanced.allassociates')) return true;
+	    if ($state.is('manager.advanced.allassociates')) {
+	      return true;
+	    }
 	    return false;
 	  };
 
 	  $scope.isBatches = function () {
-	    if ($state.is('manager.advanced.batches')) return true;
+	    if ($state.is('manager.advanced.batches')) {
+	      return true;
+	    }
 	    return false;
 	  };
 
 	  $scope.isInterviews = function () {
-	    if ($state.is('manager.advanced.interviews')) return true;
+	    if ($state.is('manager.advanced.interviews')) {
+	      return true;
+	    }
 	    return false;
 	  };
 
@@ -63597,12 +63603,9 @@
 	    // Is currently selected
 	    if (idx > -1) {
 	      $scope.selectedBatchTypes.splice(idx, 1);
+	    } else {
+	      $scope.selectedBatchTypes.push(selectedBatch);
 	    }
-
-	    // Is newly selected
-	    else {
-	        $scope.selectedBatchTypes.push(selectedBatch);
-	      }
 	  };
 
 	  $scope.associateBatchFilter = function (associate) {
@@ -63622,7 +63625,7 @@
 	      return batchType.value === batch.batchType.value;
 	    }).length >= 1;
 	  };
-	};
+	}
 
 	exports.default = managerAdvancedCtrl;
 
@@ -63708,7 +63711,7 @@
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
-	var profileCtrl = function profileCtrl($scope, $http, userService, $stateParams, $state, $window) {
+	function profileCtrl($scope, $http, userService, $stateParams, $state, $window) {
 	  if ($state.includes('manager')) {
 	    $scope.isManager = true;
 	    $http.get('client/priority').then(function (response) {
@@ -63844,7 +63847,7 @@
 	      $scope.addSkill();
 	    }
 	  };
-	};
+	}
 
 	exports.default = profileCtrl;
 
@@ -63855,139 +63858,137 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-		value: true
+	  value: true
 	});
-	var associateInterviewCtrl = function associateInterviewCtrl($scope, $http, userService) {
-		var addInterviewBtn = document.getElementById('addInterviewBtn');
+	function associateInterviewCtrl($scope, $http, userService) {
+	  var addInterviewBtn = document.getElementById('addInterviewBtn');
+	  $scope.getScheduledTime = function () {
+	    $http({
+	      method: 'GET',
+	      url: 'interviews/associate/' + userService.getUser().id
+	    }).then(function (response) {
+	      $scope.associateInterviews = response.data;
+	      $scope.associateInterviews.sort(function (a, b) {
+	        return new Date(b.scheduled).getTime() - new Date(a.scheduled).getTime();
+	      });
+	    });
+	  };
 
-		$scope.getScheduledTime = function () {
-			$http({
-				method: 'GET',
-				url: 'interviews/associate/' + userService.getUser().id
-			}).then(function (response) {
-				$scope.associateInterviews = response.data;
-				$scope.associateInterviews.sort(function (a, b) {
-					return new Date(b.scheduled).getTime() - new Date(a.scheduled).getTime();
-				});
-			});
-		};
+	  $scope.associateInterviews;
+	  $('#datetimepicker1').datetimepicker();
+	  $scope.showDateTimePicker = function () {
+	    $('#datetimepicker1').datetimepicker('show');
+	  };
+	  $('#datetimepicker1').on('dp.change', function () {
+	    $scope.selectedDate = $('#datetimepicker1').val();
+	  });
 
-		$scope.associateInterviews;
-		$('#datetimepicker1').datetimepicker();
-		$scope.showDateTimePicker = function () {
-			$('#datetimepicker1').datetimepicker("show");
-		};
-		$("#datetimepicker1").on("dp.change", function () {
-			$scope.selectedDate = $("#datetimepicker1").val();
-		});
+	  $http({
+	    method: 'GET',
+	    url: '/client/all'
+	  }).then(function (response) {
+	    $scope.clients = response.data;
+	    $scope.clients.sort(function (pre, cur) {
+	      return pre.name.localeCompare(cur.name);
+	    });
+	  });
 
-		$http({
-			method: 'GET',
-			url: '/client/all'
-		}).then(function (response) {
-			$scope.clients = response.data;
-			$scope.clients.sort(function (pre, cur) {
-				return pre.name.localeCompare(cur.name);
-			});
-		});
+	  $http({
+	    method: 'GET',
+	    url: '/interviewStatus/all'
+	  }).then(function (response) {
+	    $scope.interviewStatuses = response.data;
+	  });
 
-		$http({
-			method: 'GET',
-			url: '/interviewStatus/all'
-		}).then(function (response) {
-			$scope.interviewStatuses = response.data;
-		});
+	  $http({
+	    method: 'GET',
+	    url: '/marketer/all'
+	  }).then(function (response) {
+	    $scope.marketers = response.data;
+	  });
 
-		$http({
-			method: 'GET',
-			url: '/marketer/all'
-		}).then(function (response) {
-			$scope.marketers = response.data;
-		});
+	  $scope.getScheduledTime();
 
-		$scope.getScheduledTime();
+	  $scope.addInterviewClick = function () {
+	    $scope.errorMsgShow = false;
+	    $scope.successMsgShow = false;
+	    $scope.selectedDate = $('#datetimepicker1').val();
+	    if ($scope.selectedClient == undefined) {
+	      $scope.errorMsg = 'Please select a Client.';
+	      $scope.errorMsgShow = true;
+	    } else if ($scope.selectedDate == undefined || $scope.selectedDate === "") {
+	      $scope.errorMsg = 'Please select a Date.';
+	      $scope.errorMsgShow = true;
+	    } else if ($scope.selectedMarketer == undefined) {
+	      $scope.errorMsg = 'Please select a Marketer.';
+	      $scope.errorMsgShow = true;
+	    } else {
+	      var newDate = moment($scope.selectedDate).toDate();
+	      addInterviewBtn.disabled = true;
+	      addInterviewBtn.innerHTML = 'Adding...';
+	      $http({
+	        method: 'POST',
+	        url: '/interviews',
+	        data: { associate: userService.getUser(), client: $scope.selectedClient, scheduled: newDate, marketer: $scope.selectedMarketer }
+	      }).then(function (response) {
+	        $scope.successMsgShow = true;
+	        addInterviewBtn.disabled = false;
+	        addInterviewBtn.innerHTML = 'Add Interview';
+	        $scope.getScheduledTime();
+	      });
+	    }
+	  };
 
-		$scope.addInterviewClick = function () {
+	  $scope.showAddModal = function () {
+	    $scope.errorMsgShow = false;
+	    $scope.successMsgShow = false;
 
-			$scope.errorMsgShow = false;
-			$scope.successMsgShow = false;
+	    $scope.selectedClient = undefined;
+	    $('#datetimepicker1').val('');
+	    $scope.selectedMarketer = undefined;
 
-			$scope.selectedDate = $("#datetimepicker1").val();
+	    $('#addModal').modal('show');
+	  };
 
-			if ($scope.selectedClient == undefined) {
-				$scope.errorMsg = 'Please select a Client.';
-				$scope.errorMsgShow = true;
-			} else if ($scope.selectedDate == undefined || $scope.selectedDate === "") {
-				$scope.errorMsg = 'Please select a Date.';
-				$scope.errorMsgShow = true;
-			} else if ($scope.selectedMarketer == undefined) {
-				$scope.errorMsg = 'Please select a Marketer.';
-				$scope.errorMsgShow = true;
-			} else {
-				var newDate = moment($scope.selectedDate).toDate();
-				addInterviewBtn.disabled = true;
-				addInterviewBtn.innerHTML = 'Adding...';
-				$http({
-					method: 'POST',
-					url: '/interviews',
-					data: { associate: userService.getUser(), client: $scope.selectedClient, scheduled: newDate, marketer: $scope.selectedMarketer }
-				}).then(function (response) {
-					$scope.successMsgShow = true;
-					addInterviewBtn.disabled = false;
-					addInterviewBtn.innerHTML = 'Add Interview';
+	  $scope.interviewClick = function (interview) {
+	    $scope.clickedInterview = interview;
+	    for (var i = 0; i < $scope.interviewStatuses.length; i++) {
+	      if ($scope.interviewStatuses[i].value === interview.interviewStatus.value) {
+	        $scope.updateStatus = $scope.interviewStatuses[i];
+	      }
+	    }
+	    for (var _i = 0; _i < $scope.marketers.length; _i++) {
+	      if ($scope.marketers[_i].name === interview.marketer.name) {
+	        $scope.updateMarketer = $scope.marketers[_i];
+	      }
+	    }
+	    $scope.updateComment = $scope.clickedInterview.comment;
 
-					$scope.getScheduledTime();
-				});
-			}
-		};
+	    $scope.errorUpdateMsgShow = false;
+	    $scope.successUpdateMsgShow = false;
+	    $('#interviewModal').modal('show');
+	  };
 
-		$scope.showAddModal = function () {
-			$scope.errorMsgShow = false;
-			$scope.successMsgShow = false;
+	  $scope.updateInterviewClick = function () {
+	    $scope.errorUpdateMsgShow = false;
+	    $scope.successUpdateMsgShow = false;
 
-			$scope.selectedClient = undefined;
-			$("#datetimepicker1").val("");
-			$scope.selectedMarketer = undefined;
-
-			$('#addModal').modal('show');
-		};
-
-		$scope.interviewClick = function (interview) {
-			$scope.clickedInterview = interview;
-			for (var i = 0; i < $scope.interviewStatuses.length; i++) {
-				if ($scope.interviewStatuses[i].value === interview.interviewStatus.value) $scope.updateStatus = $scope.interviewStatuses[i];
-			}
-			for (var _i = 0; _i < $scope.marketers.length; _i++) {
-				if ($scope.marketers[_i].name === interview.marketer.name) $scope.updateMarketer = $scope.marketers[_i];
-			}
-			$scope.updateComment = $scope.clickedInterview.comment;
-
-			$scope.errorUpdateMsgShow = false;
-			$scope.successUpdateMsgShow = false;
-			$('#interviewModal').modal('show');
-		};
-
-		$scope.updateInterviewClick = function () {
-			$scope.errorUpdateMsgShow = false;
-			$scope.successUpdateMsgShow = false;
-
-			if ($scope.updateComment === undefined || $scope.updateComment === "") {
-				$scope.errorUpdateMsg = 'Please add a comment.';
-				$scope.errorUpdateMsgShow = true;
-			} else {
-				$http({
-					method: 'PUT',
-					url: '/interviews',
-					data: { id: $scope.clickedInterview.id, associate: $scope.clickedInterview.associate, client: $scope.clickedInterview.client,
-						scheduled: $scope.clickedInterview.scheduled, marketer: $scope.updateMarketer, interviewStatus: $scope.updateStatus, comment: $scope.updateComment }
-				}).then(function (response) {
-					$scope.successUpdateMsgShow = true;
-
-					$scope.getScheduledTime();
-				});
-			}
-		};
-	};
+	    if ($scope.updateComment === undefined || $scope.updateComment === '') {
+	      $scope.errorUpdateMsg = 'Please add a comment.';
+	      $scope.errorUpdateMsgShow = true;
+	    } else {
+	      $http({
+	        method: 'PUT',
+	        url: '/interviews',
+	        data: { id: $scope.clickedInterview.id, associate: $scope.clickedInterview.associate, client: $scope.clickedInterview.client,
+	          scheduled: $scope.clickedInterview.scheduled, marketer: $scope.updateMarketer, interviewStatus: $scope.updateStatus, comment: $scope.updateComment }
+	      }).then(function (response) {
+	        $scope.successUpdateMsgShow = true;
+	        $scope.getScheduledTime();
+	      });
+	    }
+	  };
+	}
 
 	exports.default = associateInterviewCtrl;
 
@@ -64021,7 +64022,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var associateCtrl = function associateCtrl($scope, $location, $http, $state, userService) {
+	function associateCtrl($scope, $location, $http, $state, userService) {
 	  var authenticatedUser = userService.getUser();
 	  var checkBtnDOM = document.getElementById('checkBtn');
 	  $scope.checkInBtn = 'Loading...';
@@ -64073,7 +64074,7 @@
 	      $state.transitionTo('login');
 	    });
 	  };
-	};
+	}
 
 	exports.default = associateCtrl;
 
@@ -64086,7 +64087,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var loginCtrl = function loginCtrl($scope, $http, $state, userService) {
+	function loginCtrl($scope, $http, $state, userService) {
 	  var loginBtn = document.getElementById('loginBtn');
 	  $scope.username = '';
 	  $scope.password = '';
@@ -64138,7 +64139,7 @@
 	      });
 	    }
 	  };
-	};
+	}
 
 	exports.default = loginCtrl;
 

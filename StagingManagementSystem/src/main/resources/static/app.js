@@ -28,7 +28,7 @@ import loginCtrl from './login/login';
 
 require('fusioncharts/fusioncharts.charts')(FusionCharts);
 
-const Visualizer = window['ui-router-visualizer'].Visualizer;
+// const Visualizer = window['ui-router-visualizer'].Visualizer;
 
 const routerApp = angular.module('routerApp', [uiRouter, angularCookies]);
 
@@ -44,7 +44,7 @@ routerApp.service('userService', function ($cookies) {
 routerApp.directive('scrollToBottom', ($timeout, $window) => {
   return {
     scope: {
-        scrollToBottom: "="
+      scrollToBottom: '='
     },
     restrict: 'A',
     link: (scope, element, attr) => {
@@ -61,7 +61,7 @@ routerApp.directive('scrollToBottom', ($timeout, $window) => {
 
 routerApp.run(($uiRouter, $trace, $rootScope) => {
 
-	//Ui Visualizer
+  // Ui Visualizer
   // Auto-collapse children in state visualizer
   // const registry = $uiRouter.stateRegistry;
   // $uiRouter.stateRegistry.get().map(s => s.$$state())
@@ -72,8 +72,8 @@ routerApp.run(($uiRouter, $trace, $rootScope) => {
   //
   // $trace.enable('TRANSITION');
 
-	//Global Functions
-	$rootScope.dateConverter = (time) => {
+  // Global Functions
+  $rootScope.dateConverter = (time) => {
     return moment(time).format('MMM D, hh:mm a');
 	};
 });
@@ -126,10 +126,10 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
 
     })
     .state('manager.create.project', {
-        url: '/project',
-        templateUrl: 'manager-pages/create/project.html',
-        controller: projectCtrl,
-     })
+      url: '/project',
+      templateUrl: 'manager-pages/create/project.html',
+      controller: projectCtrl,
+    })
     .state('manager.home', {
       url: '/home',
       views: {
@@ -155,7 +155,7 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
         },
         'checkins@manager.home': {
           templateUrl: 'manager-pages/home/checkin/checkin.html',
-            controller: managerCheckinsCtrl,
+          controller: managerCheckinsCtrl,
         },
       },
     })
@@ -211,5 +211,5 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       url: '/profile',
       templateUrl: 'associate-pages/profile/profile.html',
       controller: profileCtrl,
-    })
+    });
 });
