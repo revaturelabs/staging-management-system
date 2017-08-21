@@ -18,8 +18,8 @@ public class PortfolioStatus
 {
 	@Id
 	@Column(name = "PORTFOLIO_STATUS_ID")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PORTFOLIO_STATUS_ID_SEQ")
-	@SequenceGenerator(name = "PORTFOLIO_STATUS_ID_SEQ", sequenceName = "PORTFOLIO_STATUS_ID_SEQ")
+//	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PORTFOLIO_STATUS_ID_SEQ")
+//	@SequenceGenerator(name = "PORTFOLIO_STATUS_ID_SEQ", sequenceName = "PORTFOLIO_STATUS_ID_SEQ")
 	private int portfolioStatusId;
 	
 	@Column(name="PORTFOLIO_STATUS")

@@ -128,7 +128,7 @@ public class AssociateServiceImpl implements AssociateService {
 	@Override
 	public Set<Associate> haveNoProject() {
 		Set<Associate> noProject = new HashSet<Associate>();
-		//Set<Associate> allAssociate = associateRepo.findAssociatesByActiveTrue();
+		Set<Associate> allAssociate = associateRepo.findByAssociateStatus_Status("TRAINING");
 		for(Associate a : allAssociate){
 			if(a.getProject()==null){
 				noProject.add(a);

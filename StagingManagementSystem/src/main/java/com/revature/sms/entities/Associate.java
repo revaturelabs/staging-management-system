@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -152,32 +153,29 @@ public class Associate {
 	 * This function returns true if the associate is in Staging and is available for hire
 	 */
 	public boolean isActive() {
-		return (associateStatus.getStatus().equals("STAGING")) ? true : false;
+		return "STAGING".equals(associateStatus.getStatus()) && "BENCH".equals(associateStatus.getStatus()) ? true : false;
 	}
 	
-	/**
-	 * This function sets the associate status to staging if associate is in
-	 */
 	public void setStatus() {
 		
 		if(this.isTrainingOnDate(LocalDateTime.now())) {
-			associateStatus.setAssociatesStatusId(0);
-			associateStatus.setStatus("TRAINING");
+			AssociatesStatus status = new AssociatesStatus(0, "TRAINING");
+			this.setAssociateStatus(status);
 		}
 			
 		if(this.isTrackedOnDate(LocalDateTime.now())) {
-			associateStatus.setAssociatesStatusId(1);
-			associateStatus.setStatus("STAGING");
+			AssociatesStatus status = new AssociatesStatus(1, "STAGING");
+			this.setAssociateStatus(status);
 		}
 		
 		if(this.hasJobOnDate(LocalDateTime.now())) {
-			associateStatus.setAssociatesStatusId(2);
-			associateStatus.setStatus("PROJECT");
+			AssociatesStatus status = new AssociatesStatus(2, "PROJECT");
+			this.setAssociateStatus(status);
 		}
 		
 		if(!this.hasJobOnDate(LocalDateTime.now())) {
-			associateStatus.setAssociatesStatusId(3);
-			associateStatus.setStatus("BENCH");
+			AssociatesStatus status = new AssociatesStatus(3, "BENCH");
+			this.setAssociateStatus(status);
 		}
 	}
 
@@ -284,24 +282,6 @@ public class Associate {
 
 	public void setJobs(Set<Job> jobs) {
 		this.jobs = jobs;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((associateStatus == null) ? 0 : associateStatus.hashCode());
-		result = prime * result + ((batch == null) ? 0 : batch.hashCode());
-		result = prime * result + ((credential == null) ? 0 : credential.hashCode());
-		result = prime * result + (int) (id ^ (id >>> 32));
-		result = prime * result + ((jobs == null) ? 0 : jobs.hashCode());
-		result = prime * result + ((lockedTo == null) ? 0 : lockedTo.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((portfolioLink == null) ? 0 : portfolioLink.hashCode());
-		result = prime * result + ((portfolioStatus == null) ? 0 : portfolioStatus.hashCode());
-		result = prime * result + ((project == null) ? 0 : project.hashCode());
-		result = prime * result + ((skills == null) ? 0 : skills.hashCode());
-		return result;
 	}
 
 	@Override
