@@ -1,4 +1,4 @@
-const associateCtrl = ($scope, $location, $http, $state, userService) => {
+function associateCtrl($scope, $location, $http, $state, userService) {
   const authenticatedUser = userService.getUser();
   const checkBtnDOM = document.getElementById('checkBtn');
   $scope.checkInBtn = 'Loading...';
@@ -52,6 +52,6 @@ const associateCtrl = ($scope, $location, $http, $state, userService) => {
         $state.transitionTo('login');
       });
   };
-};
+}
 
 export default associateCtrl;
