@@ -67,4 +67,10 @@ public class ProjectServiceImpl implements ProjectService {
 		return projectRepo.findAll();
 	}
 
+
+	@Override
+	public Project findById(long id) {
+		return projectRepo.getOne(id);
+	}
+
 }

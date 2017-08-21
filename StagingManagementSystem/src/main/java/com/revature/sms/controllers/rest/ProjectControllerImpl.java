@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,5 +38,11 @@ public class ProjectControllerImpl {
 	@GetMapping("/all")
 	public List<Project> findAll() {
 		return projectService.getAll();
+	}
+	
+	// get a project by id
+	@GetMapping("/{id}")
+	public Project findById(@PathVariable long id) {
+		return projectService.findById(id);
 	}
 }

@@ -9,6 +9,9 @@ const projectCtrl = function($scope, $http, $state, $stateParams) {
 					$scope.project.associates = response3.data;
 				})
 					$scope.project = response2.data;
+				$scope.project.projectName = $scope.projectName.filter((projectName) => projectName.value === response2.data.projectName.value)[0];
+				$scope.project.projectDescription = $scope.projectDescription.filter((projectDescription) => projectDescription === response2.data.projectDescription.value)[0];
+
 			})
 		}
 	});

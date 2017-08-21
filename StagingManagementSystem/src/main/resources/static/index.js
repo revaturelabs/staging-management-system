@@ -279,7 +279,7 @@
 	  }).state('manager.advanced.projects.edit', {
 	    url: '/edit/:id',
 	    templateUrl: 'manager-pages/create/project.html',
-	    controller: _batch.batchCtrl
+	    controller: _project.projectCtrl
 	  }).state('associate', {
 	    url: '/associate',
 	    templateUrl: 'associate-pages/associate.html',
@@ -63482,6 +63482,12 @@
 						$scope.project.associates = response3.data;
 					});
 					$scope.project = response2.data;
+					$scope.project.projectName = $scope.projectName.filter(function (projectName) {
+						return projectName.value === response2.data.projectName.value;
+					})[0];
+					$scope.project.projectDescription = $scope.projectDescription.filter(function (projectDescription) {
+						return projectDescription === response2.data.projectDescription.value;
+					})[0];
 				});
 			}
 		});
@@ -63560,7 +63566,6 @@
 	  // fetching all project data
 	  $http.get('project/all').then(function (data) {
 	    $scope.projects = data.data;
-	    console.log($scope.projects);
 	  }, function (data) {
 	    console.log('failed');
 	  });

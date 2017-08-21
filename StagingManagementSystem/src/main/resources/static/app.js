@@ -187,7 +187,7 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
     .state('manager.advanced.projects.edit', {
       url: '/edit/:id',
       templateUrl: 'manager-pages/create/project.html',
-      controller: batchCtrl,
+      controller: projectCtrl,
     })
     .state('associate', {
       url: '/associate',
