@@ -134,16 +134,52 @@
 
 	var routerApp = _angular2.default.module('routerApp', [_angularjs2.default, _angularCookies2.default]);
 
-	routerApp.service('userService', function ($cookies) {
+	routerApp.service('userService', function ($cookies, $http) {
 	  var _this = this;
 
 	  this.user = $cookies.getObject('user') === undefined ? {} : $cookies.getObject('user');
 	  this.getUser = function () {
-	    return _extends({}, _this.user);
+	    checkCookies();
+	    return this.user;
 	  };
 	  this.setUser = function (user) {
 	    $cookies.putObject('user', user);
 	    _this.user = _extends({}, user);
+	  };
+
+	  // Roles
+	  var trainerRole = "ROLE_TRAINER";
+	  /**
+	   * Retrieves role from cookie
+	   * 
+	   * @returns A cookie that contains the role
+	   */
+	  function getCookie() {
+	    // TEST
+	    //console.log("Let's see what my sf role is: "+$cookies.getObject("user").get('role'));
+	    return $cookies.get("role");
+	  }
+
+	  $http.get('https://login.salesforce.com/services/oauth2/userinfo' + '?access_token=' + JSON.stringify($cookies.getObject('token'))).then(function (response) {
+	    console.log('Response:' + response);
+	    //return response;
+	  });
+
+	  /*		// TEST 
+	    $http.get('getSalesforceUser', 
+	  		     { params: {accessToken:  $cookies.getObject('token').access_token,
+	  		    	 		endpoint: 'https://login.salesforce.com/services/oauth2/userinfo' }
+	  		     })
+	  	.then((response) => {
+	           console.log('Response:'+ response);
+	           //return response;
+	       })*/
+	  /**
+	   * Moves user to home page when entering root
+	   */
+	  function checkCookies() {
+	    var role = getCookie();
+	    if (role === trainerRole) this.user = { id: false, permisssion: true };
 	  };
 	});
 
@@ -169,14 +205,18 @@
 
 	  // Ui Visualizer
 	  // Auto-collapse children in state visualizer
-	  // const registry = $uiRouter.stateRegistry;
-	  // $uiRouter.stateRegistry.get().map(s => s.$$state())
-	  //     .filter(s => s.path.length === 2 || s.path.length === 3)
-	  //     .forEach(s => s._collapsed = true);
-	  //
-	  // const pluginInstance = $uiRouter.plugin(Visualizer);
-	  //
-	  // $trace.enable('TRANSITION');
+	  var registry = $uiRouter.stateRegistry;
+	  $uiRouter.stateRegistry.get().map(function (s) {
+	    return s.$$state();
+	  }).filter(function (s) {
+	    return s.path.length === 2 || s.path.length === 3;
+	  }).forEach(function (s) {
+	    return s._collapsed = true;
+	  });
+
+	  var pluginInstance = $uiRouter.plugin(Visualizer);
+
+	  $trace.enable('TRANSITION');
 
 	  // Global Functions
 	  $rootScope.dateConverter = function (time) {
