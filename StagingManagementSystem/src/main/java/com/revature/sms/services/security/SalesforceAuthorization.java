@@ -1,6 +1,8 @@
 package com.revature.sms.services.security;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +18,9 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
 import org.springframework.beans.factory.annotation.Value;
@@ -84,10 +88,11 @@ public class SalesforceAuthorization extends Helper implements Authorization {
 	 * 
 	 * @param code
 	 * @param servletResponse
+	 * @throws URISyntaxException 
 	 */
 	@RequestMapping("/authenticated") //TODO: Put assignment to session's login_manager thing here?
 	public ModelAndView generateSalesforceToken(@RequestParam(value = "code") String code, HttpSession session, //TODO: Maybe adding session here will break
-			HttpServletResponse servletResponse) throws IOException {
+			HttpServletRequest servletRequest, HttpServletResponse servletResponse) throws IOException, URISyntaxException {
 
 		HttpClient httpClient = HttpClientBuilder.create().build();
 		
@@ -110,20 +115,26 @@ public class SalesforceAuthorization extends Helper implements Authorization {
 		
 		servletResponse.addCookie(new Cookie("token", token));
 		
+		SalesforceToken salesforceToken = new ObjectMapper().readValue(token, SalesforceToken.class);
 		
 		//set login_manager attribute by adding HttpServletRequest req at function parameters
 		//and set lm here?
 		
-		System.out.println("TEST Salesforce Authorization: GOT HERE");
+		 httpClient = HttpClientBuilder.create().build(); //removable line?
+		URIBuilder uriBuilder = new URIBuilder();
+		uriBuilder.setScheme(servletRequest.getScheme()).setHost(servletRequest.getServerName())
+				.setPort(servletRequest.getServerPort()).setPath("/getSalesforceUser/")
+				.setParameter("endpoint", salesforceToken.getId())
+				.setParameter("accessToken", salesforceToken.getAccessToken());
 		
-		//TODO: TEST THIS
+		
+		URI uri = uriBuilder.build();
+		HttpGet httpGet = new HttpGet(uri);
+		
+		 response = httpClient.execute(httpGet);
 		String user = toJsonString(response.getEntity().getContent());
 		SalesforceUser salesforceUser = new ObjectMapper().readValue(user, SalesforceUser.class);
-		salesforceUser.setSalesforceToken(new ObjectMapper().readValue(token, SalesforceToken.class));
-		//Object mapping here
-		
-		System.out.println("TEST Salesforce Authorization: "+salesforceUser);
-		//session.setAttribute(LM, salesforceUser); //session //TODO:This is broken?
+		salesforceUser.setSalesforceToken(salesforceToken);
 		
 		return new ModelAndView(REDIRECT + redirectUrl);
 
