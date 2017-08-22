@@ -115,17 +115,18 @@ public class SalesforceAuthorization extends Helper implements Authorization {
 		
 		servletResponse.addCookie(new Cookie("token", token));
 		
-		SalesforceToken salesforceToken = new ObjectMapper().readValue(token, SalesforceToken.class);
+		//SalesforceToken salesforceToken = new ObjectMapper().readValue(token, SalesforceToken.class);
 		
+		//System.out.println(salesforceToken);
 		//set login_manager attribute by adding HttpServletRequest req at function parameters
 		//and set lm here?
-		System.out.println("GOT HERE PRE INFO GET");
-		httpClient = HttpClientBuilder.create().build(); //removable line?
+		//System.out.println("GOT HERE PRE INFO GET");
+		//httpClient = HttpClientBuilder.create().build(); //removable line?
 		
 		//Testing at each portion to ensure its not screwy
-		System.out.println("Server Name: "+servletRequest.getServerName()); 
-		System.out.println("Endpoint: "+salesforceToken.getId());
-		System.out.println("Access Token: "+salesforceToken.getAccessToken());
+		//System.out.println("Server Name: "+servletRequest.getServerName()); 
+		//System.out.println("Endpoint: "+salesforceToken.getId());
+		//System.out.println("Access Token: "+salesforceToken.getAccessToken());
 		/*
 		URIBuilder uriBuilder = new URIBuilder();
 		uriBuilder.setScheme(servletRequest.getScheme()).setHost(servletRequest.getServerName())
