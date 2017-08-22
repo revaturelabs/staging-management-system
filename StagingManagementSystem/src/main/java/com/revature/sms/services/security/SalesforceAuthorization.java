@@ -119,15 +119,15 @@ public class SalesforceAuthorization extends Helper implements Authorization {
 		
 		//set login_manager attribute by adding HttpServletRequest req at function parameters
 		//and set lm here?
-		
-		 httpClient = HttpClientBuilder.create().build(); //removable line?
+		System.out.println("GOT HERE PRE INFO GET");
+		httpClient = HttpClientBuilder.create().build(); //removable line?
 		URIBuilder uriBuilder = new URIBuilder();
 		uriBuilder.setScheme(servletRequest.getScheme()).setHost(servletRequest.getServerName())
 				.setPort(servletRequest.getServerPort()).setPath("/getSalesforceUser/")
 				.setParameter("endpoint", salesforceToken.getId())
 				.setParameter("accessToken", salesforceToken.getAccessToken());
-		
-		
+		System.out.println("GOT HERE POST INFO GET");
+		/*
 		URI uri = uriBuilder.build();
 		HttpGet httpGet = new HttpGet(uri);
 		
@@ -135,7 +135,7 @@ public class SalesforceAuthorization extends Helper implements Authorization {
 		String user = toJsonString(response.getEntity().getContent());
 		SalesforceUser salesforceUser = new ObjectMapper().readValue(user, SalesforceUser.class);
 		salesforceUser.setSalesforceToken(salesforceToken);
-		
+		*/
 		return new ModelAndView(REDIRECT + redirectUrl);
 
 	}
