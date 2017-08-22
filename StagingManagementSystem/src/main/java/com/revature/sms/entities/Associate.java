@@ -162,19 +162,14 @@ public class Associate {
 			AssociatesStatus status = new AssociatesStatus(0, "TRAINING");
 			this.setAssociateStatus(status);
 		}
-			
-		if(this.isTrackedOnDate(LocalDateTime.now())) {
-			AssociatesStatus status = new AssociatesStatus(1, "STAGING");
-			this.setAssociateStatus(status);
-		}
 		
-		if(this.hasJobOnDate(LocalDateTime.now())) {
+		else if (this.hasJobOnDate(LocalDateTime.now())) {
 			AssociatesStatus status = new AssociatesStatus(2, "PROJECT");
 			this.setAssociateStatus(status);
 		}
 		
-		if(!this.hasJobOnDate(LocalDateTime.now())) {
-			AssociatesStatus status = new AssociatesStatus(3, "BENCH");
+		else {
+			AssociatesStatus status = new AssociatesStatus(1, "STAGING");
 			this.setAssociateStatus(status);
 		}
 	}

@@ -89,15 +89,7 @@ public class AssociateServiceImpl implements AssociateService {
 
         return new HashSet<>(associateRepo.findAll());
     }
-
-//	  We deleted this
-//    @Override
-//    public Set<Associate> getAllActive() {
-//
-//        return associateRepo.findAssociatesByActiveTrue();
-//    }
     
-
     @Override
     public Set<Associate> haveNoBatch() {
 
@@ -121,15 +113,18 @@ public class AssociateServiceImpl implements AssociateService {
 		return associateRepo.findByAssociateStatus_Status(status);
 	}
 
-//	public Set<Associate> getActive() {
-//		return associateRepo.findAssociateByStatusIsStagingOrBench();
-//	}
 
 	@Override
 	public Set<Associate> haveNoProject() {
 		Set<Associate> noProject = new HashSet<Associate>();
-		Set<Associate> allAssociate = associateRepo.findByAssociateStatus_Status("TRAINING");
-		for(Associate a : allAssociate){
+		Set<Associate> allAssociateStaging = associateRepo.findByAssociateStatus_Status("STAGING");
+		for(Associate a : allAssociateStaging){
+			if(a.getProject()==null){
+				noProject.add(a);
+			}
+		}
+		Set<Associate> allAssociateBench = associateRepo.findByAssociateStatus_Status("BENCH");
+		for(Associate a : allAssociateBench){
 			if(a.getProject()==null){
 				noProject.add(a);
 			}
