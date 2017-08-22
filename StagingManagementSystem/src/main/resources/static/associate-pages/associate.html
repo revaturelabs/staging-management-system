@@ -18,6 +18,7 @@
 		<ul class="nav navbar-nav">
 			<li ng-class="{ active: isActive('/associate/home')}"><a ui-sref="associate.home">Home</a></li>
 			<li ng-class="{ active: isActive('/associate/interview')}"><a ui-sref="associate.associateInterview">Interview</a></li>
+			<li ng-class="{ active: isActive('/Certifications/certifications')}"><a ui-sref="associate.certifications">Certification</a></li>
 			<li ng-click="logout()"><a ui-sref="">Logout</a></li>
 		</ul>
 	</div>
@@ -25,4 +26,4 @@
 
 
 <div id="associate-body" ui-view></div>
-<div id="certification-body" ui-view></div>
+<div id="certification-body" ui-view="certification"></div>

@@ -126,9 +126,11 @@
 
 	var _login2 = _interopRequireDefault(_login);
 
+	var _certifications = __webpack_require__(145);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	__webpack_require__(145)(_fusioncharts2.default);
+	__webpack_require__(146)(_fusioncharts2.default);
 
 	var Visualizer = window['ui-router-visualizer'].Visualizer;
 
@@ -289,6 +291,10 @@
 	    url: '/profile',
 	    templateUrl: 'associate-pages/profile/profile.html',
 	    controller: _profile2.default
+	  }).state('associate.certifications', {
+	    url: '/certifications',
+	    templateUrl: 'Certifications/certifications.html',
+	    controller: _certifications.certificationCtrl
 	  });
 	});
 
@@ -64039,6 +64045,30 @@
 
 /***/ }),
 /* 145 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	var certificationCtrl = function certificationCtrl($scope, $http, $state, $stateParams) {
+		$scope.certification = {};
+
+		$scope.ApplyCert = function () {
+
+			$('#getCert').modal('show');
+		};
+
+		$http.get('certifications/all').then(function (response) {
+			console.log(response);
+		});
+	};
+
+	exports.certificationCtrl = certificationCtrl;
+
+/***/ }),
+/* 146 */
 /***/ (function(module, exports) {
 
 	/*

@@ -1,10 +1,8 @@
 package com.revature.sms.controllers.rest;
 
-import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,7 +24,7 @@ public class CertificationsControllerImpl {
 	
 	//get a list of all certifications 
 	@GetMapping("/all")
-	public List<Certifications> getAllcert(){
+	public Set<Certifications> getAllcert(){
 		return certService.getAllCertifications();
 		
 	}
@@ -39,11 +37,8 @@ public class CertificationsControllerImpl {
 	
 	//add a new certification by type
 	@PostMapping("/add/cetification")
-	public ResponseEntity add(@RequestBody Certifications certifications, @PathVariable String cert_type){
-		certifications.setCert_type(cert_type);
+	public void add(@RequestBody Certifications certifications){
 		certService.add(certifications);
-		
-		return ResponseEntity.ok(null);
 	}
 
 	//get associate by id who has a certifications
