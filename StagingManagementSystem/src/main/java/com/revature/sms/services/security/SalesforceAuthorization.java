@@ -123,7 +123,7 @@ public class SalesforceAuthorization extends Helper implements Authorization {
 		//Object mapping here
 		
 		System.out.println("TEST Salesforce Authorization: "+salesforceUser);
-		session.setAttribute(LM, salesforceUser); //session
+		//session.setAttribute(LM, salesforceUser); //session //TODO:This is broken?
 		
 		return new ModelAndView(REDIRECT + redirectUrl);
 
