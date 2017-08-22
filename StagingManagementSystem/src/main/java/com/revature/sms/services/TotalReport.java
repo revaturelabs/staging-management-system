@@ -146,7 +146,7 @@ public class TotalReport {
   private Map<String, TotalData> totaldata = new HashMap<String, TotalData>();
 
   public void addBatch(Associate associate) {
-    String batchName = associate.getBatch().getBatchType().getValue();
+    String batchName = associate.getBatch()==null?"None":associate.getBatch().getBatchType().getValue();
     String name = associate.getName();
     String portLink = associate.getPortfolioLink();
 

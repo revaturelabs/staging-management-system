@@ -1,16 +1,8 @@
-
-//When is this referenced?
 const managerCtrl = ($scope, $state, $location, $http, userService) => {
-  $http({ //TODO: Convert to use salesforce instead
+  $http({
     method: 'GET',
     url: '/login/user',
-  })
-  
-  
-  
-  
-  //CHANGE
-  .then((response) => {
+  }).then((response) => {
     userService.setUser(response.data);
     if (response.data.permission === undefined) {
       $state.go('associate.home');

@@ -130,7 +130,7 @@
 
 	__webpack_require__(228)(_fusioncharts2.default);
 
-	var Visualizer = window['ui-router-visualizer'].Visualizer;
+	// const Visualizer = window['ui-router-visualizer'].Visualizer;
 
 	var routerApp = _angular2.default.module('routerApp', [_angularjs2.default, _angularCookies2.default]);
 
@@ -151,7 +151,7 @@
 	routerApp.directive('scrollToBottom', function ($timeout, $window) {
 	  return {
 	    scope: {
-	      scrollToBottom: "="
+	      scrollToBottom: '='
 	    },
 	    restrict: 'A',
 	    link: function link(scope, element, attr) {
@@ -181,8 +181,11 @@
 
 	  var pluginInstance = $uiRouter.plugin(Visualizer);
 
+<<<<<<< HEAD
 	  $trace.enable('TRANSITION');
 
+=======
+>>>>>>> 764f52c830c5976337e278489c6e6f8c974e0e62
 	  // Global Functions
 	  $rootScope.dateConverter = function (time) {
 	    return (0, _moment2.default)(time).format('MMM D, hh:mm a');
@@ -59922,6 +59925,7 @@
 	    return Transition;
 	}());
 
+<<<<<<< HEAD
 	/**
 	 * Functions that manipulate strings
 	 *
@@ -59991,6 +59995,56 @@
 	        [val(true), identity]
 	    ]);
 	    return stringifyPatternFn(value);
+=======
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	function managerCtrl($scope, $state, $location, $http, userService) {
+	  $http({
+	    method: 'GET',
+	    url: '/login/user'
+	  }).then(function (response) {
+	    userService.setUser(response.data);
+	    if (response.data.permission === undefined) {
+	      $state.go('associate.home');
+	    }
+	  }, function () {
+	    userService.setUser({});
+	    $state.go('login');
+	  });
+
+	  $scope.isActive = function (viewLocation) {
+	    return viewLocation === $location.path();
+	  };
+
+	  $scope.logout = function () {
+	    $http({
+	      method: 'GET',
+	      url: '/logout/'
+	    }).then(function (response) {
+	      userService.setUser({});
+	      $state.go('login');
+	    });
+	  };
+
+	  $scope.manager = { name: 'Joe' };
+	}
+
+	exports.managerCtrl = managerCtrl;
+
+/***/ }),
+/* 127 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var managerHomeCtrl = function managerHomeCtrl($scope) {
+	  $scope.view1 = 'staging';
+	  $scope.view2 = 'interviews';
+>>>>>>> 764f52c830c5976337e278489c6e6f8c974e0e62
 	};
 	function stringify(o) {
 	    var seen = [];
@@ -62608,6 +62662,7 @@
 	        .resolvePath("EAGER", trans)
 	        .then(noop);
 	};
+<<<<<<< HEAD
 	var registerEagerResolvePath = function (transitionService) {
 	    return transitionService.onStart({}, eagerResolvePath, { priority: 1000 });
 	};
@@ -62629,6 +62684,23 @@
 	var registerLazyResolveState = function (transitionService) {
 	    return transitionService.onEnter({ entering: val(true) }, lazyResolveState, { priority: 1000 });
 	};
+=======
+
+	exports.default = employmentGraphCtrl;
+
+/***/ }),
+/* 133 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	function managerCreateCtrl($scope, $state) {
+	  $scope.$state = $state;
+	}
+>>>>>>> 764f52c830c5976337e278489c6e6f8c974e0e62
 
 	/** @module hooks */ /** for typedoc */
 	/**
@@ -62646,6 +62718,7 @@
 	        return;
 	    return $q.all(enteringViews.map(function (view) { return $q.when(view.load()); })).then(noop);
 	};
+<<<<<<< HEAD
 	var registerLoadEnteringViews = function (transitionService) {
 	    return transitionService.onFinish({}, loadEnteringViews);
 	};
@@ -62810,6 +62883,327 @@
 	            services.$q.when(lazyLoadFn(transition, state))
 	                .then(updateStateRegistry)
 	                .then(success, error);
+=======
+
+	exports.batchCtrl = batchCtrl;
+
+/***/ }),
+/* 135 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	function clientCtrl($scope, $http) {
+	  // $scope.requestMade = false;
+	  $scope.submit = function () {
+	    $scope.requestMade = true;
+	    $scope.createMessage = 'Attempting to create client';
+	    $scope.createMessageStyle = { color: 'black' };
+	    var item = JSON.stringify($scope.client);
+	    $http.post('/client', item).then(function () {
+	      $scope.createMessage = 'Successfully created client';
+	      $scope.createMessageStyle = { color: 'green' };
+	    }, function () {
+	      $scope.createMessage = 'Failed to create client';
+	      $scope.createMessageStyle = { color: 'red' };
+	    });
+	  };
+	}
+	exports.clientCtrl = clientCtrl;
+
+/***/ }),
+/* 136 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	function userCtrl($scope, $http) {
+	  $http.get('batchtype/all.json').then(function (response) {
+	    $scope.posts = response.data;
+	  }, function () {
+	    console.log('failure');
+	  });
+
+	  $scope.submit = function () {
+	    $scope.requestMade = true;
+	    $scope.createMessage = 'Attempting to create client';
+	    $scope.createMessageStyle = { color: 'black' };
+
+	    // need 2 different post requests for manager and associate
+	    if ($scope.user.type == 'associate') {
+	      $http.post('/associate', $scope.user).then(function (response) {
+	        $scope.createMessage = 'Successfully created client';
+	        $scope.createMessageStyle = { color: 'green' };
+	      }, function () {
+	        $scope.createMessage = 'Failed to create client';
+	        $scope.createMessageStyle = { color: 'red' };
+	      });
+	    }
+	    if ($scope.user.type == 'manager') {
+	      $http.post('/manager', $scope.user).then(function (response) {
+	        $scope.createMessage = 'Successfully created client';
+	        $scope.createMessageStyle = { color: 'green' };
+	      }, function () {
+	        $scope.createMessage = 'Failed to create client';
+	        $scope.createMessageStyle = { color: 'red' };
+	      });
+	    }
+	  };
+	}
+
+	exports.userCtrl = userCtrl;
+
+/***/ }),
+/* 137 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	function locCtrl($scope, $http) {
+	  $scope.submit = function () {
+	    $scope.requestMade = true;
+	    $scope.createMessage = 'Attempting to create location';
+	    $scope.createMessageStyle = { color: 'black' };
+	    $http.post('/location', JSON.stringify($scope.location)).then(function (response) {
+	      $scope.createMessage = 'Successfully created location';
+	      $scope.createMessageStyle = { color: 'green' };
+	    }, function () {
+	      $scope.createMessage = 'Failed to create location';
+	      $scope.createMessageStyle = { color: 'red' };
+	    });
+	  };
+	}
+
+	exports.locCtrl = locCtrl;
+
+/***/ }),
+/* 138 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	function jobCtrl($scope, $http) {
+	  $scope.job = {};
+	  $('#datetimepicker1').datetimepicker();
+	  $('#datetimepicker2').datetimepicker();
+	  $('#datetimepicker3').datetimepicker();
+	  $('#datetimepicker4').datetimepicker();
+	  $('#datetimepicker5').datetimepicker();
+
+	  $scope.showDateTimePicker = function (id) {
+	    $('#datetimepicker' + id).datetimepicker('show');
+	  };
+
+	  $http.get('associate/all').then(function (response) {
+	    // takes a while for associates to load...
+	    $scope.associates = response.data;
+	  }, function () {
+	    console.log('failure');
+	  });
+
+	  $http.get('client/all').then(function (response) {
+	    $scope.clients = response.data;
+	  }, function () {
+	    console.log('failure');
+	  });
+
+	  $('#datetimepicker1').on('dp.change', function () {
+	    $scope.job.startDate = $('#datetimepicker1').val();
+	  });
+
+	  $('#datetimepicker2').on('dp.change', function () {
+	    $scope.job.projectedEndDate = $('#datetimepicker2').val();
+	  });
+
+	  $('#datetimepicker3').on('dp.change', function () {
+	    $scope.job.endDate = $('#datetimepicker3').val();
+	  });
+
+	  $('#datetimepicker4').on('dp.change', function () {
+	    $scope.job.buyoutDate = $('#datetimepicker4').val();
+	  });
+
+	  $('#datetimepicker5').on('dp.change', function () {
+	    $scope.job.confirmedDate = $('#datetimepicker5').val();
+	  });
+
+	  $scope.submit = function () {
+	    $scope.requestMade = true;
+	    $scope.createMessage = 'Attempting to create job';
+	    $scope.createMessageStyle = { color: 'black' };
+
+	    var jobCreation = JSON.parse(JSON.stringify($scope.job));
+	    jobCreation.startDate = moment($scope.job.startDate).toDate();
+	    jobCreation.projectedEndDate = moment($scope.job.projectedEndDate).toDate();
+	    jobCreation.endDate = moment($scope.job.endDate).toDate();
+	    jobCreation.buyoutDate = moment($scope.job.buyoutDate).toDate();
+	    jobCreation.confirmedDate = moment($scope.job.confirmedDate).toDate();
+
+	    $http.post('/job', jobCreation).then(function (response) {
+	      $scope.createMessage = 'Successfully created job';
+	      $scope.createMessageStyle = { color: 'green' };
+	    }, function () {
+	      $scope.createMessage = 'Failed to create job';
+	      $scope.createMessageStyle = { color: 'red' };
+	    });
+	  };
+	}
+
+	exports.jobCtrl = jobCtrl;
+
+/***/ }),
+/* 139 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	function projectCtrl($scope, $http, $state, $stateParams) {
+	  $scope.project = { associates: [] };
+
+	  $http.get('associate/no-project').then(function (response1) {
+	    $scope.associates = response1.data;
+	    if ($state.includes('manager.advanced')) {
+	      $http.get('project/' + $stateParams.id).then(function (response2) {
+	        $http.get('associate/by-project/' + $stateParams.id).then(function (response3) {
+	          $scope.project.associates = response3.data;
+	        });
+	        $scope.project = response2.data;
+	      });
+	    }
+	  });
+
+	  $scope.addAssociate = function () {
+	    if (!$scope.selectedAssociate) {
+	      return;
+	    }
+	    $scope.project.associates.push($scope.selectedAssociate);
+	    $scope.associates = $scope.associates.filter(function (associate) {
+	      return associate.id !== $scope.selectedAssociate.id;
+	    });
+	  };
+
+	  $scope.removeAssociate = function (selected) {
+	    $scope.project.associates = $scope.project.associates.filter(function (associate) {
+	      return associate.id !== selected.id;
+	    });
+	    $scope.associates.push(selected);
+	  };
+
+	  $scope.submit = function () {
+	    $scope.requestMade = true;
+	    $scope.createMessage = 'Attempting to create project';
+	    $scope.createMessageStyle = { color: 'black' };
+	    if ($scope.project.projectDescription == null) {
+	      $scope.project.projectDescription = 'No project description.';
+	    }
+
+	    var projectCreation = JSON.parse(JSON.stringify($scope.project));
+
+	    $http.post('/project', projectCreation).then(function (response) {
+	      $scope.createMessage = 'Successfully created project';
+	      $scope.createMessageStyle = { color: 'green' };
+	    }, function () {
+	      $scope.createMessage = 'Failed to create project';
+	      $scope.createMessageStyle = { color: 'red' };
+	    });
+	  };
+	};
+
+	exports.projectCtrl = projectCtrl;
+
+/***/ }),
+/* 140 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	function managerAdvancedCtrl($scope, $http, $state) {
+	  window.scope = $scope;
+
+	  $http.get('batchtype/all').then(function (data) {
+	    $scope.batchtypes = data.data;
+	    $scope.selectedBatchTypes = [];
+	    $scope.batchtypes.forEach(function (type) {
+	      $scope.selectedBatchTypes.push(type);
+	    });
+	  });
+
+	  $http.get('associate/all').then(function (data) {
+	    $scope.associates = data.data;
+	  }, function (data) {
+	    console.log('failed');
+	  });
+
+	  $http.get('batch/all').then(function (data) {
+	    $scope.batches = data.data;
+	  }, function (data) {
+	    console.log('failed');
+	  });
+
+	  $scope.isAssociates = function () {
+	    if ($state.is('manager.advanced.allassociates')) {
+	      return true;
+	    }
+	    return false;
+	  };
+
+	  $scope.isBatches = function () {
+	    if ($state.is('manager.advanced.batches')) {
+	      return true;
+	    }
+	    return false;
+	  };
+
+	  $scope.isInterviews = function () {
+	    if ($state.is('manager.advanced.interviews')) {
+	      return true;
+	    }
+	    return false;
+	  };
+
+	  $scope.trainerFilter = function (associate) {
+	    return true;
+	  };
+
+	  $scope.isSelectedBatchType = function (batchType) {
+	    return $scope.selectedBatchType.filter(function (type) {
+	      return type.value === batchType.value;
+	    }) >= 1;
+	  };
+
+	  $scope.toggleSelectedBatchTypes = function (selectedBatch) {
+	    var idx = $scope.selectedBatchTypes.indexOf(selectedBatch);
+
+	    // Is currently selected
+	    if (idx > -1) {
+	      $scope.selectedBatchTypes.splice(idx, 1);
+	    } else {
+	      $scope.selectedBatchTypes.push(selectedBatch);
+	    }
+	  };
+
+	  $scope.associateBatchFilter = function (associate) {
+	    if (!associate.batch) {
+	      return false;
+>>>>>>> 764f52c830c5976337e278489c6e6f8c974e0e62
 	    }
 	    /** Register any lazy loaded state definitions */
 	    function updateStateRegistry(result) {
@@ -62818,8 +63212,41 @@
 	        }
 	        return result;
 	    }
+<<<<<<< HEAD
 	    return promise;
 	}
+=======
+	    return $scope.selectedBatchTypes.filter(function (batchType) {
+	      return batchType.value === batch.batchType.value;
+	    }).length >= 1;
+	  };
+	}
+
+	exports.default = managerAdvancedCtrl;
+
+/***/ }),
+/* 141 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+	function profileCtrl($scope, $http, userService, $stateParams, $state, $window) {
+	  if ($state.includes('manager')) {
+	    $scope.isManager = true;
+	    $http.get('client/priority').then(function (response) {
+	      $scope.clients = response.data;
+	    });
+	  }
+	  var associateId = $scope.isManager ? $stateParams.id : userService.getUser().id;
+>>>>>>> 764f52c830c5976337e278489c6e6f8c974e0e62
 
 	/**
 	 * This class defines a type of hook, such as `onBefore` or `onEnter`.
@@ -63849,6 +64276,7 @@
 	    if (!accum.hasOwnProperty(key)) {
 	        accum[key] = val$$1;
 	    }
+<<<<<<< HEAD
 	    else if (isArray(accum[key])) {
 	        accum[key].push(val$$1);
 	    }
@@ -64306,6 +64734,151 @@
 
 	})));
 	//# sourceMappingURL=ui-router-core.js.map
+=======
+	  };
+	}
+
+	exports.default = profileCtrl;
+
+/***/ }),
+/* 142 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	function associateInterviewCtrl($scope, $http, userService) {
+	  var addInterviewBtn = document.getElementById('addInterviewBtn');
+	  $scope.getScheduledTime = function () {
+	    $http({
+	      method: 'GET',
+	      url: 'interviews/associate/' + userService.getUser().id
+	    }).then(function (response) {
+	      $scope.associateInterviews = response.data;
+	      $scope.associateInterviews.sort(function (a, b) {
+	        return new Date(b.scheduled).getTime() - new Date(a.scheduled).getTime();
+	      });
+	    });
+	  };
+
+	  $scope.associateInterviews;
+	  $('#datetimepicker1').datetimepicker();
+	  $scope.showDateTimePicker = function () {
+	    $('#datetimepicker1').datetimepicker('show');
+	  };
+	  $('#datetimepicker1').on('dp.change', function () {
+	    $scope.selectedDate = $('#datetimepicker1').val();
+	  });
+
+	  $http({
+	    method: 'GET',
+	    url: '/client/all'
+	  }).then(function (response) {
+	    $scope.clients = response.data;
+	    $scope.clients.sort(function (pre, cur) {
+	      return pre.name.localeCompare(cur.name);
+	    });
+	  });
+
+	  $http({
+	    method: 'GET',
+	    url: '/interviewStatus/all'
+	  }).then(function (response) {
+	    $scope.interviewStatuses = response.data;
+	  });
+
+	  $http({
+	    method: 'GET',
+	    url: '/marketer/all'
+	  }).then(function (response) {
+	    $scope.marketers = response.data;
+	  });
+
+	  $scope.getScheduledTime();
+
+	  $scope.addInterviewClick = function () {
+	    $scope.errorMsgShow = false;
+	    $scope.successMsgShow = false;
+	    $scope.selectedDate = $('#datetimepicker1').val();
+	    if ($scope.selectedClient == undefined) {
+	      $scope.errorMsg = 'Please select a Client.';
+	      $scope.errorMsgShow = true;
+	    } else if ($scope.selectedDate == undefined || $scope.selectedDate === "") {
+	      $scope.errorMsg = 'Please select a Date.';
+	      $scope.errorMsgShow = true;
+	    } else if ($scope.selectedMarketer == undefined) {
+	      $scope.errorMsg = 'Please select a Marketer.';
+	      $scope.errorMsgShow = true;
+	    } else {
+	      var newDate = moment($scope.selectedDate).toDate();
+	      addInterviewBtn.disabled = true;
+	      addInterviewBtn.innerHTML = 'Adding...';
+	      $http({
+	        method: 'POST',
+	        url: '/interviews',
+	        data: { associate: userService.getUser(), client: $scope.selectedClient, scheduled: newDate, marketer: $scope.selectedMarketer }
+	      }).then(function (response) {
+	        $scope.successMsgShow = true;
+	        addInterviewBtn.disabled = false;
+	        addInterviewBtn.innerHTML = 'Add Interview';
+	        $scope.getScheduledTime();
+	      });
+	    }
+	  };
+
+	  $scope.showAddModal = function () {
+	    $scope.errorMsgShow = false;
+	    $scope.successMsgShow = false;
+
+	    $scope.selectedClient = undefined;
+	    $('#datetimepicker1').val('');
+	    $scope.selectedMarketer = undefined;
+
+	    $('#addModal').modal('show');
+	  };
+
+	  $scope.interviewClick = function (interview) {
+	    $scope.clickedInterview = interview;
+	    for (var i = 0; i < $scope.interviewStatuses.length; i++) {
+	      if ($scope.interviewStatuses[i].value === interview.interviewStatus.value) {
+	        $scope.updateStatus = $scope.interviewStatuses[i];
+	      }
+	    }
+	    for (var _i = 0; _i < $scope.marketers.length; _i++) {
+	      if ($scope.marketers[_i].name === interview.marketer.name) {
+	        $scope.updateMarketer = $scope.marketers[_i];
+	      }
+	    }
+	    $scope.updateComment = $scope.clickedInterview.comment;
+
+	    $scope.errorUpdateMsgShow = false;
+	    $scope.successUpdateMsgShow = false;
+	    $('#interviewModal').modal('show');
+	  };
+
+	  $scope.updateInterviewClick = function () {
+	    $scope.errorUpdateMsgShow = false;
+	    $scope.successUpdateMsgShow = false;
+
+	    if ($scope.updateComment === undefined || $scope.updateComment === '') {
+	      $scope.errorUpdateMsg = 'Please add a comment.';
+	      $scope.errorUpdateMsgShow = true;
+	    } else {
+	      $http({
+	        method: 'PUT',
+	        url: '/interviews',
+	        data: { id: $scope.clickedInterview.id, associate: $scope.clickedInterview.associate, client: $scope.clickedInterview.client,
+	          scheduled: $scope.clickedInterview.scheduled, marketer: $scope.updateMarketer, interviewStatus: $scope.updateStatus, comment: $scope.updateComment }
+	      }).then(function (response) {
+	        $scope.successUpdateMsgShow = true;
+	        $scope.getScheduledTime();
+	      });
+	    }
+	  };
+	}
+>>>>>>> 764f52c830c5976337e278489c6e6f8c974e0e62
 
 
 /***/ }),
@@ -64317,6 +64890,7 @@
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
+<<<<<<< HEAD
 	var projectCtrl = function projectCtrl($scope, $http, $state, $stateParams) {
 		$scope.project = { associates: [] };
 
@@ -64331,6 +64905,78 @@
 				});
 			}
 		});
+=======
+	function associateCtrl($scope, $location, $http, $state, userService) {
+	  var authenticatedUser = userService.getUser();
+	  var checkBtnDOM = document.getElementById('checkBtn');
+	  $scope.checkInBtn = 'Loading...';
+	  checkBtnDOM.disabled = true;
+
+	  var isAssociate = authenticatedUser.id !== undefined && authenticatedUser.permission === undefined;
+
+	  if (!isAssociate) {
+	    $state.go('login');
+	    return;
+	  }
+
+	  $http({
+	    method: 'GET',
+	    url: '/checkin'
+	  }).then(function (response) {
+	    if (response.data === true) {
+	      $scope.checkInBtn = 'Checked In';
+	      $scope.hasCheckedIn = true;
+	    } else {
+	      $scope.checkInBtn = 'Check In';
+	      checkBtnDOM.disabled = false;
+	    }
+	  });
+
+	  $scope.hasCheckedIn = false;
+	  $scope.isActive = function (viewLocation) {
+	    return viewLocation === $location.path();
+	  };
+
+	  $scope.checkIn = function () {
+	    $http({
+	      method: 'PUT',
+	      url: '/checkin'
+	    }).then(function (response) {
+	      if (response.data === true) {
+	        $scope.checkInBtn = 'Checked In';
+	        $scope.hasCheckedIn = true;
+	      }
+	    });
+	  };
+
+	  $scope.logout = function () {
+	    $http({
+	      method: 'GET',
+	      url: '/logout/'
+	    }).then(function () {
+	      userService.setUser({});
+	      $state.transitionTo('login');
+	    });
+	  };
+	}
+
+	exports.default = associateCtrl;
+
+/***/ }),
+/* 144 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	function loginCtrl($scope, $http, $state, userService) {
+	  var loginBtn = document.getElementById('loginBtn');
+	  $scope.username = '';
+	  $scope.password = '';
+	  $scope.errorMsgShow = false;
+>>>>>>> 764f52c830c5976337e278489c6e6f8c974e0e62
 
 		$scope.addAssociate = function () {
 			if (!$scope.selectedAssociate) {
@@ -64359,6 +65005,7 @@
 
 			var projectCreation = JSON.parse(JSON.stringify($scope.project));
 
+<<<<<<< HEAD
 			$http.post('/project', projectCreation).then(function (response) {
 				$scope.createMessage = 'Successfully created project';
 				$scope.createMessageStyle = { color: 'green' };
@@ -64368,6 +65015,39 @@
 			});
 		};
 	};
+=======
+	    if ($scope.username === '' || $scope.username === undefined) {
+	      $scope.errorMsg = 'Please input a Username.';
+	      $scope.errorMsgShow = true;
+	      loginBtn.disabled = false;
+	      loginBtn.innerHTML = 'Log In';
+	    } else if ($scope.password === '' || $scope.password === undefined) {
+	      $scope.errorMsg = 'Please input a Password.';
+	      $scope.errorMsgShow = true;
+	      loginBtn.disabled = false;
+	      loginBtn.innerHTML = 'Log In';
+	    } else {
+	      $http({
+	        method: 'POST',
+	        url: '/login',
+	        data: { username: $scope.username, password: $scope.password }
+	      }).then(function (response) {
+	        userService.setUser(response.data);
+	        if (response.data.permission !== undefined) {
+	          $state.go('manager.home');
+	        } else {
+	          $state.go('associate.home');
+	        }
+	      }, function () {
+	        $scope.errorMsg = 'Username or Password is incorrect.';
+	        $scope.errorMsgShow = true;
+	        loginBtn.disabled = false;
+	        loginBtn.innerHTML = 'Log In';
+	      });
+	    }
+	  };
+	}
+>>>>>>> 764f52c830c5976337e278489c6e6f8c974e0e62
 
 	exports.projectCtrl = projectCtrl;
 
