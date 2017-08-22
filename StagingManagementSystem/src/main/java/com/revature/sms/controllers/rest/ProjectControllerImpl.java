@@ -40,7 +40,13 @@ public class ProjectControllerImpl {
 		return projectService.getAll();
 	}
 	
-	// get a project by id
+	/**
+	 * Gets a project with id.
+	 * 
+	 * @param id
+	 *            - id of project to be retrieved.
+	 * @return project object from dataBase.
+	 */
 	@GetMapping("/{id}")
 	public Project findById(@PathVariable long id) {
 		return projectService.findById(id);

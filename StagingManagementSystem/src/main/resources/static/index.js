@@ -63483,6 +63483,7 @@
 	          $scope.project.associates = response3.data;
 	        });
 	        $scope.project = response2.data;
+	        console.log($scope.project);
 	        $scope.project.projectName = $scope.projectName.filter(function (projectName) {
 	          return projectName.value === response2.data.projectName.value;
 	        })[0];
