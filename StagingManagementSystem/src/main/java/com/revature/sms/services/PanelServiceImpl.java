@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -52,6 +54,7 @@ public class PanelServiceImpl implements PanelService
 	}
 
 	@Override
+	@Transactional
 	public void addPanel(Panel panel) 
 	{
 		pr.saveAndFlush(panel);
