@@ -169,14 +169,14 @@
 
 	  // Ui Visualizer
 	  // Auto-collapse children in state visualizer
-	  // const registry = $uiRouter.stateRegistry;
-	  // $uiRouter.stateRegistry.get().map(s => s.$$state())
-	  //     .filter(s => s.path.length === 2 || s.path.length === 3)
-	  //     .forEach(s => s._collapsed = true);
-	  //
-	  // const pluginInstance = $uiRouter.plugin(Visualizer);
-	  //
-	  // $trace.enable('TRANSITION');
+	  /*const registry = $uiRouter.stateRegistry;
+	  $uiRouter.stateRegistry.get().map(s => s.$$state())
+	      .filter(s => s.path.length === 2 || s.path.length === 3)
+	      .forEach(s => s._collapsed = false);
+	  
+	  const pluginInstance = $uiRouter.plugin(Visualizer);
+	  
+	  $trace.enable('TRANSITION');*/
 
 	  // Global Functions
 	  $rootScope.dateConverter = function (time) {
@@ -269,10 +269,17 @@
 	  }).state('manager.advanced.batches', {
 	    url: '/batches',
 	    templateUrl: 'manager-pages/advanced/batches/batches.html'
+	  }).state('manager.advanced.projects', {
+	    url: '/projects',
+	    templateUrl: 'manager-pages/advanced/projects/projects.html'
 	  }).state('manager.advanced.batches.edit', {
 	    url: '/edit/:id',
 	    templateUrl: 'manager-pages/create/batch.html',
 	    controller: _batch.batchCtrl
+	  }).state('manager.advanced.projects.edit', {
+	    url: '/edit/:id',
+	    templateUrl: 'manager-pages/create/project.html',
+	    controller: _project.projectCtrl
 	  }).state('associate', {
 	    url: '/associate',
 	    templateUrl: 'associate-pages/associate.html',
@@ -63464,6 +63471,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+
 	function projectCtrl($scope, $http, $state, $stateParams) {
 	  $scope.project = { associates: [] };
 
@@ -63475,6 +63483,12 @@
 	          $scope.project.associates = response3.data;
 	        });
 	        $scope.project = response2.data;
+	        $scope.project.projectName = $scope.projectName.filter(function (projectName) {
+	          return projectName.value === response2.data.projectName.value;
+	        })[0];
+	        $scope.project.projectDescription = $scope.projectDescription.filter(function (projectDescription) {
+	          return projectDescription === response2.data.projectDescription.value;
+	        })[0];
 	      });
 	    }
 	  });
@@ -63550,6 +63564,13 @@
 	    console.log('failed');
 	  });
 
+	  // fetching all project data
+	  $http.get('project/all').then(function (data) {
+	    $scope.projects = data.data;
+	  }, function (data) {
+	    console.log('failed');
+	  });
+
 	  $scope.isAssociates = function () {
 	    if ($state.is('manager.advanced.allassociates')) {
 	      return true;
@@ -63561,6 +63582,12 @@
 	    if ($state.is('manager.advanced.batches')) {
 	      return true;
 	    }
+	    return false;
+	  };
+
+	  // button for internal projects
+	  $scope.isProjects = function () {
+	    if ($state.is('manager.advanced.projects')) return true;
 	    return false;
 	  };
 
@@ -63681,6 +63708,11 @@
 	    $scope.portfolioModalButtonValue = 'Save';
 	    $scope.portfolioUrlInput = $scope.associate.portfolioLink;
 	    $('#portfolioUrlModal').modal('show');
+	  };
+
+	  $scope.openProjectStatusModal = function () {
+	    $scope.sendingRequest = false;
+	    $('#projectStatusModal').modal('show');
 	  };
 
 	  $scope.toggleMappedModal = function () {

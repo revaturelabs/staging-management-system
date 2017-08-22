@@ -26,7 +26,7 @@ public class Project {
 	@Column(name = "PROJECT_ID")
 	@SequenceGenerator(name = "PROJECT_ID_SEQ", sequenceName = "PROJECT_ID_SEQ")
 	@GeneratedValue(generator = "PROJECT_ID_SEQ", strategy = GenerationType.SEQUENCE)
-	private int projectId;
+	private long projectId;
 	@Column(name = "PROJECT_NAME")
 	private String projectName;
 	@Column(name = "PROJECT_DESCRIPTION")
@@ -42,7 +42,7 @@ public class Project {
 		this.associates = new HashSet<>();
 	}
 	
-	public Project(int projectId, String projectName, String projectDescription, String projectStatus,
+	public Project(long projectId, String projectName, String projectDescription, String projectStatus,
 			Set<Associate> associates) {
 		super();
 		this.projectId = projectId;
@@ -52,11 +52,11 @@ public class Project {
 		this.associates = associates;
 	}
 
-	public int getProjectId() {
+	public long getProjectId() {
 		return projectId;
 	}
 
-	public void setProjectId(int projectId) {
+	public void setProjectId(long projectId) {
 		this.projectId = projectId;
 	}
 
