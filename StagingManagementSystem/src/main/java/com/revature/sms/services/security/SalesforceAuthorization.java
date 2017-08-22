@@ -115,9 +115,9 @@ public class SalesforceAuthorization extends Helper implements Authorization {
 		
 		servletResponse.addCookie(new Cookie("token", token));
 		
-		//SalesforceToken salesforceToken = new ObjectMapper().readValue(token, SalesforceToken.class);
+		SalesforceToken salesforceToken = new ObjectMapper().readValue(token, SalesforceToken.class);
 		
-		//System.out.println(salesforceToken);
+		System.out.println(salesforceToken);
 		//set login_manager attribute by adding HttpServletRequest req at function parameters
 		//and set lm here?
 		//System.out.println("GOT HERE PRE INFO GET");
