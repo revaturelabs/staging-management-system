@@ -46,3 +46,5 @@ logs/*
 
 # OS X
 *.DS_Store
+.vs
+*.vs*

@@ -167,6 +167,11 @@ public class AssociateControllerImpl {
 	public Set<Associate> byBatch(@PathVariable Long id) {
 		return associateService.findByBatchId(id);
 	}
+	
+	@GetMapping("by-project/{id}")
+	public Set<Associate> byProject(@PathVariable Long id) {
+		return associateService.findByProjectId(id);
+	}
 
 //	@GetMapping(path = "/totaldata")
 //	public ResponseEntity<Collection<TotalData>> getAssocaites() {

@@ -101,6 +101,12 @@ public class AssociateServiceImpl implements AssociateService {
 
         return associateRepo.findByBatchId(id);
     }
+    
+    @Override
+    public Set<Associate> findByProjectId(Long id) {
+
+        return associateRepo.findByProjectProjectId(id);
+    }
 
     @Override
     public Set<StaggingAssociate> getAssociatesInStaggingOn(String date) {
