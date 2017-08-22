@@ -35,6 +35,8 @@ public class Checkin {
     @Convert(converter = LocalDateTimeConverter.class)
     private LocalDateTime checkoutTime;
 
+    
+    //TODO:Needs to instead populate it by getting salesforce user?
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "MANAGER_ID")
     private Manager approvedBy;

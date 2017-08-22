@@ -17,22 +17,22 @@ import java.io.IOException;
  * @author d4k1d23
  * @date 1/25/17
  * 
- * Copied from caliber to be used with SMS by Stephan Kritikos
+ * Copied from caliber to be used with SMS 
  */
 @RestController
 @Scope("session")
-public class UserDetailsImpl extends Helper implements UserDetails {
+public class SalesforceUserDetailsServiceImpl extends Helper implements SalesforceUserDetailsService {
     private HttpClient httpClient;
     private HttpResponse response;
 
-    public UserDetailsImpl() {
+    public SalesforceUserDetailsServiceImpl() {
         httpClient = HttpClientBuilder.create().build();
     }
 
     @RequestMapping(value = "getSalesforceUser", produces = MediaType.APPLICATION_JSON_VALUE)
     public String getSalesforceUser(@RequestParam String accessToken,
                                     @RequestParam String endpoint) throws IOException {
-        HttpGet get = new HttpGet(endpoint + "?access_token=" + accessToken + "&format=json");
+        HttpGet get = new HttpGet(endpoint + "?access_token=" + accessToken);
         response = httpClient.execute(get);
         return toJsonString(response.getEntity().getContent());
     }

@@ -33,14 +33,15 @@ import com.revature.sms.security.models.SalesforceUser;
 /**
  * Created by louislopez on 1/18/17.
  * Modified for SMS by Richard Orr on 8/10/2017
+ * Updated to be compliant with old SMS database queries from client by Stephan Kritikos on ??/??/????
  */
-
+//TODO:This needs to assign login_manager in the session I think
 @Controller
 @Scope("prototype")
 public class SalesforceAuthorization extends Helper implements Authorization {
 	@Value("${sms.sf.login}")
 	private String loginURL;
-	@Value("services/oauth2/authorize")
+	@Value("services/oauth2/authorize") //TODO: This could be an alternate endpoint. 
 	private String authURL;
 	@Value("services/oauth2/token")
 	private String accessTokenURL;
@@ -79,7 +80,7 @@ public class SalesforceAuthorization extends Helper implements Authorization {
 	 * @param code
 	 * @param servletResponse
 	 */
-	@RequestMapping("/authenticated")
+	@RequestMapping("/authenticated") //TODO: Put assignment to session's login_manager thing here?
 	public ModelAndView generateSalesforceToken(@RequestParam(value = "code") String code,
 			HttpServletResponse servletResponse) throws IOException {
 
@@ -103,7 +104,8 @@ public class SalesforceAuthorization extends Helper implements Authorization {
 		
 		
 		servletResponse.addCookie(new Cookie("token", token));
-		
+		//set login_manager attribute by adding HttpServletRequest req at function parameters
+		//and set lm here?
 		
 		return new ModelAndView(REDIRECT + redirectUrl);
 

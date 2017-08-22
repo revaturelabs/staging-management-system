@@ -13,6 +13,7 @@ import com.revature.sms.entities.Trainer;
 /**
  * The type Salesforce user.
  */
+//TODO: Probably axe half of this, check user detail from endpoint
 public class SalesforceUser implements UserDetails {
 	private static final long serialVersionUID = 8330084985503759701L;
 	@JsonProperty(value = "id")
@@ -81,9 +82,6 @@ public class SalesforceUser implements UserDetails {
     @JsonProperty(value = "salesforceToken")
     private SalesforceToken salesforceToken;
 
-    @JsonProperty(value = "caliberUser")
-    private Trainer caliberUser;
-    
     /**
      * Instantiates a new Salesforce user.
      */
@@ -337,14 +335,6 @@ public class SalesforceUser implements UserDetails {
 
 	public void setSalesforceToken(SalesforceToken salesforceToken) {
 		this.salesforceToken = salesforceToken;
-	}
-
-	public Trainer getCaliberUser() {
-		return caliberUser;
-	}
-
-	public void setCaliberUser(Trainer caliberUser) {
-		this.caliberUser = caliberUser;
 	}
 
 	public void setUsername(String username) {

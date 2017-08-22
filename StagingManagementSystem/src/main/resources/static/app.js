@@ -30,7 +30,7 @@ const Visualizer = window['ui-router-visualizer'].Visualizer;
 
 const routerApp = angular.module('routerApp', [uiRouter, angularCookies]);
 
-routerApp.service('userService', function ($cookies, $http) {
+routerApp.service('userService', function ($cookies) {
 	  this.user = $cookies.getObject('user') === undefined ? {} : $cookies.getObject('user');
 	  this.getUser = function(){
 		  checkCookies();
@@ -39,43 +39,6 @@ routerApp.service('userService', function ($cookies, $http) {
 	  this.setUser = (user) => {
 	    $cookies.putObject('user', user);
 	    this.user = { ...user };
-	  };
-	
-		// Roles
-	  var trainerRole = "ROLE_TRAINER";
-		/**
-		 * Retrieves role from cookie
-		 * 
-		 * @returns A cookie that contains the role
-		 */
-	  function getCookie() {
-		// TEST
-		//console.log("Let's see what my sf role is: "+$cookies.getObject("user").get('role'));
-		return $cookies.get("role");
-	  }
-		
-	  $http.get('https://login.salesforce.com/services/oauth2/userinfo'+'?access_token='+JSON.stringify($cookies.getObject('token')))
-		.then((response) => {
-          console.log('Response:'+ response);
-          //return response;
-      });
-		
-	/*		// TEST 
-	  $http.get('getSalesforceUser', 
-			     { params: {accessToken:  $cookies.getObject('token').access_token,
-			    	 		endpoint: 'https://login.salesforce.com/services/oauth2/userinfo' }
-			     })
-		.then((response) => {
-          console.log('Response:'+ response);
-          //return response;
-      })*/
-		/**
-		 * Moves user to home page when entering root
-		 */
-	  function checkCookies() {
-		var role = getCookie();
-		if (role === trainerRole)
-		this.user={id:false,permisssion:true};
 	  };
 });
 

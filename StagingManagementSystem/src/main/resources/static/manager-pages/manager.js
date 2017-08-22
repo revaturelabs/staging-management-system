@@ -1,10 +1,16 @@
 
-
+//When is this referenced?
 const managerCtrl = ($scope, $state, $location, $http, userService) => {
   $http({ //TODO: Convert to use salesforce instead
     method: 'GET',
     url: '/login/user',
-  }).then((response) => {
+  })
+  
+  
+  
+  
+  //CHANGE
+  .then((response) => {
     userService.setUser(response.data);
     if (response.data.permission === undefined) {
       $state.go('associate.home');
@@ -29,7 +35,7 @@ const managerCtrl = ($scope, $state, $location, $http, userService) => {
 		});
 	};
 
-  $scope.manager = { name:'Joe'}; 
+  $scope.manager = { name:'Joe'}; //TODO: what in tarnation, maybe remove
 };
 
 export { managerCtrl };
