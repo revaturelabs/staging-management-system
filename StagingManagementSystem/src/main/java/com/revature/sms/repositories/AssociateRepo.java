@@ -15,6 +15,7 @@ public interface AssociateRepo extends JpaRepository<Associate, Long> {
     Set<Associate> findAssociatesByActiveTrue();
     Set<Associate> findByBatchIsNull();
     Set<Associate> findByBatchId(Long id);
+    Set<Associate> findByProjectProjectId(Long projectId);
     Set<Associate> findByProjectIsNull();
     Set<Associate> findByNameContainingIgnoreCase(String name);
 }

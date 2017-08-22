@@ -1,5 +1,6 @@
 package com.revature.sms.services;
 
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +59,18 @@ public class ProjectServiceImpl implements ProjectService {
 				associateRepo.saveAndFlush(ass);
 			});
 		}
+	}
+
+
+	@Override
+	public List<Project> getAll() {
+		return projectRepo.findAll();
+	}
+
+
+	@Override
+	public Project findById(long id) {
+		return projectRepo.getOne(id);
 	}
 
 }

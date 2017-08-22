@@ -1,6 +1,10 @@
 package com.revature.sms.controllers.rest;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,5 +32,23 @@ public class ProjectControllerImpl {
 	@PostMapping
 	public void addProject(@RequestBody Project project) {
 		projectService.addProject(project);
+	}
+	
+	// get all projects
+	@GetMapping("/all")
+	public List<Project> findAll() {
+		return projectService.getAll();
+	}
+	
+	/**
+	 * Gets a project with id.
+	 * 
+	 * @param id
+	 *            - id of project to be retrieved.
+	 * @return project object from dataBase.
+	 */
+	@GetMapping("/{id}")
+	public Project findById(@PathVariable long id) {
+		return projectService.findById(id);
 	}
 }
