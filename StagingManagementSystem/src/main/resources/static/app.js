@@ -26,23 +26,66 @@ import loginCtrl from './login/login';
 
 require('fusioncharts/fusioncharts.charts')(FusionCharts);
 
-const Visualizer = window['ui-router-visualizer'].Visualizer;
+// const Visualizer = window['ui-router-visualizer'].Visualizer;
 
 const routerApp = angular.module('routerApp', [uiRouter, angularCookies]);
 
-routerApp.service('userService', function ($cookies) {
-  this.user = $cookies.getObject('user') === undefined ? {} : $cookies.getObject('user');
-  this.getUser = () => ({ ...this.user });
-  this.setUser = (user) => {
-    $cookies.putObject('user', user);
-    this.user = { ...user };
-  };
+routerApp.service('userService', function ($cookies, $http) {
+	  this.user = $cookies.getObject('user') === undefined ? {} : $cookies.getObject('user');
+	  this.getUser = function(){
+		  checkCookies();
+		  return this.user
+		 };
+	  this.setUser = (user) => {
+	    $cookies.putObject('user', user);
+	    this.user = { ...user };
+	  };
+	
+		// Roles
+	  var trainerRole = "ROLE_TRAINER";
+		/**
+		 * Retrieves role from cookie
+		 * 
+		 * @returns A cookie that contains the role
+		 */
+	  function getCookie() {
+		// TEST
+		//console.log("Let's see what my sf role is: "+$cookies.getObject("user").get('role'));
+		return $cookies.get("role");
+	  }
+		
+		// TEST 
+	  console.log(JSON.stringify($cookies.getObject('token')));
+	  
+	  $http.get('https://login.salesforce.com/services/oauth2/userinfo'+'?access_token='+JSON.stringify($cookies.getObject('token')))
+		.then((response) => {
+          console.log('Response:'+ response);
+          //return response;
+      });
+		
+	/*		// TEST 
+	  $http.get('getSalesforceUser', 
+			     { params: {accessToken:  $cookies.getObject('token'),
+			    	 		endpoint: 'https://login.salesforce.com/services/oauth2/userinfo' }
+			     })
+		.then((response) => {
+          console.log('Response:'+ response);
+          //return response;
+      })*/
+		/**
+		 * Moves user to home page when entering root
+		 */
+	  function checkCookies() {
+		var role = getCookie();
+		if (role === trainerRole)
+		this.user={id:false,permisssion:true};
+	  };
 });
 
 routerApp.directive('scrollToBottom', ($timeout, $window) => {
   return {
     scope: {
-        scrollToBottom: "="
+      scrollToBottom: '='
     },
     restrict: 'A',
     link: (scope, element, attr) => {
@@ -59,19 +102,23 @@ routerApp.directive('scrollToBottom', ($timeout, $window) => {
 
 routerApp.run(($uiRouter, $trace, $rootScope) => {
 
+
   // Ui Visualizer
+>>>>>>>>> Temporary merge branch 2
   // Auto-collapse children in state visualizer
   // const registry = $uiRouter.stateRegistry;
   // $uiRouter.stateRegistry.get().map(s => s.$$state())
-  //     .filter(s => s.path.length === 2 || s.path.length === 3)
-  //     .forEach(s => s._collapsed = true);
+  // .filter(s => s.path.length === 2 || s.path.length === 3)
+  // .forEach(s => s._collapsed = true);
   //
   // const pluginInstance = $uiRouter.plugin(Visualizer);
   //
   // $trace.enable('TRANSITION');
 
+
   // Global Functions
   $rootScope.dateConverter = (time) => {
+
     return moment(time).format('MMM D, hh:mm a');
 	};
 });
@@ -124,10 +171,10 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
 
     })
     .state('manager.create.project', {
-        url: '/project',
-        templateUrl: 'manager-pages/create/project.html',
-        controller: projectCtrl,
-     })
+      url: '/project',
+      templateUrl: 'manager-pages/create/project.html',
+      controller: projectCtrl,
+    })
     .state('manager.home', {
       url: '/home',
       views: {
@@ -153,7 +200,7 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
         },
         'checkins@manager.home': {
           templateUrl: 'manager-pages/home/checkin/checkin.html',
-            controller: managerCheckinsCtrl,
+          controller: managerCheckinsCtrl,
         },
       },
     })
@@ -199,5 +246,6 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       url: '/profile',
       templateUrl: 'associate-pages/profile/profile.html',
       controller: profileCtrl,
-    })
+
+    });
 });
