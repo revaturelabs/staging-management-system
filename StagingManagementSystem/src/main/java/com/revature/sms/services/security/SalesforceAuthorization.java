@@ -114,11 +114,15 @@ public class SalesforceAuthorization extends Helper implements Authorization {
 		//set login_manager attribute by adding HttpServletRequest req at function parameters
 		//and set lm here?
 		
+		System.out.println("TEST Salesforce Authorization: GOT HERE");
+		
 		//TODO: TEST THIS
 		String user = toJsonString(response.getEntity().getContent());
 		SalesforceUser salesforceUser = new ObjectMapper().readValue(user, SalesforceUser.class);
 		salesforceUser.setSalesforceToken(new ObjectMapper().readValue(token, SalesforceToken.class));
 		//Object mapping here
+		
+		System.out.println("TEST Salesforce Authorization: "+salesforceUser);
 		session.setAttribute(LM, salesforceUser); //session
 		
 		return new ModelAndView(REDIRECT + redirectUrl);
