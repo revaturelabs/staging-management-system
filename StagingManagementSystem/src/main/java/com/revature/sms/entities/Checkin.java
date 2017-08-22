@@ -15,7 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
-
+//TODO: Table needs to change? Dependent on Manager, cant be dependent of Manager
 @Entity
 @Table(name = "CHECKINS")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})

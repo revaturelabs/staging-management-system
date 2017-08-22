@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.sms.entities.Associate;
-import com.revature.sms.entities.Manager;
 import com.revature.sms.entities.StaggingAssociate;
 import com.revature.sms.services.AssociateService;
 import com.revature.sms.services.TotalReport;
@@ -84,7 +83,7 @@ public class AssociateControllerImpl {
 		return ResponseEntity.ok(null);
 	}
 
-	@PutMapping
+	@PutMapping //TODO: Salesforce equivalent for updating credentials?
 	public ResponseEntity<Object> updateAssociate(@RequestBody Associate associate, HttpSession session) {
 		Associate authenticatedAssociate = (Associate) session.getAttribute("login_associate");
 		if (authenticatedAssociate != null) { // Associate edits their profile
@@ -96,13 +95,14 @@ public class AssociateControllerImpl {
 			associateService.update(authenticatedAssociate);
 			return ResponseEntity.ok(null);
 		}
-		Manager manager = (Manager) session.getAttribute(LM);
+		
+/*		Manager manager = (Manager) session.getAttribute(LM);
 		if (manager != null) {// We trust managers. A lot.
 			associate.setCredential(associateService.getById(associate.getId()).getCredential());
 			associateService.update(associate);
 			return ResponseEntity.ok(null);
 		}
-
+*/
 		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 	}
 

@@ -9,6 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -28,6 +29,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.revature.sms.entities.Associate;
+import com.revature.sms.security.models.SalesforceToken;
 import com.revature.sms.security.models.SalesforceUser;
 
 /**
@@ -58,6 +62,7 @@ public class SalesforceAuthorization extends Helper implements Authorization {
 	
 	private static final String REDIRECT = "redirect:";
 	private static final String REVATURE = "http://www.revature.com/";
+	private static final String LM = "login_manager";
 
 	public SalesforceAuthorization() {
 		super();
@@ -81,7 +86,7 @@ public class SalesforceAuthorization extends Helper implements Authorization {
 	 * @param servletResponse
 	 */
 	@RequestMapping("/authenticated") //TODO: Put assignment to session's login_manager thing here?
-	public ModelAndView generateSalesforceToken(@RequestParam(value = "code") String code,
+	public ModelAndView generateSalesforceToken(@RequestParam(value = "code") String code, HttpSession session, //TODO: Maybe adding session here will break
 			HttpServletResponse servletResponse) throws IOException {
 
 		HttpClient httpClient = HttpClientBuilder.create().build();
@@ -104,8 +109,17 @@ public class SalesforceAuthorization extends Helper implements Authorization {
 		
 		
 		servletResponse.addCookie(new Cookie("token", token));
+		
+		
 		//set login_manager attribute by adding HttpServletRequest req at function parameters
 		//and set lm here?
+		
+		//TODO: TEST THIS
+		String user = toJsonString(response.getEntity().getContent());
+		SalesforceUser salesforceUser = new ObjectMapper().readValue(user, SalesforceUser.class);
+		salesforceUser.setSalesforceToken(new ObjectMapper().readValue(token, SalesforceToken.class));
+		//Object mapping here
+		session.setAttribute(LM, salesforceUser); //session
 		
 		return new ModelAndView(REDIRECT + redirectUrl);
 

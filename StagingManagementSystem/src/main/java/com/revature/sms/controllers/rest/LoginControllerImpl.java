@@ -42,16 +42,16 @@ public class LoginControllerImpl {
 			return ResponseEntity.ok(true);
 	}
 	
-	//TODO:Replace with salesforce check
+	//NOTE: Retaining isManager mapping from before changing to Salesforce login to prevent conflict
+	//TODO: LM mapped elsewhere. Make note of where it was mapped
 	@GetMapping("isManager")
 	public ResponseEntity<Boolean> isManager(HttpSession session) {
 		
-		//SalesforceUser manager = (SalesforceUser)session.getAttribute(LM);
-		
-		//if(manager == null)
+		SalesforceUser manager = (SalesforceUser)session.getAttribute(LM);
+		if(manager == null)
 			return ResponseEntity.ok(false);
-		//else
-			//return ResponseEntity.ok(true);
+		else
+			return ResponseEntity.ok(true);
 	}
 	
 	@GetMapping("user")
@@ -60,32 +60,23 @@ public class LoginControllerImpl {
 		if (associate != null) {
 			return ResponseEntity.ok(associate);
 		}
+		
+		SalesforceUser manager = (SalesforceUser)session.getAttribute(LM);
+		if (manager != null) {
+			return ResponseEntity.ok(manager);
+		}
 		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 	}
 
-	//TODO: Still tied to sms as well
+	//TODO: Only has user login since removal of manager
 	@PostMapping
-	public ResponseEntity<Object> dualLogin(@RequestBody Credential creds, HttpSession session, HttpServletResponse resp){
-		
-		System.out.println("TEST: Login Test");
+	public ResponseEntity<Object> smsLogin(@RequestBody Credential creds, HttpSession session, HttpServletResponse resp){
 		
 		Object obj = credService.login(creds);
 		if(obj instanceof Associate){
 			session.setAttribute(LA, (Associate)obj);
 			return ResponseEntity.ok((Associate)obj);
 		}
-		//TODO: With the removal of login checking in this area for managers, this will likely be axed
-//		else if(obj instanceof SalesforceUser){
-//			session.setAttribute(LM, (SalesforceUser)obj); 
-//			/*if(salesforce) //May be disfunctional. Don't know if a thing exists to set {sms.salesforce}
-//			{
-//				HttpHeaders headers = new HttpHeaders();
-//				headers.add("Location", "/salesforce");
-//				return new ResponseEntity<Object>(headers,HttpStatus.FOUND);
-//			}
-//			else*/
-//			return ResponseEntity.ok((Manager)obj);
-//		}
 		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 	}
 }

@@ -1,10 +1,12 @@
 const managerCtrl = ($scope, $state, $location, $http, userService) => {
+	//TODO: Must be redone to not be tied to /login/user?
+
   $http({
     method: 'GET',
     url: '/login/user',
   }).then((response) => {
     userService.setUser(response.data);
-    if (response.data.permission === undefined) {
+    if (response.data.username === undefined) { //TODO: CHANGE .permission to role but when thats defined fine
       $state.go('associate.home');
     }
   }, () => {
@@ -12,6 +14,8 @@ const managerCtrl = ($scope, $state, $location, $http, userService) => {
     $state.go('login');
   });
 
+  
+  
 	$scope.isActive = function (viewLocation) {
 			return viewLocation === $location.path();
 	};

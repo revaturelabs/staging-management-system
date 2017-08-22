@@ -3,6 +3,8 @@ package com.revature.sms.services.security;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import java.io.IOException;
 
 /**
@@ -22,5 +24,5 @@ public interface Authorization {
      * @return back to the application
      * @throws IOException
      */
-    ModelAndView generateSalesforceToken(String code, HttpServletResponse httpServletResponse) throws IOException;
+    ModelAndView generateSalesforceToken(String code,  HttpSession session, HttpServletResponse httpServletResponse) throws IOException;
 }
