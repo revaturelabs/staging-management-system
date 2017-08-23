@@ -25,6 +25,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -39,17 +40,18 @@ import com.revature.sms.security.models.SalesforceToken;
 import com.revature.sms.security.models.SalesforceUser;
 
 /**
- * Created by louislopez on 1/18/17.
- * Modified for SMS by Richard Orr on 8/10/2017
- * Updated to be compliant with old SMS database queries from client by Stephan Kritikos on ??/??/????
+ * Created by louislopez on 1/18/17. Modified for SMS by Richard Orr on
+ * 8/10/2017 Updated to be compliant with old SMS database queries from client
+ * by Stephan Kritikos on ??/??/????
  */
-//TODO:This needs to assign login_manager in the session I think
+// TODO:This needs to assign login_manager in the session I think
 @Controller
 @Scope("prototype")
 public class SalesforceAuthorization extends Helper implements Authorization {
 	@Value("${sms.sf.login}")
 	private String loginURL;
-	@Value("services/oauth2/authorize") //TODO: This could be an alternate endpoint. 
+	@Value("services/oauth2/authorize") // TODO: This could be an alternate
+										// endpoint.
 	private String authURL;
 	@Value("services/oauth2/token")
 	private String accessTokenURL;
@@ -63,7 +65,7 @@ public class SalesforceAuthorization extends Helper implements Authorization {
 	private String redirectUrl;
 	@Value("services/oauth2/revoke")
 	private String revokeUrl;
-	
+
 	private static final String REDIRECT = "redirect:";
 	private static final String REVATURE = "http://www.revature.com/";
 	private static final String LM = "login_manager";
@@ -88,51 +90,53 @@ public class SalesforceAuthorization extends Helper implements Authorization {
 	 * 
 	 * @param code
 	 * @param servletResponse
-	 * @throws URISyntaxException 
+	 * @throws URISyntaxException
 	 */
-	@RequestMapping("/authenticated") //TODO: Put assignment to session's login_manager thing here?
-	public ModelAndView generateSalesforceToken(@RequestParam(value = "code") String code, HttpSession session, //TODO: Maybe adding session here will break
-			HttpServletRequest servletRequest, HttpServletResponse servletResponse) throws IOException, URISyntaxException {
+	@RequestMapping("/authenticated")
+	public ModelAndView generateSalesforceToken(@RequestParam(value = "code") String code, HttpSession session,
+			HttpServletRequest servletRequest, HttpServletResponse servletResponse)
+			throws IOException, URISyntaxException {
 
 		HttpClient httpClient = HttpClientBuilder.create().build();
-		
+
 		HttpPost post = new HttpPost(loginURL + accessTokenURL);
-		
+
 		List<NameValuePair> parameters = new ArrayList<>();
 		parameters.add(new BasicNameValuePair("grant_type", "authorization_code"));
 		parameters.add(new BasicNameValuePair("client_secret", clientSecret));
 		parameters.add(new BasicNameValuePair("client_id", clientId));
 		parameters.add(new BasicNameValuePair("redirect_uri", redirectUri));
 		parameters.add(new BasicNameValuePair("code", code));
-		
-		
+
 		post.setEntity(new UrlEncodedFormEntity(parameters));
-		
-		
+
 		HttpResponse response = httpClient.execute(post);
-		
+
 		String tokenJson = toJsonString(response.getEntity().getContent());
 		String tokenEncoded = URLEncoder.encode(tokenJson, "UTF-8");
-		
+
 		servletResponse.addCookie(new Cookie("token", tokenEncoded));
-	
-	
-		
+
 		SalesforceToken salesforceToken = new ObjectMapper().readValue(tokenJson, SalesforceToken.class);
-		//System.out.println("TOKEN: "+ salesforceToken);
+		// System.out.println("TOKEN: "+ salesforceToken);
+
+		// set login_manager attribute by adding HttpServletRequest req at
+		// function parameters
+		// and set lm here?
+		httpClient = HttpClientBuilder.create().build(); // removable line?
+
+		HttpGet get = new HttpGet(
+				salesforceToken.getId() + "?access_token=" + salesforceToken.getAccessToken() + "&format=json");
+		response = httpClient.execute(get);
+
+		System.out.println("\n\nSALESFORCE RESPONSE \n" + toJsonString(response.getEntity().getContent()));
 		
-		//set login_manager attribute by adding HttpServletRequest req at function parameters
-		//and set lm here?
-		httpClient = HttpClientBuilder.create().build(); //removable line?
+		String user = toJsonString(response.getEntity().getContent());
+		SalesforceUser salesforceUser = new ObjectMapper().readValue(user, SalesforceUser.class);
+		salesforceUser.setSalesforceToken(salesforceToken);
 		
+		session.setAttribute(LM, salesforceUser);
 		
-		 HttpGet get = new HttpGet(salesforceToken.getId() + "?access_token=" + salesforceToken.getAccessToken() + "&format=json");
-	        response = httpClient.execute(get);
-	       
-	        
-	        System.out.println("\n\nSALESFORCE RESPONSE \n" + toJsonString(response.getEntity().getContent()));
-	        
-	        
 		return new ModelAndView(REDIRECT + redirectUrl);
 
 	}
@@ -153,11 +157,12 @@ public class SalesforceAuthorization extends Helper implements Authorization {
 			HttpServletResponse servletResponse) throws IOException, ServletException {
 		if (auth == null)
 			return new ModelAndView(REDIRECT + REVATURE);
-		/*if (!debug) {
-			// revoke all tokens from the Salesforce
-			String accessToken = ((SalesforceUser) auth.getPrincipal()).getSalesforceToken().getAccessToken();
-			revokeToken(accessToken);
-		}*/
+		/*
+		 * if (!debug) { // revoke all tokens from the Salesforce String
+		 * accessToken = ((SalesforceUser)
+		 * auth.getPrincipal()).getSalesforceToken().getAccessToken();
+		 * revokeToken(accessToken); }
+		 */
 
 		// logout and clear Spring Security Context
 		servletRequest.logout();
@@ -165,15 +170,16 @@ public class SalesforceAuthorization extends Helper implements Authorization {
 		return new ModelAndView(REDIRECT + REVATURE);
 	}
 
-	/*private void revokeToken(String token) throws ClientProtocolException, IOException {
-		HttpClient httpClient = HttpClientBuilder.create().build();
-		HttpPost post = new HttpPost(loginURL + revokeUrl);
-		post.setHeader("Content-Type", "application/x-www-form-urlencoded");
-		List<NameValuePair> parameters = new ArrayList<>();
-		parameters.add(new BasicNameValuePair("token", token));
-		post.setEntity(new UrlEncodedFormEntity(parameters));
-		HttpResponse response = httpClient.execute(post);
-	}*/
+	/*
+	 * private void revokeToken(String token) throws ClientProtocolException,
+	 * IOException { HttpClient httpClient = HttpClientBuilder.create().build();
+	 * HttpPost post = new HttpPost(loginURL + revokeUrl);
+	 * post.setHeader("Content-Type", "application/x-www-form-urlencoded");
+	 * List<NameValuePair> parameters = new ArrayList<>(); parameters.add(new
+	 * BasicNameValuePair("token", token)); post.setEntity(new
+	 * UrlEncodedFormEntity(parameters)); HttpResponse response =
+	 * httpClient.execute(post); }
+	 */
 
 	public void setAuthURL(String authURL) {
 		this.authURL = authURL;
