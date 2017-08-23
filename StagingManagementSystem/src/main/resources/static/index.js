@@ -62158,8 +62158,6 @@
 	    userService.setUser({});
 	    $state.go('login');
 	  });
-	  //TODO:Needs way to redirect without using login?
-
 	  $scope.isActive = function (viewLocation) {
 	    return viewLocation === $location.path();
 	  };
@@ -64109,12 +64107,10 @@
 
 	  var isAssociate = authenticatedUser.id !== undefined;
 	  var isManager = authenticatedUser.is_lightning_login_user !== undefined; //TODO: Change to role whenever that gets in
-	  console.log('Check to see if manager is true  ' + isManager);
 
 	  if (isManager) {
 	    $state.go('manager.home');
-	  }
-	  if (isAssociate) {
+	  } else if (isAssociate) {
 	    $state.go('associate.home');
 	  }
 
