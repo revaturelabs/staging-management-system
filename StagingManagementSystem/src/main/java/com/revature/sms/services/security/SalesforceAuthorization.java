@@ -126,7 +126,7 @@ public class SalesforceAuthorization extends Helper implements Authorization {
 		httpClient = HttpClientBuilder.create().build(); //removable line?
 		
 		
-		 HttpGet get = new HttpGet(salesforceToken.getInstanceUrl() + "?access_token=" + salesforceToken.getAccessToken() + "&format=json");
+		 HttpGet get = new HttpGet(salesforceToken.getId() + "?access_token=" + salesforceToken.getAccessToken() + "&format=json");
 	        response = httpClient.execute(get);
 	       
 	        
