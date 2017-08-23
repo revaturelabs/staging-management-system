@@ -63,14 +63,14 @@ routerApp.run(($uiRouter, $trace, $rootScope) => {
 
   // Ui Visualizer
   // Auto-collapse children in state visualizer
-  // const registry = $uiRouter.stateRegistry;
-  // $uiRouter.stateRegistry.get().map(s => s.$$state())
-  //     .filter(s => s.path.length === 2 || s.path.length === 3)
-  //     .forEach(s => s._collapsed = true);
-  //
-  // const pluginInstance = $uiRouter.plugin(Visualizer);
-  //
-  // $trace.enable('TRANSITION');
+   /*const registry = $uiRouter.stateRegistry;
+   $uiRouter.stateRegistry.get().map(s => s.$$state())
+       .filter(s => s.path.length === 2 || s.path.length === 3)
+       .forEach(s => s._collapsed = false);
+  
+   const pluginInstance = $uiRouter.plugin(Visualizer);
+  
+   $trace.enable('TRANSITION');*/
 
   // Global Functions
   $rootScope.dateConverter = (time) => {
@@ -177,15 +177,26 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       url: '/batches',
       templateUrl: 'manager-pages/advanced/batches/batches.html'
     })
+    .state('manager.advanced.projects', {
+      url: '/projects',
+      templateUrl: 'manager-pages/advanced/projects/projects.html'
+    })
     .state('manager.advanced.batches.edit', {
       url: '/edit/:id',
       templateUrl: 'manager-pages/create/batch.html',
       controller: batchCtrl,
     })
+
     .state('manager.panel',{
     	url: 'panel',
     	templateUrl: 'manager-pages/panel/panel.html',
     	controller: managerPanelCtrl,
+    })
+    .state('manager.advanced.projects.edit', {
+      url: '/edit/:id',
+      templateUrl: 'manager-pages/create/project.html',
+      controller: projectCtrl,
+
     })
     .state('associate', {
       url: '/associate',

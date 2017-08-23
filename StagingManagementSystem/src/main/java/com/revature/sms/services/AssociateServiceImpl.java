@@ -1,6 +1,7 @@
 package com.revature.sms.services;
 
 import com.revature.sms.entities.Associate;
+import com.revature.sms.entities.AssociatesStatus;
 import com.revature.sms.entities.Skill;
 import com.revature.sms.entities.StaggingAssociate;
 import com.revature.sms.repositories.AssociateRepo;
@@ -14,7 +15,9 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class AssociateServiceImpl implements AssociateService {
@@ -86,13 +89,7 @@ public class AssociateServiceImpl implements AssociateService {
 
         return new HashSet<>(associateRepo.findAll());
     }
-
-    @Override
-    public Set<Associate> getAllActive() {
-
-        return associateRepo.findAssociatesByActiveTrue();
-    }
-
+    
     @Override
     public Set<Associate> haveNoBatch() {
 
@@ -104,17 +101,36 @@ public class AssociateServiceImpl implements AssociateService {
 
         return associateRepo.findByBatchId(id);
     }
+    
+    @Override
+    public Set<Associate> findByProjectId(Long id) {
+
+        return associateRepo.findByProjectProjectId(id);
+    }
 
     @Override
     public Set<StaggingAssociate> getAssociatesInStaggingOn(String date) {
       return staggingAssociateRepo.getAssociatesInStaggingOn(date);
     }
 
+    //We added this
+	@Override
+	public Set<Associate> getAllByStatus(String status) {
+		return associateRepo.findByAssociateStatus_Status(status);
+	}
+
+
 	@Override
 	public Set<Associate> haveNoProject() {
 		Set<Associate> noProject = new HashSet<Associate>();
-		Set<Associate> allAssociate = associateRepo.findAssociatesByActiveTrue();
-		for(Associate a : allAssociate){
+		Set<Associate> allAssociateStaging = associateRepo.findByAssociateStatus_Status("STAGING");
+		for(Associate a : allAssociateStaging){
+			if(a.getProject()==null){
+				noProject.add(a);
+			}
+		}
+		Set<Associate> allAssociateBench = associateRepo.findByAssociateStatus_Status("BENCH");
+		for(Associate a : allAssociateBench){
 			if(a.getProject()==null){
 				noProject.add(a);
 			}
