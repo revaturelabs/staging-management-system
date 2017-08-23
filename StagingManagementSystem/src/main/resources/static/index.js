@@ -64109,6 +64109,7 @@
 
 	  var isAssociate = authenticatedUser.id !== undefined;
 	  var isManager = authenticatedUser.is_lightning_login_user !== undefined; //TODO: Change to role whenever that gets in
+	  console.log('Check to see if manager is true  ' + isManager);
 
 	  if (isManager) {
 	    $state.go('manager.home');
