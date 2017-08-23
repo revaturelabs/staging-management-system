@@ -117,8 +117,8 @@ public class SalesforceAuthorization extends Helper implements Authorization {
 	
 	
 		
-		System.out.println("CONTENT AS IS: " + response.getEntity().getContent());
-		System.out.println("CONTENT CONVERTED: " + toJsonString(response.getEntity().getContent()));
+		System.out.println("CONTENT AS URL: " + token);
+		System.out.println("CONTENT CONVERTED: " + URLEncoder.encode(toJsonString(response.getEntity().getContent()), "UTF-8"));
 		
 		//SalesforceToken salesforceToken = new ObjectMapper().readValue(toJsonString(response.getEntity().getContent()), SalesforceToken.class);
 		
