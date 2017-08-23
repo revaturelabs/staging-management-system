@@ -133,12 +133,13 @@ public class SalesforceAuthorization extends Helper implements Authorization {
 		
 		String user = toJsonString(response.getEntity().getContent());
 		
-		System.out.println("USER JSON: "+user);
+		//System.out.println("USER JSON: "+user);
 		
 		SalesforceUser salesforceUser = new ObjectMapper().readValue(user, SalesforceUser.class);
-		//System.out.println(salesforceUser);
+		salesforceUser.setSalesforceToken(salesforceToken);
+		System.out.println("USER POST MAPPED" + salesforceUser);
 		
-		//salesforceUser.setSalesforceToken(salesforceToken);
+	
 		
 		//session.setAttribute(LM, salesforceUser);
 		
