@@ -56,15 +56,19 @@ public class LoginControllerImpl {
 	
 	@GetMapping("user")
 	public ResponseEntity<Object> getUser(HttpSession session) {
+		
+		//TODO: TEST, put this in front to check if it will find it fine
+		SalesforceUser manager = (SalesforceUser)session.getAttribute(LM);
+		if (manager != null) {
+			return ResponseEntity.ok(manager);
+		}
+		
 		Associate associate = (Associate)session.getAttribute(LA);
 		if (associate != null) {
 			return ResponseEntity.ok(associate);
 		}
 		
-		SalesforceUser manager = (SalesforceUser)session.getAttribute(LM);
-		if (manager != null) {
-			return ResponseEntity.ok(manager);
-		}
+
 		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 	}
 
