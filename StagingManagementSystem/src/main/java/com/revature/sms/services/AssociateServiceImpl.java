@@ -69,6 +69,9 @@ public class AssociateServiceImpl implements AssociateService {
 
     @Override
     public void update(Associate associate) {
+    	if(!associate.isActive()){
+    		associate.setProject(null);
+    	}
 
         final Set<Skill> skills = new LinkedHashSet<>();
         for (Skill associateSkill : associate.getSkills()) {
