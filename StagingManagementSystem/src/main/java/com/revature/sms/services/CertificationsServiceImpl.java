@@ -1,16 +1,12 @@
 package com.revature.sms.services;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
-
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.revature.sms.entities.Associate;
 import com.revature.sms.entities.Certifications;
-import com.revature.sms.repositories.AssociateRepo;
 import com.revature.sms.repositories.CertificationsRepo;
 
 @Service
@@ -37,11 +33,9 @@ public class CertificationsServiceImpl implements CertificationsService {
 		return certRepo.findOne(cert_id);
 	}
 
-	@Override
-	public List<Certifications> getAllCertifications() {
-		List<Certifications> cert= new ArrayList<>();
-		certRepo.findAll().forEach(cert::add);
-		return cert;
+	@Override 
+	public Set<Certifications> getAllCertifications() {
+		return new HashSet<>(certRepo.findAll());
 	}
 
 	@Override

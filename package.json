@@ -24,6 +24,7 @@
     "angular-cookies": "^1.5.8",
     "angular-material": "^1.1.1",
     "angular-messages": "^1.5.8",
+    "angular-ui-router": "^1.0.3",
     "eslint": "^3.19.0",
     "eslint-config-airbnb": "^15.0.1",
     "eslint-loader": "^1.7.1",

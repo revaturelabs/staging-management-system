@@ -19,15 +19,17 @@ import { locCtrl } from './manager-pages/create/location';
 import { jobCtrl } from './manager-pages/create/job';
 import { projectCtrl } from './manager-pages/create/project';
 import managerAdvancedCtrl from './manager-pages/advanced/advanced';
+import managerPanelCtrl from './manager-pages/panel/panel';
 import profileCtrl from './associate-pages/profile/profile';
 import associateInterviewCtrl from './associate-pages/interview/interview';
+import associatePanelCtrl from './associate-pages/associatePanel/associatePanel';
 import associateCtrl from './associate-pages/associate';
 import loginCtrl from './login/login';
-import certificationCtrl from './Certifications/certification';
+import certificationCtrl from './Certifications/certifications';
 
 require('fusioncharts/fusioncharts.charts')(FusionCharts);
 
-const Visualizer = window['ui-router-visualizer'].Visualizer;
+// const Visualizer = window['ui-router-visualizer'].Visualizer;
 
 const routerApp = angular.module('routerApp', [uiRouter, angularCookies]);
 
@@ -43,7 +45,7 @@ routerApp.service('userService', function ($cookies) {
 routerApp.directive('scrollToBottom', ($timeout, $window) => {
   return {
     scope: {
-        scrollToBottom: "="
+      scrollToBottom: '='
     },
     restrict: 'A',
     link: (scope, element, attr) => {
@@ -60,19 +62,19 @@ routerApp.directive('scrollToBottom', ($timeout, $window) => {
 
 routerApp.run(($uiRouter, $trace, $rootScope) => {
 
-	//Ui Visualizer
+  // Ui Visualizer
   // Auto-collapse children in state visualizer
-  // const registry = $uiRouter.stateRegistry;
-  // $uiRouter.stateRegistry.get().map(s => s.$$state())
-  //     .filter(s => s.path.length === 2 || s.path.length === 3)
-  //     .forEach(s => s._collapsed = true);
-  //
-  // const pluginInstance = $uiRouter.plugin(Visualizer);
-  //
-  // $trace.enable('TRANSITION');
+   /*const registry = $uiRouter.stateRegistry;
+   $uiRouter.stateRegistry.get().map(s => s.$$state())
+       .filter(s => s.path.length === 2 || s.path.length === 3)
+       .forEach(s => s._collapsed = false);
+  
+   const pluginInstance = $uiRouter.plugin(Visualizer);
+  
+   $trace.enable('TRANSITION');*/
 
-	//Global Functions
-	$rootScope.dateConverter = (time) => {
+  // Global Functions
+  $rootScope.dateConverter = (time) => {
     return moment(time).format('MMM D, hh:mm a');
 	};
 });
@@ -125,10 +127,10 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
 
     })
     .state('manager.create.project', {
-        url: '/project',
-        templateUrl: 'manager-pages/create/project.html',
-        controller: projectCtrl,
-     })
+      url: '/project',
+      templateUrl: 'manager-pages/create/project.html',
+      controller: projectCtrl,
+    })
     .state('manager.home', {
       url: '/home',
       views: {
@@ -154,7 +156,7 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
         },
         'checkins@manager.home': {
           templateUrl: 'manager-pages/home/checkin/checkin.html',
-            controller: managerCheckinsCtrl,
+          controller: managerCheckinsCtrl,
         },
       },
     })
@@ -176,10 +178,26 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       url: '/batches',
       templateUrl: 'manager-pages/advanced/batches/batches.html'
     })
+    .state('manager.advanced.projects', {
+      url: '/projects',
+      templateUrl: 'manager-pages/advanced/projects/projects.html'
+    })
     .state('manager.advanced.batches.edit', {
       url: '/edit/:id',
       templateUrl: 'manager-pages/create/batch.html',
       controller: batchCtrl,
+    })
+
+    .state('manager.panel',{
+    	url: 'panel',
+    	templateUrl: 'manager-pages/panel/panel.html',
+    	controller: managerPanelCtrl,
+    })
+    .state('manager.advanced.projects.edit', {
+      url: '/edit/:id',
+      templateUrl: 'manager-pages/create/project.html',
+      controller: projectCtrl,
+
     })
     .state('associate', {
       url: '/associate',
@@ -196,14 +214,20 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       templateUrl: 'associate-pages/interview/interview.html',
       controller: associateInterviewCtrl,
     })
+    .state('associate.associatePanel', {
+      url: '/associatePanel',
+      templateUrl: 'associate-pages/associatePanel/associatePanel.html',
+      controller:associatePanelCtrl,
+    })
     .state('associate.profile', {
       url: '/profile',
       templateUrl: 'associate-pages/profile/profile.html',
       controller: profileCtrl,
     })
-    .state('certification',{
-    	url:'/certification',
+    
+    .state('associate.certifications',{
+    	url:'/certifications',
     	templateUrl:'Certifications/certifications.html',
-    	controller:certificationCrtl,
-    })
+    	controller: certificationCtrl,
+    });
 });

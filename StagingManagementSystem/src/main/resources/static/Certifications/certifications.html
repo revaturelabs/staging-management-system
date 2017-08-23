@@ -1,11 +1,7 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Certifications</title>
-</head>
-<body>
-			<button  ng-click="ApplyCert()" type="button" id="checkBtn" class="btn btn-primary" >Take Certification</button>
+<link rel="stylesheet" href="./associate-pages/interview/associateInterview.css"/>
+
+			<button  ng-click="ApplyCert()" type="button"  class="btn btn-primary" >Schedule Certification</button>
+			<button  ng-click="submitCert()" type="button" id="checkCert" class="btn btn-primary" >Submit for Approval</button>
 			
 <div class="modal fade" id="getCert" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
@@ -17,17 +13,39 @@
       <div class="modal-body">
         <label>Pick A Certification</label>
         <div class="input-group">
-          <select class="manager-input form-control"  ng-options="">
+          <select class="form-control"  ng-model="certification" ng-options="x for Cert_type in CERTIFICATIONS" >
             <option value="">Certification</option>
           </select>
         </div>
+        <div class="form-group" >
+        <label>Pick a Date</label>
+           <div class='input-group date' >
+               <input type='text' class="form-control" ng-model="selectedDate.value" id='datetimepicker1'/>
+               <span ng-click="showDateTimePicker()" class="input-group-addon">
+                   <span class="glyphicon glyphicon-calendar"></span>
+               </span>
+           </div>
+      	</div>
+      	
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button ng-click="updateCert()"  type="button" class="btn btn-primary"></button>
+        <button ng-click="updateCert()"  type="button" class="btn btn-primary">Submit</button>
       </div>
     </div>
   </div>
 </div>
+
+<table class="table table-striped certification-table selectable-table">
+	<tr>
+		<th>Username</th>
+		<th>Certification</th>
+		<th>Status</th>
+	</tr>
+	<tr>
+		<td></td>
+	</tr>
+</table>
+
 </body>
 </html>

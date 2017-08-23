@@ -1,6 +1,7 @@
 package com.revature.sms.entities;
 
-import java.time.LocalDateTime;
+
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -31,7 +32,7 @@ public class Certifications {
          private String Cert_type;
          private String Cert_status;
          private String Cert_filename;
-         private LocalDateTime Cert_testdate;
+         private Date Cert_testdate;
          private String Cert_comments;
 //         @JoinColumn(name= "MANAGER_ID")
 //         private Manager manager_id;
@@ -77,11 +78,11 @@ public class Certifications {
 			Cert_filename = cert_filename;
 		}
 
-		public LocalDateTime getCert_testdate() {
+		public Date getCert_testdate() {
 			return Cert_testdate;
 		}
 
-		public void setCert_testdate(LocalDateTime cert_testdate) {
+		public void setCert_testdate(Date cert_testdate) {
 			Cert_testdate = cert_testdate;
 		}
 

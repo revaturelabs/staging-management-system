@@ -1,6 +1,5 @@
 package com.revature.sms.services;
 
-import java.util.List;
 import java.util.Set;
 
 import com.revature.sms.entities.Associate;
@@ -13,7 +12,7 @@ public interface CertificationsService {
      //get a particular certification by ID
       public Certifications getById(long cert_id);
      //get all certifications
-      public List<Certifications> getAllCertifications();
+      public Set<Certifications> getAllCertifications();
       // get all associates who has particular certificates
       public Set<Certifications> findByAssociate(Associate associate);
      

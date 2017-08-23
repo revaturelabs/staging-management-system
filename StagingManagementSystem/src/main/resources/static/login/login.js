@@ -1,4 +1,4 @@
-const loginCtrl = ($scope, $http, $state, userService) => {
+function loginCtrl($scope, $http, $state, userService) {
   const loginBtn = document.getElementById('loginBtn');
   $scope.username = '';
   $scope.password = '';
@@ -51,6 +51,6 @@ const loginCtrl = ($scope, $http, $state, userService) => {
         });
     }
   };
-};
+}
 
 export default loginCtrl;

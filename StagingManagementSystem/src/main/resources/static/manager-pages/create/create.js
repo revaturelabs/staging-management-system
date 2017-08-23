@@ -1,5 +1,5 @@
-const managerCreateCtrl = ($scope, $state) => {
+function managerCreateCtrl($scope, $state) {
   $scope.$state = $state;
-};
+}
 
 export default managerCreateCtrl;
