@@ -29,6 +29,14 @@ public class ProjectServiceImpl implements ProjectService {
 
 	@Override
 	public void addProject(Project project) {
+		if("inactive".equals(project.getProjectStatus())){
+			for(Associate a: project.getAssociates()){
+				Associate ass = associateRepo.findOne(a.getId());
+				ass.setProject(null);
+				associateRepo.saveAndFlush(ass);
+			}
+			project.setAssociates(null);
+		}
 		if (project.getProjectId() == 0) {
 			Project p = projectRepo.saveAndFlush(project);
 			project.getAssociates().forEach((Associate associate) -> {
