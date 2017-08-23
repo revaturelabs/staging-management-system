@@ -61,14 +61,14 @@ public class LoginControllerImpl {
 		SalesforceUser manager = (SalesforceUser)session.getAttribute(LM);
 		System.out.println("MANAGER WAS SET TO: "+ manager);
 		if (manager != null) {
-			System.out.println("\nRETURNING MANAGER");
+			System.out.println("RETURNING MANAGER\n");
 			return ResponseEntity.ok(manager);
 
 		}
 		
 		Associate associate = (Associate)session.getAttribute(LA);
 		if (associate != null) {
-			System.out.println("\nRETURNING ASSOCIATE");
+			System.out.println("RETURNING ASSOCIATE\n");
 			return ResponseEntity.ok(associate);
 		}
 		

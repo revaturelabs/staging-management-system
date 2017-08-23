@@ -4,8 +4,8 @@ function managerCtrl($scope, $state, $location, $http, userService) {
     url: '/login/user',
   }).then((response) => {
     userService.setUser(response.data);
-    if (response.data.isLightningLoginUser === undefined) { //TODO:Tie to role once role is set
-    	console.log(response);
+    if (response.data.is_lightning_login_user === undefined) { //TODO:Tie to role once role is set
+    	console.log(response.data);
       $state.go('associate.home');
     }
   }, () => {

@@ -62172,9 +62172,9 @@
 	    url: '/login/user'
 	  }).then(function (response) {
 	    userService.setUser(response.data);
-	    if (response.data.isLightningLoginUser === undefined) {
+	    if (response.data.is_lightning_login_user === undefined) {
 	      //TODO:Tie to role once role is set
-	      console.log(response);
+	      console.log(response.data);
 	      $state.go('associate.home');
 	    }
 	  }, function () {
