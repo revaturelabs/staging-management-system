@@ -21,6 +21,8 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 
 @Entity
@@ -56,11 +58,7 @@ public class Associate {
 	@JoinColumn(name = "CLIENT_ID")
 	private Client lockedTo;
 	
-	@OneToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="PORTFOLIO_STATUS_ID")
-	private PortfolioStatus portfolioStatus;
-	
-	@OneToOne(fetch=FetchType.EAGER)
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="ASSOCIATE_STATUS_ID")
 	private AssociatesStatus associateStatus;
 	
@@ -77,11 +75,10 @@ public class Associate {
 		this.skills = new HashSet<>();
 		this.jobs = new HashSet<>();
 		this.associateStatus = new AssociatesStatus();
-		this.portfolioStatus = new PortfolioStatus();
 	}
 
 	public Associate(long id, Credential credential, String name, String portfolioLink, Batch batch, Project project,
-			Client lockedTo, Set<Skill> skills, Set<Job> jobs, PortfolioStatus portfolioStatusId, AssociatesStatus associateStatusId) 
+			Client lockedTo, Set<Skill> skills, Set<Job> jobs, AssociatesStatus associateStatusId) 
 	{
 		super();
 		this.id = id;
@@ -93,10 +90,8 @@ public class Associate {
 		this.lockedTo = lockedTo;
 		this.skills = skills;
 		this.jobs = jobs;
-		this.portfolioStatus = portfolioStatusId;
 		this.associateStatus = associateStatusId;
 	}
-
 
 
 	/**
@@ -158,19 +153,18 @@ public class Associate {
 	
 	public void setStatus() {
 		
-		if(this.isTrainingOnDate(LocalDateTime.now())) {
-			AssociatesStatus status = new AssociatesStatus(0, "TRAINING");
-			this.setAssociateStatus(status);
-		}
-		
-		else if (this.hasJobOnDate(LocalDateTime.now())) {
-			AssociatesStatus status = new AssociatesStatus(2, "PROJECT");
-			this.setAssociateStatus(status);
-		}
-		
-		else {
-			AssociatesStatus status = new AssociatesStatus(1, "STAGING");
-			this.setAssociateStatus(status);
+		if (this.isTrainingOnDate(LocalDateTime.now())) {
+			associateStatus.setAssociatesStatusId(1);
+			associateStatus.setStatus("TRAINING");
+		} else if (this.isTrackedOnDate(LocalDateTime.now())) {
+			associateStatus.setAssociatesStatusId(2);
+			associateStatus.setStatus("STAGING");
+		} else if (this.hasJobOnDate(LocalDateTime.now())) {
+			associateStatus.setAssociatesStatusId(3);
+			associateStatus.setStatus("PROJECT");
+		} else {
+			associateStatus.setAssociatesStatusId(4);
+			associateStatus.setStatus("BENCH");
 		}
 	}
 
@@ -240,16 +234,6 @@ public class Associate {
 	public void setLockedTo(Client lockedTo) 
 	{
 		this.lockedTo = lockedTo;
-	}
-
-	public PortfolioStatus getPortfolioStatus() 
-	{
-		return portfolioStatus;
-	}
-
-	public void setPortfolioStatus(PortfolioStatus portfolioStatus) 
-	{
-		this.portfolioStatus = portfolioStatus;
 	}
 
 	public AssociatesStatus getAssociateStatus() 
@@ -325,11 +309,6 @@ public class Associate {
 				return false;
 		} else if (!portfolioLink.equals(other.portfolioLink))
 			return false;
-		if (portfolioStatus == null) {
-			if (other.portfolioStatus != null)
-				return false;
-		} else if (!portfolioStatus.equals(other.portfolioStatus))
-			return false;
 		if (project == null) {
 			if (other.project != null)
 				return false;
@@ -343,11 +322,11 @@ public class Associate {
 		return true;
 	}
 
-//	@Override
-//	public String toString() {
-//		return "Associate [id=" + id + ", credential=" + credential + ", name=" + name + ", portfolioLink="
-//				+ portfolioLink + ", batch=" + (batch == null ? null : batch.getBatchType().getValue()) + ", project=" + (project == null ? null : project.getProjectName()) + ", active=" + active + ", lockedTo="
-//				+ lockedTo + ", skills=" + skills + "]";
-//	}
-
+	@Override
+	public String toString() {
+		return "Associate [id=" + id + ", credential=" + credential + ", name=" + name + ", portfolioLink="
+				+ portfolioLink + ", batch=" + batch + ", project=" + project + ", lockedTo=" + lockedTo
+				+ ", associateStatus=" + associateStatus + ", skills=" + skills + ", jobs=" + jobs + "]";
+		}
+	
 }

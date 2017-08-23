@@ -18,8 +18,6 @@ public class AssociatesStatus
 {
 	@Id
 	@Column(name= "ASSOCIATE_STATUS_ID")
-//	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ASSOCIATE_STATUS_ID_SEQ")
-//	@SequenceGenerator(name = "ASSOCIATE_STATUS_ID_SEQ", sequenceName = "ASSOCIATE_STATUS_ID_SEQ")
 	private int associateStatusId;
 	
 	@Column(name="STATUS")
