@@ -18,7 +18,8 @@
 			</table>
 
 
-
+		<!-- if the last panel is fail show the button, else hide the button  ng-show ="t.state =='pending'"-->
+		<button type="button" ng-click="showAddModal()" class="btn btn-primary">Add Panel</button>
 			<table ng-show="show_panel"
 				class="table table-striped manager-advanced-associates-table selectable-table">
 				<thead>
@@ -26,9 +27,7 @@
 						<th class="assPanel-th" scope="col">Panel ID</th>
 						<th class="assPanel-th" scope="col">Date</th>
 						<th class="assPanel-th" scope="col">Status</th>
-						<th class="assPanel-th" scope="col">Comment</th>
-						<!-- if the last panel is fail show the button, else hide the button  ng-show ="t.state =='pending'"-->
-						<th class="assPanel-th" scope="col"><button type="button" ng-click="showAddModal()" class="btn btn-primary">Add Panel</button></th>
+						<th class="assPanel-th" scope="col">Comment</th>		
 					</tr>
 				</thead>
 				<tbody>
@@ -37,12 +36,13 @@
 						<td>{{p.id}}</td>
 						<td>{{dateConverter(p.statusDate)}}</td>
 						<td>{{p.status}}</td>
-						<td>{{p.comment}}</td>
+						<td>{{p.comments}}</td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
 
+	<!-- Modal for add new panel -->
 		<div id="addModal" class="modal fade" tabindex="-1" role="dialog">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
