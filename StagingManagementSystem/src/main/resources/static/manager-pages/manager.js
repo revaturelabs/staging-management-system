@@ -6,14 +6,18 @@ const managerCtrl = ($scope, $state, $location, $http, userService) => {
     url: '/login/user',
   }).then((response) => {
     userService.setUser(response.data);
-    if (response.data.gi=== undefined) { //It's checking username as a test. Will check role
+    
+    console.log(response);
+    if (response.data === undefined) { //It's checking username as a test. Will check role
       $state.go('associate.home');
     }
-  }, () => {
+  };
+  
+/*  , () => {
     userService.setUser({});
     $state.go('login');
   });
-
+*/
   
   
 	$scope.isActive = function (viewLocation) {
