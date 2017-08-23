@@ -119,7 +119,6 @@ public class SalesforceAuthorization extends Helper implements Authorization {
 		servletResponse.addCookie(new Cookie("token", tokenEncoded));
 		SalesforceToken salesforceToken = new ObjectMapper().readValue(tokenJson, SalesforceToken.class);
 
-		//httpClient = HttpClientBuilder.create().build(); // removable line?
 		HttpGet get = new HttpGet(salesforceToken.getId() + "?access_token=" + salesforceToken.getAccessToken());
 		response = httpClient.execute(get);
 
@@ -127,12 +126,8 @@ public class SalesforceAuthorization extends Helper implements Authorization {
 		SalesforceUser salesforceUser = new ObjectMapper().readValue(user, SalesforceUser.class);
 		salesforceUser.setSalesforceToken(salesforceToken);
 
-		System.out.println("USER POST MAPPED" + salesforceUser);
-
 		session.setAttribute(LM, salesforceUser);
-		
-		System.out.println("CHECKING setAttribute success" + session.getAttribute(LM));
-
+	
 		return new ModelAndView(REDIRECT + redirectUrl);
 
 	}

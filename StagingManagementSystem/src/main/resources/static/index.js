@@ -199,7 +199,14 @@
 	  // const pluginInstance = $uiRouter.plugin(Visualizer);
 	  //
 	  // $trace.enable('TRANSITION');
-
+	  /*const registry = $uiRouter.stateRegistry;
+	  $uiRouter.stateRegistry.get().map(s => s.$$state())
+	      .filter(s => s.path.length === 2 || s.path.length === 3)
+	      .forEach(s => s._collapsed = false);
+	  
+	  const pluginInstance = $uiRouter.plugin(Visualizer);
+	  
+	  $trace.enable('TRANSITION');*/
 
 	  // Global Functions
 	  $rootScope.dateConverter = function (time) {
@@ -293,10 +300,17 @@
 	  }).state('manager.advanced.batches', {
 	    url: '/batches',
 	    templateUrl: 'manager-pages/advanced/batches/batches.html'
+	  }).state('manager.advanced.projects', {
+	    url: '/projects',
+	    templateUrl: 'manager-pages/advanced/projects/projects.html'
 	  }).state('manager.advanced.batches.edit', {
 	    url: '/edit/:id',
 	    templateUrl: 'manager-pages/create/batch.html',
 	    controller: _batch.batchCtrl
+	  }).state('manager.advanced.projects.edit', {
+	    url: '/edit/:id',
+	    templateUrl: 'manager-pages/create/project.html',
+	    controller: _project.projectCtrl
 	  }).state('associate', {
 	    url: '/associate',
 	    templateUrl: 'associate-pages/associate.html',
@@ -62143,7 +62157,7 @@
 	    url: '/login/user'
 	  }).then(function (response) {
 	    userService.setUser(response.data);
-	    if (response.data.username === undefined) {
+	    if (response.data.gi === undefined) {
 	      //It's checking username as a test. Will check role
 	      $state.go('associate.home');
 	    }
