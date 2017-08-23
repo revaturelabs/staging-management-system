@@ -62144,20 +62144,20 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var managerCtrl = function managerCtrl($scope, $state, $location, $http, userService) {
+	function managerCtrl($scope, $state, $location, $http, userService) {
 	  $http({
 	    method: 'GET',
 	    url: '/login/user'
 	  }).then(function (response) {
 	    userService.setUser(response.data);
-	    if (response.data.permission === undefined) {
+	    if (response.data.is_lightning_login_user === undefined) {
+	      //TODO: Tie to role once role is properly set. Lightning user is just something in salesforceuser
 	      $state.go('associate.home');
 	    }
 	  }, function () {
 	    userService.setUser({});
 	    $state.go('login');
 	  });
-
 	  $scope.isActive = function (viewLocation) {
 	    return viewLocation === $location.path();
 	  };
@@ -62173,7 +62173,7 @@
 	  };
 
 	  $scope.manager = { name: 'Joe' };
-	};
+	}
 
 	exports.managerCtrl = managerCtrl;
 
@@ -62225,11 +62225,7 @@
 	  });
 
 	  $scope.approvedFilter = function (associate) {
-	    if (associate.checkin.approvedBy) {
-	      return false;
-	    } else {
-	      return true;
-	    }
+	    return associate.checkin.approvedBy ? false : true;
 	  };
 
 	  $scope.selectAllAssociatesWhoCheckedIn = function () {
@@ -62273,15 +62269,11 @@
 	    url: '/interviews/next-five-days'
 	  }).then(function (response) {
 	    $scope.interviews = response.data;
-	  }, function () {
-	    console.log('error!');
-	  });
+	  }, function () {});
 
 	  $http.get('/interviewStatus/all').then(function (successResponse) {
 	    $scope.interviewStatuses = successResponse.data;
-	  }, function () {
-	    console.log('failed to retreive interview statuses');
-	  });
+	  }, function () {});
 
 	  // configure the modal for the interview selected
 	  $scope.interviewSelect = function (interview) {
@@ -62690,7 +62682,6 @@
 	 */
 	function buildWeekly() {
 	  weeklyData = originalData;
-	  console.log(JSON.stringify(originalData));
 	}
 
 	/**
@@ -62759,7 +62750,6 @@
 	  }).then(function (response) {
 	    $scope.checkedInAssociates = [];
 	    $scope.notCheckedInAssociates = [];
-	    console.log(JSON.stringify(response.data, null, 2));
 	    response.data.forEach(function (item) {
 	      item.checkinTime = (0, _moment2.default)(item.checkinTime).format('HH:MM');
 	      if (item.checkinTime === 'Invalid date') $scope.notCheckedInAssociates.push(item);else $scope.checkedInAssociates.push(item);
@@ -63147,9 +63137,9 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var managerCreateCtrl = function managerCreateCtrl($scope, $state) {
+	function managerCreateCtrl($scope, $state) {
 	  $scope.$state = $state;
-	};
+	}
 
 	exports.default = managerCreateCtrl;
 
@@ -63204,20 +63194,12 @@
 	                  }
 	                });
 	              });
-	            }, function () {
-	              // console.log('failure')
-	            });
+	            }, function () {});
 	          }
 	        });
-	      }, function () {
-	        console.log('failure');
-	      });
-	    }, function () {
-	      console.log('failure');
-	    });
-	  }, function () {
-	    // console.log('failure')
-	  });
+	      }, function () {});
+	    }, function () {});
+	  }, function () {});
 
 	  $scope.addAssociate = function () {
 	    if (!$scope.selectedAssociate) {
@@ -63326,7 +63308,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var clientCtrl = function clientCtrl($scope, $http) {
+	function clientCtrl($scope, $http) {
 	  // $scope.requestMade = false;
 	  $scope.submit = function () {
 	    $scope.requestMade = true;
@@ -63341,7 +63323,7 @@
 	      $scope.createMessageStyle = { color: 'red' };
 	    });
 	  };
-	};
+	}
 	exports.clientCtrl = clientCtrl;
 
 /***/ }),
@@ -63353,19 +63335,17 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var userCtrl = function userCtrl($scope, $http) {
+	function userCtrl($scope, $http) {
 	  $http.get('batchtype/all.json').then(function (response) {
 	    $scope.posts = response.data;
-	  }, function () {
-	    console.log('failure');
-	  });
+	  }, function () {});
 
 	  $scope.submit = function () {
 	    $scope.requestMade = true;
 	    $scope.createMessage = 'Attempting to create client';
 	    $scope.createMessageStyle = { color: 'black' };
 
-	    //need 2 different post requests for manager and associate
+	    // need 2 different post requests for manager and associate
 	    if ($scope.user.type == 'associate') {
 	      $http.post('/associate', $scope.user).then(function (response) {
 	        $scope.createMessage = 'Successfully created client';
@@ -63374,7 +63354,7 @@
 	        $scope.createMessage = 'Failed to create client';
 	        $scope.createMessageStyle = { color: 'red' };
 	      });
-	    };
+	    }
 	    if ($scope.user.type == 'manager') {
 	      $http.post('/manager', $scope.user).then(function (response) {
 	        $scope.createMessage = 'Successfully created client';
@@ -63383,9 +63363,9 @@
 	        $scope.createMessage = 'Failed to create client';
 	        $scope.createMessageStyle = { color: 'red' };
 	      });
-	    };
+	    }
 	  };
-	};
+	}
 
 	exports.userCtrl = userCtrl;
 
@@ -63398,7 +63378,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var locCtrl = function locCtrl($scope, $http) {
+	function locCtrl($scope, $http) {
 	  $scope.submit = function () {
 	    $scope.requestMade = true;
 	    $scope.createMessage = 'Attempting to create location';
@@ -63411,7 +63391,7 @@
 	      $scope.createMessageStyle = { color: 'red' };
 	    });
 	  };
-	};
+	}
 
 	exports.locCtrl = locCtrl;
 
@@ -63424,7 +63404,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var jobCtrl = function jobCtrl($scope, $http) {
+	function jobCtrl($scope, $http) {
 	  $scope.job = {};
 	  $('#datetimepicker1').datetimepicker();
 	  $('#datetimepicker2').datetimepicker();
@@ -63433,21 +63413,17 @@
 	  $('#datetimepicker5').datetimepicker();
 
 	  $scope.showDateTimePicker = function (id) {
-	    $('#datetimepicker' + id).datetimepicker("show");
+	    $('#datetimepicker' + id).datetimepicker('show');
 	  };
 
 	  $http.get('associate/all').then(function (response) {
-	    //takes a while for associates to load...
+	    // takes a while for associates to load...
 	    $scope.associates = response.data;
-	  }, function () {
-	    console.log("failure");
-	  });
+	  }, function () {});
 
 	  $http.get('client/all').then(function (response) {
 	    $scope.clients = response.data;
-	  }, function () {
-	    console.log("failure");
-	  });
+	  }, function () {});
 
 	  $('#datetimepicker1').on('dp.change', function () {
 	    $scope.job.startDate = $('#datetimepicker1').val();
@@ -63489,7 +63465,7 @@
 	      $scope.createMessageStyle = { color: 'red' };
 	    });
 	  };
-	};
+	}
 
 	exports.jobCtrl = jobCtrl;
 
@@ -63572,41 +63548,54 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var managerAdvancedCtrl = function managerAdvancedCtrl($scope, $http, $state) {
+	function managerAdvancedCtrl($scope, $http, $state) {
 	  window.scope = $scope;
 
 	  $http.get('batchtype/all').then(function (data) {
 	    $scope.batchtypes = data.data;
 	    $scope.selectedBatchTypes = [];
 	    $scope.batchtypes.forEach(function (type) {
-	      return $scope.selectedBatchTypes.push(type);
+	      $scope.selectedBatchTypes.push(type);
 	    });
 	  });
 
 	  $http.get('associate/all').then(function (data) {
 	    $scope.associates = data.data;
-	  }, function (data) {
-	    console.log('failed');
-	  });
+	  }, function (data) {});
 
 	  $http.get('batch/all').then(function (data) {
 	    $scope.batches = data.data;
-	  }, function (data) {
-	    console.log('failed');
-	  });
+	  }, function (data) {});
+
+	  // fetching all project data
+	  $http.get('project/all').then(function (data) {
+	    $scope.projects = data.data;
+	  }, function (data) {});
 
 	  $scope.isAssociates = function () {
-	    if ($state.is('manager.advanced.allassociates')) return true;
+	    if ($state.is('manager.advanced.allassociates')) {
+	      return true;
+	    }
 	    return false;
 	  };
 
 	  $scope.isBatches = function () {
-	    if ($state.is('manager.advanced.batches')) return true;
+	    if ($state.is('manager.advanced.batches')) {
+	      return true;
+	    }
+	    return false;
+	  };
+
+	  // button for internal projects
+	  $scope.isProjects = function () {
+	    if ($state.is('manager.advanced.projects')) return true;
 	    return false;
 	  };
 
 	  $scope.isInterviews = function () {
-	    if ($state.is('manager.advanced.interviews')) return true;
+	    if ($state.is('manager.advanced.interviews')) {
+	      return true;
+	    }
 	    return false;
 	  };
 
@@ -63626,12 +63615,9 @@
 	    // Is currently selected
 	    if (idx > -1) {
 	      $scope.selectedBatchTypes.splice(idx, 1);
+	    } else {
+	      $scope.selectedBatchTypes.push(selectedBatch);
 	    }
-
-	    // Is newly selected
-	    else {
-	        $scope.selectedBatchTypes.push(selectedBatch);
-	      }
 	  };
 
 	  $scope.associateBatchFilter = function (associate) {
@@ -63651,7 +63637,7 @@
 	      return batchType.value === batch.batchType.value;
 	    }).length >= 1;
 	  };
-	};
+	}
 
 	exports.default = managerAdvancedCtrl;
 
@@ -63730,7 +63716,7 @@
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
-	var profileCtrl = function profileCtrl($scope, $http, userService, $stateParams, $state, $window) {
+	function profileCtrl($scope, $http, userService, $stateParams, $state, $window) {
 	  if ($state.includes('manager')) {
 	    $scope.isManager = true;
 	    $http.get('client/priority').then(function (response) {
@@ -63784,6 +63770,11 @@
 	    $scope.portfolioModalButtonValue = 'Save';
 	    $scope.portfolioUrlInput = $scope.associate.portfolioLink;
 	    $('#portfolioUrlModal').modal('show');
+	  };
+
+	  $scope.openProjectStatusModal = function () {
+	    $scope.sendingRequest = false;
+	    $('#projectStatusModal').modal('show');
 	  };
 
 	  $scope.toggleMappedModal = function () {
@@ -63866,7 +63857,7 @@
 	      $scope.addSkill();
 	    }
 	  };
-	};
+	}
 
 	exports.default = profileCtrl;
 
@@ -64041,7 +64032,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var associateCtrl = function associateCtrl($scope, $location, $http, $state, userService) {
+	function associateCtrl($scope, $location, $http, $state, userService) {
 	  var authenticatedUser = userService.getUser();
 	  var checkBtnDOM = document.getElementById('checkBtn');
 	  $scope.checkInBtn = 'Loading...';
@@ -64093,7 +64084,7 @@
 	      $state.transitionTo('login');
 	    });
 	  };
-	};
+	}
 
 	exports.default = associateCtrl;
 
@@ -64106,7 +64097,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var loginCtrl = function loginCtrl($scope, $http, $state, userService) {
+	function loginCtrl($scope, $http, $state, userService) {
 	  var loginBtn = document.getElementById('loginBtn');
 	  $scope.username = '';
 	  $scope.password = '';
@@ -64115,7 +64106,7 @@
 	  var authenticatedUser = userService.getUser();
 
 	  var isAssociate = authenticatedUser.id !== undefined;
-	  var isManager = authenticatedUser.permission !== undefined;
+	  var isManager = authenticatedUser.is_lightning_login_user !== undefined; //TODO: Change to role whenever that gets in
 
 	  if (isManager) {
 	    $state.go('manager.home');
@@ -64139,17 +64130,12 @@
 	      loginBtn.disabled = false;
 	      loginBtn.innerHTML = 'Log In';
 	    } else {
-	      $http({
+	      $http({ //Login post request
 	        method: 'POST',
 	        url: '/login',
 	        data: { username: $scope.username, password: $scope.password }
 	      }).then(function (response) {
-	        userService.setUser(response.data);
-	        if (response.data.permission !== undefined) {
-	          $state.go('manager.home');
-	        } else {
-	          $state.go('associate.home');
-	        }
+	        userService.setUser(response.data); //NOTE: Anything to do with manager login is handled through salesforce login and handling. See manager.js
 	      }, function () {
 	        $scope.errorMsg = 'Username or Password is incorrect.';
 	        $scope.errorMsgShow = true;
@@ -64158,7 +64144,7 @@
 	      });
 	    }
 	  };
-	};
+	}
 
 	exports.default = loginCtrl;
 

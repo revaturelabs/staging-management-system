@@ -1,6 +1,7 @@
 package com.revature.sms.services.security;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
@@ -34,6 +35,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.sms.entities.Associate;
 import com.revature.sms.entities.Credential;
@@ -66,6 +68,9 @@ public class SalesforceAuthorization extends Helper implements Authorization {
 	private String redirectUrl;
 	@Value("services/oauth2/revoke")
 	private String revokeUrl;
+	
+	@Value("${sms.salesforce}")
+	private boolean salesforce;
 
 	private static final String REDIRECT = "redirect:";
 	private static final String REVATURE = "http://www.revature.com/";
@@ -77,11 +82,25 @@ public class SalesforceAuthorization extends Helper implements Authorization {
 
 	/**
 	 * Redirects the request to perform authentication.
+	 * @throws JsonProcessingException 
+	 * @throws UnsupportedEncodingException 
 	 * 
 	 */
 	@RequestMapping("/salesforce")
-	public ModelAndView openAuthURI() {
-
+	public ModelAndView openAuthURI( HttpServletResponse servletResponse) throws JsonProcessingException, UnsupportedEncodingException {
+		//For local debugging
+		if (salesforce){ 
+			SalesforceUser salesforceUser = new SalesforceUser();
+			salesforceUser.setId("https://test.salesforce.com/id/00D0n000000000000/0000000000000000000");
+			salesforceUser.setLightningLoginUser(false);	
+	
+			String user = new ObjectMapper().writeValueAsString(salesforceUser);
+			String userEncoded = URLEncoder.encode(user, "UTF-8");
+			servletResponse.addCookie(new Cookie("user", userEncoded)); 
+			
+			return new ModelAndView(REDIRECT + redirectUrl);
+		}
+		
 		return new ModelAndView(REDIRECT + loginURL + authURL + "?response_type=code&client_id=" + clientId
 				+ "&redirect_uri=" + redirectUri);
 	}
