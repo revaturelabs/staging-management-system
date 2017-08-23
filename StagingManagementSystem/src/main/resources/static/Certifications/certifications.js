@@ -7,8 +7,13 @@ const certificationCtrl= function($scope,$http,$state, $stateParams){
 			$('#getCert').modal('show');
 		};
 		
-		$http.get('certifications/all').then(function(response){
-			console.log(response);
+
+		$http ({
+			method: 'GET',
+			url: '/certifications/all',
+		})
+		.then((response) => {
+			$scope.certification = response.data;
 		});
 		
 		
