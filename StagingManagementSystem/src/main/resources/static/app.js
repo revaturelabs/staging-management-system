@@ -33,13 +33,13 @@ require('fusioncharts/fusioncharts.charts')(FusionCharts);
 const routerApp = angular.module('routerApp', [uiRouter, angularCookies]);
 
 routerApp.service('userService', function ($cookies) {
-  this.user = $cookies.getObject('user') === undefined ? {} : $cookies.getObject('user');
-  this.getUser = () => ({ ...this.user });
-  this.setUser = (user) => {
-    $cookies.putObject('user', user);
-    this.user = { ...user };
-  };
-});
+	  this.user = $cookies.getObject('user') === undefined ? {} : $cookies.getObject('user');
+	  this.getUser = () => ({ ...this.user });
+	  this.setUser = (user) => {
+	    $cookies.putObject('user', user);
+	    this.user = { ...user };
+	  };
+	});
 
 routerApp.directive('scrollToBottom', ($timeout, $window) => {
   return {
@@ -61,8 +61,17 @@ routerApp.directive('scrollToBottom', ($timeout, $window) => {
 
 routerApp.run(($uiRouter, $trace, $rootScope) => {
 
+
   // Ui Visualizer
   // Auto-collapse children in state visualizer
+  // const registry = $uiRouter.stateRegistry;
+  // $uiRouter.stateRegistry.get().map(s => s.$$state())
+  // .filter(s => s.path.length === 2 || s.path.length === 3)
+  // .forEach(s => s._collapsed = true);
+  //
+  // const pluginInstance = $uiRouter.plugin(Visualizer);
+  //
+  // $trace.enable('TRANSITION');
    /*const registry = $uiRouter.stateRegistry;
    $uiRouter.stateRegistry.get().map(s => s.$$state())
        .filter(s => s.path.length === 2 || s.path.length === 3)
@@ -74,6 +83,7 @@ routerApp.run(($uiRouter, $trace, $rootScope) => {
 
   // Global Functions
   $rootScope.dateConverter = (time) => {
+
     return moment(time).format('MMM D, hh:mm a');
 	};
 });
@@ -222,5 +232,6 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       url: '/profile',
       templateUrl: 'associate-pages/profile/profile.html',
       controller: profileCtrl,
+
     });
 });
