@@ -129,13 +129,17 @@ public class SalesforceAuthorization extends Helper implements Authorization {
 				salesforceToken.getId() + "?access_token=" + salesforceToken.getAccessToken() + "&format=json");
 		response = httpClient.execute(get);
 
-		System.out.println("\n\nSALESFORCE RESPONSE \n" + toJsonString(response.getEntity().getContent()));
+		//System.out.println("\n\nSALESFORCE RESPONSE \n" + toJsonString(response.getEntity().getContent()));
 		
 		String user = toJsonString(response.getEntity().getContent());
-		SalesforceUser salesforceUser = new ObjectMapper().readValue(user, SalesforceUser.class);
-		salesforceUser.setSalesforceToken(salesforceToken);
+		System.out.println("USER JSON: "+user);
 		
-		session.setAttribute(LM, salesforceUser);
+		//SalesforceUser salesforceUser = new ObjectMapper().readValue(user, SalesforceUser.class);
+		//System.out.println(salesforceUser);
+		
+		//salesforceUser.setSalesforceToken(salesforceToken);
+		
+		//session.setAttribute(LM, salesforceUser);
 		
 		return new ModelAndView(REDIRECT + redirectUrl);
 
