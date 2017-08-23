@@ -23,6 +23,14 @@ function managerAdvancedCtrl($scope, $http, $state) {
     }, (data) => {
       console.log('failed');
     });
+    
+    // fetching all project data
+   $http.get('project/all')
+    .then((data) => {
+      $scope.projects = data.data;
+    }, (data) => {
+      console.log('failed');
+    });
 
   $scope.isAssociates = () => {
     if ($state.is('manager.advanced.allassociates')) {
@@ -36,6 +44,13 @@ function managerAdvancedCtrl($scope, $http, $state) {
       return true;
     }
     return false;
+  };
+  
+  // button for internal projects
+  $scope.isProjects = () => {
+	if($state.is('manager.advanced.projects'))
+	  return true;
+	return false;
   };
 
   $scope.isInterviews = () => {

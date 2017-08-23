@@ -1,0 +1,52 @@
+<div>
+  <table class="table table-striped manager-advanced-associates-table selectable-table">
+    <thead>
+    <tr>
+    	<!-- sorting for internal projects, would depend on whats showing-->
+      <!-- <div class="table-header-buttons">
+        <div>Select Project Status</div>
+        <div class="manager-advanced-row">
+            <input
+              type="checkbox"
+              value="active"
+              ng-checked="selectedProjectStatuses.indexOf(projectStatus) > -1"
+              ng-click="toggleSelectedStatuses(projectStatus)"
+            >Active
+            <input
+              type="checkbox"
+              value="inactive"
+              ng-checked="selectedProjectStatuses.indexOf(projectStatus) > -1"
+              ng-click="toggleSelectedStatuses(projectStatus)"
+            >Inactive
+        </div> -->
+      <th scope="col">Project Name</th>
+      <th scope="col">Description</th>
+      <th scope="col">Status</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- ng repeat for the project in projects -->
+    <tr ng-repeat="project in projects" ui-sref="manager.advanced.projects.edit({id: project.projectId})" data-toggle="modal" data-target="#projectModal">
+      <td ng-bind="project.projectName"></td>
+      <td class="ellipsis" ng-bind="project.projectDescription"></td>
+      <td ng-bind="project.projectStatus"></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Modal -->
+<div id="projectModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div ui-view></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
