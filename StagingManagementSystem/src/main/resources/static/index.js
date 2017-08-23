@@ -63720,6 +63720,31 @@
 				});
 			};
 		};
+
+		$scope.showAddModal = function () {
+			$scope.errorMsgShow = false;
+			$scope.successMsgShow = false;
+
+			$scope.selectedClient = undefined;
+			$('#datetimepicker1').val('');
+			$scope.selectedMarketer = undefined;
+
+			$('#addModal').modal('show');
+		};
+
+		$scope.PanelClick = function (panel) {
+			$scope.PanelClick = panel;
+			//			    for (let i = 0; i < $scope.interviewStatuses.length; i++) {
+			//			      if ($scope.interviewStatuses[i].value === interview.interviewStatus.value){
+			//			        $scope.updateStatus = $scope.interviewStatuses[i];
+			//			      }
+			//			    }
+			//			    $scope.updateComment = $scope.clickedInterview.comment;	 
+
+			$scope.errorUpdateMsgShow = false;
+			$scope.successUpdateMsgShow = false;
+			$('#PanelCommentModal').modal('show');
+		};
 	};
 	exports.default = managerPanelCtrl;
 
