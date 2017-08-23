@@ -74,8 +74,8 @@ public class SalesforceUser implements UserDetails {
     private String lastModifiedDate;
     @JsonProperty(value = "is_app_installed")
     private boolean isAppInstalled;
-    @JsonProperty(value = "role")
-    private String role;
+    /*@JsonProperty(value = "role")
+    private String role;*/
 	@JsonProperty(value = "is_lightning_login_user")
 	private boolean isLightningLoginUser;
 
@@ -313,14 +313,14 @@ public class SalesforceUser implements UserDetails {
 		this.isAppInstalled = isAppInstalled;
 	}
 
-	public String getRole() {
+/*	public String getRole() {
 		return role;
 	}
 
 	public void setRole(String role) {
 		this.role = role;
 	}
-
+*/
 	public boolean isLightningLoginUser() {
 		return isLightningLoginUser;
 	}
@@ -367,7 +367,7 @@ public class SalesforceUser implements UserDetails {
 
     public List<GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(this.role));
+        //authorities.add(new SimpleGrantedAuthority(this.role));
         return authorities;
     }
 
@@ -403,7 +403,7 @@ public class SalesforceUser implements UserDetails {
                 ", utcOffset=" + utcOffset +
                 ", last_modified_date='" + lastModifiedDate + '\'' +
                 ", is_app_installed=" + isAppInstalled +
-                ", role='" + role + '\'' +
+                //", role='" + role + '\'' +
                 ", salesforceToken=" + salesforceToken +
                 '}';
     }
