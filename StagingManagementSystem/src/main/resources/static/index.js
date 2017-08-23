@@ -63733,14 +63733,8 @@
 		};
 
 		$scope.PanelClick = function (panel) {
-			$scope.PanelClick = panel;
-			//			    for (let i = 0; i < $scope.interviewStatuses.length; i++) {
-			//			      if ($scope.interviewStatuses[i].value === interview.interviewStatus.value){
-			//			        $scope.updateStatus = $scope.interviewStatuses[i];
-			//			      }
-			//			    }
-			//			    $scope.updateComment = $scope.clickedInterview.comment;	 
-
+			$scope.panelChoose = panel;
+			console.log("I got the panel " + $scope.PanelClick.id);
 			$scope.errorUpdateMsgShow = false;
 			$scope.successUpdateMsgShow = false;
 			$('#PanelCommentModal').modal('show');

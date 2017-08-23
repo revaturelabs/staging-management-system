@@ -30,7 +30,7 @@
 				</thead>
 				<tbody>
 				
-					<tr class="associatePanelTable" ng-repeat="p in plist" ng-click="PanelClick(P)">
+					<tr class="associatePanelTable" ng-repeat="p in plist" ng-click="PanelClick(p)">
 						<td>{{p.id}}</td>
 						<td>{{dateConverter(p.statusDate)}}</td>
 						<td>{{p.status}}</td>
@@ -45,19 +45,14 @@
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal"
-							aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span></button>
 						<h4 class="modal-title">Add Panel</h4>
 					</div>
-
 					<div class="modal-body">
 						<div>
 							<h5 class="newH5">Associate Name</h5>
 						 aaaaaaaaaaa ?? associate.name???
 						</div>
-
 					</div>
 					<div class="modal-footer">
 						<div class="alert alert-success" ng-show="successMsgShow" style="text-align: left;">Successfully added an Panel! </div>
@@ -103,10 +98,10 @@
 
       </div>
       <div class="modal-footer">
-      	<div class="alert alert-success" ng-show="successUpdateMsgShow" style="text-align: left;">Successfully updated the Interview!</div>
-		<div class="alert alert-danger" ng-bind="errorUpdateMsg" ng-show="errorUpdateMsgShow" style="text-align: left;">Failed to add an Interview.</div>
+      	<div class="alert alert-success" ng-show="successUpdateMsgShow" style="text-align: left;">Successfully updated the Panel!</div>
+		<div class="alert alert-danger" ng-bind="errorUpdateMsg" ng-show="errorUpdateMsgShow" style="text-align: left;">Failed to add an Panel.</div>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" id="updateInterviewBtn" ng-click="updateInterviewClick()" class="btn btn-primary">Update Panel</button>
+     <!--    <button type="button" id="updateInterviewBtn" ng-click="updateInterviewClick()" class="btn btn-primary">Update Panel</button> -->
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
