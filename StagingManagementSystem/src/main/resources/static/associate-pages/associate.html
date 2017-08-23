@@ -1,4 +1,3 @@
-
 <div class="navbar navbar-fixed-top navbar-default">
 	<div class="navbar-header">
 		<a class="navbar-left img-center">
@@ -16,9 +15,9 @@
 	</div>
 	<div class="navbar-collapse collapse navbar-right">
 		<ul class="nav navbar-nav">
-			<li ng-class="{ active: isActive('/associate/home')}"><a ui-sref="associate.home">Home</a></li>
+			<li ng-class="{ active: isActive('/associate/home')}"><a ui-sref="associate.home">Home</a></li>			
 			<li ng-class="{ active: isActive('/associate/interview')}"><a ui-sref="associate.associateInterview">Interview</a></li>
-			<li ng-class="{ active: isActive('/Certifications/certifications')}"><a ui-sref="associate.certifications">Certification</a></li>
+			<li ng-class="{ active: isActive('/associate/associatePanel')}"><a ui-sref="associate.associatePanel">Panel</a></li>
 			<li ng-click="logout()"><a ui-sref="">Logout</a></li>
 		</ul>
 	</div>
@@ -26,4 +25,3 @@
 
 
 <div id="associate-body" ui-view></div>
-<div id="certification-body" ui-view="certification"></div>
