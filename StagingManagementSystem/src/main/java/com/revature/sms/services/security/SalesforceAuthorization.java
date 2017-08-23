@@ -119,18 +119,18 @@ public class SalesforceAuthorization extends Helper implements Authorization {
 	
 		
 		SalesforceToken salesforceToken = new ObjectMapper().readValue(tokenJson, SalesforceToken.class);
-		System.out.println("TOKEN: "+ salesforceToken);
+		//System.out.println("TOKEN: "+ salesforceToken);
 		
 		//set login_manager attribute by adding HttpServletRequest req at function parameters
 		//and set lm here?
 		httpClient = HttpClientBuilder.create().build(); //removable line?
 		
 		
-		 HttpGet get = new HttpGet(salesforceToken.getInstanceUrl() + "?access_token=" + salesforceToken.getAccessToken());
+		 HttpGet get = new HttpGet(salesforceToken.getInstanceUrl() + "?access_token=" + salesforceToken.getAccessToken() + "&format=json");
 	        response = httpClient.execute(get);
 	       
 	        
-	        System.out.println("\n\nUSER RESPONSE " + toJsonString(response.getEntity().getContent()));
+	        System.out.println("\n\nSALESFORCE RESPONSE \n" + toJsonString(response.getEntity().getContent()));
 	        
 	        
 		return new ModelAndView(REDIRECT + redirectUrl);
