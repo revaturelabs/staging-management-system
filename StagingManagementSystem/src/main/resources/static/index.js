@@ -62172,7 +62172,7 @@
 	    url: '/login/user'
 	  }).then(function (response) {
 	    userService.setUser(response.data);
-	    if (response.data === undefined) {
+	    if (response.data.isLightningLoginUser === undefined) {
 	      //TODO:Tie to role once role is set
 	      console.log(response);
 	      $state.go('associate.home');
