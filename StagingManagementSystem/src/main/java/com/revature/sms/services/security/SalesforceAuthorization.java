@@ -141,7 +141,7 @@ public class SalesforceAuthorization extends Helper implements Authorization {
 		
 	
 		
-		//session.setAttribute(LM, salesforceUser);
+		session.setAttribute(LM, salesforceUser);
 		
 		return new ModelAndView(REDIRECT + redirectUrl);
 
