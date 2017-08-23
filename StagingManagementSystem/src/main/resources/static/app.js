@@ -27,7 +27,7 @@ import { certificationCtrl } from './Certifications/certifications';
 
 require('fusioncharts/fusioncharts.charts')(FusionCharts);
 
-const Visualizer = window['ui-router-visualizer'].Visualizer;
+// const Visualizer = window['ui-router-visualizer'].Visualizer;
 
 const routerApp = angular.module('routerApp', [uiRouter, angularCookies]);
 
@@ -43,7 +43,7 @@ routerApp.service('userService', function ($cookies) {
 routerApp.directive('scrollToBottom', ($timeout, $window) => {
   return {
     scope: {
-        scrollToBottom: "="
+      scrollToBottom: '='
     },
     restrict: 'A',
     link: (scope, element, attr) => {
@@ -60,19 +60,19 @@ routerApp.directive('scrollToBottom', ($timeout, $window) => {
 
 routerApp.run(($uiRouter, $trace, $rootScope) => {
 
-	//Ui Visualizer
+  // Ui Visualizer
   // Auto-collapse children in state visualizer
-  // const registry = $uiRouter.stateRegistry;
-  // $uiRouter.stateRegistry.get().map(s => s.$$state())
-  //     .filter(s => s.path.length === 2 || s.path.length === 3)
-  //     .forEach(s => s._collapsed = true);
-  //
-  // const pluginInstance = $uiRouter.plugin(Visualizer);
-  //
-  // $trace.enable('TRANSITION');
+   /*const registry = $uiRouter.stateRegistry;
+   $uiRouter.stateRegistry.get().map(s => s.$$state())
+       .filter(s => s.path.length === 2 || s.path.length === 3)
+       .forEach(s => s._collapsed = false);
+  
+   const pluginInstance = $uiRouter.plugin(Visualizer);
+  
+   $trace.enable('TRANSITION');*/
 
-	//Global Functions
-	$rootScope.dateConverter = (time) => {
+  // Global Functions
+  $rootScope.dateConverter = (time) => {
     return moment(time).format('MMM D, hh:mm a');
 	};
 });
@@ -125,10 +125,10 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
 
     })
     .state('manager.create.project', {
-        url: '/project',
-        templateUrl: 'manager-pages/create/project.html',
-        controller: projectCtrl,
-     })
+      url: '/project',
+      templateUrl: 'manager-pages/create/project.html',
+      controller: projectCtrl,
+    })
     .state('manager.home', {
       url: '/home',
       views: {
@@ -154,7 +154,7 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
         },
         'checkins@manager.home': {
           templateUrl: 'manager-pages/home/checkin/checkin.html',
-            controller: managerCheckinsCtrl,
+          controller: managerCheckinsCtrl,
         },
       },
     })
@@ -176,10 +176,19 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       url: '/batches',
       templateUrl: 'manager-pages/advanced/batches/batches.html'
     })
+    .state('manager.advanced.projects', {
+      url: '/projects',
+      templateUrl: 'manager-pages/advanced/projects/projects.html'
+    })
     .state('manager.advanced.batches.edit', {
       url: '/edit/:id',
       templateUrl: 'manager-pages/create/batch.html',
       controller: batchCtrl,
+    })
+    .state('manager.advanced.projects.edit', {
+      url: '/edit/:id',
+      templateUrl: 'manager-pages/create/project.html',
+      controller: projectCtrl,
     })
     .state('associate', {
       url: '/associate',
@@ -200,10 +209,14 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       url: '/profile',
       templateUrl: 'associate-pages/profile/profile.html',
       controller: profileCtrl,
+<<<<<<< HEAD
     })
     .state('associate.certifications',{
     	url:'/certifications',
     	templateUrl:'Certifications/certifications.html',
     	controller: certificationCtrl,
     })
+=======
+    });
+>>>>>>> f2e62c43861d03faa7cda9024c402b38e672f445
 });
