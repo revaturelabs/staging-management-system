@@ -6,7 +6,7 @@ const managerCtrl = ($scope, $state, $location, $http, userService) => {
     url: '/login/user',
   }).then((response) => {
     userService.setUser(response.data);
-    if (response.data.username === undefined) { //TODO: CHANGE .permission to role but when thats defined fine
+    if (response.data.username === undefined) { //It's checking username as a test. Will check role
       $state.go('associate.home');
     }
   }, () => {

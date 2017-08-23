@@ -53,28 +53,10 @@ routerApp.service('userService', function ($cookies, $http) {
 		//console.log("Let's see what my sf role is: "+$cookies.getObject("user").get('role'));
 		return $cookies.get("role");
 	  }
-		
-		// TEST 
-	  console.log(JSON.stringify($cookies.getObject('token')));
-	  
-	  $http.get('https://login.salesforce.com/services/oauth2/userinfo'+'?access_token='+JSON.stringify($cookies.getObject('token')))
-		.then((response) => {
-          console.log('Response:'+ response);
-          //return response;
-      });
-		
-	/*		// TEST 
-	  $http.get('getSalesforceUser', 
-			     { params: {accessToken:  $cookies.getObject('token'),
-			    	 		endpoint: 'https://login.salesforce.com/services/oauth2/userinfo' }
-			     })
-		.then((response) => {
-          console.log('Response:'+ response);
-          //return response;
-      })*/
-		/**
-		 * Moves user to home page when entering root
-		 */
+
+	/**
+	 * Moves user to home page when entering root
+	 */
 	  function checkCookies() {
 		var role = getCookie();
 		if (role === trainerRole)
@@ -104,7 +86,6 @@ routerApp.run(($uiRouter, $trace, $rootScope) => {
 
 
   // Ui Visualizer
->>>>>>>>> Temporary merge branch 2
   // Auto-collapse children in state visualizer
   // const registry = $uiRouter.stateRegistry;
   // $uiRouter.stateRegistry.get().map(s => s.$$state())

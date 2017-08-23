@@ -27,5 +27,5 @@ public interface Authorization {
      * @throws IOException
      * @throws URISyntaxException 
      */
-    ModelAndView generateSalesforceToken(String code,  HttpSession session, HttpServletRequest servletRequest, HttpServletResponse httpServletResponse) throws IOException, URISyntaxException;
+    ModelAndView generateSalesforceToken(String code,  HttpSession session, HttpServletResponse httpServletResponse) throws IOException, URISyntaxException;
 }

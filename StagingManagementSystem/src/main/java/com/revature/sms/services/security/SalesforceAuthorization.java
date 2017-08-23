@@ -86,7 +86,10 @@ public class SalesforceAuthorization extends Helper implements Authorization {
 	}
 
 	/**
-	 * Retrieves Salesforce authentication token from Salesforce REST API
+	 * Retrieves Salesforce authentication token from Salesforce REST API Maps a
+	 * token to a SalesforceToken object. Uses information from that to retrieve
+	 * user information. Maps user information from response to a SalesforceUser
+	 * object. Attaches that to the session.
 	 * 
 	 * @param code
 	 * @param servletResponse
@@ -94,8 +97,7 @@ public class SalesforceAuthorization extends Helper implements Authorization {
 	 */
 	@RequestMapping("/authenticated")
 	public ModelAndView generateSalesforceToken(@RequestParam(value = "code") String code, HttpSession session,
-			HttpServletRequest servletRequest, HttpServletResponse servletResponse)
-			throws IOException, URISyntaxException {
+			HttpServletResponse servletResponse) throws IOException, URISyntaxException {
 
 		HttpClient httpClient = HttpClientBuilder.create().build();
 
@@ -109,40 +111,28 @@ public class SalesforceAuthorization extends Helper implements Authorization {
 		parameters.add(new BasicNameValuePair("code", code));
 
 		post.setEntity(new UrlEncodedFormEntity(parameters));
-
 		HttpResponse response = httpClient.execute(post);
 
 		String tokenJson = toJsonString(response.getEntity().getContent());
 		String tokenEncoded = URLEncoder.encode(tokenJson, "UTF-8");
 
 		servletResponse.addCookie(new Cookie("token", tokenEncoded));
-
 		SalesforceToken salesforceToken = new ObjectMapper().readValue(tokenJson, SalesforceToken.class);
-		// System.out.println("TOKEN: "+ salesforceToken);
 
-		// set login_manager attribute by adding HttpServletRequest req at
-		// function parameters
-		// and set lm here?
-		httpClient = HttpClientBuilder.create().build(); // removable line?
-
-		HttpGet get = new HttpGet(
-				salesforceToken.getId() + "?access_token=" + salesforceToken.getAccessToken());
+		//httpClient = HttpClientBuilder.create().build(); // removable line?
+		HttpGet get = new HttpGet(salesforceToken.getId() + "?access_token=" + salesforceToken.getAccessToken());
 		response = httpClient.execute(get);
 
-		//System.out.println("\n\nSALESFORCE RESPONSE \n" + toJsonString(response.getEntity().getContent()));
-		
 		String user = toJsonString(response.getEntity().getContent());
-		
-		//System.out.println("USER JSON: "+user);
-		
 		SalesforceUser salesforceUser = new ObjectMapper().readValue(user, SalesforceUser.class);
 		salesforceUser.setSalesforceToken(salesforceToken);
+
 		System.out.println("USER POST MAPPED" + salesforceUser);
-		
-	
-		
+
 		session.setAttribute(LM, salesforceUser);
 		
+		System.out.println("CHECKING setAttribute success" + session.getAttribute(LM));
+
 		return new ModelAndView(REDIRECT + redirectUrl);
 
 	}

@@ -130,7 +130,7 @@
 
 	__webpack_require__(145)(_fusioncharts2.default);
 
-	var Visualizer = window['ui-router-visualizer'].Visualizer;
+	// const Visualizer = window['ui-router-visualizer'].Visualizer;
 
 	var routerApp = _angular2.default.module('routerApp', [_angularjs2.default, _angularCookies2.default]);
 
@@ -160,20 +160,6 @@
 	    return $cookies.get("role");
 	  }
 
-	  $http.get('https://login.salesforce.com/services/oauth2/userinfo' + '?access_token=' + JSON.stringify($cookies.getObject('token'))).then(function (response) {
-	    console.log('Response:' + response);
-	    //return response;
-	  });
-
-	  /*		// TEST 
-	    $http.get('getSalesforceUser', 
-	  		     { params: {accessToken:  $cookies.getObject('token').access_token,
-	  		    	 		endpoint: 'https://login.salesforce.com/services/oauth2/userinfo' }
-	  		     })
-	  	.then((response) => {
-	           console.log('Response:'+ response);
-	           //return response;
-	       })*/
 	  /**
 	   * Moves user to home page when entering root
 	   */
@@ -186,7 +172,7 @@
 	routerApp.directive('scrollToBottom', function ($timeout, $window) {
 	  return {
 	    scope: {
-	      scrollToBottom: "="
+	      scrollToBottom: '='
 	    },
 	    restrict: 'A',
 	    link: function link(scope, element, attr) {
@@ -205,21 +191,19 @@
 
 	  // Ui Visualizer
 	  // Auto-collapse children in state visualizer
-	  var registry = $uiRouter.stateRegistry;
-	  $uiRouter.stateRegistry.get().map(function (s) {
-	    return s.$$state();
-	  }).filter(function (s) {
-	    return s.path.length === 2 || s.path.length === 3;
-	  }).forEach(function (s) {
-	    return s._collapsed = true;
-	  });
+	  // const registry = $uiRouter.stateRegistry;
+	  // $uiRouter.stateRegistry.get().map(s => s.$$state())
+	  // .filter(s => s.path.length === 2 || s.path.length === 3)
+	  // .forEach(s => s._collapsed = true);
+	  //
+	  // const pluginInstance = $uiRouter.plugin(Visualizer);
+	  //
+	  // $trace.enable('TRANSITION');
 
-	  var pluginInstance = $uiRouter.plugin(Visualizer);
-
-	  $trace.enable('TRANSITION');
 
 	  // Global Functions
 	  $rootScope.dateConverter = function (time) {
+
 	    return (0, _moment2.default)(time).format('MMM D, hh:mm a');
 	  };
 	});
@@ -329,6 +313,7 @@
 	    url: '/profile',
 	    templateUrl: 'associate-pages/profile/profile.html',
 	    controller: _profile2.default
+
 	  });
 	});
 
@@ -62159,7 +62144,7 @@
 	  }).then(function (response) {
 	    userService.setUser(response.data);
 	    if (response.data.username === undefined) {
-	      //TODO: CHANGE .permission to role but when thats defined fine
+	      //It's checking username as a test. Will check role
 	      $state.go('associate.home');
 	    }
 	  }, function () {
