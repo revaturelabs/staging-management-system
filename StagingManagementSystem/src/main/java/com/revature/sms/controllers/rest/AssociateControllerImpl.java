@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.sms.entities.Associate;
+import com.revature.sms.entities.Manager;
 import com.revature.sms.entities.StaggingAssociate;
 import com.revature.sms.services.AssociateService;
 import com.revature.sms.services.TotalReport;
@@ -102,7 +103,7 @@ public class AssociateControllerImpl {
 			associateService.update(associate);
 			return ResponseEntity.ok(null);
 		}
-*/
+
 		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 	}
 
@@ -123,11 +124,35 @@ public class AssociateControllerImpl {
 		return ResponseEntity.ok(associateService.getAll());
 	}
 
-	@GetMapping("/allActive")
-	public Set<Associate> getAllActiveAssociates(HttpSession session) {
-		return associateService.getAllActive();
+//	@GetMapping("/allActive")
+//	public Set<Associate> getAllActiveAssociates(HttpSession session) {
+//		return associateService.getAllActive();
+//	}
+	
+	@GetMapping("/allTraining")
+	public ResponseEntity<Set<Associate>> getAllActive(HttpSession session) {
+//		if (session.getAttribute(LM) == null) {
+//			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+//		}
+		//AssociatesStatus stagingStatus = new AssociatesStatus(1, "STAGING");
+		return ResponseEntity.ok(associateService.getAllByStatus("TRAINING"));
 	}
-
+	
+	@GetMapping("/allStaging")
+	public ResponseEntity<Set<Associate>> getAllInStaging(HttpSession session) {
+		return ResponseEntity.ok(associateService.getAllByStatus("STAGING"));
+	}
+	
+	@GetMapping("/allProject")
+	public ResponseEntity<Set<Associate>> getAllInProject(HttpSession session) {
+		return ResponseEntity.ok(associateService.getAllByStatus("PROJECT"));
+	}
+	
+	@GetMapping("/allBench")
+	public ResponseEntity<Set<Associate>> getAllInBench(HttpSession session) {
+		return ResponseEntity.ok(associateService.getAllByStatus("BENCH"));
+	}
+	
 	@GetMapping("no-batch")
 	public Set<Associate> haveNoBatch() {
 		return associateService.haveNoBatch();
@@ -142,11 +167,16 @@ public class AssociateControllerImpl {
 	public Set<Associate> byBatch(@PathVariable Long id) {
 		return associateService.findByBatchId(id);
 	}
-
-	@GetMapping(path = "/totaldata")
-	public ResponseEntity<Collection<TotalData>> getAssocaites() {
-		return ResponseEntity.ok(totalReport.process(associateService.getAllActive()));
+	
+	@GetMapping("by-project/{id}")
+	public Set<Associate> byProject(@PathVariable Long id) {
+		return associateService.findByProjectId(id);
 	}
+
+//	@GetMapping(path = "/totaldata")
+//	public ResponseEntity<Collection<TotalData>> getAssocaites() {
+//		return ResponseEntity.ok(totalReport.process(associateService.getAllActive()));
+//	}
 	
 	@GetMapping(path = "/AssociatesInStaggin/{date}")
 	public Set<StaggingAssociate> getAssociatesInStaggingOn(@PathVariable String date){

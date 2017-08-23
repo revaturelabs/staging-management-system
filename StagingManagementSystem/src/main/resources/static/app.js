@@ -87,6 +87,7 @@ routerApp.run(($uiRouter, $trace, $rootScope) => {
 
   // Ui Visualizer
   // Auto-collapse children in state visualizer
+<<<<<<< HEAD
   // const registry = $uiRouter.stateRegistry;
   // $uiRouter.stateRegistry.get().map(s => s.$$state())
   // .filter(s => s.path.length === 2 || s.path.length === 3)
@@ -95,6 +96,16 @@ routerApp.run(($uiRouter, $trace, $rootScope) => {
   // const pluginInstance = $uiRouter.plugin(Visualizer);
   //
   // $trace.enable('TRANSITION');
+=======
+   /*const registry = $uiRouter.stateRegistry;
+   $uiRouter.stateRegistry.get().map(s => s.$$state())
+       .filter(s => s.path.length === 2 || s.path.length === 3)
+       .forEach(s => s._collapsed = false);
+  
+   const pluginInstance = $uiRouter.plugin(Visualizer);
+  
+   $trace.enable('TRANSITION');*/
+>>>>>>> f2e62c43861d03faa7cda9024c402b38e672f445
 
 
   // Global Functions
@@ -203,10 +214,19 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       url: '/batches',
       templateUrl: 'manager-pages/advanced/batches/batches.html'
     })
+    .state('manager.advanced.projects', {
+      url: '/projects',
+      templateUrl: 'manager-pages/advanced/projects/projects.html'
+    })
     .state('manager.advanced.batches.edit', {
       url: '/edit/:id',
       templateUrl: 'manager-pages/create/batch.html',
       controller: batchCtrl,
+    })
+    .state('manager.advanced.projects.edit', {
+      url: '/edit/:id',
+      templateUrl: 'manager-pages/create/project.html',
+      controller: projectCtrl,
     })
     .state('associate', {
       url: '/associate',

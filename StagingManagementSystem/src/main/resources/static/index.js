@@ -63492,6 +63492,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+
 	function projectCtrl($scope, $http, $state, $stateParams) {
 	  $scope.project = { associates: [] };
 
@@ -63503,6 +63504,12 @@
 	          $scope.project.associates = response3.data;
 	        });
 	        $scope.project = response2.data;
+	        $scope.project.projectName = $scope.projectName.filter(function (projectName) {
+	          return projectName.value === response2.data.projectName.value;
+	        })[0];
+	        $scope.project.projectDescription = $scope.projectDescription.filter(function (projectDescription) {
+	          return projectDescription === response2.data.projectDescription.value;
+	        })[0];
 	      });
 	    }
 	  });
@@ -63578,6 +63585,13 @@
 	    console.log('failed');
 	  });
 
+	  // fetching all project data
+	  $http.get('project/all').then(function (data) {
+	    $scope.projects = data.data;
+	  }, function (data) {
+	    console.log('failed');
+	  });
+
 	  $scope.isAssociates = function () {
 	    if ($state.is('manager.advanced.allassociates')) {
 	      return true;
@@ -63589,6 +63603,12 @@
 	    if ($state.is('manager.advanced.batches')) {
 	      return true;
 	    }
+	    return false;
+	  };
+
+	  // button for internal projects
+	  $scope.isProjects = function () {
+	    if ($state.is('manager.advanced.projects')) return true;
 	    return false;
 	  };
 
@@ -63709,6 +63729,11 @@
 	    $scope.portfolioModalButtonValue = 'Save';
 	    $scope.portfolioUrlInput = $scope.associate.portfolioLink;
 	    $('#portfolioUrlModal').modal('show');
+	  };
+
+	  $scope.openProjectStatusModal = function () {
+	    $scope.sendingRequest = false;
+	    $('#projectStatusModal').modal('show');
 	  };
 
 	  $scope.toggleMappedModal = function () {
