@@ -60,36 +60,13 @@
 							<select class="form-control" ng-model="selectedClient"
 								ng-options="x.name for x in clients" title="Client"></select>
 						</div>
-
-						<div>
-							<h5 class="newH5">Interview Date & Time</h5>
-							<div class="form-group">
-								<div class='input-group date'>
-									<input type='text' class="form-control"
-										ng-model="selectedDate.value" id='datetimepicker1' /> <span
-										ng-click="showDateTimePicker()" class="input-group-addon">
-										<span class="glyphicon glyphicon-calendar"></span>
-									</span>
-								</div>
-							</div>
-						</div>
-						<div>
-							<h5 class="newH5">Marketer</h5>
-							<select class="form-control" ng-model="selectedMarketer"
-								ng-options="x.name for x in marketers"></select>
-						</div>
+s	
 					</div>
 					<div class="modal-footer">
-						<div class="alert alert-success" ng-show="successMsgShow"
-							style="text-align: left;">Successfully added an Interview!
-						</div>
-						<div class="alert alert-danger" ng-bind="errorMsg"
-							ng-show="errorMsgShow" style="text-align: left;">Failed to
-							add an Interview.</div>
+						<div class="alert alert-success" ng-show="successMsgShow" style="text-align: left;">Successfully added an Panel! </div>
+						<div class="alert alert-danger" ng-bind="errorMsg" ng-show="errorMsgShow" style="text-align: left;">Failed to add an Panel.</div>
 						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-						<button type="button" id="addInterviewBtn"
-							ng-click="addInterviewClick()" class="btn btn-primary">Add
-							Panel</button>
+						<button type="button" id="addInterviewBtn" ng-click="addInterviewClick()" class="btn btn-primary">Add Panel</button>
 					</div>
 				</div>
 				<!-- /.modal-content -->
