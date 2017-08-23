@@ -183,4 +183,9 @@ public class AssociateControllerImpl {
 		logger.trace("DATE!!!!    " + date);
 	  return associateService.getAssociatesInStaggingOn(date);
 	}
+	
+	@GetMapping("/search/{searchName}")
+	public Set<Associate> findByNameLike(@PathVariable String searchName){
+		return associateService.findByNameLike(searchName);
+	}
 }
