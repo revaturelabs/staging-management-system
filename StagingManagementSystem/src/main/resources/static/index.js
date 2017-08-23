@@ -63731,6 +63731,25 @@
 
 			$('#addModal').modal('show');
 		};
+
+		$scope.PanelClick = function (panel) {
+			$scope.PanelClick = panel;
+			for (var i = 0; i < $scope.interviewStatuses.length; i++) {
+				if ($scope.interviewStatuses[i].value === interview.interviewStatus.value) {
+					$scope.updateStatus = $scope.interviewStatuses[i];
+				}
+			}
+			for (var _i = 0; _i < $scope.marketers.length; _i++) {
+				if ($scope.marketers[_i].name === interview.marketer.name) {
+					$scope.updateMarketer = $scope.marketers[_i];
+				}
+			}
+			$scope.updateComment = $scope.clickedInterview.comment;
+
+			$scope.errorUpdateMsgShow = false;
+			$scope.successUpdateMsgShow = false;
+			$('#PanelCommentModal').modal('show');
+		};
 	};
 	exports.default = managerPanelCtrl;
 
