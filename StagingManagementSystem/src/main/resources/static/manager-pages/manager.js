@@ -1,40 +1,33 @@
-const managerCtrl = ($scope, $state, $location, $http, userService) => {
-	//TODO: Must be redone to not be tied to /login/user?
-
+function managerCtrl($scope, $state, $location, $http, userService) {
   $http({
     method: 'GET',
     url: '/login/user',
   }).then((response) => {
     userService.setUser(response.data);
-    
-    console.log(response);
-    if (response.data === undefined) { //It's checking username as a test. Will check role
+    if (response.data === undefined) { //TODO:Tie to role once role is set
       $state.go('associate.home');
     }
-  };
-  
- () => {
+  }, () => {
     userService.setUser({});
     $state.go('login');
   });
-  
-  
-	$scope.isActive = function (viewLocation) {
-			return viewLocation === $location.path();
-	};
 
-	$scope.logout = function () {
-		$http({
-			method: 'GET',
-			url: '/logout/',
-		})
-		.then((response) => {
-      userService.setUser({});
-			$state.go('login');
-		});
-	};
+  $scope.isActive = function (viewLocation) {
+    return viewLocation === $location.path();
+  };
 
-  $scope.manager = { name:'Joe'}; //TODO: what in tarnation, maybe remove
-};
+  $scope.logout = function () {
+    $http({
+      method: 'GET',
+      url: '/logout/',
+    })
+      .then((response) => {
+        userService.setUser({});
+        $state.go('login');
+      });
+  };
+
+  $scope.manager = { name: 'Joe' };
+}
 
 export { managerCtrl };

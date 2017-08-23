@@ -68,7 +68,7 @@
 
 	var _moment2 = _interopRequireDefault(_moment);
 
-	var _manager = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./manager-pages/manager\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+	var _manager = __webpack_require__(126);
 
 	var _home = __webpack_require__(127);
 
@@ -62158,7 +62158,49 @@
 
 
 /***/ }),
-/* 126 */,
+/* 126 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	function managerCtrl($scope, $state, $location, $http, userService) {
+	  $http({
+	    method: 'GET',
+	    url: '/login/user'
+	  }).then(function (response) {
+	    userService.setUser(response.data);
+	    if (response.data === undefined) {
+	      //TODO:Tie to role once role is set
+	      $state.go('associate.home');
+	    }
+	  }, function () {
+	    userService.setUser({});
+	    $state.go('login');
+	  });
+
+	  $scope.isActive = function (viewLocation) {
+	    return viewLocation === $location.path();
+	  };
+
+	  $scope.logout = function () {
+	    $http({
+	      method: 'GET',
+	      url: '/logout/'
+	    }).then(function (response) {
+	      userService.setUser({});
+	      $state.go('login');
+	    });
+	  };
+
+	  $scope.manager = { name: 'Joe' };
+	}
+
+	exports.managerCtrl = managerCtrl;
+
+/***/ }),
 /* 127 */
 /***/ (function(module, exports) {
 
