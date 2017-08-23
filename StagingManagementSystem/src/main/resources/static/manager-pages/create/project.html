@@ -1,0 +1,54 @@
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th class="create-th" scope="col">Create/Edit a Project</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+		<td>
+            <label>Project Name:</label>
+              <input class="manager-input" ng-model="project.projectName"/>
+		</td>
+    </tr>
+    <tr>
+      <tr>
+        <td>
+          <label>Project Description:</label>
+          <textarea rows="3" class="manager-input" ng-model="project.projectDescription" placeholder="Description..."></textarea>
+        </td>
+      </tr>
+      <tr>
+        <td>
+         <label>Select Project Status: </label>
+        <select class="manager-input" ng-model="project.projectStatus" ng-init="project.projectStatus = 'active'">
+					<option value="active" ng-click="type = 'active'" selected="selected">Active</option>
+					<option value="inactive" ng-click="type = 'inactive'">Inactive</option>
+				</select>
+        </td>
+      </tr>
+    <tr>
+      <td>
+        <div class="flex-column">
+          <div class="flex-row">
+    				<label>Associates: </label>
+            <select class="manager-input" ng-model="selectedAssociate" ng-options="associate as associate.name for associate in associates" ng-change="addAssociate()">
+              <option value=""> -- Select an Associate -- </option>
+            </select>
+          </div>
+          <div class="new-batchType-skills-title"> Added Associates </div>
+          <div class="flex-row" style="justify-content: center" ng-repeat="associate in project.associates">
+            <div style="text-align:center" ng-bind="associate.name"></div>
+            <span class="glyphicon glyphicon-minus remove-batch-type-glyph" ng-click="removeAssociate(associate)"></span>
+          </div>
+        </div>
+			</td>
+    </tr>
+  </tbody>
+</table>
+
+<div ng-show="requestMade" ng-bind="createMessage" ng-style="createMessageStyle"></div>
+<button class="submit" ng-click="submit()">Submit</button>
+
+

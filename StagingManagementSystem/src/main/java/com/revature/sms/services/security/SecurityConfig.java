@@ -33,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    protected void configure(HttpSecurity httpSecurity) throws Exception {//TODO un-break this
+    protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf().disable() // Disable cross site request forgery
                 .formLogin() // We want to use form-based authentication.
                 .loginPage("/").successHandler(authenticationSuccessHandler) // Use the monstrosity of a class we have to handle successes.

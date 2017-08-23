@@ -1,4 +1,4 @@
-const jobCtrl = ($scope, $http) => {
+function jobCtrl($scope, $http) {
   $scope.job = {};
   $('#datetimepicker1').datetimepicker();
   $('#datetimepicker2').datetimepicker();
@@ -7,21 +7,19 @@ const jobCtrl = ($scope, $http) => {
   $('#datetimepicker5').datetimepicker();
 
   $scope.showDateTimePicker = (id) => {
-		$('#datetimepicker' + id ).datetimepicker("show");
-	}
+    $('#datetimepicker' + id ).datetimepicker('show');
+  };
 
-  $http.get('associate/all').then( (response) => {
-  	//takes a while for associates to load...
-		$scope.associates = response.data
-  	}, () => {
-  		console.log("failure")
-  	})
+  $http.get('associate/all').then((response) => {
+    // takes a while for associates to load...
+    $scope.associates = response.data;
+  }, () => {
+  });
 
-    $http.get('client/all').then( (response) => {
-		$scope.clients = response.data
-  	}, () => {
-  		console.log("failure")
-  	})
+  $http.get('client/all').then((response) => {
+    $scope.clients = response.data;
+  }, () => {
+  });
 
   $('#datetimepicker1').on('dp.change', () => {
     $scope.job.startDate = $('#datetimepicker1').val();
@@ -44,24 +42,24 @@ const jobCtrl = ($scope, $http) => {
   });
 
   $scope.submit = () => {
-   	$scope.requestMade = true;
+    $scope.requestMade = true;
     $scope.createMessage = 'Attempting to create job';
     $scope.createMessageStyle = { color: 'black' };
 
-    let jobCreation = JSON.parse(JSON.stringify($scope.job))
-  	jobCreation.startDate = moment($scope.job.startDate).toDate();
-  	jobCreation.projectedEndDate = moment($scope.job.projectedEndDate).toDate();
-  	jobCreation.endDate = moment($scope.job.endDate).toDate();
-  	jobCreation.buyoutDate = moment($scope.job.buyoutDate).toDate();
-  	jobCreation.confirmedDate = moment($scope.job.confirmedDate).toDate();
+    let jobCreation = JSON.parse(JSON.stringify($scope.job));
+    jobCreation.startDate = moment($scope.job.startDate).toDate();
+    jobCreation.projectedEndDate = moment($scope.job.projectedEndDate).toDate();
+    jobCreation.endDate = moment($scope.job.endDate).toDate();
+    jobCreation.buyoutDate = moment($scope.job.buyoutDate).toDate();
+    jobCreation.confirmedDate = moment($scope.job.confirmedDate).toDate();
 
     $http.post('/job', jobCreation).then((response) => {
-        $scope.createMessage = 'Successfully created job';
-        $scope.createMessageStyle = { color: 'green' };
-      }, () => {
-        $scope.createMessage = 'Failed to create job';
-        $scope.createMessageStyle = { color: 'red' };
-      })
+      $scope.createMessage = 'Successfully created job';
+      $scope.createMessageStyle = { color: 'green' };
+    }, () => {
+      $scope.createMessage = 'Failed to create job';
+      $scope.createMessageStyle = { color: 'red' };
+    });
   };
 }
 

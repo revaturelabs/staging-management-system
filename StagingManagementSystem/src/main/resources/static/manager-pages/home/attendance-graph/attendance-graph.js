@@ -229,7 +229,6 @@ function getObj(data, time) {
  */
 function buildWeekly() {
   weeklyData = originalData;
-  console.log(JSON.stringify(originalData));
 }
 
 /**
@@ -298,7 +297,6 @@ function weeklyColumnClick(ev, props, $scope) {
   }).then((response) => {
     $scope.checkedInAssociates = [];
     $scope.notCheckedInAssociates = [];
-    console.log(JSON.stringify(response.data, null, 2));
     response.data.forEach(function (item) {
       item.checkinTime = moment(item.checkinTime).format('HH:MM');
       if(item.checkinTime === 'Invalid date')
