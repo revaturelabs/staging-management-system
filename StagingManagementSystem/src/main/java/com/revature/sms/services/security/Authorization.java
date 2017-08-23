@@ -18,9 +18,9 @@ public interface Authorization {
      * Generates authURI with provided parameters
      * @return view of the generated URI
      */
-    ModelAndView openAuthURI(); //TODO: Change javadoc to reflect changes
+    ModelAndView openAuthURI();
     /**
-     * Creates salesforce token and saves it as a session cookie
+     * Creates salesforce token, uses it to get a salesforce user, saves that as a cookie on the client.
      * @param code the string returned from the authURI required for getting token from salesforce
      * @param httpServletResponse
      * @return back to the application

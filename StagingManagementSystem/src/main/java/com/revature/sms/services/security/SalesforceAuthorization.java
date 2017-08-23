@@ -47,14 +47,12 @@ import com.revature.sms.security.models.SalesforceUser;
  * 8/10/2017 Updated to be compliant with old SMS database queries from client
  * by Stephan Kritikos on ??/??/????
  */
-// TODO:This needs to assign login_manager in the session I think
 @Controller
 @Scope("prototype")
 public class SalesforceAuthorization extends Helper implements Authorization {
 	@Value("${sms.sf.login}")
 	private String loginURL;
-	@Value("services/oauth2/authorize") // TODO: This could be an alternate
-										// endpoint.
+	@Value("services/oauth2/authorize")
 	private String authURL;
 	@Value("services/oauth2/token")
 	private String accessTokenURL;
@@ -119,6 +117,7 @@ public class SalesforceAuthorization extends Helper implements Authorization {
 		String tokenJson = toJsonString(response.getEntity().getContent());
 		SalesforceToken salesforceToken = new ObjectMapper().readValue(tokenJson, SalesforceToken.class);
 		
+		//This will return the token as a cookie to the client. Use if needed
 		//String tokenEncoded = URLEncoder.encode(tokenJson, "UTF-8");
 		//servletResponse.addCookie(new Cookie("token", tokenEncoded)); 
 

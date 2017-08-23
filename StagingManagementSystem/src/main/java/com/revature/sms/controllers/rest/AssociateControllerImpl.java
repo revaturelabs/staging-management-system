@@ -84,7 +84,7 @@ public class AssociateControllerImpl {
 		return ResponseEntity.ok(null);
 	}
 
-	@PutMapping //TODO: Salesforce equivalent for updating credentials?
+	@PutMapping //TODO: Salesforce equivalent for updating credentials? Currently has manager info removed
 	public ResponseEntity<Object> updateAssociate(@RequestBody Associate associate, HttpSession session) {
 		Associate authenticatedAssociate = (Associate) session.getAttribute("login_associate");
 		if (authenticatedAssociate != null) { // Associate edits their profile

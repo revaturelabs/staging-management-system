@@ -15,7 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
-//TODO: Table needs to change? Dependent on Manager, cant be dependent of Manager
+//TODO: Table needs to change? Dependent on Manager, cant be dependent on Manager
 @Entity
 @Table(name = "CHECKINS")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -36,7 +36,7 @@ public class Checkin {
     private LocalDateTime checkoutTime;
 
     
-    //TODO:Needs to instead populate it by getting salesforce user?
+    //TODO:Needs to instead populate it by getting salesforce user? Somethings gotta change
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "MANAGER_ID")
     private Manager approvedBy;

@@ -56,26 +56,20 @@ public class LoginControllerImpl {
 	@GetMapping("user")
 	public ResponseEntity<Object> getUser(HttpSession session) {
 		
-		//TODO: TEST, put this in front to check if it will find it fine
 		SalesforceUser manager = (SalesforceUser)session.getAttribute(LM);
-		System.out.println("MANAGER WAS SET TO: "+ manager);
 		if (manager != null) {
-			System.out.println("RETURNING MANAGER\n");
 			return ResponseEntity.ok(manager);
-
 		}
 		
 		Associate associate = (Associate)session.getAttribute(LA);
 		if (associate != null) {
-			System.out.println("RETURNING ASSOCIATE\n");
 			return ResponseEntity.ok(associate);
 		}
 		
-
 		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 	}
 
-	//TODO: Only has user login since removal of manager
+	//SMS Associate Login only. Manager login handled through Salesforce
 	@PostMapping
 	public ResponseEntity<Object> smsLogin(@RequestBody Credential creds, HttpSession session, HttpServletResponse resp){
 		
