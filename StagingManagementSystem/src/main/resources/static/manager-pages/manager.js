@@ -13,11 +13,10 @@ const managerCtrl = ($scope, $state, $location, $http, userService) => {
     }
   };
   
-/*  , () => {
+ () => {
     userService.setUser({});
     $state.go('login');
   });
-*/
   
   
 	$scope.isActive = function (viewLocation) {
