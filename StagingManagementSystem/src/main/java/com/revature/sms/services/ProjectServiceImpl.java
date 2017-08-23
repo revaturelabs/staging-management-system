@@ -1,5 +1,6 @@
 package com.revature.sms.services;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -30,12 +31,8 @@ public class ProjectServiceImpl implements ProjectService {
 	@Override
 	public void addProject(Project project) {
 		if("inactive".equals(project.getProjectStatus())){
-			for(Associate a: project.getAssociates()){
-				Associate ass = associateRepo.findOne(a.getId());
-				ass.setProject(null);
-				associateRepo.saveAndFlush(ass);
-			}
-			project.setAssociates(null);
+			Set<Associate> em = new HashSet<>();
+			project.setAssociates(em);
 		}
 		if (project.getProjectId() == 0) {
 			Project p = projectRepo.saveAndFlush(project);
