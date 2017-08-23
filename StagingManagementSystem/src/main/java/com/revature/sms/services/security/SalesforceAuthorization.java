@@ -126,6 +126,8 @@ public class SalesforceAuthorization extends Helper implements Authorization {
 		SalesforceUser salesforceUser = new ObjectMapper().readValue(user, SalesforceUser.class);
 		salesforceUser.setSalesforceToken(salesforceToken);
 
+		System.out.println("USER: "+salesforceUser);
+		
 		session.setAttribute(LM, salesforceUser);
 	
 		return new ModelAndView(REDIRECT + redirectUrl);
