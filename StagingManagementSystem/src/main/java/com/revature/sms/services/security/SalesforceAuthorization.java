@@ -111,45 +111,28 @@ public class SalesforceAuthorization extends Helper implements Authorization {
 		
 		HttpResponse response = httpClient.execute(post);
 		
-		String json = toJsonString(response.getEntity().getContent());
+		String tokenJson = toJsonString(response.getEntity().getContent());
+		String tokenEncoded = URLEncoder.encode(tokenJson, "UTF-8");
 		
-		String token = URLEncoder.encode(json, "UTF-8");
-		
-		
-		servletResponse.addCookie(new Cookie("token", token));
+		servletResponse.addCookie(new Cookie("token", tokenEncoded));
 	
 	
 		
-		SalesforceToken salesforceToken = new ObjectMapper().readValue(json, SalesforceToken.class);
+		SalesforceToken salesforceToken = new ObjectMapper().readValue(tokenJson, SalesforceToken.class);
 		System.out.println("TOKEN: "+ salesforceToken);
 		
-		//System.out.println(salesforceToken);
 		//set login_manager attribute by adding HttpServletRequest req at function parameters
 		//and set lm here?
-		//System.out.println("GOT HERE PRE INFO GET");
-		//httpClient = HttpClientBuilder.create().build(); //removable line?
+		httpClient = HttpClientBuilder.create().build(); //removable line?
 		
-		//Testing at each portion to ensure its not screwy
-		//System.out.println("Server Name: "+servletRequest.getServerName()); 
-		//System.out.println("Endpoint: "+salesforceToken.getId());
-		//System.out.println("Access Token: "+salesforceToken.getAccessToken());
-		/*
-		URIBuilder uriBuilder = new URIBuilder();
-		uriBuilder.setScheme(servletRequest.getScheme()).setHost(servletRequest.getServerName())
-				.setPort(servletRequest.getServerPort()).setPath("/getSalesforceUser/")
-				.setParameter("endpoint", salesforceToken.getId())
-				.setParameter("accessToken", salesforceToken.getAccessToken());
-	*/
 		
-		/*
-		URI uri = uriBuilder.build();
-		HttpGet httpGet = new HttpGet(uri);
-		
-		 response = httpClient.execute(httpGet);
-		String user = toJsonString(response.getEntity().getContent());
-		SalesforceUser salesforceUser = new ObjectMapper().readValue(user, SalesforceUser.class);
-		salesforceUser.setSalesforceToken(salesforceToken);
-		*/
+		 HttpGet get = new HttpGet(salesforceToken.getInstanceUrl() + "?access_token=" + salesforceToken.getAccessToken());
+	        response = httpClient.execute(get);
+	       
+	        
+	        System.out.println("\n\nUSER RESPONSE " + toJsonString(response.getEntity().getContent()));
+	        
+	        
 		return new ModelAndView(REDIRECT + redirectUrl);
 
 	}
