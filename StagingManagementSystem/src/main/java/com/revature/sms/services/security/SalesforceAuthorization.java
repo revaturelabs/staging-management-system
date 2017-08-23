@@ -120,9 +120,8 @@ public class SalesforceAuthorization extends Helper implements Authorization {
 	
 	
 		
-		System.out.println("Session" + session); //checking
-		System.out.println("json: " + json);
-		//SalesforceToken salesforceToken = new ObjectMapper().readValue(toJsonString(response.getEntity().getContent()), SalesforceToken.class);
+		SalesforceToken salesforceToken = new ObjectMapper().readValue(json, SalesforceToken.class);
+		System.out.println("TOKEN: "+ salesforceToken);
 		
 		//System.out.println(salesforceToken);
 		//set login_manager attribute by adding HttpServletRequest req at function parameters
