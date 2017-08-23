@@ -53,11 +53,18 @@ const managerPanelCtrl = ($scope, $state, $location, $http, userService) => {
 				$scope.plist = response.data;
 			});
 		};
-		
-		
-		
 	};
 	
+	  $scope.showAddModal = function () {
+		    $scope.errorMsgShow = false;
+		    $scope.successMsgShow = false;
+
+		    $scope.selectedClient = undefined;
+		    $('#datetimepicker1').val('');
+		    $scope.selectedMarketer = undefined;
+
+		    $('#addModal').modal('show');
+		  };
 	
 };
 export default managerPanelCtrl;

@@ -63720,6 +63720,17 @@
 				});
 			};
 		};
+
+		$scope.showAddModal = function () {
+			$scope.errorMsgShow = false;
+			$scope.successMsgShow = false;
+
+			$scope.selectedClient = undefined;
+			$('#datetimepicker1').val('');
+			$scope.selectedMarketer = undefined;
+
+			$('#addModal').modal('show');
+		};
 	};
 	exports.default = managerPanelCtrl;
 
