@@ -7,6 +7,11 @@ function loginCtrl($scope, $http, $state, userService) {
   const authenticatedUser = userService.getUser();
 
   const isAssociate = authenticatedUser.id !== undefined;
+  const isManager = authenticatedUser.is_lightning_login_user !== undefined; //TODO: Change to role whenever that gets in
+
+  if (isManager) {
+    $state.go('manager.home');
+  }
   if (isAssociate) {
     $state.go('associate.home');
   }

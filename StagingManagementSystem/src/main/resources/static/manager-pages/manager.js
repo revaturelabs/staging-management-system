@@ -11,6 +11,7 @@ function managerCtrl($scope, $state, $location, $http, userService) {
     userService.setUser({});
     $state.go('login');
   });
+  //TODO:Needs way to redirect without using login?
 
   $scope.isActive = function (viewLocation) {
     return viewLocation === $location.path();

@@ -130,9 +130,11 @@ public class SalesforceAuthorization extends Helper implements Authorization {
 		salesforceUser.setSalesforceToken(salesforceToken);
 		session.setAttribute(LM, salesforceUser);
 	
-		//TODO:TEST: May just be fine to send in this user and "fake" login
+
 
 		String userEncoded = URLEncoder.encode(user, "UTF-8");
+		//NOTE: The client is checking to see if user.id is set. salesforceUser has an ID
+		//BUT it is not the ID from the SMS database. It is a salesforce ID
 		servletResponse.addCookie(new Cookie("user", userEncoded)); 
 		
 		return new ModelAndView(REDIRECT + redirectUrl);
