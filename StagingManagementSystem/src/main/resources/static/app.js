@@ -32,39 +32,14 @@ require('fusioncharts/fusioncharts.charts')(FusionCharts);
 
 const routerApp = angular.module('routerApp', [uiRouter, angularCookies]);
 
-routerApp.service('userService', function ($cookies, $http) {
+routerApp.service('userService', function ($cookies) {
 	  this.user = $cookies.getObject('user') === undefined ? {} : $cookies.getObject('user');
-	  this.getUser = function(){
-		  checkCookies();
-		  return this.user
-		 };
+	  this.getUser = () => ({ ...this.user });
 	  this.setUser = (user) => {
 	    $cookies.putObject('user', user);
 	    this.user = { ...user };
 	  };
-	
-		// Roles
-	  var trainerRole = "ROLE_TRAINER";
-		/**
-		 * Retrieves role from cookie
-		 * 
-		 * @returns A cookie that contains the role
-		 */
-	  function getCookie() {
-		// TEST
-		//console.log("Let's see what my sf role is: "+$cookies.getObject("user").get('role'));
-		return $cookies.get("role");
-	  }
-
-	/**
-	 * Moves user to home page when entering root
-	 */
-	  function checkCookies() {
-		var role = getCookie();
-		if (role === trainerRole)
-		this.user={id:false,permisssion:true};
-	  };
-});
+	});
 
 routerApp.directive('scrollToBottom', ($timeout, $window) => {
   return {

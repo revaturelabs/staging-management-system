@@ -42,8 +42,7 @@ public class LoginControllerImpl {
 			return ResponseEntity.ok(true);
 	}
 	
-	//NOTE: Retaining isManager mapping from before changing to Salesforce login to prevent conflict
-	//TODO: LM mapped elsewhere. Make note of where it was mapped
+	//NOTE: LM is set in SalesforceAuthorization
 	@GetMapping("isManager")
 	public ResponseEntity<Boolean> isManager(HttpSession session) {
 		

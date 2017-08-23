@@ -142,38 +142,16 @@
 
 	var routerApp = _angular2.default.module('routerApp', [_angularjs2.default, _angularCookies2.default]);
 
-	routerApp.service('userService', function ($cookies, $http) {
+	routerApp.service('userService', function ($cookies) {
 	  var _this = this;
 
 	  this.user = $cookies.getObject('user') === undefined ? {} : $cookies.getObject('user');
 	  this.getUser = function () {
-	    checkCookies();
-	    return this.user;
+	    return _extends({}, _this.user);
 	  };
 	  this.setUser = function (user) {
 	    $cookies.putObject('user', user);
 	    _this.user = _extends({}, user);
-	  };
-
-	  // Roles
-	  var trainerRole = "ROLE_TRAINER";
-	  /**
-	   * Retrieves role from cookie
-	   * 
-	   * @returns A cookie that contains the role
-	   */
-	  function getCookie() {
-	    // TEST
-	    //console.log("Let's see what my sf role is: "+$cookies.getObject("user").get('role'));
-	    return $cookies.get("role");
-	  }
-
-	  /**
-	   * Moves user to home page when entering root
-	   */
-	  function checkCookies() {
-	    var role = getCookie();
-	    if (role === trainerRole) this.user = { id: false, permisssion: true };
 	  };
 	});
 
@@ -62173,8 +62151,7 @@
 	  }).then(function (response) {
 	    userService.setUser(response.data);
 	    if (response.data.is_lightning_login_user === undefined) {
-	      //TODO:Tie to role once role is set
-	      console.log(response.data);
+	      //TODO: Tie to role once role is properly set. Lightning user is just something in salesforceuser
 	      $state.go('associate.home');
 	    }
 	  }, function () {

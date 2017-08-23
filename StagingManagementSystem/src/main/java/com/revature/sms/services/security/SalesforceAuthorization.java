@@ -36,6 +36,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.sms.entities.Associate;
+import com.revature.sms.entities.Credential;
+import com.revature.sms.entities.Manager;
+import com.revature.sms.entities.Permission;
 import com.revature.sms.security.models.SalesforceToken;
 import com.revature.sms.security.models.SalesforceUser;
 
@@ -114,10 +117,10 @@ public class SalesforceAuthorization extends Helper implements Authorization {
 		HttpResponse response = httpClient.execute(post);
 
 		String tokenJson = toJsonString(response.getEntity().getContent());
-		String tokenEncoded = URLEncoder.encode(tokenJson, "UTF-8");
-
-		servletResponse.addCookie(new Cookie("token", tokenEncoded));
 		SalesforceToken salesforceToken = new ObjectMapper().readValue(tokenJson, SalesforceToken.class);
+		
+		//String tokenEncoded = URLEncoder.encode(tokenJson, "UTF-8");
+		//servletResponse.addCookie(new Cookie("token", tokenEncoded)); 
 
 		HttpGet get = new HttpGet(salesforceToken.getId() + "?access_token=" + salesforceToken.getAccessToken());
 		response = httpClient.execute(get);
@@ -125,11 +128,13 @@ public class SalesforceAuthorization extends Helper implements Authorization {
 		String user = toJsonString(response.getEntity().getContent());
 		SalesforceUser salesforceUser = new ObjectMapper().readValue(user, SalesforceUser.class);
 		salesforceUser.setSalesforceToken(salesforceToken);
-
-		System.out.println("USER: "+salesforceUser);
-		
 		session.setAttribute(LM, salesforceUser);
 	
+		//TODO:TEST: May just be fine to send in this user and "fake" login
+
+		String userEncoded = URLEncoder.encode(user, "UTF-8");
+		servletResponse.addCookie(new Cookie("user", userEncoded)); 
+		
 		return new ModelAndView(REDIRECT + redirectUrl);
 
 	}
