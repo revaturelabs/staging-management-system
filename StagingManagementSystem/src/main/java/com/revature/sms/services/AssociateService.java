@@ -22,8 +22,11 @@ public interface AssociateService {
     public Set<Associate> findByBatchId(Long id);
     public Set<Associate> findByProjectId(Long id);
     public Set<StaggingAssociate> getAssociatesInStaggingOn(String date);
+
+    public Set<Associate> findByNameLike(String name);
     
     //WE added this
     public Set<Associate> getAllByStatus(String status);
     //public Set<Associate> getActive();
+
 }

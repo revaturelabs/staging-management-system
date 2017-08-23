@@ -19,8 +19,10 @@ import { locCtrl } from './manager-pages/create/location';
 import { jobCtrl } from './manager-pages/create/job';
 import { projectCtrl } from './manager-pages/create/project';
 import managerAdvancedCtrl from './manager-pages/advanced/advanced';
+import managerPanelCtrl from './manager-pages/panel/panel';
 import profileCtrl from './associate-pages/profile/profile';
 import associateInterviewCtrl from './associate-pages/interview/interview';
+import associatePanelCtrl from './associate-pages/associatePanel/associatePanel';
 import associateCtrl from './associate-pages/associate';
 import loginCtrl from './login/login';
 
@@ -184,10 +186,17 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       templateUrl: 'manager-pages/create/batch.html',
       controller: batchCtrl,
     })
+
+    .state('manager.panel',{
+    	url: 'panel',
+    	templateUrl: 'manager-pages/panel/panel.html',
+    	controller: managerPanelCtrl,
+    })
     .state('manager.advanced.projects.edit', {
       url: '/edit/:id',
       templateUrl: 'manager-pages/create/project.html',
       controller: projectCtrl,
+
     })
     .state('associate', {
       url: '/associate',
@@ -203,6 +212,11 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       url: '/interview',
       templateUrl: 'associate-pages/interview/interview.html',
       controller: associateInterviewCtrl,
+    })
+    .state('associate.associatePanel', {
+      url: '/associatePanel',
+      templateUrl: 'associate-pages/associatePanel/associatePanel.html',
+      controller:associatePanelCtrl,
     })
     .state('associate.profile', {
       url: '/profile',

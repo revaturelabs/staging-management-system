@@ -110,25 +110,33 @@
 
 	var _advanced2 = _interopRequireDefault(_advanced);
 
-	var _profile = __webpack_require__(141);
+	var _panel = __webpack_require__(141);
+
+	var _panel2 = _interopRequireDefault(_panel);
+
+	var _profile = __webpack_require__(142);
 
 	var _profile2 = _interopRequireDefault(_profile);
 
-	var _interview = __webpack_require__(142);
+	var _interview = __webpack_require__(143);
 
 	var _interview2 = _interopRequireDefault(_interview);
 
-	var _associate = __webpack_require__(143);
+	var _associatePanel = __webpack_require__(144);
+
+	var _associatePanel2 = _interopRequireDefault(_associatePanel);
+
+	var _associate = __webpack_require__(145);
 
 	var _associate2 = _interopRequireDefault(_associate);
 
-	var _login = __webpack_require__(144);
+	var _login = __webpack_require__(146);
 
 	var _login2 = _interopRequireDefault(_login);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	__webpack_require__(145)(_fusioncharts2.default);
+	__webpack_require__(147)(_fusioncharts2.default);
 
 	// const Visualizer = window['ui-router-visualizer'].Visualizer;
 
@@ -173,10 +181,8 @@
 	  $uiRouter.stateRegistry.get().map(s => s.$$state())
 	      .filter(s => s.path.length === 2 || s.path.length === 3)
 	      .forEach(s => s._collapsed = false);
-	  
-	  const pluginInstance = $uiRouter.plugin(Visualizer);
-	  
-	  $trace.enable('TRANSITION');*/
+	     const pluginInstance = $uiRouter.plugin(Visualizer);
+	     $trace.enable('TRANSITION');*/
 
 	  // Global Functions
 	  $rootScope.dateConverter = function (time) {
@@ -276,10 +282,15 @@
 	    url: '/edit/:id',
 	    templateUrl: 'manager-pages/create/batch.html',
 	    controller: _batch.batchCtrl
+	  }).state('manager.panel', {
+	    url: 'panel',
+	    templateUrl: 'manager-pages/panel/panel.html',
+	    controller: _panel2.default
 	  }).state('manager.advanced.projects.edit', {
 	    url: '/edit/:id',
 	    templateUrl: 'manager-pages/create/project.html',
 	    controller: _project.projectCtrl
+
 	  }).state('associate', {
 	    url: '/associate',
 	    templateUrl: 'associate-pages/associate.html',
@@ -292,6 +303,10 @@
 	    url: '/interview',
 	    templateUrl: 'associate-pages/interview/interview.html',
 	    controller: _interview2.default
+	  }).state('associate.associatePanel', {
+	    url: '/associatePanel',
+	    templateUrl: 'associate-pages/associatePanel/associatePanel.html',
+	    controller: _associatePanel2.default
 	  }).state('associate.profile', {
 	    url: '/profile',
 	    templateUrl: 'associate-pages/profile/profile.html',
@@ -63647,6 +63662,74 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	var managerPanelCtrl = function managerPanelCtrl($scope, $state, $location, $http, userService) {
+		$scope.PanelLoad = '';
+		$scope.show_panel = false;
+		/*$http({
+	     method: 'GET',
+	     url: '/associate/all',
+	   }).then((response) => {
+	 	  
+	     $scope.associates = response.data;
+	     console.log(response.data);
+	     $scope.PanelLoad= '';
+	     $scope.search_disabled = false;
+	 });*/
+		$scope.searchClick = function (searchName) {
+			/*console.log(associate);
+	  $scope.search.name='';
+	  $scope.show_panel = true;
+	  var associateId = associate.id;
+	  $http({
+	  	method: 'GET',
+	  	url: '/panel/associate/'+associateId,
+	  }).then((response) =>{
+	  	console.log(response.data);
+	  	$scope.plist = response.data;
+	  });*/
+			if (searchName) {
+				console.log(searchName);
+				$scope.disabled_search = true;
+				$scope.show_panel = false;
+				$scope.PanelLoad = 'Loading Panel...';
+				$http({
+					method: 'GET',
+					url: '/associate/search/' + searchName
+				}).then(function (response) {
+					$scope.PanelLoad = '';
+					$scope.disabled_search = false;
+					console.log(response.data);
+					$scope.associates = response.data;
+					$scope.searchShowUp = true;
+				});
+			}
+
+			$scope.associatePanelClick = function (associate) {
+				console.log(associate);
+				$scope.searchShowUp = false;
+				$scope.show_panel = true;
+				var associateId = associate.id;
+				$http({
+					method: 'GET',
+					url: '/panel/associate/' + associateId
+				}).then(function (response) {
+					console.log(response.data);
+					$scope.plist = response.data;
+				});
+			};
+		};
+	};
+	exports.default = managerPanelCtrl;
+
+/***/ }),
+/* 142 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 
@@ -63800,7 +63883,7 @@
 	exports.default = profileCtrl;
 
 /***/ }),
-/* 142 */
+/* 143 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -63941,7 +64024,28 @@
 	exports.default = associateInterviewCtrl;
 
 /***/ }),
-/* 143 */
+/* 144 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	var associatePanelCtrl = function associatePanelCtrl($scope, $http, userService) {
+
+		$http({
+			method: 'GET',
+			url: '/panel/associate/' + userService.getUser().id
+		}).then(function (response) {
+			$scope.plist = response.data;
+		});
+	};
+
+	exports.default = associatePanelCtrl;
+
+/***/ }),
+/* 145 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -64006,7 +64110,7 @@
 	exports.default = associateCtrl;
 
 /***/ }),
-/* 144 */
+/* 146 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -64071,7 +64175,7 @@
 	exports.default = loginCtrl;
 
 /***/ }),
-/* 145 */
+/* 147 */
 /***/ (function(module, exports) {
 
 	/*
