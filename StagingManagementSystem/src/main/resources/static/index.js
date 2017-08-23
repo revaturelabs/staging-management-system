@@ -62174,6 +62174,7 @@
 	    userService.setUser(response.data);
 	    if (response.data === undefined) {
 	      //TODO:Tie to role once role is set
+	      console.log(response);
 	      $state.go('associate.home');
 	    }
 	  }, function () {
