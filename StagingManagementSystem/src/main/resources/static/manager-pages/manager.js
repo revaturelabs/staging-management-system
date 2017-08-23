@@ -4,14 +4,13 @@ function managerCtrl($scope, $state, $location, $http, userService) {
     url: '/login/user',
   }).then((response) => {
     userService.setUser(response.data);
-    if (response.data.permission === undefined) {
+    if (response.data.is_lightning_login_user === undefined) { //TODO: Tie to role once role is properly set. Lightning user is just something in salesforceuser
       $state.go('associate.home');
     }
   }, () => {
     userService.setUser({});
     $state.go('login');
   });
-
   $scope.isActive = function (viewLocation) {
     return viewLocation === $location.path();
   };

@@ -3,7 +3,6 @@ function userCtrl($scope, $http) {
     .then((response) => {
       $scope.posts = response.data;
     }, () => {
-      console.log('failure');
     });
 
   $scope.submit = () => {
