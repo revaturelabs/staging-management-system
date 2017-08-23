@@ -134,17 +134,15 @@
 
 	var _login2 = _interopRequireDefault(_login);
 
-	var _certifications = __webpack_require__(145);
+	var _certifications = __webpack_require__(147);
+
+	var _certifications2 = _interopRequireDefault(_certifications);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-<<<<<<< HEAD
-	__webpack_require__(146)(_fusioncharts2.default);
-=======
-	__webpack_require__(147)(_fusioncharts2.default);
->>>>>>> f145daf01cea429c66fbf8d86376349250da979c
+	__webpack_require__(148)(_fusioncharts2.default);
 
-	var Visualizer = window['ui-router-visualizer'].Visualizer;
+	// const Visualizer = window['ui-router-visualizer'].Visualizer;
 
 	var routerApp = _angular2.default.module('routerApp', [_angularjs2.default, _angularCookies2.default]);
 
@@ -164,7 +162,7 @@
 	routerApp.directive('scrollToBottom', function ($timeout, $window) {
 	  return {
 	    scope: {
-	      scrollToBottom: "="
+	      scrollToBottom: '='
 	    },
 	    restrict: 'A',
 	    link: function link(scope, element, attr) {
@@ -181,29 +179,18 @@
 
 	routerApp.run(function ($uiRouter, $trace, $rootScope) {
 
-	  //Ui Visualizer
+	  // Ui Visualizer
 	  // Auto-collapse children in state visualizer
-<<<<<<< HEAD
-	  // const registry = $uiRouter.stateRegistry;
-	  // $uiRouter.stateRegistry.get().map(s => s.$$state())
-	  //     .filter(s => s.path.length === 2 || s.path.length === 3)
-	  //     .forEach(s => s._collapsed = true);
-	  //
-	  // const pluginInstance = $uiRouter.plugin(Visualizer);
-	  //
-	  // $trace.enable('TRANSITION');
-
-	  //Global Functions
-=======
 	  /*const registry = $uiRouter.stateRegistry;
 	  $uiRouter.stateRegistry.get().map(s => s.$$state())
 	      .filter(s => s.path.length === 2 || s.path.length === 3)
 	      .forEach(s => s._collapsed = false);
-	     const pluginInstance = $uiRouter.plugin(Visualizer);
-	     $trace.enable('TRANSITION');*/
+	  
+	  const pluginInstance = $uiRouter.plugin(Visualizer);
+	  
+	  $trace.enable('TRANSITION');*/
 
 	  // Global Functions
->>>>>>> f145daf01cea429c66fbf8d86376349250da979c
 	  $rootScope.dateConverter = function (time) {
 	    return (0, _moment2.default)(time).format('MMM D, hh:mm a');
 	  };
@@ -294,12 +281,13 @@
 	  }).state('manager.advanced.batches', {
 	    url: '/batches',
 	    templateUrl: 'manager-pages/advanced/batches/batches.html'
+	  }).state('manager.advanced.projects', {
+	    url: '/projects',
+	    templateUrl: 'manager-pages/advanced/projects/projects.html'
 	  }).state('manager.advanced.batches.edit', {
 	    url: '/edit/:id',
 	    templateUrl: 'manager-pages/create/batch.html',
 	    controller: _batch.batchCtrl
-<<<<<<< HEAD
-=======
 	  }).state('manager.panel', {
 	    url: 'panel',
 	    templateUrl: 'manager-pages/panel/panel.html',
@@ -309,7 +297,6 @@
 	    templateUrl: 'manager-pages/create/project.html',
 	    controller: _project.projectCtrl
 
->>>>>>> f145daf01cea429c66fbf8d86376349250da979c
 	  }).state('associate', {
 	    url: '/associate',
 	    templateUrl: 'associate-pages/associate.html',
@@ -333,7 +320,7 @@
 	  }).state('associate.certifications', {
 	    url: '/certifications',
 	    templateUrl: 'Certifications/certifications.html',
-	    controller: _certifications.certificationCtrl
+	    controller: _certifications2.default
 	  });
 	});
 
@@ -64225,7 +64212,7 @@
 	exports.certificationCtrl = certificationCtrl;
 
 /***/ }),
-/* 146 */
+/* 148 */
 /***/ (function(module, exports) {
 
 	/*

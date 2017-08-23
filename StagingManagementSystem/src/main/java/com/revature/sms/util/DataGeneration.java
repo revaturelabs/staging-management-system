@@ -11,16 +11,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.revature.sms.entities.Associate;
+import com.revature.sms.entities.AssociatesStatus;
 import com.revature.sms.entities.Batch;
+import com.revature.sms.entities.Certifications;
 import com.revature.sms.entities.Checkin;
 import com.revature.sms.entities.Client;
 import com.revature.sms.entities.ClientQuestion;
+import com.revature.sms.entities.Credential;
 import com.revature.sms.entities.Interview;
 import com.revature.sms.entities.InterviewQuestion;
 import com.revature.sms.entities.InterviewStatuses;
 import com.revature.sms.entities.Job;
 import com.revature.sms.entities.Manager;
 import com.revature.sms.entities.Marketer;
+import com.revature.sms.entities.PortfolioStatus;
+import com.revature.sms.entities.Project;
+import com.revature.sms.entities.Skill;
 import com.revature.sms.services.AssociateService;
 import com.revature.sms.services.BatchService;
 import com.revature.sms.services.CheckinService;
@@ -279,7 +285,7 @@ public class DataGeneration {
 
 		AssociateP(Associate a) {
 			super(a.getId(), a.getCredential(), a.getName(), a.getPortfolioLink(), a.getBatch(), a.getProject(),
-					a.getLockedTo(), a.getSkills(), a.getJobs(), a.getPortfolioStatus(), a.getAssociateStatus());
+					a.getLockedTo(), a.getPortfolioStatus(), a.getAssociateStatus(),a.getSkills(), a.getJobs(), a.getCertifications());
 
 			int qualityOfAssociate = rand.nextInt(100);
 
@@ -321,7 +327,21 @@ public class DataGeneration {
 		Associate getAssocaite() {
 			this.setStatus();
 			return new Associate(getId(), getCredential(), getName(), getPortfolioLink(), getBatch(), getProject(),
-					getLockedTo(), getSkills(), getJobs(), getPortfolioStatus(), getAssociateStatus());
+					getLockedTo(), getPortfolioStatus(), getAssociateStatus(),getSkills(), getJobs(), getCertifications());
+		}
+
+		
+		public AssociateP() {
+			super();
+			// TODO Auto-generated constructor stub
+		}
+
+		public AssociateP(long id, Credential credential, String name, String portfolioLink, Batch batch,
+				Project project, Client lockedTo, PortfolioStatus portfolioStatus, AssociatesStatus associateStatus,
+				Set<Skill> skills, Set<Job> jobs, Set<Certifications> certifications) {
+			super(id, credential, name, portfolioLink, batch, project, lockedTo, portfolioStatus, associateStatus, skills, jobs,
+					certifications);
+			// TODO Auto-generated constructor stub
 		}
 
 		/*

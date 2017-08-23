@@ -72,17 +72,26 @@ public class Associate {
 	@OneToMany(mappedBy = "associate")
 	private Set<Job> jobs;
 
+	@OneToMany(mappedBy="associate")
+    private Set<Certifications> certifications;
+	
 	public Associate() {
 		super();
 		this.skills = new HashSet<>();
 		this.jobs = new HashSet<>();
+		this.certifications= new HashSet<>();
 		this.associateStatus = new AssociatesStatus();
 		this.portfolioStatus = new PortfolioStatus();
+		
+		
 	}
 
+	
+
+
 	public Associate(long id, Credential credential, String name, String portfolioLink, Batch batch, Project project,
-			Client lockedTo, Set<Skill> skills, Set<Job> jobs, PortfolioStatus portfolioStatusId, AssociatesStatus associateStatusId) 
-	{
+			Client lockedTo, PortfolioStatus portfolioStatus, AssociatesStatus associateStatus, Set<Skill> skills,
+			Set<Job> jobs, Set<Certifications> certifications) {
 		super();
 		this.id = id;
 		this.credential = credential;
@@ -91,11 +100,13 @@ public class Associate {
 		this.batch = batch;
 		this.project = project;
 		this.lockedTo = lockedTo;
+		this.portfolioStatus = portfolioStatus;
+		this.associateStatus = associateStatus;
 		this.skills = skills;
 		this.jobs = jobs;
-		this.portfolioStatus = portfolioStatusId;
-		this.associateStatus = associateStatusId;
+		this.certifications = certifications;
 	}
+
 
 
 
@@ -278,6 +289,20 @@ public class Associate {
 	public void setJobs(Set<Job> jobs) {
 		this.jobs = jobs;
 	}
+
+	public Set<Certifications> getCertifications() {
+		return certifications;
+	}
+
+
+
+
+	public void setCertifications(Set<Certifications> certifications) {
+		this.certifications = certifications;
+	}
+
+
+
 
 	@Override
 	public boolean equals(Object obj) {
