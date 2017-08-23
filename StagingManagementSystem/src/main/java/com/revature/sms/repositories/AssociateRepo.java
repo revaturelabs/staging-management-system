@@ -3,7 +3,7 @@ package com.revature.sms.repositories;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.revature.sms.entities.Associate;
-import com.revature.sms.entities.AssociatesStatus;
+
 import com.revature.sms.entities.Credential;
 
 import java.util.Set;
