@@ -21,7 +21,7 @@ public interface Authorization {
      * Generates authURI with provided parameters
      * @return view of the generated URI
      */
-    ModelAndView openAuthURI( HttpServletResponse servletResponse)  throws JsonProcessingException, UnsupportedEncodingException ;
+    ModelAndView openAuthURI( HttpSession session, HttpServletResponse httpServletResponse) throws JsonProcessingException, UnsupportedEncodingException  ;
     /**
      * Creates salesforce token, uses it to get a salesforce user, saves that as a cookie on the client.
      * @param code the string returned from the authURI required for getting token from salesforce
