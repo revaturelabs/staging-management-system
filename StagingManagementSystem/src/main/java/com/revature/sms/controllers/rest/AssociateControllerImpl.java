@@ -25,7 +25,6 @@ import com.revature.sms.entities.StaggingAssociate;
 import com.revature.sms.services.AssociateService;
 import com.revature.sms.services.TotalReport;
 import com.revature.sms.services.TotalReport.TotalData;
-import com.revature.sms.util.DataGeneration;
 
 @RestController
 @RequestMapping("associate")
@@ -33,8 +32,8 @@ public class AssociateControllerImpl {
 
 	@Autowired
 	private AssociateService associateService;
-	@Autowired
-	private DataGeneration dataGen;
+/*	@Autowired
+	private DataGeneration dataGen;*/
 	@Autowired
 	TotalReport totalReport;
 	
@@ -70,10 +69,10 @@ public class AssociateControllerImpl {
 		return ResponseEntity.ok(null);
 	}
 
-	@GetMapping("/generate/mock-data")
+/*	@GetMapping("/generate/mock-data")
 	public void generateAssociateMockDate() {
 		dataGen.generate();
-	}
+	}*/
 
 	@DeleteMapping
 	public ResponseEntity deleteAssociate(@RequestBody Associate associate, HttpSession session) {

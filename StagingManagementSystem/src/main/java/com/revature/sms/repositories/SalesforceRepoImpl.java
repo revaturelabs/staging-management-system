@@ -1,6 +1,7 @@
 package com.revature.sms.repositories;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.util.LinkedList;
 import java.util.List;
@@ -71,7 +72,21 @@ public class SalesforceRepoImpl implements SalesforceRepo {
 			+ "eintern_current_project_completion_pct__c , " + "Training_Batch__r.Skill_Type__c, "
 			+ "Training_Batch__r.Type__c from Contact " + "where training_batch__c = ")
 	private String batchDetails;
-
+	
+	@Value("select id, name, training_status__c, phone, email, MobilePhone, "
+			+ "Training_Batch__c , Training_Batch__r.name, " + "Training_Batch__r.batch_start_date__c, "
+			+ "Training_Batch__r.batch_end_date__c, " + "Training_Batch__r.batch_trainer__r.name, "
+			+ "rnm__Recruiter__r.name, account.name, " + "Training_Batch__r.Co_Trainer__r.name, "
+			+ "eintern_current_project_completion_pct__c , " + "Training_Batch__r.Skill_Type__c, "
+			+ "Training_Batch__r.Type__c from Contact " + "where training_status__c = 'Marketing'")
+	private String benchAssociates;
+	
+	@Value("select id, name, batch_start_date__c, batch_end_date__c, "
+			+ "batch_trainer__r.name, batch_trainer__r.email, Co_Trainer__r.name, Co_Trainer__r.email, "
+			+ "Skill_Type__c, Location__c, Type__c from training__c "
+			+ "where id= ")
+	private String batch;
+	
 	//////////// DAO methods ////////////////
 	@Override
 	public List<Batch> getRelevantBatches(SalesforceUser user) {
@@ -91,7 +106,28 @@ public class SalesforceRepoImpl implements SalesforceRepo {
 
 		return relevantBatchesList;
 	}
+	
+	@Override
+	public Batch getBatch(String resourceId, SalesforceUser user) {
+		String query = batch+"'"+resourceId+"'";
+		Batch b = null;
 
+		try {
+			SalesforceBatchResponse response = new ObjectMapper().readValue(
+					getFromSalesforce(query, user).getEntity().getContent(), SalesforceBatchResponse.class);
+			log.info("Found " + response.getTotalSize() + " batches: " + response);
+
+			if(response.getRecords().length==1)
+				b= transformer.transformBatch(response.getRecords()[0]);
+			else
+				log.error("Too many batches");
+
+		} catch (IOException e) {
+			log.error("Cannot get Salesforce batches:  " + e);
+		}
+
+		return b;
+	}
 	@Override
 	public List<Associate> getBatchTrainees(String resourceId, SalesforceUser user) {
 		String query = batchDetails + "'" + resourceId + "'";
@@ -101,7 +137,29 @@ public class SalesforceRepoImpl implements SalesforceRepo {
 			SalesforceTraineeResponse response = new ObjectMapper().readValue(getFromSalesforce(query, user).getEntity().getContent(), SalesforceTraineeResponse.class);
 			log.info(response);
 			for(SalesforceTrainee trainee : response.getRecords()){
-				trainees.add(transformer.transformTrainee(trainee));
+				trainees.add(transformer.transformTrainee(trainee, user));
+			}
+			
+		} catch (IOException e) {
+			log.error("Cannot get batch details from Salesforce: cause " + e);
+			throw new ServiceNotAvailableException();
+		}
+		return trainees;
+	}
+	
+	@Override
+	public List<Associate> getBenchTrainees(SalesforceUser user) {
+		String query = benchAssociates;
+		List<Associate> trainees = new LinkedList<>();
+		
+		try {
+			InputStream is = getFromSalesforce(query,user).getEntity().getContent();
+			log.trace(is);
+			SalesforceTraineeResponse response = new ObjectMapper().readValue(is, SalesforceTraineeResponse.class);
+			log.info("Checking for benched trainees.");
+			log.info(response);
+			for(SalesforceTrainee trainee : response.getRecords()){
+				trainees.add(transformer.transformBenchTrainee(trainee, user));
 			}
 			
 		} catch (IOException e) {
@@ -140,8 +198,6 @@ public class SalesforceRepoImpl implements SalesforceRepo {
 	 * @return
 	 */
 	private String getAccessToken(SalesforceUser user) {
-		System.out.println("==============================");
-		System.out.println(user);
 		if (!salesforce)
 			return "00D0n0000000Q1l!AQQAQGCIRGGBiQitAaZKeja8rvjTAq.Sstul_2RRs4tgHOc7W.MzUm4W99HkTWxyuSWCgZTYdpH9hQ2QGF_p9IHrQwssXVhU";
 		else
