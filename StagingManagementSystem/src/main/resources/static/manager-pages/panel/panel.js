@@ -3,9 +3,11 @@ const managerPanelCtrl = ($scope, $state, $location, $http, userService) => {
 	$scope.show_panel = false;
 	$scope.defaultCommnt = '';
 	$scope.choose = {};
-
+	$scope.plist = {};
+	
 	$scope.searchClick =(searchName)=>{
 		$scope.choose ={};
+		$scope.plist = {};
 		if(searchName){
 			$scope.disabled_search=true;
 			$scope.show_panel = false;
