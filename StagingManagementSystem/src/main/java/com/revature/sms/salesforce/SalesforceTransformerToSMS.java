@@ -83,7 +83,7 @@ public class SalesforceTransformerToSMS implements SalesforceTransformer {
 			trainer.setName(batchTrainer.getName());
 		}
 		trainer.setActive(true);
-		
+
 		return tRepo.save(trainer);
 	}
 
@@ -102,15 +102,14 @@ public class SalesforceTransformerToSMS implements SalesforceTransformer {
 		associate.setName(salesforceTrainee.getName());
 		associate.setAssociateStatus(statusHelper(associate, salesforceTrainee.getTrainingStatus()));
 		associate.setBatch(bRepo.getBySalesforceId(salesforceTrainee.getBatchId()));
-		if(associate.getBatch()==null)
-		{
+		if (associate.getBatch() == null) {
 			Batch b = sRepo.getBatch(salesforceTrainee.getBatchId(), user);
 			bRepo.save(b);
 			associate.setBatch(b);
 		}
 		return associate;
 	}
-	
+
 	@Override
 	public Associate transformBenchTrainee(SalesforceTrainee salesforceTrainee, SalesforceUser user) {
 		salesforceTrainee.setTrainingStatus("Bench");
@@ -127,8 +126,7 @@ public class SalesforceTransformerToSMS implements SalesforceTransformer {
 		associate.setName(salesforceTrainee.getName());
 		associate.setAssociateStatus(statusHelper(associate, salesforceTrainee.getTrainingStatus()));
 		associate.setBatch(bRepo.getBySalesforceId(salesforceTrainee.getBatchId()));
-		if(associate.getBatch()==null)
-		{
+		if (associate.getBatch() == null) {
 			Batch b = sRepo.getBatch(salesforceTrainee.getBatchId(), user);
 			bRepo.save(b);
 			associate.setBatch(b);
@@ -195,16 +193,18 @@ public class SalesforceTransformerToSMS implements SalesforceTransformer {
 	}
 
 	private Location locationHelper(String location) {
-		String[] pieces = location.split("\\|");
+
 		String name;
-		if(pieces.length>1)
-		{
-			name=pieces[0];
-		}
-		else
-		{
-			String[] pieces2 = location.split(",");
-			name=pieces2[0];
+		if (location != null) {
+			String[] pieces = location.split("\\|");
+			if (pieces.length > 1) {
+				name = pieces[0];
+			} else {
+				String[] pieces2 = location.split(",");
+				name = pieces2[0];
+			}
+		} else {
+			name = "Unknown";
 		}
 		Location l = lRepo.findByName(name);
 		if (l == null) {
