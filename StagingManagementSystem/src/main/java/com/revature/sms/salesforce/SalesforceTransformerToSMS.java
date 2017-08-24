@@ -151,6 +151,9 @@ public class SalesforceTransformerToSMS implements SalesforceTransformer {
 		case "Confirmed":
 			status = "PROJECT";
 			break;
+		case "Bench":
+			status = "BENCH";
+			break;
 		case "Employed":
 			status = "PROJECT";
 			break;
@@ -163,7 +166,7 @@ public class SalesforceTransformerToSMS implements SalesforceTransformer {
 		AssociatesStatus currentStatus = associate.getAssociateStatus();
 		if (currentStatus != null) {
 			// We have to update a few things
-			if (status.equals("STAGING") && currentStatus.getStatus().equals("PROJECT")) {
+			if (status.equals("BENCH") && currentStatus.getStatus().equals("PROJECT")) {
 				// status should actually be BENCH
 				status = "BENCH";
 				// set portfolio status to false
