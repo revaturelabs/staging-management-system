@@ -63667,28 +63667,10 @@
 	var managerPanelCtrl = function managerPanelCtrl($scope, $state, $location, $http, userService) {
 		$scope.PanelLoad = '';
 		$scope.show_panel = false;
-		/*$http({
-	     method: 'GET',
-	     url: '/associate/all',
-	   }).then((response) => {
-	 	  
-	     $scope.associates = response.data;
-	     console.log(response.data);
-	     $scope.PanelLoad= '';
-	     $scope.search_disabled = false;
-	 });*/
+		$scope.defaultCommnt = '';
+		$scope.choose = {};
+
 		$scope.searchClick = function (searchName) {
-			/*console.log(associate);
-	  $scope.search.name='';
-	  $scope.show_panel = true;
-	  var associateId = associate.id;
-	  $http({
-	  	method: 'GET',
-	  	url: '/panel/associate/'+associateId,
-	  }).then((response) =>{
-	  	console.log(response.data);
-	  	$scope.plist = response.data;
-	  });*/
 			if (searchName) {
 				console.log(searchName);
 				$scope.disabled_search = true;
@@ -63705,8 +63687,8 @@
 					$scope.searchShowUp = true;
 				});
 			}
-
 			$scope.associatePanelClick = function (associate) {
+				$scope.choose = associate;
 				console.log(associate);
 				$scope.searchShowUp = false;
 				$scope.show_panel = true;
@@ -63717,8 +63699,29 @@
 				}).then(function (response) {
 					console.log(response.data);
 					$scope.plist = response.data;
+					$scope.plist.sort(function (a, b) {
+						return a.id - b.id;
+					});
 				});
 			};
+		};
+
+		$scope.addPanelClick = function () {
+			$scope.errorMsgShow = false;
+			$scope.successMsgShow = false;
+
+			addPanelBtn.disabled = true;
+			addPanelBtn.innerHTML = 'Adding...';
+			$http({
+				method: 'POST',
+				url: '/panel',
+				data: { associate: $scope.choose, comments: $scope.defaultCommnt }
+			}).then(function (response) {
+				$scope.successMsgShow = true;
+				addPanelBtn.disabled = false;
+				addPanelBtn.innerHTML = 'Add Panel';
+				$scope.associatePanelClick($scope.choose);
+			});
 		};
 
 		$scope.showAddModal = function () {
@@ -63734,7 +63737,7 @@
 
 		$scope.PanelClick = function (panel) {
 			$scope.panelChoose = panel;
-			console.log("I got the panel " + $scope.PanelClick.id);
+			console.log("I got the panel ", $scope.panelChoose);
 			$scope.errorUpdateMsgShow = false;
 			$scope.successUpdateMsgShow = false;
 			$('#PanelCommentModal').modal('show');
