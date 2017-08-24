@@ -63668,7 +63668,6 @@
 					$scope.disabled_search = false;
 					$scope.associates = response.data;
 					$scope.searchShowUp = true;
-					location.reload();
 				});
 			}
 
