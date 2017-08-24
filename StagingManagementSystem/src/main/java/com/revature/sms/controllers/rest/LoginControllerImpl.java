@@ -26,9 +26,6 @@ public class LoginControllerImpl {
 	
 	@Autowired
 	CredentialService credService;
-	@Value("${sms.salesforce}")
-	private boolean salesforce;
-	
 
 	private static final String LA = "login_associate";
 	private static final String LM = "login_manager";
