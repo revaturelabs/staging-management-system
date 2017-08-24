@@ -60,6 +60,8 @@ public class PanelServiceImpl implements PanelService
 	@Transactional
 	public void addPanel(Panel panel) 
 	{
+		LocalDateTime currentDate = LocalDateTime.now();
+		panel.setStatusDate(currentDate);
 		pr.saveAndFlush(panel);
 	}
 
