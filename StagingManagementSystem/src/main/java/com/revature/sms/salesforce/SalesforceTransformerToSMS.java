@@ -76,6 +76,7 @@ public class SalesforceTransformerToSMS implements SalesforceTransformer{
 		{
 			trainer = new Trainer();
 			trainer.setName(batchTrainer.getName());
+			tRepo.save(trainer);
 		}
 		trainer.setActive(true);
 		return trainer;
