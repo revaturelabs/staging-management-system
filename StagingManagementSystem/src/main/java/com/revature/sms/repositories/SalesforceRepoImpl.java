@@ -2,6 +2,7 @@ package com.revature.sms.repositories;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.http.HttpResponse;
@@ -10,15 +11,21 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.revature.salesforce.beans.SalesforceBatch;
+import com.revature.salesforce.beans.SalesforceBatchResponse;
+import com.revature.salesforce.beans.SalesforceTrainee;
+import com.revature.salesforce.beans.SalesforceTraineeResponse;
 import com.revature.sms.entities.Associate;
 import com.revature.sms.entities.Batch;
 import com.revature.sms.exceptions.ServiceNotAvailableException;
+import com.revature.sms.salesforce.SalesforceTransformer;
 import com.revature.sms.security.models.SalesforceUser;
 
 /*
@@ -35,6 +42,9 @@ public class SalesforceRepoImpl implements SalesforceRepo {
 	private String salesforceInstanceUrl;
 	@Value("/services/data/v39.0/query/")
 	private String salesforceApiUrl;
+
+	@Autowired
+	private SalesforceTransformer transformer;
 
 	//////////// SOQL - Salesforce Object Query Language //////////////
 
@@ -62,16 +72,43 @@ public class SalesforceRepoImpl implements SalesforceRepo {
 			+ "Training_Batch__r.Type__c from Contact " + "where training_batch__c = ")
 	private String batchDetails;
 
+	//////////// DAO methods ////////////////
 	@Override
 	public List<Batch> getRelevantBatches() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Batch> relevantBatchesList = new LinkedList<>();
+
+		try {
+			SalesforceBatchResponse response = new ObjectMapper().readValue(
+					getFromSalesforce(relevantBatches).getEntity().getContent(), SalesforceBatchResponse.class);
+			log.info("Found " + response.getTotalSize() + " batches: " + response);
+
+			for (SalesforceBatch salesForceBatch : response.getRecords()) {
+				relevantBatchesList.add(transformer.transformBatch(salesForceBatch));
+			}
+		} catch (IOException e) {
+			log.error("Cannot get Salesforce batches:  " + e);
+		}
+
+		return relevantBatchesList;
 	}
 
 	@Override
 	public List<Associate> getBatchTrainees(String resourceId) {
-		// TODO Auto-generated method stub
-		return null;
+		String query = batchDetails + "'" + resourceId + "'";
+		List<Associate> trainees = new LinkedList<>();
+		
+		try {
+			SalesforceTraineeResponse response = new ObjectMapper().readValue(getFromSalesforce(query).getEntity().getContent(), SalesforceTraineeResponse.class);
+			log.info(response);
+			for(SalesforceTrainee trainee : response.getRecords()){
+				trainees.add(transformer.transformTrainee(trainee));
+			}
+			
+		} catch (IOException e) {
+			log.error("Cannot get batch details from Salesforce: cause " + e);
+			throw new ServiceNotAvailableException();
+		}
+		return trainees;
 	}
 	//////////// API Helper Methods //////////////
 
