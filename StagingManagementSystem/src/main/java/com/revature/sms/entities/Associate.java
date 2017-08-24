@@ -50,7 +50,7 @@ public class Associate {
 	@ManyToOne
 	@JoinColumn(name = "BATCH_ID")
 	private Batch batch;
-	
+
 	@ManyToOne
 	@JoinColumn(name="PROJECT_ID")
 	private Project project;
@@ -62,18 +62,18 @@ public class Associate {
 	@OneToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="PORTFOLIO_STATUS_ID")
 	private PortfolioStatus portfolioStatus;
-	
+
 	@OneToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="ASSOCIATE_STATUS_ID")
 	private AssociatesStatus associateStatus;
 	
-
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "ASSOCIATE_SKILLS", joinColumns = @JoinColumn(name = "ASSOCIATE_ID"), inverseJoinColumns = @JoinColumn(name = "SKILL_ID"))
 	private Set<Skill> skills;
-
+	
 	@OneToMany(mappedBy = "associate")
 	private Set<Job> jobs;
+	
 
 	public Associate() {
 		super();
@@ -98,188 +98,6 @@ public class Associate {
 		this.jobs = jobs;
 		this.portfolioStatus = portfolioStatusId;
 		this.associateStatus = associateStatusId;
-	}
-
-
-
-	/**
-	 *  Returns true if associate was on job during the given date.
-	 */
-	public boolean hasJobOnDate(LocalDateTime date){
-	  for(Job j : jobs){
-	    boolean beforeEnd = j.getEndDate() == null || date.compareTo(j.getEndDate()) < 0;
-	    boolean hasentStopped = j.getEndDate() == null;
-	    boolean afterStart = date.compareTo(j.getStartDate()) > 0;
-	    
-	    if(afterStart && (hasentStopped || beforeEnd))
-	      return true;
-	  }
-	  return false;
-	}
-	
-	/**
-	 * Returns true if associate has not started their training and they have not had
-	 * any jobs. Leaving it possible for associates to participate in multiple training
-	 * batches only after they have had at least one job.
-	 */
-	public boolean hasStartedOnDate(LocalDateTime date) {
-		boolean hasBegunTraining = date.compareTo(batch.getStartDate()) > 0;
-
-		if(hasBegunTraining)
-			     return true;
-		return false;
-	}
-	
-	/**
-	 * Returns true if associate was in training during the given date.
-	 */
-	public boolean isTrainingOnDate(LocalDateTime adate) {
-	   LocalDateTime date = adate.withHour(12); //Set mid day all other events should be the beginning of the day.
-	   boolean afterBatchStart = date.compareTo(batch.getStartDate()) > 0;
-	   boolean beforeBatchEnd = date.compareTo(batch.getEndDate()) < 0;
-	   if(afterBatchStart && beforeBatchEnd)
-	     return true;
-	  
-	  return false;
-	}
-	
-	/**
-	 * This function returns true if the associate was in staging on the given date.
-	 */
-	public boolean isTrackedOnDate(LocalDateTime date) {
-	     if(hasStartedOnDate(date) && !isTrainingOnDate(date) && !hasJobOnDate(date))
-	    	 return true;
-	     return false;
-	}
-	
-	/**
-	 * This function returns true if the associate is in Staging and is available for hire
-	 */
-	public boolean isActive() {
-		return "STAGING".equals(associateStatus.getStatus()) && "BENCH".equals(associateStatus.getStatus()) ? true : false;
-	}
-	
-	public void setStatus() {
-		
-		if(this.isTrainingOnDate(LocalDateTime.now())) {
-			AssociatesStatus status = new AssociatesStatus(0, "TRAINING");
-			this.setAssociateStatus(status);
-		}
-		
-		else if (this.hasJobOnDate(LocalDateTime.now())) {
-			AssociatesStatus status = new AssociatesStatus(2, "PROJECT");
-			this.setAssociateStatus(status);
-		}
-		
-		else {
-			AssociatesStatus status = new AssociatesStatus(1, "STAGING");
-			this.setAssociateStatus(status);
-		}
-	}
-
-	public long getId() 
-	{
-		return id;
-	}
-
-	public void setId(long id) 
-	{
-		this.id = id;
-	}
-
-	public Credential getCredential() 
-	{
-		return credential;
-	}
-
-	public void setCredential(Credential credential) 
-	{
-		this.credential = credential;
-	}
-
-	public String getName() 
-	{
-		return name;
-	}
-
-	public void setName(String name) 
-	{
-		this.name = name;
-	}
-
-	public String getPortfolioLink() 
-	{
-		return portfolioLink;
-	}
-
-	public void setPortfolioLink(String portfolioLink) 
-	{
-		this.portfolioLink = portfolioLink;
-	}
-
-	public Batch getBatch() 
-	{
-		return batch;
-	}
-
-	public void setBatch(Batch batch) 
-	{
-		this.batch = batch;
-	}
-	
-	public Project getProject(){
-		return project;
-	}
-	
-	public void setProject(Project project){
-		this.project = project;
-	}
-
-	public Client getLockedTo() 
-	{
-		return lockedTo;
-	}
-
-	public void setLockedTo(Client lockedTo) 
-	{
-		this.lockedTo = lockedTo;
-	}
-
-	public PortfolioStatus getPortfolioStatus() 
-	{
-		return portfolioStatus;
-	}
-
-	public void setPortfolioStatus(PortfolioStatus portfolioStatus) 
-	{
-		this.portfolioStatus = portfolioStatus;
-	}
-
-	public AssociatesStatus getAssociateStatus() 
-	{
-		return associateStatus;
-	}
-
-	public void setAssociateStatus(AssociatesStatus associateStatus) 
-	{
-		this.associateStatus = associateStatus;
-	}
-
-	public Set<Skill> getSkills() 
-	{
-		return skills;
-	}
-
-	public void setSkills(Set<Skill> skills) {
-		this.skills = skills;
-	}
-
-	public Set<Job> getJobs() {
-		return jobs;
-	}
-
-	public void setJobs(Set<Job> jobs) {
-		this.jobs = jobs;
 	}
 
 	@Override
@@ -344,6 +162,196 @@ public class Associate {
 		} else if (!skills.equals(other.skills))
 			return false;
 		return true;
+	}
+
+	public AssociatesStatus getAssociateStatus() 
+	{
+		return associateStatus;
+	}
+
+
+
+	public Batch getBatch() 
+	{
+		return batch;
+	}
+	
+	public Credential getCredential() 
+	{
+		return credential;
+	}
+	
+	public long getId() 
+	{
+		return id;
+	}
+	
+	public Set<Job> getJobs() {
+		return jobs;
+	}
+	
+	public Client getLockedTo() 
+	{
+		return lockedTo;
+	}
+	
+	public String getName() 
+	{
+		return name;
+	}
+
+	public String getPortfolioLink() 
+	{
+		return portfolioLink;
+	}
+
+	public PortfolioStatus getPortfolioStatus() 
+	{
+		return portfolioStatus;
+	}
+
+	public Project getProject(){
+		return project;
+	}
+
+	public String getSalesforceId() {
+		return salesforceId;
+	}
+
+	public Set<Skill> getSkills() 
+	{
+		return skills;
+	}
+
+	/**
+	 *  Returns true if associate was on job during the given date.
+	 */
+	public boolean hasJobOnDate(LocalDateTime date){
+	  for(Job j : jobs){
+	    boolean beforeEnd = j.getEndDate() == null || date.compareTo(j.getEndDate()) < 0;
+	    boolean hasentStopped = j.getEndDate() == null;
+	    boolean afterStart = date.compareTo(j.getStartDate()) > 0;
+	    
+	    if(afterStart && (hasentStopped || beforeEnd))
+	      return true;
+	  }
+	  return false;
+	}
+
+	/**
+	 * Returns true if associate has not started their training and they have not had
+	 * any jobs. Leaving it possible for associates to participate in multiple training
+	 * batches only after they have had at least one job.
+	 */
+	public boolean hasStartedOnDate(LocalDateTime date) {
+		boolean hasBegunTraining = date.compareTo(batch.getStartDate()) > 0;
+
+		if(hasBegunTraining)
+			     return true;
+		return false;
+	}
+
+	/**
+	 * This function returns true if the associate is in Staging and is available for hire
+	 */
+	public boolean isActive() {
+		return "STAGING".equals(associateStatus.getStatus()) && "BENCH".equals(associateStatus.getStatus()) ? true : false;
+	}
+
+	/**
+	 * This function returns true if the associate was in staging on the given date.
+	 */
+	public boolean isTrackedOnDate(LocalDateTime date) {
+	     if(hasStartedOnDate(date) && !isTrainingOnDate(date) && !hasJobOnDate(date))
+	    	 return true;
+	     return false;
+	}
+
+	/**
+	 * Returns true if associate was in training during the given date.
+	 */
+	public boolean isTrainingOnDate(LocalDateTime adate) {
+	   LocalDateTime date = adate.withHour(12); //Set mid day all other events should be the beginning of the day.
+	   boolean afterBatchStart = date.compareTo(batch.getStartDate()) > 0;
+	   boolean beforeBatchEnd = date.compareTo(batch.getEndDate()) < 0;
+	   if(afterBatchStart && beforeBatchEnd)
+	     return true;
+	  
+	  return false;
+	}
+	
+	public void setAssociateStatus(AssociatesStatus associateStatus) 
+	{
+		this.associateStatus = associateStatus;
+	}
+	
+	public void setBatch(Batch batch) 
+	{
+		this.batch = batch;
+	}
+
+	public void setCredential(Credential credential) 
+	{
+		this.credential = credential;
+	}
+
+	public void setId(long id) 
+	{
+		this.id = id;
+	}
+
+	public void setJobs(Set<Job> jobs) {
+		this.jobs = jobs;
+	}
+
+	public void setLockedTo(Client lockedTo) 
+	{
+		this.lockedTo = lockedTo;
+	}
+
+	public void setName(String name) 
+	{
+		this.name = name;
+	}
+
+	public void setPortfolioLink(String portfolioLink) 
+	{
+		this.portfolioLink = portfolioLink;
+	}
+
+	public void setPortfolioStatus(PortfolioStatus portfolioStatus) 
+	{
+		this.portfolioStatus = portfolioStatus;
+	}
+
+	public void setProject(Project project){
+		this.project = project;
+	}
+
+	public void setSalesforceId(String salesforceId) {
+		this.salesforceId = salesforceId;
+	}
+
+	public void setSkills(Set<Skill> skills) {
+		this.skills = skills;
+	}
+
+	public void setStatus() {
+		
+		if(this.isTrainingOnDate(LocalDateTime.now())) {
+			AssociatesStatus status = new AssociatesStatus(0, "TRAINING");
+			this.setAssociateStatus(status);
+		}
+		
+		else if (this.hasJobOnDate(LocalDateTime.now())) {
+			AssociatesStatus status = new AssociatesStatus(2, "PROJECT");
+			this.setAssociateStatus(status);
+		}
+		
+		else {
+			AssociatesStatus status = new AssociatesStatus(1, "STAGING");
+			this.setAssociateStatus(status);
+		}
 	}
 
 //	@Override
