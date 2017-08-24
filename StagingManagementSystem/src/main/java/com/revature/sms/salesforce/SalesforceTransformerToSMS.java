@@ -134,6 +134,8 @@ public class SalesforceTransformerToSMS implements SalesforceTransformer{
 		{
 			bt= new BatchType();
 			bt.setValue(skillType);
+
+			btRepo.save(bt);
 		}
 		return bt;
 	}
