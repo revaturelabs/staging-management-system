@@ -1,5 +1,6 @@
 package com.revature.sms.repositories;
 
+import com.revature.sms.entities.AssociatesStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.revature.sms.entities.Associate;
@@ -10,9 +11,21 @@ import java.util.Set;
 public interface AssociateRepo extends JpaRepository<Associate, Long> {
 
     Associate getByCredential_Username(String username);
-    Set<Associate> findByActive(boolean bool);
+
+    //we took this out
+    //Set<Associate> findByActive(boolean bool);
+
     Associate getByCredential(Credential credential);
-    Set<Associate> findAssociatesByActiveTrue();
+
+    //thinking
+   // Set<Associate> findAssociatesByIsActiveTrue();
+
     Set<Associate> findByBatchIsNull();
     Set<Associate> findByBatchId(Long id);
+    Set<Associate> findByProjectIsNull();
+
+    //our change
+    //Set<Associate> findByAssociateStatus(AssociatesStatus status);
+
+    Set<Associate> findByAssociateStatusStatus(String status);
 }

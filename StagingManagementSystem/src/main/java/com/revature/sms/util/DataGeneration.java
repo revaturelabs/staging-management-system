@@ -221,7 +221,7 @@ public class DataGeneration
 															// 80.
 			probabilityOfLiking = rand.nextInt(10); // Liking probability is
 													// between 0 and 10.
-			probabilityOfNotInterested = 100 - (probabilityOfHiring + probabilityOfLiking);
+			probabilityOfNotInterested = 100 - ((double)probabilityOfHiring + probabilityOfLiking);
 
 			log.debug("Client probibility hiring/liking/interested: " + probabilityOfHiring + "/" + probabilityOfLiking
 					+ "/" + probabilityOfNotInterested);
@@ -270,8 +270,11 @@ public class DataGeneration
 	  int immuneSystemHealth;
 	  
 	  AssociateP(Associate a){
-	    super(a.getId(), a.getCredential(), a.getName(), a.getPortfolioLink(), a.getBatch(), a.isActive(), a.getLockedTo(), a.getSkills(), a.getJobs());
-	    int qualityOfAssociate = rand.nextInt(100); 
+	    super(a.getId(), a.getCredential(), a.getName(), a.getPortfolioLink(), a.getBatch(), a.getProject(), a.getLockedTo(),a.getPortfolioStatus(),a.getAssociateStatus(), a.getSkills(), a.getJobs());
+
+
+
+	    int qualityOfAssociate = rand.nextInt(100);
 	    
 	    if(qualityOfAssociate < 20)    //20 percent chance of being half as hirable as the average associate.
 	      clientProbabilityMultiplier = .5;  
@@ -298,7 +301,7 @@ public class DataGeneration
 	   */
 	  Associate getAssocaite(){
 		  this.setActive();
-	    return new Associate(getId(), getCredential(), getName(), getPortfolioLink(), getBatch(), isActive(), getLockedTo(), getSkills(), getJobs());
+	    return new Associate(getId(), getCredential(), getName(), getPortfolioLink(), getBatch(), getProject(), getLockedTo(),getPortfolioStatus(),getAssociateStatus(), getSkills(), getJobs());
 	  }
 	  
 	  /*
@@ -370,12 +373,12 @@ public class DataGeneration
       
       // If client has priority interview simulate process for that interview, else roll the dice for regular client interview.
       if(state.hasInterview(probabilityOfPriorityInterview)){
-        int daysToDecide = simulateInterview(state, .6, priorityClients);
+        int daysToDecide = simulateInterview(state, .6);
         state.currentDate = state.currentDate.plusDays(daysToDecide);
       }
       
       if(state.confirmDate == null && state.hasInterview(probabilityOfRegularInterview)){
-          simulateInterview(state, .3, regularClients);
+          simulateInterview(state, .3);
       }
     }	    
 
@@ -385,13 +388,13 @@ public class DataGeneration
 
   /**
    * Simulates the interview process based on client and associate probabilities.
-   * 
+   *
    * @param state
    * @param convergenceFactor
-   * @param clients
+   * @param 
    * @return
    */
-  private int simulateInterview(SimulationState state, double convergenceFactor, ArrayList<ClientP> clients) {
+   private int simulateInterview(SimulationState state, double convergenceFactor) {
     // For priority clients revature awaits their decision before more interviews.
     int daysToDecide = logRythmicConvergence(0, 7, .5);    
     

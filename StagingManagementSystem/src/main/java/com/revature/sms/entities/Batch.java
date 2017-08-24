@@ -147,7 +147,7 @@ public class Batch {
         this.associates = associates;
     }
 
-    @Override
+   /* @Override
     public int hashCode() {
 
         final int prime = 31;
@@ -159,7 +159,7 @@ public class Batch {
         result = prime * result + ((startDate == null) ? 0 : startDate.hashCode());
         result = prime * result + ((trainers == null) ? 0 : trainers.hashCode());
         return result;
-    }
+    }*/
 
     @Override
     public final boolean equals(Object obj) {
@@ -204,9 +204,9 @@ public class Batch {
         return true;
     }
 
-    @Override
-    public String toString() {
-
-        return "Batch [id=" + id + ", batchType=" + batchType + ", startDate=" + startDate + ", endDate=" + endDate + ", location=" + location + ", trainers=" + trainers + ", associates=" + associates + "]";
-    }
+//    @Override
+//    public String toString() {
+//
+//        return "Batch [id=" + id + ", batchType=" + batchType + ", startDate=" + startDate + ", endDate=" + endDate + ", location=" + location + ", trainers=" + trainers + ", associates=" + associates + "]";
+//    }
 }

@@ -1,5 +1,18 @@
 const associateInterviewCtrl = ($scope, $http, userService) => {
 	const addInterviewBtn = document.getElementById('addInterviewBtn');
+
+	$scope.getScheduledTime = function (){
+		$http ({
+			method: 'GET',
+			url: `interviews/associate/${userService.getUser().id}`,
+		})
+		.then(function(response) {
+			$scope.associateInterviews = response.data;
+			$scope.associateInterviews.sort(function(a,b) {
+			return new Date(b.scheduled).getTime() - new Date(a.scheduled).getTime();
+			});
+		});
+	};
 	
 	$scope.associateInterviews;
 	$('#datetimepicker1').datetimepicker();
@@ -28,7 +41,7 @@ const associateInterviewCtrl = ($scope, $http, userService) => {
 	.then((response) => {
 		$scope.interviewStatuses = response.data;
 	});
-	
+
 	$http ({
 		method: 'GET',
 		url: '/marketer/all',
@@ -37,18 +50,7 @@ const associateInterviewCtrl = ($scope, $http, userService) => {
 		$scope.marketers = response.data;
 	});
 
-	$http ({
-		method: 'GET',
-		url: `interviews/associate/${userService.getUser().id}`,
-	})
-	.then((response) => {
-		$scope.associateInterviews = response.data;
-		$scope.associateInterviews.sort(function(a,b) {
-	    return new Date(b.scheduled).getTime() - new Date(a.scheduled).getTime();
-		});
-	});
-
-
+	$scope.getScheduledTime();
 
 	$scope.addInterviewClick = function() {
 
@@ -59,15 +61,15 @@ const associateInterviewCtrl = ($scope, $http, userService) => {
 	
 		if($scope.selectedClient == undefined) {
 			$scope.errorMsg = 'Please select a Client.';
-      $scope.errorMsgShow = true;
+			$scope.errorMsgShow = true;
 		}
 		else if($scope.selectedDate == undefined || $scope.selectedDate === "") {
 			$scope.errorMsg = 'Please select a Date.';
-      $scope.errorMsgShow = true;
+			$scope.errorMsgShow = true;
 		}
 		else if($scope.selectedMarketer == undefined) {
 			$scope.errorMsg = 'Please select a Marketer.';
-      $scope.errorMsgShow = true;
+			$scope.errorMsgShow = true;
 		}
 		else {
 			let newDate = moment($scope.selectedDate).toDate();
@@ -82,32 +84,24 @@ const associateInterviewCtrl = ($scope, $http, userService) => {
 				$scope.successMsgShow = true;
 				addInterviewBtn.disabled = false;
 				addInterviewBtn.innerHTML = 'Add Interview';
-				
-				$http ({
-					method: 'GET',
-					url: `interviews/associate/${userService.getUser().id}`,
-				})
-				.then((response) => {
-					$scope.associateInterviews = response.data;
-					$scope.associateInterviews.sort(function(a,b) {
-				    return new Date(b.scheduled).getTime() - new Date(a.scheduled).getTime();
-					});
-				});
+
+				$scope.getScheduledTime();
+
 			});
 		}
 	}
-	
+
 	$scope.showAddModal = function() {
 		$scope.errorMsgShow = false;
 		$scope.successMsgShow = false;
-		
+
 		$scope.selectedClient = undefined;
 		$("#datetimepicker1").val("");
 		$scope.selectedMarketer = undefined;
-		
+
 		$('#addModal').modal('show');
 	}
-	
+
 	$scope.interviewClick = function(interview) {
 		$scope.clickedInterview = interview;
 		for(let i=0;i<$scope.interviewStatuses.length;i++) {
@@ -119,19 +113,19 @@ const associateInterviewCtrl = ($scope, $http, userService) => {
 				$scope.updateMarketer = $scope.marketers[i];
 		}
 		$scope.updateComment = $scope.clickedInterview.comment;
-		
+
 		$scope.errorUpdateMsgShow = false;
 		$scope.successUpdateMsgShow = false;
 		$('#interviewModal').modal('show');
 	}
-	
+
 	$scope.updateInterviewClick = function() {
 		$scope.errorUpdateMsgShow = false;
 		$scope.successUpdateMsgShow = false;
-		
+
 		if($scope.updateComment === undefined || $scope.updateComment === "") {
 			$scope.errorUpdateMsg = 'Please add a comment.';
-      $scope.errorUpdateMsgShow = true;
+			$scope.errorUpdateMsgShow = true;
 		}
 		else {
 			$http({ 
@@ -141,20 +135,15 @@ const associateInterviewCtrl = ($scope, $http, userService) => {
 					scheduled: $scope.clickedInterview.scheduled, marketer: $scope.updateMarketer, interviewStatus: $scope.updateStatus, comment: $scope.updateComment},
 			})
 			.then ((response) => {
-	      $scope.successUpdateMsgShow = true;
-	      $http ({
-	    		method: 'GET',
-	    		url: `interviews/associate/${userService.getUser().id}`,
-	    	})
-	    	.then((response) => {
-	    		$scope.associateInterviews = response.data;
-	    		$scope.associateInterviews.sort(function(a,b) {
-	    	    return new Date(b.scheduled).getTime() - new Date(a.scheduled).getTime();
-	    		});
-	    	});
+				$scope.successUpdateMsgShow = true;
+
+				$scope.getScheduledTime();
+
 			})
 		}
 	}
-};
+
+
+}
 
 export default associateInterviewCtrl;

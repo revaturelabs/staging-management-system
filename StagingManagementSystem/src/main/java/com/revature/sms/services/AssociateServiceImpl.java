@@ -1,6 +1,7 @@
 package com.revature.sms.services;
 
 import com.revature.sms.entities.Associate;
+import com.revature.sms.entities.AssociatesStatus;
 import com.revature.sms.entities.Skill;
 import com.revature.sms.entities.StaggingAssociate;
 import com.revature.sms.repositories.AssociateRepo;
@@ -87,10 +88,9 @@ public class AssociateServiceImpl implements AssociateService {
         return new HashSet<>(associateRepo.findAll());
     }
 
-    @Override
     public Set<Associate> getAllActive() {
 
-        return associateRepo.findAssociatesByActiveTrue();
+        return associateRepo.findByAssociateStatusStatus("Staging");
     }
 
     @Override
@@ -108,5 +108,30 @@ public class AssociateServiceImpl implements AssociateService {
     @Override
     public Set<StaggingAssociate> getAssociatesInStaggingOn(String date) {
       return staggingAssociateRepo.getAssociatesInStaggingOn(date);
+    }
+
+	@Override
+	public Set<Associate> haveNoProject() {
+		Set<Associate> noProject = new HashSet<Associate>();
+		Set<Associate> allAssociate = associateRepo.findByAssociateStatusStatus("Staging");
+		for(Associate a : allAssociate){
+			if(a.getProject()==null){
+				noProject.add(a);
+			}
+		}
+		return noProject;
+	}
+
+	//we added this
+    @Override
+    public Set<Associate> findByAssociateStatus(String status)
+    {
+        return associateRepo.findByAssociateStatusStatus(status);
+    }
+
+    @Override
+    public void updateStatus(Associate associate)
+    {
+        associateRepo.saveAndFlush(associate);
     }
 }
