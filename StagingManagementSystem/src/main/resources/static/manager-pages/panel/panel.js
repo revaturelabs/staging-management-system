@@ -5,6 +5,7 @@ const managerPanelCtrl = ($scope, $state, $location, $http, userService) => {
 	$scope.choose = {};
 
 	$scope.searchClick =(searchName)=>{
+		$scope.choose ={};
 		if(searchName){
 			$scope.disabled_search=true;
 			$scope.show_panel = false;
@@ -17,6 +18,7 @@ const managerPanelCtrl = ($scope, $state, $location, $http, userService) => {
 				$scope.disabled_search = false;
 				$scope.associates = response.data;
 				$scope.searchShowUp = true;
+				location.reload();
 			});
 		}
 		
@@ -93,6 +95,7 @@ const managerPanelCtrl = ($scope, $state, $location, $http, userService) => {
 		    $('#addModal').modal('show');	    
 	  };
 		  
-
+	  
+	
 }
 export default managerPanelCtrl;

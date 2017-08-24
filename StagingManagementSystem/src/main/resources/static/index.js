@@ -63655,6 +63655,7 @@
 		$scope.choose = {};
 
 		$scope.searchClick = function (searchName) {
+			$scope.choose = {};
 			if (searchName) {
 				$scope.disabled_search = true;
 				$scope.show_panel = false;
@@ -63667,6 +63668,7 @@
 					$scope.disabled_search = false;
 					$scope.associates = response.data;
 					$scope.searchShowUp = true;
+					location.reload();
 				});
 			}
 
