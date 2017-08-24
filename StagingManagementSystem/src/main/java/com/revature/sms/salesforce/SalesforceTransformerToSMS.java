@@ -22,6 +22,7 @@ import com.revature.sms.repositories.AssociateRepo;
 import com.revature.sms.repositories.AssociatesStatusRepo;
 import com.revature.sms.repositories.BatchRepo;
 import com.revature.sms.repositories.BatchTypeRepo;
+import com.revature.sms.repositories.LocationRepo;
 import com.revature.sms.repositories.PanelRepo;
 import com.revature.sms.repositories.TrainerRepo;
 
@@ -40,6 +41,8 @@ public class SalesforceTransformerToSMS implements SalesforceTransformer{
 	private AssociatesStatusRepo asRepo;
 	@Autowired
 	private PanelRepo pRepo;
+	@Autowired
+	private LocationRepo lRepo;
 	
 	@Override
 	public Batch transformBatch(SalesforceBatch salesforceBatch) {
@@ -49,11 +52,13 @@ public class SalesforceTransformerToSMS implements SalesforceTransformer{
 			batch = new Batch();
 			batch.setSalesforceId(salesforceBatch.getId());
 			batch.setLocation(new Location());
+			batch.getLocation().setName(salesforceBatch.getLocation());
+			lRepo.save(batch.getLocation());
 		}
 		batch.setBatchType(batchHelper(salesforceBatch.getSkillType()));
 		batch.setStartDate(LocalDateTime.ofInstant(salesforceBatch.getBatchStartDate().toInstant(), ZoneId.systemDefault()));
 		batch.setEndDate(LocalDateTime.ofInstant(salesforceBatch.getBatchEndDate().toInstant(), ZoneId.systemDefault()));
-		batch.getLocation().setName(salesforceBatch.getLocation());
+		
 		
 		Set<Trainer> trainers = new HashSet<Trainer>();
 		trainers.add(transformTrainer(salesforceBatch.getTrainer()));
