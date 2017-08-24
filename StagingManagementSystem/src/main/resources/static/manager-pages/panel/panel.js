@@ -3,7 +3,9 @@ const managerPanelCtrl = ($scope, $state, $location, $http, userService) => {
 	$scope.show_panel = false;
 	$scope.defaultCommnt = '';
 	$scope.choose = {};
-	
+	$scope.errorUpdateMsgShow = false;
+    $scope.successUpdateMsgShow = false;
+
 	$scope.searchClick =(searchName)=>{
 		if(searchName){
 			console.log(searchName);
@@ -38,6 +40,27 @@ const managerPanelCtrl = ($scope, $state, $location, $http, userService) => {
 			        });
 			});
 		};
+		
+		$scope.PanelClick = function (panel) {
+		  $scope.statusOption  = panel.status;
+		  $scope.panelChoose = panel;
+		  console.log("I got the panel ",  $scope.panelChoose);
+		    $('#PanelCommentModal').modal('show');
+		    $scope.updateInterviewClick = (statusOption, updateComment)=>{
+				console.log(statusOption + " " +updateComment);
+				panel.comments = updateComment;
+				panel.status = statusOption;
+				console.log(panel);
+				$http({
+					method: 'PUT',
+					url: '/panel',
+					data: panel,
+				}).then((response)=>{
+					$scope.successUpdateMsgShow = true;
+					$scope.associatePanelClick;
+				});
+			}
+		};	
 	};
 	
 	  $scope.addPanelClick = function () {
@@ -56,12 +79,8 @@ const managerPanelCtrl = ($scope, $state, $location, $http, userService) => {
 		        addPanelBtn.disabled = false;
 		        addPanelBtn.innerHTML = 'Add Panel';
 		        $scope.associatePanelClick($scope.choose)
-		      });
-		    
+		      });  
 		  };
-	
-	
-	
 	
 	
 	  $scope.showAddModal = function () {
@@ -73,16 +92,8 @@ const managerPanelCtrl = ($scope, $state, $location, $http, userService) => {
 		    $scope.selectedMarketer = undefined;
 
 		    $('#addModal').modal('show');	    
-		  };
+	  };
 		  
-		  
-		  $scope.PanelClick = function (panel) {
-			  $scope.panelChoose = panel;
-			  console.log("I got the panel ",$scope.panelChoose) 
-			    $scope.errorUpdateMsgShow = false;
-			    $scope.successUpdateMsgShow = false;
-			    $('#PanelCommentModal').modal('show');
-			  };
-	
+
 }
 export default managerPanelCtrl;

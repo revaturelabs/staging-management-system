@@ -1,8 +1,10 @@
 package com.revature.sms.entities;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -12,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import com.revature.sms.util.LocalDateTimeConverter;
 
 @Entity
 @Table(name = "PANEL")
@@ -31,7 +35,8 @@ public class Panel
 	private String comments;
 	
 	@Column(name="STATUS_DATE ")
-	private Date statusDate;
+	@Convert(converter = LocalDateTimeConverter.class)
+	private LocalDateTime statusDate;
 	
 	@Column(name="STATUS")
 	private String status;
@@ -44,7 +49,7 @@ public class Panel
 	}
 
 
-	public Panel(long id, Associate associate, String comments, Date statusDate, String status) {
+	public Panel(long id, Associate associate, String comments, LocalDateTime statusDate, String status) {
 		super();
 		this.id = id;
 		this.associate = associate;
@@ -139,12 +144,12 @@ public class Panel
 	}
 
 
-	public Date getStatusDate() {
+	public LocalDateTime getStatusDate() {
 		return statusDate;
 	}
 
 
-	public void setStatusDate(Date statusDate) {
+	public void setStatusDate(LocalDateTime statusDate) {
 		this.statusDate = statusDate;
 	}
 

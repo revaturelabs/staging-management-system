@@ -63669,6 +63669,8 @@
 		$scope.show_panel = false;
 		$scope.defaultCommnt = '';
 		$scope.choose = {};
+		$scope.errorUpdateMsgShow = false;
+		$scope.successUpdateMsgShow = false;
 
 		$scope.searchClick = function (searchName) {
 			if (searchName) {
@@ -63704,6 +63706,27 @@
 					});
 				});
 			};
+
+			$scope.PanelClick = function (panel) {
+				$scope.statusOption = panel.status;
+				$scope.panelChoose = panel;
+				console.log("I got the panel ", $scope.panelChoose);
+				$('#PanelCommentModal').modal('show');
+				$scope.updateInterviewClick = function (statusOption, updateComment) {
+					console.log(statusOption + " " + updateComment);
+					panel.comments = updateComment;
+					panel.status = statusOption;
+					console.log(panel);
+					$http({
+						method: 'PUT',
+						url: '/panel',
+						data: panel
+					}).then(function (response) {
+						$scope.successUpdateMsgShow = true;
+						$scope.associatePanelClick;
+					});
+				};
+			};
 		};
 
 		$scope.addPanelClick = function () {
@@ -63733,14 +63756,6 @@
 			$scope.selectedMarketer = undefined;
 
 			$('#addModal').modal('show');
-		};
-
-		$scope.PanelClick = function (panel) {
-			$scope.panelChoose = panel;
-			console.log("I got the panel ", $scope.panelChoose);
-			$scope.errorUpdateMsgShow = false;
-			$scope.successUpdateMsgShow = false;
-			$('#PanelCommentModal').modal('show');
 		};
 	};
 	exports.default = managerPanelCtrl;
