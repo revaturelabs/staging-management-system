@@ -78,7 +78,7 @@ public class SalesforceRepoImpl implements SalesforceRepo {
 			+ "Training_Batch__r.batch_end_date__c, " + "Training_Batch__r.batch_trainer__r.name, "
 			+ "rnm__Recruiter__r.name, account.name, " + "Training_Batch__r.Co_Trainer__r.name, "
 			+ "eintern_current_project_completion_pct__c , " + "Training_Batch__r.Skill_Type__c, "
-			+ "Training_Batch__r.Type__c from Contact " + "where candidate_status__c = 'Bench'")
+			+ "Training_Batch__r.Type__c from Contact " + "where training_status__c = 'Marketing'")
 	private String benchAssociates;
 	
 	@Value("select id, name, batch_start_date__c, batch_end_date__c, "
