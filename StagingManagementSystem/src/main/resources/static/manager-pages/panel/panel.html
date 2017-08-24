@@ -1,3 +1,5 @@
+<link rel="stylesheet" type="text/css" href="static/panel/panel.css">
+
 <div class="panel-container">
 	<div class="text-center">
 		<p>{{PanelLoad}}</p>
@@ -19,7 +21,7 @@
 
 		
 		<button type="button" ng-show ="plist[plist.length-1].status =='FAIL' || plist.length == 0" ng-click="showAddModal()" class="btn btn-primary">Add Panel</button>
-			<table ng-show="show_panel" class="table table-striped manager-advanced-associates-table selectable-table">
+			<table ng-show="show_panel" class="table table-striped manager-advanced-associates-table selectable-table" id="panelTable">
 				<thead>
 					<tr>
 						<th class="assPanel-th" scope="col">Panel ID</th>

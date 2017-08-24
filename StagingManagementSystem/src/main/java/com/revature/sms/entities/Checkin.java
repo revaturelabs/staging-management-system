@@ -42,6 +42,7 @@ public class Checkin {
     private Manager approvedBy;
 
     @Column(name = "CHECKIN_APPROVE_TIME")
+    
     @Convert(converter = LocalDateTimeConverter.class)
     private LocalDateTime approveTime;
 
@@ -144,6 +145,7 @@ public class Checkin {
         if (this == obj)
             return true;
         if (obj == null)
+        	
             return false;
         if (!(obj instanceof Checkin))
             return false;
