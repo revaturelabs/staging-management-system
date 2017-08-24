@@ -14,8 +14,7 @@ public interface AssociateService {
     public void update(Associate associate);
     public Set<Associate> getAll();
     
-    //We took out this
-    //public Set<Associate> getAllActive();
+    public Set<Associate> getAllActive();
     
     public Set<Associate> haveNoBatch();
     public Set<Associate> haveNoProject();
