@@ -104,44 +104,96 @@ public class Associate {
 		return id;
 	}
 
+	public void setId(long id) {
+		this.id = id;
+	}
+
 	public String getSalesforceId() {
 		return salesforceId;
+	}
+
+	public void setSalesforceId(String salesforceId) {
+		this.salesforceId = salesforceId;
 	}
 
 	public Credential getCredential() {
 		return credential;
 	}
 
+	public void setCredential(Credential credential) {
+		this.credential = credential;
+	}
+
 	public String getName() {
 		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getPortfolioLink() {
 		return portfolioLink;
 	}
 
+	public void setPortfolioLink(String portfolioLink) {
+		this.portfolioLink = portfolioLink;
+	}
+
 	public Batch getBatch() {
 		return batch;
+	}
+
+	public void setBatch(Batch batch) {
+		this.batch = batch;
 	}
 
 	public Project getProject() {
 		return project;
 	}
 
+	public void setProject(Project project) {
+		this.project = project;
+	}
+
 	public Client getLockedTo() {
 		return lockedTo;
+	}
+
+	public void setLockedTo(Client lockedTo) {
+		this.lockedTo = lockedTo;
 	}
 
 	public PortfolioStatus getPortfolioStatus() {
 		return portfolioStatus;
 	}
 
+	public void setPortfolioStatus(PortfolioStatus portfolioStatus) {
+		this.portfolioStatus = portfolioStatus;
+	}
+
 	public AssociatesStatus getAssociateStatus() {
 		return associateStatus;
 	}
 
+	public void setAssociateStatus(AssociatesStatus associateStatus) {
+		this.associateStatus = associateStatus;
+	}
+
 	public Set<Skill> getSkills() {
 		return skills;
+	}
+
+	public void setSkills(Set<Skill> skills) {
+		this.skills = skills;
+	}
+
+	public Set<Job> getJobs() {
+		return jobs;
+	}
+
+	public void setJobs(Set<Job> jobs) {
+		this.jobs = jobs;
 	}
 
 	/**
