@@ -120,8 +120,9 @@ public class SalesforceRepoImpl implements SalesforceRepo {
 	 */
 	private HttpResponse getFromSalesforce(String soql, SalesforceUser user) {
 		try {
+			String instanceUrl = salesforceInstanceUrl.substring("https://".length());
 			HttpClient httpClient = HttpClientBuilder.create().build();
-			String url = new URIBuilder(salesforceInstanceUrl).setScheme("https").setHost(salesforceInstanceUrl)
+			String url = new URIBuilder(salesforceInstanceUrl).setScheme("https").setHost(instanceUrl)
 					.setPath(salesforceApiUrl).setParameter("q", soql).build().toString();
 			HttpGet getRequest = new HttpGet(url);
 			getRequest.setHeader("Authorization", "Bearer " + getAccessToken(user));
