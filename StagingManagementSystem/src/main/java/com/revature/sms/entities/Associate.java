@@ -253,7 +253,7 @@ public class Associate {
 	  return false;
 	}
 	
-	@Override
+/*	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
@@ -270,7 +270,7 @@ public class Associate {
 		result = prime * result + ((salesforceId == null) ? 0 : salesforceId.hashCode());
 		result = prime * result + ((skills == null) ? 0 : skills.hashCode());
 		return result;
-	}
+	}*/
 
 	@Override
 	public boolean equals(Object obj) {

@@ -74,12 +74,12 @@ public class SalesforceRepoImpl implements SalesforceRepo {
 
 	//////////// DAO methods ////////////////
 	@Override
-	public List<Batch> getRelevantBatches() {
+	public List<Batch> getRelevantBatches(SalesforceUser user) {
 		List<Batch> relevantBatchesList = new LinkedList<>();
 
 		try {
 			SalesforceBatchResponse response = new ObjectMapper().readValue(
-					getFromSalesforce(relevantBatches).getEntity().getContent(), SalesforceBatchResponse.class);
+					getFromSalesforce(relevantBatches, user).getEntity().getContent(), SalesforceBatchResponse.class);
 			log.info("Found " + response.getTotalSize() + " batches: " + response);
 
 			for (SalesforceBatch salesForceBatch : response.getRecords()) {
@@ -93,12 +93,12 @@ public class SalesforceRepoImpl implements SalesforceRepo {
 	}
 
 	@Override
-	public List<Associate> getBatchTrainees(String resourceId) {
+	public List<Associate> getBatchTrainees(String resourceId, SalesforceUser user) {
 		String query = batchDetails + "'" + resourceId + "'";
 		List<Associate> trainees = new LinkedList<>();
 		
 		try {
-			SalesforceTraineeResponse response = new ObjectMapper().readValue(getFromSalesforce(query).getEntity().getContent(), SalesforceTraineeResponse.class);
+			SalesforceTraineeResponse response = new ObjectMapper().readValue(getFromSalesforce(query, user).getEntity().getContent(), SalesforceTraineeResponse.class);
 			log.info(response);
 			for(SalesforceTrainee trainee : response.getRecords()){
 				trainees.add(transformer.transformTrainee(trainee));
@@ -118,13 +118,13 @@ public class SalesforceRepoImpl implements SalesforceRepo {
 	 * @param soql
 	 * @return
 	 */
-	private HttpResponse getFromSalesforce(String soql) {
+	private HttpResponse getFromSalesforce(String soql, SalesforceUser user) {
 		try {
 			HttpClient httpClient = HttpClientBuilder.create().build();
 			String url = new URIBuilder(salesforceInstanceUrl).setScheme("https").setHost(salesforceInstanceUrl)
 					.setPath(salesforceApiUrl).setParameter("q", soql).build().toString();
 			HttpGet getRequest = new HttpGet(url);
-			getRequest.setHeader("Authorization", "Bearer " + getAccessToken());
+			getRequest.setHeader("Authorization", "Bearer " + getAccessToken(user));
 			return httpClient.execute(getRequest);
 		} catch (IOException | URISyntaxException e) {
 			log.error("Unable to fetch Salesforce data: cause " + e);
@@ -138,12 +138,11 @@ public class SalesforceRepoImpl implements SalesforceRepo {
 	 * 
 	 * @return
 	 */
-	private String getAccessToken() {
+	private String getAccessToken(SalesforceUser user) {
 		if (!salesforce)
 			return "00D0n0000000Q1l!AQQAQGCIRGGBiQitAaZKeja8rvjTAq.Sstul_2RRs4tgHOc7W.MzUm4W99HkTWxyuSWCgZTYdpH9hQ2QGF_p9IHrQwssXVhU";
 		else
-			return ((SalesforceUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal())
-					.getSalesforceToken().getAccessToken();
+			return user.getSalesforceToken().getAccessToken();
 	}
 
 	/**
@@ -153,10 +152,10 @@ public class SalesforceRepoImpl implements SalesforceRepo {
 	 * 
 	 * @return
 	 */
-	public String getSalesforceResponseString() {
+	public String getSalesforceResponseString(SalesforceUser user) {
 		try {
 			return new ObjectMapper()
-					.readValue(getFromSalesforce(relevantBatches).getEntity().getContent(), JsonNode.class).asText();
+					.readValue(getFromSalesforce(relevantBatches, user).getEntity().getContent(), JsonNode.class).asText();
 		} catch (IOException e) {
 			log.error("Cannot get Salesforce batches:  " + e);
 			return null;
