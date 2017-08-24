@@ -64208,7 +64208,12 @@
 	        url: '/login',
 	        data: { username: $scope.username, password: $scope.password }
 	      }).then(function (response) {
-	        userService.setUser(response.data); //NOTE: Anything to do with manager login is handled through salesforce login and handling. See manager.js
+	        userService.setUser(response.data);
+	        if (response.data.permission !== undefined) {
+	          $state.go('manager.home');
+	        } else {
+	          $state.go('associate.home');
+	        }
 	      }, function () {
 	        $scope.errorMsg = 'Username or Password is incorrect.';
 	        $scope.errorMsgShow = true;
