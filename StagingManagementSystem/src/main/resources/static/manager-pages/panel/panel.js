@@ -79,6 +79,7 @@ const managerPanelCtrl = ($scope, $state, $location, $http, userService) => {
 		        $scope.successMsgShow = true;
 		        addPanelBtn.disabled = false;
 		        addPanelBtn.innerHTML = 'Add Panel';
+		        $scope.defaultCommnt = '';
 		        $scope.associatePanelClick($scope.choose)
 		      });  
 		  };
