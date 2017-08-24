@@ -62,18 +62,22 @@ public class CheckinServiceImpl implements CheckinService {
 	public boolean hasCheckedInToday(Associate associate) {
 		Set<Checkin> checkins = checkinRepo
 				.getAllByCheckinTimeBetween(LocalDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT), LocalDateTime.now());
-		return checkins != null && !checkins.isEmpty();
+		for (Checkin check : checkins) {
+			if (check.getAssociate().getId() == associate.getId()) {
+				return checkins != null && !checkins.isEmpty();
+			}
+		}
+		return false;
 	}
-	
-	 @Override
-	  public boolean hasCheckedInOnDate(Associate associate, LocalDateTime date) {
-	   LocalDateTime start = LocalDateTime.of(date.toLocalDate(), LocalTime.MIN);
-	   LocalDateTime end = LocalDateTime.of(date.toLocalDate(), LocalTime.MAX);
-	    Set<Checkin> checkins = checkinRepo
-	        .getAllByCheckinTimeBetween(start, end);
-	    
-	    return checkins != null && checkins.isEmpty();
-	  }
+
+	@Override
+	public boolean hasCheckedInOnDate(Associate associate, LocalDateTime date) {
+		LocalDateTime start = LocalDateTime.of(date.toLocalDate(), LocalTime.MIN);
+		LocalDateTime end = LocalDateTime.of(date.toLocalDate(), LocalTime.MAX);
+		Set<Checkin> checkins = checkinRepo.getAllByCheckinTimeBetween(start, end);
+
+		return checkins != null && checkins.isEmpty();
+	}
 
 	@Override
 	public boolean hasCheckedInToday() throws NotLoggedInException {
@@ -136,7 +140,7 @@ public class CheckinServiceImpl implements CheckinService {
 
 	@Override
 	public void addcheckins(Set<Checkin> checkins) {
-		// TODO Auto-generated method stub
+		//Empty
 
 	}
 
@@ -147,8 +151,8 @@ public class CheckinServiceImpl implements CheckinService {
 
 	@Override
 	public Set<Checkin> getTodaysCheckins() {
-		return checkinRepo
-				.getAllByCheckinTimeBetween(LocalDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT), LocalDateTime.now());
+		return checkinRepo.getAllByCheckinTimeBetween(LocalDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT),
+				LocalDateTime.now());
 	}
 
 	@Override

@@ -7,8 +7,8 @@ function loginCtrl($scope, $http, $state, userService) {
   const authenticatedUser = userService.getUser();
 
   const isAssociate = authenticatedUser.id !== undefined;
-  const isManager = authenticatedUser.permission !== undefined;
-
+  const isManager = authenticatedUser.is_lightning_login_user !== undefined; //TODO: Change to role whenever that gets in
+  
   if (isManager) {
     $state.go('manager.home');
   } else if (isAssociate) {
@@ -31,18 +31,13 @@ function loginCtrl($scope, $http, $state, userService) {
       loginBtn.disabled = false;
       loginBtn.innerHTML = 'Log In';
     } else {
-      $http({
+      $http({ //Login post request
         method: 'POST',
         url: '/login',
         data: { username: $scope.username, password: $scope.password },
       })
         .then((response) => {
-          userService.setUser(response.data);
-          if (response.data.permission !== undefined) {
-            $state.go('manager.home');
-          } else {
-            $state.go('associate.home');
-          }
+          userService.setUser(response.data); //NOTE: Anything to do with manager login is handled through salesforce login and handling. See manager.js
         }, () => {
           $scope.errorMsg = 'Username or Password is incorrect.';
           $scope.errorMsgShow = true;
@@ -51,6 +46,7 @@ function loginCtrl($scope, $http, $state, userService) {
         });
     }
   };
+  
 }
 
 export default loginCtrl;
