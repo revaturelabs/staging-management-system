@@ -22,6 +22,9 @@ public class Trainer {
 	@GeneratedValue(generator = "TRAINER_ID_SEQ", strategy = GenerationType.SEQUENCE)
 	private long id;
 
+    @Column(name="SALESFORCE_ID")
+    private String salesforceId;
+	
 	@Column(name = "TRAINER_NAME")
 	private String name;
 

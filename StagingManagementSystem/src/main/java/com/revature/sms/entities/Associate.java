@@ -34,6 +34,9 @@ public class Associate {
 	@SequenceGenerator(name = "ASSOCIATE_ID_SEQ", sequenceName = "ASSOCIATE_ID_SEQ")
 	private long id;
 
+    @Column(name="SALESFORCE_ID")
+    private String salesforceId;
+	
 	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "CREDENTIAL_ID")
 	private Credential credential;
