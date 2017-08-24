@@ -79,9 +79,8 @@ public class SalesforceTransformerToSMS implements SalesforceTransformer {
 			trainer.setName(batchTrainer.getName());
 		}
 		trainer.setActive(true);
-
-		tRepo.save(trainer);
-		return trainer;
+		
+		return tRepo.save(trainer);
 	}
 
 	@Override
@@ -132,7 +131,7 @@ public class SalesforceTransformerToSMS implements SalesforceTransformer {
 		if (as == null) {
 			as = new AssociatesStatus();
 			as.setStatus(status);
-			asRepo.save(as);
+			as = asRepo.save(as);
 		}
 		// Check if there was an old status
 		AssociatesStatus currentStatus = associate.getAssociateStatus();
@@ -144,7 +143,7 @@ public class SalesforceTransformerToSMS implements SalesforceTransformer {
 				// create a new panel
 				Panel panel = new Panel();
 				panel.setAssociate(associate);
-				pRepo.save(panel);
+				panel = pRepo.save(panel);
 			}
 		}
 		return as;
@@ -156,13 +155,13 @@ public class SalesforceTransformerToSMS implements SalesforceTransformer {
 			bt = new BatchType();
 			bt.setValue(skillType);
 
-			btRepo.save(bt);
+			bt = btRepo.save(bt);
 		}
 		return bt;
 	}
 
 	private Location locationHelper(String location) {
-		String[] pieces = location.split("|");
+		String[] pieces = location.split("\\|");
 		String name;
 		if(pieces.length>1)
 		{
@@ -177,8 +176,9 @@ public class SalesforceTransformerToSMS implements SalesforceTransformer {
 		if (l == null) {
 			l = new Location();
 			l.setName(name);
+
+			l = lRepo.save(l);
 		}
-		lRepo.save(l);
 		return l;
 	}
 }
