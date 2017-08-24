@@ -100,7 +100,23 @@ public class Associate {
 		this.associateStatus = associateStatusId;
 	}
 
-
+	public Associate(long id, String salesforceId, Credential credential, String name, String portfolioLink,
+			Batch batch, Project project, Client lockedTo, PortfolioStatus portfolioStatus,
+			AssociatesStatus associateStatus, Set<Skill> skills, Set<Job> jobs) {
+		super();
+		this.id = id;
+		this.salesforceId = salesforceId;
+		this.credential = credential;
+		this.name = name;
+		this.portfolioLink = portfolioLink;
+		this.batch = batch;
+		this.project = project;
+		this.lockedTo = lockedTo;
+		this.portfolioStatus = portfolioStatus;
+		this.associateStatus = associateStatus;
+		this.skills = skills;
+		this.jobs = jobs;
+	}
 
 	/**
 	 *  Returns true if associate was on job during the given date.
@@ -185,6 +201,14 @@ public class Associate {
 	public void setId(long id) 
 	{
 		this.id = id;
+	}
+
+	public String getSalesforceId() {
+		return salesforceId;
+	}
+
+	public void setSalesforceId(String salesforceId) {
+		this.salesforceId = salesforceId;
 	}
 
 	public Credential getCredential() 
@@ -283,6 +307,25 @@ public class Associate {
 	}
 
 	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((associateStatus == null) ? 0 : associateStatus.hashCode());
+		result = prime * result + ((batch == null) ? 0 : batch.hashCode());
+		result = prime * result + ((credential == null) ? 0 : credential.hashCode());
+		result = prime * result + (int) (id ^ (id >>> 32));
+		result = prime * result + ((jobs == null) ? 0 : jobs.hashCode());
+		result = prime * result + ((lockedTo == null) ? 0 : lockedTo.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((portfolioLink == null) ? 0 : portfolioLink.hashCode());
+		result = prime * result + ((portfolioStatus == null) ? 0 : portfolioStatus.hashCode());
+		result = prime * result + ((project == null) ? 0 : project.hashCode());
+		result = prime * result + ((salesforceId == null) ? 0 : salesforceId.hashCode());
+		result = prime * result + ((skills == null) ? 0 : skills.hashCode());
+		return result;
+	}
+
+	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
@@ -337,6 +380,11 @@ public class Associate {
 			if (other.project != null)
 				return false;
 		} else if (!project.equals(other.project))
+			return false;
+		if (salesforceId == null) {
+			if (other.salesforceId != null)
+				return false;
+		} else if (!salesforceId.equals(other.salesforceId))
 			return false;
 		if (skills == null) {
 			if (other.skills != null)
