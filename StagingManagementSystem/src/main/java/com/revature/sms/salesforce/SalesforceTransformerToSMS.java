@@ -15,6 +15,7 @@ import com.revature.sms.entities.Associate;
 import com.revature.sms.entities.AssociatesStatus;
 import com.revature.sms.entities.Batch;
 import com.revature.sms.entities.BatchType;
+import com.revature.sms.entities.Credential;
 import com.revature.sms.entities.Location;
 import com.revature.sms.entities.Panel;
 import com.revature.sms.entities.Trainer;
@@ -22,12 +23,13 @@ import com.revature.sms.repositories.AssociateRepo;
 import com.revature.sms.repositories.AssociatesStatusRepo;
 import com.revature.sms.repositories.BatchRepo;
 import com.revature.sms.repositories.BatchTypeRepo;
+import com.revature.sms.repositories.CredentialRepo;
 import com.revature.sms.repositories.LocationRepo;
 import com.revature.sms.repositories.PanelRepo;
 import com.revature.sms.repositories.TrainerRepo;
 
 @Component
-public class SalesforceTransformerToSMS implements SalesforceTransformer{
+public class SalesforceTransformerToSMS implements SalesforceTransformer {
 
 	@Autowired
 	private BatchTypeRepo btRepo;
@@ -43,23 +45,23 @@ public class SalesforceTransformerToSMS implements SalesforceTransformer{
 	private PanelRepo pRepo;
 	@Autowired
 	private LocationRepo lRepo;
-	
+	@Autowired
+	private CredentialRepo cRepo;
+
 	@Override
 	public Batch transformBatch(SalesforceBatch salesforceBatch) {
 		Batch batch = bRepo.getBySalesforceId(salesforceBatch.getId());
-		if(batch==null)
-		{
+		if (batch == null) {
 			batch = new Batch();
 			batch.setSalesforceId(salesforceBatch.getId());
-			batch.setLocation(new Location());
-			batch.getLocation().setName(salesforceBatch.getLocation());
-			lRepo.save(batch.getLocation());
+			batch.setLocation(locationHelper(salesforceBatch.getLocation()));
 		}
 		batch.setBatchType(batchHelper(salesforceBatch.getSkillType()));
-		batch.setStartDate(LocalDateTime.ofInstant(salesforceBatch.getBatchStartDate().toInstant(), ZoneId.systemDefault()));
-		batch.setEndDate(LocalDateTime.ofInstant(salesforceBatch.getBatchEndDate().toInstant(), ZoneId.systemDefault()));
-		
-		
+		batch.setStartDate(
+				LocalDateTime.ofInstant(salesforceBatch.getBatchStartDate().toInstant(), ZoneId.systemDefault()));
+		batch.setEndDate(
+				LocalDateTime.ofInstant(salesforceBatch.getBatchEndDate().toInstant(), ZoneId.systemDefault()));
+
 		Set<Trainer> trainers = new HashSet<Trainer>();
 		trainers.add(transformTrainer(salesforceBatch.getTrainer()));
 		trainers.add(transformTrainer(salesforceBatch.getCotrainer()));
@@ -69,62 +71,77 @@ public class SalesforceTransformerToSMS implements SalesforceTransformer{
 
 	@Override
 	public Trainer transformTrainer(BatchTrainer batchTrainer) {
-		if(batchTrainer==null)
+		if (batchTrainer == null)
 			return new Trainer();
 		Trainer trainer = tRepo.getByName(batchTrainer.getName());
-		if(trainer==null)
-		{
+		if (trainer == null) {
 			trainer = new Trainer();
 			trainer.setName(batchTrainer.getName());
-			tRepo.save(trainer);
 		}
 		trainer.setActive(true);
+
+		tRepo.save(trainer);
 		return trainer;
 	}
 
 	@Override
 	public Associate transformTrainee(SalesforceTrainee salesforceTrainee) {
 		Associate associate = aRepo.getBySalesforceId(salesforceTrainee.getId());
-		if(associate==null)
-		{
-			associate=new Associate();
+		if (associate == null) {
+			associate = new Associate();
 			associate.setSalesforceId(salesforceTrainee.getId());
+			Credential cred = new Credential();
+			cred.setUsername(salesforceTrainee.getEmail());
+			cred.setPassword("password");
+			cRepo.save(cred);
+			associate.setCredential(cred);
 		}
 		associate.setName(salesforceTrainee.getName());
 		associate.setAssociateStatus(statusHelper(associate, salesforceTrainee.getTrainingStatus()));
 		associate.setBatch(bRepo.getBySalesforceId(salesforceTrainee.getBatchId()));
 		return associate;
 	}
-	
+
 	private AssociatesStatus statusHelper(Associate associate, String trainingStatus) {
-		//Retrieve new status from database
+		// Retrieve new status from database
 		String status;
-		switch(trainingStatus)
-		{
-			case "Signed": status = "TRAINING"; break;
-			case "Training": status = "TRAINING"; break;
-			case "Marketing": status = "STAGING"; break;
-			case "Confirmed": status = "PROJECT"; break;
-			case "Employed": status = "PROJECT"; break;
-			case "Bench": status = "BENCH"; break;
-			default: status = "UNKNOWN"; break;
+		switch (trainingStatus) {
+		case "Signed":
+			status = "TRAINING";
+			break;
+		case "Training":
+			status = "TRAINING";
+			break;
+		case "Marketing":
+			status = "STAGING";
+			break;
+		case "Confirmed":
+			status = "PROJECT";
+			break;
+		case "Employed":
+			status = "PROJECT";
+			break;
+		case "Bench":
+			status = "BENCH";
+			break;
+		default:
+			status = "UNKNOWN";
+			break;
 		}
 		AssociatesStatus as = asRepo.getByStatus(status);
-		if(as == null)
-		{
+		if (as == null) {
 			as = new AssociatesStatus();
 			as.setStatus(status);
+			asRepo.save(as);
 		}
-		//Check if there was an old status
+		// Check if there was an old status
 		AssociatesStatus currentStatus = associate.getAssociateStatus();
-		if(currentStatus!=null)
-		{
-			//We have to update a few things
-			if(status.equals("BENCH")&&currentStatus.getStatus().equals("PROJECT"))
-			{
-				//set portfolio status to false
-				//TODO associate.setPortfolioStatus(portfolioStatus);
-				//create a new panel
+		if (currentStatus != null) {
+			// We have to update a few things
+			if (status.equals("BENCH") && currentStatus.getStatus().equals("PROJECT")) {
+				// set portfolio status to false
+				// TODO associate.setPortfolioStatus(portfolioStatus);
+				// create a new panel
 				Panel panel = new Panel();
 				panel.setAssociate(associate);
 				pRepo.save(panel);
@@ -133,12 +150,10 @@ public class SalesforceTransformerToSMS implements SalesforceTransformer{
 		return as;
 	}
 
-	private BatchType batchHelper(String skillType)
-	{
+	private BatchType batchHelper(String skillType) {
 		BatchType bt = btRepo.getByValue(skillType);
-		if(bt == null)
-		{
-			bt= new BatchType();
+		if (bt == null) {
+			bt = new BatchType();
 			bt.setValue(skillType);
 
 			btRepo.save(bt);
@@ -146,4 +161,24 @@ public class SalesforceTransformerToSMS implements SalesforceTransformer{
 		return bt;
 	}
 
+	private Location locationHelper(String location) {
+		String[] pieces = location.split("|");
+		String name;
+		if(pieces.length>1)
+		{
+			name=pieces[0];
+		}
+		else
+		{
+			String[] pieces2 = location.split(",");
+			name=pieces2[0];
+		}
+		Location l = lRepo.findByName(name);
+		if (l == null) {
+			l = new Location();
+			l.setName(name);
+		}
+		lRepo.save(l);
+		return l;
+	}
 }
