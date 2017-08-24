@@ -37,19 +37,15 @@ const batchCtrl = ($scope, $http, $state, $stateParams) => {
                     })
                   })
               	}, () => {
-              		// console.log('failure')
               	})
             }
           })
 
         	}, () => {
-        		console.log('failure')
         	})
       	}, () => {
-      		console.log('failure')
       	})
   	}, () => {
-  		// console.log('failure')
   	})
 
 

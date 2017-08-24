@@ -14,14 +14,12 @@ function managerAdvancedCtrl($scope, $http, $state) {
     .then((data) => {
       $scope.associates = data.data;
     }, (data) => {
-      console.log('failed');
     });
 
   $http.get('batch/all')
     .then((data) => {
       $scope.batches = data.data;
     }, (data) => {
-      console.log('failed');
     });
     
     // fetching all project data
@@ -29,7 +27,6 @@ function managerAdvancedCtrl($scope, $http, $state) {
     .then((data) => {
       $scope.projects = data.data;
     }, (data) => {
-      console.log('failed');
     });
 
   $scope.isAssociates = () => {
