@@ -189,10 +189,8 @@
 	  $uiRouter.stateRegistry.get().map(s => s.$$state())
 	      .filter(s => s.path.length === 2 || s.path.length === 3)
 	      .forEach(s => s._collapsed = false);
-	  
-	  const pluginInstance = $uiRouter.plugin(Visualizer);
-	  
-	  $trace.enable('TRANSITION');*/
+	     const pluginInstance = $uiRouter.plugin(Visualizer);
+	     $trace.enable('TRANSITION');*/
 
 	  // Global Functions
 	  $rootScope.dateConverter = function (time) {
@@ -63657,6 +63655,7 @@
 		$scope.choose = {};
 
 		$scope.searchClick = function (searchName) {
+			$scope.choose = {};
 			if (searchName) {
 				$scope.disabled_search = true;
 				$scope.show_panel = false;
@@ -63669,8 +63668,10 @@
 					$scope.disabled_search = false;
 					$scope.associates = response.data;
 					$scope.searchShowUp = true;
+					location.reload();
 				});
 			}
+
 			$scope.associatePanelClick = function (associate) {
 				$scope.choose = associate;
 				$scope.searchShowUp = false;
@@ -63690,12 +63691,11 @@
 
 					$scope.statusOption = panel.status;
 					$scope.panelChoose = panel;
-
 					$scope.errorUpdateMsgShow = false;
 					$scope.successUpdateMsgShow = false;
-
 					$scope.updateComment = panel.comments;
 					$('#PanelCommentModal').modal('show');
+
 					$scope.updateInterviewClick = function (statusOption, updateComment) {
 						panel.comments = updateComment;
 						panel.status = statusOption;
@@ -63717,7 +63717,6 @@
 		$scope.addPanelClick = function () {
 			$scope.errorMsgShow = false;
 			$scope.successMsgShow = false;
-
 			addPanelBtn.disabled = true;
 			addPanelBtn.innerHTML = 'Adding...';
 			$http({
@@ -63736,11 +63735,9 @@
 		$scope.showAddModal = function () {
 			$scope.errorMsgShow = false;
 			$scope.successMsgShow = false;
-
 			$scope.selectedClient = undefined;
 			$('#datetimepicker1').val('');
 			$scope.selectedMarketer = undefined;
-
 			$('#addModal').modal('show');
 		};
 	};
