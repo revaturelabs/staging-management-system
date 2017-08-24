@@ -46,6 +46,7 @@ function loginCtrl($scope, $http, $state, userService) {
         });
     }
   };
+  
 }
 
 export default loginCtrl;

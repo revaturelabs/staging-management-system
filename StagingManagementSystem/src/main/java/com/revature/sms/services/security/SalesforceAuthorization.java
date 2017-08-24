@@ -1,6 +1,7 @@
 package com.revature.sms.services.security;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
@@ -34,6 +35,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.sms.entities.Associate;
 import com.revature.sms.entities.Credential;
@@ -67,6 +69,9 @@ public class SalesforceAuthorization extends Helper implements Authorization {
 	@Value("services/oauth2/revoke")
 	private String revokeUrl;
 
+	@Value("${sms.salesforce}")
+	private boolean salesforce;
+
 	private static final String REDIRECT = "redirect:";
 	private static final String REVATURE = "http://www.revature.com/";
 	private static final String LM = "login_manager";
@@ -78,9 +83,26 @@ public class SalesforceAuthorization extends Helper implements Authorization {
 	/**
 	 * Redirects the request to perform authentication.
 	 * 
+	 * @throws JsonProcessingException
+	 * @throws UnsupportedEncodingException
+	 * 
 	 */
 	@RequestMapping("/salesforce")
-	public ModelAndView openAuthURI() {
+	public ModelAndView openAuthURI(HttpSession session, HttpServletResponse servletResponse) throws JsonProcessingException, UnsupportedEncodingException {
+		// For local debugging. Fake salesforce user. Add to it as you require more things to test with.
+		if (!salesforce) { 
+			SalesforceUser salesforceUser = new SalesforceUser(); 
+			salesforceUser.setId( "https://test.salesforce.com/id/00D0n000000000000/0000000000000000000"); 
+			salesforceUser.setLightningLoginUser(false); //Currently whats being used to test. Just something expected from salesforce
+	
+			session.setAttribute(LM, salesforceUser);
+			
+			String user = new ObjectMapper().writeValueAsString(salesforceUser);
+			String userEncoded = URLEncoder.encode(user, "UTF-8");
+			servletResponse.addCookie(new Cookie("user", userEncoded)); 
+			
+			return new ModelAndView(REDIRECT + redirectUrl);
+		}
 
 		return new ModelAndView(REDIRECT + loginURL + authURL + "?response_type=code&client_id=" + clientId
 				+ "&redirect_uri=" + redirectUri);
@@ -116,10 +138,10 @@ public class SalesforceAuthorization extends Helper implements Authorization {
 
 		String tokenJson = toJsonString(response.getEntity().getContent());
 		SalesforceToken salesforceToken = new ObjectMapper().readValue(tokenJson, SalesforceToken.class);
-		
-		//This will return the token as a cookie to the client. Use if needed
-		//String tokenEncoded = URLEncoder.encode(tokenJson, "UTF-8");
-		//servletResponse.addCookie(new Cookie("token", tokenEncoded)); 
+
+		// This will return the token as a cookie to the client. Use if needed
+		// String tokenEncoded = URLEncoder.encode(tokenJson, "UTF-8");
+		// servletResponse.addCookie(new Cookie("token", tokenEncoded));
 
 		HttpGet get = new HttpGet(salesforceToken.getId() + "?access_token=" + salesforceToken.getAccessToken());
 		response = httpClient.execute(get);
@@ -128,14 +150,12 @@ public class SalesforceAuthorization extends Helper implements Authorization {
 		SalesforceUser salesforceUser = new ObjectMapper().readValue(user, SalesforceUser.class);
 		salesforceUser.setSalesforceToken(salesforceToken);
 		session.setAttribute(LM, salesforceUser);
-	
-
 
 		String userEncoded = URLEncoder.encode(user, "UTF-8");
-		//NOTE: The client is checking to see if user.id is set. salesforceUser has an ID
-		//BUT it is not the ID from the SMS database. It is a salesforce ID
-		servletResponse.addCookie(new Cookie("user", userEncoded)); 
-		
+		// NOTE: The client is checking to see if user.id is set. salesforceUser has an ID
+		// BUT it is not the ID from the SMS database. It is a salesforce ID
+		servletResponse.addCookie(new Cookie("user", userEncoded));
+
 		return new ModelAndView(REDIRECT + redirectUrl);
 
 	}
@@ -171,13 +191,19 @@ public class SalesforceAuthorization extends Helper implements Authorization {
 
 	/*
 	 * private void revokeToken(String token) throws ClientProtocolException,
-	 * IOException { HttpClient httpClient = HttpClientBuilder.create().build();
-	 * HttpPost post = new HttpPost(loginURL + revokeUrl);
-	 * post.setHeader("Content-Type", "application/x-www-form-urlencoded");
+	 * IOException {
+	 * 
+	 * HttpClient httpClient = HttpClientBuilder.create().build(); HttpPost post
+	 * = new HttpPost(loginURL + revokeUrl); post.setHeader("Content-Type",
+	 * "application/x-www-form-urlencoded");
+	 * 
 	 * List<NameValuePair> parameters = new ArrayList<>(); parameters.add(new
 	 * BasicNameValuePair("token", token)); post.setEntity(new
-	 * UrlEncodedFormEntity(parameters)); HttpResponse response =
-	 * httpClient.execute(post); }
+	 * UrlEncodedFormEntity(parameters));
+	 * 
+	 * HttpResponse response = httpClient.execute(post);
+	 * 
+	 * }
 	 */
 
 	public void setAuthURL(String authURL) {
