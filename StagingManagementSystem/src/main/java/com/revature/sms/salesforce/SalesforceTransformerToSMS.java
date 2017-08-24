@@ -128,7 +128,8 @@ public class SalesforceTransformerToSMS implements SalesforceTransformer {
 		associate.setBatch(bRepo.getBySalesforceId(salesforceTrainee.getBatchId()));
 		if (associate.getBatch() == null) {
 			Batch b = sRepo.getBatch(salesforceTrainee.getBatchId(), user);
-			bRepo.save(b);
+			if(b!=null)
+				bRepo.save(b);
 			associate.setBatch(b);
 		}
 		return associate;
