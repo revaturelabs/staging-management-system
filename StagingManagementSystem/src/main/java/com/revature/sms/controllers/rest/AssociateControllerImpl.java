@@ -33,8 +33,8 @@ public class AssociateControllerImpl {
 
 	@Autowired
 	private AssociateService associateService;
-	@Autowired
-	private DataGeneration dataGen;
+/*	@Autowired
+	private DataGeneration dataGen;*/
 	@Autowired
 	TotalReport totalReport;
 	
@@ -70,10 +70,10 @@ public class AssociateControllerImpl {
 		return ResponseEntity.ok(null);
 	}
 
-	@GetMapping("/generate/mock-data")
+/*	@GetMapping("/generate/mock-data")
 	public void generateAssociateMockDate() {
 		dataGen.generate();
-	}
+	}*/
 
 	@DeleteMapping
 	public ResponseEntity deleteAssociate(@RequestBody Associate associate, HttpSession session) {

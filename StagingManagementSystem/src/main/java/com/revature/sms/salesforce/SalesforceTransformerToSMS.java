@@ -26,7 +26,9 @@ import com.revature.sms.repositories.BatchTypeRepo;
 import com.revature.sms.repositories.CredentialRepo;
 import com.revature.sms.repositories.LocationRepo;
 import com.revature.sms.repositories.PanelRepo;
+import com.revature.sms.repositories.SalesforceRepo;
 import com.revature.sms.repositories.TrainerRepo;
+import com.revature.sms.security.models.SalesforceUser;
 
 @Component
 public class SalesforceTransformerToSMS implements SalesforceTransformer {
@@ -47,6 +49,8 @@ public class SalesforceTransformerToSMS implements SalesforceTransformer {
 	private LocationRepo lRepo;
 	@Autowired
 	private CredentialRepo cRepo;
+	@Autowired
+	private SalesforceRepo sRepo;
 
 	@Override
 	public Batch transformBatch(SalesforceBatch salesforceBatch) {
@@ -84,7 +88,7 @@ public class SalesforceTransformerToSMS implements SalesforceTransformer {
 	}
 
 	@Override
-	public Associate transformTrainee(SalesforceTrainee salesforceTrainee) {
+	public Associate transformTrainee(SalesforceTrainee salesforceTrainee, SalesforceUser user) {
 		Associate associate = aRepo.getBySalesforceId(salesforceTrainee.getId());
 		if (associate == null) {
 			associate = new Associate();
@@ -98,6 +102,12 @@ public class SalesforceTransformerToSMS implements SalesforceTransformer {
 		associate.setName(salesforceTrainee.getName());
 		associate.setAssociateStatus(statusHelper(associate, salesforceTrainee.getTrainingStatus()));
 		associate.setBatch(bRepo.getBySalesforceId(salesforceTrainee.getBatchId()));
+		if(associate.getBatch()==null)
+		{
+			Batch b = sRepo.getBatch(salesforceTrainee.getBatchId(), user);
+			bRepo.save(b);
+			associate.setBatch(b);
+		}
 		return associate;
 	}
 

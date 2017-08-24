@@ -43,6 +43,11 @@ public class TestImpl {
     		List<Associate> a = sd.getBatchTrainees(b.getSalesforceId(), (SalesforceUser) session.getAttribute(SalesforceAuthorization.LM));
     		ad.save(a);
     	}
-    	
+    }
+    @GetMapping("/bench")
+    public void getBench(HttpSession session)
+    {
+    	List<Associate> associates = sd.getBenchTrainees((SalesforceUser) session.getAttribute(SalesforceAuthorization.LM));
+    	ad.save(associates);
     }
 }
