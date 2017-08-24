@@ -278,8 +278,8 @@ public class DataGeneration {
 		int immuneSystemHealth;
 
 		AssociateP(Associate a) {
-			super(a.getId(), a.getCredential(), a.getName(), a.getPortfolioLink(), a.getBatch(), a.getProject(),
-					a.getLockedTo(), a.getSkills(), a.getJobs(), a.getPortfolioStatus(), a.getAssociateStatus());
+			super(a.getId(),"", a.getCredential(), a.getName(), a.getPortfolioLink(), a.getBatch(), a.getProject(),
+					a.getLockedTo(), a.getPortfolioStatus(), a.getAssociateStatus(), a.getSkills(), a.getJobs());
 
 			int qualityOfAssociate = rand.nextInt(100);
 
@@ -319,11 +319,10 @@ public class DataGeneration {
 
 		// I THINK THIS ALWASY RETURN 0 FOR GETASSOCIATE STATUS
 		Associate getAssocaite() {
-			this.setStatus();
-			return new Associate(getId(), getCredential(), getName(), getPortfolioLink(), getBatch(), getProject(),
-					getLockedTo(), getSkills(), getJobs(), getPortfolioStatus(), getAssociateStatus());
+			//this.setStatus();
+			return new Associate(getId(), "", getCredential(), getName(), getPortfolioLink(), getBatch(), getProject(),
+					getLockedTo(), getPortfolioStatus(), getAssociateStatus(), getSkills(), getJobs());
 		}
-
 		/*
 		 * Randomly returns true if an associate is determined to be health.
 		 */

@@ -30,7 +30,7 @@ public interface CheckinService {
      * @param approvingManager The manager to associate with the checkin. Assumes a valid manager.
      * @param checkin The checkin to be approved.
      */
-    public void approveCheckin(Manager approvingManager, Checkin checkin);
+    public void approveCheckin(Checkin checkin);
 
     /**
      * Checks to see whether or not the associate has checked in between midnight and now.
@@ -124,7 +124,7 @@ public interface CheckinService {
      * Approves multiple checkins
      * @param checkins manager
      */
-	public void approveMultiple(Set<Checkin> checkins, Manager manager);
+	public void approveMultiple(Set<Checkin> checkins);
   public boolean hasCheckedInOnDate(Associate associate, LocalDateTime date);
 
 }
