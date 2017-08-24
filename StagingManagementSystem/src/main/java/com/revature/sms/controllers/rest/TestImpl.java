@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.revature.sms.entities.Associate;
 import com.revature.sms.entities.Batch;
+import com.revature.sms.repositories.AssociateRepo;
 import com.revature.sms.repositories.BatchRepo;
 import com.revature.sms.repositories.SalesforceRepo;
 import com.revature.sms.security.models.SalesforceUser;
@@ -24,6 +26,8 @@ public class TestImpl {
 	
 	@Autowired
 	private BatchRepo bd;
+	@Autowired
+	private AssociateRepo ad;
 	
     @GetMapping("/testone")
     public void permissionTest() {
@@ -34,6 +38,11 @@ public class TestImpl {
     {
     	List<Batch> batches = sd.getRelevantBatches((SalesforceUser) session.getAttribute(SalesforceAuthorization.LM));
     	bd.save(batches);
+    	for(Batch b : batches)
+    	{
+    		List<Associate> a = sd.getBatchTrainees(b.getSalesforceId(), (SalesforceUser) session.getAttribute(SalesforceAuthorization.LM));
+    		ad.save(a);
+    	}
     	
     }
 }
