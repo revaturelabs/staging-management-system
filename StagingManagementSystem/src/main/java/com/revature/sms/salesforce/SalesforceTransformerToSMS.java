@@ -158,12 +158,7 @@ public class SalesforceTransformerToSMS implements SalesforceTransformer {
 			status = "UNKNOWN";
 			break;
 		}
-		AssociatesStatus as = asRepo.getByStatus(status);
-		if (as == null) {
-			as = new AssociatesStatus();
-			as.setStatus(status);
-			as = asRepo.save(as);
-		}
+
 		// Check if there was an old status
 		AssociatesStatus currentStatus = associate.getAssociateStatus();
 		if (currentStatus != null) {
@@ -178,6 +173,13 @@ public class SalesforceTransformerToSMS implements SalesforceTransformer {
 				panel.setAssociate(associate);
 				panel = pRepo.save(panel);
 			}
+		}
+		
+		AssociatesStatus as = asRepo.getByStatus(status);
+		if (as == null) {
+			as = new AssociatesStatus();
+			as.setStatus(status);
+			as = asRepo.save(as);
 		}
 		return as;
 	}
