@@ -181,8 +181,10 @@
 	  $uiRouter.stateRegistry.get().map(s => s.$$state())
 	      .filter(s => s.path.length === 2 || s.path.length === 3)
 	      .forEach(s => s._collapsed = false);
-	     const pluginInstance = $uiRouter.plugin(Visualizer);
-	     $trace.enable('TRANSITION');*/
+	  
+	  const pluginInstance = $uiRouter.plugin(Visualizer);
+	  
+	  $trace.enable('TRANSITION');*/
 
 	  // Global Functions
 	  $rootScope.dateConverter = function (time) {
@@ -63705,26 +63707,26 @@
 						return a.id - b.id;
 					});
 				});
-			};
 
-			$scope.PanelClick = function (panel) {
-				$scope.statusOption = panel.status;
-				$scope.panelChoose = panel;
-				console.log("I got the panel ", $scope.panelChoose);
-				$('#PanelCommentModal').modal('show');
-				$scope.updateInterviewClick = function (statusOption, updateComment) {
-					console.log(statusOption + " " + updateComment);
-					panel.comments = updateComment;
-					panel.status = statusOption;
-					console.log(panel);
-					$http({
-						method: 'PUT',
-						url: '/panel',
-						data: panel
-					}).then(function (response) {
-						$scope.successUpdateMsgShow = true;
-						$scope.associatePanelClick;
-					});
+				$scope.PanelClick = function (panel) {
+					$scope.statusOption = panel.status;
+					$scope.panelChoose = panel;
+					console.log("I got the panel ", $scope.panelChoose);
+					$('#PanelCommentModal').modal('show');
+					$scope.updateInterviewClick = function (statusOption, updateComment) {
+						console.log(statusOption + " " + updateComment);
+						panel.comments = updateComment;
+						panel.status = statusOption;
+						console.log(panel);
+						$http({
+							method: 'PUT',
+							url: '/panel',
+							data: panel
+						}).then(function (response) {
+							$scope.successUpdateMsgShow = true;
+							$scope.associatePanelClick(associate);
+						});
+					};
 				};
 			};
 		};

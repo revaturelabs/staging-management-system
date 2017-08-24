@@ -39,28 +39,30 @@ const managerPanelCtrl = ($scope, $state, $location, $http, userService) => {
 			          return  a.id - b.id;
 			        });
 			});
+			
+			$scope.PanelClick = function (panel) {
+				  $scope.statusOption  = panel.status;
+				  $scope.panelChoose = panel;
+				  console.log("I got the panel ",  $scope.panelChoose);
+				    $('#PanelCommentModal').modal('show');
+				    $scope.updateInterviewClick = (statusOption, updateComment)=>{
+						console.log(statusOption + " " +updateComment);
+						panel.comments = updateComment;
+						panel.status = statusOption;
+						console.log(panel);
+						$http({
+							method: 'PUT',
+							url: '/panel',
+							data: panel,
+						}).then((response)=>{
+							$scope.successUpdateMsgShow = true;
+							$scope.associatePanelClick(associate);
+						});
+					}
+			};	
 		};
 		
-		$scope.PanelClick = function (panel) {
-		  $scope.statusOption  = panel.status;
-		  $scope.panelChoose = panel;
-		  console.log("I got the panel ",  $scope.panelChoose);
-		    $('#PanelCommentModal').modal('show');
-		    $scope.updateInterviewClick = (statusOption, updateComment)=>{
-				console.log(statusOption + " " +updateComment);
-				panel.comments = updateComment;
-				panel.status = statusOption;
-				console.log(panel);
-				$http({
-					method: 'PUT',
-					url: '/panel',
-					data: panel,
-				}).then((response)=>{
-					$scope.successUpdateMsgShow = true;
-					$scope.associatePanelClick;
-				});
-			}
-		};	
+		
 	};
 	
 	  $scope.addPanelClick = function () {
