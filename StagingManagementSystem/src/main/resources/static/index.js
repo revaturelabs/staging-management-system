@@ -181,8 +181,10 @@
 	  $uiRouter.stateRegistry.get().map(s => s.$$state())
 	      .filter(s => s.path.length === 2 || s.path.length === 3)
 	      .forEach(s => s._collapsed = false);
-	     const pluginInstance = $uiRouter.plugin(Visualizer);
-	     $trace.enable('TRANSITION');*/
+	  
+	  const pluginInstance = $uiRouter.plugin(Visualizer);
+	  
+	  $trace.enable('TRANSITION');*/
 
 	  // Global Functions
 	  $rootScope.dateConverter = function (time) {
@@ -63667,28 +63669,10 @@
 	var managerPanelCtrl = function managerPanelCtrl($scope, $state, $location, $http, userService) {
 		$scope.PanelLoad = '';
 		$scope.show_panel = false;
-		/*$http({
-	     method: 'GET',
-	     url: '/associate/all',
-	   }).then((response) => {
-	 	  
-	     $scope.associates = response.data;
-	     console.log(response.data);
-	     $scope.PanelLoad= '';
-	     $scope.search_disabled = false;
-	 });*/
+		$scope.errorUpdateMsgShow = false;
+		$scope.successUpdateMsgShow = false;
+
 		$scope.searchClick = function (searchName) {
-			/*console.log(associate);
-	  $scope.search.name='';
-	  $scope.show_panel = true;
-	  var associateId = associate.id;
-	  $http({
-	  	method: 'GET',
-	  	url: '/panel/associate/'+associateId,
-	  }).then((response) =>{
-	  	console.log(response.data);
-	  	$scope.plist = response.data;
-	  });*/
 			if (searchName) {
 				console.log(searchName);
 				$scope.disabled_search = true;
@@ -63719,6 +63703,27 @@
 					$scope.plist = response.data;
 				});
 			};
+
+			$scope.PanelClick = function (panel) {
+				$scope.statusOption = panel.status;
+				$scope.panelChoose = panel;
+				console.log("I got the panel ", $scope.panelChoose);
+				$('#PanelCommentModal').modal('show');
+				$scope.updateInterviewClick = function (statusOption, updateComment) {
+					console.log(statusOption + " " + updateComment);
+					panel.comments = updateComment;
+					panel.status = statusOption;
+					console.log(panel);
+					$http({
+						method: 'PUT',
+						url: '/panel',
+						data: panel
+					}).then(function (response) {
+						$scope.successUpdateMsgShow = true;
+						$scope.associatePanelClick;
+					});
+				};
+			};
 		};
 
 		$scope.showAddModal = function () {
@@ -63730,14 +63735,6 @@
 			$scope.selectedMarketer = undefined;
 
 			$('#addModal').modal('show');
-		};
-
-		$scope.PanelClick = function (panel) {
-			$scope.panelChoose = panel;
-			console.log("I got the panel " + $scope.PanelClick.id);
-			$scope.errorUpdateMsgShow = false;
-			$scope.successUpdateMsgShow = false;
-			$('#PanelCommentModal').modal('show');
 		};
 	};
 	exports.default = managerPanelCtrl;

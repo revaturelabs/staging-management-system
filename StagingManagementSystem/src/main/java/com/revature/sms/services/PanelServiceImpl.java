@@ -1,5 +1,6 @@
 package com.revature.sms.services;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -35,6 +36,8 @@ public class PanelServiceImpl implements PanelService
 	@Override
 	public void update(Panel panel) 
 	{
+		LocalDateTime currentDate = LocalDateTime.now();
+		panel.setStatusDate(currentDate);
 		pr.saveAndFlush(panel);
 		
 	}

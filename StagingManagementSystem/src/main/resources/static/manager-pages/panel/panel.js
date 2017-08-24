@@ -1,28 +1,10 @@
 const managerPanelCtrl = ($scope, $state, $location, $http, userService) => {
 	$scope.PanelLoad= '';
 	$scope.show_panel = false;
-	/*$http({
-	    method: 'GET',
-	    url: '/associate/all',
-	  }).then((response) => {
-		  
-	    $scope.associates = response.data;
-	    console.log(response.data);
-	    $scope.PanelLoad= '';
-	    $scope.search_disabled = false;
-	});*/
+	$scope.errorUpdateMsgShow = false;
+    $scope.successUpdateMsgShow = false;
+    
 	$scope.searchClick =(searchName)=>{
-		/*console.log(associate);
-		$scope.search.name='';
-		$scope.show_panel = true;
-		var associateId = associate.id;
-		$http({
-			method: 'GET',
-			url: '/panel/associate/'+associateId,
-		}).then((response) =>{
-			console.log(response.data);
-			$scope.plist = response.data;
-		});*/
 		if(searchName){
 			console.log(searchName);
 			$scope.disabled_search=true;
@@ -53,6 +35,28 @@ const managerPanelCtrl = ($scope, $state, $location, $http, userService) => {
 				$scope.plist = response.data;
 			});
 		};
+		
+		$scope.PanelClick = function (panel) {
+		  $scope.statusOption  = panel.status;
+		  $scope.panelChoose = panel;
+		  console.log("I got the panel ",  $scope.panelChoose);
+		    $('#PanelCommentModal').modal('show');
+		    $scope.updateInterviewClick = (statusOption, updateComment)=>{
+				console.log(statusOption + " " +updateComment);
+				panel.comments = updateComment;
+				panel.status = statusOption;
+				console.log(panel);
+				$http({
+					method: 'PUT',
+					url: '/panel',
+					data: panel,
+				}).then((response)=>{
+					$scope.successUpdateMsgShow = true;
+					$scope.associatePanelClick;
+				});
+			}
+		};
+		
 	};
 	
 	  $scope.showAddModal = function () {
@@ -67,13 +71,7 @@ const managerPanelCtrl = ($scope, $state, $location, $http, userService) => {
 		  };
 		  
 		  
-		  $scope.PanelClick = function (panel) {
-			  $scope.panelChoose = panel;
-			  console.log("I got the panel "+  $scope.PanelClick.id) 
-			    $scope.errorUpdateMsgShow = false;
-			    $scope.successUpdateMsgShow = false;
-			    $('#PanelCommentModal').modal('show');
-			  };
+    
 	
 }
 export default managerPanelCtrl;
