@@ -1,5 +1,9 @@
 package com.revature.sms.salesforce;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+
 import org.springframework.stereotype.Component;
 
 import com.revature.salesforce.beans.BatchTrainer;
@@ -14,7 +18,9 @@ public class SalesforceTransformerToSMS implements SalesforceTransformer{
 
 	@Override
 	public Batch transformBatch(SalesforceBatch salesforceBatch) {
-		// TODO Auto-generated method stub
+		Batch batch = new Batch();
+		//batch.setBatchType();
+		batch.setEndDate(LocalDateTime.parse(salesforceBatch.getBatchEndDate().toString()));
 		return null;
 	}
 
