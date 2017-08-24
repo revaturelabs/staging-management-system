@@ -1,9 +1,9 @@
-const profileCtrl = ($scope, $http, userService, $stateParams, $state, $window) => {
-  if($state.includes('manager')) {
+function profileCtrl($scope, $http, userService, $stateParams, $state, $window) {
+  if ($state.includes('manager')) {
     $scope.isManager = true;
     $http.get('client/priority').then((response) => {
       $scope.clients = response.data;
-    })
+    });
   }
   const associateId = $scope.isManager ? $stateParams.id : userService.getUser().id;
 
@@ -51,14 +51,19 @@ const profileCtrl = ($scope, $http, userService, $stateParams, $state, $window) 
     $scope.portfolioUrlInput = $scope.associate.portfolioLink;
     $('#portfolioUrlModal').modal('show');
   };
+  
+  $scope.openProjectStatusModal = () => {
+	    $scope.sendingRequest = false;
+	    $('#projectStatusModal').modal('show');
+	  };
 
   $scope.toggleMappedModal = () => {
     window.scope = $scope;
     $scope.sendingRequest = false;
     $scope.mappedModalButtonValue = 'Save';
-    if($scope.associate.lockedTo) {
+    if ($scope.associate.lockedTo) {
       $scope.clients.some((client) => {
-        if(client.name === $scope.associate.lockedTo.name) {
+        if (client.name === $scope.associate.lockedTo.name) {
           $scope.associate.lockedTo = client;
           return true;
         }
@@ -66,7 +71,7 @@ const profileCtrl = ($scope, $http, userService, $stateParams, $state, $window) 
     }
 
     $('#mappedToClientModal').modal('show');
-  }
+  };
 
   $scope.submitPortfolioUrl = () => {
     $scope.associate.portfolioLink = $scope.portfolioUrlInput;
@@ -113,7 +118,7 @@ const profileCtrl = ($scope, $http, userService, $stateParams, $state, $window) 
     }, () => {
       $('#mappedToClientModal').modal('hide');
     });
-  }
+  };
 
   $scope.openPortfolioLink = () => {
     $window.open($scope.associate.portfolioLink);
@@ -131,6 +136,6 @@ const profileCtrl = ($scope, $http, userService, $stateParams, $state, $window) 
       $scope.addSkill();
     }
   };
-};
+}
 
 export default profileCtrl;

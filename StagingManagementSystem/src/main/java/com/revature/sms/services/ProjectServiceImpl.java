@@ -1,5 +1,7 @@
 package com.revature.sms.services;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,10 @@ public class ProjectServiceImpl implements ProjectService {
 
 	@Override
 	public void addProject(Project project) {
+		if("inactive".equals(project.getProjectStatus())){
+			Set<Associate> em = new HashSet<>();
+			project.setAssociates(em);
+		}
 		if (project.getProjectId() == 0) {
 			Project p = projectRepo.saveAndFlush(project);
 			project.getAssociates().forEach((Associate associate) -> {
@@ -58,6 +64,18 @@ public class ProjectServiceImpl implements ProjectService {
 				associateRepo.saveAndFlush(ass);
 			});
 		}
+	}
+
+
+	@Override
+	public List<Project> getAll() {
+		return projectRepo.findAll();
+	}
+
+
+	@Override
+	public Project findById(long id) {
+		return projectRepo.getOne(id);
 	}
 
 }

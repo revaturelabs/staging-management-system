@@ -6,6 +6,7 @@ import com.revature.sms.exceptions.SmsCustomException;
 
 import java.util.Set;
 
+//TODO: Probably remove in favor of salesforce
 public interface ManagerService {
 
     // c

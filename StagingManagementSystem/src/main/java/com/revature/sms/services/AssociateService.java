@@ -14,17 +14,20 @@ public interface AssociateService {
     public void update(Associate associate);
     public Set<Associate> getAll();
 
-    //we took this out
+    
     public Set<Associate> getAllActive();
-
+    
     public Set<Associate> haveNoBatch();
     public Set<Associate> haveNoProject();
     public Set<Associate> findByBatchId(Long id);
+    public Set<Associate> findByProjectId(Long id);
     public Set<StaggingAssociate> getAssociatesInStaggingOn(String date);
 
-    //we added this
-    public Set<Associate> findByAssociateStatus(String status);
+    public Set<Associate> findByNameLike(String name);
+    
+    //WE added this
+    public Set<Associate> getAllByStatus(String status);
+    //public Set<Associate> getActive();
 
-    //added this is update a status
-    public void updateStatus(Associate associate);
+    public Set<Associate> findByAssociateStatus(String status);
 }

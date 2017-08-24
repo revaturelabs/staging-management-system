@@ -13,7 +13,7 @@ import com.revature.sms.repositories.AttendanceReportRepo;
 @Service
 public class CheckinReportServiceImpl {
   
-  // TODO: chache results
+  // TODO: cache results
   @Autowired
   AttendanceReportRepo attendanceReportRepo;
   
