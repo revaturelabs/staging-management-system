@@ -72,7 +72,7 @@ public class SalesforceTransformerToSMS implements SalesforceTransformer {
 	@Override
 	public Trainer transformTrainer(BatchTrainer batchTrainer) {
 		if (batchTrainer == null)
-			return new Trainer();
+			return null;
 		Trainer trainer = tRepo.getByName(batchTrainer.getName());
 		if (trainer == null) {
 			trainer = new Trainer();
