@@ -1,6 +1,7 @@
 package com.revature.sms.salesforce;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -50,8 +51,8 @@ public class SalesforceTransformerToSMS implements SalesforceTransformer{
 			batch.setLocation(new Location());
 		}
 		batch.setBatchType(batchHelper(salesforceBatch.getSkillType()));
-		batch.setStartDate(LocalDateTime.parse(salesforceBatch.getBatchStartDate().toString()));
-		batch.setEndDate(LocalDateTime.parse(salesforceBatch.getBatchEndDate().toString()));
+		batch.setStartDate(LocalDateTime.ofInstant(salesforceBatch.getBatchStartDate().toInstant(), ZoneId.systemDefault()));
+		batch.setEndDate(LocalDateTime.ofInstant(salesforceBatch.getBatchEndDate().toInstant(), ZoneId.systemDefault()));
 		batch.getLocation().setName(salesforceBatch.getLocation());
 		
 		Set<Trainer> trainers = new HashSet<Trainer>();
