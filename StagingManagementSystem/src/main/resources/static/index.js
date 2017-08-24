@@ -134,13 +134,9 @@
 
 	var _login2 = _interopRequireDefault(_login);
 
-	var _certifications = __webpack_require__(147);
-
-	var _certifications2 = _interopRequireDefault(_certifications);
-
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	__webpack_require__(148)(_fusioncharts2.default);
+	__webpack_require__(147)(_fusioncharts2.default);
 
 	// const Visualizer = window['ui-router-visualizer'].Visualizer;
 
@@ -181,6 +177,14 @@
 
 	  // Ui Visualizer
 	  // Auto-collapse children in state visualizer
+	  // const registry = $uiRouter.stateRegistry;
+	  // $uiRouter.stateRegistry.get().map(s => s.$$state())
+	  // .filter(s => s.path.length === 2 || s.path.length === 3)
+	  // .forEach(s => s._collapsed = true);
+	  //
+	  // const pluginInstance = $uiRouter.plugin(Visualizer);
+	  //
+	  // $trace.enable('TRANSITION');
 	  /*const registry = $uiRouter.stateRegistry;
 	  $uiRouter.stateRegistry.get().map(s => s.$$state())
 	      .filter(s => s.path.length === 2 || s.path.length === 3)
@@ -192,6 +196,7 @@
 
 	  // Global Functions
 	  $rootScope.dateConverter = function (time) {
+
 	    return (0, _moment2.default)(time).format('MMM D, hh:mm a');
 	  };
 	});
@@ -317,10 +322,7 @@
 	    url: '/profile',
 	    templateUrl: 'associate-pages/profile/profile.html',
 	    controller: _profile2.default
-	  }).state('associate.certifications', {
-	    url: '/certifications',
-	    templateUrl: 'Certifications/certifications.html',
-	    controller: _certifications2.default
+
 	  });
 	});
 
@@ -62148,14 +62150,14 @@
 	    url: '/login/user'
 	  }).then(function (response) {
 	    userService.setUser(response.data);
-	    if (response.data.permission === undefined) {
+	    if (response.data.is_lightning_login_user === undefined) {
+	      //TODO: Tie to role once role is properly set. Lightning user is just something in salesforceuser
 	      $state.go('associate.home');
 	    }
 	  }, function () {
 	    userService.setUser({});
 	    $state.go('login');
 	  });
-
 	  $scope.isActive = function (viewLocation) {
 	    return viewLocation === $location.path();
 	  };
@@ -62267,15 +62269,11 @@
 	    url: '/interviews/next-five-days'
 	  }).then(function (response) {
 	    $scope.interviews = response.data;
-	  }, function () {
-	    console.log('error!');
-	  });
+	  }, function () {});
 
 	  $http.get('/interviewStatus/all').then(function (successResponse) {
 	    $scope.interviewStatuses = successResponse.data;
-	  }, function () {
-	    console.log('failed to retreive interview statuses');
-	  });
+	  }, function () {});
 
 	  // configure the modal for the interview selected
 	  $scope.interviewSelect = function (interview) {
@@ -62684,7 +62682,6 @@
 	 */
 	function buildWeekly() {
 	  weeklyData = originalData;
-	  console.log(JSON.stringify(originalData));
 	}
 
 	/**
@@ -62753,7 +62750,6 @@
 	  }).then(function (response) {
 	    $scope.checkedInAssociates = [];
 	    $scope.notCheckedInAssociates = [];
-	    console.log(JSON.stringify(response.data, null, 2));
 	    response.data.forEach(function (item) {
 	      item.checkinTime = (0, _moment2.default)(item.checkinTime).format('HH:MM');
 	      if (item.checkinTime === 'Invalid date') $scope.notCheckedInAssociates.push(item);else $scope.checkedInAssociates.push(item);
@@ -63198,20 +63194,12 @@
 	                  }
 	                });
 	              });
-	            }, function () {
-	              // console.log('failure')
-	            });
+	            }, function () {});
 	          }
 	        });
-	      }, function () {
-	        console.log('failure');
-	      });
-	    }, function () {
-	      console.log('failure');
-	    });
-	  }, function () {
-	    // console.log('failure')
-	  });
+	      }, function () {});
+	    }, function () {});
+	  }, function () {});
 
 	  $scope.addAssociate = function () {
 	    if (!$scope.selectedAssociate) {
@@ -63350,9 +63338,7 @@
 	function userCtrl($scope, $http) {
 	  $http.get('batchtype/all.json').then(function (response) {
 	    $scope.posts = response.data;
-	  }, function () {
-	    console.log('failure');
-	  });
+	  }, function () {});
 
 	  $scope.submit = function () {
 	    $scope.requestMade = true;
@@ -63433,15 +63419,11 @@
 	  $http.get('associate/all').then(function (response) {
 	    // takes a while for associates to load...
 	    $scope.associates = response.data;
-	  }, function () {
-	    console.log('failure');
-	  });
+	  }, function () {});
 
 	  $http.get('client/all').then(function (response) {
 	    $scope.clients = response.data;
-	  }, function () {
-	    console.log('failure');
-	  });
+	  }, function () {});
 
 	  $('#datetimepicker1').on('dp.change', function () {
 	    $scope.job.startDate = $('#datetimepicker1').val();
@@ -63579,22 +63561,16 @@
 
 	  $http.get('associate/all').then(function (data) {
 	    $scope.associates = data.data;
-	  }, function (data) {
-	    console.log('failed');
-	  });
+	  }, function (data) {});
 
 	  $http.get('batch/all').then(function (data) {
 	    $scope.batches = data.data;
-	  }, function (data) {
-	    console.log('failed');
-	  });
+	  }, function (data) {});
 
 	  // fetching all project data
 	  $http.get('project/all').then(function (data) {
 	    $scope.projects = data.data;
-	  }, function (data) {
-	    console.log('failed');
-	  });
+	  }, function (data) {});
 
 	  $scope.isAssociates = function () {
 	    if ($state.is('manager.advanced.allassociates')) {
@@ -63683,24 +63659,20 @@
 	   }).then((response) => {
 	 	  
 	     $scope.associates = response.data;
-	     console.log(response.data);
 	     $scope.PanelLoad= '';
 	     $scope.search_disabled = false;
 	 });*/
 		$scope.searchClick = function (searchName) {
-			/*console.log(associate);
-	  $scope.search.name='';
+			/*$scope.search.name='';
 	  $scope.show_panel = true;
 	  var associateId = associate.id;
 	  $http({
 	  	method: 'GET',
 	  	url: '/panel/associate/'+associateId,
 	  }).then((response) =>{
-	  	console.log(response.data);
 	  	$scope.plist = response.data;
 	  });*/
 			if (searchName) {
-				console.log(searchName);
 				$scope.disabled_search = true;
 				$scope.show_panel = false;
 				$scope.PanelLoad = 'Loading Panel...';
@@ -63710,14 +63682,12 @@
 				}).then(function (response) {
 					$scope.PanelLoad = '';
 					$scope.disabled_search = false;
-					console.log(response.data);
 					$scope.associates = response.data;
 					$scope.searchShowUp = true;
 				});
 			}
 
 			$scope.associatePanelClick = function (associate) {
-				console.log(associate);
 				$scope.searchShowUp = false;
 				$scope.show_panel = true;
 				var associateId = associate.id;
@@ -63725,7 +63695,6 @@
 					method: 'GET',
 					url: '/panel/associate/' + associateId
 				}).then(function (response) {
-					console.log(response.data);
 					$scope.plist = response.data;
 				});
 			};
@@ -64137,7 +64106,7 @@
 	  var authenticatedUser = userService.getUser();
 
 	  var isAssociate = authenticatedUser.id !== undefined;
-	  var isManager = authenticatedUser.permission !== undefined;
+	  var isManager = authenticatedUser.is_lightning_login_user !== undefined; //TODO: Change to role whenever that gets in
 
 	  if (isManager) {
 	    $state.go('manager.home');
@@ -64161,17 +64130,12 @@
 	      loginBtn.disabled = false;
 	      loginBtn.innerHTML = 'Log In';
 	    } else {
-	      $http({
+	      $http({ //Login post request
 	        method: 'POST',
 	        url: '/login',
 	        data: { username: $scope.username, password: $scope.password }
 	      }).then(function (response) {
-	        userService.setUser(response.data);
-	        if (response.data.permission !== undefined) {
-	          $state.go('manager.home');
-	        } else {
-	          $state.go('associate.home');
-	        }
+	        userService.setUser(response.data); //NOTE: Anything to do with manager login is handled through salesforce login and handling. See manager.js
 	      }, function () {
 	        $scope.errorMsg = 'Username or Password is incorrect.';
 	        $scope.errorMsgShow = true;
@@ -64186,33 +64150,6 @@
 
 /***/ }),
 /* 147 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	var certificationCtrl = function certificationCtrl($scope, $http, $state, $stateParams) {
-		$scope.certification = {};
-
-		$scope.ApplyCert = function () {
-
-			$('#getCert').modal('show');
-		};
-
-		$http({
-			method: 'GET',
-			url: '/certifications/all'
-		}).then(function (response) {
-			$scope.certification = response.data;
-		});
-	};
-
-	exports.certificationCtrl = certificationCtrl;
-
-/***/ }),
-/* 148 */
 /***/ (function(module, exports) {
 
 	/*

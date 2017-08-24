@@ -22,8 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.revature.sms.entities.Associate;
 import com.revature.sms.entities.AttendanceRecord;
 import com.revature.sms.entities.Checkin;
-import com.revature.sms.entities.Manager;
 import com.revature.sms.exceptions.AlreadyCheckedInException;
+import com.revature.sms.security.models.SalesforceUser;
 import com.revature.sms.services.CheckinReportServiceImpl;
 import com.revature.sms.services.CheckinService;
 
@@ -52,14 +52,14 @@ public class CheckinControllerImpl {
 
 	}
 
-	@GetMapping("/allTodays")
+/*	@GetMapping("/allTodays")
 	public ResponseEntity<Set<Checkin>> getTodaysCheckins(HttpSession session) {
 		Manager manager = (Manager) session.getAttribute(LM);
 		if (manager == null) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 		}
 		return ResponseEntity.ok(checkinService.getTodaysCheckins());
-	}
+	}*/
 
 	@PutMapping
 	public ResponseEntity<Boolean> checkIn(HttpSession session) {
@@ -75,7 +75,7 @@ public class CheckinControllerImpl {
 		}
 	}
 
-	/**
+/*	*//**
 	 * Marks a given checkin as having been verified by the currently logged in
 	 * manager Accessible through POST:/checkin and requires a checkin to be
 	 * given.
@@ -83,8 +83,8 @@ public class CheckinControllerImpl {
 	 * @param session
 	 * @param checkin
 	 * @return
-	 */
-	@PostMapping
+	 *//*
+	@PostMapping //TODO: Fix checkin, then this can be used
 	public ResponseEntity<Boolean> managerModification(HttpSession session, @RequestBody Checkin checkin) {
 		Manager manager = (Manager) session.getAttribute(LM);
 		if (manager == null) {
@@ -94,9 +94,10 @@ public class CheckinControllerImpl {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
 		checkinService.approveCheckin(manager, checkin);
 		return ResponseEntity.ok(true);
-	}
+	}*/
 
-	@PatchMapping("approve-multiple")
+	//TODO: Replace with salesforce project approval?
+/*	@PatchMapping("approve-multiple")
 	public ResponseEntity<Boolean> approveMultiple(HttpSession session, @RequestBody Set<Checkin> checkins) {
 		Manager manager = (Manager) session.getAttribute(LM);
 		if (manager == null) {
@@ -108,40 +109,26 @@ public class CheckinControllerImpl {
 		checkinService.approveMultiple(checkins, manager);
 		return ResponseEntity.ok(true);
 	}
-
+*/
 	@GetMapping(path = "checkin/{username}")
 	public ResponseEntity<Set<Checkin>> getCheckins(@PathVariable String username, HttpSession session) {
 		Associate associate = (Associate) session.getAttribute(LA);
 		if (associate != null) { // If you're not an associate..
-			if (username.equals(associate.getCredential().getUsername())) // If
-																			// you're
-																			// asking
-																			// for
-																			// your
-																			// own
-																			// details..
-				return ResponseEntity.ok(checkinService.getAllForAssociate(associate)); // You're
-																						// welcome
-																						// to
-																						// your
-																						// own
-																						// data.
-			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null); // Otherwise,
-																			// go
+			if (username.equals(associate.getCredential().getUsername())) // If you're asking for your own details..
+				return ResponseEntity.ok(checkinService.getAllForAssociate(associate)); // You're welcome to
+																						// your own data.
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null); // Otherwise, go
 																			// away!
 		}
-		Manager manager = (Manager) session.getAttribute(LM);
+		SalesforceUser manager = (SalesforceUser) session.getAttribute(LM);
 		if (manager == null) { // And if you're not a manager..
-			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null); // Go
-																			// away!
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null); // Gos away!
 		}
 		return ResponseEntity.ok(checkinService.getAllForAssociate(username));
 	}
 
-	@GetMapping(path = "/report")
-	public ResponseEntity<Collection<AttendanceRecord>> getCheckins(HttpSession session) {// For
-																					// managers
-																					// only.
+	@GetMapping(path = "/report") //TODO: Update after checkin is functional
+	public ResponseEntity<Collection<AttendanceRecord>> getCheckins(HttpSession session) {// For managers only.
 //		Manager manager = (Manager) session.getAttribute(LM);
 //		if (manager == null) {
 //			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);

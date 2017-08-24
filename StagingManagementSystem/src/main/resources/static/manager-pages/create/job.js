@@ -14,13 +14,11 @@ function jobCtrl($scope, $http) {
     // takes a while for associates to load...
     $scope.associates = response.data;
   }, () => {
-    console.log('failure');
   });
 
   $http.get('client/all').then((response) => {
     $scope.clients = response.data;
   }, () => {
-    console.log('failure');
   });
 
   $('#datetimepicker1').on('dp.change', () => {

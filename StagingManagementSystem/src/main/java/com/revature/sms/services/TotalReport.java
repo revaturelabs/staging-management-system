@@ -8,28 +8,20 @@ import com.revature.sms.entities.Associate;
 
 @Service
 public class TotalReport {
-	
-	
-  
 
-public class Tuple<I, T> {
+  public class Tuple<I, T> {
     private I first;
     private T second;
 
-   
-    
     public Tuple(I first, T second) {
       super();
       this.first = first;
       this.second = second;
     }
-  
 
     public Tuple() {
       super();
-      
     }
-   
 
     public I getFirst() {
       return first;
@@ -56,7 +48,7 @@ public class Tuple<I, T> {
       result = prime * result + ((second == null) ? 0 : second.hashCode());
       return result;
     }
-   
+
     @Override
     public boolean equals(Object obj) {
       if (this == obj)
@@ -81,8 +73,6 @@ public class Tuple<I, T> {
       return true;
     }
 
-    
-    
     private TotalReport getOuterType() {
       return TotalReport.this;
     }
@@ -142,7 +132,7 @@ public class Tuple<I, T> {
       this.totalUnavailable = totalUnavailable;
     }
 
-  
+   
 
     public void addAvailible(String name, String portLink) {
       availibleAssociates.add(new Tuple<String, String>(name, portLink));
@@ -152,14 +142,9 @@ public class Tuple<I, T> {
       mappedAssociates.add(new Tuple<String, String>(name, portLink));
     }
   }
- 
 
   private Map<String, TotalData> totaldata = new HashMap<String, TotalData>();
-  public TotalReport() {
-		super();
-		
-	}
-  
+
   public void addBatch(Associate associate) {
     String batchName = associate.getBatch()==null?"None":associate.getBatch().getBatchType().getValue();
     String name = associate.getName();
@@ -186,7 +171,7 @@ public class Tuple<I, T> {
       }
     }
   }
- 
+
   public Collection<TotalData> returnTotalData() {
     return totaldata.values();
   }
@@ -199,7 +184,10 @@ public class Tuple<I, T> {
     this.totaldata = totaldata;
   }
 
-  
+  public TotalReport() {
+    super();
+    
+  }
 
   public Collection<TotalData> process(Set<Associate> associates) {
     this.totaldata = new HashMap<>();
