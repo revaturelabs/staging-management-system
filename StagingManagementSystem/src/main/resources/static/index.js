@@ -181,8 +181,10 @@
 	  $uiRouter.stateRegistry.get().map(s => s.$$state())
 	      .filter(s => s.path.length === 2 || s.path.length === 3)
 	      .forEach(s => s._collapsed = false);
-	     const pluginInstance = $uiRouter.plugin(Visualizer);
-	     $trace.enable('TRANSITION');*/
+	  
+	  const pluginInstance = $uiRouter.plugin(Visualizer);
+	  
+	  $trace.enable('TRANSITION');*/
 
 	  // Global Functions
 	  $rootScope.dateConverter = function (time) {
@@ -63669,12 +63671,9 @@
 		$scope.show_panel = false;
 		$scope.defaultCommnt = '';
 		$scope.choose = {};
-		$scope.errorUpdateMsgShow = false;
-		$scope.successUpdateMsgShow = false;
 
 		$scope.searchClick = function (searchName) {
 			if (searchName) {
-				console.log(searchName);
 				$scope.disabled_search = true;
 				$scope.show_panel = false;
 				$scope.PanelLoad = 'Loading Panel...';
@@ -63684,14 +63683,12 @@
 				}).then(function (response) {
 					$scope.PanelLoad = '';
 					$scope.disabled_search = false;
-					console.log(response.data);
 					$scope.associates = response.data;
 					$scope.searchShowUp = true;
 				});
 			}
 			$scope.associatePanelClick = function (associate) {
 				$scope.choose = associate;
-				console.log(associate);
 				$scope.searchShowUp = false;
 				$scope.show_panel = true;
 				var associateId = associate.id;
@@ -63699,7 +63696,6 @@
 					method: 'GET',
 					url: '/panel/associate/' + associateId
 				}).then(function (response) {
-					console.log(response.data);
 					$scope.plist = response.data;
 					$scope.plist.sort(function (a, b) {
 						return a.id - b.id;
@@ -63707,15 +63703,18 @@
 				});
 
 				$scope.PanelClick = function (panel) {
+
 					$scope.statusOption = panel.status;
 					$scope.panelChoose = panel;
-					console.log("I got the panel ", $scope.panelChoose);
+
+					$scope.errorUpdateMsgShow = false;
+					$scope.successUpdateMsgShow = false;
+
+					$scope.updateComment = panel.comments;
 					$('#PanelCommentModal').modal('show');
 					$scope.updateInterviewClick = function (statusOption, updateComment) {
-						console.log(statusOption + " " + updateComment);
 						panel.comments = updateComment;
 						panel.status = statusOption;
-						console.log(panel);
 						$http({
 							method: 'PUT',
 							url: '/panel',
@@ -63723,6 +63722,8 @@
 						}).then(function (response) {
 							$scope.successUpdateMsgShow = true;
 							$scope.associatePanelClick(associate);
+						}, function (response) {
+							$scope.errorUpdateMsgShow = true;
 						});
 					};
 				};

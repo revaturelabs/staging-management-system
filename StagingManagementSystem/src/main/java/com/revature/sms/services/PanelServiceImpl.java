@@ -27,7 +27,7 @@ public class PanelServiceImpl implements PanelService
 	}
 
 	@Override
-	public Set<Panel> findByAssociateId(int id) {
+	public Set<Panel> findByAssociateId(long id) {
 		return pr.findByAssociateId(id);
 	}
 	
