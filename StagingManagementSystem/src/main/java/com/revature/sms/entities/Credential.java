@@ -24,11 +24,9 @@ public class Credential {
     @SequenceGenerator(name = "CREDENTIAL_ID_SEQ", sequenceName = "CREDENTIAL_ID_SEQ")
     private long id;
 
-    @JsonProperty(access = Access.WRITE_ONLY)
     @Column(name = "CREDENTIAL_USERNAME")
     private String username;
 
-    @JsonProperty(access = Access.WRITE_ONLY)
     @Column(name = "CREDENTIAL_PASSWORD")
     private String password;
 
