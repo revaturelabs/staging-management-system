@@ -15,8 +15,15 @@ function profileCtrl($scope, $http, userService, $stateParams, $state, $window) 
   $http({
     method: 'GET',
     url: associateUrl,
-  }).then((response) => {
-    $scope.associate = { ...response.data };
+  }).then((response1) => {
+    $scope.associate = { ...response1.data };
+    $http({
+        method: 'GET',
+        url: '/credential/'+$scope.associate.id,
+      }).then((response2) => {
+        $scope.credential = { ...response2.data };
+        
+      });
   });
 
   $scope.portfolioUrlInput = '';
@@ -43,6 +50,13 @@ function profileCtrl($scope, $http, userService, $stateParams, $state, $window) 
     $scope.additionalSkillsValues = [...$scope.associate.skills];
     $scope.newSkillValue = '';
     $('#additionalSkillsModal').modal('show');
+  };
+  
+  $scope.showChangePassword = function(){
+	  $scope.sendingRequest = false;
+	  $scope.changePasswordButton= 'Save';
+	  $scope.newPassword = $scope.credential.password;
+	  $('#changePassword').modal('show');
   };
 
   $scope.openPortfolioUrlModal = () => {
@@ -106,6 +120,22 @@ function profileCtrl($scope, $http, userService, $stateParams, $state, $window) 
     });
   };
 
+  $scope.changePassword = function(){
+	  $scope.credential.password = $scope.newPassword;
+	  $scope.credential.id = $scope.associate.id;
+	  $scope.sendingRequest = true;
+	    $scope.changePasswordButton = 'Saving...';
+	    $http({
+	      method: 'PUT',
+	      url: '/credential/',
+	      data: $scope.credential,
+	    }).then(() => {
+	      $('#changePassword').modal('hide');
+	    }, () => {
+	      $('#changePassword').modal('hide');
+	    });
+  };
+  
   $scope.updateLockedTo = () => {
     $scope.sendingRequest = true;
     $scope.mappedModalButtonValue = 'Saving...';
