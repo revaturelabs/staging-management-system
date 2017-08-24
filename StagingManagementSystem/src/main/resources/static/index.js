@@ -63733,8 +63733,14 @@
 	  $http({
 	    method: 'GET',
 	    url: associateUrl
-	  }).then(function (response) {
-	    $scope.associate = _extends({}, response.data);
+	  }).then(function (response1) {
+	    $scope.associate = _extends({}, response1.data);
+	    $http({
+	      method: 'GET',
+	      url: '/credential/' + $scope.associate.id
+	    }).then(function (response2) {
+	      $scope.credential = _extends({}, response2.data);
+	    });
 	  });
 
 	  $scope.portfolioUrlInput = '';
@@ -63763,6 +63769,13 @@
 	    $scope.additionalSkillsValues = [].concat(_toConsumableArray($scope.associate.skills));
 	    $scope.newSkillValue = '';
 	    $('#additionalSkillsModal').modal('show');
+	  };
+
+	  $scope.showChangePassword = function () {
+	    $scope.sendingRequest = false;
+	    $scope.changePasswordButton = 'Save';
+	    $scope.newPassword = $scope.credential.password;
+	    $('#changePassword').modal('show');
 	  };
 
 	  $scope.openPortfolioUrlModal = function () {
@@ -63824,6 +63837,22 @@
 	      $('#additionalSkillsModal').modal('hide');
 	    }, function () {
 	      $('#additionalSkillsModal').modal('hide');
+	    });
+	  };
+
+	  $scope.changePassword = function () {
+	    $scope.credential.password = $scope.newPassword;
+	    $scope.credential.id = $scope.associate.id;
+	    $scope.sendingRequest = true;
+	    $scope.changePasswordButton = 'Saving...';
+	    $http({
+	      method: 'PUT',
+	      url: '/credential/',
+	      data: $scope.credential
+	    }).then(function () {
+	      $('#changePassword').modal('hide');
+	    }, function () {
+	      $('#changePassword').modal('hide');
 	    });
 	  };
 
