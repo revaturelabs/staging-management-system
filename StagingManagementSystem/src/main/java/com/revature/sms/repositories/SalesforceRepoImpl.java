@@ -1,6 +1,7 @@
 package com.revature.sms.repositories;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.util.LinkedList;
 import java.util.List;
@@ -152,7 +153,9 @@ public class SalesforceRepoImpl implements SalesforceRepo {
 		List<Associate> trainees = new LinkedList<>();
 		
 		try {
-			SalesforceTraineeResponse response = new ObjectMapper().readValue(getFromSalesforce(query, user).getEntity().getContent(), SalesforceTraineeResponse.class);
+			InputStream is = getFromSalesforce(query,user).getEntity().getContent();
+			log.trace(is);
+			SalesforceTraineeResponse response = new ObjectMapper().readValue(is, SalesforceTraineeResponse.class);
 			log.info("Checking for benched trainees.");
 			log.info(response);
 			for(SalesforceTrainee trainee : response.getRecords()){
