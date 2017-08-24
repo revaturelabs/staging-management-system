@@ -110,6 +110,31 @@ public class SalesforceTransformerToSMS implements SalesforceTransformer {
 		}
 		return associate;
 	}
+	
+	@Override
+	public Associate transformBenchTrainee(SalesforceTrainee salesforceTrainee, SalesforceUser user) {
+		salesforceTrainee.setTrainingStatus("Bench");
+		Associate associate = aRepo.getBySalesforceId(salesforceTrainee.getId());
+		if (associate == null) {
+			associate = new Associate();
+			associate.setSalesforceId(salesforceTrainee.getId());
+			Credential cred = new Credential();
+			cred.setUsername(salesforceTrainee.getEmail());
+			cred.setPassword("password");
+			cRepo.save(cred);
+			associate.setCredential(cred);
+		}
+		associate.setName(salesforceTrainee.getName());
+		associate.setAssociateStatus(statusHelper(associate, salesforceTrainee.getTrainingStatus()));
+		associate.setBatch(bRepo.getBySalesforceId(salesforceTrainee.getBatchId()));
+		if(associate.getBatch()==null)
+		{
+			Batch b = sRepo.getBatch(salesforceTrainee.getBatchId(), user);
+			bRepo.save(b);
+			associate.setBatch(b);
+		}
+		return associate;
+	}
 
 	private AssociatesStatus statusHelper(Associate associate, String trainingStatus) {
 		// Retrieve new status from database
