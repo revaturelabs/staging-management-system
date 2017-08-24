@@ -1,3 +1,19 @@
-.certification-table{
+table{
+	margin-top:10px;
+}
+.table > th{
 	background-color:#FF8000;
+}
+
+.modal-title{
+	background-color:#FF8000;
+	height:60px;
+	text-align:center;
+	padding:12px;
+}
+#err{
+	color:red;
+	opacity:0.8;
+	margin-top:4px;
+	text-align:center;
 }
