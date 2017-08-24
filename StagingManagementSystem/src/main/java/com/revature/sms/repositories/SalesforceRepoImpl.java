@@ -153,6 +153,7 @@ public class SalesforceRepoImpl implements SalesforceRepo {
 		
 		try {
 			SalesforceTraineeResponse response = new ObjectMapper().readValue(getFromSalesforce(query, user).getEntity().getContent(), SalesforceTraineeResponse.class);
+			log.info("Checking for benched trainees.");
 			log.info(response);
 			for(SalesforceTrainee trainee : response.getRecords()){
 				trainees.add(transformer.transformTrainee(trainee, user));
