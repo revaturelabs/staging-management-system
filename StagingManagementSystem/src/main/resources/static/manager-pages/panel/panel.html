@@ -18,7 +18,7 @@
 
 
 		
-		<button type="button" ng-show ="plist[plist.length-1].status =='FAIL' || plist.length == 0 "  ng-click="showAddModal()" class="btn btn-primary">Add Panel</button>
+		<button type="button" ng-show ="plist[plist.length-1].status =='FAIL' || (choose.length != 0 && plist.length == 0)"  ng-click="showAddModal()" class="btn btn-primary">Add Panel</button>
 			<table ng-show="show_panel" class="table table-striped manager-advanced-associates-table selectable-table">
 				<thead>
 					<tr>

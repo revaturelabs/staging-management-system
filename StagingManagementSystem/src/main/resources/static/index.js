@@ -189,8 +189,10 @@
 	  $uiRouter.stateRegistry.get().map(s => s.$$state())
 	      .filter(s => s.path.length === 2 || s.path.length === 3)
 	      .forEach(s => s._collapsed = false);
-	     const pluginInstance = $uiRouter.plugin(Visualizer);
-	     $trace.enable('TRANSITION');*/
+	  
+	  const pluginInstance = $uiRouter.plugin(Visualizer);
+	  
+	  $trace.enable('TRANSITION');*/
 
 	  // Global Functions
 	  $rootScope.dateConverter = function (time) {
@@ -63653,9 +63655,11 @@
 		$scope.show_panel = false;
 		$scope.defaultCommnt = '';
 		$scope.choose = {};
+		$scope.plist = {};
 
 		$scope.searchClick = function (searchName) {
 			$scope.choose = {};
+			$scope.plist = {};
 			if (searchName) {
 				$scope.disabled_search = true;
 				$scope.show_panel = false;
@@ -63668,7 +63672,6 @@
 					$scope.disabled_search = false;
 					$scope.associates = response.data;
 					$scope.searchShowUp = true;
-					location.reload();
 				});
 			}
 
