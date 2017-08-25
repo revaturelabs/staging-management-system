@@ -193,8 +193,10 @@
 	  $uiRouter.stateRegistry.get().map(s => s.$$state())
 	      .filter(s => s.path.length === 2 || s.path.length === 3)
 	      .forEach(s => s._collapsed = false);
-	     const pluginInstance = $uiRouter.plugin(Visualizer);
-	     $trace.enable('TRANSITION');*/
+	  
+	  const pluginInstance = $uiRouter.plugin(Visualizer);
+	  
+	  $trace.enable('TRANSITION');*/
 
 	  // Global Functions
 	  $rootScope.dateConverter = function (time) {
@@ -324,10 +326,16 @@
 	    url: '/profile',
 	    templateUrl: 'associate-pages/profile/profile.html',
 	    controller: _profile2.default
+<<<<<<< HEAD
 
 	  }).state('associate.certifications', {
 	    url: '/certifications',
 	    templateUrl: 'associate-pages/Certifications/certifications.html',
+=======
+	  }).state('associate.certifications', {
+	    url: '/certifications',
+	    templateUrl: 'Certifications/certifications.html',
+>>>>>>> 4ab712d560a1f97deacbdebae040e3a950d9c359
 	    controller: _certifications2.default
 	  });
 	});
@@ -64164,6 +64172,7 @@
 		value: true
 	});
 	var certificationCtrl = function certificationCtrl($scope, $http, $state, $stateParams, $filter, $timeout) {
+<<<<<<< HEAD
 		$scope.CERTIFICATIONS = {};
 
 		$scope.ApplyCert = function () {
@@ -64194,6 +64203,24 @@
 		//		};
 		//		
 
+=======
+
+		$scope.ApplyCert = function () {
+			$scope.selectedDate = undefined;
+			$('#datetimepicker1').val('');
+
+			$http({
+				method: 'GET',
+				url: '/certifications/all'
+			}).then(function (response) {
+				console.log(response);
+				$scope.CERTIFICATIONS = response.data;
+			});
+
+			$('#getCert').modal('show');
+		};
+
+>>>>>>> 4ab712d560a1f97deacbdebae040e3a950d9c359
 		$('#datetimepicker1').datetimepicker();
 		$scope.showDateTimePicker = function () {
 			$('#datetimepicker1').datetimepicker('show');
@@ -64211,9 +64238,20 @@
 			console.log($scope.changeDiff);
 			if ($scope.changeDiff > 14) {
 				//post data to database
+<<<<<<< HEAD
 				console.log($scope.today);
 				console.log($scope.selectedDate);
 				$scope.successMessage = "You are now scheduled to take a certification";
+=======
+				$scope.successMessage = "You are now scheduled to take a certification";
+				$http({
+					method: 'POST',
+					url: '/certifications/add/cetification',
+					data: { certifications: $scope.certification, date: $scope.selectedDate.value }
+				}).then(function (response) {
+					$scope.certifications = response.data;
+				});
+>>>>>>> 4ab712d560a1f97deacbdebae040e3a950d9c359
 			} else {
 				$scope.errorMessage = 'Date must be 2 weeks after today';
 				console.log($scope.today);
