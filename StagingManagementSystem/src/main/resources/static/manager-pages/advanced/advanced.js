@@ -10,6 +10,17 @@ function managerAdvancedCtrl($scope, $http, $state) {
       });
     });
 
+    $http.get('status/allStatusType')
+        .then((data) => {
+            $scope.statusTypes = data.data;
+            $scope.selectedStatusTypes = [];
+            $scope.statusTypes.forEach((type) => {
+                $scope.selectedStatusTypes.push(type);
+            });
+        });
+
+
+
   $http.get('associate/all')
     .then((data) => {
       $scope.associates = data.data;
@@ -21,7 +32,7 @@ function managerAdvancedCtrl($scope, $http, $state) {
       $scope.batches = data.data;
     }, (data) => {
     });
-    
+
     // fetching all project data
    $http.get('project/all')
     .then((data) => {
@@ -82,6 +93,19 @@ function managerAdvancedCtrl($scope, $http, $state) {
       $scope.selectedBatchTypes.push(selectedBatch);
     }
   };
+
+    $scope.toggleSelectedStatusTypes = (selectedStatus) => {
+        let idx = $scope.selectedStatusTypes.indexOf(selectedStatus);
+
+        // Is currently selected
+        if (idx > -1) {
+            $scope.selectedStatusTypes.splice(idx, 1);
+        } else {
+            $scope.selectedStatusTypes.push(selectedStatus);
+        }
+    };
+
+
 
   $scope.associateBatchFilter = (associate) => {
     if (!associate.batch) {

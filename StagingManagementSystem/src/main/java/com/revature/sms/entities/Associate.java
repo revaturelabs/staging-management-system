@@ -151,7 +151,11 @@ public class Associate {
 	 * This function returns true if the associate is in Staging and is available for hire
 	 */
 	public boolean isActive() {
-		return (("STAGING").equals(associateStatus.getStatus()) || ("BENCH").equals(associateStatus.getStatus()));
+
+		//return (("STAGING").equals(associateStatus.getStatus()) || ("BENCH").equals(associateStatus.getStatus()));
+		if(associateStatus.getStatus() == null)
+			System.out.println("ERROR NULL");
+		return (associateStatus.getStatus().equals("STAGING") || associateStatus.getStatus().equals("BENCH"));
 	}
 	
 	public void setStatus() {
