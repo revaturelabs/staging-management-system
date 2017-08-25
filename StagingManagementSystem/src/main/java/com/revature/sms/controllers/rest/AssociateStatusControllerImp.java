@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,24 +38,35 @@ public class AssociateStatusControllerImp {
 	
 	@GetMapping("/allStaging")
 	public ResponseEntity<Set<Associate>> getAllInStaging(HttpSession session) {
+		if (session.getAttribute(LM) == null) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+		}
 		return ResponseEntity.ok(associateService.getAllByStatus("STAGING"));
 	}
 	
 	@GetMapping("/allProject")
 	public ResponseEntity<Set<Associate>> getAllInProject(HttpSession session) {
+		if (session.getAttribute(LM) == null) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+		}
 		return ResponseEntity.ok(associateService.getAllByStatus("PROJECT"));
 	}
 	
 	@GetMapping("/allBench")
 	public ResponseEntity<Set<Associate>> getAllInBench(HttpSession session) {
+		if (session.getAttribute(LM) == null) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+		}
 		return ResponseEntity.ok(associateService.getAllByStatus("BENCH"));
 	}
 	
 	@PostMapping("/statusUpdate")
 	public ResponseEntity<Associate> updateStatus(@RequestBody Associate associate, HttpSession session) {
+		if (session.getAttribute(LM) == null) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+		}
 		associatesStatusService.updateStatus(associate.getAssociateStatus());
 		return ResponseEntity.ok(associate);
 	}
-	
 
 }

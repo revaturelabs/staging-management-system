@@ -344,9 +344,10 @@ public class Associate {
 
 	@Override
 	public String toString() {
-		return "Associate [id=" + id + ", credential=" + credential + ", name=" + name + ", portfolioLink="
-				+ portfolioLink + ", batch=" + batch + ", project=" + project + ", lockedTo=" + lockedTo
-				+ ", associateStatus=" + associateStatus + ", skills=" + skills + ", jobs=" + jobs + "]";
-		}
+		return "Associate [id=" + id + ", salesforceId=" + salesforceId + ", credential=" + credential + ", name="
+				+ name + ", portfolioLink=" + portfolioLink + ", batch=" + batch + ", project=" + project
+				+ ", lockedTo=" + lockedTo + ", associateStatus=" + associateStatus + ", skills=" + skills + ", jobs="
+				+ jobs + "]";
+	}
 	
 }
