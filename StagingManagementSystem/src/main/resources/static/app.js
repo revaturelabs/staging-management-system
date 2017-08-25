@@ -25,11 +25,7 @@ import associateInterviewCtrl from './associate-pages/interview/interview';
 import associatePanelCtrl from './associate-pages/associatePanel/associatePanel';
 import associateCtrl from './associate-pages/associate';
 import loginCtrl from './login/login';
-<<<<<<< HEAD
 import certificationCtrl from './associate-pages/Certifications/certifications';
-=======
-import certificationCtrl from './Certifications/certifications';
->>>>>>> 4ab712d560a1f97deacbdebae040e3a950d9c359
 
 require('fusioncharts/fusioncharts.charts')(FusionCharts);
 
@@ -237,7 +233,6 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       url: '/profile',
       templateUrl: 'associate-pages/profile/profile.html',
       controller: profileCtrl,
-<<<<<<< HEAD
 
     })
      .state('associate.certifications',{
@@ -245,12 +240,4 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
     	templateUrl:'associate-pages/Certifications/certifications.html',
     	controller: certificationCtrl,
      });
-=======
-    })
-    .state('associate.certifications',{
-        url:'/certifications',
-        templateUrl:'Certifications/certifications.html',
-        controller: certificationCtrl,
-        });
->>>>>>> 4ab712d560a1f97deacbdebae040e3a950d9c359
 });
