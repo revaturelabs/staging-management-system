@@ -63276,7 +63276,11 @@
 	    $scope.newBatchTypeShow = true;
 	    $scope.newBatchType = {};
 	    $scope.newBatchType.skills = [];
-
+	    if ($scope.batch.batchType !== undefined) {
+	      $scope.newBatchType.value = $scope.batch.batchType.value;
+	      $scope.newBatchType.skills = $scope.batch.batchType.skills;
+	      $scope.newBatchType.id = $scope.batch.batchType.id;
+	    }
 	    $scope.addSkill = function (newBatchTypeSkill) {
 	      if (!newBatchTypeSkill) {
 	        return;
@@ -63793,7 +63797,7 @@
 	    $scope.associate = _extends({}, response1.data);
 	    $http({
 	      method: 'GET',
-	      url: '/credential/' + $scope.associate.id
+	      url: '/credential/' + $scope.associate.credential.id
 	    }).then(function (response2) {
 	      $scope.credential = _extends({}, response2.data);
 	    });
@@ -63897,9 +63901,8 @@
 
 	  $scope.changePassword = function () {
 	    $scope.credential.password = $scope.newPassword;
-	    $scope.credential.id = $scope.associate.id;
 	    $scope.sendingRequest = true;
-	    if ($scope.checkOldPassword() && $scope.checkNewPassword()) {
+	    if ($scope.newPassword != null && $scope.checkNewPassword()) {
 	      $scope.changePasswordButton = 'Saving...';
 	      $http({
 	        method: 'PUT',
@@ -63907,13 +63910,11 @@
 	        data: $scope.credential
 	      }).then(function () {
 	        $('#changePassword').modal('hide');
-	        $scope.currentPassword = "";
 	        $scope.newPassword = "";
 	        $scope.confirmPassword = "";
 	        $scope.createMessage = "";
 	      }, function () {
 	        $('#changePassword').modal('hide');
-	        $scope.currentPassword = "";
 	        $scope.newPassword = "";
 	        $scope.confirmPassword = "";
 	        $scope.createMessage = "";
@@ -63922,10 +63923,6 @@
 	      $scope.createMessage = 'Password information incorrect!';
 	      $scope.createMessageStyle = { color: 'red' };
 	    }
-	  };
-
-	  $scope.checkOldPassword = function () {
-	    if ($scope.currentPassword == $scope.associate.credential.password) return true;else return false;
 	  };
 
 	  $scope.checkNewPassword = function () {
