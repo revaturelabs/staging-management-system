@@ -6,7 +6,7 @@
 			<thead>
 					<tr>
 						<th scope="col">Associate <input ng-disabled="disabled_search" ng-model="searchName" type="text" placeholder="Name" />
-						<button ng-click="searchClick(searchName)">Search</button> {{choose.name}}</th>
+						<button ng-click="searchClick(searchName)">Search</button></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -16,10 +16,10 @@
 				</tbody>
 			</table>
 
-
+			<div id="associateName">{{choose.name}}</div>
 		
-		<button type="button" ng-show ="plist[plist.length-1].status =='FAIL' || (choose.length != 0 && plist.length == 0)"  ng-click="showAddModal()" class="btn btn-primary">Add Panel</button>
-			<table ng-show="show_panel" class="table table-striped manager-advanced-associates-table selectable-table">
+			<button id ="panel-margin" type="button" ng-show ="(plist[plist.length-1].status =='FAIL'||plist[plist.length-1].status =='PASS')  || (choose.length != 0 && plist.length == 0)"  ng-click="showAddModal()" class="btn btn-primary">Add Panel</button>
+			<table ng-show="show_panel" class="table table-striped manager-associates-panel-table selectable-table">
 				<thead>
 					<tr>
 						<th class="assPanel-th" scope="col">Panel ID</th>
