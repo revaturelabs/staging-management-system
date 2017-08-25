@@ -52,14 +52,14 @@ public class CheckinControllerImpl {
 
 	}
 
-/*	@GetMapping("/allTodays")
+	@GetMapping("/allTodays")
 	public ResponseEntity<Set<Checkin>> getTodaysCheckins(HttpSession session) {
-		Manager manager = (Manager) session.getAttribute(LM);
+		SalesforceUser manager = (SalesforceUser) session.getAttribute(LM);
 		if (manager == null) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 		}
 		return ResponseEntity.ok(checkinService.getTodaysCheckins());
-	}*/
+	}
 
 	@PutMapping
 	public ResponseEntity<Boolean> checkIn(HttpSession session) {
@@ -83,33 +83,32 @@ public class CheckinControllerImpl {
 	 * @param session
 	 * @param checkin
 	 * @return
-	 *//*
+	 */
 	@PostMapping //TODO: Fix checkin, then this can be used
 	public ResponseEntity<Boolean> managerModification(HttpSession session, @RequestBody Checkin checkin) {
-		Manager manager = (Manager) session.getAttribute(LM);
+		SalesforceUser manager = (SalesforceUser) session.getAttribute(LM);
 		if (manager == null) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(false);
 		}
 		if (checkin == null)
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
-		checkinService.approveCheckin(manager, checkin);
+		checkinService.approveCheckin(checkin);
 		return ResponseEntity.ok(true);
-	}*/
+	}
 
-	//TODO: Replace with salesforce project approval?
-/*	@PatchMapping("approve-multiple")
+	@PatchMapping("approve-multiple")
 	public ResponseEntity<Boolean> approveMultiple(HttpSession session, @RequestBody Set<Checkin> checkins) {
-		Manager manager = (Manager) session.getAttribute(LM);
+		SalesforceUser manager = (SalesforceUser) session.getAttribute(LM);
 		if (manager == null) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(false);
 		}
 		if (checkins == null)
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
 
-		checkinService.approveMultiple(checkins, manager);
+		checkinService.approveMultiple(checkins);
 		return ResponseEntity.ok(true);
 	}
-*/
+
 	@GetMapping(path = "checkin/{username}")
 	public ResponseEntity<Set<Checkin>> getCheckins(@PathVariable String username, HttpSession session) {
 		Associate associate = (Associate) session.getAttribute(LA);

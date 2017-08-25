@@ -66,3 +66,18 @@ body{
 	position: relative;
     text-align: right;
 }
+
+#bootstrap-override .btn-primary.disabled, .btn-primary[disabled], fieldset[disabled] .btn-primary, .btn-primary.disabled:hover, .btn-primary[disabled]:hover, fieldset[disabled] .btn-primary:hover, .btn-primary.disabled:focus, .btn-primary[disabled]:focus, fieldset[disabled] .btn-primary:focus, .btn-primary.disabled:active, .btn-primary[disabled]:active, fieldset[disabled] .btn-primary:active, .btn-primary.disabled.active, .btn-primary[disabled].active, fieldset[disabled] .btn-primary.active {
+    background-color: #f18e5d;
+    border-color: #FF8000;
+}
+
+#bootstrap-override .btn-primary {
+    background-color: #FF8000;
+    border-color: #FF8000;
+}
+
+#bootstrap-override .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open>.dropdown-toggle.btn-primary {
+    background-color: #ce7112;
+    border-color: #FF8000;
+}

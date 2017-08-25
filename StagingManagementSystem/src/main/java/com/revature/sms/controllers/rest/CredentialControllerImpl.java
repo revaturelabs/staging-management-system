@@ -59,8 +59,9 @@ public class CredentialControllerImpl {
      */
     @PutMapping
     public void updatecredential(@RequestBody Credential credential) {
-
-        credentialService.update(credential);
+    	Credential old = credentialService.findById(credential.getId());
+    	old.setPassword(credential.getPassword());
+        credentialService.update(old);
     }
 
     /**

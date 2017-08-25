@@ -13,6 +13,7 @@
 		</div>
 		<div class="navbar-collapse collapse navbar-right">
 			<ul class="nav navbar-nav">
+				<li ng-click="updateFromSMS()"><a ui-sref="">Update from SMS</a></li>
 				<li ng-class="{ active: isActive('/manager/home')}"><a ui-sref="manager.home">Home</a></li>
 				<li ng-class="{ active: isActive('/stats')}"><a ui-sref="manager.advanced">Advanced</a></li>
 				<li ng-class="{ active: isActive('/manager/create') || isActive('/manager/create/batch')
