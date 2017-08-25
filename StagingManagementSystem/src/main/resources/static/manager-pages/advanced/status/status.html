@@ -1,0 +1,50 @@
+<div>
+    <table class="table table-striped manager-advanced-associates-table selectable-table">
+        <thead>
+        <tr>
+
+            <div class="table-header-buttons">
+                <div>Select Status Types and Portfolio Types</div>
+                <div class="manager-advanced-row">
+                    <div ng-repeat="batchtype in batchtypes">
+                        <input
+                                type="checkbox"
+                                value="{{batchtype}}"
+                                ng-checked="selectedBatchTypes.indexOf(batchtype) > -1"
+                                ng-click="toggleSelectedBatchTypes(batchtype)"
+                        > {{batchtype.value}}
+                    </div>
+                </div>
+            </div>
+
+            <th scope="col">Associate</th>
+            <th scope="col">Status</th>
+            <th scope="col">Portfolio-Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- ng repeat for the project in projects -->
+        <tr ng-repeat="associate in associates" ui-sref="manager.advanced.status.edit({id: associates.id})" data-toggle="modal" data-target="#statusModal">
+            <td ng-bind="associate.name"></td>
+            <td ng-bind="associate.associateStatus.status"></td>
+            <td ng-bind="associate.portfolioStatus.portfolioStatus"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal -->
+<div id="statusModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div ui-view></div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+
+</div>
+</div>
