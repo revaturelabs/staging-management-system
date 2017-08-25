@@ -134,9 +134,13 @@
 
 	var _login2 = _interopRequireDefault(_login);
 
+	var _certifications = __webpack_require__(147);
+
+	var _certifications2 = _interopRequireDefault(_certifications);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	__webpack_require__(147)(_fusioncharts2.default);
+	__webpack_require__(148)(_fusioncharts2.default);
 
 	// const Visualizer = window['ui-router-visualizer'].Visualizer;
 
@@ -321,6 +325,10 @@
 	    templateUrl: 'associate-pages/profile/profile.html',
 	    controller: _profile2.default
 
+	  }).state('associate.certifications', {
+	    url: '/certifications',
+	    templateUrl: 'associate-pages/Certifications/certifications.html',
+	    controller: _certifications2.default
 	  });
 	});
 
@@ -64148,6 +64156,79 @@
 
 /***/ }),
 /* 147 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	var certificationCtrl = function certificationCtrl($scope, $http, $state, $stateParams, $filter, $timeout) {
+		$scope.CERTIFICATIONS = {};
+
+		$scope.ApplyCert = function () {
+			$('#datetimepicker1').val('');
+
+			$('#getCert').modal('show');
+		};
+
+		/*	$http ({
+	 		method: 'GET',
+	 		url: '/certifications/all',
+	 	})
+	 	.then((response) => {
+	 		
+	 		$scope.CERTIFICATIONS = response.data;
+	 		console.log($scope.CERTIFICATIONS);
+	 	});*/
+
+		//		$scope.findCert = function(){
+		//			$http({
+		//				method:'GET',
+		//				url:'/certifications/all',
+		//			})
+		//			.then (function(response){
+		//				$scope.certifications=response.data;
+		//				console.log($scope.certifications);
+		//			});
+		//		};
+		//		
+
+		$('#datetimepicker1').datetimepicker();
+		$scope.showDateTimePicker = function () {
+			$('#datetimepicker1').datetimepicker('show');
+		};
+
+		$scope.updateCert = function () {
+			$scope.selectedDate = $('#datetimepicker1').val();
+			$scope.today = $filter('date')(new Date(), 'MM/dd/yyyy');
+			//let newDate = moment($scope.selectedDate).toDate();
+
+			var MS_PER_DAY = 1000 * 60 * 60 * 24;
+			$scope.dayOne = new Date($scope.selectedDate).getTime();
+			$scope.dayTwo = new Date($scope.today).getTime();
+			$scope.changeDiff = Math.floor(($scope.dayOne - $scope.dayTwo) / MS_PER_DAY);
+			console.log($scope.changeDiff);
+			if ($scope.changeDiff > 14) {
+				//post data to database
+				console.log($scope.today);
+				console.log($scope.selectedDate);
+				$scope.successMessage = "You are now scheduled to take a certification";
+			} else {
+				$scope.errorMessage = 'Date must be 2 weeks after today';
+				console.log($scope.today);
+				console.log($scope.selectedDate);
+				$timeout(function () {
+					$scope.errorMessage = false;
+				}, 2000);
+			}
+		};
+	};
+
+	exports.default = certificationCtrl;
+
+/***/ }),
+/* 148 */
 /***/ (function(module, exports) {
 
 	/*

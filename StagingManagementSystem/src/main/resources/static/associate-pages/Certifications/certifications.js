@@ -1,22 +1,33 @@
 const certificationCtrl= function($scope,$http,$state, $stateParams,$filter,$timeout){
-
+	$scope.CERTIFICATIONS ={};
+	
 		$scope.ApplyCert = function() {
-		    $scope.selectedDate = undefined;
-		    $('#datetimepicker1').val('');
-		    
-			$http ({
-				method: 'GET',
-				url: 'certifications/all',
-			})
-			.then((response) => {
-				
-				$scope.certification = response.data;
-				console.log($scope.certification);
-			});
+		    $('#datetimepicker1').val('');	    
 			
 			$('#getCert').modal('show');
 		};
 		
+	/*	$http ({
+			method: 'GET',
+			url: '/certifications/all',
+		})
+		.then((response) => {
+			
+			$scope.CERTIFICATIONS = response.data;
+			console.log($scope.CERTIFICATIONS);
+		});*/
+		
+//		$scope.findCert = function(){
+//			$http({
+//				method:'GET',
+//				url:'/certifications/all',
+//			})
+//			.then (function(response){
+//				$scope.certifications=response.data;
+//				console.log($scope.certifications);
+//			});
+//		};
+//		
 
 		 $('#datetimepicker1').datetimepicker();
 		  $scope.showDateTimePicker = () => {
