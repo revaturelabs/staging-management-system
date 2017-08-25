@@ -38,7 +38,7 @@ public class Certifications {
 //         private Manager manager_id;
          @ManyToOne(fetch= FetchType.LAZY)
          @JoinColumn(name = "ASSOCIATE_ID")
-         @JsonProperty(access = Access.WRITE_ONLY)
+       //  @JsonProperty(access = Access.WRITE_ONLY)
          private Associate associate;
          
          public Certifications() {

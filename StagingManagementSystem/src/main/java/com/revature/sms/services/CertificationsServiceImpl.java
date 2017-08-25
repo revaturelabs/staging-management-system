@@ -1,6 +1,7 @@
 package com.revature.sms.services;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +41,17 @@ public class CertificationsServiceImpl implements CertificationsService {
 
 	@Override
 
-	public Set<Certifications> findByAssociate(Associate associate) {
-		return certRepo.getByAssociate_Id(associate);
+	public Set<Certifications> findByAssociate(Long id) {
+		return certRepo.getByAssociate_Id(id);
 	}
+
+	
+/*	@Override
+	public List<Certifications> getAllCert_type() {
+		List<Certifications> certs = certRepo.getByCert_type();
+		return certs;
+	
+		
+	}*/
 
 }

@@ -1,5 +1,6 @@
 package com.revature.sms.controllers.rest;
 
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,11 @@ public class CertificationsControllerImpl {
 	@Autowired
 	private CertificationsService certService;
 	
+	public CertificationsControllerImpl(CertificationsService certService) {
+		super();
+		this.certService = certService;
+	}
+
 	//get a list of all certifications 
 	@GetMapping("/all")
 	public Set<Certifications> getAllcert(){
@@ -30,6 +36,10 @@ public class CertificationsControllerImpl {
 		
 	}
 	
+/*	@GetMapping("/all")
+	public List<Certifications> getAllCertType(){
+		return certService.getAllCert_type();
+	}*/
 	//get a certification by ID
 	@GetMapping("/{id}")
 	public Certifications getCert(@PathVariable long cert_id){
@@ -44,7 +54,7 @@ public class CertificationsControllerImpl {
 
 	//get associate by id who has a certifications
 	@GetMapping("/associate")
-	public Set<Certifications> findByAssociate(@PathVariable Associate associate) {
-		return certService.findByAssociate(associate);
+	public Set<Certifications> findByAssociate(@PathVariable Long id) {
+		return certService.findByAssociate(id);
 	}
 }
