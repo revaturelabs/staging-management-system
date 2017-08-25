@@ -63818,7 +63818,6 @@
 	  $scope.showChangePassword = function () {
 	    $scope.sendingRequest = false;
 	    $scope.changePasswordButton = 'Save';
-	    $scope.newPassword = $scope.credential.password;
 	    $('#changePassword').modal('show');
 	  };
 
@@ -63888,16 +63887,37 @@
 	    $scope.credential.password = $scope.newPassword;
 	    $scope.credential.id = $scope.associate.id;
 	    $scope.sendingRequest = true;
-	    $scope.changePasswordButton = 'Saving...';
-	    $http({
-	      method: 'PUT',
-	      url: '/credential/',
-	      data: $scope.credential
-	    }).then(function () {
-	      $('#changePassword').modal('hide');
-	    }, function () {
-	      $('#changePassword').modal('hide');
-	    });
+	    if ($scope.checkOldPassword() && $scope.checkNewPassword()) {
+	      $scope.changePasswordButton = 'Saving...';
+	      $http({
+	        method: 'PUT',
+	        url: '/credential/',
+	        data: $scope.credential
+	      }).then(function () {
+	        $('#changePassword').modal('hide');
+	        $scope.currentPassword = "";
+	        $scope.newPassword = "";
+	        $scope.confirmPassword = "";
+	        $scope.createMessage = "";
+	      }, function () {
+	        $('#changePassword').modal('hide');
+	        $scope.currentPassword = "";
+	        $scope.newPassword = "";
+	        $scope.confirmPassword = "";
+	        $scope.createMessage = "";
+	      });
+	    } else {
+	      $scope.createMessage = 'Password information incorrect!';
+	      $scope.createMessageStyle = { color: 'red' };
+	    }
+	  };
+
+	  $scope.checkOldPassword = function () {
+	    if ($scope.currentPassword == $scope.associate.credential.password) return true;else return false;
+	  };
+
+	  $scope.checkNewPassword = function () {
+	    if ($scope.newPassword == $scope.confirmPassword) return true;else return false;
 	  };
 
 	  $scope.updateLockedTo = function () {
@@ -64208,7 +64228,12 @@
 	        url: '/login',
 	        data: { username: $scope.username, password: $scope.password }
 	      }).then(function (response) {
-	        userService.setUser(response.data); //NOTE: Anything to do with manager login is handled through salesforce login and handling. See manager.js
+	        userService.setUser(response.data);
+	        if (response.data.permission !== undefined) {
+	          $state.go('manager.home');
+	        } else {
+	          $state.go('associate.home');
+	        }
 	      }, function () {
 	        $scope.errorMsg = 'Username or Password is incorrect.';
 	        $scope.errorMsgShow = true;
