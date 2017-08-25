@@ -25,7 +25,6 @@ import com.revature.sms.entities.StaggingAssociate;
 import com.revature.sms.services.AssociateService;
 import com.revature.sms.services.TotalReport;
 import com.revature.sms.services.TotalReport.TotalData;
-import com.revature.sms.util.DataGeneration;
 
 @RestController
 @RequestMapping("associate")

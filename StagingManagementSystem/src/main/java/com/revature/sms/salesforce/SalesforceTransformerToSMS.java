@@ -83,7 +83,7 @@ public class SalesforceTransformerToSMS implements SalesforceTransformer {
 			trainer.setName(batchTrainer.getName());
 		}
 		trainer.setActive(true);
-		
+
 		return tRepo.save(trainer);
 	}
 
@@ -102,10 +102,33 @@ public class SalesforceTransformerToSMS implements SalesforceTransformer {
 		associate.setName(salesforceTrainee.getName());
 		associate.setAssociateStatus(statusHelper(associate, salesforceTrainee.getTrainingStatus()));
 		associate.setBatch(bRepo.getBySalesforceId(salesforceTrainee.getBatchId()));
-		if(associate.getBatch()==null)
-		{
+		if (associate.getBatch() == null) {
 			Batch b = sRepo.getBatch(salesforceTrainee.getBatchId(), user);
 			bRepo.save(b);
+			associate.setBatch(b);
+		}
+		return associate;
+	}
+
+	@Override
+	public Associate transformBenchTrainee(SalesforceTrainee salesforceTrainee, SalesforceUser user) {
+		Associate associate = aRepo.getBySalesforceId(salesforceTrainee.getId());
+		if (associate == null) {
+			associate = new Associate();
+			associate.setSalesforceId(salesforceTrainee.getId());
+			Credential cred = new Credential();
+			cred.setUsername(salesforceTrainee.getEmail());
+			cred.setPassword("password");
+			cRepo.save(cred);
+			associate.setCredential(cred);
+		}
+		associate.setName(salesforceTrainee.getName());
+		associate.setAssociateStatus(statusHelper(associate, salesforceTrainee.getTrainingStatus()));
+		associate.setBatch(bRepo.getBySalesforceId(salesforceTrainee.getBatchId()));
+		if (associate.getBatch() == null) {
+			Batch b = sRepo.getBatch(salesforceTrainee.getBatchId(), user);
+			if(b!=null)
+				bRepo.save(b);
 			associate.setBatch(b);
 		}
 		return associate;
@@ -127,27 +150,24 @@ public class SalesforceTransformerToSMS implements SalesforceTransformer {
 		case "Confirmed":
 			status = "PROJECT";
 			break;
-		case "Employed":
-			status = "PROJECT";
-			break;
 		case "Bench":
 			status = "BENCH";
+			break;
+		case "Employed":
+			status = "PROJECT";
 			break;
 		default:
 			status = "UNKNOWN";
 			break;
 		}
-		AssociatesStatus as = asRepo.getByStatus(status);
-		if (as == null) {
-			as = new AssociatesStatus();
-			as.setStatus(status);
-			as = asRepo.save(as);
-		}
+
 		// Check if there was an old status
 		AssociatesStatus currentStatus = associate.getAssociateStatus();
 		if (currentStatus != null) {
 			// We have to update a few things
-			if (status.equals("BENCH") && currentStatus.getStatus().equals("PROJECT")) {
+			if (status.equals("STAGING") && currentStatus.getStatus().equals("PROJECT")) {
+				// status should actually be BENCH
+				status = "BENCH";
 				// set portfolio status to false
 				// TODO associate.setPortfolioStatus(portfolioStatus);
 				// create a new panel
@@ -155,6 +175,13 @@ public class SalesforceTransformerToSMS implements SalesforceTransformer {
 				panel.setAssociate(associate);
 				panel = pRepo.save(panel);
 			}
+		}
+		
+		AssociatesStatus as = asRepo.getByStatus(status);
+		if (as == null) {
+			as = new AssociatesStatus();
+			as.setStatus(status);
+			as = asRepo.save(as);
 		}
 		return as;
 	}
@@ -171,16 +198,18 @@ public class SalesforceTransformerToSMS implements SalesforceTransformer {
 	}
 
 	private Location locationHelper(String location) {
-		String[] pieces = location.split("\\|");
+
 		String name;
-		if(pieces.length>1)
-		{
-			name=pieces[0];
-		}
-		else
-		{
-			String[] pieces2 = location.split(",");
-			name=pieces2[0];
+		if (location != null) {
+			String[] pieces = location.split("\\|");
+			if (pieces.length > 1) {
+				name = pieces[0];
+			} else {
+				String[] pieces2 = location.split(",");
+				name = pieces2[0];
+			}
+		} else {
+			name = "Unknown";
 		}
 		Location l = lRepo.findByName(name);
 		if (l == null) {

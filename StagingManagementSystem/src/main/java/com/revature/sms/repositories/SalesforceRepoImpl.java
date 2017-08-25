@@ -1,6 +1,7 @@
 package com.revature.sms.repositories;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.util.LinkedList;
 import java.util.List;
@@ -13,8 +14,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,7 +32,7 @@ import com.revature.sms.security.models.SalesforceUser;
  * Most of this code adapted from Patrick Walsh's Caliber.
  */
 
-@Repository
+@Component
 public class SalesforceRepoImpl implements SalesforceRepo {
 	private Logger log = Logger.getRootLogger();
 	@Value("${sms.salesforce}")
@@ -77,7 +77,7 @@ public class SalesforceRepoImpl implements SalesforceRepo {
 			+ "Training_Batch__r.batch_end_date__c, " + "Training_Batch__r.batch_trainer__r.name, "
 			+ "rnm__Recruiter__r.name, account.name, " + "Training_Batch__r.Co_Trainer__r.name, "
 			+ "eintern_current_project_completion_pct__c , " + "Training_Batch__r.Skill_Type__c, "
-			+ "Training_Batch__r.Type__c from Contact " + "where training_status__c = 'Bench'")
+			+ "Training_Batch__r.Type__c from Contact " + "where training_status__c = 'Marketing'")
 	private String benchAssociates;
 	
 	@Value("select id, name, batch_start_date__c, batch_end_date__c, "
@@ -152,11 +152,13 @@ public class SalesforceRepoImpl implements SalesforceRepo {
 		List<Associate> trainees = new LinkedList<>();
 		
 		try {
-			SalesforceTraineeResponse response = new ObjectMapper().readValue(getFromSalesforce(query, user).getEntity().getContent(), SalesforceTraineeResponse.class);
+			InputStream is = getFromSalesforce(query,user).getEntity().getContent();
+			log.trace(is);
+			SalesforceTraineeResponse response = new ObjectMapper().readValue(is, SalesforceTraineeResponse.class);
 			log.info("Checking for benched trainees.");
 			log.info(response);
 			for(SalesforceTrainee trainee : response.getRecords()){
-				trainees.add(transformer.transformTrainee(trainee, user));
+				trainees.add(transformer.transformBenchTrainee(trainee, user));
 			}
 			
 		} catch (IOException e) {

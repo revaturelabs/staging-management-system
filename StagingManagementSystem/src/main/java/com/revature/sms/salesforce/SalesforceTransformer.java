@@ -12,4 +12,5 @@ public interface SalesforceTransformer {
 	public Batch transformBatch(SalesforceBatch salesforceBatch);
 	public Trainer transformTrainer(BatchTrainer batchTrainer);
 	public Associate transformTrainee(SalesforceTrainee salesforceTrainee, SalesforceUser user);
+	public Associate transformBenchTrainee(SalesforceTrainee trainee, SalesforceUser user);
 }
