@@ -6,12 +6,11 @@ const certificationCtrl= function($scope,$http,$state, $stateParams,$filter,$tim
 		    
 			$http ({
 				method: 'GET',
-				url: 'certifications/all',
+				url: '/certifications/all',
 			})
 			.then((response) => {
-				
-				$scope.certification = response.data;
-				console.log($scope.certification);
+				console.log(response);
+				$scope.CERTIFICATIONS = response.data;
 			});
 			
 			$('#getCert').modal('show');
@@ -24,6 +23,7 @@ const certificationCtrl= function($scope,$http,$state, $stateParams,$filter,$tim
 		  };
 		  
 			
+			    
 		  $scope.updateCert=function(){
 			  $scope.selectedDate = $('#datetimepicker1').val();
 			  $scope.today = $filter('date')(new Date(),'MM/dd/yyyy');
@@ -36,9 +36,15 @@ const certificationCtrl= function($scope,$http,$state, $stateParams,$filter,$tim
 			  console.log($scope.changeDiff);
 				if( $scope.changeDiff > 14){
 					//post data to database
-					console.log($scope.today);
-					console.log($scope.selectedDate);
 					 $scope.successMessage="You are now scheduled to take a certification";
+				      $http({
+				          method: 'POST',
+				          url: '/certifications/add/cetification',
+				          data: { certifications:$scope.certification, date: $scope.selectedDate.value},
+				        })
+				        .then((response) => {
+				        	$scope.certifications= response.data;
+				        });
 				}else{
 					$scope.errorMessage='Date must be 2 weeks after today';
 					console.log($scope.today);

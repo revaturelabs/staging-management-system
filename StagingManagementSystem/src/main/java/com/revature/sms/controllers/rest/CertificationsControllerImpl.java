@@ -25,6 +25,7 @@ public class CertificationsControllerImpl {
 	//get a list of all certifications 
 	@GetMapping("/all")
 	public Set<Certifications> getAllcert(){
+		System.out.println(certService.getAllCertifications());
 		return certService.getAllCertifications();
 		
 	}

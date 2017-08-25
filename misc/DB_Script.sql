@@ -1,20 +1,20 @@
-DROP USER sms CASCADE;
+DROP USER sms_kamal2 CASCADE;
 
-CREATE USER sms
+CREATE USER sms_kamal2
 IDENTIFIED BY swordfish
 DEFAULT TABLESPACE users
 TEMPORARY TABLESPACE temp;
 
-GRANT connect to sms;
-GRANT resource to sms;
-GRANT CREATE SESSION TO sms;
-GRANT CREATE TABLE TO sms;
-GRANT CREATE VIEW TO sms;
-GRANT CREATE MATERIALIZED VIEW TO sms;
-GRANT create session to sms;
-ALTER USER sms QUOTA 10m ON users;
+GRANT connect to sms_kamal2;
+GRANT resource to sms_kamal2;
+GRANT CREATE SESSION TO sms_kamal2;
+GRANT CREATE TABLE TO sms_kamal2;
+GRANT CREATE VIEW TO sms_kamal2;
+GRANT CREATE MATERIALIZED VIEW TO sms_kamal2;
+GRANT create session to sms_kamal2;
+ALTER USER sms_kamal2 QUOTA 10m ON users;
 
-conn sms/swordfish
+conn sms_kamal2/swordfish
 
 CREATE TABLE CREDENTIALS (
   CREDENTIAL_ID NUMBER PRIMARY KEY,
