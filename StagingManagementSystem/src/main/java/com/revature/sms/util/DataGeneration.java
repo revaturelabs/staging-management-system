@@ -273,13 +273,14 @@ public class DataGeneration {
 	 * @author jozse
 	 *
 	 */
+
 	class AssociateP extends Associate {
 		double clientProbabilityMultiplier;
 		int immuneSystemHealth;
 
 		AssociateP(Associate a) {
-			super(a.getId(),"", a.getCredential(), a.getName(), a.getPortfolioLink(), a.getBatch(), a.getProject(),
-					a.getLockedTo(), a.getAssociateStatus(), a.getSkills(), a.getJobs());
+			super(a.getId(),a.getSalesforceId(), a.getCredential(), a.getName(), a.getPortfolioLink(), a.getBatch(), a.getProject(),
+					a.getLockedTo(), a.getSkills(), a.getJobs(),a.getAssociateStatus(), a.getPortfolioStatus());
 
 			int qualityOfAssociate = rand.nextInt(100);
 
@@ -318,9 +319,9 @@ public class DataGeneration {
 		 */
 
 		Associate getAssocaite() {
-			//this.setStatus();
-			return new Associate(getId(), "", getCredential(), getName(), getPortfolioLink(), getBatch(), getProject(),
-					getLockedTo(), getAssociateStatus(), getSkills(), getJobs());
+			this.setStatus();
+			return new Associate(getId(), getSalesforceId(), getCredential(), getName(), getPortfolioLink(), getBatch(), getProject(),
+					getLockedTo(), getSkills(), getJobs(), getAssociateStatus(), getPortfolioStatus());
 		}
 		
 		 //* Randomly returns true if an associate is determined to be health.
@@ -329,6 +330,7 @@ public class DataGeneration {
 			int diceRoll = rand.nextInt(100);
 			return diceRoll < immuneSystemHealth;
 		}
+
 	}
 
 	/**
@@ -352,7 +354,7 @@ public class DataGeneration {
 
 		sperateClientsByType();
 
-		// Simulate stagin for each associate.
+		// Simulate staging for each associate.
 		for (Associate a : associates) {
 			SimulationState state = new SimulationState(a.getBatch(), genToDate);
 			state.associate = new AssociateP(a); // Create a probability

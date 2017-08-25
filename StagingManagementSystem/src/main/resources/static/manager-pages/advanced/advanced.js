@@ -42,6 +42,13 @@ function managerAdvancedCtrl($scope, $http, $state) {
     }
     return false;
   };
+
+  $scope.isStatus = () =>{
+    if($state.is('manager.advanced.status')){
+      return true;
+    }
+    return false;
+  };
   
   // button for internal projects
   $scope.isProjects = () => {

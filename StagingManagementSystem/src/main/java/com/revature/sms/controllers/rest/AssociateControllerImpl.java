@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
+import com.revature.sms.entities.AssociatesStatus;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -132,9 +133,39 @@ public class AssociateControllerImpl {
 		return ResponseEntity.ok(associateService.getAll());
 	}
 
+//	we took this out
 	@GetMapping("/allActive")
 	public Set<Associate> getAllActiveAssociates(HttpSession session) {
-		return associateService.getAllActive();
+	return associateService.getAllActive();
+	}
+
+	//getting all the assocoates by theit status
+	//status is passing throuh the js file
+	@GetMapping("{status}")
+	public Set<Associate> getAllTraining(@PathVariable String status, HttpSession session)
+	{
+		return associateService.findByAssociateStatus(status);
+	}
+
+	//getting all the associates to display on the page by their status
+	@GetMapping("/getAllInTraining")
+	public Set<Associate> getAllTrainingAssociate(HttpSession session){
+		return associateService.findByAssociateStatus("Training");
+	}
+
+	@GetMapping("/getAllInStaging")
+	public Set<Associate> getAllStagingAssociate(HttpSession session){
+		return associateService.findByAssociateStatus("Staging");
+	}
+
+	@GetMapping("/getAllInProject")
+	public Set<Associate> getAllProjectAssociate(HttpSession session){
+		return associateService.findByAssociateStatus("Project");
+	}
+
+	@GetMapping("/getAllInBench")
+	public Set<Associate> getAllBenchAssociate(HttpSession session){
+		return associateService.findByAssociateStatus("Bench");
 	}
 	
 	@GetMapping("no-batch")
@@ -158,8 +189,9 @@ public class AssociateControllerImpl {
 	}
 
 	@GetMapping(path = "/totaldata")
-	public ResponseEntity<Collection<TotalData>> getAssocaites() {
-		return ResponseEntity.ok(totalReport.process(associateService.getAllActive()));
+	public ResponseEntity<Collection<TotalData>> getAssocaites()
+	{
+		return ResponseEntity.ok(totalReport.process(associateService.findByAssociateStatus("Staging")));
 	}
 	
 	@GetMapping(path = "/AssociatesInStaggin/{date}")

@@ -99,6 +99,7 @@ public class AssociateServiceImpl implements AssociateService {
 		return associateRepo.findByBatchIsNull();
 	}
 
+
 	@Override
 	public Set<Associate> findByBatchId(Long id) {
 
@@ -120,6 +121,11 @@ public class AssociateServiceImpl implements AssociateService {
 	@Override
 	public Set<Associate> getAllByStatus(String status) {
 		return associateRepo.findByAssociateStatus_Status(status);
+	}
+
+	@Override
+	public Set<Associate> findByAssociateStatus(String status) {
+		return null;
 	}
 
 	@Override

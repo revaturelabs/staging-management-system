@@ -51,13 +51,16 @@ public class Associate {
 	private Batch batch;
 
 	@ManyToOne
-	@JoinColumn(name="PROJECT_ID")
+	@JoinColumn(name = "PROJECT_ID")
 	private Project project;
 
 	@ManyToOne
 	@JoinColumn(name = "CLIENT_ID")
 	private Client lockedTo;
-	
+
+	@Column(name = "PORTFOLIO_STATUS")
+	private boolean portfolioStatus;
+
 	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="ASSOCIATE_STATUS")
 	private AssociatesStatus associateStatus;
@@ -77,8 +80,10 @@ public class Associate {
 		this.associateStatus = new AssociatesStatus();
 	}
 
-	public Associate(long id, String salesforceId, Credential credential, String name, String portfolioLink,
-			Batch batch, Project project, Client lockedTo, AssociatesStatus associateStatus, Set<Skill> skills, Set<Job> jobs) {
+
+	public Associate(long id,String salesforceId, Credential credential, String name, String portfolioLink, Batch batch, Project project,
+			Client lockedTo, Set<Skill> skills, Set<Job> jobs, AssociatesStatus associateStatus, boolean portfolioStatus)
+	{
 		super();
 		this.id = id;
 		this.salesforceId = salesforceId;
@@ -88,27 +93,27 @@ public class Associate {
 		this.batch = batch;
 		this.project = project;
 		this.lockedTo = lockedTo;
-		this.associateStatus = associateStatus;
 		this.skills = skills;
 		this.jobs = jobs;
 		this.associateStatus = associateStatus;
+		this.portfolioStatus = portfolioStatus;
 	}
 
 	/**
-	 *  Returns true if associate was on job during the given date.
+	 * Returns true if associate was on job during the given date.
 	 */
-	public boolean hasJobOnDate(LocalDateTime date){
-	  for(Job j : jobs){
-	    boolean beforeEnd = j.getEndDate() == null || date.compareTo(j.getEndDate()) < 0;
-	    boolean hasentStopped = j.getEndDate() == null;
-	    boolean afterStart = date.compareTo(j.getStartDate()) > 0;
-	    
-	    if(afterStart && (hasentStopped || beforeEnd))
-	      return true;
-	  }
-	  return false;
+	public boolean hasJobOnDate(LocalDateTime date) {
+		for (Job j : jobs) {
+			boolean beforeEnd = j.getEndDate() == null || date.compareTo(j.getEndDate()) < 0;
+			boolean hasentStopped = j.getEndDate() == null;
+			boolean afterStart = date.compareTo(j.getStartDate()) > 0;
+
+			if (afterStart && (hasentStopped || beforeEnd))
+				return true;
+		}
+		return false;
 	}
-	
+
 	/**
 	 * Returns true if associate has not started their training and they have not had
 	 * any jobs. Leaving it possible for associates to participate in multiple training
@@ -116,38 +121,37 @@ public class Associate {
 	 */
 	public boolean hasStartedOnDate(LocalDateTime date) {
 		boolean hasBegunTraining = date.compareTo(batch.getStartDate()) > 0;
-		if(hasBegunTraining)
-			     return true;
+
 		return false;
 	}
-	
+
 	/**
 	 * Returns true if associate was in training during the given date.
 	 */
 	public boolean isTrainingOnDate(LocalDateTime adate) {
-	   LocalDateTime date = adate.withHour(12); //Set mid day all other events should be the beginning of the day.
-	   boolean afterBatchStart = date.compareTo(batch.getStartDate()) > 0;
-	   boolean beforeBatchEnd = date.compareTo(batch.getEndDate()) < 0;
-	   if(afterBatchStart && beforeBatchEnd)
-	     return true;
-	  
-	  return false;
+		LocalDateTime date = adate.withHour(12); //Set mid day all other events should be the beginning of the day.
+		boolean afterBatchStart = date.compareTo(batch.getStartDate()) > 0;
+		boolean beforeBatchEnd = date.compareTo(batch.getEndDate()) < 0;
+		if (afterBatchStart && beforeBatchEnd)
+			return true;
+
+		return false;
 	}
-	
+
 	/**
 	 * This function returns true if the associate was in staging on the given date.
 	 */
 	public boolean isTrackedOnDate(LocalDateTime date) {
-	     if(hasStartedOnDate(date) && !isTrainingOnDate(date) && !hasJobOnDate(date))
-	    	 return true;
-	     return false;
+		if (hasStartedOnDate(date) && !isTrainingOnDate(date) && !hasJobOnDate(date))
+			return true;
+		return false;
 	}
 	
 	/**
 	 * This function returns true if the associate is in Staging and is available for hire
 	 */
 	public boolean isActive() {
-		return (("STAGING").equals(associateStatus.getStatus()) || ("BENCH").equals(associateStatus.getStatus())) ? true : false;
+		return (("STAGING").equals(associateStatus.getStatus()) || ("BENCH").equals(associateStatus.getStatus()));
 	}
 	
 	public void setStatus() {
@@ -227,6 +231,14 @@ public class Associate {
 		this.project = project;
 	}
 
+	public boolean getPortfolioStatus() {
+		return portfolioStatus;
+	}
+
+	public void setPortfolioStatus(boolean portfolioStatus) {
+		this.portfolioStatus = portfolioStatus;
+	}
+
 	public Client getLockedTo() {
 		return lockedTo;
 	}
@@ -258,25 +270,6 @@ public class Associate {
 	public void setJobs(Set<Job> jobs) {
 		this.jobs = jobs;
 	}
-
-/*	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((associateStatus == null) ? 0 : associateStatus.hashCode());
-		result = prime * result + ((batch == null) ? 0 : batch.hashCode());
-		result = prime * result + ((credential == null) ? 0 : credential.hashCode());
-		result = prime * result + (int) (id ^ (id >>> 32));
-		result = prime * result + ((jobs == null) ? 0 : jobs.hashCode());
-		result = prime * result + ((lockedTo == null) ? 0 : lockedTo.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((portfolioLink == null) ? 0 : portfolioLink.hashCode());
-		result = prime * result + ((portfolioStatus == null) ? 0 : portfolioStatus.hashCode());
-		result = prime * result + ((project == null) ? 0 : project.hashCode());
-		result = prime * result + ((salesforceId == null) ? 0 : salesforceId.hashCode());
-		result = prime * result + ((skills == null) ? 0 : skills.hashCode());
-		return result;
-	}*/
 
 	@Override
 	public boolean equals(Object obj) {
@@ -324,6 +317,8 @@ public class Associate {
 				return false;
 		} else if (!portfolioLink.equals(other.portfolioLink))
 			return false;
+		if (portfolioStatus != other.portfolioStatus)
+			return false;
 		if (project == null) {
 			if (other.project != null)
 				return false;
@@ -346,8 +341,7 @@ public class Associate {
 	public String toString() {
 		return "Associate [id=" + id + ", salesforceId=" + salesforceId + ", credential=" + credential + ", name="
 				+ name + ", portfolioLink=" + portfolioLink + ", batch=" + batch + ", project=" + project
-				+ ", lockedTo=" + lockedTo + ", associateStatus=" + associateStatus + ", skills=" + skills + ", jobs="
-				+ jobs + "]";
+				+ ", lockedTo=" + lockedTo + ", portfolioStatus=" + portfolioStatus + ", associateStatus="
+				+ associateStatus + ", skills=" + skills + ", jobs=" + jobs + "]";
 	}
-	
 }

@@ -156,20 +156,20 @@ public class Job {
         this.confirmedDate = confirmedDate;
     }
 
-    @Override
-    public int hashCode() {
-
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((associate == null) ? 0 : associate.hashCode());
-        result = prime * result + ((buyoutDate == null) ? 0 : buyoutDate.hashCode());
-        result = prime * result + ((client == null) ? 0 : client.hashCode());
-        result = prime * result + ((confirmedDate == null) ? 0 : confirmedDate.hashCode());
-        result = prime * result + ((endDate == null) ? 0 : endDate.hashCode());
-        result = prime * result + ((projectedEndDate == null) ? 0 : projectedEndDate.hashCode());
-        result = prime * result + ((startDate == null) ? 0 : startDate.hashCode());
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//
+//        final int prime = 31;
+//        int result = 1;
+//        result = prime * result + ((associate == null) ? 0 : associate.hashCode());
+//        result = prime * result + ((buyoutDate == null) ? 0 : buyoutDate.hashCode());
+//        result = prime * result + ((client == null) ? 0 : client.hashCode());
+//        result = prime * result + ((confirmedDate == null) ? 0 : confirmedDate.hashCode());
+//        result = prime * result + ((endDate == null) ? 0 : endDate.hashCode());
+//        result = prime * result + ((projectedEndDate == null) ? 0 : projectedEndDate.hashCode());
+//        result = prime * result + ((startDate == null) ? 0 : startDate.hashCode());
+//        return result;
+//    }
 
     @Override
     public final boolean equals(Object obj) {
@@ -219,8 +219,8 @@ public class Job {
         return true;
     }
 
-    @Override
-    public String toString() {
-        return "Job [id=" + id + ", client=" + client + ", startDate=" + startDate + ", projectedEndDate=" + projectedEndDate + ", endDate=" + endDate + ", buyoutDate=" + buyoutDate + ", confirmedDate=" + confirmedDate + "]";
-    }
+//    @Override
+//    public String toString() {
+//        return "Job [id=" + id + ", client=" + client + ", startDate=" + startDate + ", projectedEndDate=" + projectedEndDate + ", endDate=" + endDate + ", buyoutDate=" + buyoutDate + ", confirmedDate=" + confirmedDate + "]";
+//    }
 }

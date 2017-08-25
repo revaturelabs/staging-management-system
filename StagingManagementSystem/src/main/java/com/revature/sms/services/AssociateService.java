@@ -20,5 +20,5 @@ public interface AssociateService {
     public Set<StaggingAssociate> getAssociatesInStaggingOn(String date);
     public Set<Associate> findByNameLike(String name);
     public Set<Associate> getAllByStatus(String status);
-
+    public Set<Associate> findByAssociateStatus(String status);
 }
