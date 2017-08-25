@@ -1,5 +1,7 @@
 package com.revature.sms.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +15,12 @@ public class AssociateStatusServiceImpl implements AssociatesStatusService {
 	private AssociatesStatusRepo associatesStatusRepo;
 
 	public void updateStatus(AssociatesStatus status) {
-		associatesStatusRepo.save(status);
+		associatesStatusRepo.saveAndFlush(status);
+	}
+
+	@Override
+	public List<AssociatesStatus> getAllStatusString() {
+ 		return associatesStatusRepo.findAll();
 	}
 
 }

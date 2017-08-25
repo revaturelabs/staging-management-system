@@ -5,6 +5,7 @@ import java.util.Set;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.sms.entities.Associate;
 import com.revature.sms.services.AssociateService;
-import com.revature.sms.services.AssoicateStatusService;
+import com.revature.sms.services.AssociatesStatusService;
 
 @RestController
 @RequestMapping("status")
@@ -24,13 +25,15 @@ public class AssociateStatusControllerImp {
 	@Autowired
 	private AssociateService associateService;
 	@Autowired
-	private AssociateStatusService associateStatusService;
+	private AssociatesStatusService associatesStatusService;
+	
+	private static final String LM = "login_manager";
 	
 	@GetMapping("/allTraining")
 	public ResponseEntity<Set<Associate>> getAllActive(HttpSession session) {
-//		if (session.getAttribute(LM) == null) {
-//			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
-//		}
+		if (session.getAttribute(LM) == null) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+		}
 		return ResponseEntity.ok(associateService.getAllByStatus("TRAINING"));
 	}
 	
@@ -49,9 +52,10 @@ public class AssociateStatusControllerImp {
 		return ResponseEntity.ok(associateService.getAllByStatus("BENCH"));
 	}
 	
-	@PutMapping("/statusUpdate")
-	public ResponseEntity<Set<Associate>> updateStatus(@RequestBody Associate associate, HttpSession session) {
-		return ResponseEntity.ok(associateStatusService.)
+	@PostMapping("/statusUpdate")
+	public ResponseEntity<Associate> updateStatus(@RequestBody Associate associate, HttpSession session) {
+		associatesStatusService.updateStatus(associate.getAssociateStatus());
+		return ResponseEntity.ok(associate);
 	}
 	
 
