@@ -319,7 +319,7 @@ public class DataGeneration {
 		 */
 
 		Associate getAssocaite() {
-			//this.setStatus();
+			this.setStatus();
 			return new Associate(getId(), getSalesforceId(), getCredential(), getName(), getPortfolioLink(), getBatch(), getProject(),
 					getLockedTo(), getSkills(), getJobs(), getAssociateStatus());
 		}

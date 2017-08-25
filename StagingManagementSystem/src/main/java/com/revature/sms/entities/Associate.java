@@ -152,7 +152,7 @@ public class Associate {
 	 * This function returns true if the associate is in Staging and is available for hire
 	 */
 	public boolean isActive() {
-		return (("STAGING").equals(associateStatus.getStatus()) || ("BENCH").equals(associateStatus.getStatus())) ? true : false;
+		return (("STAGING").equals(associateStatus.getStatus()) || ("BENCH").equals(associateStatus.getStatus()));
 	}
 	
 	public void setStatus() {
@@ -273,23 +273,23 @@ public class Associate {
 	}
 
 
-@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((associateStatus == null) ? 0 : associateStatus.hashCode());
-		result = prime * result + ((batch == null) ? 0 : batch.hashCode());
-		result = prime * result + ((credential == null) ? 0 : credential.hashCode());
-		result = prime * result + (int) (id ^ (id >>> 32));
-		result = prime * result + ((jobs == null) ? 0 : jobs.hashCode());
-		result = prime * result + ((lockedTo == null) ? 0 : lockedTo.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((portfolioLink == null) ? 0 : portfolioLink.hashCode());
-		result = prime * result + ((project == null) ? 0 : project.hashCode());
-		result = prime * result + ((salesforceId == null) ? 0 : salesforceId.hashCode());
-		result = prime * result + ((skills == null) ? 0 : skills.hashCode());
-		return result;
-	}
+//@Override
+//	public int hashCode() {
+//		final int prime = 31;
+//		int result = 1;
+//		result = prime * result + ((associateStatus == null) ? 0 : associateStatus.hashCode());
+//		result = prime * result + ((batch == null) ? 0 : batch.hashCode());
+//		result = prime * result + ((credential == null) ? 0 : credential.hashCode());
+//		result = prime * result + (int) (id ^ (id >>> 32));
+//		result = prime * result + ((jobs == null) ? 0 : jobs.hashCode());
+//		result = prime * result + ((lockedTo == null) ? 0 : lockedTo.hashCode());
+//		result = prime * result + ((name == null) ? 0 : name.hashCode());
+//		result = prime * result + ((portfolioLink == null) ? 0 : portfolioLink.hashCode());
+//		result = prime * result + ((project == null) ? 0 : project.hashCode());
+//		result = prime * result + ((salesforceId == null) ? 0 : salesforceId.hashCode());
+//		result = prime * result + ((skills == null) ? 0 : skills.hashCode());
+//		return result;
+//	}
 
 	@Override
 	public boolean equals(Object obj) {
@@ -355,17 +355,17 @@ public class Associate {
 		return true;
 	}
 
-	@Override
-	public String toString() {
-		return "Associate{" +
-				"id=" + id +
-				", salesforceId='" + salesforceId + '\'' +
-				", credential=" + credential +
-				", name='" + name + '\'' +
-				", portfolioLink='" + portfolioLink + '\'' +
-				", project=" + project +
-				", lockedTo=" + lockedTo +
-				", associateStatus=" + associateStatus +
-				'}';
-	}
+//	@Override
+//	public String toString() {
+//		return "Associate{" +
+//				"id=" + id +
+//				", salesforceId='" + salesforceId + '\'' +
+//				", credential=" + credential +
+//				", name='" + name + '\'' +
+//				", portfolioLink='" + portfolioLink + '\'' +
+//				", project=" + project +
+//				", lockedTo=" + lockedTo +
+//				", associateStatus=" + associateStatus +
+//				'}';
+//	}
 }
