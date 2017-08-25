@@ -74,7 +74,7 @@ public class SalesforceAuthorization extends Helper implements Authorization {
 
 	private static final String REDIRECT = "redirect:";
 	private static final String REVATURE = "http://www.revature.com/";
-	private static final String LM = "login_manager";
+	public static final String LM = "login_manager";
 
 	public SalesforceAuthorization() {
 		super();

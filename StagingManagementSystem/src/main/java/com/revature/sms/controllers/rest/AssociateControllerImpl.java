@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -37,6 +38,8 @@ public class AssociateControllerImpl {
 	private DataGeneration dataGen;
 	@Autowired
 	TotalReport totalReport;
+	@Value("${sms.salesforce}")
+	private boolean salesforce;
 	
 	private static Logger logger = Logger.getRootLogger();
 
@@ -71,8 +74,14 @@ public class AssociateControllerImpl {
 	}
 
 	@GetMapping("/generate/mock-data")
-	public void generateAssociateMockDate() {
-		dataGen.generate();
+	public ResponseEntity generateAssociateMockDate() {
+		if(!salesforce)
+		{
+			dataGen.generate();
+			return ResponseEntity.status(HttpStatus.OK).body(null);
+		}
+		else
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 	}
 
 	@DeleteMapping

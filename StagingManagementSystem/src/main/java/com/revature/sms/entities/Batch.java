@@ -34,6 +34,9 @@ public class Batch {
     @GeneratedValue(generator = "BATCH_ID_SEQ", strategy = GenerationType.SEQUENCE)
     private long id;
 
+    @Column(name="SALESFORCE_ID")
+    private String salesforceId;
+
     @ManyToOne
     @JoinColumn(name = "BATCH_TYPE_ID")
     private BatchType batchType;
@@ -65,10 +68,11 @@ public class Batch {
         this.associates = new HashSet<>();
     }
 
-    public Batch(long id, BatchType batchType, LocalDateTime startDate, LocalDateTime endDate, Location location, Set<Trainer> trainers, Set<Associate> associates) {
+    public Batch(long id, String salesforceId, BatchType batchType, LocalDateTime startDate, LocalDateTime endDate, Location location, Set<Trainer> trainers, Set<Associate> associates) {
 
         super();
         this.id = id;
+        this.salesforceId = salesforceId;
         this.batchType = batchType;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -87,6 +91,16 @@ public class Batch {
         this.id = id;
     }
 
+    public String getSalesforceId() {
+
+        return salesforceId;
+    }
+
+    public void setSalesforceId(String salesforceId) {
+
+        this.salesforceId = salesforceId;
+    }
+    
     public BatchType getBatchType() {
 
         return batchType;
@@ -148,61 +162,65 @@ public class Batch {
     }
 
     @Override
-    public int hashCode() {
-
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((associates == null) ? 0 : associates.hashCode());
-        result = prime * result + ((batchType == null) ? 0 : batchType.hashCode());
-        result = prime * result + ((endDate == null) ? 0 : endDate.hashCode());
-        result = prime * result + ((location == null) ? 0 : location.hashCode());
-        result = prime * result + ((startDate == null) ? 0 : startDate.hashCode());
-        result = prime * result + ((trainers == null) ? 0 : trainers.hashCode());
-        return result;
-    }
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((associates == null) ? 0 : associates.hashCode());
+		result = prime * result + ((batchType == null) ? 0 : batchType.hashCode());
+		result = prime * result + ((endDate == null) ? 0 : endDate.hashCode());
+		result = prime * result + ((location == null) ? 0 : location.hashCode());
+		result = prime * result + ((salesforceId == null) ? 0 : salesforceId.hashCode());
+		result = prime * result + ((startDate == null) ? 0 : startDate.hashCode());
+		result = prime * result + ((trainers == null) ? 0 : trainers.hashCode());
+		return result;
+	}
 
     @Override
-    public final boolean equals(Object obj) {
-
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (!(obj instanceof Batch))
-            return false;
-        Batch other = (Batch) obj;
-        if (associates == null) {
-            if (other.associates != null)
-                return false;
-        } else if (!associates.equals(other.associates))
-            return false;
-        if (batchType == null) {
-            if (other.batchType != null)
-                return false;
-        } else if (!batchType.equals(other.batchType))
-            return false;
-        if (endDate == null) {
-            if (other.endDate != null)
-                return false;
-        } else if (!endDate.equals(other.endDate))
-            return false;
-        if (location == null) {
-            if (other.location != null)
-                return false;
-        } else if (!location.equals(other.location))
-            return false;
-        if (startDate == null) {
-            if (other.startDate != null)
-                return false;
-        } else if (!startDate.equals(other.startDate))
-            return false;
-        if (trainers == null) {
-            if (other.trainers != null)
-                return false;
-        } else if (!trainers.equals(other.trainers))
-            return false;
-        return true;
-    }
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Batch other = (Batch) obj;
+		if (associates == null) {
+			if (other.associates != null)
+				return false;
+		} else if (!associates.equals(other.associates))
+			return false;
+		if (batchType == null) {
+			if (other.batchType != null)
+				return false;
+		} else if (!batchType.equals(other.batchType))
+			return false;
+		if (endDate == null) {
+			if (other.endDate != null)
+				return false;
+		} else if (!endDate.equals(other.endDate))
+			return false;
+		if (location == null) {
+			if (other.location != null)
+				return false;
+		} else if (!location.equals(other.location))
+			return false;
+		if (salesforceId == null) {
+			if (other.salesforceId != null)
+				return false;
+		} else if (!salesforceId.equals(other.salesforceId))
+			return false;
+		if (startDate == null) {
+			if (other.startDate != null)
+				return false;
+		} else if (!startDate.equals(other.startDate))
+			return false;
+		if (trainers == null) {
+			if (other.trainers != null)
+				return false;
+		} else if (!trainers.equals(other.trainers))
+			return false;
+		return true;
+	}
 
 //    @Override
 //    public String toString() {
