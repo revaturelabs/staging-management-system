@@ -62172,6 +62172,17 @@
 	    });
 	  };
 
+	  $scope.updateFromSMS = function () {
+	    console.log("TEST");
+	    $http({
+	      method: 'GET',
+	      url: '/sfdata/batches'
+	    });
+	    /*      .then((response) => {
+	              console.log(response);
+	            });*/
+	  };
+
 	  $scope.manager = { name: 'Joe' };
 	}
 
