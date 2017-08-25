@@ -14,8 +14,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,7 +32,7 @@ import com.revature.sms.security.models.SalesforceUser;
  * Most of this code adapted from Patrick Walsh's Caliber.
  */
 
-@Repository
+@Component
 public class SalesforceRepoImpl implements SalesforceRepo {
 	private Logger log = Logger.getRootLogger();
 	@Value("${sms.salesforce}")
