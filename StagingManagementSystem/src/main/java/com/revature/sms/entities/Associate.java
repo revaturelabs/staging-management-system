@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -21,8 +20,6 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 
 @Entity
@@ -58,8 +55,8 @@ public class Associate {
 	@JoinColumn(name = "CLIENT_ID")
 	private Client lockedTo;
 	
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="ASSOCIATE_STATUS_ID")
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="ASSOCIATE_STATUS")
 	private AssociatesStatus associateStatus;
 	
 
@@ -94,6 +91,7 @@ public class Associate {
 	}
 
 
+
 	/**
 	 *  Returns true if associate was on job during the given date.
 	 */
@@ -116,7 +114,6 @@ public class Associate {
 	 */
 	public boolean hasStartedOnDate(LocalDateTime date) {
 		boolean hasBegunTraining = date.compareTo(batch.getStartDate()) > 0;
-
 		if(hasBegunTraining)
 			     return true;
 		return false;
@@ -148,23 +145,26 @@ public class Associate {
 	 * This function returns true if the associate is in Staging and is available for hire
 	 */
 	public boolean isActive() {
-		return "STAGING".equals(associateStatus.getStatus()) && "BENCH".equals(associateStatus.getStatus()) ? true : false;
+		return (("STAGING").equals(associateStatus.getStatus()) && ("BENCH").equals(associateStatus.getStatus())) ? true : false;
 	}
 	
 	public void setStatus() {
 		
 		if (this.isTrainingOnDate(LocalDateTime.now())) {
-			associateStatus.setAssociatesStatusId(1);
-			associateStatus.setStatus("TRAINING");
-		} else if (this.isTrackedOnDate(LocalDateTime.now())) {
-			associateStatus.setAssociatesStatusId(2);
-			associateStatus.setStatus("STAGING");
-		} else if (this.hasJobOnDate(LocalDateTime.now())) {
-			associateStatus.setAssociatesStatusId(3);
-			associateStatus.setStatus("PROJECT");
-		} else {
-			associateStatus.setAssociatesStatusId(4);
-			associateStatus.setStatus("BENCH");
+			AssociatesStatus status = new AssociatesStatus(0, "TRAINING");
+			this.setAssociateStatus(status);
+		}
+		else if (this.isTrackedOnDate(LocalDateTime.now()) && !this.isTrainingOnDate(LocalDateTime.now())) {
+			AssociatesStatus status = new AssociatesStatus(1, "STAGING");
+			this.setAssociateStatus(status);
+		}
+		else if (this.hasJobOnDate(LocalDateTime.now())) {
+			AssociatesStatus status = new AssociatesStatus(2, "PROJECT");
+			this.setAssociateStatus(status);
+		}
+		else if (this.isTrackedOnDate(LocalDateTime.now()) && !this.hasJobOnDate(LocalDateTime.now())) {
+			AssociatesStatus status = new AssociatesStatus(3, "BENCH");
+			this.setAssociateStatus(status);
 		}
 	}
 

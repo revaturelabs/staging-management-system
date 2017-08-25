@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.sms.entities.Associate;
-import com.revature.sms.entities.AssociatesStatus;
 import com.revature.sms.entities.Manager;
 import com.revature.sms.entities.StaggingAssociate;
 import com.revature.sms.services.AssociateService;
@@ -127,30 +126,6 @@ public class AssociateControllerImpl {
 	@GetMapping("/allActive")
 	public Set<Associate> getAllActiveAssociates(HttpSession session) {
 		return associateService.getAllActive();
-	}
-	
-	@GetMapping("/allTraining")
-	public ResponseEntity<Set<Associate>> getAllActive(HttpSession session) {
-//		if (session.getAttribute(LM) == null) {
-//			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
-//		}
-		//AssociatesStatus stagingStatus = new AssociatesStatus(1, "STAGING");
-		return ResponseEntity.ok(associateService.getAllByStatus("TRAINING"));
-	}
-	
-	@GetMapping("/allStaging")
-	public ResponseEntity<Set<Associate>> getAllInStaging(HttpSession session) {
-		return ResponseEntity.ok(associateService.getAllByStatus("STAGING"));
-	}
-	
-	@GetMapping("/allProject")
-	public ResponseEntity<Set<Associate>> getAllInProject(HttpSession session) {
-		return ResponseEntity.ok(associateService.getAllByStatus("PROJECT"));
-	}
-	
-	@GetMapping("/allBench")
-	public ResponseEntity<Set<Associate>> getAllInBench(HttpSession session) {
-		return ResponseEntity.ok(associateService.getAllByStatus("BENCH"));
 	}
 	
 	@GetMapping("no-batch")

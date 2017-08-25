@@ -221,7 +221,6 @@ public class Job {
 
     @Override
     public String toString() {
-
-        return "Job [id=" + id + ", associate=" + associate + ", client=" + client + ", startDate=" + startDate + ", projectedEndDate=" + projectedEndDate + ", endDate=" + endDate + ", buyoutDate=" + buyoutDate + ", confirmedDate=" + confirmedDate + "]";
+        return "Job [id=" + id + ", client=" + client + ", startDate=" + startDate + ", projectedEndDate=" + projectedEndDate + ", endDate=" + endDate + ", buyoutDate=" + buyoutDate + ", confirmedDate=" + confirmedDate + "]";
     }
 }

@@ -206,7 +206,7 @@ public class Batch {
 
     @Override
     public String toString() {
-
-        return "Batch [id=" + id + ", batchType=" + batchType + ", startDate=" + startDate + ", endDate=" + endDate + ", location=" + location + ", trainers=" + trainers + ", associates=" + associates + "]";
+        return "Batch [id=" + id + ", batchType=" + batchType + ", startDate=" + startDate + ", endDate=" + endDate
+        		+ ", location=" + location + ", trainers=" + trainers + "]";
     }
 }

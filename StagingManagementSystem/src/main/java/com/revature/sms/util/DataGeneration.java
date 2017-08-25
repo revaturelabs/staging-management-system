@@ -279,7 +279,7 @@ public class DataGeneration {
 
 		AssociateP(Associate a) {
 			super(a.getId(), a.getCredential(), a.getName(), a.getPortfolioLink(), a.getBatch(), a.getProject(),
-					a.getLockedTo(), a.getSkills(), a.getJobs(), /*a.getPortfolioStatus(),*/ a.getAssociateStatus());
+					a.getLockedTo(), a.getSkills(), a.getJobs(), a.getAssociateStatus());
 
 			int qualityOfAssociate = rand.nextInt(100);
 
@@ -317,11 +317,10 @@ public class DataGeneration {
 		 * @return - super instance
 		 */
 
-		// I THINK THIS ALWASY RETURN 0 FOR GETASSOCIATE STATUS
 		Associate getAssocaite() {
 			this.setStatus();
 			return new Associate(getId(), getCredential(), getName(), getPortfolioLink(), getBatch(), getProject(),
-					getLockedTo(), getSkills(), getJobs(), /*getPortfolioStatus(),*/ getAssociateStatus());
+					getLockedTo(), getSkills(), getJobs(), getAssociateStatus());
 		}
 
 		/*
