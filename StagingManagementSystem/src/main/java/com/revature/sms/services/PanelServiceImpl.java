@@ -1,5 +1,6 @@
 package com.revature.sms.services;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -26,7 +27,7 @@ public class PanelServiceImpl implements PanelService
 	}
 
 	@Override
-	public Set<Panel> findByAssociateId(int id) {
+	public Set<Panel> findByAssociateId(long id) {
 		return pr.findByAssociateId(id);
 	}
 	
@@ -35,6 +36,8 @@ public class PanelServiceImpl implements PanelService
 	@Override
 	public void update(Panel panel) 
 	{
+		LocalDateTime currentDate = LocalDateTime.now();
+		panel.setStatusDate(currentDate);
 		pr.saveAndFlush(panel);
 		
 	}
@@ -57,6 +60,8 @@ public class PanelServiceImpl implements PanelService
 	@Transactional
 	public void addPanel(Panel panel) 
 	{
+		LocalDateTime currentDate = LocalDateTime.now();
+		panel.setStatusDate(currentDate);
 		pr.saveAndFlush(panel);
 	}
 

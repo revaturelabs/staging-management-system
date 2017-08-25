@@ -31,10 +31,9 @@ public class PanelControllerImp {
 	}
 	
 	@GetMapping("/associate/{associateId}")
-	public Set<Panel> findByAssociate(@PathVariable String associateId) {
-		//long associate_Id = Long.parseLong(associateId);
-		Integer associate_Id = Integer.parseInt(associateId);
-		return pr.findByAssociateId(associate_Id);
+	public Set<Panel> findByAssociate(@PathVariable long associateId) {
+	//	Integer associate_Id = Integer.parseInt(associateId);
+		return pr.findByAssociateId(associateId);
 	}
 
 	@GetMapping("allpanel")
