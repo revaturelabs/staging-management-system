@@ -146,27 +146,6 @@ public class AssociateControllerImpl {
 	{
 		return associateService.findByAssociateStatus(status);
 	}
-
-	//getting all the associates to display on the page by their status
-	@GetMapping("/getAllInTraining")
-	public Set<Associate> getAllTrainingAssociate(HttpSession session){
-		return associateService.findByAssociateStatus("Training");
-	}
-
-	@GetMapping("/getAllInStaging")
-	public Set<Associate> getAllStagingAssociate(HttpSession session){
-		return associateService.findByAssociateStatus("Staging");
-	}
-
-	@GetMapping("/getAllInProject")
-	public Set<Associate> getAllProjectAssociate(HttpSession session){
-		return associateService.findByAssociateStatus("Project");
-	}
-
-	@GetMapping("/getAllInBench")
-	public Set<Associate> getAllBenchAssociate(HttpSession session){
-		return associateService.findByAssociateStatus("Bench");
-	}
 	
 	@GetMapping("no-batch")
 	public Set<Associate> haveNoBatch() {
