@@ -62173,14 +62173,12 @@
 	  };
 
 	  $scope.updateFromSMS = function () {
-	    console.log("TEST");
 	    $http({
 	      method: 'GET',
 	      url: '/sfdata/batches'
+	    }).then(function (response) {
+	      alert("Sent update to SMS from Salesforce request!");
 	    });
-	    /*      .then((response) => {
-	              console.log(response);
-	            });*/
 	  };
 
 	  $scope.manager = { name: 'Joe' };
