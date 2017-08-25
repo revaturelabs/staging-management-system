@@ -21,4 +21,5 @@ public interface AssociateRepo extends JpaRepository<Associate, Long> {
     Set<Associate> findByProjectIsNull();
 
     Set<Associate> findByNameContainingIgnoreCase(String name);
+    Associate getBySalesforceId(String salesforceId);
 }

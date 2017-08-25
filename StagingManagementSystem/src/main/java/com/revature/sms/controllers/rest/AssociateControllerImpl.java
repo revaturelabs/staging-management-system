@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 import com.revature.sms.entities.AssociatesStatus;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.sms.entities.Associate;
-import com.revature.sms.entities.AssociatesStatus;
 import com.revature.sms.entities.Manager;
 import com.revature.sms.entities.StaggingAssociate;
 import com.revature.sms.services.AssociateService;
@@ -38,6 +38,8 @@ public class AssociateControllerImpl {
 	private DataGeneration dataGen;
 	@Autowired
 	TotalReport totalReport;
+	@Value("${sms.salesforce}")
+	private boolean salesforce;
 	
 	private static Logger logger = Logger.getRootLogger();
 
@@ -72,8 +74,14 @@ public class AssociateControllerImpl {
 	}
 
 	@GetMapping("/generate/mock-data")
-	public void generateAssociateMockDate() {
-		dataGen.generate();
+	public ResponseEntity generateAssociateMockDate() {
+		if(!salesforce)
+		{
+			dataGen.generate();
+			return ResponseEntity.status(HttpStatus.OK).body(null);
+		}
+		else
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 	}
 
 	@DeleteMapping
@@ -158,30 +166,6 @@ public class AssociateControllerImpl {
 	@GetMapping("/getAllInBench")
 	public Set<Associate> getAllBenchAssociate(HttpSession session){
 		return associateService.findByAssociateStatus("Bench");
-	}
-	
-	@GetMapping("/allTraining")
-	public ResponseEntity<Set<Associate>> getAllActive(HttpSession session) {
-//		if (session.getAttribute(LM) == null) {
-//			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
-//		}
-		//AssociatesStatus stagingStatus = new AssociatesStatus(1, "STAGING");
-		return ResponseEntity.ok(associateService.getAllByStatus("TRAINING"));
-	}
-	
-	@GetMapping("/allStaging")
-	public ResponseEntity<Set<Associate>> getAllInStaging(HttpSession session) {
-		return ResponseEntity.ok(associateService.getAllByStatus("STAGING"));
-	}
-	
-	@GetMapping("/allProject")
-	public ResponseEntity<Set<Associate>> getAllInProject(HttpSession session) {
-		return ResponseEntity.ok(associateService.getAllByStatus("PROJECT"));
-	}
-	
-	@GetMapping("/allBench")
-	public ResponseEntity<Set<Associate>> getAllInBench(HttpSession session) {
-		return ResponseEntity.ok(associateService.getAllByStatus("BENCH"));
 	}
 	
 	@GetMapping("no-batch")

@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -34,6 +33,9 @@ public class Associate {
 	@SequenceGenerator(name = "ASSOCIATE_ID_SEQ", sequenceName = "ASSOCIATE_ID_SEQ")
 	private long id;
 
+    @Column(name="SALESFORCE_ID")
+    private String salesforceId;
+	
 	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "CREDENTIAL_ID")
 	private Credential credential;
@@ -56,51 +58,47 @@ public class Associate {
 	@JoinColumn(name = "CLIENT_ID")
 	private Client lockedTo;
 
-	@OneToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "PORTFOLIO_STATUS_ID")
-	private PortfolioStatus portfolioStatus;
+//	@OneToOne(fetch = FetchType.EAGER)
+//	@JoinColumn(name = "PORTFOLIO_STATUS_ID")
+//	private PortfolioStatus portfolioStatus;
 
 	@OneToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "ASSOCIATE_STATUS_ID")
+	@JoinColumn(name="ASSOCIATE_STATUS")
 	private AssociatesStatus associateStatus;
-
-
+	
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "ASSOCIATE_SKILLS", joinColumns = @JoinColumn(name = "ASSOCIATE_ID"), inverseJoinColumns = @JoinColumn(name = "SKILL_ID"))
 	private Set<Skill> skills;
-
+	
 	@OneToMany(mappedBy = "associate")
 	private Set<Job> jobs;
+	
 
 	public Associate() {
 		super();
 		this.skills = new HashSet<>();
 		this.jobs = new HashSet<>();
 		this.associateStatus = new AssociatesStatus();
-		this.portfolioStatus = new PortfolioStatus();
 	}
 
 
-	public Associate(long id, Credential credential, String name, String portfolioLink, Batch batch, Project project,
-			Client lockedTo, Set<Skill> skills, Set<Job> jobs, PortfolioStatus portfolioStatusId, AssociatesStatus associateStatusId) 
+	public Associate(long id,String salesforceId, Credential credential, String name, String portfolioLink, Batch batch, Project project,
+			Client lockedTo, Set<Skill> skills, Set<Job> jobs, AssociatesStatus associateStatusId)
 	{
 		super();
 		this.id = id;
+		this.salesforceId = salesforceId;
 		this.credential = credential;
 		this.name = name;
 		this.portfolioLink = portfolioLink;
 		this.batch = batch;
 		this.project = project;
 		this.lockedTo = lockedTo;
-		this.portfolioStatus = portfolioStatus;
 		this.associateStatus = associateStatus;
 		this.skills = skills;
 		this.jobs = jobs;
-		this.portfolioStatus = portfolioStatusId;
-		this.associateStatus = associateStatusId;
+		this.associateStatus = associateStatus;
 	}
-
-
 
 	/**
 	 * Returns true if associate was on job during the given date.
@@ -125,8 +123,6 @@ public class Associate {
 	public boolean hasStartedOnDate(LocalDateTime date) {
 		boolean hasBegunTraining = date.compareTo(batch.getStartDate()) > 0;
 
-		if (hasBegunTraining)
-			return true;
 		return false;
 	}
 
@@ -156,23 +152,25 @@ public class Associate {
 	 * This function returns true if the associate is in Staging and is available for hire
 	 */
 	public boolean isActive() {
-		return "STAGING".equals(associateStatus.getStatus()) && "BENCH".equals(associateStatus.getStatus()) ? true : false;
+		return (("STAGING").equals(associateStatus.getStatus()) || ("BENCH").equals(associateStatus.getStatus())) ? true : false;
 	}
 	
 	public void setStatus() {
 		
-		if(this.isTrainingOnDate(LocalDateTime.now())) {
+		if (this.isTrainingOnDate(LocalDateTime.now())) {
 			AssociatesStatus status = new AssociatesStatus(0, "TRAINING");
 			this.setAssociateStatus(status);
 		}
-		
+		else if (this.isTrackedOnDate(LocalDateTime.now()) && !this.isTrainingOnDate(LocalDateTime.now())) {
+			AssociatesStatus status = new AssociatesStatus(1, "STAGING");
+			this.setAssociateStatus(status);
+		}
 		else if (this.hasJobOnDate(LocalDateTime.now())) {
 			AssociatesStatus status = new AssociatesStatus(2, "PROJECT");
 			this.setAssociateStatus(status);
 		}
-		
-		else {
-			AssociatesStatus status = new AssociatesStatus(1, "STAGING");
+		else if (this.isTrackedOnDate(LocalDateTime.now()) && !this.hasJobOnDate(LocalDateTime.now())) {
+			AssociatesStatus status = new AssociatesStatus(3, "BENCH");
 			this.setAssociateStatus(status);
 		}
 	}
@@ -182,48 +180,47 @@ public class Associate {
 		return id;
 	}
 
-	public void setId(long id) 
-	{
+	public void setId(long id) {
 		this.id = id;
 	}
 
-	public Credential getCredential() 
-	{
+	public String getSalesforceId() {
+		return salesforceId;
+	}
+
+	public void setSalesforceId(String salesforceId) {
+		this.salesforceId = salesforceId;
+	}
+
+	public Credential getCredential() {
 		return credential;
 	}
 
-	public void setCredential(Credential credential) 
-	{
+	public void setCredential(Credential credential) {
 		this.credential = credential;
 	}
 
-	public String getName() 
-	{
+	public String getName() {
 		return name;
 	}
 
-	public void setName(String name) 
-	{
+	public void setName(String name) {
 		this.name = name;
 	}
 
-	public String getPortfolioLink() 
-	{
+	public String getPortfolioLink() {
 		return portfolioLink;
 	}
 
-	public void setPortfolioLink(String portfolioLink) 
-	{
+	public void setPortfolioLink(String portfolioLink) {
 		this.portfolioLink = portfolioLink;
 	}
 
-	public Batch getBatch() 
-	{
+	public Batch getBatch() {
 		return batch;
 	}
 
-	public void setBatch(Batch batch) 
-	{
+	public void setBatch(Batch batch) {
 		this.batch = batch;
 	}
 
@@ -235,39 +232,31 @@ public class Associate {
 		this.project = project;
 	}
 
+//	public PortfolioStatus getPortfolioStatus() {
+//		return portfolioStatus;
+//	}
+//
+//	public void setPortfolioStatus(PortfolioStatus portfolioStatus) {
+//		this.portfolioStatus = portfolioStatus;
+//	}
 
-	public Client getLockedTo() 
-	{
+	public Client getLockedTo() {
 		return lockedTo;
 	}
 
-	public void setLockedTo(Client lockedTo) 
-	{
+	public void setLockedTo(Client lockedTo) {
 		this.lockedTo = lockedTo;
 	}
 
-	public PortfolioStatus getPortfolioStatus() 
-	{
-		return portfolioStatus;
-	}
-
-	public void setPortfolioStatus(PortfolioStatus portfolioStatus) 
-	{
-		this.portfolioStatus = portfolioStatus;
-	}
-
-	public AssociatesStatus getAssociateStatus() 
-	{
+	public AssociatesStatus getAssociateStatus() {
 		return associateStatus;
 	}
 
-	public void setAssociateStatus(AssociatesStatus associateStatus) 
-	{
+	public void setAssociateStatus(AssociatesStatus associateStatus) {
 		this.associateStatus = associateStatus;
 	}
 
-	public Set<Skill> getSkills() 
-	{
+	public Set<Skill> getSkills() {
 		return skills;
 	}
 
@@ -284,30 +273,99 @@ public class Associate {
 	}
 
 
+@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((associateStatus == null) ? 0 : associateStatus.hashCode());
+		result = prime * result + ((batch == null) ? 0 : batch.hashCode());
+		result = prime * result + ((credential == null) ? 0 : credential.hashCode());
+		result = prime * result + (int) (id ^ (id >>> 32));
+		result = prime * result + ((jobs == null) ? 0 : jobs.hashCode());
+		result = prime * result + ((lockedTo == null) ? 0 : lockedTo.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((portfolioLink == null) ? 0 : portfolioLink.hashCode());
+		result = prime * result + ((project == null) ? 0 : project.hashCode());
+		result = prime * result + ((salesforceId == null) ? 0 : salesforceId.hashCode());
+		result = prime * result + ((skills == null) ? 0 : skills.hashCode());
+		return result;
+	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Associate other = (Associate) obj;
+		if (associateStatus == null) {
+			if (other.associateStatus != null)
+				return false;
+		} else if (!associateStatus.equals(other.associateStatus))
+			return false;
+		if (batch == null) {
+			if (other.batch != null)
+				return false;
+		} else if (!batch.equals(other.batch))
+			return false;
+		if (credential == null) {
+			if (other.credential != null)
+				return false;
+		} else if (!credential.equals(other.credential))
+			return false;
+		if (id != other.id)
+			return false;
+		if (jobs == null) {
+			if (other.jobs != null)
+				return false;
+		} else if (!jobs.equals(other.jobs))
+			return false;
+		if (lockedTo == null) {
+			if (other.lockedTo != null)
+				return false;
+		} else if (!lockedTo.equals(other.lockedTo))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (portfolioLink == null) {
+			if (other.portfolioLink != null)
+				return false;
+		} else if (!portfolioLink.equals(other.portfolioLink))
+			return false;
+		if (project == null) {
+			if (other.project != null)
+				return false;
+		} else if (!project.equals(other.project))
+			return false;
+		if (salesforceId == null) {
+			if (other.salesforceId != null)
+				return false;
+		} else if (!salesforceId.equals(other.salesforceId))
+			return false;
+		if (skills == null) {
+			if (other.skills != null)
+				return false;
+		} else if (!skills.equals(other.skills))
+			return false;
+		return true;
+	}
 
-//	@Override
-//	public String toString() {
-//		return "Associate [id=" + id + ", credential=" + credential + ", name=" + name + ", portfolioLink="
-//				+ portfolioLink + ", batch=" + (batch == null ? null : batch.getBatchType().getValue()) + ", project=" + (project == null ? null : project.getProjectName()) + ", active=" + active + ", lockedTo="
-//				+ lockedTo + ", skills=" + skills + "]";
-//	}
-
+	@Override
+	public String toString() {
+		return "Associate{" +
+				"id=" + id +
+				", salesforceId='" + salesforceId + '\'' +
+				", credential=" + credential +
+				", name='" + name + '\'' +
+				", portfolioLink='" + portfolioLink + '\'' +
+				", project=" + project +
+				", lockedTo=" + lockedTo +
+				", associateStatus=" + associateStatus +
+				'}';
+	}
 }
-//	@Override
-//	public String toString() {
-//		return "Associate{" +
-//				"id=" + id +
-//				", credential=" + credential +
-//				", name='" + name + '\'' +
-//				", portfolioLink='" + portfolioLink + '\'' +
-//				", batch=" + batch +
-//				", project=" + project +
-//				", lockedTo=" + lockedTo +
-//				", portfolioStatus=" + portfolioStatus +
-//				", associateStatus=" + associateStatus +
-//				", skills=" + skills +
-//				", jobs=" + jobs +
-//				'}';
-//	}
-//}
