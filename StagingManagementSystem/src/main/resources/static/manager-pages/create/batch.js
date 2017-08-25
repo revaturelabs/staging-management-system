@@ -110,6 +110,8 @@ const batchCtrl = ($scope, $http, $state, $stateParams) => {
     $scope.newBatchTypeShow = true;
     $scope.newBatchType = {};
     $scope.newBatchType.skills = [];
+    $scope.newBatchType.value = $scope.batch.batchType.value;
+    $scope.newBatchType.skills = $scope.batch.batchType.skills;
 
     $scope.addSkill = (newBatchTypeSkill) => {
       if(!newBatchTypeSkill) {

@@ -62173,14 +62173,12 @@
 	  };
 
 	  $scope.updateFromSMS = function () {
-	    console.log("TEST");
 	    $http({
 	      method: 'GET',
 	      url: '/sfdata/batches'
+	    }).then(function (response) {
+	      alert("Sent update to SMS from Salesforce request!");
 	    });
-	    /*      .then((response) => {
-	              console.log(response);
-	            });*/
 	  };
 
 	  $scope.manager = { name: 'Joe' };
@@ -63275,6 +63273,8 @@
 	    $scope.newBatchTypeShow = true;
 	    $scope.newBatchType = {};
 	    $scope.newBatchType.skills = [];
+	    $scope.newBatchType.value = $scope.batch.batchType.value;
+	    $scope.newBatchType.skills = $scope.batch.batchType.skills;
 
 	    $scope.addSkill = function (newBatchTypeSkill) {
 	      if (!newBatchTypeSkill) {
