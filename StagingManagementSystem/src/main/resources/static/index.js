@@ -62173,14 +62173,12 @@
 	  };
 
 	  $scope.updateFromSMS = function () {
-	    console.log("TEST");
 	    $http({
 	      method: 'GET',
 	      url: '/sfdata/batches'
+	    }).then(function (response) {
+	      alert("Sent update to SMS from Salesforce request!");
 	    });
-	    /*      .then((response) => {
-	              console.log(response);
-	            });*/
 	  };
 
 	  $scope.manager = { name: 'Joe' };
@@ -63069,14 +63067,13 @@
 	  caption: 'Employed Percentage versus Those awaiting placement',
 	  subcaption: 'Revature, LLC',
 	  startingangle: '120',
-	  showlabels: '0',
+	  showlabels: '1',
 	  showlegend: '1',
 	  enablemultislicing: '0',
 	  slicingdistance: '25',
-	  showpercentvalues: '1',
-	  showpercentintooltip: '0',
-	  palettecolors: '#0075c2,#ff0000',
-	  plottooltext: '$label Total: $datavalue',
+	  showpercentvalues: '0',
+	  showpercentintooltip: '1',
+	  palettecolors: '#0075c2,#ff0000,#FF8000',
 	  theme: 'fint'
 	};
 
@@ -63105,13 +63102,17 @@
 	    }, {
 	      label: 'Awaiting placement',
 	      value: 0
+	    }, {
+	      label: 'In Training',
+	      value: 0
 	    }];
-
 	    for (var i = 0; i < responseData.data.length; i += 1) {
-	      if (responseData.data[i].active) {
+	      if (responseData.data[i].associateStatus.status == 'STAGING' || responseData.data[i].associateStatus.status == 'BENCH') {
 	        chartData[1].value += 1;
-	      } else {
+	      } else if (responseData.data[i].associateStatus.status == 'PROJECT') {
 	        chartData[0].value += 1;
+	      } else {
+	        chartData[2].value += 1;
 	      }
 	    }
 	    $scope.cache.put('chartData', chartData);
