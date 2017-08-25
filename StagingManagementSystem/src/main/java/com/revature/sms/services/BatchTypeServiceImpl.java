@@ -29,7 +29,9 @@ public class BatchTypeServiceImpl implements BatchTypeService {
 
     @Override
     public BatchType add(BatchType batchType) {
-
+    	// looks for each skill in the database,
+    	// gets it if it's there,
+    	// make one if it's not
         for (Skill skill : batchType.getSkills()) {
             Skill retreivedSkill = skillRepo.findFirstByValueIgnoreCase(skill.getValue());
             if (retreivedSkill != null) {
