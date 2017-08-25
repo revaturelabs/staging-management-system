@@ -12,10 +12,10 @@ function managerAdvancedCtrl($scope, $http, $state) {
 
     $http.get('status/allStatusType')
         .then((data) => {
-            $scope.statusType = data.data;
-            $scope.selectedStatusType = [];
-            $scope.statusType.forEach((type) => {
-                $scope.selectedStatusType.push(type);
+            $scope.statusTypes = data.data;
+            $scope.selectedStatusTypes = [];
+            $scope.statusTypes.forEach((type) => {
+                $scope.selectedStatusTypes.push(type);
             });
         });
 
@@ -93,6 +93,19 @@ function managerAdvancedCtrl($scope, $http, $state) {
       $scope.selectedBatchTypes.push(selectedBatch);
     }
   };
+
+    $scope.toggleSelectedStatusTypes = (selectedStatus) => {
+        let idx = $scope.selectedStatusTypes.indexOf(selectedStatus);
+
+        // Is currently selected
+        if (idx > -1) {
+            $scope.selectedStatusTypes.splice(idx, 1);
+        } else {
+            $scope.selectedStatusTypes.push(selectedStatus);
+        }
+    };
+
+
 
   $scope.associateBatchFilter = (associate) => {
     if (!associate.batch) {

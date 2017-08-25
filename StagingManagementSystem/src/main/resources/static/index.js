@@ -63630,10 +63630,10 @@
 	  });
 
 	  $http.get('status/allStatusType').then(function (data) {
-	    $scope.statusType = data.data;
-	    $scope.selectedStatusType = [];
-	    $scope.statusType.forEach(function (type) {
-	      $scope.selectedStatusType.push(type);
+	    $scope.statusTypes = data.data;
+	    $scope.selectedStatusTypes = [];
+	    $scope.statusTypes.forEach(function (type) {
+	      $scope.selectedStatusTypes.push(type);
 	    });
 	  });
 
@@ -63702,6 +63702,17 @@
 	      $scope.selectedBatchTypes.splice(idx, 1);
 	    } else {
 	      $scope.selectedBatchTypes.push(selectedBatch);
+	    }
+	  };
+
+	  $scope.toggleSelectedStatusTypes = function (selectedStatus) {
+	    var idx = $scope.selectedStatusTypes.indexOf(selectedStatus);
+
+	    // Is currently selected
+	    if (idx > -1) {
+	      $scope.selectedStatusTypes.splice(idx, 1);
+	    } else {
+	      $scope.selectedStatusTypes.push(selectedStatus);
 	    }
 	  };
 

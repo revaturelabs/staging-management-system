@@ -280,7 +280,7 @@ public class DataGeneration {
 
 		AssociateP(Associate a) {
 			super(a.getId(),a.getSalesforceId(), a.getCredential(), a.getName(), a.getPortfolioLink(), a.getBatch(), a.getProject(),
-					a.getLockedTo(), a.getSkills(), a.getJobs(),a.getAssociateStatus());
+					a.getLockedTo(), a.getSkills(), a.getJobs(),a.getAssociateStatus(), a.getPortfolioStatus());
 
 			int qualityOfAssociate = rand.nextInt(100);
 
@@ -321,7 +321,7 @@ public class DataGeneration {
 		Associate getAssocaite() {
 			this.setStatus();
 			return new Associate(getId(), getSalesforceId(), getCredential(), getName(), getPortfolioLink(), getBatch(), getProject(),
-					getLockedTo(), getSkills(), getJobs(), getAssociateStatus());
+					getLockedTo(), getSkills(), getJobs(), getAssociateStatus(), getPortfolioStatus());
 		}
 		
 		 //* Randomly returns true if an associate is determined to be health.
@@ -354,7 +354,7 @@ public class DataGeneration {
 
 		sperateClientsByType();
 
-		// Simulate stagin for each associate.
+		// Simulate staging for each associate.
 		for (Associate a : associates) {
 			SimulationState state = new SimulationState(a.getBatch(), genToDate);
 			state.associate = new AssociateP(a); // Create a probability
