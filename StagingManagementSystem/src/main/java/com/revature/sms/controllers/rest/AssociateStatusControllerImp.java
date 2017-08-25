@@ -1,9 +1,11 @@
 package com.revature.sms.controllers.rest;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
+import com.revature.sms.entities.AssociatesStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -58,5 +60,9 @@ public class AssociateStatusControllerImp {
 		return ResponseEntity.ok(associate);
 	}
 	
-
+	@GetMapping("/allStatusType")
+	public List<AssociatesStatus> getAllStatus(HttpSession session)
+	{
+		return associatesStatusService.getAllStatusString();
+	}
 }

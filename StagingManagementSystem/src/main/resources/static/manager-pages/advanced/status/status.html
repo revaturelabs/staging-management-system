@@ -2,17 +2,16 @@
     <table class="table table-striped manager-advanced-associates-table selectable-table">
         <thead>
         <tr>
-
             <div class="table-header-buttons">
                 <div>Select Status Types and Portfolio Types</div>
                 <div class="manager-advanced-row">
-                    <div ng-repeat="batchtype in batchtypes">
+                    <div ng-repeat="status in statusType">
                         <input
                                 type="checkbox"
-                                value="{{batchtype}}"
-                                ng-checked="selectedBatchTypes.indexOf(batchtype) > -1"
-                                ng-click="toggleSelectedBatchTypes(batchtype)"
-                        > {{batchtype.value}}
+                                value="{{status}}"
+                                ng-checked="selectedStatusType.indexOf(status) > -1"
+                                ng-click="toggleSelectedStatusType(status)"
+                        > {{status.value}}
                     </div>
                 </div>
             </div>

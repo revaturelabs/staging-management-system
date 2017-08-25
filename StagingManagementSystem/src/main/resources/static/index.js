@@ -63629,6 +63629,14 @@
 	    });
 	  });
 
+	  $http.get('status/allStatusType').then(function (data) {
+	    $scope.statusType = data.data;
+	    $scope.selectedStatusType = [];
+	    $scope.statusType.forEach(function (type) {
+	      $scope.selectedStatusType.push(type);
+	    });
+	  });
+
 	  $http.get('associate/all').then(function (data) {
 	    $scope.associates = data.data;
 	  }, function (data) {});

@@ -10,6 +10,17 @@ function managerAdvancedCtrl($scope, $http, $state) {
       });
     });
 
+    $http.get('status/allStatusType')
+        .then((data) => {
+            $scope.statusType = data.data;
+            $scope.selectedStatusType = [];
+            $scope.statusType.forEach((type) => {
+                $scope.selectedStatusType.push(type);
+            });
+        });
+
+
+
   $http.get('associate/all')
     .then((data) => {
       $scope.associates = data.data;
@@ -21,7 +32,7 @@ function managerAdvancedCtrl($scope, $http, $state) {
       $scope.batches = data.data;
     }, (data) => {
     });
-    
+
     // fetching all project data
    $http.get('project/all')
     .then((data) => {
