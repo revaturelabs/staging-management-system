@@ -20,7 +20,7 @@ public class PortfolioStatus
 	@Column(name = "PORTFOLIO_STATUS_ID")
 //	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PORTFOLIO_STATUS_ID_SEQ")
 //	@SequenceGenerator(name = "PORTFOLIO_STATUS_ID_SEQ", sequenceName = "PORTFOLIO_STATUS_ID_SEQ")
-	private int portfolioStatusId;
+	private long portfolioStatusId;
 	
 	@Column(name="PORTFOLIO_STATUS")
 	private String portfolioStatus;
@@ -37,12 +37,12 @@ public class PortfolioStatus
 		this.portfolioStatus = portfolioStatus;
 	}
 
-	public int getPortfolioStatusId()
+	public long getPortfolioStatusId()
 	{
 		return portfolioStatusId;
 	}
 
-	public void setPortfolioStatusId(int portfolioStatusId) 
+	public void setPortfolioStatusId(long portfolioStatusId) 
 	{
 		this.portfolioStatusId = portfolioStatusId;
 	}
@@ -57,15 +57,15 @@ public class PortfolioStatus
 		this.portfolioStatus = portfolioStatus;
 	}
 
-	@Override
+	/*@Override
 	public int hashCode() 
 	{
-		final int prime = 31;
+		final long prime = 31;
 		int result = 1;
 		result = prime * result + ((portfolioStatus == null) ? 0 : portfolioStatus.hashCode());
 		result = prime * result + portfolioStatusId;
 		return result;
-	}
+	}*/
 
 	@Override
 	public boolean equals(Object obj) 
