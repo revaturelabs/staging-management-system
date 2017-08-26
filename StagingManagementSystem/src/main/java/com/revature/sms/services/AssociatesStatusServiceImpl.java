@@ -9,7 +9,7 @@ import com.revature.sms.entities.AssociatesStatus;
 import com.revature.sms.repositories.AssociatesStatusRepo;
 
 @Component
-public class AssociateStatusServiceImpl implements AssociatesStatusService {
+public class AssociatesStatusServiceImpl implements AssociatesStatusService {
 	
 	@Autowired
 	private AssociatesStatusRepo associatesStatusRepo;

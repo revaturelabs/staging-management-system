@@ -5,7 +5,6 @@ import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
-import com.revature.sms.entities.AssociatesStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,12 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.sms.entities.Associate;
+import com.revature.sms.entities.AssociatesStatus;
 import com.revature.sms.services.AssociateService;
 import com.revature.sms.services.AssociatesStatusService;
 
 @RestController
 @RequestMapping("status")
-public class AssociateStatusControllerImp {
+public class AssociatesStatusControllerImp {
 	
 	@Autowired
 	private AssociateService associateService;
@@ -62,6 +62,7 @@ public class AssociateStatusControllerImp {
 		return ResponseEntity.ok(associateService.getAllByStatus("BENCH"));
 	}
 	
+	
 	@PostMapping("/statusUpdate")
 	public ResponseEntity<Associate> updateStatus(@RequestBody Associate associate, HttpSession session) {
 		if (session.getAttribute(LM) == null) {
@@ -70,13 +71,11 @@ public class AssociateStatusControllerImp {
 		associatesStatusService.updateStatus(associate.getAssociateStatus());
 		return ResponseEntity.ok(associate);
 	}
-
 	
 	@GetMapping("/allStatusType")
-	public List<AssociatesStatus> getAllStatus(HttpSession session)
-	{
+    public List<AssociatesStatus> getAllStatus(HttpSession session) {
+        System.out.println(associatesStatusService.getAllStatusString().toString());
+        return associatesStatusService.getAllStatusString();
+    }
 
-		//System.out.println(associatesStatusService.getAllStatusString().toString());
-		return associatesStatusService.getAllStatusString();
-	}
 }
