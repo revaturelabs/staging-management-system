@@ -63067,14 +63067,13 @@
 	  caption: 'Employed Percentage versus Those awaiting placement',
 	  subcaption: 'Revature, LLC',
 	  startingangle: '120',
-	  showlabels: '0',
+	  showlabels: '1',
 	  showlegend: '1',
 	  enablemultislicing: '0',
 	  slicingdistance: '25',
-	  showpercentvalues: '1',
-	  showpercentintooltip: '0',
-	  palettecolors: '#0075c2,#ff0000',
-	  plottooltext: '$label Total: $datavalue',
+	  showpercentvalues: '0',
+	  showpercentintooltip: '1',
+	  palettecolors: '#0075c2,#ff0000,#FF8000',
 	  theme: 'fint'
 	};
 
@@ -63103,13 +63102,17 @@
 	    }, {
 	      label: 'Awaiting placement',
 	      value: 0
+	    }, {
+	      label: 'In Training',
+	      value: 0
 	    }];
-
 	    for (var i = 0; i < responseData.data.length; i += 1) {
-	      if (responseData.data[i].active) {
+	      if (responseData.data[i].associateStatus.status == 'STAGING' || responseData.data[i].associateStatus.status == 'BENCH') {
 	        chartData[1].value += 1;
-	      } else {
+	      } else if (responseData.data[i].associateStatus.status == 'PROJECT') {
 	        chartData[0].value += 1;
+	      } else {
+	        chartData[2].value += 1;
 	      }
 	    }
 	    $scope.cache.put('chartData', chartData);
@@ -63273,7 +63276,11 @@
 	    $scope.newBatchTypeShow = true;
 	    $scope.newBatchType = {};
 	    $scope.newBatchType.skills = [];
-
+	    if ($scope.batch.batchType !== undefined) {
+	      $scope.newBatchType.value = $scope.batch.batchType.value;
+	      $scope.newBatchType.skills = $scope.batch.batchType.skills;
+	      $scope.newBatchType.id = $scope.batch.batchType.id;
+	    }
 	    $scope.addSkill = function (newBatchTypeSkill) {
 	      if (!newBatchTypeSkill) {
 	        return;
@@ -63790,7 +63797,7 @@
 	    $scope.associate = _extends({}, response1.data);
 	    $http({
 	      method: 'GET',
-	      url: '/credential/' + $scope.associate.id
+	      url: '/credential/' + $scope.associate.credential.id
 	    }).then(function (response2) {
 	      $scope.credential = _extends({}, response2.data);
 	    });
@@ -63894,9 +63901,8 @@
 
 	  $scope.changePassword = function () {
 	    $scope.credential.password = $scope.newPassword;
-	    $scope.credential.id = $scope.associate.id;
 	    $scope.sendingRequest = true;
-	    if ($scope.checkOldPassword() && $scope.checkNewPassword()) {
+	    if ($scope.newPassword != null && $scope.checkNewPassword()) {
 	      $scope.changePasswordButton = 'Saving...';
 	      $http({
 	        method: 'PUT',
@@ -63904,13 +63910,11 @@
 	        data: $scope.credential
 	      }).then(function () {
 	        $('#changePassword').modal('hide');
-	        $scope.currentPassword = "";
 	        $scope.newPassword = "";
 	        $scope.confirmPassword = "";
 	        $scope.createMessage = "";
 	      }, function () {
 	        $('#changePassword').modal('hide');
-	        $scope.currentPassword = "";
 	        $scope.newPassword = "";
 	        $scope.confirmPassword = "";
 	        $scope.createMessage = "";
@@ -63919,10 +63923,6 @@
 	      $scope.createMessage = 'Password information incorrect!';
 	      $scope.createMessageStyle = { color: 'red' };
 	    }
-	  };
-
-	  $scope.checkOldPassword = function () {
-	    if ($scope.currentPassword == $scope.associate.credential.password) return true;else return false;
 	  };
 
 	  $scope.checkNewPassword = function () {

@@ -76,7 +76,12 @@ public class CheckinServiceImpl implements CheckinService {
 		LocalDateTime end = LocalDateTime.of(date.toLocalDate(), LocalTime.MAX);
 		Set<Checkin> checkins = checkinRepo.getAllByCheckinTimeBetween(start, end);
 
-		return checkins != null && checkins.isEmpty();
+		for (Checkin check : checkins) {
+			if (check.getAssociate().getId() == associate.getId()) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override
