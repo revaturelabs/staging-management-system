@@ -1,22 +1,24 @@
-const certificationCtrl= function($scope,$http,$state, $stateParams,$filter,$timeout){
+const certificationCtrl= function($scope,$http,$state, $stateParams,$filter,$timeout,userService){
 	$scope.certifications ={};
+	$scope.certificationtype ={};
 	
 		$scope.ApplyCert = function() {
-		    $('#datetimepicker1').val('');	    
 			
+		    $('#datetimepicker1').val('');	    
 			$('#getCert').modal('show');
 		};
 		
 		$http ({
 			method: 'GET',
-			url: 'certifications/all',
+			url: 'certificationtype/all',
 		})
 		.then((response) => {
 			
-			$scope.certifications = response.data;
-			console.log($scope.certifications);
+			$scope.Certification_Type = response.data;
+			console.log($scope.Certification_Type);
 		});
 		
+
 //		$scope.findCert = function(){
 //			$http({
 //				method:'GET',
@@ -37,6 +39,7 @@ const certificationCtrl= function($scope,$http,$state, $stateParams,$filter,$tim
 			
 		  $scope.updateCert=function(){
 			  $scope.selectedDate = $('#datetimepicker1').val();
+			  $scope.selectedType = undefined;
 			  $scope.today = $filter('date')(new Date(),'MM/dd/yyyy');
 			  //let newDate = moment($scope.selectedDate).toDate();
 
@@ -49,17 +52,22 @@ const certificationCtrl= function($scope,$http,$state, $stateParams,$filter,$tim
 					//post data to database
 					console.log($scope.today);
 					console.log($scope.selectedDate);
-					 $scope.successMessage="You are now scheduled to take a certification";
-					 
+					let newDate = moment($scope.selectedDate).toDate();
 					 $http({
 					        method: 'POST',
-					        url: 'certifications/add/cetification',
-					        data: { certifications:certification, date:selectedDate.value },
+					        url: 'certifications/add/certification',
+					        data: {cert_type:$scope.selectedType, cert_testdate:newDate, cert_status:$scope.selectedStatus, associate_id:userService.getUser().id },
 					      })
 					      .then((response) => {
-					    	  $scope.ApplyCert();
+					    	  $state.reload();
+					    	  console.log(response.data);
 					      });
-				}else{
+					 $scope.successMessage="You are now scheduled to take a certification";
+					 $timeout(function(){
+							$scope.successMessage=false;
+						},2000);
+					 }
+				else{
 					$scope.errorMessage='Date must be 2 weeks after today';
 					console.log($scope.today);
 					console.log($scope.selectedDate);

@@ -235,7 +235,7 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       controller: profileCtrl,
 
     })
-     .state('associate.certifications',{
+     .state('associate.Certifications',{
     	url:'/certifications',
     	templateUrl:'associate-pages/Certifications/certifications.html',
     	controller: certificationCtrl,

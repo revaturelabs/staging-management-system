@@ -47,7 +47,7 @@ public class CertificationsControllerImpl {
 	}
 	
 	//add a new certification by type
-	@PostMapping("/add/cetification")
+	@PostMapping("/add/certification")
 	public void add(@RequestBody Certifications certifications){
 		certService.add(certifications);
 	}

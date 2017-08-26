@@ -327,7 +327,7 @@
 	    templateUrl: 'associate-pages/profile/profile.html',
 	    controller: _profile2.default
 
-	  }).state('associate.certifications', {
+	  }).state('associate.Certifications', {
 	    url: '/certifications',
 	    templateUrl: 'associate-pages/Certifications/certifications.html',
 	    controller: _certifications2.default
@@ -64165,22 +64165,23 @@
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
-	var certificationCtrl = function certificationCtrl($scope, $http, $state, $stateParams, $filter, $timeout) {
+	var certificationCtrl = function certificationCtrl($scope, $http, $state, $stateParams, $filter, $timeout, userService) {
 		$scope.certifications = {};
+		$scope.certificationtype = {};
 
 		$scope.ApplyCert = function () {
-			$('#datetimepicker1').val('');
 
+			$('#datetimepicker1').val('');
 			$('#getCert').modal('show');
 		};
 
 		$http({
 			method: 'GET',
-			url: 'certifications/all'
+			url: 'certificationtype/all'
 		}).then(function (response) {
 
-			$scope.certifications = response.data;
-			console.log($scope.certifications);
+			$scope.Certification_Type = response.data;
+			console.log($scope.Certification_Type);
 		});
 
 		//		$scope.findCert = function(){
@@ -64202,6 +64203,7 @@
 
 		$scope.updateCert = function () {
 			$scope.selectedDate = $('#datetimepicker1').val();
+			$scope.selectedType = undefined;
 			$scope.today = $filter('date')(new Date(), 'MM/dd/yyyy');
 			//let newDate = moment($scope.selectedDate).toDate();
 
@@ -64214,15 +64216,19 @@
 				//post data to database
 				console.log($scope.today);
 				console.log($scope.selectedDate);
-				$scope.successMessage = "You are now scheduled to take a certification";
-
+				var newDate = moment($scope.selectedDate).toDate();
 				$http({
 					method: 'POST',
-					url: 'certifications/add/cetification',
-					data: { certifications: certification, date: selectedDate.value }
+					url: 'certifications/add/certification',
+					data: { cert_type: $scope.selectedType, cert_testdate: newDate, cert_status: $scope.selectedStatus, associate_id: userService.getUser().id }
 				}).then(function (response) {
-					$scope.ApplyCert();
+					$state.reload();
+					console.log(response.data);
 				});
+				$scope.successMessage = "You are now scheduled to take a certification";
+				$timeout(function () {
+					$scope.successMessage = false;
+				}, 2000);
 			} else {
 				$scope.errorMessage = 'Date must be 2 weeks after today';
 				console.log($scope.today);

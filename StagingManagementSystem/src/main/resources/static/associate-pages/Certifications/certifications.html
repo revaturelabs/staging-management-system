@@ -11,15 +11,18 @@
         <h4 class="modal-title">Schedule a Certification</h4>
       </div>
       <div class="modal-body">
-        <label>Pick A Certification</label>
+      <label>Pick A Certification</label>
         <div class="input-group">
-          <select class="form-control"  ng-model="Certification" ng-options="x.cert_type for x in certifications" title="Certifications">
+          <select class="form-control"  ng-model="selectedType" ng-options="x.type_of_cert for x in Certification_type">
+          </select>
+          <label>Status</label>
+          <select class="form-control"  ng-model="selectedStatus" ng-options="x.cert_status for x in certifications">
           </select>
         </div>
         <div class="form-group" >
         <label>Pick a Date</label>
            <div class='input-group date' >
-               <input type='text' class="form-control" ng-model="selectedDate.value" id='datetimepicker1'/>
+               <input type='text' class="form-control" ng-model="selectedDate" id='datetimepicker1'/>
                <span ng-click="showDateTimePicker()" class="input-group-addon">
                    <span class="glyphicon glyphicon-calendar"></span>
                </span>
@@ -29,7 +32,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button ng-click="updateCert()"  type="button" class="btn btn-primary">Submit</button>
+        <button ng-click="updateCert()"  type="button" class="btn btn-primary" data-dismiss="modal">Submit</button>
       </div>
     </div>
   </div>

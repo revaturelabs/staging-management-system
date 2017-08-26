@@ -29,7 +29,7 @@ public class Certifications {
 	   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CERTIFICATIONS_ID_SEQ")
 	    @SequenceGenerator(name = "CERTIFICATIONS_ID_SEQ", sequenceName = "CERTIFICATIONS_ID_SEQ")
 	     private long Cert_id;
-         private String Cert_type;
+      
          private String Cert_status;
          private String Cert_filename;
          private Date Cert_testdate;
@@ -45,6 +45,19 @@ public class Certifications {
  			super();
  			
  		}
+         
+
+		public Certifications(long cert_id, String cert_status, String cert_filename, Date cert_testdate,
+				String cert_comments, Associate associate) {
+			super();
+			Cert_id = cert_id;
+			Cert_status = cert_status;
+			Cert_filename = cert_filename;
+			Cert_testdate = cert_testdate;
+			Cert_comments = cert_comments;
+			this.associate = associate;
+		}
+
 
 		public long getCert_id() {
 			return Cert_id;
@@ -54,14 +67,7 @@ public class Certifications {
 			Cert_id = cert_id;
 		}
 
-		public String getCert_type() {
-			return Cert_type;
-		}
-
-		public void setCert_type(String cert_type) {
-			Cert_type = cert_type;
-		}
-
+		
 		public String getCert_status() {
 			return Cert_status;
 		}
@@ -110,7 +116,7 @@ public class Certifications {
 			result = prime * result + (int) (Cert_id ^ (Cert_id >>> 32));
 			result = prime * result + ((Cert_status == null) ? 0 : Cert_status.hashCode());
 			result = prime * result + ((Cert_testdate == null) ? 0 : Cert_testdate.hashCode());
-			result = prime * result + ((Cert_type == null) ? 0 : Cert_type.hashCode());
+		
 			result = prime * result + ((associate == null) ? 0 : associate.hashCode());
 			result = prime * result + ((Cert_comments == null) ? 0 : Cert_comments.hashCode());
 			return result;
@@ -142,11 +148,7 @@ public class Certifications {
 					return false;
 			} else if (!Cert_testdate.equals(other.Cert_testdate))
 				return false;
-			if (Cert_type == null) {
-				if (other.Cert_type != null)
-					return false;
-			} else if (!Cert_type.equals(other.Cert_type))
-				return false;
+			
 			if (associate == null) {
 				if (other.associate != null)
 					return false;
@@ -162,10 +164,12 @@ public class Certifications {
 
 		@Override
 		public String toString() {
-			return "Certifications [Cert_id=" + Cert_id + ", Cert_type=" + Cert_type + ", Cert_status=" + Cert_status
-					+ ", Cert_filename=" + Cert_filename + ", Cert_testdate=" + Cert_testdate + ", comments=" + Cert_comments
-					+ ", associate_id=" + associate + "]";
+			return "Certifications [Cert_id=" + Cert_id + ", Cert_status=" + Cert_status + ", Cert_filename="
+					+ Cert_filename + ", Cert_testdate=" + Cert_testdate + ", Cert_comments=" + Cert_comments
+					+ ", associate=" + associate + "]";
 		}
+
+	
           
 		
          
