@@ -13,11 +13,12 @@
       <div class="modal-body">
       <label>Pick A Certification</label>
         <div class="input-group">
-          <select class="form-control"  ng-model="selectedType" ng-options="x.type_of_cert for x in Certification_type">
+          <select class="form-control"  ng-model="selectedType" ng-options="x.type_of_cert for x in CERTIFICATION_TYPE">
           </select>
-          <label>Status</label>
-          <select class="form-control"  ng-model="selectedStatus" ng-options="x.cert_status for x in certifications">
-          </select>
+        </div>
+        <div class="form-group">
+        	<label>Status</label>
+        	<input type="text" ng-model="formkey" name="formkey" ng-init="formkey='inprogress'">
         </div>
         <div class="form-group" >
         <label>Pick a Date</label>
@@ -46,8 +47,8 @@
 		<th>Status</th>
 		<th>Test Date</th>
 	</tr>
-	<tr>
-		<td></td>
+	<tr ng-repeat="x in CERTFICATIONS">
+		<td>{{}}</td>
 	</tr>
 </table>
 

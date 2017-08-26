@@ -64180,21 +64180,9 @@
 			url: 'certificationtype/all'
 		}).then(function (response) {
 
-			$scope.Certification_Type = response.data;
-			console.log($scope.Certification_Type);
+			$scope.CERTIFICATION_TYPE = response.data;
+			console.log($scope.CERTIFICATION_TYPE);
 		});
-
-		//		$scope.findCert = function(){
-		//			$http({
-		//				method:'GET',
-		//				url:'/certifications/all',
-		//			})
-		//			.then (function(response){
-		//				$scope.certifications=response.data;
-		//				console.log($scope.certifications);
-		//			});
-		//		};
-		//		
 
 		$('#datetimepicker1').datetimepicker();
 		$scope.showDateTimePicker = function () {
@@ -64203,8 +64191,8 @@
 
 		$scope.updateCert = function () {
 			$scope.selectedDate = $('#datetimepicker1').val();
-			$scope.selectedType = undefined;
 			$scope.today = $filter('date')(new Date(), 'MM/dd/yyyy');
+			$scope.associate_id = userService.getUser();
 			//let newDate = moment($scope.selectedDate).toDate();
 
 			var MS_PER_DAY = 1000 * 60 * 60 * 24;
@@ -64220,7 +64208,7 @@
 				$http({
 					method: 'POST',
 					url: 'certifications/add/certification',
-					data: { cert_type: $scope.selectedType, cert_testdate: newDate, cert_status: $scope.selectedStatus, associate_id: userService.getUser().id }
+					data: { cert_testdate: newDate, cert_status: $scope.formkey, associate_id: userService.getUser(), cert_type: $scope.selectedType.type_of_cert }
 				}).then(function (response) {
 					$state.reload();
 					console.log(response.data);
