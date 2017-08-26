@@ -62172,6 +62172,15 @@
 	    });
 	  };
 
+	  $scope.updateFromSMS = function () {
+	    $http({
+	      method: 'GET',
+	      url: '/sfdata/batches'
+	    }).then(function (response) {
+	      alert("Sent update to SMS from Salesforce request!");
+	    });
+	  };
+
 	  $scope.manager = { name: 'Joe' };
 	}
 
