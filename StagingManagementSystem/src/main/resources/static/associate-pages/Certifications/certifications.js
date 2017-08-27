@@ -1,6 +1,18 @@
-const certificationCtrl= function($scope,$http,$state, $stateParams,$filter,$timeout,userService){
+function certificationCtrl($scope,$http,$state, $stateParams,$filter,$timeout,userService){
 	$scope.certifications ={};
 	$scope.certificationtype ={};
+	
+	const updateCert = document.getElementById('addCerts');
+
+	
+	$scope.getScheduleCert = function(){
+	    $http({
+	        method: 'GET',
+	        url: `certifications/associate/${userService.getUser().id}`,
+	      }).then(function (response) {
+	    	  $scope.CERTIFICATIONS = response.data;
+	      });
+	}
 	
 		$scope.ApplyCert = function() {
 			
@@ -20,12 +32,23 @@ const certificationCtrl= function($scope,$http,$state, $stateParams,$filter,$tim
 		
 		
 
+		$http ({
+			method: 'GET',
+			url: 'certifications/all',
+		})
+		.then((response) => {
+			
+			$scope.CERTIFICATIONS.associate_Id = response.data;
+			console.log($scope.CERTIFICATIONS.associate_Id);
+		});
+		
 		 $('#datetimepicker1').datetimepicker();
 		  $scope.showDateTimePicker = () => {
 		    $('#datetimepicker1').datetimepicker('show');
 		  };
 		  
-
+		  $scope.getScheduleCert();
+		  
 		  $scope.updateCert=function(){
 			  $scope.selectedDate = $('#datetimepicker1').val();
 			  $scope.today = $filter('date')(new Date(),'MM/dd/yyyy');
@@ -48,7 +71,7 @@ const certificationCtrl= function($scope,$http,$state, $stateParams,$filter,$tim
 					        data: { cert_testdate:newDate, cert_status:$scope.formkey, associate_id:userService.getUser(), cert_type:$scope.selectedType.type_of_cert },
 					      })
 					      .then((response) => {
-					    	  $state.reload();
+					    	  $scope.getScheduleCert();
 					    	  console.log(response.data);
 					      });
 					 $scope.successMessage="You are now scheduled to take a certification";

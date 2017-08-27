@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
@@ -29,16 +30,15 @@ public class Certifications {
 	   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CERTIFICATIONS_ID_SEQ")
 	    @SequenceGenerator(name = "CERTIFICATIONS_ID_SEQ", sequenceName = "CERTIFICATIONS_ID_SEQ")
 	     private long Cert_id;
-	   	private String Cert_type;
+	   	 private String Cert_type;
          private String Cert_status;
          private String Cert_filename;
          private Date Cert_testdate;
          private String Cert_comments;
 //         @JoinColumn(name= "MANAGER_ID")
 //         private Manager manager_id;
-         @ManyToOne(fetch= FetchType.LAZY)
-         @JoinColumn(name = "ASSOCIATE_ID")
-       //  @JsonProperty(access = Access.WRITE_ONLY)
+         @ManyToOne(fetch = FetchType.LAZY)
+         @JoinColumn(name="ASSOCIATE_ID")
          private Associate associate;
          
          public Certifications() {
@@ -110,10 +110,11 @@ public class Certifications {
 			this.Cert_comments = comments;
 		}
 
+	
 		public Associate getAssociate_id() {
 			return associate;
 		}
-
+        
 		public void setAssociate_id(Associate associate_id) {
 			this.associate = associate_id;
 		}

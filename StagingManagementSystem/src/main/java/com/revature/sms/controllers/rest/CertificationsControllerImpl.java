@@ -53,8 +53,8 @@ public class CertificationsControllerImpl {
 	}
 
 	//get associate by id who has a certifications
-	@GetMapping("/associate")
-	public Set<Certifications> findByAssociate(@PathVariable Long id) {
-		return certService.findByAssociate(id);
+	@GetMapping("/associate/{associateId}")
+	public Set<Certifications> findByAssociate(@PathVariable long associateId) {
+		return certService.findByAssociate(associateId);
 	}
 }

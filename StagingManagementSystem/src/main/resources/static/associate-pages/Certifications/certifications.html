@@ -33,23 +33,28 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button ng-click="updateCert()"  type="button" class="btn btn-primary" data-dismiss="modal">Submit</button>
+        <button ng-click="updateCert()"  type="button" id="addCerts" class="btn btn-primary" data-dismiss="modal">Submit</button>
       </div>
     </div>
   </div>
 </div>
 
-<div ng-if="successMessage" class="btn btn-">{{successMessage}}</div>
-<table class="table table-striped certification-table selectable-table">
+<div ng-if="successMessage">{{successMessage}}</div>
+<table class="table table-striped ">
+	<thead>
 	<tr>
-		<th>Username</th>
 		<th>Certification</th>
 		<th>Status</th>
 		<th>Test Date</th>
 	</tr>
-	<tr ng-repeat="x in CERTFICATIONS">
-		<td>{{}}</td>
+</thead>
+<tbody>
+	<tr ng-repeat="x in CERTIFICATIONS" >
+		<td>{{x.cert_type}}</td>
+		<td>{{x.cert_status}}</td>
+		<td>{{dateConverter(x.cert_testdate)}}</td>
 	</tr>
+</tbody>
 </table>
 
 </body>

@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -21,6 +20,8 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 
 @Entity
@@ -72,7 +73,8 @@ public class Associate {
 	@OneToMany(mappedBy = "associate")
 	private Set<Job> jobs;
 
-	@OneToMany(mappedBy="associate")
+	@OneToMany(mappedBy="associate",fetch = FetchType.LAZY)
+    @JsonProperty(access = Access.WRITE_ONLY)
     private Set<Certifications> certifications;
 	
 	public Associate() {
@@ -290,19 +292,14 @@ public class Associate {
 		this.jobs = jobs;
 	}
 
+	
 	public Set<Certifications> getCertifications() {
 		return certifications;
 	}
 
-
-
-
 	public void setCertifications(Set<Certifications> certifications) {
 		this.certifications = certifications;
 	}
-
-
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -317,11 +314,6 @@ public class Associate {
 			if (other.associateStatus != null)
 				return false;
 		} else if (!associateStatus.equals(other.associateStatus))
-			return false;
-		if (batch == null) {
-			if (other.batch != null)
-				return false;
-		} else if (!batch.equals(other.batch))
 			return false;
 		if (credential == null) {
 			if (other.credential != null)
@@ -354,11 +346,6 @@ public class Associate {
 			if (other.portfolioStatus != null)
 				return false;
 		} else if (!portfolioStatus.equals(other.portfolioStatus))
-			return false;
-		if (project == null) {
-			if (other.project != null)
-				return false;
-		} else if (!project.equals(other.project))
 			return false;
 		if (skills == null) {
 			if (other.skills != null)

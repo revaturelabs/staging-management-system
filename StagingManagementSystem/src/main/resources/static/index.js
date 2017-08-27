@@ -64165,9 +64165,20 @@
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
-	var certificationCtrl = function certificationCtrl($scope, $http, $state, $stateParams, $filter, $timeout, userService) {
+	function certificationCtrl($scope, $http, $state, $stateParams, $filter, $timeout, userService) {
 		$scope.certifications = {};
 		$scope.certificationtype = {};
+
+		var updateCert = document.getElementById('addCerts');
+
+		$scope.getScheduleCert = function () {
+			$http({
+				method: 'GET',
+				url: 'certifications/associate/' + userService.getUser().id
+			}).then(function (response) {
+				$scope.CERTIFICATIONS = response.data;
+			});
+		};
 
 		$scope.ApplyCert = function () {
 
@@ -64184,10 +64195,21 @@
 			console.log($scope.CERTIFICATION_TYPE);
 		});
 
+		$http({
+			method: 'GET',
+			url: 'certifications/all'
+		}).then(function (response) {
+
+			$scope.CERTIFICATIONS.associate_Id = response.data;
+			console.log($scope.CERTIFICATIONS.associate_Id);
+		});
+
 		$('#datetimepicker1').datetimepicker();
 		$scope.showDateTimePicker = function () {
 			$('#datetimepicker1').datetimepicker('show');
 		};
+
+		$scope.getScheduleCert();
 
 		$scope.updateCert = function () {
 			$scope.selectedDate = $('#datetimepicker1').val();
@@ -64210,7 +64232,7 @@
 					url: 'certifications/add/certification',
 					data: { cert_testdate: newDate, cert_status: $scope.formkey, associate_id: userService.getUser(), cert_type: $scope.selectedType.type_of_cert }
 				}).then(function (response) {
-					$state.reload();
+					$scope.getScheduleCert();
 					console.log(response.data);
 				});
 				$scope.successMessage = "You are now scheduled to take a certification";
@@ -64226,7 +64248,7 @@
 				}, 2000);
 			}
 		};
-	};
+	}
 
 	exports.default = certificationCtrl;
 
