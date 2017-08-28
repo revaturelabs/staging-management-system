@@ -17,7 +17,6 @@ import javax.persistence.Table;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Credential {
 
-    @JsonProperty(access = Access.WRITE_ONLY)
     @Id
     @Column(name = "CREDENTIAL_ID")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CREDENTIAL_ID_SEQ")
