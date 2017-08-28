@@ -21,7 +21,6 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-
 @Entity
 @Table(name = "ASSOCIATES")
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
@@ -107,7 +106,6 @@ public class Associate {
 			boolean beforeEnd = j.getEndDate() == null || date.compareTo(j.getEndDate()) < 0;
 			boolean hasentStopped = j.getEndDate() == null;
 			boolean afterStart = date.compareTo(j.getStartDate()) > 0;
-
 			if (afterStart && (hasentStopped || beforeEnd))
 				return true;
 		}
@@ -121,8 +119,7 @@ public class Associate {
 	 */
 	public boolean hasStartedOnDate(LocalDateTime date) {
 		boolean hasBegunTraining = date.compareTo(batch.getStartDate()) > 0;
-
-		return false;
+		return (hasBegunTraining) ? true : false;
 	}
 
 	/**
@@ -132,32 +129,27 @@ public class Associate {
 		LocalDateTime date = adate.withHour(12); //Set mid day all other events should be the beginning of the day.
 		boolean afterBatchStart = date.compareTo(batch.getStartDate()) > 0;
 		boolean beforeBatchEnd = date.compareTo(batch.getEndDate()) < 0;
-		if (afterBatchStart && beforeBatchEnd)
-			return true;
-
-		return false;
+		return (afterBatchStart && beforeBatchEnd) ? true : false;
 	}
 
 	/**
 	 * This function returns true if the associate was in staging on the given date.
 	 */
 	public boolean isTrackedOnDate(LocalDateTime date) {
-		if (hasStartedOnDate(date) && !isTrainingOnDate(date) && !hasJobOnDate(date))
-			return true;
-		return false;
+		return (hasStartedOnDate(date) && !isTrainingOnDate(date) && !hasJobOnDate(date)) ? true : false;
 	}
 	
 	/**
 	 * This function returns true if the associate is in Staging and is available for hire
 	 */
 	public boolean isActive() {
-
-		//return (("STAGING").equals(associateStatus.getStatus()) || ("BENCH").equals(associateStatus.getStatus()));
-		if(associateStatus.getStatus() == null)
-			System.out.println("ERROR NULL");
 		return (associateStatus.getStatus().equals("STAGING") || associateStatus.getStatus().equals("BENCH"));
 	}
 	
+	public boolean isBenched() {
+		return associateStatus.getStatus().equals("BENCH") ? true : false;
+	}
+
 	public void setStatus() {
 		
 		if (this.isTrainingOnDate(LocalDateTime.now())) {

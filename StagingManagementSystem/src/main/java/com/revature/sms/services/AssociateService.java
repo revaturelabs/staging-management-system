@@ -11,6 +11,7 @@ public interface AssociateService {
     public void add(Associate associate);
     public void delete(Associate associate);
     public void update(Associate associate);
+    public void updateStatus(Associate associate);
     public Set<Associate> getAll();
     public Set<Associate> getAllActive();
     public Set<Associate> haveNoBatch();

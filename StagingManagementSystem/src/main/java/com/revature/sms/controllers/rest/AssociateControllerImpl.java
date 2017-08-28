@@ -116,7 +116,7 @@ public class AssociateControllerImpl {
 		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 	}
 
-	@GetMapping("/{id}")
+	@GetMapping("/by-identifier/{id}")
 	public ResponseEntity<Associate> getAssociate(@PathVariable long id, HttpSession session) {
 		Associate associate = (Associate) session.getAttribute(LA);
 		if (session.getAttribute(LM) == null && (associate == null || associate.getId() != id)) {
@@ -133,13 +133,12 @@ public class AssociateControllerImpl {
 		return ResponseEntity.ok(associateService.getAll());
 	}
 
-//	we took this out
 	@GetMapping("/allActive")
 	public Set<Associate> getAllActiveAssociates(HttpSession session) {
 	return associateService.getAllActive();
 	}
 
-	//getting all the assocoates by theit status
+	//getting all the associates by theit status
 	//status is passing throuh the js file
 	@GetMapping("{status}")
 	public Set<Associate> getAllTraining(@PathVariable String status, HttpSession session)
@@ -167,20 +166,30 @@ public class AssociateControllerImpl {
 		return associateService.findByProjectId(id);
 	}
 
+	// is this broken? what is the purpose of this method
 	@GetMapping(path = "/totaldata")
 	public ResponseEntity<Collection<TotalData>> getAssocaites()
 	{
-		return ResponseEntity.ok(totalReport.process(associateService.findByAssociateStatus("Staging")));
+		return ResponseEntity.ok(totalReport.process(associateService.getAllActive()));
 	}
 	
 	@GetMapping(path = "/AssociatesInStaggin/{date}")
-	public Set<StaggingAssociate> getAssociatesInStaggingOn(@PathVariable String date){
+	public Set<StaggingAssociate> getAssociatesInStaggingOn(@PathVariable String date) {
 		logger.trace("DATE!!!!    " + date);
 	  return associateService.getAssociatesInStaggingOn(date);
 	}
 	
 	@GetMapping("/search/{searchName}")
-	public Set<Associate> findByNameLike(@PathVariable String searchName){
+	public Set<Associate> findByNameLike(@PathVariable String searchName) {
 		return associateService.findByNameLike(searchName);
+	}
+
+	@PutMapping("updateAssociateStatus")
+	public ResponseEntity<Associate> updateStatus(@RequestBody Associate associate, HttpSession session) {
+		if (session.getAttribute(LM) == null) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+		}
+		associateService.updateStatus(associate);
+		return ResponseEntity.ok(associate);
 	}
 }

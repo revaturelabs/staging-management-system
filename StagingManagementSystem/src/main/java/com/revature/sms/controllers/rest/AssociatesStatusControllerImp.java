@@ -74,7 +74,6 @@ public class AssociatesStatusControllerImp {
 	
 	@GetMapping("/allStatusType")
     public List<AssociatesStatus> getAllStatus(HttpSession session) {
-        System.out.println(associatesStatusService.getAllStatusString().toString());
         return associatesStatusService.getAllStatusString();
     }
 
