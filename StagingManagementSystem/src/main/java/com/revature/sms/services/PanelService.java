@@ -12,7 +12,7 @@ public interface PanelService {
 
 	// Read
 	public Set<Panel> findByAssociate(Associate associate);
-	public Set<Panel> findByAssociateId(int id);
+	public Set<Panel> findByAssociateId(long associateId);
 	public Panel getById(long id);
 	public Set<Panel> getAllPanel();
 	

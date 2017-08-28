@@ -29,13 +29,12 @@ public class BatchTypeControllerImpl {
 
 	/**
 	 * When called this will always persist a unique BatchType in the database.
-	 * 
+	 * ^no longer does that, just update/add
 	 * @param batchType
 	 *            - batchType to be persisted.
 	 */
 	@PostMapping
 	public BatchType addBatchType(@RequestBody BatchType batchType) {
-		batchType.setId(0l);
 		return batchTypeService.add(batchType);
 	}
 

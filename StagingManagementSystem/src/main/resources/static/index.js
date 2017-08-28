@@ -134,13 +134,9 @@
 
 	var _login2 = _interopRequireDefault(_login);
 
-	var _certifications = __webpack_require__(147);
-
-	var _certifications2 = _interopRequireDefault(_certifications);
-
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	__webpack_require__(148)(_fusioncharts2.default);
+	__webpack_require__(147)(_fusioncharts2.default);
 
 	// const Visualizer = window['ui-router-visualizer'].Visualizer;
 
@@ -193,8 +189,10 @@
 	  $uiRouter.stateRegistry.get().map(s => s.$$state())
 	      .filter(s => s.path.length === 2 || s.path.length === 3)
 	      .forEach(s => s._collapsed = false);
-	     const pluginInstance = $uiRouter.plugin(Visualizer);
-	     $trace.enable('TRANSITION');*/
+	  
+	  const pluginInstance = $uiRouter.plugin(Visualizer);
+	  
+	  $trace.enable('TRANSITION');*/
 
 	  // Global Functions
 	  $rootScope.dateConverter = function (time) {
@@ -325,10 +323,6 @@
 	    templateUrl: 'associate-pages/profile/profile.html',
 	    controller: _profile2.default
 
-	  }).state('associate.Certifications', {
-	    url: '/certifications',
-	    templateUrl: 'associate-pages/Certifications/certifications.html',
-	    controller: _certifications2.default
 	  });
 	});
 
@@ -62178,6 +62172,15 @@
 	    });
 	  };
 
+	  $scope.updateFromSMS = function () {
+	    $http({
+	      method: 'GET',
+	      url: '/sfdata/batches'
+	    }).then(function (response) {
+	      alert("Sent update to SMS from Salesforce request!");
+	    });
+	  };
+
 	  $scope.manager = { name: 'Joe' };
 	}
 
@@ -63064,14 +63067,13 @@
 	  caption: 'Employed Percentage versus Those awaiting placement',
 	  subcaption: 'Revature, LLC',
 	  startingangle: '120',
-	  showlabels: '0',
+	  showlabels: '1',
 	  showlegend: '1',
 	  enablemultislicing: '0',
 	  slicingdistance: '25',
-	  showpercentvalues: '1',
-	  showpercentintooltip: '0',
-	  palettecolors: '#0075c2,#ff0000',
-	  plottooltext: '$label Total: $datavalue',
+	  showpercentvalues: '0',
+	  showpercentintooltip: '1',
+	  palettecolors: '#0075c2,#ff0000,#FF8000',
 	  theme: 'fint'
 	};
 
@@ -63100,13 +63102,17 @@
 	    }, {
 	      label: 'Awaiting placement',
 	      value: 0
+	    }, {
+	      label: 'In Training',
+	      value: 0
 	    }];
-
 	    for (var i = 0; i < responseData.data.length; i += 1) {
-	      if (responseData.data[i].active) {
+	      if (responseData.data[i].associateStatus.status == 'STAGING' || responseData.data[i].associateStatus.status == 'BENCH') {
 	        chartData[1].value += 1;
-	      } else {
+	      } else if (responseData.data[i].associateStatus.status == 'PROJECT') {
 	        chartData[0].value += 1;
+	      } else {
+	        chartData[2].value += 1;
 	      }
 	    }
 	    $scope.cache.put('chartData', chartData);
@@ -63270,7 +63276,11 @@
 	    $scope.newBatchTypeShow = true;
 	    $scope.newBatchType = {};
 	    $scope.newBatchType.skills = [];
-
+	    if ($scope.batch.batchType !== undefined) {
+	      $scope.newBatchType.value = $scope.batch.batchType.value;
+	      $scope.newBatchType.skills = $scope.batch.batchType.skills;
+	      $scope.newBatchType.id = $scope.batch.batchType.id;
+	    }
 	    $scope.addSkill = function (newBatchTypeSkill) {
 	      if (!newBatchTypeSkill) {
 	        return;
@@ -63659,25 +63669,13 @@
 	var managerPanelCtrl = function managerPanelCtrl($scope, $state, $location, $http, userService) {
 		$scope.PanelLoad = '';
 		$scope.show_panel = false;
-		/*$http({
-	     method: 'GET',
-	     url: '/associate/all',
-	   }).then((response) => {
-	 	  
-	     $scope.associates = response.data;
-	     $scope.PanelLoad= '';
-	     $scope.search_disabled = false;
-	 });*/
+		$scope.defaultCommnt = '';
+		$scope.choose = {};
+		$scope.plist = {};
+
 		$scope.searchClick = function (searchName) {
-			/*$scope.search.name='';
-	  $scope.show_panel = true;
-	  var associateId = associate.id;
-	  $http({
-	  	method: 'GET',
-	  	url: '/panel/associate/'+associateId,
-	  }).then((response) =>{
-	  	$scope.plist = response.data;
-	  });*/
+			$scope.choose = {};
+			$scope.plist = {};
 			if (searchName) {
 				$scope.disabled_search = true;
 				$scope.show_panel = false;
@@ -63694,6 +63692,7 @@
 			}
 
 			$scope.associatePanelClick = function (associate) {
+				$scope.choose = associate;
 				$scope.searchShowUp = false;
 				$scope.show_panel = true;
 				var associateId = associate.id;
@@ -63702,8 +63701,63 @@
 					url: '/panel/associate/' + associateId
 				}).then(function (response) {
 					$scope.plist = response.data;
+					$scope.plist.sort(function (a, b) {
+						return a.id - b.id;
+					});
 				});
+
+				$scope.PanelClick = function (panel) {
+
+					$scope.statusOption = panel.status;
+					$scope.panelChoose = panel;
+					$scope.errorUpdateMsgShow = false;
+					$scope.successUpdateMsgShow = false;
+					$scope.updateComment = panel.comments;
+					$('#PanelCommentModal').modal('show');
+
+					$scope.updateInterviewClick = function (statusOption, updateComment) {
+						panel.comments = updateComment;
+						panel.status = statusOption;
+						$http({
+							method: 'PUT',
+							url: '/panel',
+							data: panel
+						}).then(function (response) {
+							$scope.successUpdateMsgShow = true;
+							$scope.associatePanelClick(associate);
+						}, function (response) {
+							$scope.errorUpdateMsgShow = true;
+						});
+					};
+				};
 			};
+		};
+
+		$scope.addPanelClick = function () {
+			$scope.errorMsgShow = false;
+			$scope.successMsgShow = false;
+			addPanelBtn.disabled = true;
+			addPanelBtn.innerHTML = 'Adding...';
+			$http({
+				method: 'POST',
+				url: '/panel',
+				data: { associate: $scope.choose, comments: $scope.defaultCommnt }
+			}).then(function (response) {
+				$scope.successMsgShow = true;
+				addPanelBtn.disabled = false;
+				addPanelBtn.innerHTML = 'Add Panel';
+				$scope.defaultCommnt = '';
+				$scope.associatePanelClick($scope.choose);
+			});
+		};
+
+		$scope.showAddModal = function () {
+			$scope.errorMsgShow = false;
+			$scope.successMsgShow = false;
+			$scope.selectedClient = undefined;
+			$('#datetimepicker1').val('');
+			$scope.selectedMarketer = undefined;
+			$('#addModal').modal('show');
 		};
 	};
 	exports.default = managerPanelCtrl;
@@ -63739,8 +63793,14 @@
 	  $http({
 	    method: 'GET',
 	    url: associateUrl
-	  }).then(function (response) {
-	    $scope.associate = _extends({}, response.data);
+	  }).then(function (response1) {
+	    $scope.associate = _extends({}, response1.data);
+	    $http({
+	      method: 'GET',
+	      url: '/credential/' + $scope.associate.credential.id
+	    }).then(function (response2) {
+	      $scope.credential = _extends({}, response2.data);
+	    });
 	  });
 
 	  $scope.portfolioUrlInput = '';
@@ -63769,6 +63829,12 @@
 	    $scope.additionalSkillsValues = [].concat(_toConsumableArray($scope.associate.skills));
 	    $scope.newSkillValue = '';
 	    $('#additionalSkillsModal').modal('show');
+	  };
+
+	  $scope.showChangePassword = function () {
+	    $scope.sendingRequest = false;
+	    $scope.changePasswordButton = 'Save';
+	    $('#changePassword').modal('show');
 	  };
 
 	  $scope.openPortfolioUrlModal = function () {
@@ -63831,6 +63897,36 @@
 	    }, function () {
 	      $('#additionalSkillsModal').modal('hide');
 	    });
+	  };
+
+	  $scope.changePassword = function () {
+	    $scope.credential.password = $scope.newPassword;
+	    $scope.sendingRequest = true;
+	    if ($scope.newPassword != null && $scope.checkNewPassword()) {
+	      $scope.changePasswordButton = 'Saving...';
+	      $http({
+	        method: 'PUT',
+	        url: '/credential/',
+	        data: $scope.credential
+	      }).then(function () {
+	        $('#changePassword').modal('hide');
+	        $scope.newPassword = "";
+	        $scope.confirmPassword = "";
+	        $scope.createMessage = "";
+	      }, function () {
+	        $('#changePassword').modal('hide');
+	        $scope.newPassword = "";
+	        $scope.confirmPassword = "";
+	        $scope.createMessage = "";
+	      });
+	    } else {
+	      $scope.createMessage = 'Password information incorrect!';
+	      $scope.createMessageStyle = { color: 'red' };
+	    }
+	  };
+
+	  $scope.checkNewPassword = function () {
+	    if ($scope.newPassword == $scope.confirmPassword) return true;else return false;
 	  };
 
 	  $scope.updateLockedTo = function () {
@@ -64141,7 +64237,12 @@
 	        url: '/login',
 	        data: { username: $scope.username, password: $scope.password }
 	      }).then(function (response) {
-	        userService.setUser(response.data); //NOTE: Anything to do with manager login is handled through salesforce login and handling. See manager.js
+	        userService.setUser(response.data);
+	        if (response.data.permission !== undefined) {
+	          $state.go('manager.home');
+	        } else {
+	          $state.go('associate.home');
+	        }
 	      }, function () {
 	        $scope.errorMsg = 'Username or Password is incorrect.';
 	        $scope.errorMsgShow = true;
@@ -64156,113 +64257,6 @@
 
 /***/ }),
 /* 147 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	function certificationCtrl($scope, $http, $state, $stateParams, $filter, $timeout, userService) {
-		$scope.certifications = {};
-		$scope.certificationtype = {};
-
-		var updateCert = document.getElementById('addCerts');
-		var deleteCert = document.getElementById('delCerts');
-
-		$scope.getScheduleCert = function () {
-			$http({
-				method: 'GET',
-				url: 'certifications/associate/' + userService.getUser().id
-			}).then(function (response) {
-				$scope.CERTIFICATIONS = response.data;
-			});
-		};
-		$scope.deleteCert = function (associateId) {
-
-			$http({
-				method: 'DELETE',
-				url: '/certifications'
-
-			}).then(function (response) {
-
-				$scope.CERTIFICATIONS = response.data;
-				console.log($scope.CERTIFICATIONS);
-			});
-		};
-		$scope.ApplyCert = function () {
-
-			$('#datetimepicker1').val('');
-			$('#getCert').modal('show');
-		};
-
-		$http({
-			method: 'GET',
-			url: 'certificationtype/all'
-		}).then(function (response) {
-
-			$scope.CERTIFICATION_TYPE = response.data;
-			console.log($scope.CERTIFICATION_TYPE);
-		});
-
-		$http({
-			method: 'GET',
-			url: 'certifications/all'
-		}).then(function (response) {
-
-			$scope.CERTIFICATIONS.associate_Id = response.data;
-		});
-
-		$('#datetimepicker1').datetimepicker();
-		$scope.showDateTimePicker = function () {
-			$('#datetimepicker1').datetimepicker('show');
-		};
-
-		$scope.getScheduleCert();
-
-		$scope.updateCert = function () {
-			$scope.selectedDate = $('#datetimepicker1').val();
-			$scope.today = $filter('date')(new Date(), 'MM/dd/yyyy');
-			$scope.associate_id = userService.getUser();
-			//let newDate = moment($scope.selectedDate).toDate();
-
-			var MS_PER_DAY = 1000 * 60 * 60 * 24;
-			$scope.dayOne = new Date($scope.selectedDate).getTime();
-			$scope.dayTwo = new Date($scope.today).getTime();
-			$scope.changeDiff = Math.floor(($scope.dayOne - $scope.dayTwo) / MS_PER_DAY);
-			console.log($scope.changeDiff);
-			if ($scope.changeDiff > 14) {
-				//post data to database
-				console.log($scope.today);
-				console.log($scope.selectedDate);
-				var newDate = moment($scope.selectedDate).toDate();
-				$http({
-					method: 'POST',
-					url: 'certifications/add/certification',
-					data: { cert_testdate: newDate, cert_status: $scope.formkey, associate_id: userService.getUser(), cert_type: $scope.selectedType.type_of_cert }
-				}).then(function (response) {
-					$scope.getScheduleCert();
-					console.log(response.data);
-				});
-				$scope.successMessage = "You are now scheduled to take a certification";
-				$timeout(function () {
-					$scope.successMessage = false;
-				}, 2000);
-			} else {
-				$scope.errorMessage = 'Date must be 2 weeks after today';
-				console.log($scope.today);
-				console.log($scope.selectedDate);
-				$timeout(function () {
-					$scope.errorMessage = false;
-				}, 2000);
-			}
-		};
-	}
-
-	exports.default = certificationCtrl;
-
-/***/ }),
-/* 148 */
 /***/ (function(module, exports) {
 
 	/*

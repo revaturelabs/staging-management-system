@@ -79,6 +79,14 @@
             </dt>
           </div>
         </div>
+        <br>
+        <div class="row">
+          <div class="col-md-12 col-sm-12 col-xs-12">
+            <dt>
+           	 <button type="button" ng-click="showChangePassword()" class="btn btn-primary">Change Password</button>
+            </dt>
+          </div>
+        </div>
       </dl>
     </div>
   </div>
@@ -177,3 +185,39 @@
     </div>
   </div>
 </div>
+
+
+<div id="changePassword" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Change Password</h4>
+      </div>
+      
+      <div class="modal-body">
+      	<form>
+      		<div class="form-group">
+      			<input ng-model="newPassword" type="password" class="form-control" placeholder="New Password">
+      		</div>
+      		<div class="form-group">
+      			<input ng-model="confirmPassword" type="password" class="form-control" placeholder="Confirm Password">
+      		</div>
+      		<span ng-bind="createMessage" ng-style="createMessageStyle"></span>
+      		<br>
+      		<button type="button" id="changePasswordBtn" ng-click="changePassword()" class="btn btn-primary" ng-bind="changePasswordButton"></button>
+      	</form>
+      </div>
+      
+      <div class="modal-footer">
+        <div class="alert alert-success" ng-show="successMsgShow" style="text-align: left;">
+		  Successfully changed password!
+		</div>
+		<div class="alert alert-danger" ng-bind="errorMsg" ng-show="errorMsgShow" style="text-align: left;">
+		  Failed to change password.
+		</div>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
