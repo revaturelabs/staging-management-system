@@ -62145,6 +62145,8 @@
 	  value: true
 	});
 	function managerCtrl($scope, $state, $location, $http, userService) {
+	  $scope.loading = true;
+
 	  $http({
 	    method: 'GET',
 	    url: '/login/user'
@@ -62172,15 +62174,31 @@
 	    });
 	  };
 
-	  $scope.updateFromSMS = function () {
-	    console.log("TEST");
-	    $http({
-	      method: 'GET',
-	      url: '/sfdata/batches'
-	    });
-	    /*      .then((response) => {
-	              console.log(response);
-	            });*/
+	  $scope.currState_GetSF = 'getSF_Ready';
+	  $scope.updateSMS = function ($event) {
+
+	    //console.log($event.target);
+	    $event.target.innerHTML = "Loading!";
+	    if ($event.target.disabled !== 'disabled') {
+	      $scope.currState_GetSF = 'getSF_Getting';
+	      $http({
+	        method: 'GET',
+	        url: '/dingus' //TODO Return to being /sfdata/batches
+	      }).then(function (response) {
+	        $event.target.innerHTML = "Update SMS Data from Salesforce";
+	        $event.target.disabled = 'enabled';
+	        $scope.currState_GetSF = 'getSF_Ready';
+
+	        $.notify($event.target, "Finished loading data!", "success");
+	      }, function (response) {
+	        $event.target.innerHTML = "Update SMS Data from Salesforce";
+	        $event.target.disabled = 'enabled';
+	        $scope.currState_GetSF = 'getSF_Ready';
+
+	        $.notify($event.target, "Could not load data!", "error");
+	      });
+	    }
+	    $event.target.disabled = 'disabled';
 	  };
 
 	  $scope.manager = { name: 'Joe' };
