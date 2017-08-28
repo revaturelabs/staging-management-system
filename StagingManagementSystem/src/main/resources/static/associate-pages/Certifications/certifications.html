@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="./associate-pages/Certifications/certification.css"/> 
 
-			<button  ng-click="ApplyCert()" type="button"  class="btn btn-primary" >Schedule Certification</button>
-			<button  ng-click="submitCert()" type="button" id="checkCert" class="btn btn-primary" >Submit for Approval</button>
+			<button  data-ng-click="ApplyCert()" type="button"  class="btn btn-primary" >Schedule Certification</button>
+			<button  data-ng-click="submitCert()" type="button" id="checkCert" class="btn btn-primary" >Submit for Approval</button>
 			
 <div class="modal fade" id="getCert"  role="dialog">
   <div class="modal-dialog" role="document">
@@ -13,46 +13,51 @@
       <div class="modal-body">
       <label>Pick A Certification</label>
         <div class="input-group">
-          <select class="form-control"  ng-model="selectedType" ng-options="x.type_of_cert for x in CERTIFICATION_TYPE">
+          <select class="form-control"  data-ng-model="selectedType" data-ng-options="x.type_of_cert for x in CERTIFICATION_TYPE">
           </select>
         </div>
         <div class="form-group">
         	<label>Status</label>
-        	<input type="text" ng-model="formkey" name="formkey" ng-init="formkey='inprogress'">
+        	<input type="text" data-ng-model="formkey" name="formkey" data-ng-init="formkey='inprogress'">
         </div>
         <div class="form-group" >
         <label>Pick a Date</label>
            <div class='input-group date' >
-               <input type='text' class="form-control" ng-model="selectedDate" id='datetimepicker1'/>
-               <span ng-click="showDateTimePicker()" class="input-group-addon">
+               <input type='text' class="form-control" data-ng-model="selectedDate" id='datetimepicker1'/>
+               <span data-ng-click="showDateTimePicker()" class="input-group-addon">
                    <span class="glyphicon glyphicon-calendar"></span>
                </span>
            </div>
-            <div ng-if="errorMessage" id="err">{{errorMessage}}</div>
+            <div data-ng-if="errorMessage" id="err">{{errorMessage}}</div>
       	</div>      	
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button ng-click="updateCert()"  type="button" id="addCerts" class="btn btn-primary" data-dismiss="modal">Submit</button>
+        
+        <button data-ng-click="updateCert()"  type="button" id="addCerts" class="btn btn-primary" data-dismiss="modal">Submit</button>
+
       </div>
     </div>
   </div>
 </div>
 
-<div ng-if="successMessage">{{successMessage}}</div>
+<div data-ng-if="successMessage">{{successMessage}}</div>
 <table class="table table-striped ">
 	<thead>
 	<tr>
 		<th>Certification</th>
 		<th>Status</th>
 		<th>Test Date</th>
+		<th>Cancel</th>
 	</tr>
 </thead>
 <tbody>
-	<tr ng-repeat="x in CERTIFICATIONS" >
+	<tr data-ng-repeat="x in CERTIFICATIONS" >
 		<td>{{x.cert_type}}</td>
 		<td>{{x.cert_status}}</td>
 		<td>{{dateConverter(x.cert_testdate)}}</td>
+	<td> <button data-ng-click="deleteCert(associateId)"type="button" id= "delCerts" class="btn btn-primary">delete</button></td>
+		      
 	</tr>
 </tbody>
 </table>

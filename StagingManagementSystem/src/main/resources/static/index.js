@@ -193,10 +193,8 @@
 	  $uiRouter.stateRegistry.get().map(s => s.$$state())
 	      .filter(s => s.path.length === 2 || s.path.length === 3)
 	      .forEach(s => s._collapsed = false);
-	  
-	  const pluginInstance = $uiRouter.plugin(Visualizer);
-	  
-	  $trace.enable('TRANSITION');*/
+	     const pluginInstance = $uiRouter.plugin(Visualizer);
+	     $trace.enable('TRANSITION');*/
 
 	  // Global Functions
 	  $rootScope.dateConverter = function (time) {
@@ -64170,6 +64168,7 @@
 		$scope.certificationtype = {};
 
 		var updateCert = document.getElementById('addCerts');
+		var deleteCert = document.getElementById('delCerts');
 
 		$scope.getScheduleCert = function () {
 			$http({
@@ -64179,7 +64178,18 @@
 				$scope.CERTIFICATIONS = response.data;
 			});
 		};
+		$scope.deleteCert = function (associateId) {
 
+			$http({
+				method: 'DELETE',
+				url: '/certifications'
+
+			}).then(function (response) {
+
+				$scope.CERTIFICATIONS = response.data;
+				console.log($scope.CERTIFICATIONS);
+			});
+		};
 		$scope.ApplyCert = function () {
 
 			$('#datetimepicker1').val('');
@@ -64201,7 +64211,6 @@
 		}).then(function (response) {
 
 			$scope.CERTIFICATIONS.associate_Id = response.data;
-			console.log($scope.CERTIFICATIONS.associate_Id);
 		});
 
 		$('#datetimepicker1').datetimepicker();

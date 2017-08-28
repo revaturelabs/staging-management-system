@@ -3,6 +3,7 @@ function certificationCtrl($scope,$http,$state, $stateParams,$filter,$timeout,us
 	$scope.certificationtype ={};
 	
 	const updateCert = document.getElementById('addCerts');
+	const deleteCert = document.getElementById('delCerts');
 
 	
 	$scope.getScheduleCert = function(){
@@ -13,7 +14,19 @@ function certificationCtrl($scope,$http,$state, $stateParams,$filter,$timeout,us
 	    	  $scope.CERTIFICATIONS = response.data;
 	      });
 	}
-	
+	  $scope.deleteCert=function(associateId){
+		
+		   $http({
+			   method:'DELETE',
+				   url: '/certifications',
+				  
+		   })
+		   .then(function (response){
+			   
+			   $scope.CERTIFICATIONS= response.data;
+				console.log( $scope.CERTIFICATIONS);
+		   });
+		  }
 		$scope.ApplyCert = function() {
 			
 		    $('#datetimepicker1').val('');	    
@@ -39,8 +52,10 @@ function certificationCtrl($scope,$http,$state, $stateParams,$filter,$timeout,us
 		.then((response) => {
 			
 			$scope.CERTIFICATIONS.associate_Id = response.data;
-			console.log($scope.CERTIFICATIONS.associate_Id);
+		
 		});
+		
+		
 		
 		 $('#datetimepicker1').datetimepicker();
 		  $scope.showDateTimePicker = () => {

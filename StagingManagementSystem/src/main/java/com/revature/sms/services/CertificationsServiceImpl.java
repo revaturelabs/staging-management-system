@@ -45,6 +45,18 @@ public class CertificationsServiceImpl implements CertificationsService {
 		return certRepo.getByAssociate_Id(id);
 	}
 
+	@Override
+	public void delete(Certifications certifications) {
+	        certRepo.delete(certifications);
+		
+	}
+
+	@Override
+	public void update(Certifications certifications) {
+	      certRepo.saveAndFlush(certifications);
+		
+	}
+
 	
 /*	@Override
 	public List<Certifications> getAllCert_type() {

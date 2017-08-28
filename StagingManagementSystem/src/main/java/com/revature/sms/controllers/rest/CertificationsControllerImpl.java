@@ -1,17 +1,17 @@
 package com.revature.sms.controllers.rest;
 
-import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.revature.sms.entities.Associate;
 import com.revature.sms.entities.Certifications;
 
 import com.revature.sms.services.CertificationsService;
@@ -57,4 +57,14 @@ public class CertificationsControllerImpl {
 	public Set<Certifications> findByAssociate(@PathVariable long associateId) {
 		return certService.findByAssociate(associateId);
 	}
+	
+     @PutMapping("/allUpdate")
+     public void updateCertifications(@RequestBody Certifications certifications){
+    	 certService.update(certifications);
+     }
+     
+     @DeleteMapping
+     public void deleteCertifications(@RequestBody Certifications certifications){
+    	 certService.delete(certifications);
+     }
 }
