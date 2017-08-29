@@ -62144,8 +62144,8 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	function managerCtrl($scope, $state, $location, $http, userService) {
-	  $scope.loading = true;
+	function managerCtrl($scope, $state, $location, $http, userService, $rootScope) {
+	  $rootScope.loading = false;
 
 	  $http({
 	    method: 'GET',
@@ -62174,10 +62174,23 @@
 	    });
 	  };
 
+	  $scope.getLogo = function () {
+	    var style = {};
+	    if ($http.pendingRequests.length !== 0) {
+	      style.width = '95px';
+	      //This is done because the gif is slightly larger than the image and it shouldn't expand the border
+	      style.transform = 'translate(-1.65px, 16.2px)';
+	      style.margin = '-20px 0 0 0px';
+	    } else {
+	      style.width = '90px';
+	    }
+	    console.log($http.pendingRequests.length);
+	    return style;
+	  };
+
 	  $scope.currState_GetSF = 'getSF_Ready';
 	  $scope.updateSMS = function ($event) {
 
-	    //console.log($event.target);
 	    $event.target.innerHTML = "Loading!";
 	    if ($event.target.disabled !== 'disabled') {
 	      $scope.currState_GetSF = 'getSF_Getting';
@@ -62443,6 +62456,7 @@
 	    method: 'GET',
 	    url: '/associate/totaldata'
 	  }).then(function (response) {
+	    $scope.$root.loading = false;
 	    responseData = response.data;
 	    var stuff1 = [];
 	    var stuff2 = [];
