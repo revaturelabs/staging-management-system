@@ -1,6 +1,37 @@
+
 function managerAdvancedCtrl($scope, $http, $state) {
   window.scope = $scope;
+  $scope.userSearch;
+  
+  $scope.filterList = {
+		 list:
+		[
+			 {id : 2, name : 'associate'},
+			 {id : 3, name : 'batch'},
+			 {id : 4, name : 'trainer'},
+		 ]
+  };
+  
+  $scope.filterList2 = {
+			 list:
+			[
+				 {id : 1, name : 'start date'},
+				 {id : 2, name : 'end date'},
+				 {id : 3, name : 'batch'},
+				 {id : 4, name : 'trainer'},
+			 ]
+	  };
 
+  $scope.filterType = {
+		    type: $scope.filterList.list[0]
+		  }
+  
+  $scope.filterType2 = {
+		    type: $scope.filterList2.list[0]
+		  }
+  
+  
+	
   $http.get('batchtype/all')
     .then((data) => {
       $scope.batchtypes = data.data;
@@ -21,7 +52,7 @@ function managerAdvancedCtrl($scope, $http, $state) {
       $scope.batches = data.data;
     }, (data) => {
     });
-    
+  
     // fetching all project data
    $http.get('project/all')
     .then((data) => {
@@ -29,6 +60,7 @@ function managerAdvancedCtrl($scope, $http, $state) {
     }, (data) => {
     });
 
+  
   $scope.isAssociates = () => {
     if ($state.is('manager.advanced.allassociates')) {
       return true;
@@ -82,13 +114,15 @@ function managerAdvancedCtrl($scope, $http, $state) {
     }
     return $scope.selectedBatchTypes.filter((batchType) => batchType.value === associate.batch.batchType.value).length >= 1;
   };
-
+  
   $scope.batchBatchFilter = (batch) => {
     if (!batch) {
       return false;
     }
     return $scope.selectedBatchTypes.filter((batchType) => batchType.value === batch.batchType.value).length >= 1;
   };
+  
+ 
+  
 }
-
 export default managerAdvancedCtrl;
