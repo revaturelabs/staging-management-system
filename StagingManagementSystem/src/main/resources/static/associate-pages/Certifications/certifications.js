@@ -2,7 +2,7 @@ function certificationCtrl($scope,$http,$state, $stateParams,$filter,$timeout,us
 	$scope.certifications ={};
 	$scope.certificationtype ={};
 	
-	const updateCert = document.getElementById('addCerts');
+	const updateCert = document.getElementById('updateNewCert');
 
 	
 	$scope.getScheduleCert = function(){
@@ -57,8 +57,6 @@ function certificationCtrl($scope,$http,$state, $stateParams,$filter,$timeout,us
 			console.log($scope.CERTIFICATION_TYPE);
 		});
 		
-		
-
 		$http ({
 			method: 'GET',
 			url: 'certifications/all',
@@ -117,6 +115,21 @@ function certificationCtrl($scope,$http,$state, $stateParams,$filter,$timeout,us
 				}
 		  };
 
+		  $scope.updateNewCert=function(x){
+			  let newDate = moment($scope.newSelectedDate).toDate();
+			  $scope.newSelectedType= x.cert_type;
+			  console.log(x);
+				 $http({
+				        method: 'PUT',
+				        url: 'certifications/allUpdate',
+				        data: { cert_testdate:newDate, cert_status:$scope.newFormkey, associate_id:userService.getUser(), cert_type:$scope.newSelectedType.type_of_cert },
+				      })
+				      .then((response) => {
+				    	  $scope.reload();
+				    	  updateCert.disabled=true;
+				    	  console.log(response.data);
+				      });
+		  };
 		
 }
 

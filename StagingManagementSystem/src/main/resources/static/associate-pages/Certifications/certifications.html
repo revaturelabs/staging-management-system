@@ -28,7 +28,7 @@
                    <span class="glyphicon glyphicon-calendar"></span>
                </span>
            </div>
-            <div ng-if="errorMessage" id="err">{{errorMessage}}</div>
+            <div ng-if="errorMessage" class="alert alert-danger">{{errorMessage}}</div>
       	</div>      	
       </div>
       <div class="modal-footer">
@@ -39,7 +39,7 @@
   </div>
 </div>
 
-<div ng-if="successMessage" id="success">{{successMessage}}</div>
+<div ng-if="successMessage" alert alert-success>{{successMessage}}</div>
 <table class="table table-striped ">
 	<thead>
 	<tr>
@@ -70,25 +70,25 @@
       <div class="modal-body">
         <div class="input-group">
         <label>Certification</label>
-          <input type="text" ng-bind="selectedType"/>
+          <input type="text"  ng-model="newSelectedType"/>
         </div>
         <div class="form-group">
         	<label>Status</label>
-        	<input type="text" ng-bind="formkey"  readonly="readonly">
+        	<input type="text" ng-bind="formkey" ng-model="newFormkey" readonly="readonly">
         </div>
         <div class="form-group" >
         <label>Date</label>
         <div class="form-group">
-        	<input type="text" ng-bind="selectedDate">
+        	<input type="text" ng-bind="selectedDate" ng-model="newSelectedDate">
         </div>
      	<div class="form-group">
         	<label>Add Comment</label>
-        	<textarea placeholder="Add Comment for manager" ng-model="selectedComment" rows="5" cols="60" maxlength="25"></textarea>
+        	<textarea placeholder="Add Comment for manager" ng-model="selectedComment"  rows="5" cols="60" maxlength="25" required></textarea>
         </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button ng-click="updateNewCert()"  type="button"  class="btn btn-primary">Update</button>
+        <button ng-click="updateNewCert(x)"  id="updateNewCert" type="button"  class="btn btn-primary">Update</button>
       </div>
     </div>
   </div>
