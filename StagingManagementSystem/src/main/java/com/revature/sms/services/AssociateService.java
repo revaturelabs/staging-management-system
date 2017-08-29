@@ -27,5 +27,6 @@ public interface AssociateService {
     //WE added this
     public Set<Associate> getAllByStatus(String status);
     //public Set<Associate> getActive();
+    public int countAssociateByAssociateStatus_Status(String status);
 
 }
