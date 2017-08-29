@@ -64303,6 +64303,10 @@
 			$('#getCert').modal('show');
 		};
 
+		$scope.deletedCert = function () {
+			$('#deleteCert').modal('show');
+		};
+
 		//add a new certification in the certification type
 		$scope.customCert = function () {
 			$http({
@@ -64360,8 +64364,6 @@
 					url: 'certifications/add/certification',
 					data: { cert_testdate: newDate, cert_status: $scope.formkey, associate_id: userService.getUser(), cert_type: $scope.selectedType.type_of_cert }
 				}).then(function (response) {
-					addCerts.disabled = false;
-					addCerts.innerHTML = 'Add Certification';
 					$scope.getScheduleCert();
 					console.log(response.data);
 				});
