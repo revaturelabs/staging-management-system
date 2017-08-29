@@ -13,3 +13,6 @@
 .managerHomeSelected {
   background-color: gray;
 }
+#zoom-btn{
+  width: 100%;
+}
