@@ -7,5 +7,6 @@ import com.revature.sms.entities.AssociatesStatus;
 
 @Repository
 public interface AssociatesStatusRepo extends JpaRepository<AssociatesStatus,Integer>{
+	
 	AssociatesStatus getByStatus(String status);
 }

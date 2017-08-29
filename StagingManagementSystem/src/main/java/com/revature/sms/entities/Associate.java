@@ -76,8 +76,8 @@ public class Associate {
 	private Set<Job> jobs;
 	
 	@OneToMany(mappedBy="associate",fetch = FetchType.LAZY)
-    @JsonProperty(access = Access.WRITE_ONLY)
-    private Set<Certifications> certifications;
+	   @JsonProperty(access = Access.WRITE_ONLY)
+	   private Set<Certifications> certifications;
 
 	public Associate() {
 		super();
@@ -203,6 +203,8 @@ public class Associate {
 		this.jobs = jobs;
 	}
 
+	
+	
 	public Set<Certifications> getCertifications() {
 		return certifications;
 	}
@@ -267,23 +269,8 @@ public class Associate {
 	  
 	  return false;
 	}
-	
-/*	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((associateStatus == null) ? 0 : associateStatus.hashCode());
-		result = prime * result + ((credential == null) ? 0 : credential.hashCode());
-		result = prime * result + (int) (id ^ (id >>> 32));
-		result = prime * result + ((jobs == null) ? 0 : jobs.hashCode());
-		result = prime * result + ((lockedTo == null) ? 0 : lockedTo.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((portfolioLink == null) ? 0 : portfolioLink.hashCode());
-		result = prime * result + ((portfolioStatus == null) ? 0 : portfolioStatus.hashCode());
-		result = prime * result + ((salesforceId == null) ? 0 : salesforceId.hashCode());
-		result = prime * result + ((skills == null) ? 0 : skills.hashCode());
-		return result;
-	}*/
+
+
 
 	@Override
 	public boolean equals(Object obj) {
@@ -303,6 +290,11 @@ public class Associate {
 			if (other.batch != null)
 				return false;
 		} else if (!batch.equals(other.batch))
+			return false;
+		if (certifications == null) {
+			if (other.certifications != null)
+				return false;
+		} else if (!certifications.equals(other.certifications))
 			return false;
 		if (credential == null) {
 			if (other.credential != null)
@@ -353,6 +345,24 @@ public class Associate {
 			return false;
 		return true;
 	}
+	
+/*	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((associateStatus == null) ? 0 : associateStatus.hashCode());
+		result = prime * result + ((credential == null) ? 0 : credential.hashCode());
+		result = prime * result + (int) (id ^ (id >>> 32));
+		result = prime * result + ((jobs == null) ? 0 : jobs.hashCode());
+		result = prime * result + ((lockedTo == null) ? 0 : lockedTo.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((portfolioLink == null) ? 0 : portfolioLink.hashCode());
+		result = prime * result + ((portfolioStatus == null) ? 0 : portfolioStatus.hashCode());
+		result = prime * result + ((salesforceId == null) ? 0 : salesforceId.hashCode());
+		result = prime * result + ((skills == null) ? 0 : skills.hashCode());
+		return result;
+	}*/
+
 
 //	@Override
 //	public String toString() {

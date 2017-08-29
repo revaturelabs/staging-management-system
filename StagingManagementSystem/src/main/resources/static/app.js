@@ -27,6 +27,8 @@ import associateCtrl from './associate-pages/associate';
 import loginCtrl from './login/login';
 import certificationCtrl from './associate-pages/Certifications/certifications';
 
+
+
 require('fusioncharts/fusioncharts.charts')(FusionCharts);
 
 // const Visualizer = window['ui-router-visualizer'].Visualizer;
@@ -235,9 +237,10 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       controller: profileCtrl,
 
     })
-     .state('associate.Certifications',{
-    	url:'/certifications',
-    	templateUrl:'associate-pages/Certifications/certifications.html',
-    	controller: certificationCtrl,
+    .state('associate.Certifications',{
+        url:'/certifications',
+        templateUrl:'associate-pages/Certifications/certifications.html',
+        controller: certificationCtrl,
      });
+
 });

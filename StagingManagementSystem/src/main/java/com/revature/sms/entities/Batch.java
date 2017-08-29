@@ -161,19 +161,19 @@ public class Batch {
         this.associates = associates;
     }
 
-    @Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((associates == null) ? 0 : associates.hashCode());
-		result = prime * result + ((batchType == null) ? 0 : batchType.hashCode());
-		result = prime * result + ((endDate == null) ? 0 : endDate.hashCode());
-		result = prime * result + ((location == null) ? 0 : location.hashCode());
-		result = prime * result + ((salesforceId == null) ? 0 : salesforceId.hashCode());
-		result = prime * result + ((startDate == null) ? 0 : startDate.hashCode());
-		result = prime * result + ((trainers == null) ? 0 : trainers.hashCode());
-		return result;
-	}
+//    @Override
+//	public int hashCode() {
+//		final int prime = 31;
+//		int result = 1;
+//		result = prime * result + ((associates == null) ? 0 : associates.hashCode());
+//		result = prime * result + ((batchType == null) ? 0 : batchType.hashCode());
+//		result = prime * result + ((endDate == null) ? 0 : endDate.hashCode());
+//		result = prime * result + ((location == null) ? 0 : location.hashCode());
+//		result = prime * result + ((salesforceId == null) ? 0 : salesforceId.hashCode());
+//		result = prime * result + ((startDate == null) ? 0 : startDate.hashCode());
+//		result = prime * result + ((trainers == null) ? 0 : trainers.hashCode());
+//		return result;
+//	}
 
     @Override
 	public boolean equals(Object obj) {
@@ -224,7 +224,7 @@ public class Batch {
 
 //    @Override
 //    public String toString() {
-//
-//        return "Batch [id=" + id + ", batchType=" + batchType + ", startDate=" + startDate + ", endDate=" + endDate + ", location=" + location + ", trainers=" + trainers + ", associates=" + associates + "]";
+//        return "Batch [id=" + id + ", batchType=" + batchType + ", startDate=" + startDate + ", endDate=" + endDate
+//        		+ ", location=" + location + ", trainers=" + trainers + "]";
 //    }
 }
