@@ -29,4 +29,5 @@ public interface AssociateService {
     //public Set<Associate> getActive();
     public int countAssociateByAssociateStatus_Status(String status);
 
+    public Set<Associate> findByLatestPanelStatus(String latestPanelStatus);
 }
