@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.revature.sms.entities.Associate;
 import com.revature.sms.entities.AssociatesStatus;
 import com.revature.sms.entities.Manager;
+import com.revature.sms.entities.PortfolioStatus;
 import com.revature.sms.entities.StaggingAssociate;
 import com.revature.sms.services.AssociateService;
 import com.revature.sms.services.TotalReport;
@@ -37,6 +39,8 @@ public class AssociateControllerImpl {
 	private DataGeneration dataGen;
 	@Autowired
 	TotalReport totalReport;
+	@Value("${sms.salesforce}")
+	private boolean salesforce;
 	
 	private static Logger logger = Logger.getRootLogger();
 
@@ -57,6 +61,14 @@ public class AssociateControllerImpl {
 		associateService.add(associate);
 		return ResponseEntity.ok(null);
 	}
+     	@PutMapping("/portfolioStatus/{id}")
+	public void updatePortfolio(@PathVariable long id, @RequestBody PortfolioStatus file)
+	{
+		Associate associate=associateService.getById(id);
+	
+		associate.setPortfolioStatus(file);
+		associateService.add(associate);
+	}
 
 	@PostMapping("/add/all")
 	public ResponseEntity addAssociates(@RequestBody Set<Associate> associates, HttpSession session) {
@@ -71,8 +83,14 @@ public class AssociateControllerImpl {
 	}
 
 	@GetMapping("/generate/mock-data")
-	public void generateAssociateMockDate() {
-		dataGen.generate();
+	public ResponseEntity generateAssociateMockDate() {
+		if(!salesforce)
+		{
+			dataGen.generate();
+			return ResponseEntity.status(HttpStatus.OK).body(null);
+		}
+		else
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 	}
 
 	@DeleteMapping

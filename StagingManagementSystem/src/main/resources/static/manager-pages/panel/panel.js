@@ -3,8 +3,11 @@ const managerPanelCtrl = ($scope, $state, $location, $http, userService) => {
 	$scope.show_panel = false;
 	$scope.defaultCommnt = '';
 	$scope.choose = {};
-
+	$scope.plist = {};
+	
 	$scope.searchClick =(searchName)=>{
+		$scope.choose ={};
+		$scope.plist = {};
 		if(searchName){
 			$scope.disabled_search=true;
 			$scope.show_panel = false;
@@ -17,8 +20,10 @@ const managerPanelCtrl = ($scope, $state, $location, $http, userService) => {
 				$scope.disabled_search = false;
 				$scope.associates = response.data;
 				$scope.searchShowUp = true;
+				
 			});
 		}
+		
 		$scope.associatePanelClick =(associate)=>{
 			$scope.choose = associate;
 			$scope.searchShowUp = false;
@@ -38,12 +43,11 @@ const managerPanelCtrl = ($scope, $state, $location, $http, userService) => {
 				
 				  $scope.statusOption  = panel.status;
 				  $scope.panelChoose = panel;
-				  
 				  $scope.errorUpdateMsgShow = false;
 			      $scope.successUpdateMsgShow = false;
-			      
 				  $scope.updateComment = panel.comments;
 				  $('#PanelCommentModal').modal('show');
+				  
 			      $scope.updateInterviewClick = (statusOption, updateComment)=>{
 					panel.comments = updateComment;
 					panel.status = statusOption;
@@ -67,7 +71,6 @@ const managerPanelCtrl = ($scope, $state, $location, $http, userService) => {
 	  $scope.addPanelClick = function () {
 		    $scope.errorMsgShow = false;
 		    $scope.successMsgShow = false;
-		   
 		    addPanelBtn.disabled = true;
 		    addPanelBtn.innerHTML = 'Adding...';
 		      $http({
@@ -88,14 +91,13 @@ const managerPanelCtrl = ($scope, $state, $location, $http, userService) => {
 	  $scope.showAddModal = function () {
 		    $scope.errorMsgShow = false;
 		    $scope.successMsgShow = false;
-
 		    $scope.selectedClient = undefined;
 		    $('#datetimepicker1').val('');
 		    $scope.selectedMarketer = undefined;
-
 		    $('#addModal').modal('show');	    
 	  };
 		  
-
+	  
+	
 }
 export default managerPanelCtrl;

@@ -25,6 +25,16 @@ function managerCtrl($scope, $state, $location, $http, userService) {
         $state.go('login');
       });
   };
+  
+  $scope.updateFromSMS = function () {
+    $http({
+        method: 'GET',
+        url: '/sfdata/batches',
+      })
+      .then((response) => {
+          alert("Sent update to SMS from Salesforce request!");
+        });
+  }
 
   $scope.manager = { name: 'Joe' };
 }

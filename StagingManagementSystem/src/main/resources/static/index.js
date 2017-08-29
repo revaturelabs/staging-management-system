@@ -62172,6 +62172,15 @@
 	    });
 	  };
 
+	  $scope.updateFromSMS = function () {
+	    $http({
+	      method: 'GET',
+	      url: '/sfdata/batches'
+	    }).then(function (response) {
+	      alert("Sent update to SMS from Salesforce request!");
+	    });
+	  };
+
 	  $scope.manager = { name: 'Joe' };
 	}
 
@@ -62713,6 +62722,8 @@
 	  for (i = 0; i < 7; i += 1) {
 	    var currObj = getObj(weeklyData, currDate);
 
+	    weeklyLabels[i].label = weeklyLabels[i].label + "\n" + currDate.format('MM/DD');
+
 	    var hourCount = currObj.hourCount;
 	    var hourEstimate = currObj.hourEstimate;
 
@@ -62774,7 +62785,6 @@
 	    itemCpy.time = identityString;
 	    monthlyData.push(itemCpy);
 	  } else if (timeMoment.isoWeekday() < 6 && timeMoment < (0, _moment2.default)()) {
-	    // TODO: && moment() > timeMoment) {
 	    dataObj.hourCount = parseFloat(dataObj.hourCount) + parseFloat(item.hourCount);
 	    dataObj.hourEstimate = parseFloat(dataObj.hourEstimate) + parseFloat(item.hourEstimate);
 	  }
@@ -62805,14 +62815,15 @@
 	  var i = void 0;
 	  var currDate = (0, _moment2.default)(date.format());
 	  for (i = 0; i < 5; i += 1) {
+	    convertToFirstOfMonth(currDate);
 	    var currObj = getObj(monthlyData, currDate);
-	    var nextObj = getObj(monthlyData, currDate.add(7, 'days'));
+	    var nextObj = getObj(monthlyData, currDate);
 
 	    var hourCount = currObj.hourCount;
 	    var hourEstimate = currObj.hourEstimate;
 
 	    var start = (0, _moment2.default)(currObj.time).format('MM/DD');
-	    var stop = (0, _moment2.default)(nextObj.time).subtract(1, 'days').format('MM/DD');
+	    var stop = (0, _moment2.default)(nextObj.time).add(1, 'months').subtract(1, 'days').format('MM/DD');
 	    valueString += '{"label":"' + start + '-' + stop + '"}';
 
 	    var value = Math.floor(hourCount / hourEstimate * 100);
@@ -62821,7 +62832,7 @@
 	      dataString += ',';
 	      valueString += ',';
 	    }
-	    currDate.add(7, 'days');
+	    currDate.add(1, 'months');
 	  }
 	  dataString += ']}]';
 	  valueString += ']';
@@ -62833,7 +62844,34 @@
 	}
 
 	function monthlyColumnClick(ev, props, $scope) {
-	  setWeekly($scope, (0, _moment2.default)(focalDate.add(props.dataIndex * 7, 'days')));
+	  var i = void 0;
+	  for (i = 0; i < 7; i += 1) {
+	    switch (i) {
+	      case 0:
+	        weeklyLabels[i].label = 'Sunday';
+	        break;
+	      case 1:
+	        weeklyLabels[i].label = 'Monday';
+	        break;
+	      case 2:
+	        weeklyLabels[i].label = 'Tuesday';
+	        break;
+	      case 3:
+	        weeklyLabels[i].label = 'Wednesday';
+	        break;
+	      case 4:
+	        weeklyLabels[i].label = 'Thursday';
+	        break;
+	      case 5:
+	        weeklyLabels[i].label = 'Friday';
+	        break;
+	      case 6:
+	        weeklyLabels[i].label = 'Saturday';
+	        break;
+	      default:
+	    }
+	  }
+	  setWeekly($scope, (0, _moment2.default)(convertToFirstOfMonth(focalDate.add(props.dataIndex, 'months'))));
 
 	  $scope.selectedValue = '$props.displayValue}/' + props.categoryLabel + '/' + props.dataIndex;
 	}
@@ -62882,8 +62920,8 @@
 
 	  // Set global view properties.
 	  focalDate = (0, _moment2.default)(date.format());
-	  $scope.zoomOutStr = 'Not Visible';
-	  $scope.canZoom = '';
+	  $scope.zoomOutStr = 'Weekly';
+	  $scope.canZoom = 'true';
 	  scale = YEAR;
 
 	  var dataString = '[{"seriesname":"Yearly","data":[';
@@ -62893,6 +62931,8 @@
 	  for (i = 0; i < 4; i += 1) {
 	    var currObj = getObj(yearlyData, currDate);
 
+	    yearlyLabels[i].label = yearlyLabels[i].label + " " + currDate.format('MM/YYYY') + " - " + currDate.add(2, 'months').format('MM/YYYY');
+	    currDate.subtract(2, 'months');
 	    var hourCount = currObj.hourCount;
 	    var hourEstimate = currObj.hourEstimate;
 
@@ -62926,6 +62966,33 @@
 	  $scope.step = function step(steps) {
 	    switch (scale) {
 	      case WEEK:
+	        var i = void 0;
+	        for (i = 0; i < 7; i += 1) {
+	          switch (i) {
+	            case 0:
+	              weeklyLabels[i].label = 'Sunday';
+	              break;
+	            case 1:
+	              weeklyLabels[i].label = 'Monday';
+	              break;
+	            case 2:
+	              weeklyLabels[i].label = 'Tuesday';
+	              break;
+	            case 3:
+	              weeklyLabels[i].label = 'Wednesday';
+	              break;
+	            case 4:
+	              weeklyLabels[i].label = 'Thursday';
+	              break;
+	            case 5:
+	              weeklyLabels[i].label = 'Friday';
+	              break;
+	            case 6:
+	              weeklyLabels[i].label = 'Saturday';
+	              break;
+	            default:
+	          }
+	        }
 	        focalDate = focalDate.add(steps * 7, 'days');
 	        setWeekly($scope, focalDate);
 	        break;
@@ -62934,6 +63001,23 @@
 	        setMonthly($scope, focalDate);
 	        break;
 	      case YEAR:
+	        for (i = 0; i < 4; i += 1) {
+	          switch (i) {
+	            case 0:
+	              yearlyLabels[i].label = '1st Quarter';
+	              break;
+	            case 1:
+	              yearlyLabels[i].label = '2nd Quarter';
+	              break;
+	            case 2:
+	              yearlyLabels[i].label = '3rd Quarter';
+	              break;
+	            case 3:
+	              yearlyLabels[i].label = '4th Quarter';
+	              break;
+	            default:
+	          }
+	        }
 	        focalDate = focalDate.add(steps, 'years');
 	        setYearly($scope, focalDate);
 	        break;
@@ -62942,10 +63026,57 @@
 	  };
 
 	  $scope.zoomOut = function zoomOut() {
+	    var i = void 0;
 	    if (scale === WEEK) {
 	      setMonthly($scope, focalDate);
 	    } else if (scale === MONTH) {
+
+	      for (i = 0; i < 4; i += 1) {
+	        switch (i) {
+	          case 0:
+	            yearlyLabels[i].label = '1st Quarter';
+	            break;
+	          case 1:
+	            yearlyLabels[i].label = '2nd Quarter';
+	            break;
+	          case 2:
+	            yearlyLabels[i].label = '3rd Quarter';
+	            break;
+	          case 3:
+	            yearlyLabels[i].label = '4th Quarter';
+	            break;
+	          default:
+	        }
+	      }
 	      setYearly($scope, focalDate);
+	    } else if (scale === YEAR) {
+	      for (i = 0; i < 7; i += 1) {
+	        switch (i) {
+	          case 0:
+	            weeklyLabels[i].label = 'Sunday';
+	            break;
+	          case 1:
+	            weeklyLabels[i].label = 'Monday';
+	            break;
+	          case 2:
+	            weeklyLabels[i].label = 'Tuesday';
+	            break;
+	          case 3:
+	            weeklyLabels[i].label = 'Wednesday';
+	            break;
+	          case 4:
+	            weeklyLabels[i].label = 'Thursday';
+	            break;
+	          case 5:
+	            weeklyLabels[i].label = 'Friday';
+	            break;
+	          case 6:
+	            weeklyLabels[i].label = 'Saturday';
+	            break;
+	          default:
+	        }
+	      }
+	      setWeekly($scope, focalDate);
 	    }
 	  };
 	}
@@ -63058,14 +63189,13 @@
 	  caption: 'Employed Percentage versus Those awaiting placement',
 	  subcaption: 'Revature, LLC',
 	  startingangle: '120',
-	  showlabels: '0',
+	  showlabels: '1',
 	  showlegend: '1',
 	  enablemultislicing: '0',
 	  slicingdistance: '25',
-	  showpercentvalues: '1',
-	  showpercentintooltip: '0',
-	  palettecolors: '#0075c2,#ff0000',
-	  plottooltext: '$label Total: $datavalue',
+	  showpercentvalues: '0',
+	  showpercentintooltip: '1',
+	  palettecolors: '#0075c2,#ff0000,#FF8000',
 	  theme: 'fint'
 	};
 
@@ -63094,13 +63224,17 @@
 	    }, {
 	      label: 'Awaiting placement',
 	      value: 0
+	    }, {
+	      label: 'In Training',
+	      value: 0
 	    }];
-
 	    for (var i = 0; i < responseData.data.length; i += 1) {
-	      if (responseData.data[i].active) {
+	      if (responseData.data[i].associateStatus.status == 'STAGING' || responseData.data[i].associateStatus.status == 'BENCH') {
 	        chartData[1].value += 1;
-	      } else {
+	      } else if (responseData.data[i].associateStatus.status == 'PROJECT') {
 	        chartData[0].value += 1;
+	      } else {
+	        chartData[2].value += 1;
 	      }
 	    }
 	    $scope.cache.put('chartData', chartData);
@@ -63264,7 +63398,11 @@
 	    $scope.newBatchTypeShow = true;
 	    $scope.newBatchType = {};
 	    $scope.newBatchType.skills = [];
-
+	    if ($scope.batch.batchType !== undefined) {
+	      $scope.newBatchType.value = $scope.batch.batchType.value;
+	      $scope.newBatchType.skills = $scope.batch.batchType.skills;
+	      $scope.newBatchType.id = $scope.batch.batchType.id;
+	    }
 	    $scope.addSkill = function (newBatchTypeSkill) {
 	      if (!newBatchTypeSkill) {
 	        return;
@@ -63672,8 +63810,11 @@
 		$scope.show_panel = false;
 		$scope.defaultCommnt = '';
 		$scope.choose = {};
+		$scope.plist = {};
 
 		$scope.searchClick = function (searchName) {
+			$scope.choose = {};
+			$scope.plist = {};
 			if (searchName) {
 				$scope.disabled_search = true;
 				$scope.show_panel = false;
@@ -63688,6 +63829,7 @@
 					$scope.searchShowUp = true;
 				});
 			}
+
 			$scope.associatePanelClick = function (associate) {
 				$scope.choose = associate;
 				$scope.searchShowUp = false;
@@ -63707,12 +63849,11 @@
 
 					$scope.statusOption = panel.status;
 					$scope.panelChoose = panel;
-
 					$scope.errorUpdateMsgShow = false;
 					$scope.successUpdateMsgShow = false;
-
 					$scope.updateComment = panel.comments;
 					$('#PanelCommentModal').modal('show');
+
 					$scope.updateInterviewClick = function (statusOption, updateComment) {
 						panel.comments = updateComment;
 						panel.status = statusOption;
@@ -63734,7 +63875,6 @@
 		$scope.addPanelClick = function () {
 			$scope.errorMsgShow = false;
 			$scope.successMsgShow = false;
-
 			addPanelBtn.disabled = true;
 			addPanelBtn.innerHTML = 'Adding...';
 			$http({
@@ -63753,11 +63893,9 @@
 		$scope.showAddModal = function () {
 			$scope.errorMsgShow = false;
 			$scope.successMsgShow = false;
-
 			$scope.selectedClient = undefined;
 			$('#datetimepicker1').val('');
 			$scope.selectedMarketer = undefined;
-
 			$('#addModal').modal('show');
 		};
 	};
@@ -63798,7 +63936,7 @@
 	    $scope.associate = _extends({}, response1.data);
 	    $http({
 	      method: 'GET',
-	      url: '/credential/' + $scope.associate.id
+	      url: '/credential/' + $scope.associate.credential.id
 	    }).then(function (response2) {
 	      $scope.credential = _extends({}, response2.data);
 	    });
@@ -63835,7 +63973,6 @@
 	  $scope.showChangePassword = function () {
 	    $scope.sendingRequest = false;
 	    $scope.changePasswordButton = 'Save';
-	    $scope.newPassword = $scope.credential.password;
 	    $('#changePassword').modal('show');
 	  };
 
@@ -63903,18 +64040,32 @@
 
 	  $scope.changePassword = function () {
 	    $scope.credential.password = $scope.newPassword;
-	    $scope.credential.id = $scope.associate.id;
 	    $scope.sendingRequest = true;
-	    $scope.changePasswordButton = 'Saving...';
-	    $http({
-	      method: 'PUT',
-	      url: '/credential/',
-	      data: $scope.credential
-	    }).then(function () {
-	      $('#changePassword').modal('hide');
-	    }, function () {
-	      $('#changePassword').modal('hide');
-	    });
+	    if ($scope.newPassword != null && $scope.checkNewPassword()) {
+	      $scope.changePasswordButton = 'Saving...';
+	      $http({
+	        method: 'PUT',
+	        url: '/credential/',
+	        data: $scope.credential
+	      }).then(function () {
+	        $('#changePassword').modal('hide');
+	        $scope.newPassword = "";
+	        $scope.confirmPassword = "";
+	        $scope.createMessage = "";
+	      }, function () {
+	        $('#changePassword').modal('hide');
+	        $scope.newPassword = "";
+	        $scope.confirmPassword = "";
+	        $scope.createMessage = "";
+	      });
+	    } else {
+	      $scope.createMessage = 'Password information incorrect!';
+	      $scope.createMessageStyle = { color: 'red' };
+	    }
+	  };
+
+	  $scope.checkNewPassword = function () {
+	    if ($scope.newPassword == $scope.confirmPassword) return true;else return false;
 	  };
 
 	  $scope.updateLockedTo = function () {

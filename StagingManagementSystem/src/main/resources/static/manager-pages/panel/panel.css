@@ -1,9 +1,12 @@
-@CHARSET "ISO-8859-1";
-
-#panelTable{
-	position: relative;
+.manager-associates-panel-table > thead > tr {
+  background-color: #FF8000;
 }
-.assPanel-th{
-	width: 50%;
-	text-align: center;
+#associateName {
+	font-size: 20px;
+	font-family: serif;
+	padding-bottom: 15px;
+	font-weight: bold;
+}
+#panel-margin{
+	margin-bottom: 10px;
 }

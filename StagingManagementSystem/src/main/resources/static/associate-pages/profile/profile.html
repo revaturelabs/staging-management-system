@@ -69,13 +69,6 @@
             </dd>
           </div>
         </div>
-         <div class="row">
-          <div class="col-md-12 col-sm-12 col-xs-12">
-            <dt>
-           	 <button type="button" ng-click="showChangePassword()" class="btn btn-primary">Change Password</button>
-            </dt>
-          </div>
-        </div>
         <div class="row" ng-show="isManager">
           <div class="col-md-12 col-sm-12 col-xs-12">
             <dt>
@@ -83,6 +76,14 @@
               <span style="cursor: pointer;" ng-click="toggleMappedModal()">
                 <span class="glyphicon glyphicon-edit"></span>
               </span>
+            </dt>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-md-12 col-sm-12 col-xs-12">
+            <dt>
+           	 <button type="button" ng-click="showChangePassword()" class="btn btn-primary">Change Password</button>
             </dt>
           </div>
         </div>
@@ -185,6 +186,7 @@
   </div>
 </div>
 
+
 <div id="changePassword" class="modal fade" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -194,12 +196,19 @@
       </div>
       
       <div class="modal-body">
-      <div>
-	    <h5 class="newH5">New Password</h5>
-		<input ng-model="newPassword" type="text"/>
-		</div>
-		
+      	<form>
+      		<div class="form-group">
+      			<input ng-model="newPassword" type="password" class="form-control" placeholder="New Password">
+      		</div>
+      		<div class="form-group">
+      			<input ng-model="confirmPassword" type="password" class="form-control" placeholder="Confirm Password">
+      		</div>
+      		<span ng-bind="createMessage" ng-style="createMessageStyle"></span>
+      		<br>
+      		<button type="button" id="changePasswordBtn" ng-click="changePassword()" class="btn btn-primary" ng-bind="changePasswordButton"></button>
+      	</form>
       </div>
+      
       <div class="modal-footer">
         <div class="alert alert-success" ng-show="successMsgShow" style="text-align: left;">
 		  Successfully changed password!
@@ -208,7 +217,6 @@
 		  Failed to change password.
 		</div>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" id="changePasswordBtn" ng-click="changePassword()" class="btn btn-primary" ng-bind="changePasswordButton"></button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->

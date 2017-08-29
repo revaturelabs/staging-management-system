@@ -19,7 +19,7 @@ function profileCtrl($scope, $http, userService, $stateParams, $state, $window) 
     $scope.associate = { ...response1.data };
     $http({
         method: 'GET',
-        url: '/credential/'+$scope.associate.id,
+        url: '/credential/'+$scope.associate.credential.id,
       }).then((response2) => {
         $scope.credential = { ...response2.data };
         
@@ -55,7 +55,6 @@ function profileCtrl($scope, $http, userService, $stateParams, $state, $window) 
   $scope.showChangePassword = function(){
 	  $scope.sendingRequest = false;
 	  $scope.changePasswordButton= 'Save';
-	  $scope.newPassword = $scope.credential.password;
 	  $('#changePassword').modal('show');
   };
 
@@ -122,19 +121,36 @@ function profileCtrl($scope, $http, userService, $stateParams, $state, $window) 
 
   $scope.changePassword = function(){
 	  $scope.credential.password = $scope.newPassword;
-	  $scope.credential.id = $scope.associate.id;
 	  $scope.sendingRequest = true;
-	    $scope.changePasswordButton = 'Saving...';
-	    $http({
-	      method: 'PUT',
-	      url: '/credential/',
-	      data: $scope.credential,
-	    }).then(() => {
-	      $('#changePassword').modal('hide');
-	    }, () => {
-	      $('#changePassword').modal('hide');
-	    });
+	  if ($scope.newPassword != null && $scope.checkNewPassword()){
+		    $scope.changePasswordButton = 'Saving...';
+		    $http({
+		      method: 'PUT',
+		      url: '/credential/',
+		      data: $scope.credential,
+		    }).then(() => {
+		      $('#changePassword').modal('hide');
+		      $scope.newPassword="";
+		      $scope.confirmPassword="";
+		      $scope.createMessage = "";
+		    }, () => {
+		      $('#changePassword').modal('hide');
+		      $scope.newPassword="";
+		      $scope.confirmPassword="";
+		      $scope.createMessage = "";
+		    });
+		  } else {
+			  $scope.createMessage = 'Password information incorrect!';
+		      $scope.createMessageStyle = { color: 'red' };
+		  }
   };
+  
+  $scope.checkNewPassword = function() {
+	  if ($scope.newPassword == $scope.confirmPassword)
+		  return true;
+	  else
+		  return false;
+  }
   
   $scope.updateLockedTo = () => {
     $scope.sendingRequest = true;

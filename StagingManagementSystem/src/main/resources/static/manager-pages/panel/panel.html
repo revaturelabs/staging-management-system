@@ -1,5 +1,3 @@
-<link rel="stylesheet" type="text/css" href="./manager-pages/panel/panel.css"/>
-
 <div class="panel-container">
 	<div class="text-center">
 		<p>{{PanelLoad}}</p>
@@ -20,8 +18,8 @@
 
 
 		
-		<button type="button" ng-show ="plist[plist.length-1].status =='FAIL' || plist.length == 0" ng-click="showAddModal()" class="btn btn-primary">Add Panel</button>
-			<table ng-show="show_panel" class="table table-striped manager-advanced-associates-table selectable-table" id="panelTable">
+			<button id ="panel-margin" type="button" ng-show ="(plist[plist.length-1].status =='FAIL'||plist[plist.length-1].status =='PASS')  || (choose.length != 0 && plist.length == 0)"  ng-click="showAddModal()" class="btn btn-primary">Add Panel</button>
+			<table ng-show="show_panel" class="table table-striped manager-associates-panel-table selectable-table">
 				<thead>
 					<tr>
 						<th class="assPanel-th" scope="col">Panel ID</th>
