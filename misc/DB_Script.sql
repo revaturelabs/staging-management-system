@@ -1,20 +1,20 @@
-DROP USER sms_kamal2 CASCADE;
+DROP USER sms_kamal1 CASCADE;
 
-CREATE USER sms_kamal2
+CREATE USER sms_kamal1
 IDENTIFIED BY swordfish
 DEFAULT TABLESPACE users
 TEMPORARY TABLESPACE temp;
 
-GRANT connect to sms_kamal2;
-GRANT resource to sms_kamal2;
-GRANT CREATE SESSION TO sms_kamal2;
-GRANT CREATE TABLE TO sms_kamal2;
-GRANT CREATE VIEW TO sms_kamal2;
-GRANT CREATE MATERIALIZED VIEW TO sms_kamal2;
-GRANT create session to sms_kamal2;
-ALTER USER sms_kamal2 QUOTA 10m ON users;
+GRANT connect to sms_kamal1;
+GRANT resource to sms_kamal1;
+GRANT CREATE SESSION TO sms_kamal1;
+GRANT CREATE TABLE TO sms_kamal1;
+GRANT CREATE VIEW TO sms_kamal1;
+GRANT CREATE MATERIALIZED VIEW TO sms_kamal1;
+GRANT create session to sms_kamal1;
+ALTER USER sms_kamal1 QUOTA 10m ON users;
 
-conn sms_kamal2/swordfish
+conn sms_kamal1/swordfish
 
 CREATE TABLE CREDENTIALS (
   CREDENTIAL_ID NUMBER PRIMARY KEY,
@@ -245,6 +245,27 @@ CREATE TABLE PANEL (
     CONSTRAINT FK_ASSOCIATE_ID FOREIGN KEY (ASSOCIATE_ID) REFERENCES ASSOCIATES(ASSOCIATE_ID)
 );
 CREATE SEQUENCE PANEL_ID_SEQ;
+CREATE TABLE CERTIFICATIONS(
+ Cert_id number primary key,
+ Cert_type  varchar2(256),
+  Cert_status varchar2(256),
+  Cert_filename varchar2(256),
+  Cert_testdate timestamp(6),
+  Cert_comments varchar2(256),
+
+ ASSOCIATE_ID  NUMBER,
+ 
+     CONSTRAINT FK_CERTIFICATIONSAssociate FOREIGN KEY (ASSOCIATE_ID) REFERENCES ASSOCIATES(ASSOCIATE_ID)
+);
+CREATE SEQUENCE CERTIFICATIONS_ID_SEQ;
+create table Certification_Type(
+ type_of_cert varchar2(256),
+ Cert_id  number,
+ 
+     CONSTRAINT FK_CERTIFICATIONSTYPE FOREIGN KEY (Cert_id) REFERENCES Certifications(Cert_id)
+ );
+ 
+
 
 CREATE OR REPLACE VIEW ASSOCIATE_STATE_INFO AS
     select 

@@ -4,6 +4,8 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,6 +28,10 @@ public class CertificationsTypeControllerImpl {
 	public Set<CertificationsType> getAllcertType(){
 		System.out.println(cts.getAllCertType());
 		return cts.getAllCertType();
-		
+	}
+	
+	@PostMapping("/add/certification_type")
+	public void addNewType(@RequestBody CertificationsType certType){
+		cts.add(certType);
 	}
 }

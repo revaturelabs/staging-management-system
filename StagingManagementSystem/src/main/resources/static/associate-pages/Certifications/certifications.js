@@ -3,7 +3,6 @@ function certificationCtrl($scope,$http,$state, $stateParams,$filter,$timeout,us
 	$scope.certificationtype ={};
 	
 	const updateCert = document.getElementById('addCerts');
-	const deleteCert = document.getElementById('delCerts');
 
 	
 	$scope.getScheduleCert = function(){
@@ -18,8 +17,7 @@ function certificationCtrl($scope,$http,$state, $stateParams,$filter,$timeout,us
 		
 		   $http({
 			   method:'DELETE',
-				   url: '/certifications',
-				  
+				   url: '/certifications',  
 		   })
 		   .then(function (response){
 			   
@@ -27,10 +25,22 @@ function certificationCtrl($scope,$http,$state, $stateParams,$filter,$timeout,us
 				console.log( $scope.CERTIFICATIONS);
 		   });
 		  }
-		$scope.ApplyCert = function() {
+	  $scope.ApplyCert = function() {
 			
 		    $('#datetimepicker1').val('');	    
 			$('#getCert').modal('show');
+		};
+		
+		//add a new certification in the certification type
+		$scope.customCert = function(){
+			$http({
+				method:"POST",
+				url: 'certificationtype/add/certification_type',
+				data:{type_of_cert:customText}
+			})
+			.then((response)=>{
+				$state.reload();
+			});
 		};
 		
 		$http ({
@@ -52,10 +62,8 @@ function certificationCtrl($scope,$http,$state, $stateParams,$filter,$timeout,us
 		.then((response) => {
 			
 			$scope.CERTIFICATIONS.associate_Id = response.data;
-		
+			console.log($scope.CERTIFICATIONS.associate_Id);
 		});
-		
-		
 		
 		 $('#datetimepicker1').datetimepicker();
 		  $scope.showDateTimePicker = () => {
@@ -86,6 +94,8 @@ function certificationCtrl($scope,$http,$state, $stateParams,$filter,$timeout,us
 					        data: { cert_testdate:newDate, cert_status:$scope.formkey, associate_id:userService.getUser(), cert_type:$scope.selectedType.type_of_cert },
 					      })
 					      .then((response) => {
+					    	  addCerts.disabled=false;
+					    	  addCerts.innerHTML = 'Add Certification';
 					    	  $scope.getScheduleCert();
 					    	  console.log(response.data);
 					      });
