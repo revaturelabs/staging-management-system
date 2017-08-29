@@ -63825,9 +63825,8 @@
 						return a.id - b.id;
 					});
 				});
-
+				//For Update
 				$scope.PanelClick = function (panel) {
-
 					$scope.statusOption = panel.status;
 					$scope.panelChoose = panel;
 					$scope.errorUpdateMsgShow = false;
