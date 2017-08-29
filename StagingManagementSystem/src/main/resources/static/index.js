@@ -62756,6 +62756,8 @@
 	  for (i = 0; i < 7; i += 1) {
 	    var currObj = getObj(weeklyData, currDate);
 
+	    weeklyLabels[i].label = weeklyLabels[i].label + "\n" + currDate.format('MM/DD');
+
 	    var hourCount = currObj.hourCount;
 	    var hourEstimate = currObj.hourEstimate;
 
@@ -62817,7 +62819,6 @@
 	    itemCpy.time = identityString;
 	    monthlyData.push(itemCpy);
 	  } else if (timeMoment.isoWeekday() < 6 && timeMoment < (0, _moment2.default)()) {
-	    // TODO: && moment() > timeMoment) {
 	    dataObj.hourCount = parseFloat(dataObj.hourCount) + parseFloat(item.hourCount);
 	    dataObj.hourEstimate = parseFloat(dataObj.hourEstimate) + parseFloat(item.hourEstimate);
 	  }
@@ -62848,14 +62849,15 @@
 	  var i = void 0;
 	  var currDate = (0, _moment2.default)(date.format());
 	  for (i = 0; i < 5; i += 1) {
+	    convertToFirstOfMonth(currDate);
 	    var currObj = getObj(monthlyData, currDate);
-	    var nextObj = getObj(monthlyData, currDate.add(7, 'days'));
+	    var nextObj = getObj(monthlyData, currDate);
 
 	    var hourCount = currObj.hourCount;
 	    var hourEstimate = currObj.hourEstimate;
 
 	    var start = (0, _moment2.default)(currObj.time).format('MM/DD');
-	    var stop = (0, _moment2.default)(nextObj.time).subtract(1, 'days').format('MM/DD');
+	    var stop = (0, _moment2.default)(nextObj.time).add(1, 'months').subtract(1, 'days').format('MM/DD');
 	    valueString += '{"label":"' + start + '-' + stop + '"}';
 
 	    var value = Math.floor(hourCount / hourEstimate * 100);
@@ -62864,7 +62866,7 @@
 	      dataString += ',';
 	      valueString += ',';
 	    }
-	    currDate.add(7, 'days');
+	    currDate.add(1, 'months');
 	  }
 	  dataString += ']}]';
 	  valueString += ']';
@@ -62876,7 +62878,34 @@
 	}
 
 	function monthlyColumnClick(ev, props, $scope) {
-	  setWeekly($scope, (0, _moment2.default)(focalDate.add(props.dataIndex * 7, 'days')));
+	  var i = void 0;
+	  for (i = 0; i < 7; i += 1) {
+	    switch (i) {
+	      case 0:
+	        weeklyLabels[i].label = 'Sunday';
+	        break;
+	      case 1:
+	        weeklyLabels[i].label = 'Monday';
+	        break;
+	      case 2:
+	        weeklyLabels[i].label = 'Tuesday';
+	        break;
+	      case 3:
+	        weeklyLabels[i].label = 'Wednesday';
+	        break;
+	      case 4:
+	        weeklyLabels[i].label = 'Thursday';
+	        break;
+	      case 5:
+	        weeklyLabels[i].label = 'Friday';
+	        break;
+	      case 6:
+	        weeklyLabels[i].label = 'Saturday';
+	        break;
+	      default:
+	    }
+	  }
+	  setWeekly($scope, (0, _moment2.default)(convertToFirstOfMonth(focalDate.add(props.dataIndex, 'months'))));
 
 	  $scope.selectedValue = '$props.displayValue}/' + props.categoryLabel + '/' + props.dataIndex;
 	}
@@ -62925,8 +62954,8 @@
 
 	  // Set global view properties.
 	  focalDate = (0, _moment2.default)(date.format());
-	  $scope.zoomOutStr = 'Not Visible';
-	  $scope.canZoom = '';
+	  $scope.zoomOutStr = 'Weekly';
+	  $scope.canZoom = 'true';
 	  scale = YEAR;
 
 	  var dataString = '[{"seriesname":"Yearly","data":[';
@@ -62936,6 +62965,8 @@
 	  for (i = 0; i < 4; i += 1) {
 	    var currObj = getObj(yearlyData, currDate);
 
+	    yearlyLabels[i].label = yearlyLabels[i].label + " " + currDate.format('MM/YYYY') + " - " + currDate.add(2, 'months').format('MM/YYYY');
+	    currDate.subtract(2, 'months');
 	    var hourCount = currObj.hourCount;
 	    var hourEstimate = currObj.hourEstimate;
 
@@ -62969,6 +63000,33 @@
 	  $scope.step = function step(steps) {
 	    switch (scale) {
 	      case WEEK:
+	        var i = void 0;
+	        for (i = 0; i < 7; i += 1) {
+	          switch (i) {
+	            case 0:
+	              weeklyLabels[i].label = 'Sunday';
+	              break;
+	            case 1:
+	              weeklyLabels[i].label = 'Monday';
+	              break;
+	            case 2:
+	              weeklyLabels[i].label = 'Tuesday';
+	              break;
+	            case 3:
+	              weeklyLabels[i].label = 'Wednesday';
+	              break;
+	            case 4:
+	              weeklyLabels[i].label = 'Thursday';
+	              break;
+	            case 5:
+	              weeklyLabels[i].label = 'Friday';
+	              break;
+	            case 6:
+	              weeklyLabels[i].label = 'Saturday';
+	              break;
+	            default:
+	          }
+	        }
 	        focalDate = focalDate.add(steps * 7, 'days');
 	        setWeekly($scope, focalDate);
 	        break;
@@ -62977,6 +63035,23 @@
 	        setMonthly($scope, focalDate);
 	        break;
 	      case YEAR:
+	        for (i = 0; i < 4; i += 1) {
+	          switch (i) {
+	            case 0:
+	              yearlyLabels[i].label = '1st Quarter';
+	              break;
+	            case 1:
+	              yearlyLabels[i].label = '2nd Quarter';
+	              break;
+	            case 2:
+	              yearlyLabels[i].label = '3rd Quarter';
+	              break;
+	            case 3:
+	              yearlyLabels[i].label = '4th Quarter';
+	              break;
+	            default:
+	          }
+	        }
 	        focalDate = focalDate.add(steps, 'years');
 	        setYearly($scope, focalDate);
 	        break;
@@ -62985,10 +63060,57 @@
 	  };
 
 	  $scope.zoomOut = function zoomOut() {
+	    var i = void 0;
 	    if (scale === WEEK) {
 	      setMonthly($scope, focalDate);
 	    } else if (scale === MONTH) {
+
+	      for (i = 0; i < 4; i += 1) {
+	        switch (i) {
+	          case 0:
+	            yearlyLabels[i].label = '1st Quarter';
+	            break;
+	          case 1:
+	            yearlyLabels[i].label = '2nd Quarter';
+	            break;
+	          case 2:
+	            yearlyLabels[i].label = '3rd Quarter';
+	            break;
+	          case 3:
+	            yearlyLabels[i].label = '4th Quarter';
+	            break;
+	          default:
+	        }
+	      }
 	      setYearly($scope, focalDate);
+	    } else if (scale === YEAR) {
+	      for (i = 0; i < 7; i += 1) {
+	        switch (i) {
+	          case 0:
+	            weeklyLabels[i].label = 'Sunday';
+	            break;
+	          case 1:
+	            weeklyLabels[i].label = 'Monday';
+	            break;
+	          case 2:
+	            weeklyLabels[i].label = 'Tuesday';
+	            break;
+	          case 3:
+	            weeklyLabels[i].label = 'Wednesday';
+	            break;
+	          case 4:
+	            weeklyLabels[i].label = 'Thursday';
+	            break;
+	          case 5:
+	            weeklyLabels[i].label = 'Friday';
+	            break;
+	          case 6:
+	            weeklyLabels[i].label = 'Saturday';
+	            break;
+	          default:
+	        }
+	      }
+	      setWeekly($scope, focalDate);
 	    }
 	  };
 	}
