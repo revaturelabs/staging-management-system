@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.sms.entities.Associate;
 import com.revature.sms.entities.Manager;
+import com.revature.sms.entities.PortfolioStatus;
 import com.revature.sms.entities.StaggingAssociate;
 import com.revature.sms.services.AssociateService;
 import com.revature.sms.services.TotalReport;
@@ -59,6 +60,14 @@ public class AssociateControllerImpl {
 		}
 		associateService.add(associate);
 		return ResponseEntity.ok(null);
+	}
+     	@PutMapping("/portfolioStatus/{id}")
+	public void updatePortfolio(@PathVariable long id, @RequestBody PortfolioStatus file)
+	{
+		Associate associate=associateService.getById(id);
+	
+		associate.setPortfolioStatus(file);
+		associateService.add(associate);
 	}
 
 	@PostMapping("/add/all")
