@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="MercurySuite">
+	<parameter name="url" value="http://newtours.demoaut.com/"></parameter>
+	<parameter name="username" value="bobbert"></parameter>
+	<parameter name="password" value="bobbert"></parameter>
+	<parameter name="homepage" value="Welcome: Mercury Tours"></parameter>
+	<parameter name="findflightpage" value="Find a Flight: Mercury Tours:"></parameter>
+	<test verbose="2" name="MercuryLoginTest">
+		<classes>
+			<class name="com.revature.testsuites.MercuryLogin" />
+		</classes>
+	</test> <!-- Default test -->
+</suite> <!-- Default suite -->
+

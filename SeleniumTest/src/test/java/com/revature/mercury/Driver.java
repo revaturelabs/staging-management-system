@@ -133,12 +133,13 @@ public class Driver {
 		
 		//Expiration Month
 		for(int i = 1; i <= 12; i++) {
-			driver.findElement(By.xpath("//tbody/tr[2]/td[3]/select[1]/option["+i+"]")).click();
+			driver.findElement(By.xpath("//tr[2]/td[3]/select[1]/option["+i+"]")).click();
+			//
 		}
 		
 		//Expiration Year
 		for(int i = 1; i <= 12; i++) {
-			driver.findElement(By.xpath("//tbody/tr[2]/td[3]/select[2]/option["+i+"]")).click();
+			driver.findElement(By.xpath("//tr[2]/td[3]/select[2]/option["+i+"]")).click();
 			if(i == 5)
 				driver.switchTo().alert().accept();
 		}
