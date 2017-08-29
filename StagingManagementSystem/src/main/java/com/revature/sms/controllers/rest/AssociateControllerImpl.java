@@ -61,14 +61,14 @@ public class AssociateControllerImpl {
 		associateService.add(associate);
 		return ResponseEntity.ok(null);
 	}
-     	@PutMapping("/portfolioStatus/{id}")
-	public void updatePortfolio(@PathVariable long id, @RequestBody PortfolioStatus file)
-	{
-		Associate associate=associateService.getById(id);
-	
-		associate.setPortfolioStatus(file);
-		associateService.add(associate);
-	}
+//     	@PutMapping("/portfolioStatus/{id}")
+//	public void updatePortfolio(@PathVariable long id, @RequestBody PortfolioStatus file)
+//	{
+//		Associate associate=associateService.getById(id);
+//	
+//		associate.setPortfolioStatus(file);
+//		associateService.add(associate);
+//	}
 
 	@PostMapping("/add/all")
 	public ResponseEntity addAssociates(@RequestBody Set<Associate> associates, HttpSession session) {

@@ -23,7 +23,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
-
 @Entity
 @Table(name = "ASSOCIATES")
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
@@ -53,19 +52,18 @@ public class Associate {
 	private Batch batch;
 
 	@ManyToOne
-	@JoinColumn(name="PROJECT_ID")
+	@JoinColumn(name = "PROJECT_ID")
 	private Project project;
 
 	@ManyToOne
 	@JoinColumn(name = "CLIENT_ID")
 	private Client lockedTo;
-	
-	@OneToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="PORTFOLIO_STATUS_ID")
-	private PortfolioStatus portfolioStatus;
 
-	@OneToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="ASSOCIATE_STATUS_ID")
+	@Column(name = "PORTFOLIO_STATUS")
+	private boolean portfolioStatus;
+
+	@ManyToOne
+	@JoinColumn(name="ASSOCIATE_STATUS")
 	private AssociatesStatus associateStatus;
 	
 	@ManyToMany(fetch = FetchType.EAGER)
@@ -78,6 +76,7 @@ public class Associate {
 	@OneToMany(mappedBy="associate",fetch = FetchType.LAZY)
 	   @JsonProperty(access = Access.WRITE_ONLY)
 	   private Set<Certifications> certifications;
+	
 
 	public Associate() {
 		super();
@@ -85,12 +84,12 @@ public class Associate {
 		this.jobs = new HashSet<>();
 		this.certifications= new HashSet<>();
 		this.associateStatus = new AssociatesStatus();
-		this.portfolioStatus = new PortfolioStatus();
 	}
 
-	public Associate(long id, String salesforceId, Credential credential, String name, String portfolioLink,
-			Batch batch, Project project, Client lockedTo, PortfolioStatus portfolioStatus,
-			AssociatesStatus associateStatus, Set<Skill> skills, Set<Job> jobs, Set<Certifications> certifications) {
+
+	public Associate(long id,String salesforceId, Credential credential, String name, String portfolioLink, Batch batch, Project project,
+			Client lockedTo, Set<Skill> skills, Set<Job> jobs, Set<Certifications> certifications,AssociatesStatus associateStatus, boolean portfolioStatus)
+	{
 		super();
 		this.id = id;
 		this.salesforceId = salesforceId;
@@ -100,14 +99,87 @@ public class Associate {
 		this.batch = batch;
 		this.project = project;
 		this.lockedTo = lockedTo;
-		this.portfolioStatus = portfolioStatus;
-		this.associateStatus = associateStatus;
 		this.skills = skills;
 		this.jobs = jobs;
 		this.certifications= certifications;
+		this.associateStatus = associateStatus;
+		this.portfolioStatus = portfolioStatus;
 	}
 
-	public long getId() {
+	/**
+	 * Returns true if associate was on job during the given date.
+	 */
+	public boolean hasJobOnDate(LocalDateTime date) {
+		for (Job j : jobs) {
+			boolean beforeEnd = j.getEndDate() == null || date.compareTo(j.getEndDate()) < 0;
+			boolean hasentStopped = j.getEndDate() == null;
+			boolean afterStart = date.compareTo(j.getStartDate()) > 0;
+			if (afterStart && (hasentStopped || beforeEnd))
+				return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Returns true if associate has not started their training and they have not had
+	 * any jobs. Leaving it possible for associates to participate in multiple training
+	 * batches only after they have had at least one job.
+	 */
+	public boolean hasStartedOnDate(LocalDateTime date) {
+		boolean hasBegunTraining = date.compareTo(batch.getStartDate()) > 0;
+		return (hasBegunTraining) ? true : false;
+	}
+
+	/**
+	 * Returns true if associate was in training during the given date.
+	 */
+	public boolean isTrainingOnDate(LocalDateTime adate) {
+		LocalDateTime date = adate.withHour(12); //Set mid day all other events should be the beginning of the day.
+		boolean afterBatchStart = date.compareTo(batch.getStartDate()) > 0;
+		boolean beforeBatchEnd = date.compareTo(batch.getEndDate()) < 0;
+		return (afterBatchStart && beforeBatchEnd) ? true : false;
+	}
+
+	/**
+	 * This function returns true if the associate was in staging on the given date.
+	 */
+	public boolean isTrackedOnDate(LocalDateTime date) {
+		return (hasStartedOnDate(date) && !isTrainingOnDate(date) && !hasJobOnDate(date)) ? true : false;
+	}
+	
+	/**
+	 * This function returns true if the associate is in Staging and is available for hire
+	 */
+	public boolean isActive() {
+		return (associateStatus.getStatus().equals("STAGING") || associateStatus.getStatus().equals("BENCH"));
+	}
+	
+	public boolean isBenched() {
+		return associateStatus.getStatus().equals("BENCH") ? true : false;
+	}
+
+	public void setStatus() {
+		
+		if (this.isTrainingOnDate(LocalDateTime.now())) {
+			AssociatesStatus status = new AssociatesStatus(0, "TRAINING");
+			this.setAssociateStatus(status);
+		}
+		else if (this.isTrackedOnDate(LocalDateTime.now()) && !this.isTrainingOnDate(LocalDateTime.now())) {
+			AssociatesStatus status = new AssociatesStatus(1, "STAGING");
+			this.setAssociateStatus(status);
+		}
+		else if (this.hasJobOnDate(LocalDateTime.now())) {
+			AssociatesStatus status = new AssociatesStatus(2, "PROJECT");
+			this.setAssociateStatus(status);
+		}
+		else if (this.isTrackedOnDate(LocalDateTime.now()) && !this.hasJobOnDate(LocalDateTime.now())) {
+			AssociatesStatus status = new AssociatesStatus(3, "BENCH");
+			this.setAssociateStatus(status);
+		}
+	}
+
+	public long getId() 
+	{
 		return id;
 	}
 
@@ -163,20 +235,20 @@ public class Associate {
 		this.project = project;
 	}
 
+	public boolean getPortfolioStatus() {
+		return portfolioStatus;
+	}
+
+	public void setPortfolioStatus(boolean portfolioStatus) {
+		this.portfolioStatus = portfolioStatus;
+	}
+
 	public Client getLockedTo() {
 		return lockedTo;
 	}
 
 	public void setLockedTo(Client lockedTo) {
 		this.lockedTo = lockedTo;
-	}
-
-	public PortfolioStatus getPortfolioStatus() {
-		return portfolioStatus;
-	}
-
-	public void setPortfolioStatus(PortfolioStatus portfolioStatus) {
-		this.portfolioStatus = portfolioStatus;
 	}
 
 	public AssociatesStatus getAssociateStatus() {
@@ -202,72 +274,15 @@ public class Associate {
 	public void setJobs(Set<Job> jobs) {
 		this.jobs = jobs;
 	}
+	
 
-	
-	
 	public Set<Certifications> getCertifications() {
 		return certifications;
 	}
 
+
 	public void setCertifications(Set<Certifications> certifications) {
 		this.certifications = certifications;
-	}
-
-	/**
-	 *  Returns true if associate was on job during the given date.
-	 */
-	public boolean hasJobOnDate(LocalDateTime date){
-	  for(Job j : jobs){
-	    boolean beforeEnd = j.getEndDate() == null || date.compareTo(j.getEndDate()) < 0;
-	    boolean hasentStopped = j.getEndDate() == null;
-	    boolean afterStart = date.compareTo(j.getStartDate()) > 0;
-	    
-	    if(afterStart && (hasentStopped || beforeEnd))
-	      return true;
-	  }
-	  return false;
-	}
-
-	/**
-	 * Returns true if associate has not started their training and they have not had
-	 * any jobs. Leaving it possible for associates to participate in multiple training
-	 * batches only after they have had at least one job.
-	 */
-	public boolean hasStartedOnDate(LocalDateTime date) {
-		boolean hasBegunTraining = date.compareTo(batch.getStartDate()) > 0;
-
-		if(hasBegunTraining)
-			     return true;
-		return false;
-	}
-
-	/**
-	 * This function returns true if the associate is in Staging and is available for hire
-	 */
-	public boolean isActive() {
-		return "STAGING".equals(associateStatus.getStatus()) || "BENCH".equals(associateStatus.getStatus()) ? true : false;
-	}
-
-	/**
-	 * This function returns true if the associate was in staging on the given date.
-	 */
-	public boolean isTrackedOnDate(LocalDateTime date) {
-	     if(hasStartedOnDate(date) && !isTrainingOnDate(date) && !hasJobOnDate(date))
-	    	 return true;
-	     return false;
-	}
-
-	/**
-	 * Returns true if associate was in training during the given date.
-	 */
-	public boolean isTrainingOnDate(LocalDateTime adate) {
-	   LocalDateTime date = adate.withHour(12); //Set mid day all other events should be the beginning of the day.
-	   boolean afterBatchStart = date.compareTo(batch.getStartDate()) > 0;
-	   boolean beforeBatchEnd = date.compareTo(batch.getEndDate()) < 0;
-	   if(afterBatchStart && beforeBatchEnd)
-	     return true;
-	  
-	  return false;
 	}
 
 
@@ -323,10 +338,7 @@ public class Associate {
 				return false;
 		} else if (!portfolioLink.equals(other.portfolioLink))
 			return false;
-		if (portfolioStatus == null) {
-			if (other.portfolioStatus != null)
-				return false;
-		} else if (!portfolioStatus.equals(other.portfolioStatus))
+		if (portfolioStatus != other.portfolioStatus)
 			return false;
 		if (project == null) {
 			if (other.project != null)
@@ -345,30 +357,16 @@ public class Associate {
 			return false;
 		return true;
 	}
-	
-/*	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((associateStatus == null) ? 0 : associateStatus.hashCode());
-		result = prime * result + ((credential == null) ? 0 : credential.hashCode());
-		result = prime * result + (int) (id ^ (id >>> 32));
-		result = prime * result + ((jobs == null) ? 0 : jobs.hashCode());
-		result = prime * result + ((lockedTo == null) ? 0 : lockedTo.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((portfolioLink == null) ? 0 : portfolioLink.hashCode());
-		result = prime * result + ((portfolioStatus == null) ? 0 : portfolioStatus.hashCode());
-		result = prime * result + ((salesforceId == null) ? 0 : salesforceId.hashCode());
-		result = prime * result + ((skills == null) ? 0 : skills.hashCode());
-		return result;
-	}*/
 
 
-//	@Override
-//	public String toString() {
-//		return "Associate [id=" + id + ", credential=" + credential + ", name=" + name + ", portfolioLink="
-//				+ portfolioLink + ", batch=" + (batch == null ? null : batch.getBatchType().getValue()) + ", project=" + (project == null ? null : project.getProjectName()) + ", active=" + active + ", lockedTo="
-//				+ lockedTo + ", skills=" + skills + "]";
-//	}
+	@Override
+	public String toString() {
+		return "Associate [id=" + id + ", salesforceId=" + salesforceId + ", credential=" + credential + ", name="
+				+ name + ", portfolioLink=" + portfolioLink + ", batch=" + batch + ", project=" + project
+				+ ", lockedTo=" + lockedTo + ", portfolioStatus=" + portfolioStatus + ", associateStatus="
+				+ associateStatus + ", skills=" + skills + ", jobs=" + jobs + ", certifications=" + certifications
+				+ "]";
+	}
+
 
 }

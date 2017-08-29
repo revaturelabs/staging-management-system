@@ -28,6 +28,13 @@ public class AssociatesStatusControllerImp {
 	@Autowired
 	private AssociatesStatusService associatesStatusService;
 	
+	public AssociatesStatusControllerImp(AssociateService associateService,
+			AssociatesStatusService associatesStatusService) {
+		super();
+		this.associateService = associateService;
+		this.associatesStatusService = associatesStatusService;
+	}
+
 	private static final String LM = "login_manager";
 	
 	@GetMapping("/allTraining")
