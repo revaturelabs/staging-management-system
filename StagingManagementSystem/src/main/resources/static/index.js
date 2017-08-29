@@ -64411,7 +64411,7 @@
 		$scope.certifications = {};
 		$scope.certificationtype = {};
 
-		var updateCert = document.getElementById('addCerts');
+		var updateCert = document.getElementById('updateNewCert');
 
 		$scope.getScheduleCert = function () {
 			$http({
@@ -64514,6 +64514,21 @@
 					$scope.errorMessage = false;
 				}, 2000);
 			}
+		};
+
+		$scope.updateNewCert = function (x) {
+			var newDate = moment($scope.newSelectedDate).toDate();
+			$scope.newSelectedType = x.cert_type;
+			console.log(x);
+			$http({
+				method: 'PUT',
+				url: 'certifications/allUpdate',
+				data: { cert_testdate: newDate, cert_status: $scope.newFormkey, associate_id: userService.getUser(), cert_type: $scope.newSelectedType.type_of_cert }
+			}).then(function (response) {
+				$scope.reload();
+				updateCert.disabled = true;
+				console.log(response.data);
+			});
 		};
 	}
 
