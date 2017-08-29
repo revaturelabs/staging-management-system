@@ -27,7 +27,7 @@ export function associateStatusEditController($scope, $http, $state, $stateParam
 		$scope.submitted = false;
 		$scope.error = false;
 
-		$http.post('associate/updateAssociateStatus', $scope.associate).then(() => {
+		$http.put('associate/updateAssociateStatus', $scope.associate).then(() => {
 			$scope.submitting = false;
 			$scope.submitted = true;
 		}).catch(() => {

@@ -60,7 +60,7 @@ public class Associate {
 	@Column(name = "PORTFOLIO_STATUS")
 	private boolean portfolioStatus;
 
-	@OneToOne(fetch = FetchType.EAGER)
+	@ManyToOne
 	@JoinColumn(name="ASSOCIATE_STATUS")
 	private AssociatesStatus associateStatus;
 	

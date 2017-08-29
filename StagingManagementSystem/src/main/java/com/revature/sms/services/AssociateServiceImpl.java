@@ -90,7 +90,7 @@ public class AssociateServiceImpl implements AssociateService {
 	@Override
 	public void updateStatus(Associate associate) {
 		if(associate.isBenched()) {
-			associate.setPortfolioStatus(false);
+			associate.setPortfolioStatus(true);
 			associateRepo.saveAndFlush(associate);
 		} else {
 			associateRepo.saveAndFlush(associate);

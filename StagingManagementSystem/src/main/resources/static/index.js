@@ -63330,7 +63330,7 @@
 			$scope.submitted = false;
 			$scope.error = false;
 
-			$http.post('associate/updateAssociateStatus', $scope.associate).then(function () {
+			$http.put('associate/updateAssociateStatus', $scope.associate).then(function () {
 				$scope.submitting = false;
 				$scope.submitted = true;
 			}).catch(function () {
