@@ -79,6 +79,7 @@ const managerPanelCtrl = ($scope, $state, $location, $http, userService) => {
 				});
 			  };
 		};	
+
 	};
 	
 	$scope.addPanelClick = function() {

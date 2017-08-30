@@ -61,11 +61,11 @@ public class Associate {
 	@JoinColumn(name = "CLIENT_ID")
 	private Client lockedTo;
 	
-	@OneToOne(fetch=FetchType.EAGER)
+	@ManyToOne
 	@JoinColumn(name="PORTFOLIO_STATUS_ID")
 	private PortfolioStatus portfolioStatus;
 
-	@OneToOne(fetch=FetchType.EAGER)
+	@ManyToOne
 	@JoinColumn(name="ASSOCIATE_STATUS_ID")
 	private AssociatesStatus associateStatus;
 	

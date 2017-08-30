@@ -189,10 +189,8 @@
 	  $uiRouter.stateRegistry.get().map(s => s.$$state())
 	      .filter(s => s.path.length === 2 || s.path.length === 3)
 	      .forEach(s => s._collapsed = false);
-	  
-	  const pluginInstance = $uiRouter.plugin(Visualizer);
-	  
-	  $trace.enable('TRANSITION');*/
+	     const pluginInstance = $uiRouter.plugin(Visualizer);
+	     $trace.enable('TRANSITION');*/
 
 	  // Global Functions
 	  $rootScope.dateConverter = function (time) {
@@ -63858,6 +63856,7 @@
 				$scope.plist.sort(function (a, b) {
 					return a.id - b.id;
 				});
+<<<<<<< HEAD
 			});
 
 			$scope.PanelClick = function (panel) {
@@ -63881,6 +63880,31 @@
 					}, function (response) {
 						$scope.errorUpdateMsgShow = true;
 					});
+=======
+				//For Update
+				$scope.PanelClick = function (panel) {
+					$scope.statusOption = panel.status;
+					$scope.panelChoose = panel;
+					$scope.errorUpdateMsgShow = false;
+					$scope.successUpdateMsgShow = false;
+					$scope.updateComment = panel.comments;
+					$('#PanelCommentModal').modal('show');
+
+					$scope.updateInterviewClick = function (statusOption, updateComment) {
+						panel.comments = updateComment;
+						panel.status = statusOption;
+						$http({
+							method: 'PUT',
+							url: '/panel',
+							data: panel
+						}).then(function (response) {
+							$scope.successUpdateMsgShow = true;
+							$scope.associatePanelClick(associate);
+						}, function (response) {
+							$scope.errorUpdateMsgShow = true;
+						});
+					};
+>>>>>>> dc8a893775b37e7e36d2098e84ebad437a601b11
 				};
 			};
 		};
