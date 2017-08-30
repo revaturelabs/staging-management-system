@@ -8,6 +8,15 @@ import com.revature.pages.LoginPageFactory;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Parameters;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -30,13 +39,13 @@ public class MercuryLogin {
 	
 	
 	
-	@Test(priority = 0)
+	@Test(priority = 0, enabled = false) //enable false so robbert doesn't test twice because im using parameters in test.xml
 	@Parameters({"homepage"})
 	public void validateLandingPage(String homepage) {
 		Assert.assertEquals(driver.getTitle(), homepage);
 	}
 
-	@Test(priority = 1)
+	@Test(priority = 1, enabled = false)
 	@Parameters({"username", "password", "findflightpage"})
 	public void logIntoMercury(String username, String password, String findflightpage) {
 //		LoginPage loginPage = new LoginPage(driver);
@@ -53,7 +62,7 @@ public class MercuryLogin {
 		
 	}
 	
-	@Test(priority = 2)
+	@Test(priority = 2, enabled = false)
 	@Parameters({"homepage"})
 	public void logout(String homepage) {
 		driver.findElement(By.xpath("//a[contains(text(), 'Home')]")).click();
@@ -62,7 +71,7 @@ public class MercuryLogin {
 		//Use text() as a parameter of contains for looking at innerHTML
 	}
 	
-	@Test(priority = 3, dataProvider="provideAccountDetails")
+	@Test(priority = 3, dataProvider="provideAccountDetailsExcel")
 	public void dataProviderExample(String username, String password) {
 		LoginPageFactory loginPage = new LoginPageFactory(driver);
 		loginPage.driverLogIntoMercury(username, password);
@@ -80,7 +89,7 @@ public class MercuryLogin {
 
 	@AfterTest
 	public void afterTest() {
-		driver.close();
+		driver.quit();
 	}
 
 	@DataProvider // Note you can NAME the provider if you don't it defaults to method name
@@ -89,6 +98,26 @@ public class MercuryLogin {
 			{"bobbert", "bobbert"},
 			{"testguy123", "testguy123"}
 		};
+	}
+	
+	@DataProvider
+	public Object[][] provideAccountDetailsExcel() throws IOException {
+		Object[][] data;
+		File file = new File("src/test/resources/mercuryData.xlsx");
+		FileInputStream fileInputStream = new FileInputStream(file);
+		
+		Workbook workbook = new XSSFWorkbook(fileInputStream);
+		Sheet sheet = workbook.getSheet("Sheet1");
+		
+		int rowCount = sheet.getLastRowNum() - sheet.getFirstRowNum();
+		data = new Object[rowCount][2];
+		
+		for(int i = 1; i < rowCount+1; i++) {
+			Row row = sheet.getRow(i);
+			data[i-1] = new Object[]{row.getCell(0).getStringCellValue(), row.getCell(1).getStringCellValue()};
+		}
+		
+		return data;
 	}
 	
 }

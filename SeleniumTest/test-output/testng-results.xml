@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results skipped="0" failed="0" total="5" passed="5">
+<testng-results skipped="0" failed="0" total="3" passed="3">
   <reporter-output>
   </reporter-output>
-  <suite name="MercurySuite" duration-ms="12169" started-at="2017-08-29T17:56:31Z" finished-at="2017-08-29T17:56:43Z">
+  <suite name="MercurySuite" duration-ms="10758" started-at="2017-08-30T18:16:33Z" finished-at="2017-08-30T18:16:43Z">
     <groups>
     </groups>
-    <test name="MercuryLoginTest" duration-ms="12169" started-at="2017-08-29T17:56:31Z" finished-at="2017-08-29T17:56:43Z">
+    <test name="MercuryLoginTest" duration-ms="10758" started-at="2017-08-30T18:16:33Z" finished-at="2017-08-30T18:16:43Z">
       <class name="com.revature.testsuites.MercuryLogin">
-        <test-method status="PASS" signature="beforeTest(java.lang.String)[pri:0, instance:com.revature.testsuites.MercuryLogin@14acaea5]" name="beforeTest" is-config="true" duration-ms="7166" started-at="2017-08-29T13:56:31Z" finished-at="2017-08-29T13:56:38Z">
+        <test-method status="PASS" signature="beforeTest(java.lang.String)[pri:0, instance:com.revature.testsuites.MercuryLogin@66a3ffec]" name="beforeTest" is-config="true" duration-ms="4569" started-at="2017-08-30T14:16:33Z" finished-at="2017-08-30T14:16:37Z">
           <params>
             <param index="0">
               <value>
@@ -18,50 +18,7 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- beforeTest -->
-        <test-method status="PASS" signature="validateLandingPage(java.lang.String)[pri:0, instance:com.revature.testsuites.MercuryLogin@14acaea5]" name="validateLandingPage" duration-ms="13" started-at="2017-08-29T13:56:38Z" finished-at="2017-08-29T13:56:38Z">
-          <params>
-            <param index="0">
-              <value>
-                <![CDATA[Welcome: Mercury Tours]]>
-              </value>
-            </param>
-          </params>
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- validateLandingPage -->
-        <test-method status="PASS" signature="logIntoMercury(java.lang.String, java.lang.String, java.lang.String)[pri:0, instance:com.revature.testsuites.MercuryLogin@14acaea5]" name="logIntoMercury" duration-ms="1176" started-at="2017-08-29T13:56:38Z" finished-at="2017-08-29T13:56:39Z">
-          <params>
-            <param index="0">
-              <value>
-                <![CDATA[bobbert]]>
-              </value>
-            </param>
-            <param index="1">
-              <value>
-                <![CDATA[bobbert]]>
-              </value>
-            </param>
-            <param index="2">
-              <value>
-                <![CDATA[Find a Flight: Mercury Tours:]]>
-              </value>
-            </param>
-          </params>
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- logIntoMercury -->
-        <test-method status="PASS" signature="logout(java.lang.String)[pri:0, instance:com.revature.testsuites.MercuryLogin@14acaea5]" name="logout" duration-ms="367" started-at="2017-08-29T13:56:39Z" finished-at="2017-08-29T13:56:40Z">
-          <params>
-            <param index="0">
-              <value>
-                <![CDATA[Welcome: Mercury Tours]]>
-              </value>
-            </param>
-          </params>
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- logout -->
-        <test-method status="PASS" signature="dataProviderExample(java.lang.String, java.lang.String)[pri:0, instance:com.revature.testsuites.MercuryLogin@14acaea5]" name="dataProviderExample" duration-ms="1336" started-at="2017-08-29T13:56:40Z" data-provider="provideAccountDetails" finished-at="2017-08-29T13:56:41Z">
+        <test-method status="PASS" signature="dataProviderExample(java.lang.String, java.lang.String)[pri:0, instance:com.revature.testsuites.MercuryLogin@66a3ffec]" name="dataProviderExample" duration-ms="1531" started-at="2017-08-30T14:16:38Z" data-provider="provideAccountDetailsExcel" finished-at="2017-08-30T14:16:39Z">
           <params>
             <param index="0">
               <value>
@@ -77,7 +34,7 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- dataProviderExample -->
-        <test-method status="PASS" signature="dataProviderExample(java.lang.String, java.lang.String)[pri:0, instance:com.revature.testsuites.MercuryLogin@14acaea5]" name="dataProviderExample" duration-ms="2054" started-at="2017-08-29T13:56:41Z" data-provider="provideAccountDetails" finished-at="2017-08-29T13:56:43Z">
+        <test-method status="PASS" signature="dataProviderExample(java.lang.String, java.lang.String)[pri:0, instance:com.revature.testsuites.MercuryLogin@66a3ffec]" name="dataProviderExample" duration-ms="1750" started-at="2017-08-30T14:16:39Z" data-provider="provideAccountDetailsExcel" finished-at="2017-08-30T14:16:41Z">
           <params>
             <param index="0">
               <value>
@@ -93,7 +50,23 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- dataProviderExample -->
-        <test-method status="PASS" signature="afterTest()[pri:0, instance:com.revature.testsuites.MercuryLogin@14acaea5]" name="afterTest" is-config="true" duration-ms="42" started-at="2017-08-29T13:56:43Z" finished-at="2017-08-29T13:56:43Z">
+        <test-method status="PASS" signature="dataProviderExample(java.lang.String, java.lang.String)[pri:0, instance:com.revature.testsuites.MercuryLogin@66a3ffec]" name="dataProviderExample" duration-ms="1318" started-at="2017-08-30T14:16:41Z" data-provider="provideAccountDetailsExcel" finished-at="2017-08-30T14:16:42Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[edgar]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[edgar]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- dataProviderExample -->
+        <test-method status="PASS" signature="afterTest()[pri:0, instance:com.revature.testsuites.MercuryLogin@66a3ffec]" name="afterTest" is-config="true" duration-ms="905" started-at="2017-08-30T14:16:42Z" finished-at="2017-08-30T14:16:43Z">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- afterTest -->
