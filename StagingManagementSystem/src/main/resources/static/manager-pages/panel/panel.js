@@ -34,7 +34,7 @@ const managerPanelCtrl = ($scope, $state, $location, $http, userService) => {
 		else if(selectChoice == 'NULL'){
 			$scope.associates = $scope.AllAssociates.filter(function(obj){
 	        	return obj.latestPanelStatus == null;
-	        });
+	        })
 		}
 		else {
 			$scope.associates = $scope.AllAssociates;
@@ -73,6 +73,10 @@ const managerPanelCtrl = ($scope, $state, $location, $http, userService) => {
 					data: panel,
 				}).then((response)=>{
 					$scope.successUpdateMsgShow = true;
+					console.log(associate.latestPanelStatus)
+					$scope.modifyAllAssociates(panel.status, associate.id);
+					console.log(associate.latestPanelStatus)
+					//refresh panel history table 
 					$scope.associateNameClick(associate);
 				},(response)=>{
 					$scope.errorUpdateMsgShow = true;
@@ -80,6 +84,15 @@ const managerPanelCtrl = ($scope, $state, $location, $http, userService) => {
 			  };
 		};	
 
+	};
+	
+	$scope.modifyAllAssociates =function (status, id){
+		for(var obj of $scope.AllAssociates){
+			if (obj.id == id){
+				obj.latestPanelStatus = status;
+				break;
+			}
+		}
 	};
 	
 	$scope.addPanelClick = function() {
@@ -97,6 +110,8 @@ const managerPanelCtrl = ($scope, $state, $location, $http, userService) => {
 		        addPanelBtn.disabled = false;
 		        addPanelBtn.innerHTML = 'Add Panel';
 		        $scope.defaultCommnt = '';
+		        $scope.modifyAllAssociates("PENDING", $scope.choose.id);
+		    	//refresh panel history table 
 		        $scope.associateNameClick($scope.choose)
 		      });  
 	};

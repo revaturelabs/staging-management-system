@@ -13,6 +13,7 @@
 								<option value="FAIL">FAIL</option>
 								<option value="NULL">NO PANEL RECORD</option>
 							</select> 
+							<button type="button"  ng-click="statusSelected(selectChoice)" class="btn btn-primary" ><span class="glyphicon glyphicon-refresh"></span></button>
 						</th>
 						</th>
 					</tr>
@@ -23,9 +24,7 @@
 					</tr>
 				</tbody>
 			</table>
-
-
-		
+			<div id="associateName">{{choose.name}}</div>
 			<button id ="panel-margin" type="button" ng-show ="(plist[plist.length-1].status =='FAIL'||plist[plist.length-1].status =='PASS')  || (choose.length != 0 && plist.length == 0)"  ng-click="showAddModal()" class="btn btn-primary">Add Panel</button>
 			<table ng-show="show_panel" class="table table-striped manager-associates-panel-table selectable-table">
 				<thead>
