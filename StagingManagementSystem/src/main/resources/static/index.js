@@ -63972,6 +63972,7 @@
 		$scope.disabled_search = true;
 		$scope.disabled_select = true;
 		$scope.PanelLoad = 'Loading Panel...';
+		$scope.refreshIcon = true;
 		$http({
 			method: 'GET',
 			url: "/associate/all"
@@ -63982,6 +63983,7 @@
 			$scope.searchShowUp = true;
 			$scope.disabled_search = false;
 			$scope.disabled_select = false;
+			$scope.refreshIcon = false;
 		});
 
 		$scope.statusSelected = function (selectChoice) {
@@ -64034,9 +64036,7 @@
 						data: panel
 					}).then(function (response) {
 						$scope.successUpdateMsgShow = true;
-						console.log(associate.latestPanelStatus);
 						$scope.modifyAllAssociates(panel.status, associate.id);
-						console.log(associate.latestPanelStatus);
 						//refresh panel history table 
 						$scope.associateNameClick(associate);
 					}, function (response) {

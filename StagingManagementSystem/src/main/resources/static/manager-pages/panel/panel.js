@@ -8,6 +8,7 @@ const managerPanelCtrl = ($scope, $state, $location, $http, userService) => {
 	$scope.disabled_search=true;
 	$scope.disabled_select=true;
 	$scope.PanelLoad= 'Loading Panel...';
+	$scope.refreshIcon=true;
 	$http({
 		method: 'GET',
 		url: "/associate/all",
@@ -19,6 +20,7 @@ const managerPanelCtrl = ($scope, $state, $location, $http, userService) => {
 		$scope.searchShowUp = true;	
 		$scope.disabled_search=false;
 		$scope.disabled_select=false;
+		$scope.refreshIcon=false;
 	});
 	
 	$scope.statusSelected = (selectChoice) =>{
@@ -73,9 +75,7 @@ const managerPanelCtrl = ($scope, $state, $location, $http, userService) => {
 					data: panel,
 				}).then((response)=>{
 					$scope.successUpdateMsgShow = true;
-					console.log(associate.latestPanelStatus)
 					$scope.modifyAllAssociates(panel.status, associate.id);
-					console.log(associate.latestPanelStatus)
 					//refresh panel history table 
 					$scope.associateNameClick(associate);
 				},(response)=>{
