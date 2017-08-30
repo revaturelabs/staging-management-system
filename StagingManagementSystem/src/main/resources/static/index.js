@@ -63792,65 +63792,78 @@
 		$scope.PanelLoad = '';
 		$scope.show_panel = false;
 		$scope.defaultCommnt = '';
+		$scope.AllAssociates = {};
 		$scope.choose = {};
 		$scope.plist = {};
+		$scope.disabled_search = true;
+		$scope.disabled_select = true;
+		$scope.PanelLoad = 'Loading Panel...';
+		$http({
+			method: 'GET',
+			url: "/associate/all"
+		}).then(function (response) {
+			$scope.AllAssociates = response.data;
+			$scope.associates = $scope.AllAssociates;
+			$scope.PanelLoad = '';
+			$scope.searchShowUp = true;
+			$scope.disabled_search = false;
+			$scope.disabled_select = false;
+		});
 
-		$scope.searchClick = function (searchName) {
+		$scope.statusSelected = function (selectChoice) {
+			$scope.searchShowUp = true;
+			$scope.show_panel = false;
 			$scope.choose = {};
 			$scope.plist = {};
-			if (searchName) {
-				$scope.disabled_search = true;
-				$scope.show_panel = false;
-				$scope.PanelLoad = 'Loading Panel...';
-				$http({
-					method: 'GET',
-					url: '/associate/search/' + searchName
-				}).then(function (response) {
-					$scope.PanelLoad = '';
-					$scope.disabled_search = false;
-					$scope.associates = response.data;
-					$scope.searchShowUp = true;
+			if (selectChoice == 'PENDING' || selectChoice == "PASS" || selectChoice == "FAIL") {
+				$scope.associates = $scope.AllAssociates.filter(function (obj) {
+					return obj.latestPanelStatus == selectChoice;
 				});
+			} else if (selectChoice == 'NULL') {
+				$scope.associates = $scope.AllAssociates.filter(function (obj) {
+					return obj.latestPanelStatus == null;
+				});
+			} else {
+				$scope.associates = $scope.AllAssociates;
 			}
+		};
 
-			$scope.associatePanelClick = function (associate) {
-				$scope.choose = associate;
-				$scope.searchShowUp = false;
-				$scope.show_panel = true;
-				var associateId = associate.id;
-				$http({
-					method: 'GET',
-					url: '/panel/associate/' + associateId
-				}).then(function (response) {
-					$scope.plist = response.data;
-					$scope.plist.sort(function (a, b) {
-						return a.id - b.id;
-					});
+		$scope.associateNameClick = function (associate) {
+			$scope.choose = associate;
+			$scope.searchShowUp = false;
+			$scope.show_panel = true;
+			var associateId = associate.id;
+			$http({
+				method: 'GET',
+				url: '/panel/associate/' + associateId
+			}).then(function (response) {
+				$scope.plist = response.data;
+				$scope.plist.sort(function (a, b) {
+					return a.id - b.id;
 				});
+			});
 
-				$scope.PanelClick = function (panel) {
+			$scope.PanelClick = function (panel) {
+				$scope.statusOption = panel.status;
+				$scope.panelChoose = panel;
+				$scope.errorUpdateMsgShow = false;
+				$scope.successUpdateMsgShow = false;
+				$scope.updateComment = panel.comments;
+				$('#PanelCommentModal').modal('show');
 
-					$scope.statusOption = panel.status;
-					$scope.panelChoose = panel;
-					$scope.errorUpdateMsgShow = false;
-					$scope.successUpdateMsgShow = false;
-					$scope.updateComment = panel.comments;
-					$('#PanelCommentModal').modal('show');
-
-					$scope.updateInterviewClick = function (statusOption, updateComment) {
-						panel.comments = updateComment;
-						panel.status = statusOption;
-						$http({
-							method: 'PUT',
-							url: '/panel',
-							data: panel
-						}).then(function (response) {
-							$scope.successUpdateMsgShow = true;
-							$scope.associatePanelClick(associate);
-						}, function (response) {
-							$scope.errorUpdateMsgShow = true;
-						});
-					};
+				$scope.updateInterviewClick = function (statusOption, updateComment) {
+					panel.comments = updateComment;
+					panel.status = statusOption;
+					$http({
+						method: 'PUT',
+						url: '/panel',
+						data: panel
+					}).then(function (response) {
+						$scope.successUpdateMsgShow = true;
+						$scope.associatePanelClick(associate);
+					}, function (response) {
+						$scope.errorUpdateMsgShow = true;
+					});
 				};
 			};
 		};
