@@ -193,8 +193,10 @@
 	  $uiRouter.stateRegistry.get().map(s => s.$$state())
 	      .filter(s => s.path.length === 2 || s.path.length === 3)
 	      .forEach(s => s._collapsed = false);
-	     const pluginInstance = $uiRouter.plugin(Visualizer);
-	     $trace.enable('TRANSITION');*/
+	  
+	  const pluginInstance = $uiRouter.plugin(Visualizer);
+	  
+	  $trace.enable('TRANSITION');*/
 
 	  // Global Functions
 	  $rootScope.dateConverter = function (time) {
@@ -345,7 +347,7 @@
 /***/ (function(module, exports) {
 
 	/**
-	 * @license AngularJS v1.6.6
+	 * @license AngularJS v1.6.5
 	 * (c) 2010-2017 Google, Inc. http://angularjs.org
 	 * License: MIT
 	 */
@@ -452,7 +454,7 @@
 	      return match;
 	    });
 
-	    message += '\nhttp://errors.angularjs.org/1.6.6/' +
+	    message += '\nhttp://errors.angularjs.org/1.6.5/' +
 	      (module ? module + '/' : '') + code;
 
 	    for (i = 0, paramPrefix = '?'; i < templateArgs.length; i++, paramPrefix = '&') {
@@ -3130,11 +3132,11 @@
 	var version = {
 	  // These placeholder strings will be replaced by grunt's `build` task.
 	  // They need to be double- or single-quoted.
-	  full: '1.6.6',
+	  full: '1.6.5',
 	  major: 1,
 	  minor: 6,
-	  dot: 6,
-	  codeName: 'interdimensional-cable'
+	  dot: 5,
+	  codeName: 'toffee-salinization'
 	};
 
 
@@ -3280,7 +3282,7 @@
 	      });
 	    }
 	  ])
-	  .info({ angularVersion: '1.6.6' });
+	  .info({ angularVersion: '1.6.5' });
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -8842,31 +8844,6 @@
 	    return preAssignBindingsEnabled;
 	  };
 
-	  /**
-	   * @ngdoc method
-	   * @name  $compileProvider#strictComponentBindingsEnabled
-	   *
-	   * @param {boolean=} enabled update the strictComponentBindingsEnabled state if provided, otherwise just return the
-	   * current strictComponentBindingsEnabled state
-	   * @returns {*} current value if used as getter or itself (chaining) if used as setter
-	   *
-	   * @kind function
-	   *
-	   * @description
-	   * Call this method to enable/disable strict component bindings check. If enabled, the compiler will enforce that
-	   * for all bindings of a component that are not set as optional with `?`, an attribute needs to be provided
-	   * on the component's HTML tag.
-	   *
-	   * The default value is false.
-	   */
-	  var strictComponentBindingsEnabled = false;
-	  this.strictComponentBindingsEnabled = function(enabled) {
-	    if (isDefined(enabled)) {
-	      strictComponentBindingsEnabled = enabled;
-	      return this;
-	    }
-	    return strictComponentBindingsEnabled;
-	  };
 
 	  var TTL = 10;
 	  /**
@@ -10894,20 +10871,12 @@
 	      }
 	    }
 
-	    function strictBindingsCheck(attrName, directiveName) {
-	      if (strictComponentBindingsEnabled) {
-	        throw $compileMinErr('missingattr',
-	          'Attribute \'{0}\' of \'{1}\' is non-optional and must be set!',
-	          attrName, directiveName);
-	      }
-	    }
 
 	    // Set up $watches for isolate scope and controller bindings.
 	    function initializeDirectiveBindings(scope, attrs, destination, bindings, directive) {
 	      var removeWatchCollection = [];
 	      var initialChanges = {};
 	      var changes;
-
 	      forEach(bindings, function initializeBinding(definition, scopeName) {
 	        var attrName = definition.attrName,
 	        optional = definition.optional,
@@ -10919,9 +10888,7 @@
 
 	          case '@':
 	            if (!optional && !hasOwnProperty.call(attrs, attrName)) {
-	              strictBindingsCheck(attrName, directive.name);
 	              destination[scopeName] = attrs[attrName] = undefined;
-
 	            }
 	            removeWatch = attrs.$observe(attrName, function(value) {
 	              if (isString(value) || isBoolean(value)) {
@@ -10948,7 +10915,6 @@
 	          case '=':
 	            if (!hasOwnProperty.call(attrs, attrName)) {
 	              if (optional) break;
-	              strictBindingsCheck(attrName, directive.name);
 	              attrs[attrName] = undefined;
 	            }
 	            if (optional && !attrs[attrName]) break;
@@ -10993,7 +10959,6 @@
 	          case '<':
 	            if (!hasOwnProperty.call(attrs, attrName)) {
 	              if (optional) break;
-	              strictBindingsCheck(attrName, directive.name);
 	              attrs[attrName] = undefined;
 	            }
 	            if (optional && !attrs[attrName]) break;
@@ -11019,9 +10984,6 @@
 	            break;
 
 	          case '&':
-	            if (!optional && !hasOwnProperty.call(attrs, attrName)) {
-	              strictBindingsCheck(attrName, directive.name);
-	            }
 	            // Don't assign Object.prototype method to scope
 	            parentGet = attrs.hasOwnProperty(attrName) ? $parse(attrs[attrName]) : noop;
 
@@ -11554,7 +11516,7 @@
 	      if (!params) return '';
 	      var parts = [];
 	      forEachSorted(params, function(value, key) {
-	        if (value === null || isUndefined(value) || isFunction(value)) return;
+	        if (value === null || isUndefined(value)) return;
 	        if (isArray(value)) {
 	          forEach(value, function(v) {
 	            parts.push(encodeUriQuery(key)  + '=' + encodeUriQuery(serializeValue(v)));
@@ -11650,15 +11612,10 @@
 
 	    if (tempData) {
 	      var contentType = headers('Content-Type');
-	      var hasJsonContentType = contentType && (contentType.indexOf(APPLICATION_JSON) === 0);
-
-	      if (hasJsonContentType || isJsonLike(tempData)) {
+	      if ((contentType && (contentType.indexOf(APPLICATION_JSON) === 0)) || isJsonLike(tempData)) {
 	        try {
 	          data = fromJson(tempData);
 	        } catch (e) {
-	          if (!hasJsonContentType) {
-	            return data;
-	          }
 	          throw $httpMinErr('baddata', 'Data must be a valid JSON object. Received: "{0}". ' +
 	          'Parse error: "{1}"', data, e);
 	        }
@@ -11971,7 +11928,6 @@
 	     *   - **headers** – `{function([headerName])}` – Header getter function.
 	     *   - **config** – `{Object}` – The configuration object that was used to generate the request.
 	     *   - **statusText** – `{string}` – HTTP status text of the response.
-	     *   - **xhrStatus** – `{string}` – Status of the XMLHttpRequest (`complete`, `error`, `timeout` or `abort`).
 	     *
 	     * A response status code between 200 and 299 is considered a success status and will result in
 	     * the success callback being called. Any response status code outside of that range is
@@ -12813,9 +12769,9 @@
 	          } else {
 	            // serving from cache
 	            if (isArray(cachedResp)) {
-	              resolvePromise(cachedResp[1], cachedResp[0], shallowCopy(cachedResp[2]), cachedResp[3], cachedResp[4]);
+	              resolvePromise(cachedResp[1], cachedResp[0], shallowCopy(cachedResp[2]), cachedResp[3]);
 	            } else {
-	              resolvePromise(cachedResp, 200, {}, 'OK', 'complete');
+	              resolvePromise(cachedResp, 200, {}, 'OK');
 	            }
 	          }
 	        } else {
@@ -12872,10 +12828,10 @@
 	       *  - resolves the raw $http promise
 	       *  - calls $apply
 	       */
-	      function done(status, response, headersString, statusText, xhrStatus) {
+	      function done(status, response, headersString, statusText) {
 	        if (cache) {
 	          if (isSuccess(status)) {
-	            cache.put(url, [status, response, parseHeaders(headersString), statusText, xhrStatus]);
+	            cache.put(url, [status, response, parseHeaders(headersString), statusText]);
 	          } else {
 	            // remove promise from the cache
 	            cache.remove(url);
@@ -12883,7 +12839,7 @@
 	        }
 
 	        function resolveHttpPromise() {
-	          resolvePromise(response, status, headersString, statusText, xhrStatus);
+	          resolvePromise(response, status, headersString, statusText);
 	        }
 
 	        if (useApplyAsync) {
@@ -12898,7 +12854,7 @@
 	      /**
 	       * Resolves the raw $http promise.
 	       */
-	      function resolvePromise(response, status, headers, statusText, xhrStatus) {
+	      function resolvePromise(response, status, headers, statusText) {
 	        //status: HTTP response status code, 0, -1 (aborted by timeout / promise)
 	        status = status >= -1 ? status : 0;
 
@@ -12907,13 +12863,12 @@
 	          status: status,
 	          headers: headersGetter(headers),
 	          config: config,
-	          statusText: statusText,
-	          xhrStatus: xhrStatus
+	          statusText: statusText
 	        });
 	      }
 
 	      function resolvePromiseWithResult(result) {
-	        resolvePromise(result.data, result.status, shallowCopy(result.headers()), result.statusText, result.xhrStatus);
+	        resolvePromise(result.data, result.status, shallowCopy(result.headers()), result.statusText);
 	      }
 
 	      function removePendingReq() {
@@ -13014,7 +12969,7 @@
 	      var jsonpDone = jsonpReq(url, callbackPath, function(status, text) {
 	        // jsonpReq only ever sets status to 200 (OK), 404 (ERROR) or -1 (WAITING)
 	        var response = (status === 200) && callbacks.getResponse(callbackPath);
-	        completeRequest(callback, status, response, '', text, 'complete');
+	        completeRequest(callback, status, response, '', text);
 	        callbacks.removeCallback(callbackPath);
 	      });
 	    } else {
@@ -13049,29 +13004,18 @@
 	            status,
 	            response,
 	            xhr.getAllResponseHeaders(),
-	            statusText,
-	            'complete');
+	            statusText);
 	      };
 
 	      var requestError = function() {
 	        // The response is always empty
 	        // See https://xhr.spec.whatwg.org/#request-error-steps and https://fetch.spec.whatwg.org/#concept-network-error
-	        completeRequest(callback, -1, null, null, '', 'error');
-	      };
-
-	      var requestAborted = function() {
-	        completeRequest(callback, -1, null, null, '', 'abort');
-	      };
-
-	      var requestTimeout = function() {
-	        // The response is always empty
-	        // See https://xhr.spec.whatwg.org/#request-error-steps and https://fetch.spec.whatwg.org/#concept-network-error
-	        completeRequest(callback, -1, null, null, '', 'timeout');
+	        completeRequest(callback, -1, null, null, '');
 	      };
 
 	      xhr.onerror = requestError;
-	      xhr.onabort = requestAborted;
-	      xhr.ontimeout = requestTimeout;
+	      xhr.onabort = requestError;
+	      xhr.ontimeout = requestError;
 
 	      forEach(eventHandlers, function(value, key) {
 	          xhr.addEventListener(key, value);
@@ -13121,14 +13065,14 @@
 	      }
 	    }
 
-	    function completeRequest(callback, status, response, headersString, statusText, xhrStatus) {
+	    function completeRequest(callback, status, response, headersString, statusText) {
 	      // cancel timeout and subsequent timeout promise resolution
 	      if (isDefined(timeoutId)) {
 	        $browserDefer.cancel(timeoutId);
 	      }
 	      jsonpDone = xhr = null;
 
-	      callback(status, response, headersString, statusText, xhrStatus);
+	      callback(status, response, headersString, statusText);
 	    }
 	  };
 
@@ -15754,7 +15698,7 @@
 	      findConstantAndWatchExpressions(ast.property, $filter, astIsPure);
 	    }
 	    ast.constant = ast.object.constant && (!ast.computed || ast.property.constant);
-	    ast.toWatch = ast.constant ? [] : [ast];
+	    ast.toWatch = [ast];
 	    break;
 	  case AST.CallExpression:
 	    isStatelessFilter = ast.filter ? isStateless($filter, ast.callee.name) : false;
@@ -15763,7 +15707,9 @@
 	    forEach(ast.arguments, function(expr) {
 	      findConstantAndWatchExpressions(expr, $filter, astIsPure);
 	      allConstants = allConstants && expr.constant;
-	      argsToWatch.push.apply(argsToWatch, expr.toWatch);
+	      if (!expr.constant) {
+	        argsToWatch.push.apply(argsToWatch, expr.toWatch);
+	      }
 	    });
 	    ast.constant = allConstants;
 	    ast.toWatch = isStatelessFilter ? argsToWatch : [ast];
@@ -15780,7 +15726,9 @@
 	    forEach(ast.elements, function(expr) {
 	      findConstantAndWatchExpressions(expr, $filter, astIsPure);
 	      allConstants = allConstants && expr.constant;
-	      argsToWatch.push.apply(argsToWatch, expr.toWatch);
+	      if (!expr.constant) {
+	        argsToWatch.push.apply(argsToWatch, expr.toWatch);
+	      }
 	    });
 	    ast.constant = allConstants;
 	    ast.toWatch = argsToWatch;
@@ -15790,14 +15738,17 @@
 	    argsToWatch = [];
 	    forEach(ast.properties, function(property) {
 	      findConstantAndWatchExpressions(property.value, $filter, astIsPure);
-	      allConstants = allConstants && property.value.constant;
-	      argsToWatch.push.apply(argsToWatch, property.value.toWatch);
-	      if (property.computed) {
-	        //`{[key]: value}` implicitly does `key.toString()` which may be non-pure
-	        findConstantAndWatchExpressions(property.key, $filter, /*parentIsPure=*/false);
-	        allConstants = allConstants && property.key.constant;
-	        argsToWatch.push.apply(argsToWatch, property.key.toWatch);
+	      allConstants = allConstants && property.value.constant && !property.computed;
+	      if (!property.value.constant) {
+	        argsToWatch.push.apply(argsToWatch, property.value.toWatch);
 	      }
+	      if (property.computed) {
+	        findConstantAndWatchExpressions(property.key, $filter, astIsPure);
+	        if (!property.key.constant) {
+	          argsToWatch.push.apply(argsToWatch, property.key.toWatch);
+	        }
+	      }
+
 	    });
 	    ast.constant = allConstants;
 	    ast.toWatch = argsToWatch;
@@ -23393,20 +23344,15 @@
 	 *
 	 * ## A note about browser compatibility
 	 *
-	 * Internet Explorer and Edge do not support the `details` element, it is
+	 * Edge, Firefox, and Internet Explorer do not support the `details` element, it is
 	 * recommended to use {@link ng.ngShow} and {@link ng.ngHide} instead.
 	 *
 	 * @example
 	     <example name="ng-open">
 	       <file name="index.html">
-	         <label>Toggle details: <input type="checkbox" ng-model="open"></label><br/>
+	         <label>Check me check multiple: <input type="checkbox" ng-model="open"></label><br/>
 	         <details id="details" ng-open="open">
-	            <summary>List</summary>
-	            <ul>
-	              <li>Apple</li>
-	              <li>Orange</li>
-	              <li>Durian</li>
-	            </ul>
+	            <summary>Show/Hide me</summary>
 	         </details>
 	       </file>
 	       <file name="protractor.js" type="protractor">
@@ -31514,9 +31460,7 @@
 	 *     more than one tracking expression value resolve to the same key. (This would mean that two distinct objects are
 	 *     mapped to the same DOM element, which is not possible.)
 	 *
-	 *     <div class="alert alert-warning">
-	 *       <strong>Note:</strong> the `track by` expression must come last - after any filters, and the alias expression.
-	 *     </div>
+	 *     Note that the tracking expression must come last, after any filters, and the alias expression.
 	 *
 	 *     For example: `item in items` is equivalent to `item in items track by $id(item)`. This implies that the DOM elements
 	 *     will be associated by item identity in the array.
@@ -34247,7 +34191,7 @@
 /***/ (function(module, exports) {
 
 	/**
-	 * @license AngularJS v1.6.6
+	 * @license AngularJS v1.6.5
 	 * (c) 2010-2017 Google, Inc. http://angularjs.org
 	 * License: MIT
 	 */
@@ -34270,7 +34214,7 @@
 
 
 	angular.module('ngCookies', ['ng']).
-	  info({ angularVersion: '1.6.6' }).
+	  info({ angularVersion: '1.6.5' }).
 	  /**
 	   * @ngdoc provider
 	   * @name $cookiesProvider
@@ -64479,36 +64423,19 @@
 				$scope.CERTIFICATIONS = response.data;
 			});
 		};
-		$scope.deleteCert = function (associateId) {
-
-			$http({
-				method: 'DELETE',
-				url: '/certifications'
-			}).then(function (response) {
-
-				$scope.CERTIFICATIONS = response.data;
-				console.log($scope.CERTIFICATIONS);
-			});
-		};
 		$scope.ApplyCert = function () {
 
 			$('#datetimepicker1').val('');
 			$('#getCert').modal('show');
 		};
 
-		$scope.deletedCert = function () {
+		$scope.deletedCert = function (x) {
+			var newDate = moment($scope.newSelectedDate).toDate();
+			$scope.newSelectedType = x.cert_type;
+			$scope.newSelectedDate = x.cert_testdate;
+			$scope.CERTIFICATIONS.cert_id = x.cert_id;
+			console.log($scope.CERTIFICATIONS.cert_id);
 			$('#deleteCert').modal('show');
-		};
-
-		//add a new certification in the certification type
-		$scope.customCert = function () {
-			$http({
-				method: "POST",
-				url: 'certificationtype/add/certification_type',
-				data: { type_of_cert: customText }
-			}).then(function (response) {
-				$state.reload();
-			});
 		};
 
 		$http({
@@ -64576,16 +64503,17 @@
 
 		$scope.updateNewCert = function (x) {
 			var newDate = moment($scope.newSelectedDate).toDate();
-			$scope.newSelectedType = x.cert_type;
-			console.log(x);
+			$scope.cert_id = $scope.CERTIFICATIONS.cert_id;
+			$scope.cert_type = $scope.newSelectedType.type_of_cert;
+
 			$http({
 				method: 'PUT',
-				url: 'certifications/allUpdate',
-				data: { cert_testdate: newDate, cert_status: $scope.newFormkey, associate_id: userService.getUser(), cert_type: $scope.newSelectedType.type_of_cert }
+				url: '/certifications',
+				data: { cert_id: $scope.CERTIFICATIONS.cert_id, cert_testdate: newDate, cert_status: $scope.newFormkey, associate_id: userService.getUser(), cert_type: $scope.newSelectedType, comments: $scope.selectedComment }
 			}).then(function (response) {
-				$scope.reload();
-				updateCert.disabled = true;
+				$scope.successMessage = "Successfully sent to Manager";
 				console.log(response.data);
+				console.log($scope.newSelectedType);
 			});
 		};
 	}

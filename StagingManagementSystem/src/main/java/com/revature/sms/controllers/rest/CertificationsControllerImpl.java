@@ -58,7 +58,7 @@ public class CertificationsControllerImpl {
 		return certService.findByAssociate(associateId);
 	}
 	
-     @PutMapping("/allUpdate")
+     @PutMapping
      public void updateCertifications(@RequestBody Certifications certifications){
     	 certService.update(certifications);
      }

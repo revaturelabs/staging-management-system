@@ -3,6 +3,7 @@ function certificationCtrl($scope,$http,$state, $stateParams,$filter,$timeout,us
 	$scope.certificationtype ={};
 	
 	const updateCert = document.getElementById('updateNewCert');
+	
 
 	
 	$scope.getScheduleCert = function(){
@@ -13,39 +14,21 @@ function certificationCtrl($scope,$http,$state, $stateParams,$filter,$timeout,us
 	    	  $scope.CERTIFICATIONS = response.data;
 	      });
 	}
-	  $scope.deleteCert=function(associateId){
-		
-		   $http({
-			   method:'DELETE',
-				   url: '/certifications',  
-		   })
-		   .then(function (response){
-			   
-			   $scope.CERTIFICATIONS= response.data;
-				console.log( $scope.CERTIFICATIONS);
-		   });
-		  }
 	  $scope.ApplyCert = function() {
 			
 		    $('#datetimepicker1').val('');	    
 			$('#getCert').modal('show');
 		};
 		
-		  $scope.deletedCert = function() {   
+		  $scope.deletedCert = function(x) {  
+			  let newDate = moment($scope.newSelectedDate).toDate();
+			  $scope.newSelectedType = x.cert_type;
+			  $scope.newSelectedDate = x.cert_testdate;
+			  $scope.CERTIFICATIONS.cert_id = x.cert_id;
+			  console.log($scope.CERTIFICATIONS.cert_id);
 				$('#deleteCert').modal('show');
 			};
 			
-		//add a new certification in the certification type
-		$scope.customCert = function(){
-			$http({
-				method:"POST",
-				url: 'certificationtype/add/certification_type',
-				data:{type_of_cert:customText}
-			})
-			.then((response)=>{
-				$state.reload();
-			});
-		};
 		
 		$http ({
 			method: 'GET',
@@ -115,19 +98,22 @@ function certificationCtrl($scope,$http,$state, $stateParams,$filter,$timeout,us
 				}
 		  };
 
+		  
+		  
 		  $scope.updateNewCert=function(x){
 			  let newDate = moment($scope.newSelectedDate).toDate();
-			  $scope.newSelectedType= x.cert_type;
-			  console.log(x);
+			  $scope.cert_id= $scope.CERTIFICATIONS.cert_id;
+			  $scope.cert_type= $scope.newSelectedType.type_of_cert;
+
 				 $http({
 				        method: 'PUT',
-				        url: 'certifications/allUpdate',
-				        data: { cert_testdate:newDate, cert_status:$scope.newFormkey, associate_id:userService.getUser(), cert_type:$scope.newSelectedType.type_of_cert },
+				        url: '/certifications',
+				        data: { cert_id:$scope.CERTIFICATIONS.cert_id, cert_testdate:newDate, cert_status:$scope.newFormkey, associate_id:userService.getUser(), cert_type:$scope.newSelectedType, comments:$scope.selectedComment },
 				      })
 				      .then((response) => {
-				    	  $scope.reload();
-				    	  updateCert.disabled=true;
+				    	  $scope.successMessage="Successfully sent to Manager";
 				    	  console.log(response.data);
+				    	  console.log($scope.newSelectedType);
 				      });
 		  };
 		
