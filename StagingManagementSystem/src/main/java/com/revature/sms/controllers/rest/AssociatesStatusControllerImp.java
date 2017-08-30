@@ -68,7 +68,7 @@ public class AssociatesStatusControllerImp {
 		if (session.getAttribute(LM) == null) {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 		}
-		associatesStatusService.updateStatus(associate.getAssociateStatus());
+		associatesStatusService.updateStatus(associate.getAssociateStatusObject());
 		return ResponseEntity.ok(associate);
 	}
 	
