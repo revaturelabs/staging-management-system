@@ -29,7 +29,7 @@ public class Panel
 	
 	private long id;
 	
-	@ManyToOne(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToOne
 	@JoinColumn(name = "ASSOCIATE_ID")
 	private Associate associate;
 	
