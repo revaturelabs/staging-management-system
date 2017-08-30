@@ -13,10 +13,7 @@
 								<option value="FAIL">FAIL</option>
 								<option value="NULL">NO PANEL RECORD</option>
 							</select> 
-							
 						</th>
-						
-							
 						</th>
 					</tr>
 				</thead>
@@ -27,7 +24,7 @@
 				</tbody>
 			</table>
 
-			<div id="associateName">{{choose.name}}</div>
+
 		
 			<button id ="panel-margin" type="button" ng-show ="(plist[plist.length-1].status =='FAIL'||plist[plist.length-1].status =='PASS')  || (choose.length != 0 && plist.length == 0)"  ng-click="showAddModal()" class="btn btn-primary">Add Panel</button>
 			<table ng-show="show_panel" class="table table-striped manager-associates-panel-table selectable-table">
