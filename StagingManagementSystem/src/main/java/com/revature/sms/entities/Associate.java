@@ -150,10 +150,10 @@ public class Associate {
 		return associateStatus.getStatus().equals("BENCH") ? true : false;
 	}
 
-	public void setStatus() {
+	public void checkAssociateStatus() {
 		
 		if (this.isTrainingOnDate(LocalDateTime.now())) {
-			AssociatesStatus status = new AssociatesStatus(0, "TRAINING");
+			AssociatesStatus status = new AssociatesStatus(4, "TRAINING");
 			this.setAssociateStatus(status);
 		}
 		else if (this.isTrackedOnDate(LocalDateTime.now()) && !this.isTrainingOnDate(LocalDateTime.now())) {
@@ -243,8 +243,12 @@ public class Associate {
 		this.lockedTo = lockedTo;
 	}
 
-	public AssociatesStatus getAssociateStatus() {
+	public AssociatesStatus getAssociateStatusObject() {
 		return associateStatus;
+	}
+	
+	public String getAssociateStatus() {
+		return associateStatus.getStatus();
 	}
 
 	public void setAssociateStatus(AssociatesStatus associateStatus) {
