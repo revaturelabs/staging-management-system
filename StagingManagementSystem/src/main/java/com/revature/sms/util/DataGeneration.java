@@ -280,7 +280,7 @@ public class DataGeneration {
 
 		AssociateP(Associate a) {
 			super(a.getId(),a.getSalesforceId(), a.getCredential(), a.getName(), a.getPortfolioLink(), a.getBatch(), a.getProject(),
-					a.getLockedTo(), a.getSkills(), a.getJobs(),a.getAssociateStatus(), a.getPortfolioStatus());
+					a.getLockedTo(), a.getSkills(), a.getJobs(),a.getAssociateStatusObject(), a.getPortfolioStatus());
 
 			int qualityOfAssociate = rand.nextInt(100);
 
@@ -319,9 +319,10 @@ public class DataGeneration {
 		 */
 
 		Associate getAssocaite() {
-			this.setStatus();
+			this.checkAssociateStatus();
+			this.checkPortfolioStatus();
 			return new Associate(getId(), getSalesforceId(), getCredential(), getName(), getPortfolioLink(), getBatch(), getProject(),
-					getLockedTo(), getSkills(), getJobs(), getAssociateStatus(), getPortfolioStatus());
+					getLockedTo(), getSkills(), getJobs(), getAssociateStatusObject(), getPortfolioStatus());
 		}
 		
 		 //* Randomly returns true if an associate is determined to be health.
