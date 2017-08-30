@@ -1,0 +1,52 @@
+!SESSION 2017-08-30 11:30:52.880 -----------------------------------------------
+eclipse.buildId=4.6.3.M20170301-0400
+java.version=1.8.0_73
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.jee.product
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -product org.eclipse.epp.package.jee.product
+
+!ENTRY org.eclipse.jface.text 2 0 2017-08-30 11:31:24.798
+!MESSAGE Duplicate template id: 'org.eclipse.wst.xslt.templates.xpath.number'
+
+!ENTRY org.eclipse.jface.text 2 0 2017-08-30 11:31:24.806
+!MESSAGE Duplicate template id: 'org.eclipse.wst.xslt.templates.xpath.round'
+
+!ENTRY org.eclipse.egit.ui 2 0 2017-08-30 11:31:31.042
+!MESSAGE Warning: The environment variable HOME is not set. The following directory will be used to store the Git
+user global configuration and to define the default location to store repositories: 'C:\Users\caarl'. If this is
+not correct please set the HOME environment variable and restart Eclipse. Otherwise Git for Windows and
+EGit might behave differently since they see different configuration options.
+This warning can be switched off on the Team > Git > Confirmations and Warnings preference page.
+
+!ENTRY com.amazonaws.eclipse.core 1 0 2017-08-30 11:31:35.182
+!MESSAGE Starting the AWS toolkit core plugin...
+
+!ENTRY com.amazonaws.eclipse.core 1 0 2017-08-30 11:31:39.124
+!MESSAGE No profile found: carlacc1
+
+!ENTRY com.amazonaws.eclipse.core 1 0 2017-08-30 11:31:39.135
+!MESSAGE No profile found: New Profile
+
+!ENTRY com.amazonaws.eclipse.core 1 0 2017-08-30 11:31:39.246
+!MESSAGE Monitoring content of C:\Users\caarl\.aws\credentials
+
+!ENTRY com.amazonaws.eclipse.core 1 0 2017-08-30 11:31:39.706
+!MESSAGE AWS toolkit core plugin initialized after 4609 milliseconds.
+
+!ENTRY com.amazonaws.eclipse.core 1 0 2017-08-30 11:31:39.741
+!MESSAGE The current accountId is not found in the system. Switching to the default account.
+
+!ENTRY com.amazonaws.eclipse.core 1 0 2017-08-30 11:31:40.067
+!MESSAGE Initialized a new Cognito identity us-east-1:272b6f7c-6a8c-4f01-b8aa-f2bf308e4048
+
+!ENTRY org.eclipse.ui.ide 4 4 2017-08-30 11:34:42.675
+!MESSAGE Problems saving workspace
+
+!ENTRY org.eclipse.ui.ide 2 1 2017-08-30 11:34:42.701
+!MESSAGE Problems occurred while trying to save the state of the workbench.
+!SUBENTRY 1 org.eclipse.core.resources 2 234 2017-08-30 11:34:42.702
+!MESSAGE The project description file (.project) for 'RemoteSystemsTempFiles' was missing.  This file contains important information about the project.  A new project description file has been created, but some information about the project may have been lost.
+
+!ENTRY org.eclipse.core.resources 2 10035 2017-08-30 11:34:43.936
+!MESSAGE The workspace will exit with unsaved changes in this session.
