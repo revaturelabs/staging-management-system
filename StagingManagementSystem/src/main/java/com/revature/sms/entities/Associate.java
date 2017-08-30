@@ -45,6 +45,9 @@ public class Associate {
 
 	@Column(name = "ASSOCIATE_PORTFOLIO_LINK")
 	private String portfolioLink;
+	
+	@Column(name = "PANEL_STATUS")
+	private String latestPanelStatus;
 
 	@ManyToOne
 	@JoinColumn(name = "BATCH_ID")
@@ -58,11 +61,11 @@ public class Associate {
 	@JoinColumn(name = "CLIENT_ID")
 	private Client lockedTo;
 	
-	@OneToOne(fetch=FetchType.EAGER)
+	@ManyToOne
 	@JoinColumn(name="PORTFOLIO_STATUS_ID")
 	private PortfolioStatus portfolioStatus;
 
-	@OneToOne(fetch=FetchType.EAGER)
+	@ManyToOne
 	@JoinColumn(name="ASSOCIATE_STATUS_ID")
 	private AssociatesStatus associateStatus;
 	
@@ -82,7 +85,7 @@ public class Associate {
 		this.portfolioStatus = new PortfolioStatus();
 	}
 
-	public Associate(long id, String salesforceId, Credential credential, String name, String portfolioLink,
+	public Associate(long id, String salesforceId, Credential credential, String name, String portfolioLink, String latestPanelStatus,
 			Batch batch, Project project, Client lockedTo, PortfolioStatus portfolioStatus,
 			AssociatesStatus associateStatus, Set<Skill> skills, Set<Job> jobs) {
 		super();
@@ -91,6 +94,7 @@ public class Associate {
 		this.credential = credential;
 		this.name = name;
 		this.portfolioLink = portfolioLink;
+		this.latestPanelStatus = latestPanelStatus;
 		this.batch = batch;
 		this.project = project;
 		this.lockedTo = lockedTo;
@@ -138,6 +142,14 @@ public class Associate {
 
 	public void setPortfolioLink(String portfolioLink) {
 		this.portfolioLink = portfolioLink;
+	}
+	
+	public String getLatestPanelStatus(){
+		return latestPanelStatus;
+	}
+	
+	public void setLastestPanelStatus(String latestPanelStatus){
+		this.latestPanelStatus = latestPanelStatus;
 	}
 
 	public Batch getBatch() {

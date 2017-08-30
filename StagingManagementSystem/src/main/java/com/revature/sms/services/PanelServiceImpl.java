@@ -12,12 +12,16 @@ import org.springframework.stereotype.Service;
 
 import com.revature.sms.entities.Associate;
 import com.revature.sms.entities.Panel;
+import com.revature.sms.repositories.AssociateRepo;
 import com.revature.sms.repositories.PanelRepo;
 @Service
 public class PanelServiceImpl implements PanelService
 {
 	@Autowired
 	PanelRepo pr;
+	
+	@Autowired
+	AssociateRepo associateRepo;
 	
 	@Override
 	public Set<Panel> findByAssociate(Associate associate) 
@@ -38,8 +42,11 @@ public class PanelServiceImpl implements PanelService
 	{
 		LocalDateTime currentDate = LocalDateTime.now();
 		panel.setStatusDate(currentDate);
+		Associate associate = panel.getAssociate();
+		associate.setLastestPanelStatus(panel.getStatus());
 		pr.saveAndFlush(panel);
-		
+		associateRepo.saveAndFlush(associate);
+	
 	}
 	
 	public Panel getById(long id)
@@ -62,7 +69,10 @@ public class PanelServiceImpl implements PanelService
 	{
 		LocalDateTime currentDate = LocalDateTime.now();
 		panel.setStatusDate(currentDate);
+		Associate associate = panel.getAssociate();
+		associate.setLastestPanelStatus(panel.getStatus());
 		pr.saveAndFlush(panel);
+		associateRepo.saveAndFlush(associate);
 	}
 
 
