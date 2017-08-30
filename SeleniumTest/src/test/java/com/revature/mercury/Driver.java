@@ -187,10 +187,13 @@ public class Driver {
 		
 		for(int i = 1; i <= 266; i++) {
 			driver.findElement(By.xpath("//tr[22]/td[2]/select/option["+i+"]")).click();
+			if(i != 79 || i != 215)
+				driver.switchTo().alert().accept();
 		}
 		
 		driver.findElement(By.name("buyFlights")).submit();
-		driver.switchTo().alert().accept();
+		
+		driver.quit();
+		
 	}
-
 }
