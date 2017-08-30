@@ -1,6 +1,7 @@
 
 function managerAdvancedCtrl($scope, $http, $state) {
   window.scope = $scope;
+  
   $scope.userSearch;
   
   $scope.filterList = {
@@ -29,9 +30,7 @@ function managerAdvancedCtrl($scope, $http, $state) {
   $scope.filterType2 = {
 		    type: $scope.filterList2.list[0]
 		  }
-  
-  
-	
+
   $http.get('batchtype/all')
     .then((data) => {
       $scope.batchtypes = data.data;
@@ -41,11 +40,19 @@ function managerAdvancedCtrl($scope, $http, $state) {
       });
     });
 
-  $http.get('associate/all')
+    $http.get('status/allStatusType')
     .then((data) => {
-      $scope.associates = data.data;
-    }, (data) => {
+        $scope.statusTypes = data.data;            
+        $scope.selectedStatusTypes = [];
+        $scope.statusTypes.forEach((statusType) => {
+            $scope.selectedStatusTypes.push(statusType);
+        });
     });
+
+  	$http.get('associate/all')
+  	.then((response) => {
+		$scope.associates = response.data;
+  	});
 
   $http.get('batch/all')
     .then((data) => {
@@ -70,6 +77,13 @@ function managerAdvancedCtrl($scope, $http, $state) {
 
   $scope.isBatches = () => {
     if ($state.is('manager.advanced.batches')) {
+      return true;
+    }
+    return false;
+  };
+
+  $scope.isStatus = () =>{
+    if($state.is('manager.advanced.status')){
       return true;
     }
     return false;
@@ -107,7 +121,7 @@ function managerAdvancedCtrl($scope, $http, $state) {
       $scope.selectedBatchTypes.push(selectedBatch);
     }
   };
-
+  
   $scope.associateBatchFilter = (associate) => {
     if (!associate.batch) {
       return false;
@@ -121,8 +135,6 @@ function managerAdvancedCtrl($scope, $http, $state) {
     }
     return $scope.selectedBatchTypes.filter((batchType) => batchType.value === batch.batchType.value).length >= 1;
   };
-  
- 
   
 }
 export default managerAdvancedCtrl;

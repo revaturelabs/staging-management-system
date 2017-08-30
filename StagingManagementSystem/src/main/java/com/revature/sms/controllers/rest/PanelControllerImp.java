@@ -40,7 +40,6 @@ public class PanelControllerImp {
 	@GetMapping("allpanel")
 	public Set<Panel> SetgetAllPanel() {
 		return pr.getAllPanel();
-
 	}
 
 	@PostMapping

@@ -101,7 +101,7 @@ const managerPanelCtrl = ($scope, $state, $location, $http, userService) => {
 		      });  
 	};
 	
-	
+
     $scope.showAddModal = function() {
 	    $scope.errorMsgShow = false;
 	    $scope.successMsgShow = false;
@@ -110,8 +110,6 @@ const managerPanelCtrl = ($scope, $state, $location, $http, userService) => {
 	    $scope.selectedMarketer = undefined;
 	    $('#addModal').modal('show');	    
     };
-		  
-	  
-	
+
 }
 export default managerPanelCtrl;

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Failed suite [MercurySuite]">
+  <parameter name="password" value="bobbert"/>
+  <parameter name="findflightpage" value="Find a Flight: Mercury Tours:"/>
+  <parameter name="url" value="http://newtours.demoaut.com/"/>
+  <parameter name="username" value="bobbert"/>
+  <parameter name="homepage" value="Welcome: Mercury Tours"/>
+  <test name="MercuryLoginTest(failed)">
+    <classes>
+      <class name="com.revature.testsuites.MercuryLogin">
+        <methods>
+          <include name="logIntoMercury"/>
+          <include name="beforeTest"/>
+          <include name="afterTest"/>
+        </methods>
+      </class> <!-- com.revature.testsuites.MercuryLogin -->
+    </classes>
+  </test> <!-- MercuryLoginTest(failed) -->
+</suite> <!-- Failed suite [MercurySuite] -->
