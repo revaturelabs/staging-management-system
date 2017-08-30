@@ -63227,7 +63227,36 @@
 	    pieChart.render();
 	  }
 
-	  function processChartData(responseData) {
+	  /*  function processChartData(responseData) {
+	      const chartData = [
+	        {
+	          label: 'Employed',
+	          value: 0,
+	        },
+	        {
+	          label: 'Awaiting placement',
+	          value: 0,
+	        },
+	        {
+	            label: 'In Training',
+	            value: 0,
+	          },
+	      ];
+	      for (let i = 0; i < responseData.data.length; i += 1) {
+	        if (responseData.data[i].associateStatus.status == 'STAGING' || responseData.data[i].associateStatus.status == 'BENCH') {
+	          chartData[1].value += 1;
+	        } else if(responseData.data[i].associateStatus.status == 'PROJECT'){
+	          chartData[0].value += 1;
+	        }	else {
+	      	chartData[2].value += 1;
+	        }
+	      }
+	      $scope.cache.put('chartData', chartData);
+	      return chartData;
+	    }*/
+
+	  function httpRequest() {
+	    var asscStatus = [{ status: 'STAGING' }, { status: 'BENCH' }, { status: 'PROJECT' }, { status: 'TRAINING' }];
 	    var chartData = [{
 	      label: 'Employed',
 	      value: 0
@@ -63238,26 +63267,18 @@
 	      label: 'In Training',
 	      value: 0
 	    }];
-	    for (var i = 0; i < responseData.data.length; i += 1) {
-	      if (responseData.data[i].associateStatus.status == 'STAGING' || responseData.data[i].associateStatus.status == 'BENCH') {
-	        chartData[1].value += 1;
-	      } else if (responseData.data[i].associateStatus.status == 'PROJECT') {
-	        chartData[0].value += 1;
-	      } else {
-	        chartData[2].value += 1;
-	      }
-	    }
-	    $scope.cache.put('chartData', chartData);
-	    return chartData;
-	  }
-
-	  function httpRequest() {
-	    $http({
-	      method: 'GET',
-	      url: '/associate/all'
-	    }).then(function (response) {
-	      var chartData = processChartData(response);
-	      renderChart(chartData);
+	    $http.get('associate/number-by-status/' + asscStatus[0].status).then(function (response1) {
+	      chartData[1].value += response1.data;
+	      $http.get('associate/number-by-status/' + asscStatus[1].status).then(function (response2) {
+	        chartData[1].value += response2.data;
+	        $http.get('associate/number-by-status/' + asscStatus[2].status).then(function (response3) {
+	          chartData[0].value += response3.data;
+	          $http.get('associate/number-by-status/' + asscStatus[3].status).then(function (response4) {
+	            chartData[2].value += response4.data;
+	            renderChart(chartData);
+	          });
+	        });
+	      });
 	    });
 	  }
 
@@ -63806,8 +63827,27 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+
 	function managerAdvancedCtrl($scope, $http, $state) {
 	  window.scope = $scope;
+
+	  $scope.userSearch;
+
+	  $scope.filterList = {
+	    list: [{ id: 2, name: 'associate' }, { id: 3, name: 'batch' }, { id: 4, name: 'trainer' }]
+	  };
+
+	  $scope.filterList2 = {
+	    list: [{ id: 1, name: 'start date' }, { id: 2, name: 'end date' }, { id: 3, name: 'batch' }, { id: 4, name: 'trainer' }]
+	  };
+
+	  $scope.filterType = {
+	    type: $scope.filterList.list[0]
+	  };
+
+	  $scope.filterType2 = {
+	    type: $scope.filterList2.list[0]
+	  };
 
 	  $http.get('batchtype/all').then(function (data) {
 	    $scope.batchtypes = data.data;
@@ -63911,7 +63951,6 @@
 	    }).length >= 1;
 	  };
 	}
-
 	exports.default = managerAdvancedCtrl;
 
 /***/ }),

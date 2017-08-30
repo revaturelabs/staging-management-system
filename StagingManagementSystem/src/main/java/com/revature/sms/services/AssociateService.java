@@ -22,4 +22,6 @@ public interface AssociateService {
     public Set<Associate> findByNameLike(String name);
     public Set<Associate> getAllByStatus(String status);
     public Set<Associate> findByAssociateStatus(String status);
+    public int countAssociateByAssociateStatus_Status(String status);
+    public Set<Associate> findByLatestPanelStatus(String latestPanelStatus);
 }

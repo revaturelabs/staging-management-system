@@ -201,4 +201,14 @@ public class AssociateControllerImpl {
 		associateService.updateStatus(associate);
 		return ResponseEntity.ok(associate);
 	}
+
+	@GetMapping("number-by-status/{status}")
+	public int countAssociateByAssociateStatus_Status(@PathVariable String status){
+		int asscCount = associateService.countAssociateByAssociateStatus_Status(status);
+		if(!(asscCount>0)){
+			asscCount = 0;
+		}
+		System.out.println(asscCount);
+		return asscCount;
+	}
 }

@@ -44,6 +44,9 @@ public class Associate {
 
 	@Column(name = "ASSOCIATE_PORTFOLIO_LINK")
 	private String portfolioLink;
+	
+	@Column(name = "PANEL_STATUS")
+	private String latestPanelStatus;
 
 	@ManyToOne
 	@JoinColumn(name = "BATCH_ID")
@@ -79,23 +82,23 @@ public class Associate {
 		this.associateStatus = new AssociatesStatus();
 	}
 
-
-	public Associate(long id,String salesforceId, Credential credential, String name, String portfolioLink, Batch batch, Project project,
-			Client lockedTo, Set<Skill> skills, Set<Job> jobs, AssociatesStatus associateStatus, boolean portfolioStatus)
-	{
+	public Associate(long id, String salesforceId, Credential credential, String name, String portfolioLink, 
+			String latestPanelStatus, Batch batch, Project project, Client lockedTo, boolean portfolioStatus,
+			AssociatesStatus associateStatus, Set<Skill> skills, Set<Job> jobs) {
 		super();
 		this.id = id;
 		this.salesforceId = salesforceId;
 		this.credential = credential;
 		this.name = name;
 		this.portfolioLink = portfolioLink;
+		this.latestPanelStatus = latestPanelStatus;
 		this.batch = batch;
 		this.project = project;
 		this.lockedTo = lockedTo;
-		this.skills = skills;
-		this.jobs = jobs;
-		this.associateStatus = associateStatus;
 		this.portfolioStatus = portfolioStatus;
+		this.associateStatus = associateStatus;
+		this.skills = skills;
+		this.jobs = jobs;	
 	}
 
 	/**
@@ -217,6 +220,14 @@ public class Associate {
 
 	public void setPortfolioLink(String portfolioLink) {
 		this.portfolioLink = portfolioLink;
+	}
+	
+	public String getLatestPanelStatus(){
+		return latestPanelStatus;
+	}
+	
+	public void setLastestPanelStatus(String latestPanelStatus){
+		this.latestPanelStatus = latestPanelStatus;
 	}
 
 	public Batch getBatch() {
@@ -348,8 +359,9 @@ public class Associate {
 	@Override
 	public String toString() {
 		return "Associate [id=" + id + ", salesforceId=" + salesforceId + ", credential=" + credential + ", name="
-				+ name + ", portfolioLink=" + portfolioLink + ", batch=" + batch + ", project=" + project
-				+ ", lockedTo=" + lockedTo + ", portfolioStatus=" + portfolioStatus + ", associateStatus="
-				+ associateStatus + ", skills=" + skills + ", jobs=" + jobs + "]";
+				+ name + ", portfolioLink=" + portfolioLink + ", latestPanelStatus=" + latestPanelStatus + ", batch="
+				+ batch + ", project=" + project + ", lockedTo=" + lockedTo + ", portfolioStatus=" + portfolioStatus
+				+ ", associateStatus=" + associateStatus + ", skills=" + skills + ", jobs=" + jobs + "]";
 	}
+	
 }
