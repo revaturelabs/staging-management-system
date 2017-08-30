@@ -95,9 +95,6 @@ const managerPanelCtrl = ($scope, $state, $location, $http, userService) => {
 		    $('#datetimepicker1').val('');
 		    $scope.selectedMarketer = undefined;
 		    $('#addModal').modal('show');	    
-	  };
-		  
-	  
-	
+	  };		  
 }
 export default managerPanelCtrl;

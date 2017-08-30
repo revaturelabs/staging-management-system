@@ -88,6 +88,16 @@ public class AssociateServiceImpl implements AssociateService {
 	}
 
 	@Override
+	public void updateStatus(Associate associate) {
+		if(associate.isBenched()) {
+			associate.setPortfolioStatus(true);
+			associateRepo.saveAndFlush(associate);
+		} else {
+			associateRepo.saveAndFlush(associate);
+		}
+	}
+
+	@Override
 	public Set<Associate> getAll() {
 
 		return new HashSet<>(associateRepo.findAll());
@@ -116,10 +126,14 @@ public class AssociateServiceImpl implements AssociateService {
 		return staggingAssociateRepo.getAssociatesInStaggingOn(date);
 	}
 
-	// We added this
 	@Override
 	public Set<Associate> getAllByStatus(String status) {
 		return associateRepo.findByAssociateStatus_Status(status);
+	}
+
+	@Override
+	public Set<Associate> findByAssociateStatus(String status) {
+		return null;
 	}
 
 	@Override

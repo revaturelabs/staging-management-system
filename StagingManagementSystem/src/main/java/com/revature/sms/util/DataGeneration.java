@@ -273,6 +273,7 @@ public class DataGeneration {
 	 * @author jozse
 	 *
 	 */
+
 	class AssociateP extends Associate {
 		double clientProbabilityMultiplier;
 		int immuneSystemHealth;
@@ -317,9 +318,9 @@ public class DataGeneration {
 		 * @return - super instance
 		 */
 
-		// I THINK THIS ALWASY RETURN 0 FOR GETASSOCIATE STATUS
 		Associate getAssocaite() {
-			//this.setStatus();
+			this.checkAssociateStatus();
+			this.checkPortfolioStatus();
 			return new Associate(getId(), "", getCredential(), getName(), getPortfolioLink(), getLatestPanelStatus(),getBatch(), getProject(),
 					getLockedTo(), getPortfolioStatus(), getAssociateStatus(), getSkills(), getJobs());
 		}
@@ -330,6 +331,7 @@ public class DataGeneration {
 			int diceRoll = rand.nextInt(100);
 			return diceRoll < immuneSystemHealth;
 		}
+
 	}
 
 	/**
@@ -353,7 +355,7 @@ public class DataGeneration {
 
 		sperateClientsByType();
 
-		// Simulate stagin for each associate.
+		// Simulate staging for each associate.
 		for (Associate a : associates) {
 			SimulationState state = new SimulationState(a.getBatch(), genToDate);
 			state.associate = new AssociateP(a); // Create a probability

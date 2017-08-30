@@ -1,5 +1,6 @@
 package com.revature.sms.repositories;
 
+import com.revature.sms.entities.AssociatesStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.revature.sms.entities.Associate;
@@ -18,6 +19,7 @@ public interface AssociateRepo extends JpaRepository<Associate, Long> {
     Set<Associate> findByAssociateStatus_Status(String status);
     Set<Associate> findByProjectProjectId(Long projectId);
     Set<Associate> findByProjectIsNull();
+
     Set<Associate> findByNameContainingIgnoreCase(String name);
     Associate getBySalesforceId(String salesforceId);
      int countAssociateByAssociateStatus_Status(String status);   
