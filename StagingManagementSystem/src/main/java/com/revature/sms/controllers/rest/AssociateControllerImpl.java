@@ -206,4 +206,14 @@ public class AssociateControllerImpl {
 	public Set<Associate> findByNameLike(@PathVariable String searchName){
 		return associateService.findByNameLike(searchName);
 	}
+	
+	@GetMapping("number-by-status/{status}")
+	public int countAssociateByAssociateStatus_Status(@PathVariable String status){
+		int asscCount = associateService.countAssociateByAssociateStatus_Status(status);
+		if(!(asscCount>0)){
+			asscCount = 0;
+		}
+		System.out.println(asscCount);
+		return asscCount;
+	}
 }

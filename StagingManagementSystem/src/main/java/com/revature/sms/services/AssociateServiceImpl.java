@@ -158,6 +158,10 @@ public class AssociateServiceImpl implements AssociateService {
 	public Set<Associate> findByNameLike(String name) {
 		return associateRepo.findByNameContainingIgnoreCase(name);
 	}
+	@Override 
+	public int countAssociateByAssociateStatus_Status(String status){
+		return associateRepo.countAssociateByAssociateStatus_Status(status);
+	}
 
 	@Override
 	public Set<Associate> findByLatestPanelStatus(String latestPanelStatus) {

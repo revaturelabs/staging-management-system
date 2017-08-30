@@ -20,6 +20,6 @@ public interface AssociateRepo extends JpaRepository<Associate, Long> {
     Set<Associate> findByProjectIsNull();
     Set<Associate> findByNameContainingIgnoreCase(String name);
     Associate getBySalesforceId(String salesforceId);
-    
+     int countAssociateByAssociateStatus_Status(String status);   
     Set<Associate> findByLatestPanelStatus(String latestPanelStatus);
 }
