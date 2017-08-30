@@ -64303,19 +64303,12 @@
 			$('#getCert').modal('show');
 		};
 
-		$scope.deletedCert = function () {
+		$scope.deletedCert = function (x) {
+			var newDate = moment($scope.newSelectedDate).toDate();
+			$scope.newSelectedType = x.cert_type;
+			$scope.newFormkey = x.cert_status;
+			$scope.newSelectedDate = x.cert_testdate;
 			$('#deleteCert').modal('show');
-		};
-
-		//add a new certification in the certification type
-		$scope.customCert = function () {
-			$http({
-				method: "POST",
-				url: 'certificationtype/add/certification_type',
-				data: { type_of_cert: customText }
-			}).then(function (response) {
-				$state.reload();
-			});
 		};
 
 		$http({
@@ -64381,16 +64374,15 @@
 			}
 		};
 
-		$scope.updateNewCert = function (x) {
+		$scope.updateNewCert = function () {
 			var newDate = moment($scope.newSelectedDate).toDate();
-			$scope.newSelectedType = x.cert_type;
-			console.log(x);
+			$scope.selectedComment = undefined;
 			$http({
 				method: 'PUT',
 				url: 'certifications/allUpdate',
-				data: { cert_testdate: newDate, cert_status: $scope.newFormkey, associate_id: userService.getUser(), cert_type: $scope.newSelectedType.type_of_cert }
+				data: { cert_testdate: newDate, cert_status: $scope.newFormkey, associate_id: userService.getUser(), cert_type: $scope.newSelectedType.type_of_cert, cert_comments: $scope.selectedComment }
 			}).then(function (response) {
-				$scope.reload();
+				$scope.successMessage = "Successfully sent to Manager";
 				updateCert.disabled = true;
 				console.log(response.data);
 			});

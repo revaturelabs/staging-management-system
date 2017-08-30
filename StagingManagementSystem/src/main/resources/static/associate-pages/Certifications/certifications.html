@@ -31,6 +31,7 @@
             <div ng-if="errorMessage" class="alert alert-danger">{{errorMessage}}</div>
       	</div>      	
       </div>
+      <div ng-if="successMessage" alert alert-success>{{successMessage}}</div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <button ng-click="updateCert()"  type="button" id="addCerts" class="btn btn-primary">Submit</button>
@@ -39,7 +40,7 @@
   </div>
 </div>
 
-<div ng-if="successMessage" alert alert-success>{{successMessage}}</div>
+
 <table class="table table-striped ">
 	<thead>
 	<tr>
@@ -54,7 +55,7 @@
 		<td>{{x.cert_type}}</td>
 		<td>{{x.cert_status}}</td>
 		<td>{{dateConverter(x.cert_testdate)}}</td>
-		<td><button type="button"  class="btn btn-danger" ng-click="deletedCert()">Update</button></td>
+		<td><button type="button"  class="btn btn-danger" ng-click="deletedCert(x)">Delete</button></td>
 	</tr>
 </tbody>
 </table>
@@ -74,21 +75,21 @@
         </div>
         <div class="form-group">
         	<label>Status</label>
-        	<input type="text" ng-bind="formkey" ng-model="newFormkey" readonly="readonly">
+        	<input type="text"  ng-model="newFormkey" readonly="readonly">
         </div>
         <div class="form-group" >
         <label>Date</label>
-        <div class="form-group">
-        	<input type="text" ng-bind="selectedDate" ng-model="newSelectedDate">
+        	<input type="text"  ng-model="newSelectedDate">
         </div>
      	<div class="form-group">
         	<label>Add Comment</label>
-        	<textarea placeholder="Add Comment for manager" ng-model="selectedComment"  rows="5" cols="60" maxlength="25" required></textarea>
+        	<textarea placeholder="Add Comment for manager" ng-model="selectedComment"  rows="5" cols="60" maxlength="25" ng-required></textarea>
         </div>
       </div>
+      <div ng-if="successMessage" alert alert-success>{{successMessage}}</div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button ng-click="updateNewCert(x)"  id="updateNewCert" type="button"  class="btn btn-primary">Update</button>
+        <button ng-click="updateNewCert(item)"  id="updateNewCert" type="button"  class="btn btn-primary">Delete</button>
       </div>
     </div>
   </div>
