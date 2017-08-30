@@ -279,13 +279,8 @@ public class DataGeneration {
 		int immuneSystemHealth;
 
 		AssociateP(Associate a) {
-<<<<<<< HEAD
-			super(a.getId(),a.getSalesforceId(), a.getCredential(), a.getName(), a.getPortfolioLink(), a.getBatch(), a.getProject(),
-					a.getLockedTo(), a.getSkills(), a.getJobs(),a.getAssociateStatusObject(), a.getPortfolioStatus());
-=======
 			super(a.getId(),"", a.getCredential(), a.getName(), a.getPortfolioLink(), a.getLatestPanelStatus(), a.getBatch(), a.getProject(),
 					a.getLockedTo(), a.getPortfolioStatus(), a.getAssociateStatus(), a.getSkills(), a.getJobs());
->>>>>>> e7d745e98ae1a5c73a49c9429ca1c9e382b878f4
 
 			int qualityOfAssociate = rand.nextInt(100);
 
@@ -324,16 +319,10 @@ public class DataGeneration {
 		 */
 
 		Associate getAssocaite() {
-<<<<<<< HEAD
 			this.checkAssociateStatus();
 			this.checkPortfolioStatus();
-			return new Associate(getId(), getSalesforceId(), getCredential(), getName(), getPortfolioLink(), getBatch(), getProject(),
-					getLockedTo(), getSkills(), getJobs(), getAssociateStatusObject(), getPortfolioStatus());
-=======
-			//this.setStatus();
 			return new Associate(getId(), "", getCredential(), getName(), getPortfolioLink(), getLatestPanelStatus(),getBatch(), getProject(),
 					getLockedTo(), getPortfolioStatus(), getAssociateStatus(), getSkills(), getJobs());
->>>>>>> e7d745e98ae1a5c73a49c9429ca1c9e382b878f4
 		}
 		
 		 //* Randomly returns true if an associate is determined to be health.

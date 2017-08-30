@@ -174,7 +174,7 @@ public class Associate {
 	}
 	
 	public void checkPortfolioStatus() {
-		if(this.getAssociateStatus().equals("STAGING"))
+		if(associateStatus.getStatus().equals("STAGING"))
 			this.setPortfolioStatus(true);
 		else {
 			this.setPortfolioStatus(false);
@@ -262,12 +262,8 @@ public class Associate {
 		this.lockedTo = lockedTo;
 	}
 
-	public AssociatesStatus getAssociateStatusObject() {
+	public AssociatesStatus getAssociateStatus() {
 		return associateStatus;
-	}
-	
-	public String getAssociateStatus() {
-		return associateStatus.getStatus();
 	}
 
 	public void setAssociateStatus(AssociatesStatus associateStatus) {

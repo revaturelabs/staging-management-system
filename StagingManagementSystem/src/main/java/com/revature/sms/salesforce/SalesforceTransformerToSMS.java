@@ -162,7 +162,7 @@ public class SalesforceTransformerToSMS implements SalesforceTransformer {
 		}
 
 		// Check if there was an old status
-		AssociatesStatus currentStatus = associate.getAssociateStatusObject();
+		AssociatesStatus currentStatus = associate.getAssociateStatus();
 		if (currentStatus != null) {
 			// We have to update a few things
 			if (status.equals("STAGING") && currentStatus.getStatus().equals("PROJECT")) {
