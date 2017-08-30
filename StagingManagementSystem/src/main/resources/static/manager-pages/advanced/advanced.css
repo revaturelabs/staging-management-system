@@ -1,4 +1,6 @@
-.manager-advanced-view-container {
-  display: flex;
-  justify-content: center;
+.ellipsis {
+  max-width: 250px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }

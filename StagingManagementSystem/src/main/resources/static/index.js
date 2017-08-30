@@ -193,10 +193,8 @@
 	  $uiRouter.stateRegistry.get().map(s => s.$$state())
 	      .filter(s => s.path.length === 2 || s.path.length === 3)
 	      .forEach(s => s._collapsed = false);
-	  
-	  const pluginInstance = $uiRouter.plugin(Visualizer);
-	  
-	  $trace.enable('TRANSITION');*/
+	     const pluginInstance = $uiRouter.plugin(Visualizer);
+	     $trace.enable('TRANSITION');*/
 
 	  // Global Functions
 	  $rootScope.dateConverter = function (time) {
@@ -347,7 +345,7 @@
 /***/ (function(module, exports) {
 
 	/**
-	 * @license AngularJS v1.6.5
+	 * @license AngularJS v1.6.6
 	 * (c) 2010-2017 Google, Inc. http://angularjs.org
 	 * License: MIT
 	 */
@@ -454,7 +452,7 @@
 	      return match;
 	    });
 
-	    message += '\nhttp://errors.angularjs.org/1.6.5/' +
+	    message += '\nhttp://errors.angularjs.org/1.6.6/' +
 	      (module ? module + '/' : '') + code;
 
 	    for (i = 0, paramPrefix = '?'; i < templateArgs.length; i++, paramPrefix = '&') {
@@ -3132,11 +3130,11 @@
 	var version = {
 	  // These placeholder strings will be replaced by grunt's `build` task.
 	  // They need to be double- or single-quoted.
-	  full: '1.6.5',
+	  full: '1.6.6',
 	  major: 1,
 	  minor: 6,
-	  dot: 5,
-	  codeName: 'toffee-salinization'
+	  dot: 6,
+	  codeName: 'interdimensional-cable'
 	};
 
 
@@ -3282,7 +3280,7 @@
 	      });
 	    }
 	  ])
-	  .info({ angularVersion: '1.6.5' });
+	  .info({ angularVersion: '1.6.6' });
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -8844,6 +8842,31 @@
 	    return preAssignBindingsEnabled;
 	  };
 
+	  /**
+	   * @ngdoc method
+	   * @name  $compileProvider#strictComponentBindingsEnabled
+	   *
+	   * @param {boolean=} enabled update the strictComponentBindingsEnabled state if provided, otherwise just return the
+	   * current strictComponentBindingsEnabled state
+	   * @returns {*} current value if used as getter or itself (chaining) if used as setter
+	   *
+	   * @kind function
+	   *
+	   * @description
+	   * Call this method to enable/disable strict component bindings check. If enabled, the compiler will enforce that
+	   * for all bindings of a component that are not set as optional with `?`, an attribute needs to be provided
+	   * on the component's HTML tag.
+	   *
+	   * The default value is false.
+	   */
+	  var strictComponentBindingsEnabled = false;
+	  this.strictComponentBindingsEnabled = function(enabled) {
+	    if (isDefined(enabled)) {
+	      strictComponentBindingsEnabled = enabled;
+	      return this;
+	    }
+	    return strictComponentBindingsEnabled;
+	  };
 
 	  var TTL = 10;
 	  /**
@@ -10871,12 +10894,20 @@
 	      }
 	    }
 
+	    function strictBindingsCheck(attrName, directiveName) {
+	      if (strictComponentBindingsEnabled) {
+	        throw $compileMinErr('missingattr',
+	          'Attribute \'{0}\' of \'{1}\' is non-optional and must be set!',
+	          attrName, directiveName);
+	      }
+	    }
 
 	    // Set up $watches for isolate scope and controller bindings.
 	    function initializeDirectiveBindings(scope, attrs, destination, bindings, directive) {
 	      var removeWatchCollection = [];
 	      var initialChanges = {};
 	      var changes;
+
 	      forEach(bindings, function initializeBinding(definition, scopeName) {
 	        var attrName = definition.attrName,
 	        optional = definition.optional,
@@ -10888,7 +10919,9 @@
 
 	          case '@':
 	            if (!optional && !hasOwnProperty.call(attrs, attrName)) {
+	              strictBindingsCheck(attrName, directive.name);
 	              destination[scopeName] = attrs[attrName] = undefined;
+
 	            }
 	            removeWatch = attrs.$observe(attrName, function(value) {
 	              if (isString(value) || isBoolean(value)) {
@@ -10915,6 +10948,7 @@
 	          case '=':
 	            if (!hasOwnProperty.call(attrs, attrName)) {
 	              if (optional) break;
+	              strictBindingsCheck(attrName, directive.name);
 	              attrs[attrName] = undefined;
 	            }
 	            if (optional && !attrs[attrName]) break;
@@ -10959,6 +10993,7 @@
 	          case '<':
 	            if (!hasOwnProperty.call(attrs, attrName)) {
 	              if (optional) break;
+	              strictBindingsCheck(attrName, directive.name);
 	              attrs[attrName] = undefined;
 	            }
 	            if (optional && !attrs[attrName]) break;
@@ -10984,6 +11019,9 @@
 	            break;
 
 	          case '&':
+	            if (!optional && !hasOwnProperty.call(attrs, attrName)) {
+	              strictBindingsCheck(attrName, directive.name);
+	            }
 	            // Don't assign Object.prototype method to scope
 	            parentGet = attrs.hasOwnProperty(attrName) ? $parse(attrs[attrName]) : noop;
 
@@ -11516,7 +11554,7 @@
 	      if (!params) return '';
 	      var parts = [];
 	      forEachSorted(params, function(value, key) {
-	        if (value === null || isUndefined(value)) return;
+	        if (value === null || isUndefined(value) || isFunction(value)) return;
 	        if (isArray(value)) {
 	          forEach(value, function(v) {
 	            parts.push(encodeUriQuery(key)  + '=' + encodeUriQuery(serializeValue(v)));
@@ -11612,10 +11650,15 @@
 
 	    if (tempData) {
 	      var contentType = headers('Content-Type');
-	      if ((contentType && (contentType.indexOf(APPLICATION_JSON) === 0)) || isJsonLike(tempData)) {
+	      var hasJsonContentType = contentType && (contentType.indexOf(APPLICATION_JSON) === 0);
+
+	      if (hasJsonContentType || isJsonLike(tempData)) {
 	        try {
 	          data = fromJson(tempData);
 	        } catch (e) {
+	          if (!hasJsonContentType) {
+	            return data;
+	          }
 	          throw $httpMinErr('baddata', 'Data must be a valid JSON object. Received: "{0}". ' +
 	          'Parse error: "{1}"', data, e);
 	        }
@@ -11928,6 +11971,7 @@
 	     *   - **headers** – `{function([headerName])}` – Header getter function.
 	     *   - **config** – `{Object}` – The configuration object that was used to generate the request.
 	     *   - **statusText** – `{string}` – HTTP status text of the response.
+	     *   - **xhrStatus** – `{string}` – Status of the XMLHttpRequest (`complete`, `error`, `timeout` or `abort`).
 	     *
 	     * A response status code between 200 and 299 is considered a success status and will result in
 	     * the success callback being called. Any response status code outside of that range is
@@ -12769,9 +12813,9 @@
 	          } else {
 	            // serving from cache
 	            if (isArray(cachedResp)) {
-	              resolvePromise(cachedResp[1], cachedResp[0], shallowCopy(cachedResp[2]), cachedResp[3]);
+	              resolvePromise(cachedResp[1], cachedResp[0], shallowCopy(cachedResp[2]), cachedResp[3], cachedResp[4]);
 	            } else {
-	              resolvePromise(cachedResp, 200, {}, 'OK');
+	              resolvePromise(cachedResp, 200, {}, 'OK', 'complete');
 	            }
 	          }
 	        } else {
@@ -12828,10 +12872,10 @@
 	       *  - resolves the raw $http promise
 	       *  - calls $apply
 	       */
-	      function done(status, response, headersString, statusText) {
+	      function done(status, response, headersString, statusText, xhrStatus) {
 	        if (cache) {
 	          if (isSuccess(status)) {
-	            cache.put(url, [status, response, parseHeaders(headersString), statusText]);
+	            cache.put(url, [status, response, parseHeaders(headersString), statusText, xhrStatus]);
 	          } else {
 	            // remove promise from the cache
 	            cache.remove(url);
@@ -12839,7 +12883,7 @@
 	        }
 
 	        function resolveHttpPromise() {
-	          resolvePromise(response, status, headersString, statusText);
+	          resolvePromise(response, status, headersString, statusText, xhrStatus);
 	        }
 
 	        if (useApplyAsync) {
@@ -12854,7 +12898,7 @@
 	      /**
 	       * Resolves the raw $http promise.
 	       */
-	      function resolvePromise(response, status, headers, statusText) {
+	      function resolvePromise(response, status, headers, statusText, xhrStatus) {
 	        //status: HTTP response status code, 0, -1 (aborted by timeout / promise)
 	        status = status >= -1 ? status : 0;
 
@@ -12863,12 +12907,13 @@
 	          status: status,
 	          headers: headersGetter(headers),
 	          config: config,
-	          statusText: statusText
+	          statusText: statusText,
+	          xhrStatus: xhrStatus
 	        });
 	      }
 
 	      function resolvePromiseWithResult(result) {
-	        resolvePromise(result.data, result.status, shallowCopy(result.headers()), result.statusText);
+	        resolvePromise(result.data, result.status, shallowCopy(result.headers()), result.statusText, result.xhrStatus);
 	      }
 
 	      function removePendingReq() {
@@ -12969,7 +13014,7 @@
 	      var jsonpDone = jsonpReq(url, callbackPath, function(status, text) {
 	        // jsonpReq only ever sets status to 200 (OK), 404 (ERROR) or -1 (WAITING)
 	        var response = (status === 200) && callbacks.getResponse(callbackPath);
-	        completeRequest(callback, status, response, '', text);
+	        completeRequest(callback, status, response, '', text, 'complete');
 	        callbacks.removeCallback(callbackPath);
 	      });
 	    } else {
@@ -13004,18 +13049,29 @@
 	            status,
 	            response,
 	            xhr.getAllResponseHeaders(),
-	            statusText);
+	            statusText,
+	            'complete');
 	      };
 
 	      var requestError = function() {
 	        // The response is always empty
 	        // See https://xhr.spec.whatwg.org/#request-error-steps and https://fetch.spec.whatwg.org/#concept-network-error
-	        completeRequest(callback, -1, null, null, '');
+	        completeRequest(callback, -1, null, null, '', 'error');
+	      };
+
+	      var requestAborted = function() {
+	        completeRequest(callback, -1, null, null, '', 'abort');
+	      };
+
+	      var requestTimeout = function() {
+	        // The response is always empty
+	        // See https://xhr.spec.whatwg.org/#request-error-steps and https://fetch.spec.whatwg.org/#concept-network-error
+	        completeRequest(callback, -1, null, null, '', 'timeout');
 	      };
 
 	      xhr.onerror = requestError;
-	      xhr.onabort = requestError;
-	      xhr.ontimeout = requestError;
+	      xhr.onabort = requestAborted;
+	      xhr.ontimeout = requestTimeout;
 
 	      forEach(eventHandlers, function(value, key) {
 	          xhr.addEventListener(key, value);
@@ -13065,14 +13121,14 @@
 	      }
 	    }
 
-	    function completeRequest(callback, status, response, headersString, statusText) {
+	    function completeRequest(callback, status, response, headersString, statusText, xhrStatus) {
 	      // cancel timeout and subsequent timeout promise resolution
 	      if (isDefined(timeoutId)) {
 	        $browserDefer.cancel(timeoutId);
 	      }
 	      jsonpDone = xhr = null;
 
-	      callback(status, response, headersString, statusText);
+	      callback(status, response, headersString, statusText, xhrStatus);
 	    }
 	  };
 
@@ -15698,7 +15754,7 @@
 	      findConstantAndWatchExpressions(ast.property, $filter, astIsPure);
 	    }
 	    ast.constant = ast.object.constant && (!ast.computed || ast.property.constant);
-	    ast.toWatch = [ast];
+	    ast.toWatch = ast.constant ? [] : [ast];
 	    break;
 	  case AST.CallExpression:
 	    isStatelessFilter = ast.filter ? isStateless($filter, ast.callee.name) : false;
@@ -15707,9 +15763,7 @@
 	    forEach(ast.arguments, function(expr) {
 	      findConstantAndWatchExpressions(expr, $filter, astIsPure);
 	      allConstants = allConstants && expr.constant;
-	      if (!expr.constant) {
-	        argsToWatch.push.apply(argsToWatch, expr.toWatch);
-	      }
+	      argsToWatch.push.apply(argsToWatch, expr.toWatch);
 	    });
 	    ast.constant = allConstants;
 	    ast.toWatch = isStatelessFilter ? argsToWatch : [ast];
@@ -15726,9 +15780,7 @@
 	    forEach(ast.elements, function(expr) {
 	      findConstantAndWatchExpressions(expr, $filter, astIsPure);
 	      allConstants = allConstants && expr.constant;
-	      if (!expr.constant) {
-	        argsToWatch.push.apply(argsToWatch, expr.toWatch);
-	      }
+	      argsToWatch.push.apply(argsToWatch, expr.toWatch);
 	    });
 	    ast.constant = allConstants;
 	    ast.toWatch = argsToWatch;
@@ -15738,17 +15790,14 @@
 	    argsToWatch = [];
 	    forEach(ast.properties, function(property) {
 	      findConstantAndWatchExpressions(property.value, $filter, astIsPure);
-	      allConstants = allConstants && property.value.constant && !property.computed;
-	      if (!property.value.constant) {
-	        argsToWatch.push.apply(argsToWatch, property.value.toWatch);
-	      }
+	      allConstants = allConstants && property.value.constant;
+	      argsToWatch.push.apply(argsToWatch, property.value.toWatch);
 	      if (property.computed) {
-	        findConstantAndWatchExpressions(property.key, $filter, astIsPure);
-	        if (!property.key.constant) {
-	          argsToWatch.push.apply(argsToWatch, property.key.toWatch);
-	        }
+	        //`{[key]: value}` implicitly does `key.toString()` which may be non-pure
+	        findConstantAndWatchExpressions(property.key, $filter, /*parentIsPure=*/false);
+	        allConstants = allConstants && property.key.constant;
+	        argsToWatch.push.apply(argsToWatch, property.key.toWatch);
 	      }
-
 	    });
 	    ast.constant = allConstants;
 	    ast.toWatch = argsToWatch;
@@ -23344,15 +23393,20 @@
 	 *
 	 * ## A note about browser compatibility
 	 *
-	 * Edge, Firefox, and Internet Explorer do not support the `details` element, it is
+	 * Internet Explorer and Edge do not support the `details` element, it is
 	 * recommended to use {@link ng.ngShow} and {@link ng.ngHide} instead.
 	 *
 	 * @example
 	     <example name="ng-open">
 	       <file name="index.html">
-	         <label>Check me check multiple: <input type="checkbox" ng-model="open"></label><br/>
+	         <label>Toggle details: <input type="checkbox" ng-model="open"></label><br/>
 	         <details id="details" ng-open="open">
-	            <summary>Show/Hide me</summary>
+	            <summary>List</summary>
+	            <ul>
+	              <li>Apple</li>
+	              <li>Orange</li>
+	              <li>Durian</li>
+	            </ul>
 	         </details>
 	       </file>
 	       <file name="protractor.js" type="protractor">
@@ -31460,7 +31514,9 @@
 	 *     more than one tracking expression value resolve to the same key. (This would mean that two distinct objects are
 	 *     mapped to the same DOM element, which is not possible.)
 	 *
-	 *     Note that the tracking expression must come last, after any filters, and the alias expression.
+	 *     <div class="alert alert-warning">
+	 *       <strong>Note:</strong> the `track by` expression must come last - after any filters, and the alias expression.
+	 *     </div>
 	 *
 	 *     For example: `item in items` is equivalent to `item in items track by $id(item)`. This implies that the DOM elements
 	 *     will be associated by item identity in the array.
@@ -34191,7 +34247,7 @@
 /***/ (function(module, exports) {
 
 	/**
-	 * @license AngularJS v1.6.5
+	 * @license AngularJS v1.6.6
 	 * (c) 2010-2017 Google, Inc. http://angularjs.org
 	 * License: MIT
 	 */
@@ -34214,7 +34270,7 @@
 
 
 	angular.module('ngCookies', ['ng']).
-	  info({ angularVersion: '1.6.5' }).
+	  info({ angularVersion: '1.6.6' }).
 	  /**
 	   * @ngdoc provider
 	   * @name $cookiesProvider
@@ -62730,6 +62786,8 @@
 	  for (i = 0; i < 7; i += 1) {
 	    var currObj = getObj(weeklyData, currDate);
 
+	    weeklyLabels[i].label = weeklyLabels[i].label + "\n" + currDate.format('MM/DD');
+
 	    var hourCount = currObj.hourCount;
 	    var hourEstimate = currObj.hourEstimate;
 
@@ -62791,7 +62849,6 @@
 	    itemCpy.time = identityString;
 	    monthlyData.push(itemCpy);
 	  } else if (timeMoment.isoWeekday() < 6 && timeMoment < (0, _moment2.default)()) {
-	    // TODO: && moment() > timeMoment) {
 	    dataObj.hourCount = parseFloat(dataObj.hourCount) + parseFloat(item.hourCount);
 	    dataObj.hourEstimate = parseFloat(dataObj.hourEstimate) + parseFloat(item.hourEstimate);
 	  }
@@ -62822,14 +62879,15 @@
 	  var i = void 0;
 	  var currDate = (0, _moment2.default)(date.format());
 	  for (i = 0; i < 5; i += 1) {
+	    convertToFirstOfMonth(currDate);
 	    var currObj = getObj(monthlyData, currDate);
-	    var nextObj = getObj(monthlyData, currDate.add(7, 'days'));
+	    var nextObj = getObj(monthlyData, currDate);
 
 	    var hourCount = currObj.hourCount;
 	    var hourEstimate = currObj.hourEstimate;
 
 	    var start = (0, _moment2.default)(currObj.time).format('MM/DD');
-	    var stop = (0, _moment2.default)(nextObj.time).subtract(1, 'days').format('MM/DD');
+	    var stop = (0, _moment2.default)(nextObj.time).add(1, 'months').subtract(1, 'days').format('MM/DD');
 	    valueString += '{"label":"' + start + '-' + stop + '"}';
 
 	    var value = Math.floor(hourCount / hourEstimate * 100);
@@ -62838,7 +62896,7 @@
 	      dataString += ',';
 	      valueString += ',';
 	    }
-	    currDate.add(7, 'days');
+	    currDate.add(1, 'months');
 	  }
 	  dataString += ']}]';
 	  valueString += ']';
@@ -62850,7 +62908,34 @@
 	}
 
 	function monthlyColumnClick(ev, props, $scope) {
-	  setWeekly($scope, (0, _moment2.default)(focalDate.add(props.dataIndex * 7, 'days')));
+	  var i = void 0;
+	  for (i = 0; i < 7; i += 1) {
+	    switch (i) {
+	      case 0:
+	        weeklyLabels[i].label = 'Sunday';
+	        break;
+	      case 1:
+	        weeklyLabels[i].label = 'Monday';
+	        break;
+	      case 2:
+	        weeklyLabels[i].label = 'Tuesday';
+	        break;
+	      case 3:
+	        weeklyLabels[i].label = 'Wednesday';
+	        break;
+	      case 4:
+	        weeklyLabels[i].label = 'Thursday';
+	        break;
+	      case 5:
+	        weeklyLabels[i].label = 'Friday';
+	        break;
+	      case 6:
+	        weeklyLabels[i].label = 'Saturday';
+	        break;
+	      default:
+	    }
+	  }
+	  setWeekly($scope, (0, _moment2.default)(convertToFirstOfMonth(focalDate.add(props.dataIndex, 'months'))));
 
 	  $scope.selectedValue = '$props.displayValue}/' + props.categoryLabel + '/' + props.dataIndex;
 	}
@@ -62899,8 +62984,8 @@
 
 	  // Set global view properties.
 	  focalDate = (0, _moment2.default)(date.format());
-	  $scope.zoomOutStr = 'Not Visible';
-	  $scope.canZoom = '';
+	  $scope.zoomOutStr = 'Weekly';
+	  $scope.canZoom = 'true';
 	  scale = YEAR;
 
 	  var dataString = '[{"seriesname":"Yearly","data":[';
@@ -62910,6 +62995,8 @@
 	  for (i = 0; i < 4; i += 1) {
 	    var currObj = getObj(yearlyData, currDate);
 
+	    yearlyLabels[i].label = yearlyLabels[i].label + " " + currDate.format('MM/YYYY') + " - " + currDate.add(2, 'months').format('MM/YYYY');
+	    currDate.subtract(2, 'months');
 	    var hourCount = currObj.hourCount;
 	    var hourEstimate = currObj.hourEstimate;
 
@@ -62943,6 +63030,33 @@
 	  $scope.step = function step(steps) {
 	    switch (scale) {
 	      case WEEK:
+	        var i = void 0;
+	        for (i = 0; i < 7; i += 1) {
+	          switch (i) {
+	            case 0:
+	              weeklyLabels[i].label = 'Sunday';
+	              break;
+	            case 1:
+	              weeklyLabels[i].label = 'Monday';
+	              break;
+	            case 2:
+	              weeklyLabels[i].label = 'Tuesday';
+	              break;
+	            case 3:
+	              weeklyLabels[i].label = 'Wednesday';
+	              break;
+	            case 4:
+	              weeklyLabels[i].label = 'Thursday';
+	              break;
+	            case 5:
+	              weeklyLabels[i].label = 'Friday';
+	              break;
+	            case 6:
+	              weeklyLabels[i].label = 'Saturday';
+	              break;
+	            default:
+	          }
+	        }
 	        focalDate = focalDate.add(steps * 7, 'days');
 	        setWeekly($scope, focalDate);
 	        break;
@@ -62951,6 +63065,23 @@
 	        setMonthly($scope, focalDate);
 	        break;
 	      case YEAR:
+	        for (i = 0; i < 4; i += 1) {
+	          switch (i) {
+	            case 0:
+	              yearlyLabels[i].label = '1st Quarter';
+	              break;
+	            case 1:
+	              yearlyLabels[i].label = '2nd Quarter';
+	              break;
+	            case 2:
+	              yearlyLabels[i].label = '3rd Quarter';
+	              break;
+	            case 3:
+	              yearlyLabels[i].label = '4th Quarter';
+	              break;
+	            default:
+	          }
+	        }
 	        focalDate = focalDate.add(steps, 'years');
 	        setYearly($scope, focalDate);
 	        break;
@@ -62959,10 +63090,57 @@
 	  };
 
 	  $scope.zoomOut = function zoomOut() {
+	    var i = void 0;
 	    if (scale === WEEK) {
 	      setMonthly($scope, focalDate);
 	    } else if (scale === MONTH) {
+
+	      for (i = 0; i < 4; i += 1) {
+	        switch (i) {
+	          case 0:
+	            yearlyLabels[i].label = '1st Quarter';
+	            break;
+	          case 1:
+	            yearlyLabels[i].label = '2nd Quarter';
+	            break;
+	          case 2:
+	            yearlyLabels[i].label = '3rd Quarter';
+	            break;
+	          case 3:
+	            yearlyLabels[i].label = '4th Quarter';
+	            break;
+	          default:
+	        }
+	      }
 	      setYearly($scope, focalDate);
+	    } else if (scale === YEAR) {
+	      for (i = 0; i < 7; i += 1) {
+	        switch (i) {
+	          case 0:
+	            weeklyLabels[i].label = 'Sunday';
+	            break;
+	          case 1:
+	            weeklyLabels[i].label = 'Monday';
+	            break;
+	          case 2:
+	            weeklyLabels[i].label = 'Tuesday';
+	            break;
+	          case 3:
+	            weeklyLabels[i].label = 'Wednesday';
+	            break;
+	          case 4:
+	            weeklyLabels[i].label = 'Thursday';
+	            break;
+	          case 5:
+	            weeklyLabels[i].label = 'Friday';
+	            break;
+	          case 6:
+	            weeklyLabels[i].label = 'Saturday';
+	            break;
+	          default:
+	        }
+	      }
+	      setWeekly($scope, focalDate);
 	    }
 	  };
 	}
@@ -63583,9 +63761,17 @@
 	    });
 	  });
 
-	  $http.get('associate/all').then(function (data) {
-	    $scope.associates = data.data;
-	  }, function (data) {});
+	  $http.get('status/allStatusType').then(function (data) {
+	    $scope.statusTypes = data.data;
+	    $scope.selectedStatusTypes = [];
+	    $scope.statusTypes.forEach(function (statusType) {
+	      $scope.selectedStatusTypes.push(statusType);
+	    });
+	  });
+
+	  $http.get('associate/all').then(function (response) {
+	    $scope.associates = response.data;
+	  });
 
 	  $http.get('batch/all').then(function (data) {
 	    $scope.batches = data.data;
@@ -63605,6 +63791,13 @@
 
 	  $scope.isBatches = function () {
 	    if ($state.is('manager.advanced.batches')) {
+	      return true;
+	    }
+	    return false;
+	  };
+
+	  $scope.isStatus = function () {
+	    if ($state.is('manager.advanced.status')) {
 	      return true;
 	    }
 	    return false;
