@@ -73,7 +73,7 @@ const managerPanelCtrl = ($scope, $state, $location, $http, userService) => {
 					data: panel,
 				}).then((response)=>{
 					$scope.successUpdateMsgShow = true;
-					$scope.associatePanelClick(associate);
+					$scope.associateNameClick(associate);
 				},(response)=>{
 					$scope.errorUpdateMsgShow = true;
 				});
@@ -97,7 +97,7 @@ const managerPanelCtrl = ($scope, $state, $location, $http, userService) => {
 		        addPanelBtn.disabled = false;
 		        addPanelBtn.innerHTML = 'Add Panel';
 		        $scope.defaultCommnt = '';
-		        $scope.associatePanelClick($scope.choose)
+		        $scope.associateNameClick($scope.choose)
 		      });  
 	};
 	
