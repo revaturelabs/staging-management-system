@@ -3,6 +3,7 @@ function certificationCtrl($scope,$http,$state, $stateParams,$filter,$timeout,us
 	$scope.certificationtype ={};
 	
 	const updateCert = document.getElementById('updateNewCert');
+	
 
 	
 	$scope.getScheduleCert = function(){
@@ -22,8 +23,9 @@ function certificationCtrl($scope,$http,$state, $stateParams,$filter,$timeout,us
 		  $scope.deletedCert = function(x) {  
 			  let newDate = moment($scope.newSelectedDate).toDate();
 			  $scope.newSelectedType = x.cert_type;
-			  $scope.newFormkey = x.cert_status;
 			  $scope.newSelectedDate = x.cert_testdate;
+			  $scope.CERTIFICATIONS.cert_id = x.cert_id;
+			  console.log($scope.CERTIFICATIONS.cert_id);
 				$('#deleteCert').modal('show');
 			};
 			
@@ -97,19 +99,21 @@ function certificationCtrl($scope,$http,$state, $stateParams,$filter,$timeout,us
 		  };
 
 		  
-		  $scope.updateNewCert=function(item){
+		  
+		  $scope.updateNewCert=function(x){
 			  let newDate = moment($scope.newSelectedDate).toDate();
-			  $scope.selectedComment= undefined;
+			  $scope.cert_id= $scope.CERTIFICATIONS.cert_id;
+			  $scope.cert_type= $scope.newSelectedType.type_of_cert;
+
 				 $http({
 				        method: 'PUT',
 				        url: '/certifications',
-				        data: { cert_testdate:newDate, cert_status:$scope.newFormkey, associate_id:userService.getUser(), cert_type:$scope.newSelectedType.type_of_cert, cert_comments:$scope.selectedComment },
+				        data: { cert_id:$scope.CERTIFICATIONS.cert_id, cert_testdate:newDate, cert_status:$scope.newFormkey, associate_id:userService.getUser(), cert_type:$scope.newSelectedType, comments:$scope.selectedComment },
 				      })
 				      .then((response) => {
 				    	  $scope.successMessage="Successfully sent to Manager";
-				    	  var index = $scope.CERTIFICATIONS.indexOf(item);
-				    	  $scope.CERTIFICATIONS.splice(index,1);
 				    	  console.log(response.data);
+				    	  console.log($scope.newSelectedType);
 				      });
 		  };
 		

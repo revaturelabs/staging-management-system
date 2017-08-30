@@ -55,7 +55,7 @@
 		<td>{{x.cert_type}}</td>
 		<td>{{x.cert_status}}</td>
 		<td>{{dateConverter(x.cert_testdate)}}</td>
-		<td><button type="button"  class="btn btn-danger" ng-click="deletedCert(x)">Delete</button></td>
+		<td><button type="button"  class="btn btn-danger" ng-click="deletedCert(x)" id="specificCert">Delete</button></td>
 	</tr>
 </tbody>
 </table>
@@ -75,7 +75,7 @@
         </div>
         <div class="form-group">
         	<label>Status</label>
-        	<input type="text"  ng-model="newFormkey" readonly="readonly">
+        	<input type="text"  ng-model="newFormkey" ng-init="newFormkey='pending'" readonly="readonly">
         </div>
         <div class="form-group" >
         <label>Date</label>
@@ -83,13 +83,13 @@
         </div>
      	<div class="form-group">
         	<label>Add Comment</label>
-        	<textarea placeholder="Add Comment for manager" ng-model="selectedComment"  rows="5" cols="60" maxlength="25" ng-required></textarea>
+        	<textarea placeholder="Add Comment for manager" ng-model="selectedComment"  rows="5" cols="60"  ng-required></textarea>
         </div>
       </div>
       <div ng-if="successMessage" alert alert-success>{{successMessage}}</div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button ng-click="updateNewCert(item)"  id="updateNewCert" type="button"  class="btn btn-primary">Delete</button>
+        <button ng-click="updateNewCert(x)"  id="updateNewCert" type="button"  class="btn btn-primary">Delete</button>
       </div>
     </div>
   </div>
