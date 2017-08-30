@@ -169,6 +169,14 @@ public class Associate {
 			this.setAssociateStatus(status);
 		}
 	}
+	
+	public void checkPortfolioStatus() {
+		if(this.getAssociateStatus().equals("STAGING"))
+			this.setPortfolioStatus(true);
+		else {
+			this.setPortfolioStatus(false);
+		}
+	}
 
 	public long getId() 
 	{
