@@ -15,104 +15,101 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
-
 //TODO: Table needs to change? Dependent on Manager, cant be dependent on Manager
 @Entity
 @Table(name = "CHECKINS")
-@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Checkin {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CHECKIN_ID_SEQ")
-	@SequenceGenerator(name = "CHECKIN_ID_SEQ", sequenceName = "CHECKIN_ID_SEQ")
-	@Column(name = "CHECKIN_ID")
-	private long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CHECKIN_ID_SEQ")
+    @SequenceGenerator(name = "CHECKIN_ID_SEQ", sequenceName = "CHECKIN_ID_SEQ")
+    @Column(name = "CHECKIN_ID")
+    private long id;
 
-	@Column(name = "CHECKIN_IN_TIME")
-	@Convert(converter = LocalDateTimeConverter.class)
-	private LocalDateTime checkinTime;
+    @Column(name = "CHECKIN_IN_TIME")
+    @Convert(converter = LocalDateTimeConverter.class)
+    private LocalDateTime checkinTime;
 
-	@Column(name = "CHECKIN_OUT_TIME")
-	@Convert(converter = LocalDateTimeConverter.class)
-	private LocalDateTime checkoutTime;
+    @Column(name = "CHECKIN_OUT_TIME")
+    @Convert(converter = LocalDateTimeConverter.class)
+    private LocalDateTime checkoutTime;
+
 
 	@Column(name = "CHECKIN_APPROVE_TIME")
 	@Convert(converter = LocalDateTimeConverter.class)
 	private LocalDateTime approveTime;
 
-	@ManyToOne
-	@JoinColumn(name = "ASSOCIATE_ID")
-	private Associate associate;
+    @ManyToOne
+    @JoinColumn(name = "ASSOCIATE_ID")
+    private Associate associate;
 
-	public Checkin() {
+    public Checkin() {
 
-		super();
-	}
+        super();
+    }
 
-	public Checkin(long id, LocalDateTime checkinTime, LocalDateTime checkoutTime, LocalDateTime approveTime,
-			Associate associate) {
+    public Checkin(long id, LocalDateTime checkinTime, LocalDateTime checkoutTime, LocalDateTime approveTime, Associate associate) {
 
-		super();
-		this.id = id;
-		this.checkinTime = checkinTime;
-		this.checkoutTime = checkoutTime;
-		this.approveTime = approveTime;
-		this.associate = associate;
-	}
+        super();
+        this.id = id;
+        this.checkinTime = checkinTime;
+        this.checkoutTime = checkoutTime;
+        this.approveTime = approveTime;
+        this.associate = associate;
+    }
 
-	public long getId() {
+    public long getId() {
 
-		return id;
-	}
+        return id;
+    }
 
-	public void setId(long id) {
+    public void setId(long id) {
 
-		this.id = id;
-	}
+        this.id = id;
+    }
 
-	public LocalDateTime getCheckinTime() {
+    public LocalDateTime getCheckinTime() {
 
-		return checkinTime;
-	}
+        return checkinTime;
+    }
 
-	public void setCheckinTime(LocalDateTime checkinTime) {
+    public void setCheckinTime(LocalDateTime checkinTime) {
 
-		this.checkinTime = checkinTime;
-	}
+        this.checkinTime = checkinTime;
+    }
 
-	public LocalDateTime getCheckoutTime() {
+    public LocalDateTime getCheckoutTime() {
 
-		return checkoutTime;
-	}
+        return checkoutTime;
+    }
 
-	public void setCheckoutTime(LocalDateTime checkoutTime) {
+    public void setCheckoutTime(LocalDateTime checkoutTime) {
 
-		this.checkoutTime = checkoutTime;
-	}
+        this.checkoutTime = checkoutTime;
+    }
 
-	public LocalDateTime getApproveTime() {
+    public LocalDateTime getApproveTime() {
 
-		return approveTime;
-	}
+        return approveTime;
+    }
 
-	public void setApproveTime(LocalDateTime approveTime) {
+    public void setApproveTime(LocalDateTime approveTime) {
 
-		this.approveTime = approveTime;
-	}
+        this.approveTime = approveTime;
+    }
+    
+    public Associate getAssociate() {
 
-	public Associate getAssociate() {
+        return associate;
+    }
 
-		return associate;
-	}
+    public void setAssociate(Associate associate) {
 
-	public void setAssociate(Associate associate) {
-
-		this.associate = associate;
-	}
-
-	@Override
+        this.associate = associate;
+    }
+    @Override
 	public int hashCode() {
-
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((approveTime == null) ? 0 : approveTime.hashCode());
@@ -123,13 +120,12 @@ public class Checkin {
 	}
 
 	@Override
-	public final boolean equals(Object obj) {
-
+	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
 			return false;
-		if (!(obj instanceof Checkin))
+		if (getClass() != obj.getClass())
 			return false;
 		Checkin other = (Checkin) obj;
 		if (approveTime == null) {
@@ -155,10 +151,13 @@ public class Checkin {
 		return true;
 	}
 
+	
+	
 	@Override
 	public String toString() {
-
 		return "Checkin [id=" + id + ", checkinTime=" + checkinTime + ", checkoutTime=" + checkoutTime
 				+ ", approveTime=" + approveTime + ", associate=" + associate + "]";
 	}
+
+	
 }

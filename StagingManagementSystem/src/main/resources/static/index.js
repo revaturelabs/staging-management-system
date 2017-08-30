@@ -63684,8 +63684,26 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+
 	function managerAdvancedCtrl($scope, $http, $state) {
 	  window.scope = $scope;
+	  $scope.userSearch;
+
+	  $scope.filterList = {
+	    list: [{ id: 2, name: 'associate' }, { id: 3, name: 'batch' }, { id: 4, name: 'trainer' }]
+	  };
+
+	  $scope.filterList2 = {
+	    list: [{ id: 1, name: 'start date' }, { id: 2, name: 'end date' }, { id: 3, name: 'batch' }, { id: 4, name: 'trainer' }]
+	  };
+
+	  $scope.filterType = {
+	    type: $scope.filterList.list[0]
+	  };
+
+	  $scope.filterType2 = {
+	    type: $scope.filterList2.list[0]
+	  };
 
 	  $http.get('batchtype/all').then(function (data) {
 	    $scope.batchtypes = data.data;
@@ -63774,7 +63792,6 @@
 	    }).length >= 1;
 	  };
 	}
-
 	exports.default = managerAdvancedCtrl;
 
 /***/ }),

@@ -1,17 +1,44 @@
-<div>
-  <table class="table table-striped manager-advanced-associates-table selectable-table">
+
+<div id="parent">
+<br> 
+  <table class="table table-striped manager-advanced-associates-table selectable-table" id="buttonsTables">
     <thead>
     <tr>
       <div class="table-header-buttons">
-        <div>Select Batch Types</div>
+        <div class="text-center"></div>
         <div class="manager-advanced-row">
-          <div ng-repeat="batchtype in batchtypes">
+          <div id="searchBars">
             <input
-              type="checkbox"
-              value="{{batchtype}}"
-              ng-checked="selectedBatchTypes.indexOf(batchtype) > -1"
-              ng-click="toggleSelectedBatchTypes(batchtype)"
-            > {{batchtype.value}}
+              type="text"
+              ng-model="userSearch.startDate"
+              class="text-center"
+              placeholder="Search: yyyy-mm-dd"
+              ng-hide="filterType2.type.name != 'start date'"
+              >
+              <input
+              type="text"
+              ng-model="userSearch.endDate"
+              class="text-center"
+              placeholder="Search: yyyy-mm-dd"
+              ng-hide="filterType2.type.name != 'end date'"
+              >
+              <input
+              type="text"
+              ng-model="userSearch.batchType.value"
+              class="text-center"
+              placeholder="Search"
+              ng-hide="filterType2.type.name != 'batch'"
+              >
+              <input
+              type="text"
+              ng-model="userSearch.trainers.name"
+              class="text-center"
+              placeholder="Search"
+              ng-hide="filterType2.type.name != 'trainer'"
+              >
+             <select ng-model="filterType2.type" ng-options="item.name for item in filterList2.list">
+             </select>
+             <br> <br>
           </div>
         </div>
       </div>
@@ -22,15 +49,15 @@
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="batch in batches | filter: batchBatchFilter" ui-sref="manager.advanced.batches.edit({id: batch.id})" data-toggle="modal" data-target="#batchModal">
+    <tr ng-repeat="batch in batches | filter: userSearch" ui-sref="manager.advanced.batches.edit({id: batch.id})" data-toggle="modal" data-target="#batchModal">
       <td ng-bind="batch.batchType.value"></td>
       <td>
         <div ng-repeat="trainer in batch.trainers">
           <div ng-bind="trainer.name"></div>
         </div>
       </td>
-      <td ng-bind="dateConverter(batch.startDate)"></td>
-      <td ng-bind="dateConverter(batch.endDate)"></td>
+      <td ng-bind="batch.startDate | date: mediumDate"></td>
+      <td ng-bind="batch.endDate | date: mediumDate"></td>
     </tr>
     </tbody>
   </table>
