@@ -9,12 +9,12 @@ public interface CertificationsService {
 	//associates can add certifications
       public void add(Certifications certification);
       
-      public void delete(Certifications certifications);
+      public void delete(long cert_id);
       
       public void update(Certifications certifications);
      //get a particular certification by ID
       
-      public Certifications getById(long cert_id);
+
      //get all certifications
       public Set<Certifications> getAllCertifications();
 //      // get all associates who has particular certificates

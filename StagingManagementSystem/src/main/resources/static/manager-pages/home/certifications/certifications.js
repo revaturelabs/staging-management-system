@@ -84,17 +84,18 @@ const certificationManCtrl=($scope, $http, userService) =>{
                }); 
 		};
 		
-		$scope.denied=function(){
-			if($scope.CERTIFICATIONS.comments ){
+		$scope.updateDeny=function(x){
+			if($scope.CERTIFICATIONS.comments){
+			let newDate = moment($scope.selectedDate).toDate();
+			 var cert_id = $scope.CERTIFICATIONS.cert_id;
 			    $http({
 	                 method: 'DELETE',
-	                 url: 'certifications',
-	                 data: { associate_id:$scope.newSelectedType, cert_id:$scope.CERTIFICATIONS.cert_id, cert_testdate:newDate,  cert_status:$scope.newFormkey="completed",cert_type:$scope.selectedType, comments:$scope.selectedComment, cert_filename:$scope.selectedFilename },
+	                 url: 'certifications/'+cert_id,
+	                 
 	               })
 	               .then((response) => {
-	            	   console.log($scope.CERTIFICATIONS.associate_id.name);
-	                   console.log($scope.CERTIFICATIONS.cert_id);
-	                   getScheduleCert();
+	            	  console.log(response.data);
+	            	  $scope.successMessage="Successfully Deleted";
 	               }); 
 			}
 		}

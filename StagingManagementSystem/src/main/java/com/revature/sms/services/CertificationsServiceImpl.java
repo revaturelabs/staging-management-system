@@ -29,10 +29,7 @@ public class CertificationsServiceImpl implements CertificationsService {
 		certRepo.saveAndFlush(certifications);
 	}
 
-	@Override
-	public Certifications getById(long cert_id) {
-		return certRepo.findOne(cert_id);
-	}
+
 
 	@Override 
 	public Set<Certifications> getAllCertifications() {
@@ -46,8 +43,8 @@ public class CertificationsServiceImpl implements CertificationsService {
 	}
 
 	@Override
-	public void delete(Certifications certifications) {
-	        certRepo.delete(certifications);
+	public void delete(long cert_id) {
+	        certRepo.delete(cert_id);
 		
 	}
 

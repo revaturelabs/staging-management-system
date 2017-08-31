@@ -73,6 +73,8 @@ Associates Who Don't Have Certifications<input type="checkbox" name="noCert" ng-
         	<input type="text" ng-model="selectedFilename"/>
         </div>
       </div>
+      <div ng-if="successMessage" class="alert alert-success">{{successMessage}}</div>
+      <div ng-if="errorMessage" class="alert alert-danger">{{errorMessage}}</div>
       <div class="modal-footer">
         <button ng-click="updateApprove(x)" ng-model="approved" type="button" class="btn btn-success" data-dismiss="modal">Approve</button>
         <button ng-click="updateDeny(x)"  ng-model="denied" id="updateNewCert" type="button"  class="btn btn-danger">Deny</button>

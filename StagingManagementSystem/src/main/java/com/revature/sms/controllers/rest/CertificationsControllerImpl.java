@@ -41,10 +41,6 @@ public class CertificationsControllerImpl {
 		return certService.getAllCert_type();
 	}*/
 	//get a certification by ID
-	@GetMapping("/{id}")
-	public Certifications getCert(@PathVariable long cert_id){
-		return certService.getById(cert_id);
-	}
 	
 	//add a new certification by type
 	@PostMapping("/add/certification")
@@ -64,8 +60,9 @@ public class CertificationsControllerImpl {
     	 certService.update(certifications);
      }
      
-     @DeleteMapping
-     public void deleteCertifications(@RequestBody Certifications certifications){
-    	 certService.delete(certifications);
+     @DeleteMapping("/{cert_id}")
+     public void deleteCertifications(@PathVariable long cert_id){
+    	 System.out.println("i want my delete ");
+    	 certService.delete(cert_id);
      }
 }
