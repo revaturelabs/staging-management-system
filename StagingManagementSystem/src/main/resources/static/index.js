@@ -276,7 +276,7 @@
 	        controller: _checkin2.default
 	      }
 	    }
-	  }).state('manager.associateView', {
+	  }).state('manager.advanced.allassociates.associateView', {
 	    url: '/associate/:id',
 	    templateUrl: 'associate-pages/profile/profile.html',
 	    controller: _profile2.default
@@ -63871,11 +63871,11 @@
 	  $scope.userSearch;
 
 	  $scope.filterList = {
-	    list: [{ id: 2, name: 'associate' }, { id: 3, name: 'batch' }, { id: 4, name: 'trainer' }]
+	    list: [{ id: 2, name: 'Associate' }, { id: 3, name: 'Batch' }, { id: 4, name: 'Trainer' }]
 	  };
 
 	  $scope.filterList2 = {
-	    list: [{ id: 1, name: 'start date' }, { id: 2, name: 'end date' }, { id: 3, name: 'batch' }, { id: 4, name: 'trainer' }]
+	    list: [{ id: 1, name: 'Start Date' }, { id: 2, name: 'End Date' }, { id: 3, name: 'Batch' }, { id: 4, name: 'Trainer' }]
 	  };
 
 	  $scope.filterType = {
