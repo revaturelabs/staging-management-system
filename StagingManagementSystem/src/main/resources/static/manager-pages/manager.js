@@ -29,6 +29,7 @@ function managerCtrl($scope, $state, $location, $http, userService, $rootScope) 
   };
   
   $scope.getLogo = function(){ 
+	  $scope.loading = true;
 	  let style = {};
 	  if($http.pendingRequests.length !== 0 ){
 		  style.width = '95px';
@@ -37,6 +38,8 @@ function managerCtrl($scope, $state, $location, $http, userService, $rootScope) 
 		  style.margin= '-20px 0 0 0px';
 	  } else {
 		  style.width = '90px';
+		  style.transform = 'translate(0px, 0px)';
+		  $scope.loading = false;
   		}
 	  console.log($http.pendingRequests.length)
 	  return style;
@@ -50,19 +53,18 @@ function managerCtrl($scope, $state, $location, $http, userService, $rootScope) 
 		$scope.currState_GetSF = 'getSF_Getting';
 	    $http({
 	        method: 'GET',
-	        url: '/dingus', //TODO Return to being /sfdata/batches
+	        url:  '/sfdata/batches'
 	      })
-	      .then((response) => {
+	      .then((response) => { //Successes
 	    	  $event.target.innerHTML = "Update SMS Data from Salesforce";
 	    	  $event.target.disabled = 'enabled';
 	    	  $scope.currState_GetSF = 'getSF_Ready';  
-	    	  
 	    	  $.notify($event.target, "Finished loading data!", "success");
-	      }, function(response) {
+	    	  
+	      }, function(response) { //Errors
 	    	  $event.target.innerHTML = "Update SMS Data from Salesforce";
 	    	  $event.target.disabled = 'enabled';
 	    	  $scope.currState_GetSF = 'getSF_Ready';  
-	    	  
 	    	  $.notify($event.target, "Could not load data!", "error");
 	      });
 	  }

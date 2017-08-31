@@ -13,7 +13,6 @@ import com.revature.sms.entities.Trainer;
 /**
  * The type Salesforce user.
  */
-//TODO: Probably axe half of this, check user detail from endpoint
 public class SalesforceUser implements UserDetails {
 	private static final long serialVersionUID = 8330084985503759701L;
 	@JsonProperty(value = "id")
