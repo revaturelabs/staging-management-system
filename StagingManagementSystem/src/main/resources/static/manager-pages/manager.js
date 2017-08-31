@@ -41,7 +41,7 @@ function managerCtrl($scope, $state, $location, $http, userService, $rootScope) 
 		  style.transform = 'translate(0px, 0px)';
 		  $scope.loading = false;
   		}
-	  console.log($http.pendingRequests.length)
+	  //console.log($http.pendingRequests.length)
 	  return style;
   	}
   

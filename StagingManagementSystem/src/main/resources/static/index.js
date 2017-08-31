@@ -62197,7 +62197,7 @@
 	      style.transform = 'translate(0px, 0px)';
 	      $scope.loading = false;
 	    }
-	    console.log($http.pendingRequests.length);
+	    //console.log($http.pendingRequests.length)
 	    return style;
 	  };
 
@@ -64172,7 +64172,7 @@
 	    return;
 	  }
 
-	  var associateUrl = '/associate/' + associateId;
+	  var associateUrl = '/associate/by-identifier/' + associateId;
 	  $http({
 	    method: 'GET',
 	    url: associateUrl
