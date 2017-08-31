@@ -25,7 +25,6 @@ public class PanelControllerImp {
 	@Autowired
 	PanelService pr;
 
-
 	@GetMapping("associatetepanel")
 	public Set<Panel> getAssociatePanel(HttpSession session) {
 		return pr.findByAssociate((Associate) session.getAttribute("LA"));
@@ -49,7 +48,7 @@ public class PanelControllerImp {
 
 	@PutMapping
 	public void update(@RequestBody Panel panel) {
-		pr.update(panel);	
+		pr.update(panel);
 	}
 
 }
