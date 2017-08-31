@@ -155,29 +155,21 @@ public class Associate {
 
 	public void checkAssociateStatus() {
 		
-		if (this.isTrainingOnDate(LocalDateTime.now())) {
-			AssociatesStatus status = new AssociatesStatus(4, "TRAINING");
-			this.setAssociateStatus(status);
-		}
-		else if (this.isTrackedOnDate(LocalDateTime.now()) && !this.isTrainingOnDate(LocalDateTime.now())) {
+		if (this.isTrackedOnDate(LocalDateTime.now()) && !this.isTrainingOnDate(LocalDateTime.now())) {
 			AssociatesStatus status = new AssociatesStatus(1, "STAGING");
-			this.setAssociateStatus(status);
+			setAssociateStatus(status);
 		}
 		else if (this.hasJobOnDate(LocalDateTime.now())) {
 			AssociatesStatus status = new AssociatesStatus(2, "PROJECT");
-			this.setAssociateStatus(status);
+			setAssociateStatus(status);
 		}
 		else if (this.isTrackedOnDate(LocalDateTime.now()) && !this.hasJobOnDate(LocalDateTime.now())) {
 			AssociatesStatus status = new AssociatesStatus(3, "BENCH");
-			this.setAssociateStatus(status);
+			setAssociateStatus(status);
 		}
-	}
-	
-	public void checkPortfolioStatus() {
-		if(associateStatus.getStatus().equals("STAGING"))
-			this.setPortfolioStatus(true);
 		else {
-			this.setPortfolioStatus(false);
+			AssociatesStatus status = new AssociatesStatus(4, "TRAINING");
+			setAssociateStatus(status);
 		}
 	}
 
@@ -250,8 +242,12 @@ public class Associate {
 		return portfolioStatus;
 	}
 
-	public void setPortfolioStatus(boolean portfolioStatus) {
-		this.portfolioStatus = portfolioStatus;
+	public void setPortfolioStatus() {
+		if(associateStatus.getStatus().equals("STAGING"))
+			portfolioStatus = true;
+		else {
+			portfolioStatus = false;
+		}
 	}
 
 	public Client getLockedTo() {
@@ -266,6 +262,10 @@ public class Associate {
 		return associateStatus;
 	}
 
+	public void setMockStatus() {
+		checkAssociateStatus();
+	}
+	
 	public void setAssociateStatus(AssociatesStatus associateStatus) {
 		this.associateStatus = associateStatus;
 	}

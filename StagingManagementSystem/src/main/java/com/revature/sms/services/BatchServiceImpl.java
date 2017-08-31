@@ -17,6 +17,7 @@ import com.revature.sms.entities.BatchType;
 import com.revature.sms.entities.Location;
 import com.revature.sms.entities.Trainer;
 import com.revature.sms.repositories.AssociateRepo;
+import com.revature.sms.repositories.AssociatesStatusRepo;
 import com.revature.sms.repositories.BatchRepo;
 import com.revature.sms.repositories.BatchTypeRepo;
 import com.revature.sms.repositories.CredentialRepo;
@@ -28,6 +29,9 @@ public class BatchServiceImpl implements BatchService {
 
 	@Autowired
 	private AssociateRepo associateRepo;
+	
+	@Autowired
+	private AssociatesStatusRepo associatesStatusRepo;
 
 	@Autowired
 	private BatchRepo batchRepo;
@@ -154,6 +158,8 @@ public class BatchServiceImpl implements BatchService {
 	          associate.setPortfolioLink(portfolio.substring(0, 128));
 	        }
 	        associate.setBatch(batch);
+	        associate.checkAssociateStatus();
+	        associate.setPortfolioStatus();
 	        associate.setCredential(credentialRepo.saveAndFlush(associate.getCredential()));
 	        associateRepo.saveAndFlush(associate);
 	      });

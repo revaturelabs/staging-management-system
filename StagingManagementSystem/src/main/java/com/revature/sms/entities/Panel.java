@@ -25,7 +25,6 @@ public class Panel
 	@Column(name = "PANEL_ID")
 	@SequenceGenerator(name = "PANEL_ID_SEQ", sequenceName = "PANEL_ID_SEQ",allocationSize=1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PANEL_ID_SEQ")
-	
 	private long id;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
