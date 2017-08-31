@@ -9,6 +9,7 @@ const managerPanelCtrl = ($scope, $state, $location, $http, userService) => {
 	$scope.disabled_select=true;
 	$scope.PanelLoad= 'Loading Panel...';
 	$scope.refreshIcon=true;
+	
 	$http({
 		method: 'GET',
 		url: "/associate/all",

@@ -5,7 +5,7 @@
 			<table class="table table-striped manager-advanced-associates-table selectable-table">
 			<thead>
 					<tr>
-						<th scope="col">Associate <input ng-disabled="disabled_search" ng-model="searchName" type="text" placeholder="Name" />
+						<th scope="col">Associate <input ng-disabled="disabled_search" ng-model="searchName.name" type="text" placeholder="Name" />
 							<select ng-disabled="disabled_select" ng-model="selectChoice" ng-change="statusSelected(selectChoice)">
 								<option value="ALL">ALL</option>
 								<option value="PENDING">PENDING</option>
@@ -24,6 +24,7 @@
 					</tr>
 				</tbody>
 			</table>
+			
 			<div id="associateName">{{choose.name}}</div>
 			<button id ="panel-margin" type="button" ng-show ="(plist[plist.length-1].status =='FAIL'||plist[plist.length-1].status =='PASS')  || (choose.length != 0 && plist.length == 0)"  ng-click="showAddModal()" class="btn btn-primary">Add Panel</button>
 			<table ng-show="show_panel" class="table table-striped manager-associates-panel-table selectable-table">
