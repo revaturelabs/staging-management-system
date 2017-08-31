@@ -1,0 +1,84 @@
+Associates Who Have Certifications <input type="checkbox" name="Cert"  ng-init="checked=true" value="Associates Who Have Certifications" ng-model="haveCert" ng-click="onClickCert(x)"/>
+Associates Who Don't Have Certifications<input type="checkbox" name="noCert" ng-init="checked=true" value="Associates Who Don't Have Certifications" ng-model="noCert" ng-click="onClickCert(x)"/>
+<div class="interviews-container">
+  <table class="table table-striped interview-table selectable-table">
+    <thead>
+    <tr>
+    <th class="interview-th" scope="col">Associate Name</th>
+      <th class="interview-th" scope="col">certType</th>
+      <th class="interview-th" scope="col">certStatus</th>
+      <th class="interview-th" scope="col">certDate</th>
+      <th class="interview-th" scope="col">certComments</th>
+      <th class="interview-th" scope="col">certFile</th>
+    </tr>
+    </thead>
+     <tbody>
+    <!-- <tr ng-repeat="x in interviews" data-toggle="modal" data-target="#interviewModal" ng-click="interviewSelect(interview)" ng-class="{selectedTableRow : interview.id === idSelectedInterview}" > -->
+    <tr ng-repeat="x in CERTIFICATIONS |filter:hasNoCert" ng-if="noCert"   ng-click="clickedCert(x)">
+          
+     <td class="interview-td">{{x.associate_id.name}}</td>
+      <td class="interview-td">{{x.cert_type}}</td>
+      <td class="interview-td">{{x.cert_status}}</td>
+      <td class="interview-td">{{dateConverter(x.cert_testdate)}}</td>
+       <td class="interview-td" id="cm">{{x.comments}}</td>
+        <td class="interview-td">{{x.cert_filename}}</td>
+    </tr> 
+    
+    <tr ng-repeat="x in CERTIFICATIONS |filter:hasCert" ng-if="haveCert"   ng-click="clickedCert(x)">
+          
+    <td class="interview-td">{{x.associate_id.name}}</td>
+      <td class="interview-td">{{x.cert_type}}</td>
+      <td class="interview-td">{{x.cert_status}}</td>
+      <td class="interview-td">{{dateConverter(x.cert_testdate)}}</td>
+       <td class="interview-td" id="cm">{{x.comments}}</td>
+        <td class="interview-td">{{x.cert_filename}}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Modal -->
+
+<div class="modal fade" id="lookUpCert"  role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Associate Information</h4>
+      </div>
+      <div class="modal-body">
+        <div class="input-group">
+        <label>Associate Name</label>
+          <input type="text"  ng-model="newSelectedType"/>
+        </div>
+        <div class="form-group">
+        	<label>Certification Type</label>
+        	<input type="text"  ng-model="selectedType" readonly="readonly">
+        </div>
+        <div class="form-group" >
+        <label>Certification Status</label>
+        <div class="form-group">
+        	<input type="text"  ng-model="newFormkey">
+        </div>
+     	<div class="form-group">
+        	<label>Certification Date</label>
+        	<input type="text" ng-model="selectedDate"/>
+        </div>
+        <div class="form-group">
+        	<label>Certification Comments</label>
+        	<input type="text" ng-model="selectedComment"/>
+        </div>
+        <div class="form-group">
+        	<label>Certification Filename</label>
+        	<input type="text" ng-model="selectedFilename"/>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button ng-click="updateApprove(x)" ng-model="approved" type="button" class="btn btn-success" data-dismiss="modal">Approve</button>
+        <button ng-click="updateDeny(x)"  ng-model="denied" id="updateNewCert" type="button"  class="btn btn-danger">Deny</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+

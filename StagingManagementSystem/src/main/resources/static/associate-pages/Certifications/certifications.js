@@ -2,7 +2,8 @@ function certificationCtrl($scope,$http,$state, $stateParams,$filter,$timeout,us
 	$scope.certifications ={};
 	$scope.certificationtype ={};
 	
-	const updateCert = document.getElementById('updateNewCert');
+	//const updateCert = document.getElementById('specificCert');
+	const needToDelete = document.getElementById('specificCert');
 	
 
 	
@@ -112,8 +113,7 @@ function certificationCtrl($scope,$http,$state, $stateParams,$filter,$timeout,us
 				      })
 				      .then((response) => {
 				    	  $scope.successMessage="Successfully sent to Manager";
-				    	  console.log(response.data);
-				    	  console.log($scope.newSelectedType);
+				    	  
 				      });
 		  };
 		

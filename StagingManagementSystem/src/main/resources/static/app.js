@@ -26,6 +26,7 @@ import associatePanelCtrl from './associate-pages/associatePanel/associatePanel'
 import associateCtrl from './associate-pages/associate';
 import loginCtrl from './login/login';
 import certificationCtrl from './associate-pages/Certifications/certifications';
+import certificationManCtrl from './manager-pages/home/certifications/certifications';
 
 
 
@@ -170,6 +171,11 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
           templateUrl: 'manager-pages/home/checkin/checkin.html',
           controller: managerCheckinsCtrl,
         },
+      //certifications view
+        'certifications@manager.home': {
+            templateUrl: 'manager-pages/home/certifications/certifications.html',
+            controller: certificationManCtrl,
+          },
       },
     })
     .state('manager.associateView', {

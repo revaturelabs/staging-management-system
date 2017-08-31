@@ -60,6 +60,7 @@ public class CertificationsControllerImpl {
 	
      @PutMapping
      public void updateCertifications(@RequestBody Certifications certifications){
+    	 System.out.println("i want my associate "+ certifications.getAssociate_id().getName());
     	 certService.update(certifications);
      }
      

@@ -15,9 +15,14 @@
         <div class="row manager-view-selecter-container">
           <button type="button" class="manager-view-selecter" ng-click="view2 = 'interviews'" ng-class="{managerHomeSelected: view2 === 'interviews'}" ng-style="interviewsSelecter">Interviews</button>
           <button type="button" class="manager-view-selecter" ng-click="view2 = 'checkins'" ng-class="{managerHomeSelected: view2 === 'checkins'}">Checkins</button>
+          <!-- manager certifications button -->
+          <button type="button" class="manager-view-selecter" ng-click="view2 = 'certifications'" ng-class="{managerHomeSelected: view2 === 'certifications'}">Certifications</button>
+          
         </div>
         <div ui-view="interviews" ng-show="view2 === 'interviews'"></div>
         <div ui-view="checkins" ng-show="view2 === 'checkins'"></div>
+        <!-- manager certifications view -->
+        <div ui-view="certifications" ng-show="view2 === 'certifications'"></div>
     </div>
 
 
