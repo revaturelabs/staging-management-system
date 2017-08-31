@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.sms.entities.Associate;
 import com.revature.sms.entities.Panel;
+import com.revature.sms.services.AssociateService;
 import com.revature.sms.services.PanelService;
 
 @RestController
