@@ -51,13 +51,7 @@ public class SalesforceDataController {
 			List<Associate> a = sd.getBatchTrainees(b.getSalesforceId(),
 					(SalesforceUser) session.getAttribute(SalesforceAuthorization.LM));
 			ad.save(a);
-			
-			Set<Associate> currentAssociates = ad.findByAssociateStatus_Status("PROJECT");
-			currentAssociates.addAll(ad.findByAssociateStatus_Status("BENCH"));
-			currentAssociates.addAll(ad.findByAssociateStatus_Status("UNKNOWN"));
-			List<Associate> updatedAssociates = sd.getSpecificAssociates(currentAssociates, (SalesforceUser) session.getAttribute(SalesforceAuthorization.LM));
-			
-			ad.save(updatedAssociates);
+			ad.save(sd.getSpecificAssociates( ad.findByAssociateStatus_Status("STAGING"), (SalesforceUser) session.getAttribute(SalesforceAuthorization.LM)));
 			
 		}
 
