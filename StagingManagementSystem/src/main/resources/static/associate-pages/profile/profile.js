@@ -11,7 +11,7 @@ function profileCtrl($scope, $http, userService, $stateParams, $state, $window) 
     return;
   }
 
-  const associateUrl = `/associate/${associateId}`;
+  const associateUrl = `/associate/by-identifier/${associateId}`;
   $http({
     method: 'GET',
     url: associateUrl,

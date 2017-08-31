@@ -193,8 +193,10 @@
 	  $uiRouter.stateRegistry.get().map(s => s.$$state())
 	      .filter(s => s.path.length === 2 || s.path.length === 3)
 	      .forEach(s => s._collapsed = false);
-	     const pluginInstance = $uiRouter.plugin(Visualizer);
-	     $trace.enable('TRANSITION');*/
+	  
+	  const pluginInstance = $uiRouter.plugin(Visualizer);
+	  
+	  $trace.enable('TRANSITION');*/
 
 	  // Global Functions
 	  $rootScope.dateConverter = function (time) {
@@ -62152,7 +62154,9 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	function managerCtrl($scope, $state, $location, $http, userService) {
+	function managerCtrl($scope, $state, $location, $http, userService, $rootScope) {
+	  $rootScope.loading = false;
+
 	  $http({
 	    method: 'GET',
 	    url: '/login/user'
@@ -62180,13 +62184,47 @@
 	    });
 	  };
 
-	  $scope.updateFromSMS = function () {
-	    $http({
-	      method: 'GET',
-	      url: '/sfdata/batches'
-	    }).then(function (response) {
-	      alert("Sent update to SMS from Salesforce request!");
-	    });
+	  $scope.getLogo = function () {
+	    $scope.loading = true;
+	    var style = {};
+	    if ($http.pendingRequests.length !== 0) {
+	      style.width = '95px';
+	      //This is done because the gif is slightly larger than the image and it shouldn't expand the border
+	      style.transform = 'translate(-1.65px, 16.2px)';
+	      style.margin = '-20px 0 0 0px';
+	    } else {
+	      style.width = '90px';
+	      style.transform = 'translate(0px, 0px)';
+	      $scope.loading = false;
+	    }
+	    //console.log($http.pendingRequests.length)
+	    return style;
+	  };
+
+	  $scope.currState_GetSF = 'getSF_Ready';
+	  $scope.updateSMS = function ($event) {
+
+	    $event.target.innerHTML = "Loading!";
+	    if ($event.target.disabled !== 'disabled') {
+	      $scope.currState_GetSF = 'getSF_Getting';
+	      $http({
+	        method: 'GET',
+	        url: '/sfdata/batches'
+	      }).then(function (response) {
+	        //Successes
+	        $event.target.innerHTML = "Update SMS Data from Salesforce";
+	        $event.target.disabled = 'enabled';
+	        $scope.currState_GetSF = 'getSF_Ready';
+	        $.notify($event.target, "Finished loading data!", "success");
+	      }, function (response) {
+	        //Errors
+	        $event.target.innerHTML = "Update SMS Data from Salesforce";
+	        $event.target.disabled = 'enabled';
+	        $scope.currState_GetSF = 'getSF_Ready';
+	        $.notify($event.target, "Could not load data!", "error");
+	      });
+	    }
+	    $event.target.disabled = 'disabled';
 	  };
 
 	  $scope.manager = { name: 'Joe' };
@@ -62431,6 +62469,7 @@
 	    method: 'GET',
 	    url: '/associate/totaldata'
 	  }).then(function (response) {
+	    $scope.$root.loading = false;
 	    responseData = response.data;
 	    var stuff1 = [];
 	    var stuff2 = [];
@@ -64133,7 +64172,7 @@
 	    return;
 	  }
 
-	  var associateUrl = '/associate/' + associateId;
+	  var associateUrl = '/associate/by-identifier/' + associateId;
 	  $http({
 	    method: 'GET',
 	    url: associateUrl
