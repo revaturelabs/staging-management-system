@@ -1,0 +1,184 @@
+<link rel="stylesheet"
+	href="./associate-pages/Certifications/certification.css" />
+
+<button ng-click="ApplyCert()" type="button" class="btn btn-primary">Schedule
+	Certification</button>
+<button ng-click="submitCert()" type="button" 
+	class="btn btn-primary">Submit for Approval</button>
+
+<div class="modal fade" id="getCert" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">Schedule a Certification</h4>
+			</div>
+			<div class="modal-body">
+				<label>Pick A Certification</label>
+				<div class="input-group">
+					<select class="form-control" ng-model="selectedType"
+						ng-options="x.type_of_cert for x in CERTIFICATION_TYPE">
+					</select>
+				</div>
+				<div class="form-group">
+					<label>Status</label> <input type="text" ng-model="formkey"
+						name="formkey" ng-init="formkey='inprogress'" readonly="readonly">
+				</div>
+				<div class="form-group">
+					<label>Pick a Date</label>
+					<div class='input-group date'>
+						<input type='text' class="form-control" ng-model="selectedDate"
+							id='datetimepicker1' /> <span ng-click="showDateTimePicker()"
+							class="input-group-addon"> <span
+							class="glyphicon glyphicon-calendar"></span>
+						</span>
+					</div>
+					<div ng-if="errorMessage" class="alert alert-danger">{{errorMessage}}</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button ng-click="updateCert()" type="button" id="addCerts"
+					class="btn btn-primary">Submit</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div ng-if="successMessage" alert alert-success>{{successMessage}}</div>
+<table class="table table-striped ">
+	<thead>
+		<tr>
+			<th>Certification</th>
+			<th>Status</th>
+			<th>Test Date</th>
+			<th>Cancel</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="x in CERTIFICATIONS">
+			<td>{{x.cert_type}}</td>
+			<td>{{x.cert_status}}</td>
+			<td>{{dateConverter(x.cert_testdate)}}</td>
+			<td><button type="button" class="btn btn-danger"
+					ng-click="deletedCert()">Update</button></td>
+		</tr>
+	</tbody>
+</table>
+
+
+<div class="modal fade" id="deleteCert" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">Delete Certification</h4>
+			</div>
+			<div class="modal-body">
+				<div class="input-group">
+					<label>Certification</label> <input type="text"
+						ng-model="newSelectedType" />
+				</div>
+				<div class="form-group">
+					<label>Status</label> <input type="text" ng-bind="formkey"
+						ng-model="newFormkey" readonly="readonly">
+				</div>
+				<div class="form-group">
+					<label>Date</label>
+					<div class="form-group">
+						<input type="text" ng-bind="selectedDate"
+							ng-model="newSelectedDate">
+					</div>
+					<div class="form-group">
+						<label>Add Comment</label>
+						<textarea placeholder="Add Comment for manager"
+							ng-model="selectedComment" rows="5" cols="60" maxlength="25"
+							required></textarea>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button ng-click="updateNewCert(x)" id="updateNewCert"
+						type="button" class="btn btn-primary">Update</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- **********************************  Modal For uploading File Starts here ************************************* -->
+
+
+<div class="modal fade" id="submitCert" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">Delete Certification</h4>
+			</div>
+			<div class="modal-body">
+				<div class="input-group">
+					<label>Certification</label> <input type="text"
+						ng-model="newSelectedType" />
+				</div>
+				<div class="form-group">
+					<label>Status</label> <input type="text" ng-bind="formkey"
+						ng-model="newFormkey" readonly="readonly">
+				</div>
+				<div class="form-group">
+					<label>Date</label>
+					<div class="form-group">
+						<input type="text" ng-bind="selectedDate"
+							ng-model="newSelectedDate">
+					</div>
+					<div class="form-group">
+						<label>Add Comment</label>
+						<textarea placeholder="Add Comment for manager"
+							ng-model="selectedComment" rows="5" cols="60" maxlength="25"
+							required></textarea>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button ng-click="updateNewCert(x)" id="updateNewCert"
+						type="button" class="btn btn-primary">Update</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal -->
+	<div class="modal fade" id="dsfs" role="dialog">
+		<div class="modal-dialog">
+
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Modal Header</h4>
+				</div>
+				<div class="modal-body">
+					<input type="file" id="file" name="file" /> <input type="button"
+						ng-click="uploadFiles()" value="Upload" />
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<!-- **********************************  Modal For uploading File Ends here ************************************* -->
+
+
+	</body>
+	</html>
