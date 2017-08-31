@@ -63227,36 +63227,7 @@
 	    pieChart.render();
 	  }
 
-	  /*  function processChartData(responseData) {
-	      const chartData = [
-	        {
-	          label: 'Employed',
-	          value: 0,
-	        },
-	        {
-	          label: 'Awaiting placement',
-	          value: 0,
-	        },
-	        {
-	            label: 'In Training',
-	            value: 0,
-	          },
-	      ];
-	      for (let i = 0; i < responseData.data.length; i += 1) {
-	        if (responseData.data[i].associateStatus.status == 'STAGING' || responseData.data[i].associateStatus.status == 'BENCH') {
-	          chartData[1].value += 1;
-	        } else if(responseData.data[i].associateStatus.status == 'PROJECT'){
-	          chartData[0].value += 1;
-	        }	else {
-	      	chartData[2].value += 1;
-	        }
-	      }
-	      $scope.cache.put('chartData', chartData);
-	      return chartData;
-	    }*/
-
-	  function httpRequest() {
-	    var asscStatus = [{ status: 'STAGING' }, { status: 'BENCH' }, { status: 'PROJECT' }, { status: 'TRAINING' }];
+	  function processChartData(responseData) {
 	    var chartData = [{
 	      label: 'Employed',
 	      value: 0
@@ -63267,18 +63238,26 @@
 	      label: 'In Training',
 	      value: 0
 	    }];
-	    $http.get('associate/number-by-status/' + asscStatus[0].status).then(function (response1) {
-	      chartData[1].value += response1.data;
-	      $http.get('associate/number-by-status/' + asscStatus[1].status).then(function (response2) {
-	        chartData[1].value += response2.data;
-	        $http.get('associate/number-by-status/' + asscStatus[2].status).then(function (response3) {
-	          chartData[0].value += response3.data;
-	          $http.get('associate/number-by-status/' + asscStatus[3].status).then(function (response4) {
-	            chartData[2].value += response4.data;
-	            renderChart(chartData);
-	          });
-	        });
-	      });
+	    for (var i = 0; i < responseData.data.length; i += 1) {
+	      if (responseData.data[i].associateStatus.status == 'STAGING' || responseData.data[i].associateStatus.status == 'BENCH') {
+	        chartData[1].value += 1;
+	      } else if (responseData.data[i].associateStatus.status == 'PROJECT') {
+	        chartData[0].value += 1;
+	      } else {
+	        chartData[2].value += 1;
+	      }
+	    }
+	    $scope.cache.put('chartData', chartData);
+	    return chartData;
+	  }
+
+	  function httpRequest() {
+	    $http({
+	      method: 'GET',
+	      url: '/associate/all'
+	    }).then(function (response) {
+	      var chartData = processChartData(response);
+	      renderChart(chartData);
 	    });
 	  }
 
@@ -63827,27 +63806,8 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-
 	function managerAdvancedCtrl($scope, $http, $state) {
 	  window.scope = $scope;
-
-	  $scope.userSearch;
-
-	  $scope.filterList = {
-	    list: [{ id: 2, name: 'associate' }, { id: 3, name: 'batch' }, { id: 4, name: 'trainer' }]
-	  };
-
-	  $scope.filterList2 = {
-	    list: [{ id: 1, name: 'start date' }, { id: 2, name: 'end date' }, { id: 3, name: 'batch' }, { id: 4, name: 'trainer' }]
-	  };
-
-	  $scope.filterType = {
-	    type: $scope.filterList.list[0]
-	  };
-
-	  $scope.filterType2 = {
-	    type: $scope.filterList2.list[0]
-	  };
 
 	  $http.get('batchtype/all').then(function (data) {
 	    $scope.batchtypes = data.data;
@@ -63951,6 +63911,7 @@
 	    }).length >= 1;
 	  };
 	}
+
 	exports.default = managerAdvancedCtrl;
 
 /***/ }),
@@ -63966,114 +63927,67 @@
 		$scope.PanelLoad = '';
 		$scope.show_panel = false;
 		$scope.defaultCommnt = '';
-		$scope.AllAssociates = {};
 		$scope.choose = {};
 		$scope.plist = {};
-		$scope.disabled_search = true;
-		$scope.disabled_select = true;
-		$scope.PanelLoad = 'Loading Panel...';
-		$scope.refreshIcon = true;
-		$http({
-			method: 'GET',
-			url: "/associate/all"
-		}).then(function (response) {
-			$scope.AllAssociates = response.data;
-			$scope.associates = $scope.AllAssociates;
-			$scope.PanelLoad = '';
-			$scope.searchShowUp = true;
-			$scope.disabled_search = false;
-			$scope.disabled_select = false;
-			$scope.refreshIcon = false;
-		});
 
-		$scope.statusSelected = function (selectChoice) {
-			$scope.searchShowUp = true;
-			$scope.show_panel = false;
+		$scope.searchClick = function (searchName) {
 			$scope.choose = {};
 			$scope.plist = {};
-			if (selectChoice == 'PENDING' || selectChoice == "PASS" || selectChoice == "FAIL") {
-				$scope.associates = $scope.AllAssociates.filter(function (obj) {
-					return obj.latestPanelStatus == selectChoice;
+			if (searchName) {
+				$scope.disabled_search = true;
+				$scope.show_panel = false;
+				$scope.PanelLoad = 'Loading Panel...';
+				$http({
+					method: 'GET',
+					url: '/associate/search/' + searchName
+				}).then(function (response) {
+					$scope.PanelLoad = '';
+					$scope.disabled_search = false;
+					$scope.associates = response.data;
+					$scope.searchShowUp = true;
 				});
-			} else if (selectChoice == 'NULL') {
-				$scope.associates = $scope.AllAssociates.filter(function (obj) {
-					return obj.latestPanelStatus == null;
-				});
-			} else {
-				$scope.associates = $scope.AllAssociates;
 			}
-		};
 
-		$scope.associateNameClick = function (associate) {
-			$scope.choose = associate;
-			$scope.searchShowUp = false;
-			$scope.show_panel = true;
-			var associateId = associate.id;
-			$http({
-				method: 'GET',
-				url: '/panel/associate/' + associateId
-			}).then(function (response) {
-				$scope.plist = response.data;
-				$scope.plist.sort(function (a, b) {
-					return a.id - b.id;
-				});
-			});
-
-			$scope.PanelClick = function (panel) {
-				$scope.statusOption = panel.status;
-				$scope.panelChoose = panel;
-				$scope.errorUpdateMsgShow = false;
-				$scope.successUpdateMsgShow = false;
-				$scope.updateComment = panel.comments;
-				$('#PanelCommentModal').modal('show');
-
-				$scope.updateInterviewClick = function (statusOption, updateComment) {
-					panel.comments = updateComment;
-					panel.status = statusOption;
-					$http({
-						method: 'PUT',
-						url: '/panel',
-						data: panel
-					}).then(function (response) {
-						$scope.successUpdateMsgShow = true;
-						$scope.modifyAllAssociates(panel.status, associate.id);
-						//refresh panel history table 
-						$scope.associateNameClick(associate);
-					}, function (response) {
-						$scope.errorUpdateMsgShow = true;
+			$scope.associatePanelClick = function (associate) {
+				$scope.choose = associate;
+				$scope.searchShowUp = false;
+				$scope.show_panel = true;
+				var associateId = associate.id;
+				$http({
+					method: 'GET',
+					url: '/panel/associate/' + associateId
+				}).then(function (response) {
+					$scope.plist = response.data;
+					$scope.plist.sort(function (a, b) {
+						return a.id - b.id;
 					});
+				});
+
+				$scope.PanelClick = function (panel) {
+
+					$scope.statusOption = panel.status;
+					$scope.panelChoose = panel;
+					$scope.errorUpdateMsgShow = false;
+					$scope.successUpdateMsgShow = false;
+					$scope.updateComment = panel.comments;
+					$('#PanelCommentModal').modal('show');
+
+					$scope.updateInterviewClick = function (statusOption, updateComment) {
+						panel.comments = updateComment;
+						panel.status = statusOption;
+						$http({
+							method: 'PUT',
+							url: '/panel',
+							data: panel
+						}).then(function (response) {
+							$scope.successUpdateMsgShow = true;
+							$scope.associatePanelClick(associate);
+						}, function (response) {
+							$scope.errorUpdateMsgShow = true;
+						});
+					};
 				};
 			};
-		};
-
-		$scope.modifyAllAssociates = function (status, id) {
-			var _iteratorNormalCompletion = true;
-			var _didIteratorError = false;
-			var _iteratorError = undefined;
-
-			try {
-				for (var _iterator = $scope.AllAssociates[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-					var obj = _step.value;
-
-					if (obj.id == id) {
-						obj.latestPanelStatus = status;
-						break;
-					}
-				}
-			} catch (err) {
-				_didIteratorError = true;
-				_iteratorError = err;
-			} finally {
-				try {
-					if (!_iteratorNormalCompletion && _iterator.return) {
-						_iterator.return();
-					}
-				} finally {
-					if (_didIteratorError) {
-						throw _iteratorError;
-					}
-				}
-			}
 		};
 
 		$scope.addPanelClick = function () {
@@ -64090,9 +64004,7 @@
 				addPanelBtn.disabled = false;
 				addPanelBtn.innerHTML = 'Add Panel';
 				$scope.defaultCommnt = '';
-				$scope.modifyAllAssociates("PENDING", $scope.choose.id);
-				//refresh panel history table 
-				$scope.associateNameClick($scope.choose);
+				$scope.associatePanelClick($scope.choose);
 			});
 		};
 
