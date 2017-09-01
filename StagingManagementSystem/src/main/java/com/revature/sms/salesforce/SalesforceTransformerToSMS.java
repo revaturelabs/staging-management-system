@@ -136,7 +136,7 @@ public class SalesforceTransformerToSMS implements SalesforceTransformer {
 
 	private AssociatesStatus statusHelper(Associate associate, String trainingStatus) {
 		// Retrieve new status from database
-		String status;
+		String status = "";
 		switch (trainingStatus) {
 		case "Signed":
 			status = "TRAINING";
