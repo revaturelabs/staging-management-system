@@ -76,7 +76,7 @@ public class Associate {
 	@OneToMany(mappedBy = "associate")
 	private Set<Job> jobs;
 	
-
+	//@OneToMany(mappedBy="associate")
 	@OneToMany(mappedBy="associate",fetch = FetchType.LAZY)
 	  @JsonProperty(access = Access.WRITE_ONLY)
 	  private Set<Certifications> certifications;

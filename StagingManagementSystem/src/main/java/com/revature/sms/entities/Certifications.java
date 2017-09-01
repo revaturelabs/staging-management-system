@@ -179,13 +179,13 @@ public class Certifications {
 			return true;
 		}
 
-/*
-		@Override
-		public String toString() {
-			return "Certifications [Cert_id=" + Cert_id + ", Cert_type=" + Cert_type + ", Cert_status=" + Cert_status
-					+ ", Cert_filename=" + Cert_filename + ", Cert_testdate=" + Cert_testdate + ", Cert_comments="
-					+ Cert_comments + ", associate=" + associate + "]";
-		}
-*/
-        
+//
+//		@Override
+//		public String toString() {
+//			return "Certifications [Cert_id=" + Cert_id + ", Cert_type=" + Cert_type + ", Cert_status=" + Cert_status
+//					+ ", Cert_filename=" + Cert_filename + ", Cert_testdate=" + Cert_testdate + ", Cert_comments="
+//					+ Cert_comments + ", associate=" + associate + "]";
+//		}
+//
+//        
 }

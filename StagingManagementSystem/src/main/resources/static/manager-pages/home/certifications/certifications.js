@@ -54,6 +54,7 @@ const certificationManCtrl=($scope, $http, userService) =>{
 	//click on certification list
 	$scope.clickedCert = function(x){
 		$scope.newSelectedType=x.associate_id.name;
+		$scope.selectedAssociate=x.associate_id;
 		$scope.selectedType = x.cert_type;
 		$scope.newFormkey = x.cert_status;
 		$scope.selectedDate = x.cert_testdate;
@@ -68,24 +69,24 @@ const certificationManCtrl=($scope, $http, userService) =>{
 		let newDate = moment($scope.selectedDate).toDate();
         $scope.cert_id= $scope.CERTIFICATIONS.cert_id;
         $scope.cert_type= $scope.selectedType.type_of_cert;
-        console.log("i pass ",$scope.newSelectedType);
+       // console.log("i pass ",$scope.newSelectedType);
         //$scope.associate_id=$scope.CERTIFICATIONS.associate_id.id;
      
         $scope.newFormkey = "completed";
                $http({
                  method: 'PUT',
-                 url: 'certifications',
-                 data: { associate_id:$scope.newSelectedType, cert_id:$scope.CERTIFICATIONS.cert_id, cert_testdate:newDate,  cert_status:$scope.newFormkey="completed",cert_type:$scope.selectedType, comments:$scope.selectedComment, cert_filename:$scope.selectedFilename },
+                 url: '/certifications',
+                 data: { associate_id:$scope.selectedAssociate, cert_id:$scope.CERTIFICATIONS.cert_id, cert_testdate:newDate,  cert_status:$scope.newFormkey="completed",cert_type:$scope.selectedType, comments:$scope.selectedComment, cert_filename:$scope.selectedFilename },
                })
                .then((response) => {
-            	   console.log($scope.CERTIFICATIONS.associate_id.name);
-                   console.log($scope.CERTIFICATIONS.cert_id);
-                   getScheduleCert();
+            	  /// console.log($scope.CERTIFICATIONS.associate_id.name);
+                  // console.log($scope.CERTIFICATIONS.cert_id);
+                  // getScheduleCert();
                }); 
 		};
 		
 		$scope.updateDeny=function(x){
-			if($scope.CERTIFICATIONS.comments){
+			//if($scope.CERTIFICATIONS.comments){
 			let newDate = moment($scope.selectedDate).toDate();
 			 var cert_id = $scope.CERTIFICATIONS.cert_id;
 			    $http({
@@ -97,7 +98,7 @@ const certificationManCtrl=($scope, $http, userService) =>{
 	            	  console.log(response.data);
 	            	  $scope.successMessage="Successfully Deleted";
 	               }); 
-			}
+			
 		}
 		
 	}
