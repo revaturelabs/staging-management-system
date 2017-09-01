@@ -1,6 +1,7 @@
 const certificationManCtrl=($scope, $http, userService) =>{
 	
 	const commentDocument = document.getElementById("cm");
+	const updenied = document.getElementById("updateNewCert");
 	$scope.newSelectedType={};
 	
 	$scope.getScheduleCert = function(){
@@ -71,7 +72,12 @@ const certificationManCtrl=($scope, $http, userService) =>{
         $scope.cert_type= $scope.selectedType.type_of_cert;
        // console.log("i pass ",$scope.newSelectedType);
         //$scope.associate_id=$scope.CERTIFICATIONS.associate_id.id;
-     
+        $scope.isDisabled = false;
+		 angular.forEach($scope.CERTIFICATIONS, function(value, key){
+			 if(value.cert_filename==="...." || value.cert_filename==null){
+				 $scope.isDisabled = true;
+					$scope.errorMessage="This cannot be approved, you have no file";
+			 }
         $scope.newFormkey = "completed";
                $http({
                  method: 'PUT',
@@ -83,21 +89,33 @@ const certificationManCtrl=($scope, $http, userService) =>{
                   // console.log($scope.CERTIFICATIONS.cert_id);
                   // getScheduleCert();
                }); 
-		};
+		 });
+		}
 		
 		$scope.updateDeny=function(x){
-			//if($scope.CERTIFICATIONS.comments){
+			
 			let newDate = moment($scope.selectedDate).toDate();
 			 var cert_id = $scope.CERTIFICATIONS.cert_id;
-			    $http({
-	                 method: 'DELETE',
-	                 url: 'certifications/'+cert_id,
-	                 
-	               })
-	               .then((response) => {
-	            	  console.log(response.data);
-	            	  $scope.successMessage="Successfully Deleted";
-	               }); 
+			 $scope.isDisabled = false;
+			 angular.forEach($scope.CERTIFICATIONS, function(value, key){
+					if(value.comments==="...." || value.comments==null){
+						$scope.isDisabled = true;
+						$scope.errorMessage="You need to add a comment";
+					}else{
+						  $http({
+				                 method: 'DELETE',
+				                 url: 'certifications/'+cert_id,
+				                 
+				               })
+				               .then((response) => {
+				            	  console.log(response.data);
+				            	  $scope.successMessage="Successfully Deleted";
+				               }); 
+					}
+					
+
+				});
+			  
 			
 		}
 		

@@ -109,13 +109,64 @@ function certificationCtrl($scope,$http,$state, $stateParams,$filter,$timeout,us
 				 $http({
 				        method: 'PUT',
 				        url: '/certifications',
-				        data: { cert_id:$scope.CERTIFICATIONS.cert_id, cert_testdate:newDate, cert_status:$scope.newFormkey, associate_id:userService.getUser(), cert_type:$scope.newSelectedType, comments:$scope.selectedComment },
+				        data: { cert_id:$scope.CERTIFICATIONS.cert_id, cert_testdate:newDate, cert_status:$scope.newFormkey, associate_id:userService.getUser(), cert_type:$scope.newSelectedType, comments:$scope.selectedComment, cert_filename:$scope.fileName },
 				      })
 				      .then((response) => {
 				    	  $scope.successMessage="Successfully sent to Manager";
 				    	  
 				      });
 		  };
+		  
+		  /*
+		   * This opens the fileuploadModal and hides the delete cert modal
+		   */
+		  $scope.openFileUploadModal = function(){
+			  $('#deleteCert').modal('hide');
+			  $('#submitCert').modal('show');
+		  };
+		  /*
+		   * **************************************************************
+		   */
+		  
+		  
+		  /*
+		   * This function is for the submit cert modal, it takes the file by element and
+		   * passes to http to the spring side.
+		   * then hides the cert modal and shows the delete cert modal
+		   */
+		  $scope.uploadFiles = function() {
+			  console.log("inside uploadfiles function update again");
+			  console.log("FILE?: " + document.getElementById('file').files[0].name);
+			  $scope.fileName = document.getElementById('file').files[0].name;
+			  //console.log($scope.file);
+			  //var file = $scope.file;
+			  /*
+			   * uploadfile to spring side for uploading to S3 starts
+			   */
+			  var fileupload = document.getElementById('file').files[0];
+			  console.log("checking checking: " + fileupload);
+			  var formdata = new FormData();
+			  formdata.append('file', fileupload);
+/*				$http ({
+					method: 'POST',
+					url: 'certifications/upload',
+				})
+				.then((response) => {
+				});*/
+			  
+			  $http.post('certifications/upload', formdata, {
+		            transformRequest: angular.identity,
+		            headers: {'Content-Type': undefined}
+		        });
+			  /*
+			   * uploadingfile to spring side for uploading to S3 ends
+			   */
+			  
+			  $('#submitCert').modal('hide');
+			  $('#deleteCert').modal('show');
+			  
+		  };
+		  //************************************************************************************
 		
 }
 
