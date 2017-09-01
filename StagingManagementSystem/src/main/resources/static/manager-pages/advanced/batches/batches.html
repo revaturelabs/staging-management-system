@@ -13,28 +13,28 @@
               ng-model="userSearch.startDate"
               class="text-center"
               placeholder="Search: yyyy-mm-dd"
-              ng-hide="filterType2.type.name != 'start date'"
+              ng-hide="filterType2.type.name != 'Start Date'"
               >
               <input
               type="text"
               ng-model="userSearch.endDate"
               class="text-center"
               placeholder="Search: yyyy-mm-dd"
-              ng-hide="filterType2.type.name != 'end date'"
+              ng-hide="filterType2.type.name != 'End Date'"
               >
               <input
               type="text"
               ng-model="userSearch.batchType.value"
               class="text-center"
               placeholder="Search"
-              ng-hide="filterType2.type.name != 'batch'"
+              ng-hide="filterType2.type.name != 'Batch'"
               >
               <input
               type="text"
               ng-model="userSearch.trainers.name"
               class="text-center"
               placeholder="Search"
-              ng-hide="filterType2.type.name != 'trainer'"
+              ng-hide="filterType2.type.name != 'Trainer'"
               >
              <select ng-model="filterType2.type" ng-options="item.name for item in filterList2.list">
              </select>
