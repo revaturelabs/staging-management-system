@@ -16,11 +16,14 @@
 			<ul class="nav navbar-nav">
 				<li ng-class="currState_GetSF" ng-click="updateSMS($event)"><a ui-sref="">Update SMS Data from Salesforce</a></li>
 				<li ng-class="{ active: isActive('/manager/home')}"><a ui-sref="manager.home">Home</a></li>
-				<li ng-class="{ active: isActive('/stats')}"><a ui-sref="manager.advanced">Advanced</a></li>
+				<li ng-class="{ active: isActive('/manager/advanced') || isActive('/manager/advanced/associates')
+						|| isActive('/manager/advanced/batches') || isActive('/manager/advanced/status') 
+						|| isActive('/manager/advanced/projects')}"><a ui-sref="manager.advanced">Advanced</a></li>
 				<li ng-class="{ active: isActive('/manager/create') || isActive('/manager/create/batch')
-						|| isActive('/manager/create/user') || isActive('/manager/create/client') || isActive('/manager/create/location') || isActive('/manager/create/job')}">
+						|| isActive('/manager/create/user') || isActive('/manager/create/client') || isActive('/manager/create/location') 
+						|| isActive('/manager/create/job') || isActive('/manager/create/project')}">
 						<a ui-sref="manager.create">Create</a></li>
-				<li ng-class="{ active: isActive('/manager/create')}"> <a ui-sref="manager.panel">Panel</a></li>
+				<li ng-class="{ active: isActive('/manager/panel')}"> <a ui-sref="manager.panel">Panel</a></li>
 				<li ng-click="logout()"><a ui-sref="">Logout</a></li>
 			</ul>
 		</div>

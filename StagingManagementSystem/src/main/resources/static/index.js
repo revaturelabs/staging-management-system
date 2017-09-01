@@ -306,7 +306,7 @@
 	    templateUrl: 'manager-pages/create/batch.html',
 	    controller: _batch.batchCtrl
 	  }).state('manager.panel', {
-	    url: 'panel',
+	    url: '/panel',
 	    templateUrl: 'manager-pages/panel/panel.html',
 	    controller: _panel2.default
 	  }).state('manager.advanced.projects.edit', {
@@ -63865,6 +63865,8 @@
 
 	function managerAdvancedCtrl($scope, $http, $state) {
 	  window.scope = $scope;
+
+	  $scope.$state = $state;
 
 	  $scope.userSearch;
 
