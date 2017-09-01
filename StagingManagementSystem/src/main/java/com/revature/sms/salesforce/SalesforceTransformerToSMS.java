@@ -54,8 +54,12 @@ public class SalesforceTransformerToSMS implements SalesforceTransformer {
 
 	@Override
 	public Batch transformBatch(SalesforceBatch salesforceBatch) {
-		Batch batch = bRepo.getBySalesforceId(salesforceBatch.getId());
-		if (batch == null) {
+		Batch batch;
+		try {
+			batch = bRepo.getBySalesforceId(salesforceBatch.getId());
+		}
+		catch(Exception e)
+		{
 			batch = new Batch();
 			batch.setSalesforceId(salesforceBatch.getId());
 			batch.setLocation(locationHelper(salesforceBatch.getLocation()));
@@ -77,8 +81,11 @@ public class SalesforceTransformerToSMS implements SalesforceTransformer {
 	public Trainer transformTrainer(BatchTrainer batchTrainer) {
 		if (batchTrainer == null)
 			return null;
-		Trainer trainer = tRepo.getByName(batchTrainer.getName());
-		if (trainer == null) {
+		Trainer trainer;
+		try {
+			trainer = tRepo.getByName(batchTrainer.getName());
+		}
+		catch (Exception e) {
 			trainer = new Trainer();
 			trainer.setName(batchTrainer.getName());
 		}
@@ -89,8 +96,11 @@ public class SalesforceTransformerToSMS implements SalesforceTransformer {
 
 	@Override
 	public Associate transformTrainee(SalesforceTrainee salesforceTrainee, SalesforceUser user) {
-		Associate associate = aRepo.getBySalesforceId(salesforceTrainee.getId());
-		if (associate == null) {
+		Associate associate;
+		try{
+			associate = aRepo.getBySalesforceId(salesforceTrainee.getId());
+		}
+		catch(Exception e) {
 			associate = new Associate();
 			associate.setSalesforceId(salesforceTrainee.getId());
 			Credential cred = new Credential();
@@ -112,8 +122,11 @@ public class SalesforceTransformerToSMS implements SalesforceTransformer {
 
 	@Override
 	public Associate transformBenchTrainee(SalesforceTrainee salesforceTrainee, SalesforceUser user) {
-		Associate associate = aRepo.getBySalesforceId(salesforceTrainee.getId());
-		if (associate == null) {
+		Associate associate;
+		try{
+			associate= aRepo.getBySalesforceId(salesforceTrainee.getId());
+		}
+		catch(Exception e) {
 			associate = new Associate();
 			associate.setSalesforceId(salesforceTrainee.getId());
 			Credential cred = new Credential();
@@ -187,8 +200,11 @@ public class SalesforceTransformerToSMS implements SalesforceTransformer {
 	}
 
 	private BatchType batchHelper(String skillType) {
-		BatchType bt = btRepo.getByValue(skillType);
-		if (bt == null) {
+		BatchType bt;
+		try{
+			bt= btRepo.getByValue(skillType);
+		}
+		catch(Exception e) {
 			bt = new BatchType();
 			bt.setValue(skillType);
 
