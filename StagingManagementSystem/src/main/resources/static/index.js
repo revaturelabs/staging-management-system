@@ -63811,7 +63811,6 @@
 	function statusController($scope, $http, $state) {
 		$scope.associates = [];
 		$scope.selectedStatusTypes = [];
-		$scope.isLoadingAssociates = true;
 
 		$http.get('status/allStatusType').then(function (response) {
 			$scope.statusTypes = response.data;
@@ -63822,7 +63821,6 @@
 
 		$http.get('associate/all').then(function (response) {
 			$scope.associates = response.data;
-			$scope.isLoadingAssociates = false;
 		});
 
 		$scope.isSelectedStatusType = function (statusType) {
