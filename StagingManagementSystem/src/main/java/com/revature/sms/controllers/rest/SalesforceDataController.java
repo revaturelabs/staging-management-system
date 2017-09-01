@@ -50,10 +50,8 @@ public class SalesforceDataController {
 		for (Batch b : batches) {
 			List<Associate> a = sd.getBatchTrainees(b.getSalesforceId(),
 					(SalesforceUser) session.getAttribute(SalesforceAuthorization.LM));
-			ad.save(a);
-			ad.save(sd.getSpecificAssociates( ad.findByAssociateStatus_Status("STAGING"), (SalesforceUser) session.getAttribute(SalesforceAuthorization.LM)));
-			
+			ad.save(a);			
 		}
-
+		ad.save(sd.getSpecificAssociates( ad.findByAssociateStatus_Status("STAGING"), (SalesforceUser) session.getAttribute(SalesforceAuthorization.LM)));
 	}
 }
