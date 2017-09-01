@@ -1,7 +1,10 @@
 package com.revature.sms.entities;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -13,6 +16,8 @@ public class AssociatesStatus
 {
 	@Id
 	@Column(name= "ASSOCIATE_STATUS_ID")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ASSOCIATE_STATUS_ID_SEQ")
+	@SequenceGenerator(name = "ASSOCIATE_STATUS_ID_SEQ", sequenceName = "ASSOCIATE_STATUS_ID_SEQ")
 	private int associateStatusId;
 	
 	@Column(name="STATUS")

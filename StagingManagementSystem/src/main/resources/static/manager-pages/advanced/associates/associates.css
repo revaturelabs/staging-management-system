@@ -10,3 +10,25 @@
   flex-direction: row;
   justify-content: space-around;
 }
+.manager-view-selecter{
+    left: 0;
+    right: 0;
+    height: auto;
+    width: 100%;
+   font-size: 12px;
+   
+   margin: 0 auto;
+    text-align: center;
+    background-color: #FF8000;
+}
+input{
+  border-color: black;
+  border-style: solid;
+  border-width: thin;
+}
+
+select{
+  border-color: black;
+  border-style: solid;
+  border-width: thin; 
+}

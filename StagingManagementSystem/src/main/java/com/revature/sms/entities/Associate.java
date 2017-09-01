@@ -46,6 +46,9 @@ public class Associate {
 
 	@Column(name = "ASSOCIATE_PORTFOLIO_LINK")
 	private String portfolioLink;
+	
+	@Column(name = "PANEL_STATUS")
+	private String latestPanelStatus;
 
 	@ManyToOne
 	@JoinColumn(name = "BATCH_ID")
@@ -73,37 +76,37 @@ public class Associate {
 	@OneToMany(mappedBy = "associate")
 	private Set<Job> jobs;
 	
-	@OneToMany(mappedBy="associate",fetch = FetchType.LAZY)
-	   @JsonProperty(access = Access.WRITE_ONLY)
-	   private Set<Certifications> certifications;
-	
 
+	@OneToMany(mappedBy="associate",fetch = FetchType.LAZY)
+	  @JsonProperty(access = Access.WRITE_ONLY)
+	  private Set<Certifications> certifications;
+	
 	public Associate() {
 		super();
 		this.skills = new HashSet<>();
 		this.jobs = new HashSet<>();
-		this.certifications= new HashSet<>();
+		this.certifications = new HashSet<>();
 		this.associateStatus = new AssociatesStatus();
 	}
 
-
-	public Associate(long id,String salesforceId, Credential credential, String name, String portfolioLink, Batch batch, Project project,
-			Client lockedTo, Set<Skill> skills, Set<Job> jobs, Set<Certifications> certifications,AssociatesStatus associateStatus, boolean portfolioStatus)
-	{
+	public Associate(long id, String salesforceId, Credential credential, String name, String portfolioLink, 
+			String latestPanelStatus, Batch batch, Project project, Client lockedTo, boolean portfolioStatus,
+			AssociatesStatus associateStatus, Set<Skill> skills, Set<Job> jobs, Set<Certifications> certifications) {
 		super();
 		this.id = id;
 		this.salesforceId = salesforceId;
 		this.credential = credential;
 		this.name = name;
 		this.portfolioLink = portfolioLink;
+		this.latestPanelStatus = latestPanelStatus;
 		this.batch = batch;
 		this.project = project;
 		this.lockedTo = lockedTo;
-		this.skills = skills;
-		this.jobs = jobs;
-		this.certifications= certifications;
-		this.associateStatus = associateStatus;
 		this.portfolioStatus = portfolioStatus;
+		this.associateStatus = associateStatus;
+		this.skills = skills;
+		this.jobs = jobs;	
+		this.certifications=certifications;
 	}
 
 	/**
@@ -158,10 +161,10 @@ public class Associate {
 		return associateStatus.getStatus().equals("BENCH") ? true : false;
 	}
 
-	public void setStatus() {
+	public void checkAssociateStatus() {
 		
 		if (this.isTrainingOnDate(LocalDateTime.now())) {
-			AssociatesStatus status = new AssociatesStatus(0, "TRAINING");
+			AssociatesStatus status = new AssociatesStatus(4, "TRAINING");
 			this.setAssociateStatus(status);
 		}
 		else if (this.isTrackedOnDate(LocalDateTime.now()) && !this.isTrainingOnDate(LocalDateTime.now())) {
@@ -175,6 +178,14 @@ public class Associate {
 		else if (this.isTrackedOnDate(LocalDateTime.now()) && !this.hasJobOnDate(LocalDateTime.now())) {
 			AssociatesStatus status = new AssociatesStatus(3, "BENCH");
 			this.setAssociateStatus(status);
+		}
+	}
+	
+	public void checkPortfolioStatus() {
+		if(associateStatus.getStatus().equals("STAGING"))
+			this.setPortfolioStatus(true);
+		else {
+			this.setPortfolioStatus(false);
 		}
 	}
 
@@ -217,6 +228,14 @@ public class Associate {
 
 	public void setPortfolioLink(String portfolioLink) {
 		this.portfolioLink = portfolioLink;
+	}
+	
+	public String getLatestPanelStatus(){
+		return latestPanelStatus;
+	}
+	
+	public void setLastestPanelStatus(String latestPanelStatus){
+		this.latestPanelStatus = latestPanelStatus;
 	}
 
 	public Batch getBatch() {
@@ -280,11 +299,11 @@ public class Associate {
 		return certifications;
 	}
 
-
 	public void setCertifications(Set<Certifications> certifications) {
 		this.certifications = certifications;
 	}
 
+	
 
 
 	@Override
@@ -323,6 +342,11 @@ public class Associate {
 				return false;
 		} else if (!jobs.equals(other.jobs))
 			return false;
+		if (latestPanelStatus == null) {
+			if (other.latestPanelStatus != null)
+				return false;
+		} else if (!latestPanelStatus.equals(other.latestPanelStatus))
+			return false;
 		if (lockedTo == null) {
 			if (other.lockedTo != null)
 				return false;
@@ -358,15 +382,15 @@ public class Associate {
 		return true;
 	}
 
-
 	@Override
 	public String toString() {
 		return "Associate [id=" + id + ", salesforceId=" + salesforceId + ", credential=" + credential + ", name="
-				+ name + ", portfolioLink=" + portfolioLink + ", batch=" + batch + ", project=" + project
-				+ ", lockedTo=" + lockedTo + ", portfolioStatus=" + portfolioStatus + ", associateStatus="
-				+ associateStatus + ", skills=" + skills + ", jobs=" + jobs + ", certifications=" + certifications
-				+ "]";
+				+ name + ", portfolioLink=" + portfolioLink + ", latestPanelStatus=" + latestPanelStatus + ", batch="
+				+ batch + ", project=" + project + ", lockedTo=" + lockedTo + ", portfolioStatus=" + portfolioStatus
+				+ ", associateStatus=" + associateStatus + ", skills=" + skills + ", jobs=" + jobs + ", certifications="
+				+ certifications + "]";
 	}
 
 
+	
 }

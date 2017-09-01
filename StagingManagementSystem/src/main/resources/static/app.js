@@ -178,7 +178,7 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
           },
       },
     })
-    .state('manager.associateView', {
+    .state('manager.advanced.allassociates.associateView', {
       url: '/associate/:id',
       templateUrl: 'associate-pages/profile/profile.html',
       controller: profileCtrl,

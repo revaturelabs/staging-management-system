@@ -5,34 +5,41 @@
 			<table class="table table-striped manager-advanced-associates-table selectable-table">
 			<thead>
 					<tr>
-						<th scope="col">Associate <input ng-disabled="disabled_search" ng-model="searchName" type="text" placeholder="Name" />
-						<button ng-click="searchClick(searchName)">Search</button></th>
+						<th scope="col">Associate <input ng-disabled="disabled_search" ng-model="searchName.name" type="text" placeholder="Name" />
+							<select ng-disabled="disabled_select" ng-model="selectChoice" ng-change="statusSelected(selectChoice)">
+								<option value="ALL">ALL</option>
+								<option value="PENDING">PENDING</option>
+								<option value="PASS">PASS</option>
+								<option value="FAIL">FAIL</option>
+								<option value="NULL">NO PANEL RECORD</option>
+							</select> 
+							<button type="button" ng-disabled="refreshIcon" ng-click="statusSelected(selectChoice)" class="btn btn-primary" ><span class="glyphicon glyphicon-refresh"></span></button>
+						</th>
+						</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-show="searchShowUp" ng-repeat="associate in associates">
-						<td ng-click="associatePanelClick(associate)" ng-bind="associate.name"></td>
+					<tr ng-show="searchShowUp" ng-repeat="associate in associates | filter:searchName">
+						<td ng-click="associateNameClick(associate)" ng-bind="associate.name"></td>
 					</tr>
 				</tbody>
 			</table>
-
+			
 			<div id="associateName">{{choose.name}}</div>
-		
 			<button id ="panel-margin" type="button" ng-show ="(plist[plist.length-1].status =='FAIL'||plist[plist.length-1].status =='PASS')  || (choose.length != 0 && plist.length == 0)"  ng-click="showAddModal()" class="btn btn-primary">Add Panel</button>
 			<table ng-show="show_panel" class="table table-striped manager-associates-panel-table selectable-table">
 				<thead>
 					<tr>
-						<th class="assPanel-th" scope="col">Panel ID</th>
-						<th class="assPanel-th" scope="col">Date</th>
-						<th class="assPanel-th" scope="col">Status</th>
-						
+						<th class="assPanel-th center-title" scope="col">Date</th>
+						<th class="assPanel-th center-title" scope="col">Status</th>
+						<th class="assPanel-th center-title" scope="col">Comment</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr class="associatePanelTable" ng-repeat="p in plist" ng-click="PanelClick(p)">
-						<td>{{p.id}}</td>
 						<td>{{dateConverter(p.statusDate)}}</td>
 						<td>{{p.status}}</td>
+						<td class="comment-ellipsis">{{p.comments}}</td>
 					</tr>
 				</tbody>
 			</table>

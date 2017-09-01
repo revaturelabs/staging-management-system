@@ -5,7 +5,6 @@ import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
-import com.revature.sms.entities.AssociatesStatus;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -61,7 +60,8 @@ public class AssociateControllerImpl {
 		associateService.add(associate);
 		return ResponseEntity.ok(null);
 	}
-//     	@PutMapping("/portfolioStatus/{id}")
+	
+//    @PutMapping("/portfolioStatus/{id}")
 //	public void updatePortfolio(@PathVariable long id, @RequestBody PortfolioStatus file)
 //	{
 //		Associate associate=associateService.getById(id);
@@ -200,5 +200,15 @@ public class AssociateControllerImpl {
 		}
 		associateService.updateStatus(associate);
 		return ResponseEntity.ok(associate);
+	}
+
+	@GetMapping("number-by-status/{status}")
+	public int countAssociateByAssociateStatus_Status(@PathVariable String status){
+		int asscCount = associateService.countAssociateByAssociateStatus_Status(status);
+		if(!(asscCount>0)){
+			asscCount = 0;
+		}
+		System.out.println(asscCount);
+		return asscCount;
 	}
 }

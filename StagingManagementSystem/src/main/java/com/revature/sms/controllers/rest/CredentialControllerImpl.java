@@ -70,6 +70,7 @@ public class CredentialControllerImpl {
      * @param id - id of credential to be retrieved.
      * @return credential object from dataBase.
      */
+    //TODO: May be deprecated, test.
     @GetMapping("/{id}")
     public Credential findById(@PathVariable long id) {
 

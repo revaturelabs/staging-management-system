@@ -90,7 +90,7 @@ public class AssociateServiceImpl implements AssociateService {
 	@Override
 	public void updateStatus(Associate associate) {
 		if(associate.isBenched()) {
-			associate.setPortfolioStatus(false);
+			associate.setPortfolioStatus(true);
 			associateRepo.saveAndFlush(associate);
 		} else {
 			associateRepo.saveAndFlush(associate);
@@ -171,5 +171,15 @@ public class AssociateServiceImpl implements AssociateService {
 	@Override
 	public Set<Associate> findByNameLike(String name) {
 		return associateRepo.findByNameContainingIgnoreCase(name);
+	}
+	@Override 
+	public int countAssociateByAssociateStatus_Status(String status){
+		return associateRepo.countAssociateByAssociateStatus_Status(status);
+	}
+
+	@Override
+	public Set<Associate> findByLatestPanelStatus(String latestPanelStatus) {
+		
+		return associateRepo.findByLatestPanelStatus(latestPanelStatus);
 	}
 }
