@@ -1,7 +1,6 @@
 export function statusController($scope, $http, $state) {
 	$scope.associates = [];
 	$scope.selectedStatusTypes = [];
-  	$scope.isLoadingAssociates = true;
 
 	$http.get('status/allStatusType').then((response) => {
         $scope.statusTypes = response.data;            
@@ -12,7 +11,6 @@ export function statusController($scope, $http, $state) {
 
   	$http.get('associate/all').then((response) => {
 		$scope.associates = response.data;
-		$scope.isLoadingAssociates = false;
   	});
 
   	$scope.isSelectedStatusType = (statusType) => {

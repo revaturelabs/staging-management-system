@@ -2,6 +2,8 @@
 function managerAdvancedCtrl($scope, $http, $state) {
   window.scope = $scope;
   
+  $scope.$state = $state;
+  
   $scope.userSearch;
   
   $scope.filterList = {

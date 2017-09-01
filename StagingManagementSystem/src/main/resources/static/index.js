@@ -306,7 +306,7 @@
 	    templateUrl: 'manager-pages/create/batch.html',
 	    controller: _batch.batchCtrl
 	  }).state('manager.panel', {
-	    url: 'panel',
+	    url: '/panel',
 	    templateUrl: 'manager-pages/panel/panel.html',
 	    controller: _panel2.default
 	  }).state('manager.advanced.projects.edit', {
@@ -63811,7 +63811,6 @@
 	function statusController($scope, $http, $state) {
 		$scope.associates = [];
 		$scope.selectedStatusTypes = [];
-		$scope.isLoadingAssociates = true;
 
 		$http.get('status/allStatusType').then(function (response) {
 			$scope.statusTypes = response.data;
@@ -63822,7 +63821,6 @@
 
 		$http.get('associate/all').then(function (response) {
 			$scope.associates = response.data;
-			$scope.isLoadingAssociates = false;
 		});
 
 		$scope.isSelectedStatusType = function (statusType) {
@@ -63867,6 +63865,8 @@
 
 	function managerAdvancedCtrl($scope, $http, $state) {
 	  window.scope = $scope;
+
+	  $scope.$state = $state;
 
 	  $scope.userSearch;
 
