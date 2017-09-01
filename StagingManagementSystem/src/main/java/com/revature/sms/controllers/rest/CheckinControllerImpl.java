@@ -84,7 +84,7 @@ public class CheckinControllerImpl {
 	 * @param checkin
 	 * @return
 	 */
-	@PostMapping //TODO: Fix checkin, then this can be used
+	@PostMapping
 	public ResponseEntity<Boolean> managerModification(HttpSession session, @RequestBody Checkin checkin) {
 		SalesforceUser manager = (SalesforceUser) session.getAttribute(LM);
 		if (manager == null) {

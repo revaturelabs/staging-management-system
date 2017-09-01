@@ -94,49 +94,53 @@
 
 	var _create2 = _interopRequireDefault(_create);
 
-	var _batch = __webpack_require__(134);
+	var _associateStatusEdit = __webpack_require__(134);
 
-	var _client = __webpack_require__(135);
+	var _batch = __webpack_require__(135);
 
-	var _user = __webpack_require__(136);
+	var _client = __webpack_require__(136);
 
-	var _location = __webpack_require__(137);
+	var _user = __webpack_require__(137);
 
-	var _job = __webpack_require__(138);
+	var _location = __webpack_require__(138);
 
-	var _project = __webpack_require__(139);
+	var _job = __webpack_require__(139);
 
-	var _advanced = __webpack_require__(140);
+	var _project = __webpack_require__(140);
+
+	var _status = __webpack_require__(141);
+
+	var _advanced = __webpack_require__(142);
 
 	var _advanced2 = _interopRequireDefault(_advanced);
 
-	var _panel = __webpack_require__(141);
+	var _panel = __webpack_require__(143);
 
 	var _panel2 = _interopRequireDefault(_panel);
 
-	var _profile = __webpack_require__(142);
+	var _profile = __webpack_require__(144);
 
 	var _profile2 = _interopRequireDefault(_profile);
 
-	var _interview = __webpack_require__(143);
+	var _interview = __webpack_require__(145);
 
 	var _interview2 = _interopRequireDefault(_interview);
 
-	var _associatePanel = __webpack_require__(144);
+	var _associatePanel = __webpack_require__(146);
 
 	var _associatePanel2 = _interopRequireDefault(_associatePanel);
 
-	var _associate = __webpack_require__(145);
+	var _associate = __webpack_require__(147);
 
 	var _associate2 = _interopRequireDefault(_associate);
 
-	var _login = __webpack_require__(146);
+	var _login = __webpack_require__(148);
 
 	var _login2 = _interopRequireDefault(_login);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	__webpack_require__(147)(_fusioncharts2.default);
+	__webpack_require__(149)(_fusioncharts2.default);
 
 	// const Visualizer = window['ui-router-visualizer'].Visualizer;
 
@@ -272,7 +276,7 @@
 	        controller: _checkin2.default
 	      }
 	    }
-	  }).state('manager.associateView', {
+	  }).state('manager.advanced.allassociates.associateView', {
 	    url: '/associate/:id',
 	    templateUrl: 'associate-pages/profile/profile.html',
 	    controller: _profile2.default
@@ -286,6 +290,14 @@
 	  }).state('manager.advanced.batches', {
 	    url: '/batches',
 	    templateUrl: 'manager-pages/advanced/batches/batches.html'
+	  }).state('manager.advanced.status', {
+	    url: '/status',
+	    templateUrl: 'manager-pages/advanced/status/status.html',
+	    controller: _status.statusController
+	  }).state('manager.advanced.status.edit', {
+	    url: '/edit/:id',
+	    templateUrl: 'manager-pages/create/associate-status-edit.html',
+	    controller: _associateStatusEdit.associateStatusEditController
 	  }).state('manager.advanced.projects', {
 	    url: '/projects',
 	    templateUrl: 'manager-pages/advanced/projects/projects.html'
@@ -294,14 +306,13 @@
 	    templateUrl: 'manager-pages/create/batch.html',
 	    controller: _batch.batchCtrl
 	  }).state('manager.panel', {
-	    url: 'panel',
+	    url: '/panel',
 	    templateUrl: 'manager-pages/panel/panel.html',
 	    controller: _panel2.default
 	  }).state('manager.advanced.projects.edit', {
 	    url: '/edit/:id',
 	    templateUrl: 'manager-pages/create/project.html',
 	    controller: _project.projectCtrl
-
 	  }).state('associate', {
 	    url: '/associate',
 	    templateUrl: 'associate-pages/associate.html',
@@ -322,7 +333,6 @@
 	    url: '/profile',
 	    templateUrl: 'associate-pages/profile/profile.html',
 	    controller: _profile2.default
-
 	  });
 	});
 
@@ -62144,7 +62154,9 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	function managerCtrl($scope, $state, $location, $http, userService) {
+	function managerCtrl($scope, $state, $location, $http, userService, $rootScope) {
+	  $rootScope.loading = false;
+
 	  $http({
 	    method: 'GET',
 	    url: '/login/user'
@@ -62172,13 +62184,47 @@
 	    });
 	  };
 
-	  $scope.updateFromSMS = function () {
-	    $http({
-	      method: 'GET',
-	      url: '/sfdata/batches'
-	    }).then(function (response) {
-	      alert("Sent update to SMS from Salesforce request!");
-	    });
+	  $scope.getLogo = function () {
+	    $scope.loading = true;
+	    var style = {};
+	    if ($http.pendingRequests.length !== 0) {
+	      style.width = '95px';
+	      //This is done because the gif is slightly larger than the image and it shouldn't expand the border
+	      style.transform = 'translate(-1.65px, 16.2px)';
+	      style.margin = '-20px 0 0 0px';
+	    } else {
+	      style.width = '90px';
+	      style.transform = 'translate(0px, 0px)';
+	      $scope.loading = false;
+	    }
+	    //console.log($http.pendingRequests.length)
+	    return style;
+	  };
+
+	  $scope.currState_GetSF = 'getSF_Ready';
+	  $scope.updateSMS = function ($event) {
+
+	    $event.target.innerHTML = "Loading!";
+	    if ($event.target.disabled !== 'disabled') {
+	      $scope.currState_GetSF = 'getSF_Getting';
+	      $http({
+	        method: 'GET',
+	        url: '/sfdata/batches'
+	      }).then(function (response) {
+	        //Successes
+	        $event.target.innerHTML = "Update SMS Data from Salesforce";
+	        $event.target.disabled = 'enabled';
+	        $scope.currState_GetSF = 'getSF_Ready';
+	        $.notify($event.target, "Finished loading data!", "success");
+	      }, function (response) {
+	        //Errors
+	        $event.target.innerHTML = "Update SMS Data from Salesforce";
+	        $event.target.disabled = 'enabled';
+	        $scope.currState_GetSF = 'getSF_Ready';
+	        $.notify($event.target, "Could not load data!", "error");
+	      });
+	    }
+	    $event.target.disabled = 'disabled';
 	  };
 
 	  $scope.manager = { name: 'Joe' };
@@ -62423,6 +62469,7 @@
 	    method: 'GET',
 	    url: '/associate/totaldata'
 	  }).then(function (response) {
+	    $scope.$root.loading = false;
 	    responseData = response.data;
 	    var stuff1 = [];
 	    var stuff2 = [];
@@ -63217,7 +63264,36 @@
 	    pieChart.render();
 	  }
 
-	  function processChartData(responseData) {
+	  /*  function processChartData(responseData) {
+	      const chartData = [
+	        {
+	          label: 'Employed',
+	          value: 0,
+	        },
+	        {
+	          label: 'Awaiting placement',
+	          value: 0,
+	        },
+	        {
+	            label: 'In Training',
+	            value: 0,
+	          },
+	      ];
+	      for (let i = 0; i < responseData.data.length; i += 1) {
+	        if (responseData.data[i].associateStatus.status == 'STAGING' || responseData.data[i].associateStatus.status == 'BENCH') {
+	          chartData[1].value += 1;
+	        } else if(responseData.data[i].associateStatus.status == 'PROJECT'){
+	          chartData[0].value += 1;
+	        }	else {
+	      	chartData[2].value += 1;
+	        }
+	      }
+	      $scope.cache.put('chartData', chartData);
+	      return chartData;
+	    }*/
+
+	  function httpRequest() {
+	    var asscStatus = [{ status: 'STAGING' }, { status: 'BENCH' }, { status: 'PROJECT' }, { status: 'TRAINING' }];
 	    var chartData = [{
 	      label: 'Employed',
 	      value: 0
@@ -63228,26 +63304,18 @@
 	      label: 'In Training',
 	      value: 0
 	    }];
-	    for (var i = 0; i < responseData.data.length; i += 1) {
-	      if (responseData.data[i].associateStatus.status == 'STAGING' || responseData.data[i].associateStatus.status == 'BENCH') {
-	        chartData[1].value += 1;
-	      } else if (responseData.data[i].associateStatus.status == 'PROJECT') {
-	        chartData[0].value += 1;
-	      } else {
-	        chartData[2].value += 1;
-	      }
-	    }
-	    $scope.cache.put('chartData', chartData);
-	    return chartData;
-	  }
-
-	  function httpRequest() {
-	    $http({
-	      method: 'GET',
-	      url: '/associate/all'
-	    }).then(function (response) {
-	      var chartData = processChartData(response);
-	      renderChart(chartData);
+	    $http.get('associate/number-by-status/' + asscStatus[0].status).then(function (response1) {
+	      chartData[1].value += response1.data;
+	      $http.get('associate/number-by-status/' + asscStatus[1].status).then(function (response2) {
+	        chartData[1].value += response2.data;
+	        $http.get('associate/number-by-status/' + asscStatus[2].status).then(function (response3) {
+	          chartData[0].value += response3.data;
+	          $http.get('associate/number-by-status/' + asscStatus[3].status).then(function (response4) {
+	            chartData[2].value += response4.data;
+	            renderChart(chartData);
+	          });
+	        });
+	      });
 	    });
 	  }
 
@@ -63279,6 +63347,59 @@
 
 /***/ }),
 /* 134 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+	exports.associateStatusEditController = associateStatusEditController;
+	function associateStatusEditController($scope, $http, $state, $stateParams) {
+		$scope.loading = true;
+		$scope.submitting = false;
+		$scope.submitted = false;
+		$scope.error = false;
+		$scope.associate = undefined;
+		$scope.statusTypes = undefined;
+
+		$('#statusModal').modal('show');
+
+		$('#statusModal').on('hide.bs.modal', function () {
+			$state.go('manager.advanced.status', {}, { reload: true });
+		});
+
+		Promise.all([$http.get('associate/by-identifier/' + $stateParams.id), $http.get('status/allStatusType')]).then(function (_ref) {
+			var _ref2 = _slicedToArray(_ref, 2),
+			    associateResponse = _ref2[0],
+			    statusTypesResponse = _ref2[1];
+
+			$scope.associate = associateResponse.data;
+			$scope.statusTypes = statusTypesResponse.data;
+			$scope.loading = false;
+			$scope.$digest();
+		});
+
+		$scope.updateAssociateStatus = function () {
+			$scope.submitting = true;
+			$scope.submitted = false;
+			$scope.error = false;
+
+			$http.put('associate/updateAssociateStatus', $scope.associate).then(function () {
+				$scope.submitting = false;
+				$scope.submitted = true;
+			}).catch(function () {
+				$scope.submitting = false;
+				$scope.error = true;
+			});
+		};
+	};
+
+/***/ }),
+/* 135 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -63438,7 +63559,7 @@
 	exports.batchCtrl = batchCtrl;
 
 /***/ }),
-/* 135 */
+/* 136 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -63465,7 +63586,7 @@
 	exports.clientCtrl = clientCtrl;
 
 /***/ }),
-/* 136 */
+/* 137 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -63508,7 +63629,7 @@
 	exports.userCtrl = userCtrl;
 
 /***/ }),
-/* 137 */
+/* 138 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -63534,7 +63655,7 @@
 	exports.locCtrl = locCtrl;
 
 /***/ }),
-/* 138 */
+/* 139 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -63608,7 +63729,7 @@
 	exports.jobCtrl = jobCtrl;
 
 /***/ }),
-/* 139 */
+/* 140 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -63678,7 +63799,62 @@
 	exports.projectCtrl = projectCtrl;
 
 /***/ }),
-/* 140 */
+/* 141 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	exports.statusController = statusController;
+	function statusController($scope, $http, $state) {
+		$scope.associates = [];
+		$scope.selectedStatusTypes = [];
+
+		$http.get('status/allStatusType').then(function (response) {
+			$scope.statusTypes = response.data;
+			$scope.statusTypes.forEach(function (statusType) {
+				$scope.selectedStatusTypes.push(statusType);
+			});
+		});
+
+		$http.get('associate/all').then(function (response) {
+			$scope.associates = response.data;
+		});
+
+		$scope.isSelectedStatusType = function (statusType) {
+			return $scope.selectedStatusTypes.some(function (selectedStatusType) {
+				return selectedStatusType.id === statusType.id;
+			});
+		};
+
+		$scope.toggleSelectedStatusTypes = function (selectedStatus) {
+			var idx = $scope.selectedStatusTypes.indexOf(selectedStatus);
+
+			// Is currently selected
+			if (idx > -1) {
+				$scope.selectedStatusTypes.splice(idx, 1);
+			} else {
+				$scope.selectedStatusTypes.push(selectedStatus);
+			}
+		};
+
+		$scope.associatesFilter = function (associate) {
+			var selectedStatusTypes = $scope.selectedStatusTypes;
+
+			if (selectedStatusTypes.length === 0) {
+				return false;
+			}
+
+			return selectedStatusTypes.some(function (selectedStatusType) {
+				return associate.associateStatus.associateStatusId === selectedStatusType.associateStatusId;
+			});
+		};
+	}
+
+/***/ }),
+/* 142 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -63686,8 +63862,29 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+
 	function managerAdvancedCtrl($scope, $http, $state) {
 	  window.scope = $scope;
+
+	  $scope.$state = $state;
+
+	  $scope.userSearch;
+
+	  $scope.filterList = {
+	    list: [{ id: 2, name: 'Associate' }, { id: 3, name: 'Batch' }, { id: 4, name: 'Trainer' }]
+	  };
+
+	  $scope.filterList2 = {
+	    list: [{ id: 1, name: 'Start Date' }, { id: 2, name: 'End Date' }, { id: 3, name: 'Batch' }, { id: 4, name: 'Trainer' }]
+	  };
+
+	  $scope.filterType = {
+	    type: $scope.filterList.list[0]
+	  };
+
+	  $scope.filterType2 = {
+	    type: $scope.filterList2.list[0]
+	  };
 
 	  $http.get('batchtype/all').then(function (data) {
 	    $scope.batchtypes = data.data;
@@ -63697,9 +63894,17 @@
 	    });
 	  });
 
-	  $http.get('associate/all').then(function (data) {
-	    $scope.associates = data.data;
-	  }, function (data) {});
+	  $http.get('status/allStatusType').then(function (data) {
+	    $scope.statusTypes = data.data;
+	    $scope.selectedStatusTypes = [];
+	    $scope.statusTypes.forEach(function (statusType) {
+	      $scope.selectedStatusTypes.push(statusType);
+	    });
+	  });
+
+	  $http.get('associate/all').then(function (response) {
+	    $scope.associates = response.data;
+	  });
 
 	  $http.get('batch/all').then(function (data) {
 	    $scope.batches = data.data;
@@ -63719,6 +63924,13 @@
 
 	  $scope.isBatches = function () {
 	    if ($state.is('manager.advanced.batches')) {
+	      return true;
+	    }
+	    return false;
+	  };
+
+	  $scope.isStatus = function () {
+	    if ($state.is('manager.advanced.status')) {
 	      return true;
 	    }
 	    return false;
@@ -63776,11 +63988,10 @@
 	    }).length >= 1;
 	  };
 	}
-
 	exports.default = managerAdvancedCtrl;
 
 /***/ }),
-/* 141 */
+/* 143 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -63792,67 +64003,115 @@
 		$scope.PanelLoad = '';
 		$scope.show_panel = false;
 		$scope.defaultCommnt = '';
+		$scope.AllAssociates = {};
 		$scope.choose = {};
 		$scope.plist = {};
+		$scope.disabled_search = true;
+		$scope.disabled_select = true;
+		$scope.PanelLoad = 'Loading Panel...';
+		$scope.refreshIcon = true;
 
-		$scope.searchClick = function (searchName) {
+		$http({
+			method: 'GET',
+			url: "/associate/all"
+		}).then(function (response) {
+			$scope.AllAssociates = response.data;
+			$scope.associates = $scope.AllAssociates;
+			$scope.PanelLoad = '';
+			$scope.searchShowUp = true;
+			$scope.disabled_search = false;
+			$scope.disabled_select = false;
+			$scope.refreshIcon = false;
+		});
+
+		$scope.statusSelected = function (selectChoice) {
+			$scope.searchShowUp = true;
+			$scope.show_panel = false;
 			$scope.choose = {};
 			$scope.plist = {};
-			if (searchName) {
-				$scope.disabled_search = true;
-				$scope.show_panel = false;
-				$scope.PanelLoad = 'Loading Panel...';
-				$http({
-					method: 'GET',
-					url: '/associate/search/' + searchName
-				}).then(function (response) {
-					$scope.PanelLoad = '';
-					$scope.disabled_search = false;
-					$scope.associates = response.data;
-					$scope.searchShowUp = true;
+			if (selectChoice == 'PENDING' || selectChoice == "PASS" || selectChoice == "FAIL") {
+				$scope.associates = $scope.AllAssociates.filter(function (obj) {
+					return obj.latestPanelStatus == selectChoice;
 				});
+			} else if (selectChoice == 'NULL') {
+				$scope.associates = $scope.AllAssociates.filter(function (obj) {
+					return obj.latestPanelStatus == null;
+				});
+			} else {
+				$scope.associates = $scope.AllAssociates;
 			}
+		};
 
-			$scope.associatePanelClick = function (associate) {
-				$scope.choose = associate;
-				$scope.searchShowUp = false;
-				$scope.show_panel = true;
-				var associateId = associate.id;
-				$http({
-					method: 'GET',
-					url: '/panel/associate/' + associateId
-				}).then(function (response) {
-					$scope.plist = response.data;
-					$scope.plist.sort(function (a, b) {
-						return a.id - b.id;
-					});
+		$scope.associateNameClick = function (associate) {
+			$scope.choose = associate;
+			$scope.searchShowUp = false;
+			$scope.show_panel = true;
+			var associateId = associate.id;
+			$http({
+				method: 'GET',
+				url: '/panel/associate/' + associateId
+			}).then(function (response) {
+				$scope.plist = response.data;
+				$scope.plist.sort(function (a, b) {
+					return a.id - b.id;
 				});
+			});
 
-				$scope.PanelClick = function (panel) {
+			$scope.PanelClick = function (panel) {
+				$scope.statusOption = panel.status;
+				$scope.panelChoose = panel;
+				$scope.errorUpdateMsgShow = false;
+				$scope.successUpdateMsgShow = false;
+				$scope.updateComment = panel.comments;
+				$('#PanelCommentModal').modal('show');
 
-					$scope.statusOption = panel.status;
-					$scope.panelChoose = panel;
-					$scope.errorUpdateMsgShow = false;
-					$scope.successUpdateMsgShow = false;
-					$scope.updateComment = panel.comments;
-					$('#PanelCommentModal').modal('show');
-
-					$scope.updateInterviewClick = function (statusOption, updateComment) {
-						panel.comments = updateComment;
-						panel.status = statusOption;
-						$http({
-							method: 'PUT',
-							url: '/panel',
-							data: panel
-						}).then(function (response) {
-							$scope.successUpdateMsgShow = true;
-							$scope.associatePanelClick(associate);
-						}, function (response) {
-							$scope.errorUpdateMsgShow = true;
-						});
-					};
+				$scope.updateInterviewClick = function (statusOption, updateComment) {
+					panel.comments = updateComment;
+					panel.status = statusOption;
+					$http({
+						method: 'PUT',
+						url: '/panel',
+						data: panel
+					}).then(function (response) {
+						$scope.successUpdateMsgShow = true;
+						$scope.modifyAllAssociates(panel.status, associate.id);
+						//refresh panel history table 
+						$scope.associateNameClick(associate);
+					}, function (response) {
+						$scope.errorUpdateMsgShow = true;
+					});
 				};
 			};
+		};
+
+		$scope.modifyAllAssociates = function (status, id) {
+			var _iteratorNormalCompletion = true;
+			var _didIteratorError = false;
+			var _iteratorError = undefined;
+
+			try {
+				for (var _iterator = $scope.AllAssociates[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+					var obj = _step.value;
+
+					if (obj.id == id) {
+						obj.latestPanelStatus = status;
+						break;
+					}
+				}
+			} catch (err) {
+				_didIteratorError = true;
+				_iteratorError = err;
+			} finally {
+				try {
+					if (!_iteratorNormalCompletion && _iterator.return) {
+						_iterator.return();
+					}
+				} finally {
+					if (_didIteratorError) {
+						throw _iteratorError;
+					}
+				}
+			}
 		};
 
 		$scope.addPanelClick = function () {
@@ -63869,7 +64128,9 @@
 				addPanelBtn.disabled = false;
 				addPanelBtn.innerHTML = 'Add Panel';
 				$scope.defaultCommnt = '';
-				$scope.associatePanelClick($scope.choose);
+				$scope.modifyAllAssociates("PENDING", $scope.choose.id);
+				//refresh panel history table 
+				$scope.associateNameClick($scope.choose);
 			});
 		};
 
@@ -63885,7 +64146,7 @@
 	exports.default = managerPanelCtrl;
 
 /***/ }),
-/* 142 */
+/* 144 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -63911,7 +64172,7 @@
 	    return;
 	  }
 
-	  var associateUrl = '/associate/' + associateId;
+	  var associateUrl = '/associate/by-identifier/' + associateId;
 	  $http({
 	    method: 'GET',
 	    url: associateUrl
@@ -64086,7 +64347,7 @@
 	exports.default = profileCtrl;
 
 /***/ }),
-/* 143 */
+/* 145 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -64227,7 +64488,7 @@
 	exports.default = associateInterviewCtrl;
 
 /***/ }),
-/* 144 */
+/* 146 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -64248,7 +64509,7 @@
 	exports.default = associatePanelCtrl;
 
 /***/ }),
-/* 145 */
+/* 147 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -64313,7 +64574,7 @@
 	exports.default = associateCtrl;
 
 /***/ }),
-/* 146 */
+/* 148 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -64378,7 +64639,7 @@
 	exports.default = loginCtrl;
 
 /***/ }),
-/* 147 */
+/* 149 */
 /***/ (function(module, exports) {
 
 	/*

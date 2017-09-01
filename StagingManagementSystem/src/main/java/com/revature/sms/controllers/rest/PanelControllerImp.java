@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.sms.entities.Associate;
 import com.revature.sms.entities.Panel;
+import com.revature.sms.services.AssociateService;
 import com.revature.sms.services.PanelService;
 
 @RestController
@@ -27,7 +28,6 @@ public class PanelControllerImp {
 	@GetMapping("associatetepanel")
 	public Set<Panel> getAssociatePanel(HttpSession session) {
 		return pr.findByAssociate((Associate) session.getAttribute("LA"));
-
 	}
 	
 	@GetMapping("/associate/{associateId}")
@@ -39,19 +39,16 @@ public class PanelControllerImp {
 	@GetMapping("allpanel")
 	public Set<Panel> SetgetAllPanel() {
 		return pr.getAllPanel();
-
 	}
 
 	@PostMapping
 	public void addPanel(@RequestBody Panel panel) {
 		pr.addPanel(panel);
-
 	}
 
 	@PutMapping
 	public void update(@RequestBody Panel panel) {
 		pr.update(panel);
-
 	}
 
 }

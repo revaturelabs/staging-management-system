@@ -29,3 +29,6 @@ public class LoggingAspect {
         log.error("Exception thrown: " + joinPoint.getSignature().getName());
     }
 }
+//it didnt show that now
+//but somone im not getting the request mapped...thats why i was checking that error
+//that was teh error i got// where is the oontroller
