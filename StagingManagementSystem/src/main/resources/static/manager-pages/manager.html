@@ -2,7 +2,8 @@
 	<div class="navbar navbar-fixed-top navbar-default">
 		<div class="navbar-header">
 			<a class="navbar-left img-center">
-				<img src="./images/revature-logo.png" alt="Revature" width="90" height="35">
+				<img id="RevatureLogo" ng-src="{{loading> 0 ? './images/revature_loading.gif' : './images/revature-logo.png'}}" alt="Revature" 
+					ng-style="getLogo()">
 			</a>
 			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
 				<span class="sr-only">Toggle navigation</span>
@@ -13,13 +14,16 @@
 		</div>
 		<div class="navbar-collapse collapse navbar-right">
 			<ul class="nav navbar-nav">
-				<li ng-click="updateFromSMS()"><a ui-sref="">Update from SMS</a></li>
+				<li ng-class="currState_GetSF" ng-click="updateSMS($event)"><a ui-sref="">Update SMS Data from Salesforce</a></li>
 				<li ng-class="{ active: isActive('/manager/home')}"><a ui-sref="manager.home">Home</a></li>
-				<li ng-class="{ active: isActive('/stats')}"><a ui-sref="manager.advanced">Advanced</a></li>
+				<li ng-class="{ active: isActive('/manager/advanced') || isActive('/manager/advanced/associates')
+						|| isActive('/manager/advanced/batches') || isActive('/manager/advanced/status') 
+						|| isActive('/manager/advanced/projects')}"><a ui-sref="manager.advanced">Advanced</a></li>
 				<li ng-class="{ active: isActive('/manager/create') || isActive('/manager/create/batch')
-						|| isActive('/manager/create/user') || isActive('/manager/create/client') || isActive('/manager/create/location') || isActive('/manager/create/job')}">
+						|| isActive('/manager/create/user') || isActive('/manager/create/client') || isActive('/manager/create/location') 
+						|| isActive('/manager/create/job') || isActive('/manager/create/project')}">
 						<a ui-sref="manager.create">Create</a></li>
-				<li ng-class="{ active: isActive('/manager/create')}"> <a ui-sref="manager.panel">Panel</a></li>
+				<li ng-class="{ active: isActive('/manager/panel')}"> <a ui-sref="manager.panel">Panel</a></li>
 				<li ng-click="logout()"><a ui-sref="">Logout</a></li>
 			</ul>
 		</div>

@@ -171,7 +171,7 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
         },
       },
     })
-    .state('manager.associateView', {
+    .state('manager.advanced.allassociates.associateView', {
       url: '/associate/:id',
       templateUrl: 'associate-pages/profile/profile.html',
       controller: profileCtrl,
@@ -209,7 +209,7 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       controller: batchCtrl,
     })
     .state('manager.panel',{
-    	url: 'panel',
+    	url: '/panel',
     	templateUrl: 'manager-pages/panel/panel.html',
     	controller: managerPanelCtrl,
     })

@@ -36,6 +36,7 @@ label{
 .table > thead > tr > th.create-th {
     background-color: #FF8000;
     text-align: center;
+    color: white;
 }
 
 #country{

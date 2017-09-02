@@ -3,8 +3,12 @@ package com.revature.sms.repositories;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -61,6 +65,19 @@ public class SalesforceRepoImpl implements SalesforceRepo {
 	/**
 	 * Will change as of version 2.0 Salesforce API in August/September 2017
 	 * timeframe Once user selects a batch to import, use this to load all the
+	 * Relevant Associates based on their Salesforce ID.
+	 */
+	@Value("select id, name, training_status__c, phone, email, MobilePhone, "
+			+ "Training_Batch__c , Training_Batch__r.name, " + "Training_Batch__r.batch_start_date__c, "
+			+ "Training_Batch__r.batch_end_date__c, " + "Training_Batch__r.batch_trainer__r.name, "
+			+ "rnm__Recruiter__r.name, account.name, " + "Training_Batch__r.Co_Trainer__r.name, "
+			+ "eintern_current_project_completion_pct__c , " + "Training_Batch__r.Skill_Type__c, "
+			+ "Training_Batch__r.Type__c from Contact " + "where id = ")
+	private String specificAssociates;
+
+	/**
+	 * Will change as of version 2.0 Salesforce API in August/September 2017
+	 * timeframe Once user selects a batch to import, use this to load all the
 	 * Trainee details. ResourceId *MUST* be surrounded in single quotes to
 	 * function properly
 	 */
@@ -71,7 +88,7 @@ public class SalesforceRepoImpl implements SalesforceRepo {
 			+ "eintern_current_project_completion_pct__c , " + "Training_Batch__r.Skill_Type__c, "
 			+ "Training_Batch__r.Type__c from Contact " + "where training_batch__c = ")
 	private String batchDetails;
-	
+
 	@Value("select id, name, training_status__c, phone, email, MobilePhone, "
 			+ "Training_Batch__c , Training_Batch__r.name, " + "Training_Batch__r.batch_start_date__c, "
 			+ "Training_Batch__r.batch_end_date__c, " + "Training_Batch__r.batch_trainer__r.name, "
@@ -79,13 +96,12 @@ public class SalesforceRepoImpl implements SalesforceRepo {
 			+ "eintern_current_project_completion_pct__c , " + "Training_Batch__r.Skill_Type__c, "
 			+ "Training_Batch__r.Type__c from Contact " + "where training_status__c = 'Marketing'")
 	private String benchAssociates;
-	
+
 	@Value("select id, name, batch_start_date__c, batch_end_date__c, "
 			+ "batch_trainer__r.name, batch_trainer__r.email, Co_Trainer__r.name, Co_Trainer__r.email, "
-			+ "Skill_Type__c, Location__c, Type__c from training__c "
-			+ "where id= ")
+			+ "Skill_Type__c, Location__c, Type__c from training__c " + "where id= ")
 	private String batch;
-	
+
 	//////////// DAO methods ////////////////
 	@Override
 	public List<Batch> getRelevantBatches(SalesforceUser user) {
@@ -105,19 +121,19 @@ public class SalesforceRepoImpl implements SalesforceRepo {
 
 		return relevantBatchesList;
 	}
-	
+
 	@Override
 	public Batch getBatch(String resourceId, SalesforceUser user) {
-		String query = batch+"'"+resourceId+"'";
+		String query = batch + "'" + resourceId + "'";
 		Batch b = null;
 
 		try {
-			SalesforceBatchResponse response = new ObjectMapper().readValue(
-					getFromSalesforce(query, user).getEntity().getContent(), SalesforceBatchResponse.class);
+			SalesforceBatchResponse response = new ObjectMapper()
+					.readValue(getFromSalesforce(query, user).getEntity().getContent(), SalesforceBatchResponse.class);
 			log.info("Found " + response.getTotalSize() + " batches: " + response);
 
-			if(response.getRecords().length==1)
-				b= transformer.transformBatch(response.getRecords()[0]);
+			if (response.getRecords().length == 1)
+				b = transformer.transformBatch(response.getRecords()[0]);
 			else
 				log.error("Too many batches");
 
@@ -127,18 +143,42 @@ public class SalesforceRepoImpl implements SalesforceRepo {
 
 		return b;
 	}
+
 	@Override
 	public List<Associate> getBatchTrainees(String resourceId, SalesforceUser user) {
 		String query = batchDetails + "'" + resourceId + "'";
 		List<Associate> trainees = new LinkedList<>();
-		
+
 		try {
-			SalesforceTraineeResponse response = new ObjectMapper().readValue(getFromSalesforce(query, user).getEntity().getContent(), SalesforceTraineeResponse.class);
+			SalesforceTraineeResponse response = new ObjectMapper().readValue(
+					getFromSalesforce(query, user).getEntity().getContent(), SalesforceTraineeResponse.class);
 			log.info(response);
-			for(SalesforceTrainee trainee : response.getRecords()){
+			for (SalesforceTrainee trainee : response.getRecords()) {
 				trainees.add(transformer.transformTrainee(trainee, user));
 			}
-			
+
+		} catch (IOException e) {
+			log.error("Cannot get batch details from Salesforce: cause " + e);
+			throw new ServiceNotAvailableException();
+		}
+		return trainees;
+	}
+
+	@Override
+	public List<Associate> getBenchTrainees(SalesforceUser user) {
+		String query = benchAssociates;
+		List<Associate> trainees = new LinkedList<>();
+
+		try {
+			InputStream is = getFromSalesforce(query, user).getEntity().getContent();
+			log.trace(is);
+			SalesforceTraineeResponse response = new ObjectMapper().readValue(is, SalesforceTraineeResponse.class);
+			log.info("Checking for benched trainees.");
+			log.info(response);
+			for (SalesforceTrainee trainee : response.getRecords()) {
+				trainees.add(transformer.transformBenchTrainee(trainee, user));
+			}
+
 		} catch (IOException e) {
 			log.error("Cannot get batch details from Salesforce: cause " + e);
 			throw new ServiceNotAvailableException();
@@ -146,27 +186,36 @@ public class SalesforceRepoImpl implements SalesforceRepo {
 		return trainees;
 	}
 	
+	/**
+	 * Retrieves specific associates. Primarily used to check if people on staging in the database are no longer in the database
+	 * Takes a list of Associates and a Salesforce User for authentication
+	 * Returns a list of those associates fetched from the Salesforce database
+	 */
 	@Override
-	public List<Associate> getBenchTrainees(SalesforceUser user) {
-		String query = benchAssociates;
-		List<Associate> trainees = new LinkedList<>();
-		
+	public List<Associate> getSpecificAssociates(Set<Associate> associates, SalesforceUser user) {
+		List<Associate> updatedAssociatesList = new ArrayList<Associate>();
+
 		try {
-			InputStream is = getFromSalesforce(query,user).getEntity().getContent();
-			log.trace(is);
-			SalesforceTraineeResponse response = new ObjectMapper().readValue(is, SalesforceTraineeResponse.class);
-			log.info("Checking for benched trainees.");
-			log.info(response);
-			for(SalesforceTrainee trainee : response.getRecords()){
-				trainees.add(transformer.transformBenchTrainee(trainee, user));
-			}
+			for(Associate a : associates)
+			{
+				InputStream is = getFromSalesforce(specificAssociates + "'" + a.getSalesforceId() + "'", user).getEntity().getContent();
 			
+				SalesforceTraineeResponse response = new ObjectMapper().readValue(is, SalesforceTraineeResponse.class);
+				log.info("Retrieving requested Associates.");
+				log.info(response);
+				if(response.getRecords().length==1)
+					updatedAssociatesList.add(transformer.transformTrainee(response.getRecords()[0], user));
+			
+			}
+
 		} catch (IOException e) {
-			log.error("Cannot get batch details from Salesforce: cause " + e);
+			log.error("Cannot get specific associates from Salesforce: cause " + e);
 			throw new ServiceNotAvailableException();
+
 		}
-		return trainees;
+		return updatedAssociatesList;
 	}
+	
 	//////////// API Helper Methods //////////////
 
 	/**
@@ -179,11 +228,13 @@ public class SalesforceRepoImpl implements SalesforceRepo {
 		try {
 			String instanceUrl = salesforceInstanceUrl.substring("https://".length());
 			HttpClient httpClient = HttpClientBuilder.create().build();
+
 			String url = new URIBuilder(salesforceInstanceUrl).setScheme("https").setHost(instanceUrl)
 					.setPath(salesforceApiUrl).setParameter("q", soql).build().toString();
 			HttpGet getRequest = new HttpGet(url);
 			getRequest.setHeader("Authorization", "Bearer " + getAccessToken(user));
 			return httpClient.execute(getRequest);
+
 		} catch (IOException | URISyntaxException e) {
 			log.error("Unable to fetch Salesforce data: cause " + e);
 			throw new ServiceNotAvailableException();
@@ -213,10 +264,14 @@ public class SalesforceRepoImpl implements SalesforceRepo {
 	public String getSalesforceResponseString(SalesforceUser user) {
 		try {
 			return new ObjectMapper()
-					.readValue(getFromSalesforce(relevantBatches, user).getEntity().getContent(), JsonNode.class).asText();
+					.readValue(getFromSalesforce(relevantBatches, user).getEntity().getContent(), JsonNode.class)
+					.asText();
 		} catch (IOException e) {
 			log.error("Cannot get Salesforce batches:  " + e);
 			return null;
 		}
 	}
+
+
+
 }
