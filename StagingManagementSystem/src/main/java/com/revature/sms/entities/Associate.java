@@ -155,7 +155,7 @@ public class Associate {
 
 	public void checkAssociateStatus() {
 		
-		if (this.isTrackedOnDate(LocalDateTime.now()) && !this.isTrainingOnDate(LocalDateTime.now())) {
+		if (isTrackedOnDate(LocalDateTime.now())) {
 			AssociatesStatus status = new AssociatesStatus(1, "STAGING");
 			setAssociateStatus(status);
 		}
