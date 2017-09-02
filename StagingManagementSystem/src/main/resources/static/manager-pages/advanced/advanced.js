@@ -1,6 +1,6 @@
 const defaultFilterStatus = {
 	columnName: 'status',
-	searchText: 'staging',
+	searchText: undefined,
 };
 
 function managerAdvancedCtrl($scope, $http, $state) {
@@ -172,7 +172,7 @@ function managerAdvancedCtrl($scope, $http, $state) {
 	$scope.formatPortfolioStatus = formatPortfolioStatus;
 
 	$scope.associatesFilter = (associate) => {
-		const searchText = $scope.filterStatus.searchText;
+		let searchText = $scope.filterStatus.searchText;
 		let filterValue;
 		
 		switch ($scope.filterStatus.columnName) {
@@ -180,6 +180,7 @@ function managerAdvancedCtrl($scope, $http, $state) {
 			filterValue = associate.name;
 			break;
 		case "status":
+			searchText = typeof searchText === 'undefined' ? 'staging' : searchText;
 			filterValue = associate.associateStatus.status;
 			break;
 		case "portfolioStatus":
