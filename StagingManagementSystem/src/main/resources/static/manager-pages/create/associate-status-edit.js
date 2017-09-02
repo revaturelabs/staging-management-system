@@ -26,6 +26,23 @@ export function associateStatusEditController($scope, $http, $state, $stateParam
 		$scope.submitting = true;
 		$scope.submitted = false;
 		$scope.error = false;
+		
+		// Hack! Business logic on the front-end.
+		switch ($scope.associate.associateStatus.associateStatusId) {
+		case 1:
+			$scope.associate.associateStatus.status = 'STAGING';
+			break;
+		case 2:
+			$scope.associate.associateStatus.status = 'PROJECT';
+			break;
+		case 3:
+			$scope.associate.associateStatus.status = 'BENCH';
+			$scope.associate.portfolioStatus = false;
+			break;
+		default:
+			$scope.associate.associateStatus.status = 'TRAINING';
+			break;
+		}
 
 		$http.put('associate/updateAssociateStatus', $scope.associate).then(() => {
 			$scope.submitting = false;
