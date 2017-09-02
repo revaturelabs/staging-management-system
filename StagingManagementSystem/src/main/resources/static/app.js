@@ -135,7 +135,6 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       url: '/job',
       templateUrl: 'manager-pages/create/job.html',
       controller: jobCtrl,
-
     })
     .state('manager.create.project', {
       url: '/project',
@@ -191,27 +190,26 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
     })
     .state('manager.advanced.status', {
       url: '/status',
-      templateUrl: 'manager-pages/advanced/status/status.html',
-      controller: statusController,
-    })
-    .state('manager.advanced.status.edit', {
-      url: '/edit/:id',
-      templateUrl: 'manager-pages/create/associate-status-edit.html',
-      controller: associateStatusEditController,
+      templateUrl: 'manager-pages/advanced/status/status.html'
     })
     .state('manager.advanced.projects', {
       url: '/projects',
       templateUrl: 'manager-pages/advanced/projects/projects.html'
+    })
+    .state('manager.panel',{
+    	url: '/panel',
+    	templateUrl: 'manager-pages/panel/panel.html',
+    	controller: managerPanelCtrl,
     })
     .state('manager.advanced.batches.edit', {
       url: '/edit/:id',
       templateUrl: 'manager-pages/create/batch.html',
       controller: batchCtrl,
     })
-    .state('manager.panel',{
-    	url: '/panel',
-    	templateUrl: 'manager-pages/panel/panel.html',
-    	controller: managerPanelCtrl,
+    .state('manager.advanced.status.edit', {
+      url: '/edit/:id',
+      templateUrl: 'manager-pages/create/associate-status-edit.html',
+      controller: associateStatusEditController,
     })
     .state('manager.advanced.projects.edit', {
       url: '/edit/:id',

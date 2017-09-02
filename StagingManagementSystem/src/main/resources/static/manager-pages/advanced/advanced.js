@@ -138,5 +138,33 @@ function managerAdvancedCtrl($scope, $http, $state) {
     return $scope.selectedBatchTypes.filter((batchType) => batchType.value === batch.batchType.value).length >= 1;
   };
   
+  $scope.isSelectedStatusType = (statusType) => {
+		return $scope.selectedStatusTypes.some((selectedStatusType) => {
+			return selectedStatusType.id === statusType.id;
+		});
+	}
+
+	$scope.toggleSelectedStatusTypes = (selectedStatus) => {
+		let idx = $scope.selectedStatusTypes.indexOf(selectedStatus);
+
+		// Is currently selected
+		if (idx > -1) {
+			$scope.selectedStatusTypes.splice(idx, 1);
+		} else {
+			$scope.selectedStatusTypes.push(selectedStatus);
+		}
+	};
+
+	$scope.associatesFilter = (associate) => {
+		var selectedStatusTypes = $scope.selectedStatusTypes;
+
+		if (selectedStatusTypes.length === 0) {
+			return false;
+		}
+
+		return selectedStatusTypes.some((selectedStatusType) => {
+			return associate.associateStatus.associateStatusId === selectedStatusType.associateStatusId;
+		});
+	}
 }
 export default managerAdvancedCtrl;
