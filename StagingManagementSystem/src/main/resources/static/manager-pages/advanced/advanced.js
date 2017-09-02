@@ -1,3 +1,7 @@
+const defaultFilterStatus = {
+	columnName: 'status',
+	searchText: 'staging',
+};
 
 function managerAdvancedCtrl($scope, $http, $state) {
   window.scope = $scope;
@@ -5,6 +9,8 @@ function managerAdvancedCtrl($scope, $http, $state) {
   $scope.$state = $state;
   
   $scope.userSearch;
+  
+  $scope.filterStatus = defaultFilterStatus; 
   
   $scope.filterList = {
 		 list:
@@ -154,17 +160,36 @@ function managerAdvancedCtrl($scope, $http, $state) {
 			$scope.selectedStatusTypes.push(selectedStatus);
 		}
 	};
+	
+	function formatPortfolioStatus(portfolioStatus) {
+		return portfolioStatus ? 'COMPLETE' : 'INCOMPLETE';
+	}
+	
+	function caseInsensitiveFilter(value, searchText) {		
+		return value.toLowerCase().substr(0, searchText.length) === searchText.toLowerCase();
+	};
+	
+	$scope.formatPortfolioStatus = formatPortfolioStatus;
 
 	$scope.associatesFilter = (associate) => {
-		var selectedStatusTypes = $scope.selectedStatusTypes;
-
-		if (selectedStatusTypes.length === 0) {
-			return false;
+		const searchText = $scope.filterStatus.searchText;
+		let filterValue;
+		
+		switch ($scope.filterStatus.columnName) {
+		case "associate":
+			filterValue = associate.name;
+			break;
+		case "status":
+			filterValue = associate.associateStatus.status;
+			break;
+		case "portfolioStatus":
+			filterValue = formatPortfolioStatus(associate.portfolioStatus);
+			break;
+		default:
+			break;
 		}
-
-		return selectedStatusTypes.some((selectedStatusType) => {
-			return associate.associateStatus.associateStatusId === selectedStatusType.associateStatusId;
-		});
+		
+		return caseInsensitiveFilter(filterValue, searchText);
 	}
 }
 export default managerAdvancedCtrl;
