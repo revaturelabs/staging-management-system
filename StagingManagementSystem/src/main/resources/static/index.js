@@ -243,7 +243,6 @@
 	    url: '/job',
 	    templateUrl: 'manager-pages/create/job.html',
 	    controller: _job.jobCtrl
-
 	  }).state('manager.create.project', {
 	    url: '/project',
 	    templateUrl: 'manager-pages/create/project.html',
@@ -292,23 +291,22 @@
 	    templateUrl: 'manager-pages/advanced/batches/batches.html'
 	  }).state('manager.advanced.status', {
 	    url: '/status',
-	    templateUrl: 'manager-pages/advanced/status/status.html',
-	    controller: _status.statusController
-	  }).state('manager.advanced.status.edit', {
-	    url: '/edit/:id',
-	    templateUrl: 'manager-pages/create/associate-status-edit.html',
-	    controller: _associateStatusEdit.associateStatusEditController
+	    templateUrl: 'manager-pages/advanced/status/status.html'
 	  }).state('manager.advanced.projects', {
 	    url: '/projects',
 	    templateUrl: 'manager-pages/advanced/projects/projects.html'
-	  }).state('manager.advanced.batches.edit', {
-	    url: '/edit/:id',
-	    templateUrl: 'manager-pages/create/batch.html',
-	    controller: _batch.batchCtrl
 	  }).state('manager.panel', {
 	    url: '/panel',
 	    templateUrl: 'manager-pages/panel/panel.html',
 	    controller: _panel2.default
+	  }).state('manager.advanced.batches.edit', {
+	    url: '/edit/:id',
+	    templateUrl: 'manager-pages/create/batch.html',
+	    controller: _batch.batchCtrl
+	  }).state('manager.advanced.status.edit', {
+	    url: '/edit/:id',
+	    templateUrl: 'manager-pages/create/associate-status-edit.html',
+	    controller: _associateStatusEdit.associateStatusEditController
 	  }).state('manager.advanced.projects.edit', {
 	    url: '/edit/:id',
 	    templateUrl: 'manager-pages/create/project.html',
@@ -63369,7 +63367,7 @@
 		$('#statusModal').modal('show');
 
 		$('#statusModal').on('hide.bs.modal', function () {
-			$state.go('manager.advanced.status', {}, { reload: true });
+			$state.go('manager.advanced.status', {}, { reload: $scope.submitted });
 		});
 
 		Promise.all([$http.get('associate/by-identifier/' + $stateParams.id), $http.get('status/allStatusType')]).then(function (_ref) {
@@ -63387,6 +63385,23 @@
 			$scope.submitting = true;
 			$scope.submitted = false;
 			$scope.error = false;
+
+			// Hack! Business logic on the front-end.
+			switch ($scope.associate.associateStatus.associateStatusId) {
+				case 1:
+					$scope.associate.associateStatus.status = 'STAGING';
+					break;
+				case 2:
+					$scope.associate.associateStatus.status = 'PROJECT';
+					break;
+				case 3:
+					$scope.associate.associateStatus.status = 'BENCH';
+					$scope.associate.portfolioStatus = false;
+					break;
+				default:
+					$scope.associate.associateStatus.status = 'TRAINING';
+					break;
+			}
 
 			$http.put('associate/updateAssociateStatus', $scope.associate).then(function () {
 				$scope.submitting = false;
@@ -63862,6 +63877,10 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	var defaultFilterStatus = {
+	  columnName: 'status',
+	  searchText: undefined
+	};
 
 	function managerAdvancedCtrl($scope, $http, $state) {
 	  window.scope = $scope;
@@ -63869,6 +63888,8 @@
 	  $scope.$state = $state;
 
 	  $scope.userSearch;
+
+	  $scope.filterStatus = defaultFilterStatus;
 
 	  $scope.filterList = {
 	    list: [{ id: 2, name: 'Associate' }, { id: 3, name: 'Batch' }, { id: 4, name: 'Trainer' }]
@@ -63986,6 +64007,55 @@
 	    return $scope.selectedBatchTypes.filter(function (batchType) {
 	      return batchType.value === batch.batchType.value;
 	    }).length >= 1;
+	  };
+
+	  $scope.isSelectedStatusType = function (statusType) {
+	    return $scope.selectedStatusTypes.some(function (selectedStatusType) {
+	      return selectedStatusType.id === statusType.id;
+	    });
+	  };
+
+	  $scope.toggleSelectedStatusTypes = function (selectedStatus) {
+	    var idx = $scope.selectedStatusTypes.indexOf(selectedStatus);
+
+	    // Is currently selected
+	    if (idx > -1) {
+	      $scope.selectedStatusTypes.splice(idx, 1);
+	    } else {
+	      $scope.selectedStatusTypes.push(selectedStatus);
+	    }
+	  };
+
+	  function formatPortfolioStatus(portfolioStatus) {
+	    return portfolioStatus ? 'COMPLETE' : 'INCOMPLETE';
+	  }
+
+	  function caseInsensitiveFilter(value, searchText) {
+	    return value.toLowerCase().substr(0, searchText.length) === searchText.toLowerCase();
+	  };
+
+	  $scope.formatPortfolioStatus = formatPortfolioStatus;
+
+	  $scope.associatesFilter = function (associate) {
+	    var searchText = $scope.filterStatus.searchText;
+	    var filterValue = void 0;
+
+	    switch ($scope.filterStatus.columnName) {
+	      case "associate":
+	        filterValue = associate.name;
+	        break;
+	      case "status":
+	        searchText = typeof searchText === 'undefined' ? 'staging' : searchText;
+	        filterValue = associate.associateStatus.status;
+	        break;
+	      case "portfolioStatus":
+	        filterValue = formatPortfolioStatus(associate.portfolioStatus);
+	        break;
+	      default:
+	        break;
+	    }
+
+	    return caseInsensitiveFilter(filterValue, searchText);
 	  };
 	}
 	exports.default = managerAdvancedCtrl;
