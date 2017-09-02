@@ -9,7 +9,7 @@ export function associateStatusEditController($scope, $http, $state, $stateParam
 	$('#statusModal').modal('show');
 	
 	$('#statusModal').on('hide.bs.modal', () => {
-		$state.go('manager.advanced.status', {}, { reload: true });
+		$state.go('manager.advanced.status', {}, { reload: $scope.submitted });
 	});
 	
 	Promise.all([
