@@ -5,12 +5,14 @@ function profileCtrl($scope, $http, userService, $stateParams, $state, $window) 
       $scope.clients = response.data;
     });
   }
+  
+  
   const associateId = $scope.isManager ? $stateParams.id : userService.getUser().id;
 
   if (associateId === undefined) {
     return;
   }
-
+  
   const associateUrl = `/associate/by-identifier/${associateId}`;
   $http({
     method: 'GET',
@@ -52,11 +54,19 @@ function profileCtrl($scope, $http, userService, $stateParams, $state, $window) 
     $('#additionalSkillsModal').modal('show');
   };
   
+  $scope.closeSkillModal = () => {
+	  $('#additionalSkillsModal').modal('hide');
+  };
+  
   $scope.showChangePassword = function(){
 	  $scope.sendingRequest = false;
 	  $scope.changePasswordButton= 'Save';
 	  $('#changePassword').modal('show');
   };
+  
+  $scope.closeChangePassword = () => {
+	  $('#changePassword').modal('hide');
+  }
 
   $scope.openPortfolioUrlModal = () => {
     $scope.sendingRequest = false;
@@ -65,10 +75,66 @@ function profileCtrl($scope, $http, userService, $stateParams, $state, $window) 
     $('#portfolioUrlModal').modal('show');
   };
   
+  $scope.closePortfolioUrlModal = () => {
+	  $('#portfolioUrlModal').modal('hide');
+  };
+  
+  $scope.openAssociateStatusModal = () => {
+	  $scope.loading = true;
+	  $scope.submitting = false;
+	  $scope.submitted = false;
+	  $scope.error = false;
+
+		$('#statusModal').modal('show');
+		
+		$scope.updateAssociateStatus = () => {		
+			$scope.submitting = true;
+			$scope.submitted = false;
+			$scope.error = false;
+			
+			// Hack! Business logic on the front-end.
+			switch ($scope.associate.associateStatus.associateStatusId) {
+			case 1:
+				$scope.associate.associateStatus.status = 'STAGING';
+				break;
+			case 2:
+				$scope.associate.associateStatus.status = 'PROJECT';
+				break;
+			case 3:
+				$scope.associate.associateStatus.status = 'BENCH';
+				$scope.associate.portfolioStatus = false;
+				break;
+			default:
+				$scope.associate.associateStatus.status = 'TRAINING';
+				break;
+			}
+
+			$http.put('associate/updateAssociateStatus', $scope.associate).then(() => {
+				$scope.submitting = false;
+				$scope.submitted = true;
+			}).catch(() => {
+				$scope.submitting = false;			
+				$scope.error = true;
+			});
+		}
+  };
+  
+  $scope.closeAssociateStatusModal = () => {
+	  $('#statusModal').modal('hide');
+  };
+  
+  function formatPortfolioStatus(portfolioStatus) {
+		return portfolioStatus ? 'COMPLETE' : 'INCOMPLETE';
+	};
+	
   $scope.openProjectStatusModal = () => {
 	    $scope.sendingRequest = false;
 	    $('#projectStatusModal').modal('show');
-	  };
+  };
+  
+  $scope.closeProjectStatusModal = () => {
+	  $('#projectStatusModal').modal('hide');
+  };
 
   $scope.toggleMappedModal = () => {
     window.scope = $scope;
@@ -84,6 +150,10 @@ function profileCtrl($scope, $http, userService, $stateParams, $state, $window) 
     }
 
     $('#mappedToClientModal').modal('show');
+  };
+  
+  $scope.closeMappedToClientModal = () => {
+	  $('#mappedToClientModal').modal('hide');
   };
 
   $scope.submitPortfolioUrl = () => {

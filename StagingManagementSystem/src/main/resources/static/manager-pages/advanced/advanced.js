@@ -10,6 +10,8 @@ function managerAdvancedCtrl($scope, $http, $state) {
   
   $scope.userSearch;
   
+  $scope.associateList = {};
+  
   $scope.filterStatus = defaultFilterStatus; 
   
   $scope.filterList = {
@@ -163,7 +165,7 @@ function managerAdvancedCtrl($scope, $http, $state) {
 	
 	function formatPortfolioStatus(portfolioStatus) {
 		return portfolioStatus ? 'COMPLETE' : 'INCOMPLETE';
-	}
+	};
 	
 	function caseInsensitiveFilter(value, searchText) {		
 		return value.toLowerCase().substr(0, searchText.length) === searchText.toLowerCase();

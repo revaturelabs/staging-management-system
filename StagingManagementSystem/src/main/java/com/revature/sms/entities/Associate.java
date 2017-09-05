@@ -352,12 +352,12 @@ public class Associate {
 		return true;
 	}
 
-	@Override
-	public String toString() {
-		return "Associate [id=" + id + ", salesforceId=" + salesforceId + ", credential=" + credential + ", name="
-				+ name + ", portfolioLink=" + portfolioLink + ", latestPanelStatus=" + latestPanelStatus + ", batch="
-				+ batch + ", project=" + project + ", lockedTo=" + lockedTo + ", portfolioStatus=" + portfolioStatus
-				+ ", associateStatus=" + associateStatus + ", skills=" + skills + ", jobs=" + jobs + "]";
-	}
+//	@Override
+//	public String toString() {
+//		return "Associate [id=" + id + ", salesforceId=" + salesforceId + ", credential=" + credential + ", name="
+//				+ name + ", portfolioLink=" + portfolioLink + ", latestPanelStatus=" + latestPanelStatus + ", batch="
+//				+ batch + ", project=" + project + ", lockedTo=" + lockedTo + ", portfolioStatus=" + portfolioStatus
+//				+ ", associateStatus=" + associateStatus + ", skills=" + skills + ", jobs=" + jobs + "]";
+//	}
 	
 }

@@ -27,6 +27,7 @@
 				<th scope="col">Associate</th>
 				<th scope="col">Batch Type</th>
 				<th scope="col">Trainer</th>
+				<th scope="col">Status</th>
 				<th scope="col">Internal Project</th>
 			</tr>
 		</thead>
@@ -42,6 +43,7 @@
 						<div ng-bind="trainer.name"></div>
 					</div>
 				</td>
+				<td ng-bind="associate.associateStatus.status"></td>
 				<td ng-bind="associate.project.projectName"></td>
 
 			</tr>

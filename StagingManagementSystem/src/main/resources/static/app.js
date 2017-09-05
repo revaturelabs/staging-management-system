@@ -12,14 +12,12 @@ import stagingGraphController from './manager-pages/home/staging-graph/staging-g
 import attendanceGraphCtrl from './manager-pages/home/attendance-graph/attendance-graph';
 import employmentGraphCtrl from './manager-pages/home/employment-graph/employment-graph';
 import managerCreateCtrl from './manager-pages/create/create';
-import { associateStatusEditController } from './manager-pages/create/associate-status-edit';
 import { batchCtrl } from './manager-pages/create/batch';
 import { clientCtrl } from './manager-pages/create/client';
 import { userCtrl } from './manager-pages/create/user';
 import { locCtrl } from './manager-pages/create/location';
 import { jobCtrl } from './manager-pages/create/job';
 import { projectCtrl } from './manager-pages/create/project';
-import { statusController } from './manager-pages/advanced/status/status';
 import managerAdvancedCtrl from './manager-pages/advanced/advanced';
 import managerPanelCtrl from './manager-pages/panel/panel';
 import profileCtrl from './associate-pages/profile/profile';
@@ -119,7 +117,6 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       url: '/user',
       templateUrl: 'manager-pages/create/user.html',
       controller: userCtrl,
-
     })
     .state('manager.create.client', {
       url: '/client',
@@ -188,10 +185,6 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       url: '/batches',
       templateUrl: 'manager-pages/advanced/batches/batches.html'
     })
-    .state('manager.advanced.status', {
-      url: '/status',
-      templateUrl: 'manager-pages/advanced/status/status.html'
-    })
     .state('manager.advanced.projects', {
       url: '/projects',
       templateUrl: 'manager-pages/advanced/projects/projects.html'
@@ -205,11 +198,6 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       url: '/edit/:id',
       templateUrl: 'manager-pages/create/batch.html',
       controller: batchCtrl,
-    })
-    .state('manager.advanced.status.edit', {
-      url: '/edit/:id',
-      templateUrl: 'manager-pages/create/associate-status-edit.html',
-      controller: associateStatusEditController,
     })
     .state('manager.advanced.projects.edit', {
       url: '/edit/:id',
