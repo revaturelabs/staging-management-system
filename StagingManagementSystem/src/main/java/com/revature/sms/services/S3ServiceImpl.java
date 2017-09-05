@@ -35,7 +35,6 @@ public class S3ServiceImpl implements S3Service{
             System.out.println("Uploading a new object to S3 from a file\n");
             //File file = new File(uploadFileName);
             //System.out.println("UPLOADED FILE AS STRING: "+uploadedFile+"\n\n");
-            //FileReader file = new FileReader("file://localhost/C:/Users/caarl/Desktop/trialbucket.txt");
             
             ObjectMetadata metadata = new ObjectMetadata();
             s3client.putObject(new PutObjectRequest(
