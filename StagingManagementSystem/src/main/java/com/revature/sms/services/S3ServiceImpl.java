@@ -10,8 +10,10 @@ import org.springframework.web.multipart.MultipartFile;
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.auth.InstanceProfileCredentialsProvider;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 
@@ -24,8 +26,9 @@ public class S3ServiceImpl implements S3Service{
 	@Override
 	public void uploadFile(MultipartFile file) throws IOException {
 		
-		BasicAWSCredentials cred = new BasicAWSCredentials("AKIAJKPTF4KIZRRLDUIA", "s3/UB79GdnrvsXyc34gfy++PDeA7seqU7XzkU/dh");
-		AmazonS3 s3client = new AmazonS3Client(cred/*new ProfileCredentialsProvider()*/);
+		AmazonS3 s3client = AmazonS3ClientBuilder.standard()
+	              .withCredentials(new InstanceProfileCredentialsProvider(false))
+	              .build();
 		
 		
 		try {
