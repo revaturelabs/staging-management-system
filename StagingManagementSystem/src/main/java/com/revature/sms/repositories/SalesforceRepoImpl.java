@@ -196,22 +196,16 @@ public class SalesforceRepoImpl implements SalesforceRepo {
 		List<Associate> updatedAssociatesList = new ArrayList<Associate>();
 
 		try {
-			Iterator<Associate> assoIt = associates.iterator();
-			specificAssociates += assoIt.next().getSalesforceId();
+			for(Associate a : associates)
+			{
+				InputStream is = getFromSalesforce(specificAssociates + "'" + a.getSalesforceId() + "'", user).getEntity().getContent();
 			
-			while (assoIt.hasNext()) {
-				specificAssociates += " OR id=" + assoIt.next().getSalesforceId();
-			}
-
-			InputStream is = getFromSalesforce(specificAssociates, user).getEntity().getContent();
-			log.trace(is);
+				SalesforceTraineeResponse response = new ObjectMapper().readValue(is, SalesforceTraineeResponse.class);
+				log.info("Retrieving requested Associates.");
+				log.info(response);
+				if(response.getRecords().length==1)
+					updatedAssociatesList.add(transformer.transformTrainee(response.getRecords()[0], user));
 			
-			SalesforceTraineeResponse response = new ObjectMapper().readValue(is, SalesforceTraineeResponse.class);
-			log.info("Retrieving requested Associates.");
-			log.info(response);
-			
-			for (SalesforceTrainee trainee : response.getRecords()) {
-				updatedAssociatesList.add(transformer.transformBenchTrainee(trainee, user));
 			}
 
 		} catch (IOException e) {

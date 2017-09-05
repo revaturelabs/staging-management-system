@@ -207,7 +207,7 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
     })
 
     .state('manager.panel',{
-    	url: 'panel',
+    	url: '/panel',
     	templateUrl: 'manager-pages/panel/panel.html',
     	controller: managerPanelCtrl,
     })

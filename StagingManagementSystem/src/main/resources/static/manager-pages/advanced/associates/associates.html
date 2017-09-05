@@ -9,14 +9,14 @@
 						<div id="searchBars">
 							<input type="text" ng-model="userSearch.name" class="text-center"
 								placeholder="Search"
-								ng-hide="filterType.type.name != 'associate'"> 
+								ng-hide="filterType.type.name != 'Associate'"> 
 							<input type="text" ng-model="userSearch.batch.batchType.value"
 								class="text-center" placeholder="Search"
-								ng-hide="filterType.type.name != 'batch'"> 
+								ng-hide="filterType.type.name != 'Batch'"> 
 							<input
 								type="text" ng-model="userSearch.batch.trainers.name"
 								class="text-center" placeholder="Search"
-								ng-hide="filterType.type.name != 'trainer'"> 
+								ng-hide="filterType.type.name != 'Trainer'"> 
 							<select
 								ng-model="filterType.type"
 								ng-options="item.name for item in filterList.list">

@@ -2,9 +2,9 @@
 
     <div class="home-view-1">
       <div class="row manager-view-selecter-container">
-        <button type="button" class="manager-view-selecter" ng-click="view1 = 'staging'" ng-class="{managerHomeSelected: view1 === 'staging'}"> Staging Graph </button>
-        <button type="button" class="manager-view-selecter" ng-click="view1 = 'attendance'" ng-class="{managerHomeSelected: view1 === 'attendance'}"> Attendance  </button>
-        <button type="button" class="manager-view-selecter" ng-click="view1 = 'employment'" ng-class="{managerHomeSelected: view1 === 'employment'}"> Employment Graph  </button>
+        <button type="button" class="manager-view-selecter btn btn-primary" ng-click="view1 = 'staging'" ng-class="{managerHomeSelected: view1 === 'staging'}"> Staging Graph </button>
+        <button type="button" class="manager-view-selecter btn btn-primary" ng-click="view1 = 'attendance'" ng-class="{managerHomeSelected: view1 === 'attendance'}"> Attendance  </button>
+        <button type="button" class="manager-view-selecter btn btn-primary" ng-click="view1 = 'employment'" ng-class="{managerHomeSelected: view1 === 'employment'}"> Employment Graph  </button>
       </div>
         <div ui-view="staging-graph" ng-show="view1 === 'staging'"></div>
         <div ui-view="attendance-graph" ng-show="view1 === 'attendance'"></div>
@@ -13,16 +13,16 @@
 
     <div class="home-view-2">
         <div class="row manager-view-selecter-container">
-          <button type="button" class="manager-view-selecter" ng-click="view2 = 'interviews'" ng-class="{managerHomeSelected: view2 === 'interviews'}" ng-style="interviewsSelecter">Interviews</button>
-          <button type="button" class="manager-view-selecter" ng-click="view2 = 'checkins'" ng-class="{managerHomeSelected: view2 === 'checkins'}">Checkins</button>
-          <!-- manager certifications button -->
+          <button type="button" class="manager-view-selecter btn btn-primary" ng-click="view2 = 'interviews'" ng-class="{managerHomeSelected: view2 === 'interviews'}" ng-style="interviewsSelecter">Interviews</button>
+          <button type="button" class="manager-view-selecter btn btn-primary" ng-click="view2 = 'checkins'" ng-class="{managerHomeSelected: view2 === 'checkins'}">Checkins</button>
+            <!-- manager certifications button -->
           <button type="button" class="manager-view-selecter" ng-click="view2 = 'certifications'" ng-class="{managerHomeSelected: view2 === 'certifications'}">Certifications</button>
           
+          
         </div>
+        <br>
         <div ui-view="interviews" ng-show="view2 === 'interviews'"></div>
         <div ui-view="checkins" ng-show="view2 === 'checkins'"></div>
-        <!-- manager certifications view -->
-        <div ui-view="certifications" ng-show="view2 === 'certifications'"></div>
     </div>
 
 

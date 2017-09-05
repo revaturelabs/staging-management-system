@@ -136,7 +136,7 @@ public class SalesforceTransformerToSMS implements SalesforceTransformer {
 
 	private AssociatesStatus statusHelper(Associate associate, String trainingStatus) {
 		// Retrieve new status from database
-		String status;
+		String status = "";
 		switch (trainingStatus) {
 		case "Signed":
 			status = "TRAINING";
@@ -163,7 +163,7 @@ public class SalesforceTransformerToSMS implements SalesforceTransformer {
 
 		// Check if there was an old status
 		AssociatesStatus currentStatus = associate.getAssociateStatus();
-		if (currentStatus != null) {
+		if (currentStatus != null && currentStatus.getStatus() !=null) {
 			// We have to update a few things
 			if (status.equals("STAGING") && currentStatus.getStatus().equals("PROJECT")) {
 				// status should actually be BENCH
