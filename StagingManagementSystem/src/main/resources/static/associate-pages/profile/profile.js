@@ -14,6 +14,7 @@ function profileCtrl($scope, $http, userService, $stateParams, $state, $window) 
   }
   
   const associateUrl = `/associate/by-identifier/${associateId}`;
+  
   $http({
     method: 'GET',
     url: associateUrl,
@@ -27,7 +28,7 @@ function profileCtrl($scope, $http, userService, $stateParams, $state, $window) 
         
       });
   });
-
+  
   $scope.portfolioUrlInput = '';
 
   $scope.addSkill = () => {
