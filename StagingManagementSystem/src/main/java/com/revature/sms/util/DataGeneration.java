@@ -319,8 +319,6 @@ public class DataGeneration {
 		 */
 
 		Associate getAssocaite() {
-			this.checkAssociateStatus();
-			this.checkPortfolioStatus();
 			return new Associate(getId(), "", getCredential(), getName(), getPortfolioLink(), getLatestPanelStatus(),getBatch(), getProject(),
 					getLockedTo(), getPortfolioStatus(), getAssociateStatus(), getSkills(), getJobs(),getCertifications());
 		}

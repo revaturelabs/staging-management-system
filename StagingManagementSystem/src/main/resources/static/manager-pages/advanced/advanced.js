@@ -1,10 +1,7 @@
-
 function managerAdvancedCtrl($scope, $http, $state) {
   window.scope = $scope;
   
   $scope.$state = $state;
-  
-  $scope.userSearch;
   
   $scope.filterList = {
 		 list:
@@ -83,13 +80,6 @@ function managerAdvancedCtrl($scope, $http, $state) {
     }
     return false;
   };
-
-  $scope.isStatus = () =>{
-    if($state.is('manager.advanced.status')){
-      return true;
-    }
-    return false;
-  };
   
   // button for internal projects
   $scope.isProjects = () => {
@@ -138,5 +128,27 @@ function managerAdvancedCtrl($scope, $http, $state) {
     return $scope.selectedBatchTypes.filter((batchType) => batchType.value === batch.batchType.value).length >= 1;
   };
   
+  $scope.isSelectedStatusType = (statusType) => {
+		return $scope.selectedStatusTypes.some((selectedStatusType) => {
+			return selectedStatusType.id === statusType.id;
+		});
+	}
+
+	$scope.toggleSelectedStatusTypes = (selectedStatus) => {
+		let idx = $scope.selectedStatusTypes.indexOf(selectedStatus);
+
+		// Is currently selected
+		if (idx > -1) {
+			$scope.selectedStatusTypes.splice(idx, 1);
+		} else {
+			$scope.selectedStatusTypes.push(selectedStatus);
+		}
+	};
+	
+	$scope.closeAssociateModal = () => {
+		  $('#associateModal').modal('hide');
+		  location.reload();
+	  };
+	
 }
 export default managerAdvancedCtrl;
