@@ -63740,21 +63740,10 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var defaultFilterStatus = {
-	  columnName: 'status',
-	  searchText: undefined
-	};
-
 	function managerAdvancedCtrl($scope, $http, $state) {
 	  window.scope = $scope;
 
 	  $scope.$state = $state;
-
-	  $scope.userSearch;
-
-	  $scope.associateList = {};
-
-	  $scope.filterStatus = defaultFilterStatus;
 
 	  $scope.filterList = {
 	    list: [{ id: 2, name: 'Associate' }, { id: 3, name: 'Batch' }, { id: 4, name: 'Trainer' }]
@@ -63810,13 +63799,6 @@
 
 	  $scope.isBatches = function () {
 	    if ($state.is('manager.advanced.batches')) {
-	      return true;
-	    }
-	    return false;
-	  };
-
-	  $scope.isStatus = function () {
-	    if ($state.is('manager.advanced.status')) {
 	      return true;
 	    }
 	    return false;
@@ -63891,36 +63873,9 @@
 	    }
 	  };
 
-	  function formatPortfolioStatus(portfolioStatus) {
-	    return portfolioStatus ? 'COMPLETE' : 'INCOMPLETE';
-	  };
-
-	  function caseInsensitiveFilter(value, searchText) {
-	    return value.toLowerCase().substr(0, searchText.length) === searchText.toLowerCase();
-	  };
-
-	  $scope.formatPortfolioStatus = formatPortfolioStatus;
-
-	  $scope.associatesFilter = function (associate) {
-	    var searchText = $scope.filterStatus.searchText;
-	    var filterValue = void 0;
-
-	    switch ($scope.filterStatus.columnName) {
-	      case "associate":
-	        filterValue = associate.name;
-	        break;
-	      case "status":
-	        searchText = typeof searchText === 'undefined' ? 'staging' : searchText;
-	        filterValue = associate.associateStatus.status;
-	        break;
-	      case "portfolioStatus":
-	        filterValue = formatPortfolioStatus(associate.portfolioStatus);
-	        break;
-	      default:
-	        break;
-	    }
-
-	    return caseInsensitiveFilter(filterValue, searchText);
+	  $scope.closeAssociateModal = function () {
+	    $('#associateModal').modal('hide');
+	    location.reload();
 	  };
 	}
 	exports.default = managerAdvancedCtrl;
@@ -64109,6 +64064,7 @@
 	  }
 
 	  var associateUrl = '/associate/by-identifier/' + associateId;
+
 	  $http({
 	    method: 'GET',
 	    url: associateUrl
@@ -64219,7 +64175,33 @@
 	    $('#statusModal').modal('hide');
 	  };
 
-	  function formatPortfolioStatus(portfolioStatus) {
+	  $scope.openPortfolioStatusModal = function () {
+	    $scope.loading = true;
+	    $scope.submitting = false;
+	    $scope.submitted = false;
+	    $scope.error = false;
+
+	    $('#portfolioStatusModal').modal('show');
+
+	    $scope.updatePortfolioStatus = function () {
+	      $scope.submitting = true;
+	      $scope.submitted = false;
+	      $scope.error = false;
+	      $http.put('associate/updateAssociateStatus', $scope.associate).then(function () {
+	        $scope.submitting = false;
+	        $scope.submitted = true;
+	      }).catch(function () {
+	        $scope.submitting = false;
+	        $scope.error = true;
+	      });
+	    };
+	  };
+
+	  $scope.closePortfolioStatusModal = function () {
+	    $('#portfolioStatusModal').modal('hide');
+	  };
+
+	  $scope.formatPortfolioStatus = function (portfolioStatus) {
 	    return portfolioStatus ? 'COMPLETE' : 'INCOMPLETE';
 	  };
 

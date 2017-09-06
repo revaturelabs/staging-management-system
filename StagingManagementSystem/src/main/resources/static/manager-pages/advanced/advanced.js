@@ -80,13 +80,6 @@ function managerAdvancedCtrl($scope, $http, $state) {
     }
     return false;
   };
-
-  $scope.isStatus = () =>{
-    if($state.is('manager.advanced.status')){
-      return true;
-    }
-    return false;
-  };
   
   // button for internal projects
   $scope.isProjects = () => {
@@ -152,8 +145,10 @@ function managerAdvancedCtrl($scope, $http, $state) {
 		}
 	};
 	
-	$scope.formatPortfolioStatus = (portfolioStatus) => {
-		return portfolioStatus ? 'COMPLETE' : 'INCOMPLETE';
-	}
+	$scope.closeAssociateModal = () => {
+		  $('#associateModal').modal('hide');
+		  location.reload();
+	  };
+	
 }
 export default managerAdvancedCtrl;

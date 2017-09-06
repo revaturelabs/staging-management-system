@@ -113,6 +113,7 @@ function profileCtrl($scope, $http, userService, $stateParams, $state, $window) 
 			$http.put('associate/updateAssociateStatus', $scope.associate).then(() => {
 				$scope.submitting = false;
 				$scope.submitted = true;
+				
 			}).catch(() => {
 				$scope.submitting = false;			
 				$scope.error = true;
@@ -136,7 +137,6 @@ function profileCtrl($scope, $http, userService, $stateParams, $state, $window) 
 			$scope.submitting = true;
 			$scope.submitted = false;
 			$scope.error = false;
-	  
 		    $http.put('associate/updateAssociateStatus', $scope.associate).then(() => {
 				$scope.submitting = false;
 				$scope.submitted = true;
@@ -151,9 +151,9 @@ function profileCtrl($scope, $http, userService, $stateParams, $state, $window) 
 	  $('#portfolioStatusModal').modal('hide');
   }
   
-  function formatPortfolioStatus(portfolioStatus) {
+  $scope.formatPortfolioStatus = (portfolioStatus) => {
 		return portfolioStatus ? 'COMPLETE' : 'INCOMPLETE';
-	};
+  };
 	
   $scope.openProjectStatusModal = () => {
 	    $scope.sendingRequest = false;
