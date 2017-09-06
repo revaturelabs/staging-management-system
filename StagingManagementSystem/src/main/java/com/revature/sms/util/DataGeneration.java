@@ -280,7 +280,7 @@ public class DataGeneration {
 
 		AssociateP(Associate a) {
 			super(a.getId(),"", a.getCredential(), a.getName(), a.getPortfolioLink(), a.getLatestPanelStatus(), a.getBatch(), a.getProject(),
-					a.getLockedTo(), a.getPortfolioStatus(), a.getAssociateStatus(), a.getSkills(), a.getJobs());
+					a.getLockedTo(), a.getPortfolioStatus(), a.getAssociateStatus(), a.getSkills(), a.getJobs(),a.getCertifications());
 
 			int qualityOfAssociate = rand.nextInt(100);
 
@@ -322,7 +322,7 @@ public class DataGeneration {
 			this.checkAssociateStatus();
 			this.checkPortfolioStatus();
 			return new Associate(getId(), "", getCredential(), getName(), getPortfolioLink(), getLatestPanelStatus(),getBatch(), getProject(),
-					getLockedTo(), getPortfolioStatus(), getAssociateStatus(), getSkills(), getJobs());
+					getLockedTo(), getPortfolioStatus(), getAssociateStatus(), getSkills(), getJobs(),getCertifications());
 		}
 		
 		 //* Randomly returns true if an associate is determined to be health.
@@ -560,5 +560,6 @@ public class DataGeneration {
 		}
 		log.warn("Convergence did not yeald result, This should never happen.");
 		return (tval % (start - end)) + start;
-	}
+	
+}
 }

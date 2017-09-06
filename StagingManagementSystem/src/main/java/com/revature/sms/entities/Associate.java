@@ -20,6 +20,8 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 @Entity
 @Table(name = "ASSOCIATES")
@@ -74,17 +76,22 @@ public class Associate {
 	@OneToMany(mappedBy = "associate")
 	private Set<Job> jobs;
 	
-
+	//@OneToMany(mappedBy="associate")
+	@OneToMany(mappedBy="associate",fetch = FetchType.LAZY)
+	  @JsonProperty(access = Access.WRITE_ONLY)
+	  private Set<Certifications> certifications;
+	
 	public Associate() {
 		super();
 		this.skills = new HashSet<>();
 		this.jobs = new HashSet<>();
+		this.certifications = new HashSet<>();
 		this.associateStatus = new AssociatesStatus();
 	}
 
 	public Associate(long id, String salesforceId, Credential credential, String name, String portfolioLink, 
 			String latestPanelStatus, Batch batch, Project project, Client lockedTo, boolean portfolioStatus,
-			AssociatesStatus associateStatus, Set<Skill> skills, Set<Job> jobs) {
+			AssociatesStatus associateStatus, Set<Skill> skills, Set<Job> jobs, Set<Certifications> certifications) {
 		super();
 		this.id = id;
 		this.salesforceId = salesforceId;
@@ -99,6 +106,7 @@ public class Associate {
 		this.associateStatus = associateStatus;
 		this.skills = skills;
 		this.jobs = jobs;	
+		this.certifications=certifications;
 	}
 
 	/**
@@ -285,6 +293,18 @@ public class Associate {
 	public void setJobs(Set<Job> jobs) {
 		this.jobs = jobs;
 	}
+	
+
+	public Set<Certifications> getCertifications() {
+		return certifications;
+	}
+
+	public void setCertifications(Set<Certifications> certifications) {
+		this.certifications = certifications;
+	}
+
+	
+
 
 	@Override
 	public boolean equals(Object obj) {
@@ -305,6 +325,11 @@ public class Associate {
 				return false;
 		} else if (!batch.equals(other.batch))
 			return false;
+		if (certifications == null) {
+			if (other.certifications != null)
+				return false;
+		} else if (!certifications.equals(other.certifications))
+			return false;
 		if (credential == null) {
 			if (other.credential != null)
 				return false;
@@ -316,6 +341,11 @@ public class Associate {
 			if (other.jobs != null)
 				return false;
 		} else if (!jobs.equals(other.jobs))
+			return false;
+		if (latestPanelStatus == null) {
+			if (other.latestPanelStatus != null)
+				return false;
+		} else if (!latestPanelStatus.equals(other.latestPanelStatus))
 			return false;
 		if (lockedTo == null) {
 			if (other.lockedTo != null)
@@ -357,7 +387,10 @@ public class Associate {
 		return "Associate [id=" + id + ", salesforceId=" + salesforceId + ", credential=" + credential + ", name="
 				+ name + ", portfolioLink=" + portfolioLink + ", latestPanelStatus=" + latestPanelStatus + ", batch="
 				+ batch + ", project=" + project + ", lockedTo=" + lockedTo + ", portfolioStatus=" + portfolioStatus
-				+ ", associateStatus=" + associateStatus + ", skills=" + skills + ", jobs=" + jobs + "]";
+				+ ", associateStatus=" + associateStatus + ", skills=" + skills + ", jobs=" + jobs + ", certifications="
+				+ certifications + "]";
 	}
+
+
 	
 }
