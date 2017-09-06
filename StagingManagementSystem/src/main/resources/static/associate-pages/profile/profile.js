@@ -123,6 +123,33 @@ function profileCtrl($scope, $http, userService, $stateParams, $state, $window) 
 	  $('#statusModal').modal('hide');
   };
   
+  $scope.openPortfolioStatusModal = () => {
+	  $scope.loading = true;
+	  $scope.submitting = false;
+	  $scope.submitted = false;
+	  $scope.error = false;
+	  
+	  $('#portfolioStatusModal').modal('show');
+	  
+	  $scope.updatePortfolioStatus = () => {		
+			$scope.submitting = true;
+			$scope.submitted = false;
+			$scope.error = false;
+	  
+		    $http.put('associate/updateAssociateStatus', $scope.associate).then(() => {
+				$scope.submitting = false;
+				$scope.submitted = true;
+			}).catch(() => {
+				$scope.submitting = false;			
+				$scope.error = true;
+			});
+	  }
+  };
+  
+  $scope.closePortfolioStatusModal = () => {
+	  $('#portfolioStatusModal').modal('hide');
+  }
+  
   function formatPortfolioStatus(portfolioStatus) {
 		return portfolioStatus ? 'COMPLETE' : 'INCOMPLETE';
 	};

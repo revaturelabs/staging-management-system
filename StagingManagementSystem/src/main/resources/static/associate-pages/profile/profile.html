@@ -32,27 +32,37 @@
         </div>
         <div class="row">
           <div class="col-md-6 col-sm-6 col-xs-6">
-            <dt>
-              Profile URL
-              <span style="cursor: pointer;" ng-click="openPortfolioUrlModal()">
-                <span class="glyphicon glyphicon-edit"></span>
-              </span>
-            </dt>
-            <dd>
-              <span>
-                <a ng-click="openPortfolioLink()" href="">Profile Link</a>
-              </span>
-            </dd>
-          </div>
-          <div class="col-md-6 col-sm-6 col-xs-6">
             <dt>	
-            Status/Portfolio-Status
-            <span ng-if="isManager" style="cursor: pointer;" ng-click="openAssociateStatusModal()">
-            <span ng-if="isManager" class="glyphicon glyphicon-edit"></span>
-            </span>
+            	Status
+	            <span ng-if="isManager" style="cursor: pointer;" ng-click="openAssociateStatusModal()">
+	            	<span ng-if="isManager" class="glyphicon glyphicon-edit"></span>
+	            </span>
             </dt>
             <dd ng-bind-template="{{associate.associateStatus.status}}"></dd>
-            <dd ng-bind="formatPortfolioStatus(associate.portfolioStatus)"></dd>
+          </div>
+          <div class="col-md-6 col-sm-6 col-xs-6">
+          	<dt>
+          		Portfolio-Status
+          		<span ng-if="isManager" style="cursor: pointer;" ng-click="openPortfolioStatusModal()">
+          			<span ng-if="isManager" class="glyphicon glyphicon-edit"></span>
+          		</span>
+          		<dd ng-bind="formatPortfolioStatus(associate.portfolioStatus)"></dd>
+          	</dt>
+          </div>
+        </div>
+        <div class="row">
+        	<div class="col-md-12 col-sm-12 col-xs-12">
+	            <dt>
+	              Profile URL
+	              <span style="cursor: pointer;" ng-click="openPortfolioUrlModal()">
+	                <span class="glyphicon glyphicon-edit"></span>
+	              </span>
+	            </dt>
+	            <dd>
+	              <span>
+	                <a ng-click="openPortfolioLink()" href="">Profile Link</a>
+	              </span>
+	            </dd>
           </div>
         </div>
         <div class="row">
@@ -202,14 +212,14 @@
 
 <!-- ASSOCIATE STATUS MODAL openAssociateStatusModal() -->
 
-<div id="statusModal" class="modal fade" role="dialog">
-    <div class="modal-dialog container" id="main-profile" role="document">    
-        <div class="modal-content panel panel-primary" id="profile-panel">
+<div class="modal fade" id="statusModal" role="dialog">
+    <div class="modal-dialog" role="document">    
+        <div class="modal-content">
             <form ng-submit="updateAssociateStatus()">
-                <div class="modal-header panel-heading">
-                    <h3 class="modal-title">Update Associate Status</h3>
+                <div class="modal-header">
+                    <h4 class="modal-title">Update Associate Status</h4>
                 </div>
-                <div class="modal-body panel-body">
+                <div class="modal-body">
                     <div ng-if="submitted" class="alert alert-success" role="alert">
                         <strong>Great!</strong> Associate status for {{associate.name}} was successfully updated.
                     </div>
@@ -218,19 +228,45 @@
                     </div>
                     <div>
                         <label for="associateStatus">Associate Status:</label>
-                        <br />
                         <select id="associateStatus" name="associateStatus" ng-model="associate.associateStatus.associateStatusId">
                             <option ng-repeat="statusType in statusTypes" ng-value="statusType.associateStatusId">{{statusType.status}}</option>
                         </select>
-                    </div>
-                    <div>
-                        <input type="checkbox" name="portfolioStatus" id="portfolioStatus" ng-model="associate.portfolioStatus" ng-checked={{associate.portfolioStatus}} />
-                        <label for="portfolioStatus">Portfolio Complete:</label>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary" ng-disabled="submitting">Update</button>
                     <button type="button" class="btn btn-default" ng-disabled="submitting" ng-click="closeAssociateStatusModal()">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- PORTFOLIO STATUS MODAL -->
+
+<div class="modal fade" id="portfolioStatusModal" role="dialog">
+    <div class="modal-dialog" role="document">    
+        <div class="modal-content">
+            <form ng-submit="updatePortfolioStatus()">
+                <div class="modal-header">
+                    <h4 class="modal-title">Update Associate Portfolio-Status</h4>
+                </div>
+                <div class="modal-body">
+                    <div ng-if="submitted" class="alert alert-success" role="alert">
+                        <strong>Great!</strong> Associate portfolio status for {{associate.name}} was successfully updated.
+                    </div>
+                    <div ng-if="error" class="alert alert-danger" role="alert">
+                        <strong>Oh snap!</strong> An error occured while updating associate portfolio status. Please try again.
+                    </div>
+                    <div>
+                        <label for="portfolioStatus">Portfolio Status:</label>
+                        <input type="radio" name="portfolioStatusTrue" ng-model="associate.portfolioStatus" ng-value="true"/> COMPLETE
+						<input type="radio" name="portfolioStatusFalse" ng-model="associate.portfolioStatus" ng-value="false"/>  INCOMPLETE
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" ng-disabled="submitting">Update</button>
+                    <button type="button" class="btn btn-default" ng-disabled="submitting" ng-click="closePortfolioStatusModal()">Close</button>
                 </div>
             </form>
         </div>
