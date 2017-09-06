@@ -25,10 +25,20 @@ public class S3ServiceImpl implements S3Service{
 	
 	@Override
 	public void uploadFile(MultipartFile file) throws IOException {
-		
-		AmazonS3 s3client = AmazonS3ClientBuilder.standard()
+		/*
+		 * this is for EC2 but need to change bucket name
+		 */
+		/*AmazonS3 s3client = AmazonS3ClientBuilder.standard()
 	              .withCredentials(new InstanceProfileCredentialsProvider(false))
-	              .build();
+	              .build();*/
+		/*
+		 * code end
+		 */
+		
+		//this is for credentials
+		BasicAWSCredentials cred = new BasicAWSCredentials("AKIAJKPTF4KIZRRLDUIA", "s3/UB79GdnrvsXyc34gfy++PDeA7seqU7XzkU/dh");
+		AmazonS3 s3client = new AmazonS3Client(cred/*new ProfileCredentialsProvider()*/);
+		//credentials end
 		
 		
 		try {
