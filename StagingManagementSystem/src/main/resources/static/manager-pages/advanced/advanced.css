@@ -4,3 +4,12 @@
   overflow: hidden;
   white-space: nowrap;
 }
+.manager-advanced-view-controller {
+	
+	display:flex;
+	justify-content:center;
+}
+
+thead {
+	color: white;
+}

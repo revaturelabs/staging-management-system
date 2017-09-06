@@ -10,3 +10,20 @@
 #panel-margin{
 	margin-bottom: 10px;
 }
+.comment-ellipsis {
+    max-width: 120px;
+    min-width: 120px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.center-title{
+	text-align: center;
+}
+#panel-associate{
+	color:black;
+}
+#panel-associate > input{
+	color:black;
+}
+

@@ -42,7 +42,7 @@ CREATE SEQUENCE MANAGER_ID_SEQ;
 
 CREATE TABLE BATCH_TYPES (
   BATCH_TYPE_ID NUMBER PRIMARY KEY,
-  BATCH_TYPE_VALUE VARCHAR2(64)
+  BATCH_TYPE_VALUE VARCHAR2(64) UNIQUE
 );
 CREATE SEQUENCE BATCH_TYPE_ID_SEQ;
 
@@ -231,6 +231,46 @@ CREATE TABLE PANEL (
     CONSTRAINT FK_ASSOCIATE_ID FOREIGN KEY (ASSOCIATE_ID) REFERENCES ASSOCIATES(ASSOCIATE_ID)
 );
 CREATE SEQUENCE PANEL_ID_SEQ;
+
+CREATE TABLE CERTIFICATIONS(
+ Cert_id number primary key,
+ Cert_type  varchar2(256),
+  Cert_status varchar2(256),
+  Cert_filename varchar2(256),
+  Cert_testdate timestamp(6),
+  Cert_comments varchar2(256),
+
+ ASSOCIATE_ID  NUMBER,
+ 
+     CONSTRAINT FK_CERTIFICATIONSAssociate FOREIGN KEY (ASSOCIATE_ID) REFERENCES ASSOCIATES(ASSOCIATE_ID)
+);
+CREATE SEQUENCE CERTIFICATIONS_ID_SEQ;
+create table Certification_Type(
+ type_of_cert varchar2(256),
+ Cert_id  number,
+ 
+     CONSTRAINT FK_CERTIFICATIONSTYPE FOREIGN KEY (Cert_id) REFERENCES Certifications(Cert_id)
+ );
+ 
+/*
+we need to insert some values in the database for certifications type so associate can select the certifications
+
+**/
+insert into CERTIFICATION_TYPE(type_of_cert, Cert_id)
+VALUES('OCA', '');
+insert into CERTIFICATION_TYPE(type_of_cert, Cert_id)
+VALUES('C++', '');
+insert into CERTIFICATION_TYPE(type_of_cert, Cert_id)
+VALUES('JAVA', '');
+insert into CERTIFICATION_TYPE(type_of_cert, Cert_id)
+VALUES('ASP.NET', '');
+insert into CERTIFICATION_TYPE(type_of_cert, Cert_id)
+VALUES('ORACLE', '');
+insert into CERTIFICATION_TYPE(type_of_cert, Cert_id)
+VALUES('PHP', '');
+-------end of the values----------------
+
+
 
 CREATE OR REPLACE VIEW ASSOCIATE_STATE_INFO AS
     select 

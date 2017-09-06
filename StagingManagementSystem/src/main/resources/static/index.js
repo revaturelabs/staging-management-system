@@ -94,49 +94,53 @@
 
 	var _create2 = _interopRequireDefault(_create);
 
-	var _associateStatusEdit = __webpack_require__(134);
+	var _batch = __webpack_require__(134);
 
-	var _batch = __webpack_require__(135);
+	var _client = __webpack_require__(135);
 
-	var _client = __webpack_require__(136);
+	var _user = __webpack_require__(136);
 
-	var _user = __webpack_require__(137);
+	var _location = __webpack_require__(137);
 
-	var _location = __webpack_require__(138);
+	var _job = __webpack_require__(138);
 
-	var _job = __webpack_require__(139);
+	var _project = __webpack_require__(139);
 
-	var _project = __webpack_require__(140);
-
-	var _status = __webpack_require__(141);
-
-	var _advanced = __webpack_require__(142);
+	var _advanced = __webpack_require__(140);
 
 	var _advanced2 = _interopRequireDefault(_advanced);
 
-	var _panel = __webpack_require__(143);
+	var _panel = __webpack_require__(141);
 
 	var _panel2 = _interopRequireDefault(_panel);
 
-	var _profile = __webpack_require__(144);
+	var _profile = __webpack_require__(142);
 
 	var _profile2 = _interopRequireDefault(_profile);
 
-	var _interview = __webpack_require__(145);
+	var _interview = __webpack_require__(143);
 
 	var _interview2 = _interopRequireDefault(_interview);
 
-	var _associatePanel = __webpack_require__(146);
+	var _associatePanel = __webpack_require__(144);
 
 	var _associatePanel2 = _interopRequireDefault(_associatePanel);
 
-	var _associate = __webpack_require__(147);
+	var _associate = __webpack_require__(145);
 
 	var _associate2 = _interopRequireDefault(_associate);
 
-	var _login = __webpack_require__(148);
+	var _login = __webpack_require__(146);
 
 	var _login2 = _interopRequireDefault(_login);
+
+	var _certifications = __webpack_require__(147);
+
+	var _certifications2 = _interopRequireDefault(_certifications);
+
+	var _certifications3 = __webpack_require__(148);
+
+	var _certifications4 = _interopRequireDefault(_certifications3);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -274,9 +278,14 @@
 	      'checkins@manager.home': {
 	        templateUrl: 'manager-pages/home/checkin/checkin.html',
 	        controller: _checkin2.default
+	      },
+	      //certifications view
+	      'certifications@manager.home': {
+	        templateUrl: 'manager-pages/home/certifications/certifications.html',
+	        controller: _certifications4.default
 	      }
 	    }
-	  }).state('manager.associateView', {
+	  }).state('manager.advanced.allassociates.associateView', {
 	    url: '/associate/:id',
 	    templateUrl: 'associate-pages/profile/profile.html',
 	    controller: _profile2.default
@@ -290,14 +299,6 @@
 	  }).state('manager.advanced.batches', {
 	    url: '/batches',
 	    templateUrl: 'manager-pages/advanced/batches/batches.html'
-	  }).state('manager.advanced.status', {
-	    url: '/status',
-	    templateUrl: 'manager-pages/advanced/status/status.html',
-	    controller: _status.statusController
-	  }).state('manager.advanced.status.edit', {
-	    url: '/edit/:id',
-	    templateUrl: 'manager-pages/create/associate-status-edit.html',
-	    controller: _associateStatusEdit.associateStatusEditController
 	  }).state('manager.advanced.projects', {
 	    url: '/projects',
 	    templateUrl: 'manager-pages/advanced/projects/projects.html'
@@ -306,13 +307,14 @@
 	    templateUrl: 'manager-pages/create/batch.html',
 	    controller: _batch.batchCtrl
 	  }).state('manager.panel', {
-	    url: 'panel',
+	    url: '/panel',
 	    templateUrl: 'manager-pages/panel/panel.html',
 	    controller: _panel2.default
 	  }).state('manager.advanced.projects.edit', {
 	    url: '/edit/:id',
 	    templateUrl: 'manager-pages/create/project.html',
 	    controller: _project.projectCtrl
+
 	  }).state('associate', {
 	    url: '/associate',
 	    templateUrl: 'associate-pages/associate.html',
@@ -333,6 +335,11 @@
 	    url: '/profile',
 	    templateUrl: 'associate-pages/profile/profile.html',
 	    controller: _profile2.default
+
+	  }).state('associate.Certifications', {
+	    url: '/certifications',
+	    templateUrl: 'associate-pages/Certifications/certifications.html',
+	    controller: _certifications2.default
 	  });
 	});
 
@@ -349,7 +356,7 @@
 /***/ (function(module, exports) {
 
 	/**
-	 * @license AngularJS v1.6.5
+	 * @license AngularJS v1.6.6
 	 * (c) 2010-2017 Google, Inc. http://angularjs.org
 	 * License: MIT
 	 */
@@ -456,7 +463,7 @@
 	      return match;
 	    });
 
-	    message += '\nhttp://errors.angularjs.org/1.6.5/' +
+	    message += '\nhttp://errors.angularjs.org/1.6.6/' +
 	      (module ? module + '/' : '') + code;
 
 	    for (i = 0, paramPrefix = '?'; i < templateArgs.length; i++, paramPrefix = '&') {
@@ -3134,11 +3141,11 @@
 	var version = {
 	  // These placeholder strings will be replaced by grunt's `build` task.
 	  // They need to be double- or single-quoted.
-	  full: '1.6.5',
+	  full: '1.6.6',
 	  major: 1,
 	  minor: 6,
-	  dot: 5,
-	  codeName: 'toffee-salinization'
+	  dot: 6,
+	  codeName: 'interdimensional-cable'
 	};
 
 
@@ -3284,7 +3291,7 @@
 	      });
 	    }
 	  ])
-	  .info({ angularVersion: '1.6.5' });
+	  .info({ angularVersion: '1.6.6' });
 	}
 
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -8846,6 +8853,31 @@
 	    return preAssignBindingsEnabled;
 	  };
 
+	  /**
+	   * @ngdoc method
+	   * @name  $compileProvider#strictComponentBindingsEnabled
+	   *
+	   * @param {boolean=} enabled update the strictComponentBindingsEnabled state if provided, otherwise just return the
+	   * current strictComponentBindingsEnabled state
+	   * @returns {*} current value if used as getter or itself (chaining) if used as setter
+	   *
+	   * @kind function
+	   *
+	   * @description
+	   * Call this method to enable/disable strict component bindings check. If enabled, the compiler will enforce that
+	   * for all bindings of a component that are not set as optional with `?`, an attribute needs to be provided
+	   * on the component's HTML tag.
+	   *
+	   * The default value is false.
+	   */
+	  var strictComponentBindingsEnabled = false;
+	  this.strictComponentBindingsEnabled = function(enabled) {
+	    if (isDefined(enabled)) {
+	      strictComponentBindingsEnabled = enabled;
+	      return this;
+	    }
+	    return strictComponentBindingsEnabled;
+	  };
 
 	  var TTL = 10;
 	  /**
@@ -10873,12 +10905,20 @@
 	      }
 	    }
 
+	    function strictBindingsCheck(attrName, directiveName) {
+	      if (strictComponentBindingsEnabled) {
+	        throw $compileMinErr('missingattr',
+	          'Attribute \'{0}\' of \'{1}\' is non-optional and must be set!',
+	          attrName, directiveName);
+	      }
+	    }
 
 	    // Set up $watches for isolate scope and controller bindings.
 	    function initializeDirectiveBindings(scope, attrs, destination, bindings, directive) {
 	      var removeWatchCollection = [];
 	      var initialChanges = {};
 	      var changes;
+
 	      forEach(bindings, function initializeBinding(definition, scopeName) {
 	        var attrName = definition.attrName,
 	        optional = definition.optional,
@@ -10890,7 +10930,9 @@
 
 	          case '@':
 	            if (!optional && !hasOwnProperty.call(attrs, attrName)) {
+	              strictBindingsCheck(attrName, directive.name);
 	              destination[scopeName] = attrs[attrName] = undefined;
+
 	            }
 	            removeWatch = attrs.$observe(attrName, function(value) {
 	              if (isString(value) || isBoolean(value)) {
@@ -10917,6 +10959,7 @@
 	          case '=':
 	            if (!hasOwnProperty.call(attrs, attrName)) {
 	              if (optional) break;
+	              strictBindingsCheck(attrName, directive.name);
 	              attrs[attrName] = undefined;
 	            }
 	            if (optional && !attrs[attrName]) break;
@@ -10961,6 +11004,7 @@
 	          case '<':
 	            if (!hasOwnProperty.call(attrs, attrName)) {
 	              if (optional) break;
+	              strictBindingsCheck(attrName, directive.name);
 	              attrs[attrName] = undefined;
 	            }
 	            if (optional && !attrs[attrName]) break;
@@ -10986,6 +11030,9 @@
 	            break;
 
 	          case '&':
+	            if (!optional && !hasOwnProperty.call(attrs, attrName)) {
+	              strictBindingsCheck(attrName, directive.name);
+	            }
 	            // Don't assign Object.prototype method to scope
 	            parentGet = attrs.hasOwnProperty(attrName) ? $parse(attrs[attrName]) : noop;
 
@@ -11518,7 +11565,7 @@
 	      if (!params) return '';
 	      var parts = [];
 	      forEachSorted(params, function(value, key) {
-	        if (value === null || isUndefined(value)) return;
+	        if (value === null || isUndefined(value) || isFunction(value)) return;
 	        if (isArray(value)) {
 	          forEach(value, function(v) {
 	            parts.push(encodeUriQuery(key)  + '=' + encodeUriQuery(serializeValue(v)));
@@ -11614,10 +11661,15 @@
 
 	    if (tempData) {
 	      var contentType = headers('Content-Type');
-	      if ((contentType && (contentType.indexOf(APPLICATION_JSON) === 0)) || isJsonLike(tempData)) {
+	      var hasJsonContentType = contentType && (contentType.indexOf(APPLICATION_JSON) === 0);
+
+	      if (hasJsonContentType || isJsonLike(tempData)) {
 	        try {
 	          data = fromJson(tempData);
 	        } catch (e) {
+	          if (!hasJsonContentType) {
+	            return data;
+	          }
 	          throw $httpMinErr('baddata', 'Data must be a valid JSON object. Received: "{0}". ' +
 	          'Parse error: "{1}"', data, e);
 	        }
@@ -11930,6 +11982,7 @@
 	     *   - **headers** – `{function([headerName])}` – Header getter function.
 	     *   - **config** – `{Object}` – The configuration object that was used to generate the request.
 	     *   - **statusText** – `{string}` – HTTP status text of the response.
+	     *   - **xhrStatus** – `{string}` – Status of the XMLHttpRequest (`complete`, `error`, `timeout` or `abort`).
 	     *
 	     * A response status code between 200 and 299 is considered a success status and will result in
 	     * the success callback being called. Any response status code outside of that range is
@@ -12771,9 +12824,9 @@
 	          } else {
 	            // serving from cache
 	            if (isArray(cachedResp)) {
-	              resolvePromise(cachedResp[1], cachedResp[0], shallowCopy(cachedResp[2]), cachedResp[3]);
+	              resolvePromise(cachedResp[1], cachedResp[0], shallowCopy(cachedResp[2]), cachedResp[3], cachedResp[4]);
 	            } else {
-	              resolvePromise(cachedResp, 200, {}, 'OK');
+	              resolvePromise(cachedResp, 200, {}, 'OK', 'complete');
 	            }
 	          }
 	        } else {
@@ -12830,10 +12883,10 @@
 	       *  - resolves the raw $http promise
 	       *  - calls $apply
 	       */
-	      function done(status, response, headersString, statusText) {
+	      function done(status, response, headersString, statusText, xhrStatus) {
 	        if (cache) {
 	          if (isSuccess(status)) {
-	            cache.put(url, [status, response, parseHeaders(headersString), statusText]);
+	            cache.put(url, [status, response, parseHeaders(headersString), statusText, xhrStatus]);
 	          } else {
 	            // remove promise from the cache
 	            cache.remove(url);
@@ -12841,7 +12894,7 @@
 	        }
 
 	        function resolveHttpPromise() {
-	          resolvePromise(response, status, headersString, statusText);
+	          resolvePromise(response, status, headersString, statusText, xhrStatus);
 	        }
 
 	        if (useApplyAsync) {
@@ -12856,7 +12909,7 @@
 	      /**
 	       * Resolves the raw $http promise.
 	       */
-	      function resolvePromise(response, status, headers, statusText) {
+	      function resolvePromise(response, status, headers, statusText, xhrStatus) {
 	        //status: HTTP response status code, 0, -1 (aborted by timeout / promise)
 	        status = status >= -1 ? status : 0;
 
@@ -12865,12 +12918,13 @@
 	          status: status,
 	          headers: headersGetter(headers),
 	          config: config,
-	          statusText: statusText
+	          statusText: statusText,
+	          xhrStatus: xhrStatus
 	        });
 	      }
 
 	      function resolvePromiseWithResult(result) {
-	        resolvePromise(result.data, result.status, shallowCopy(result.headers()), result.statusText);
+	        resolvePromise(result.data, result.status, shallowCopy(result.headers()), result.statusText, result.xhrStatus);
 	      }
 
 	      function removePendingReq() {
@@ -12971,7 +13025,7 @@
 	      var jsonpDone = jsonpReq(url, callbackPath, function(status, text) {
 	        // jsonpReq only ever sets status to 200 (OK), 404 (ERROR) or -1 (WAITING)
 	        var response = (status === 200) && callbacks.getResponse(callbackPath);
-	        completeRequest(callback, status, response, '', text);
+	        completeRequest(callback, status, response, '', text, 'complete');
 	        callbacks.removeCallback(callbackPath);
 	      });
 	    } else {
@@ -13006,18 +13060,29 @@
 	            status,
 	            response,
 	            xhr.getAllResponseHeaders(),
-	            statusText);
+	            statusText,
+	            'complete');
 	      };
 
 	      var requestError = function() {
 	        // The response is always empty
 	        // See https://xhr.spec.whatwg.org/#request-error-steps and https://fetch.spec.whatwg.org/#concept-network-error
-	        completeRequest(callback, -1, null, null, '');
+	        completeRequest(callback, -1, null, null, '', 'error');
+	      };
+
+	      var requestAborted = function() {
+	        completeRequest(callback, -1, null, null, '', 'abort');
+	      };
+
+	      var requestTimeout = function() {
+	        // The response is always empty
+	        // See https://xhr.spec.whatwg.org/#request-error-steps and https://fetch.spec.whatwg.org/#concept-network-error
+	        completeRequest(callback, -1, null, null, '', 'timeout');
 	      };
 
 	      xhr.onerror = requestError;
-	      xhr.onabort = requestError;
-	      xhr.ontimeout = requestError;
+	      xhr.onabort = requestAborted;
+	      xhr.ontimeout = requestTimeout;
 
 	      forEach(eventHandlers, function(value, key) {
 	          xhr.addEventListener(key, value);
@@ -13067,14 +13132,14 @@
 	      }
 	    }
 
-	    function completeRequest(callback, status, response, headersString, statusText) {
+	    function completeRequest(callback, status, response, headersString, statusText, xhrStatus) {
 	      // cancel timeout and subsequent timeout promise resolution
 	      if (isDefined(timeoutId)) {
 	        $browserDefer.cancel(timeoutId);
 	      }
 	      jsonpDone = xhr = null;
 
-	      callback(status, response, headersString, statusText);
+	      callback(status, response, headersString, statusText, xhrStatus);
 	    }
 	  };
 
@@ -15700,7 +15765,7 @@
 	      findConstantAndWatchExpressions(ast.property, $filter, astIsPure);
 	    }
 	    ast.constant = ast.object.constant && (!ast.computed || ast.property.constant);
-	    ast.toWatch = [ast];
+	    ast.toWatch = ast.constant ? [] : [ast];
 	    break;
 	  case AST.CallExpression:
 	    isStatelessFilter = ast.filter ? isStateless($filter, ast.callee.name) : false;
@@ -15709,9 +15774,7 @@
 	    forEach(ast.arguments, function(expr) {
 	      findConstantAndWatchExpressions(expr, $filter, astIsPure);
 	      allConstants = allConstants && expr.constant;
-	      if (!expr.constant) {
-	        argsToWatch.push.apply(argsToWatch, expr.toWatch);
-	      }
+	      argsToWatch.push.apply(argsToWatch, expr.toWatch);
 	    });
 	    ast.constant = allConstants;
 	    ast.toWatch = isStatelessFilter ? argsToWatch : [ast];
@@ -15728,9 +15791,7 @@
 	    forEach(ast.elements, function(expr) {
 	      findConstantAndWatchExpressions(expr, $filter, astIsPure);
 	      allConstants = allConstants && expr.constant;
-	      if (!expr.constant) {
-	        argsToWatch.push.apply(argsToWatch, expr.toWatch);
-	      }
+	      argsToWatch.push.apply(argsToWatch, expr.toWatch);
 	    });
 	    ast.constant = allConstants;
 	    ast.toWatch = argsToWatch;
@@ -15740,17 +15801,14 @@
 	    argsToWatch = [];
 	    forEach(ast.properties, function(property) {
 	      findConstantAndWatchExpressions(property.value, $filter, astIsPure);
-	      allConstants = allConstants && property.value.constant && !property.computed;
-	      if (!property.value.constant) {
-	        argsToWatch.push.apply(argsToWatch, property.value.toWatch);
-	      }
+	      allConstants = allConstants && property.value.constant;
+	      argsToWatch.push.apply(argsToWatch, property.value.toWatch);
 	      if (property.computed) {
-	        findConstantAndWatchExpressions(property.key, $filter, astIsPure);
-	        if (!property.key.constant) {
-	          argsToWatch.push.apply(argsToWatch, property.key.toWatch);
-	        }
+	        //`{[key]: value}` implicitly does `key.toString()` which may be non-pure
+	        findConstantAndWatchExpressions(property.key, $filter, /*parentIsPure=*/false);
+	        allConstants = allConstants && property.key.constant;
+	        argsToWatch.push.apply(argsToWatch, property.key.toWatch);
 	      }
-
 	    });
 	    ast.constant = allConstants;
 	    ast.toWatch = argsToWatch;
@@ -23346,15 +23404,20 @@
 	 *
 	 * ## A note about browser compatibility
 	 *
-	 * Edge, Firefox, and Internet Explorer do not support the `details` element, it is
+	 * Internet Explorer and Edge do not support the `details` element, it is
 	 * recommended to use {@link ng.ngShow} and {@link ng.ngHide} instead.
 	 *
 	 * @example
 	     <example name="ng-open">
 	       <file name="index.html">
-	         <label>Check me check multiple: <input type="checkbox" ng-model="open"></label><br/>
+	         <label>Toggle details: <input type="checkbox" ng-model="open"></label><br/>
 	         <details id="details" ng-open="open">
-	            <summary>Show/Hide me</summary>
+	            <summary>List</summary>
+	            <ul>
+	              <li>Apple</li>
+	              <li>Orange</li>
+	              <li>Durian</li>
+	            </ul>
 	         </details>
 	       </file>
 	       <file name="protractor.js" type="protractor">
@@ -31462,7 +31525,9 @@
 	 *     more than one tracking expression value resolve to the same key. (This would mean that two distinct objects are
 	 *     mapped to the same DOM element, which is not possible.)
 	 *
-	 *     Note that the tracking expression must come last, after any filters, and the alias expression.
+	 *     <div class="alert alert-warning">
+	 *       <strong>Note:</strong> the `track by` expression must come last - after any filters, and the alias expression.
+	 *     </div>
 	 *
 	 *     For example: `item in items` is equivalent to `item in items track by $id(item)`. This implies that the DOM elements
 	 *     will be associated by item identity in the array.
@@ -34193,7 +34258,7 @@
 /***/ (function(module, exports) {
 
 	/**
-	 * @license AngularJS v1.6.5
+	 * @license AngularJS v1.6.6
 	 * (c) 2010-2017 Google, Inc. http://angularjs.org
 	 * License: MIT
 	 */
@@ -34216,7 +34281,7 @@
 
 
 	angular.module('ngCookies', ['ng']).
-	  info({ angularVersion: '1.6.5' }).
+	  info({ angularVersion: '1.6.6' }).
 	  /**
 	   * @ngdoc provider
 	   * @name $cookiesProvider
@@ -62154,7 +62219,9 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	function managerCtrl($scope, $state, $location, $http, userService) {
+	function managerCtrl($scope, $state, $location, $http, userService, $rootScope) {
+	  $rootScope.loading = false;
+
 	  $http({
 	    method: 'GET',
 	    url: '/login/user'
@@ -62182,13 +62249,47 @@
 	    });
 	  };
 
-	  $scope.updateFromSMS = function () {
-	    $http({
-	      method: 'GET',
-	      url: '/sfdata/batches'
-	    }).then(function (response) {
-	      alert("Sent update to SMS from Salesforce request!");
-	    });
+	  $scope.getLogo = function () {
+	    $scope.loading = true;
+	    var style = {};
+	    if ($http.pendingRequests.length !== 0) {
+	      style.width = '95px';
+	      //This is done because the gif is slightly larger than the image and it shouldn't expand the border
+	      style.transform = 'translate(-1.65px, 16.2px)';
+	      style.margin = '-20px 0 0 0px';
+	    } else {
+	      style.width = '90px';
+	      style.transform = 'translate(0px, 0px)';
+	      $scope.loading = false;
+	    }
+	    //console.log($http.pendingRequests.length)
+	    return style;
+	  };
+
+	  $scope.currState_GetSF = 'getSF_Ready';
+	  $scope.updateSMS = function ($event) {
+
+	    $event.target.innerHTML = "Loading!";
+	    if ($event.target.disabled !== 'disabled') {
+	      $scope.currState_GetSF = 'getSF_Getting';
+	      $http({
+	        method: 'GET',
+	        url: '/sfdata/batches'
+	      }).then(function (response) {
+	        //Successes
+	        $event.target.innerHTML = "Update SMS Data from Salesforce";
+	        $event.target.disabled = 'enabled';
+	        $scope.currState_GetSF = 'getSF_Ready';
+	        $.notify($event.target, "Finished loading data!", "success");
+	      }, function (response) {
+	        //Errors
+	        $event.target.innerHTML = "Update SMS Data from Salesforce";
+	        $event.target.disabled = 'enabled';
+	        $scope.currState_GetSF = 'getSF_Ready';
+	        $.notify($event.target, "Could not load data!", "error");
+	      });
+	    }
+	    $event.target.disabled = 'disabled';
 	  };
 
 	  $scope.manager = { name: 'Joe' };
@@ -62433,6 +62534,7 @@
 	    method: 'GET',
 	    url: '/associate/totaldata'
 	  }).then(function (response) {
+	    $scope.$root.loading = false;
 	    responseData = response.data;
 	    var stuff1 = [];
 	    var stuff2 = [];
@@ -63315,59 +63417,6 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-
-	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
-	exports.associateStatusEditController = associateStatusEditController;
-	function associateStatusEditController($scope, $http, $state, $stateParams) {
-		$scope.loading = true;
-		$scope.submitting = false;
-		$scope.submitted = false;
-		$scope.error = false;
-		$scope.associate = undefined;
-		$scope.statusTypes = undefined;
-
-		$('#statusModal').modal('show');
-
-		$('#statusModal').on('hide.bs.modal', function () {
-			$state.go('manager.advanced.status', {}, { reload: true });
-		});
-
-		Promise.all([$http.get('associate/by-identifier/' + $stateParams.id), $http.get('status/allStatusType')]).then(function (_ref) {
-			var _ref2 = _slicedToArray(_ref, 2),
-			    associateResponse = _ref2[0],
-			    statusTypesResponse = _ref2[1];
-
-			$scope.associate = associateResponse.data;
-			$scope.statusTypes = statusTypesResponse.data;
-			$scope.loading = false;
-			$scope.$digest();
-		});
-
-		$scope.updateAssociateStatus = function () {
-			$scope.submitting = true;
-			$scope.submitted = false;
-			$scope.error = false;
-
-			$http.put('associate/updateAssociateStatus', $scope.associate).then(function () {
-				$scope.submitting = false;
-				$scope.submitted = true;
-			}).catch(function () {
-				$scope.submitting = false;
-				$scope.error = true;
-			});
-		};
-	};
-
-/***/ }),
-/* 135 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	var batchCtrl = function batchCtrl($scope, $http, $state, $stateParams) {
@@ -63522,7 +63571,7 @@
 	exports.batchCtrl = batchCtrl;
 
 /***/ }),
-/* 136 */
+/* 135 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -63549,7 +63598,7 @@
 	exports.clientCtrl = clientCtrl;
 
 /***/ }),
-/* 137 */
+/* 136 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -63592,7 +63641,7 @@
 	exports.userCtrl = userCtrl;
 
 /***/ }),
-/* 138 */
+/* 137 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -63618,7 +63667,7 @@
 	exports.locCtrl = locCtrl;
 
 /***/ }),
-/* 139 */
+/* 138 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -63692,7 +63741,7 @@
 	exports.jobCtrl = jobCtrl;
 
 /***/ }),
-/* 140 */
+/* 139 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -63762,64 +63811,7 @@
 	exports.projectCtrl = projectCtrl;
 
 /***/ }),
-/* 141 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	exports.statusController = statusController;
-	function statusController($scope, $http, $state) {
-		$scope.associates = [];
-		$scope.selectedStatusTypes = [];
-		$scope.isLoadingAssociates = true;
-
-		$http.get('status/allStatusType').then(function (response) {
-			$scope.statusTypes = response.data;
-			$scope.statusTypes.forEach(function (statusType) {
-				$scope.selectedStatusTypes.push(statusType);
-			});
-		});
-
-		$http.get('associate/all').then(function (response) {
-			$scope.associates = response.data;
-			$scope.isLoadingAssociates = false;
-		});
-
-		$scope.isSelectedStatusType = function (statusType) {
-			return $scope.selectedStatusTypes.some(function (selectedStatusType) {
-				return selectedStatusType.id === statusType.id;
-			});
-		};
-
-		$scope.toggleSelectedStatusTypes = function (selectedStatus) {
-			var idx = $scope.selectedStatusTypes.indexOf(selectedStatus);
-
-			// Is currently selected
-			if (idx > -1) {
-				$scope.selectedStatusTypes.splice(idx, 1);
-			} else {
-				$scope.selectedStatusTypes.push(selectedStatus);
-			}
-		};
-
-		$scope.associatesFilter = function (associate) {
-			var selectedStatusTypes = $scope.selectedStatusTypes;
-
-			if (selectedStatusTypes.length === 0) {
-				return false;
-			}
-
-			return selectedStatusTypes.some(function (selectedStatusType) {
-				return associate.associateStatus.associateStatusId === selectedStatusType.associateStatusId;
-			});
-		};
-	}
-
-/***/ }),
-/* 142 */
+/* 140 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -63831,14 +63823,16 @@
 	function managerAdvancedCtrl($scope, $http, $state) {
 	  window.scope = $scope;
 
+	  $scope.$state = $state;
+
 	  $scope.userSearch;
 
 	  $scope.filterList = {
-	    list: [{ id: 2, name: 'associate' }, { id: 3, name: 'batch' }, { id: 4, name: 'trainer' }]
+	    list: [{ id: 2, name: 'Associate' }, { id: 3, name: 'Batch' }, { id: 4, name: 'Trainer' }]
 	  };
 
 	  $scope.filterList2 = {
-	    list: [{ id: 1, name: 'start date' }, { id: 2, name: 'end date' }, { id: 3, name: 'batch' }, { id: 4, name: 'trainer' }]
+	    list: [{ id: 1, name: 'Start Date' }, { id: 2, name: 'End Date' }, { id: 3, name: 'Batch' }, { id: 4, name: 'Trainer' }]
 	  };
 
 	  $scope.filterType = {
@@ -63954,7 +63948,7 @@
 	exports.default = managerAdvancedCtrl;
 
 /***/ }),
-/* 143 */
+/* 141 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -63966,67 +63960,115 @@
 		$scope.PanelLoad = '';
 		$scope.show_panel = false;
 		$scope.defaultCommnt = '';
+		$scope.AllAssociates = {};
 		$scope.choose = {};
 		$scope.plist = {};
+		$scope.disabled_search = true;
+		$scope.disabled_select = true;
+		$scope.PanelLoad = 'Loading Panel...';
+		$scope.refreshIcon = true;
 
-		$scope.searchClick = function (searchName) {
+		$http({
+			method: 'GET',
+			url: "/associate/all"
+		}).then(function (response) {
+			$scope.AllAssociates = response.data;
+			$scope.associates = $scope.AllAssociates;
+			$scope.PanelLoad = '';
+			$scope.searchShowUp = true;
+			$scope.disabled_search = false;
+			$scope.disabled_select = false;
+			$scope.refreshIcon = false;
+		});
+
+		$scope.statusSelected = function (selectChoice) {
+			$scope.searchShowUp = true;
+			$scope.show_panel = false;
 			$scope.choose = {};
 			$scope.plist = {};
-			if (searchName) {
-				$scope.disabled_search = true;
-				$scope.show_panel = false;
-				$scope.PanelLoad = 'Loading Panel...';
-				$http({
-					method: 'GET',
-					url: '/associate/search/' + searchName
-				}).then(function (response) {
-					$scope.PanelLoad = '';
-					$scope.disabled_search = false;
-					$scope.associates = response.data;
-					$scope.searchShowUp = true;
+			if (selectChoice == 'PENDING' || selectChoice == "PASS" || selectChoice == "FAIL") {
+				$scope.associates = $scope.AllAssociates.filter(function (obj) {
+					return obj.latestPanelStatus == selectChoice;
 				});
+			} else if (selectChoice == 'NULL') {
+				$scope.associates = $scope.AllAssociates.filter(function (obj) {
+					return obj.latestPanelStatus == null;
+				});
+			} else {
+				$scope.associates = $scope.AllAssociates;
 			}
+		};
 
-			$scope.associatePanelClick = function (associate) {
-				$scope.choose = associate;
-				$scope.searchShowUp = false;
-				$scope.show_panel = true;
-				var associateId = associate.id;
-				$http({
-					method: 'GET',
-					url: '/panel/associate/' + associateId
-				}).then(function (response) {
-					$scope.plist = response.data;
-					$scope.plist.sort(function (a, b) {
-						return a.id - b.id;
-					});
+		$scope.associateNameClick = function (associate) {
+			$scope.choose = associate;
+			$scope.searchShowUp = false;
+			$scope.show_panel = true;
+			var associateId = associate.id;
+			$http({
+				method: 'GET',
+				url: '/panel/associate/' + associateId
+			}).then(function (response) {
+				$scope.plist = response.data;
+				$scope.plist.sort(function (a, b) {
+					return a.id - b.id;
 				});
+			});
 
-				$scope.PanelClick = function (panel) {
+			$scope.PanelClick = function (panel) {
+				$scope.statusOption = panel.status;
+				$scope.panelChoose = panel;
+				$scope.errorUpdateMsgShow = false;
+				$scope.successUpdateMsgShow = false;
+				$scope.updateComment = panel.comments;
+				$('#PanelCommentModal').modal('show');
 
-					$scope.statusOption = panel.status;
-					$scope.panelChoose = panel;
-					$scope.errorUpdateMsgShow = false;
-					$scope.successUpdateMsgShow = false;
-					$scope.updateComment = panel.comments;
-					$('#PanelCommentModal').modal('show');
-
-					$scope.updateInterviewClick = function (statusOption, updateComment) {
-						panel.comments = updateComment;
-						panel.status = statusOption;
-						$http({
-							method: 'PUT',
-							url: '/panel',
-							data: panel
-						}).then(function (response) {
-							$scope.successUpdateMsgShow = true;
-							$scope.associatePanelClick(associate);
-						}, function (response) {
-							$scope.errorUpdateMsgShow = true;
-						});
-					};
+				$scope.updateInterviewClick = function (statusOption, updateComment) {
+					panel.comments = updateComment;
+					panel.status = statusOption;
+					$http({
+						method: 'PUT',
+						url: '/panel',
+						data: panel
+					}).then(function (response) {
+						$scope.successUpdateMsgShow = true;
+						$scope.modifyAllAssociates(panel.status, associate.id);
+						//refresh panel history table 
+						$scope.associateNameClick(associate);
+					}, function (response) {
+						$scope.errorUpdateMsgShow = true;
+					});
 				};
 			};
+		};
+
+		$scope.modifyAllAssociates = function (status, id) {
+			var _iteratorNormalCompletion = true;
+			var _didIteratorError = false;
+			var _iteratorError = undefined;
+
+			try {
+				for (var _iterator = $scope.AllAssociates[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+					var obj = _step.value;
+
+					if (obj.id == id) {
+						obj.latestPanelStatus = status;
+						break;
+					}
+				}
+			} catch (err) {
+				_didIteratorError = true;
+				_iteratorError = err;
+			} finally {
+				try {
+					if (!_iteratorNormalCompletion && _iterator.return) {
+						_iterator.return();
+					}
+				} finally {
+					if (_didIteratorError) {
+						throw _iteratorError;
+					}
+				}
+			}
 		};
 
 		$scope.addPanelClick = function () {
@@ -64043,7 +64085,9 @@
 				addPanelBtn.disabled = false;
 				addPanelBtn.innerHTML = 'Add Panel';
 				$scope.defaultCommnt = '';
-				$scope.associatePanelClick($scope.choose);
+				$scope.modifyAllAssociates("PENDING", $scope.choose.id);
+				//refresh panel history table 
+				$scope.associateNameClick($scope.choose);
 			});
 		};
 
@@ -64059,7 +64103,7 @@
 	exports.default = managerPanelCtrl;
 
 /***/ }),
-/* 144 */
+/* 142 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -64085,7 +64129,7 @@
 	    return;
 	  }
 
-	  var associateUrl = '/associate/' + associateId;
+	  var associateUrl = '/associate/by-identifier/' + associateId;
 	  $http({
 	    method: 'GET',
 	    url: associateUrl
@@ -64260,7 +64304,7 @@
 	exports.default = profileCtrl;
 
 /***/ }),
-/* 145 */
+/* 143 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -64401,7 +64445,7 @@
 	exports.default = associateInterviewCtrl;
 
 /***/ }),
-/* 146 */
+/* 144 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -64422,7 +64466,7 @@
 	exports.default = associatePanelCtrl;
 
 /***/ }),
-/* 147 */
+/* 145 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -64487,7 +64531,7 @@
 	exports.default = associateCtrl;
 
 /***/ }),
-/* 148 */
+/* 146 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -64550,6 +64594,297 @@
 	}
 
 	exports.default = loginCtrl;
+
+/***/ }),
+/* 147 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	function certificationCtrl($scope, $http, $state, $stateParams, $filter, $timeout, userService) {
+		$scope.certifications = {};
+		$scope.certificationtype = {};
+
+		//const updateCert = document.getElementById('specificCert');
+		var needToDelete = document.getElementById('specificCert');
+
+		$scope.getScheduleCert = function () {
+			$http({
+				method: 'GET',
+				url: 'certifications/associate/' + userService.getUser().id
+			}).then(function (response) {
+				$scope.CERTIFICATIONS = response.data;
+			});
+		};
+		$scope.ApplyCert = function () {
+
+			$('#datetimepicker1').val('');
+			$('#getCert').modal('show');
+		};
+
+		$scope.deletedCert = function (x) {
+			var newDate = moment($scope.newSelectedDate).toDate();
+			$scope.newSelectedType = x.cert_type;
+			$scope.newSelectedDate = x.cert_testdate;
+			$scope.CERTIFICATIONS.cert_id = x.cert_id;
+			console.log($scope.CERTIFICATIONS.cert_id);
+			$('#deleteCert').modal('show');
+		};
+
+		$http({
+			method: 'GET',
+			url: 'certificationtype/all'
+		}).then(function (response) {
+
+			$scope.CERTIFICATION_TYPE = response.data;
+			console.log($scope.CERTIFICATION_TYPE);
+		});
+
+		$http({
+			method: 'GET',
+			url: 'certifications/all'
+		}).then(function (response) {
+
+			$scope.CERTIFICATIONS.associate_Id = response.data;
+			console.log($scope.CERTIFICATIONS.associate_Id);
+		});
+
+		$('#datetimepicker1').datetimepicker();
+		$scope.showDateTimePicker = function () {
+			$('#datetimepicker1').datetimepicker('show');
+		};
+
+		$scope.getScheduleCert();
+
+		$scope.updateCert = function () {
+			$scope.selectedDate = $('#datetimepicker1').val();
+			$scope.today = $filter('date')(new Date(), 'MM/dd/yyyy');
+			$scope.associate_id = userService.getUser();
+			//let newDate = moment($scope.selectedDate).toDate();
+
+			var MS_PER_DAY = 1000 * 60 * 60 * 24;
+			$scope.dayOne = new Date($scope.selectedDate).getTime();
+			$scope.dayTwo = new Date($scope.today).getTime();
+			$scope.changeDiff = Math.floor(($scope.dayOne - $scope.dayTwo) / MS_PER_DAY);
+			console.log($scope.changeDiff);
+			if ($scope.changeDiff > 14) {
+				//post data to database
+				console.log($scope.today);
+				console.log($scope.selectedDate);
+				var newDate = moment($scope.selectedDate).toDate();
+				$http({
+					method: 'POST',
+					url: 'certifications/add/certification',
+					data: { cert_testdate: newDate, cert_status: $scope.formkey, associate_id: userService.getUser(), cert_type: $scope.selectedType.type_of_cert }
+				}).then(function (response) {
+					$scope.getScheduleCert();
+					console.log(response.data);
+				});
+				$scope.successMessage = "You are now scheduled to take a certification";
+				$timeout(function () {
+					$scope.successMessage = false;
+				}, 2000);
+			} else {
+				$scope.errorMessage = 'Date must be 2 weeks after today';
+				console.log($scope.today);
+				console.log($scope.selectedDate);
+				$timeout(function () {
+					$scope.errorMessage = false;
+				}, 2000);
+			}
+		};
+
+		$scope.updateNewCert = function (x) {
+			var newDate = moment($scope.newSelectedDate).toDate();
+			$scope.cert_id = $scope.CERTIFICATIONS.cert_id;
+			$scope.cert_type = $scope.newSelectedType.type_of_cert;
+
+			$http({
+				method: 'PUT',
+				url: '/certifications',
+				data: { cert_id: $scope.CERTIFICATIONS.cert_id, cert_testdate: newDate, cert_status: $scope.newFormkey, associate_id: userService.getUser(), cert_type: $scope.newSelectedType, comments: $scope.selectedComment, cert_filename: $scope.fileName }
+			}).then(function (response) {
+				$scope.successMessage = "Successfully sent to Manager";
+			});
+		};
+
+		/*
+	  * This opens the fileuploadModal and hides the delete cert modal
+	  */
+		$scope.openFileUploadModal = function () {
+			$('#deleteCert').modal('hide');
+			$('#submitCert').modal('show');
+		};
+		/*
+	  * **************************************************************
+	  */
+
+		/*
+	  * This function is for the submit cert modal, it takes the file by element and
+	  * passes to http to the spring side.
+	  * then hides the cert modal and shows the delete cert modal
+	  */
+		$scope.uploadFiles = function () {
+			console.log("inside uploadfiles function update again");
+			console.log("FILE?: " + document.getElementById('file').files[0].name);
+			$scope.fileName = document.getElementById('file').files[0].name;
+			//console.log($scope.file);
+			//var file = $scope.file;
+			/*
+	   * uploadfile to spring side for uploading to S3 starts
+	   */
+			var fileupload = document.getElementById('file').files[0];
+			console.log("checking checking: " + fileupload);
+			var formdata = new FormData();
+			formdata.append('file', fileupload);
+			/*				$http ({
+	  					method: 'POST',
+	  					url: 'certifications/upload',
+	  				})
+	  				.then((response) => {
+	  				});*/
+
+			$http.post('certifications/upload', formdata, {
+				transformRequest: angular.identity,
+				headers: { 'Content-Type': undefined }
+			});
+			/*
+	   * uploadingfile to spring side for uploading to S3 ends
+	   */
+
+			$('#submitCert').modal('hide');
+			$('#deleteCert').modal('show');
+		};
+		//************************************************************************************
+	}
+
+	exports.default = certificationCtrl;
+
+/***/ }),
+/* 148 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	var certificationManCtrl = function certificationManCtrl($scope, $http, userService) {
+
+		var commentDocument = document.getElementById("cm");
+		var updenied = document.getElementById("updateNewCert");
+		$scope.newSelectedType = {};
+
+		$scope.getScheduleCert = function () {
+			$http({
+				method: 'GET',
+				url: "certifications/associate/" + userService.getUser().name
+			}).then(function (response) {
+				console.log($scope.CERTIFICATIONS.associate_id.name);
+			});
+		};
+
+		//get all certifications
+		$scope.CERTIFICATIONS = {};
+		$scope.noCert = true;
+		$http({
+			method: 'GET',
+			url: 'certifications/all'
+		}).then(function (response) {
+			angular.forEach(response.data, function (value, key) {
+				if (value.comments == null || value.comments === "") {
+					value.comments = "....";
+				}
+				if (value.cert_filename == null || value.cert_filename === "") {
+					value.cert_filename = "....";
+				}
+			});
+
+			$scope.CERTIFICATIONS = response.data;
+
+			console.log($scope.CERTIFICATIONS);
+		});
+
+		//filter associate by certification
+		$scope.hasNoCert = function (CERTIFICATIONS) {
+			if (CERTIFICATIONS.cert_status == "completed") {
+				return false;
+			}
+			return CERTIFICATIONS;
+		};
+
+		$scope.hasCert = function (CERTIFICATIONS) {
+			if (CERTIFICATIONS.cert_status == "pending" || CERTIFICATIONS.cert_status == "inprogress") {
+				return false;
+			}
+			return CERTIFICATIONS;
+		};
+		//click on certification list
+		$scope.clickedCert = function (x) {
+			$scope.newSelectedType = x.associate_id.name;
+			$scope.selectedAssociate = x.associate_id;
+			$scope.selectedType = x.cert_type;
+			$scope.newFormkey = x.cert_status;
+			$scope.selectedDate = x.cert_testdate;
+			$scope.selectedComment = x.comments;
+			$scope.selectedFilename = x.cert_filename;
+			$scope.CERTIFICATIONS.cert_id = x.cert_id;
+			console.log($scope.newSelectedType);
+			$("#lookUpCert").modal('show');
+		};
+
+		$scope.updateApprove = function (x) {
+			var newDate = moment($scope.selectedDate).toDate();
+			$scope.cert_id = $scope.CERTIFICATIONS.cert_id;
+			$scope.cert_type = $scope.selectedType.type_of_cert;
+			// console.log("i pass ",$scope.newSelectedType);
+			//$scope.associate_id=$scope.CERTIFICATIONS.associate_id.id;
+			$scope.isDisabled = false;
+			angular.forEach($scope.CERTIFICATIONS, function (value, key) {
+				if (value.cert_filename === "...." || value.cert_filename == null) {
+					$scope.isDisabled = true;
+					$scope.errorMessage = "This cannot be approved, you have no file";
+				}
+				$scope.newFormkey = "completed";
+				$http({
+					method: 'PUT',
+					url: '/certifications',
+					data: { associate_id: $scope.selectedAssociate, cert_id: $scope.CERTIFICATIONS.cert_id, cert_testdate: newDate, cert_status: $scope.newFormkey = "completed", cert_type: $scope.selectedType, comments: $scope.selectedComment, cert_filename: $scope.selectedFilename }
+				}).then(function (response) {
+					/// console.log($scope.CERTIFICATIONS.associate_id.name);
+					// console.log($scope.CERTIFICATIONS.cert_id);
+					// getScheduleCert();
+				});
+			});
+		};
+
+		$scope.updateDeny = function (x) {
+
+			var newDate = moment($scope.selectedDate).toDate();
+			var cert_id = $scope.CERTIFICATIONS.cert_id;
+			$scope.isDisabled = false;
+			angular.forEach($scope.CERTIFICATIONS, function (value, key) {
+				if (value.comments === "...." || value.comments == null) {
+					$scope.isDisabled = true;
+					$scope.errorMessage = "You need to add a comment";
+				} else {
+					$http({
+						method: 'DELETE',
+						url: 'certifications/' + cert_id
+
+					}).then(function (response) {
+						console.log(response.data);
+						$scope.successMessage = "Successfully Deleted";
+					});
+				}
+			});
+		};
+	};
+
+	exports.default = certificationManCtrl;
 
 /***/ }),
 /* 149 */

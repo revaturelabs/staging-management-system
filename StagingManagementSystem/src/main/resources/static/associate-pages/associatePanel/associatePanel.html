@@ -10,7 +10,6 @@
 	<table class="table table-striped panels-table selectable-table">
 	  <thead>
 	    <tr>
-	      <th class="assPanel-th" scope="col">Panel ID</th>
 	      <th class="assPanel-th" scope="col">Date</th>
 	      <th class="assPanel-th" scope="col">Result</th>
 	    </tr>
@@ -18,7 +17,6 @@
 	  <tbody>
 	   <!--  <tr class="associatePanelTable" ng-repeat="x in associateInterviews" ng-click="panelClick(x)"> -->
 	      <tr class="associatePanelTable" ng-repeat="p in plist">
-	      <td>{{p.id}}</td>
 	      <td>{{ dateConverter(p.statusDate) }}</td>
 	      <td>{{p.status}}</td>
 	    </tr>

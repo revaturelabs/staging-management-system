@@ -79,6 +79,7 @@ function graphBuilder($scope, $http) {
     method: 'GET',
     url: '/associate/totaldata',
   }).then((response) => {
+	$scope.$root.loading = false;
     responseData = response.data;
     const stuff1 = [];
     const stuff2 = [];

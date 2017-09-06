@@ -10,4 +10,14 @@
 .manager-view-selecter-container {
   display: flex;
   flex-direction: row;
+  margin-bottom: 5px;
+}
+
+.getSF_Ready{
+	background-color
+}
+
+.getSF_Getting {
+	  font-style: italic;
+	  
 }
