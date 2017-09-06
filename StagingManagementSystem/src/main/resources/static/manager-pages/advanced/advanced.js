@@ -1,18 +1,7 @@
-const defaultFilterStatus = {
-	columnName: 'status',
-	searchText: undefined,
-};
-
 function managerAdvancedCtrl($scope, $http, $state) {
   window.scope = $scope;
   
   $scope.$state = $state;
-  
-  $scope.userSearch;
-  
-  $scope.associateList = {};
-  
-  $scope.filterStatus = defaultFilterStatus; 
   
   $scope.filterList = {
 		 list:
@@ -163,36 +152,8 @@ function managerAdvancedCtrl($scope, $http, $state) {
 		}
 	};
 	
-	function formatPortfolioStatus(portfolioStatus) {
+	$scope.formatPortfolioStatus = (portfolioStatus) => {
 		return portfolioStatus ? 'COMPLETE' : 'INCOMPLETE';
-	};
-	
-	function caseInsensitiveFilter(value, searchText) {		
-		return value.toLowerCase().substr(0, searchText.length) === searchText.toLowerCase();
-	};
-	
-	$scope.formatPortfolioStatus = formatPortfolioStatus;
-
-	$scope.associatesFilter = (associate) => {
-		let searchText = $scope.filterStatus.searchText;
-		let filterValue;
-		
-		switch ($scope.filterStatus.columnName) {
-		case "associate":
-			filterValue = associate.name;
-			break;
-		case "status":
-			searchText = typeof searchText === 'undefined' ? 'staging' : searchText;
-			filterValue = associate.associateStatus.status;
-			break;
-		case "portfolioStatus":
-			filterValue = formatPortfolioStatus(associate.portfolioStatus);
-			break;
-		default:
-			break;
-		}
-		
-		return caseInsensitiveFilter(filterValue, searchText);
 	}
 }
 export default managerAdvancedCtrl;
