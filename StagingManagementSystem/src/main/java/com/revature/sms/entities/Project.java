@@ -139,9 +139,9 @@ public class Project {
 		return true;
 	}
 
-	@Override
-	public String toString() {
-		return "Project [projectId=" + projectId + ", projectName=" + projectName + ", projectDescription="
-				+ projectDescription + ", projectStatus=" + projectStatus + ", associates=" + associates + "]";
-	}
+//	@Override
+//	public String toString() {
+//		return "Project [projectId=" + projectId + ", projectName=" + projectName + ", projectDescription="
+//				+ projectDescription + ", projectStatus=" + projectStatus + ", associates=" + associates + "]";
+//	}
 }

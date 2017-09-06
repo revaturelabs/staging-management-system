@@ -32,21 +32,37 @@
         </div>
         <div class="row">
           <div class="col-md-6 col-sm-6 col-xs-6">
-            <dt>
-              Profile URL
-              <span style="cursor: pointer;" ng-click="openPortfolioUrlModal()">
-                <span class="glyphicon glyphicon-edit"></span>
-              </span>
+            <dt>	
+            	Status
+	            <span ng-if="isManager" style="cursor: pointer;" ng-click="openAssociateStatusModal()">
+	            	<span ng-if="isManager" class="glyphicon glyphicon-edit"></span>
+	            </span>
             </dt>
-            <dd>
-              <span>
-                <a ng-click="openPortfolioLink()" href="">Profile Link</a>
-              </span>
-            </dd>
+            <dd ng-bind-template="{{associate.associateStatus.status}}"></dd>
           </div>
           <div class="col-md-6 col-sm-6 col-xs-6">
-            <dt>Status</dt>
-            <dd ng-bind-template="{{associate.active === true ? 'Active': 'Not active'}}"></dd>
+          	<dt>
+          		Portfolio-Status
+          		<span ng-if="isManager" style="cursor: pointer;" ng-click="openPortfolioStatusModal()">
+          			<span ng-if="isManager" class="glyphicon glyphicon-edit"></span>
+          		</span>
+          		<dd ng-bind="formatPortfolioStatus(associate.portfolioStatus)"></dd>
+          	</dt>
+          </div>
+        </div>
+        <div class="row">
+        	<div class="col-md-12 col-sm-12 col-xs-12">
+	            <dt>
+	              Profile URL
+	              <span style="cursor: pointer;" ng-click="openPortfolioUrlModal()">
+	                <span class="glyphicon glyphicon-edit"></span>
+	              </span>
+	            </dt>
+	            <dd>
+	              <span>
+	                <a ng-click="openPortfolioLink()" href="">Profile Link</a>
+	              </span>
+	            </dd>
           </div>
         </div>
         <div class="row">
@@ -92,11 +108,13 @@
   </div>
 
 </div>
+
+<!-- ADDITONAL SKILLS MODAL toggleSkillsModal() -->
+
 <div class="modal fade" id="additionalSkillsModal" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title">Add or remove skills</h4>
       </div>
       <div class="modal-body">
@@ -121,17 +139,19 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default" ng-click="closeSkillModal()">Close</button>
         <button ng-click="submitSkills()" ng-class="{ disabled: sendingRequest }" ng-bind="skillsModalButtonValue" type="button" class="btn btn-primary"></button>
       </div>
     </div>
   </div>
 </div>
+
+<!-- PORTFOLIO URL MODAL -->
+
 <div class="modal fade" id="portfolioUrlModal" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title">Edit Portfolio URL</h4>
       </div>
       <div class="modal-body">
@@ -141,33 +161,37 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default" ng-click="closePortfolioUrlModal()">Close</button>
         <button ng-click="submitPortfolioUrl()" ng-class="{ disabled: sendingRequest }" ng-bind="portfolioModalButtonValue" type="button" class="btn btn-primary"></button>
       </div>
     </div>
   </div>
 </div>
+
+<!-- PROJECT STATUS MODAL openProjectStatusModal() -->
+
 <div class="modal fade" id="projectStatusModal" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title">{{associate.project.projectName}}</h4>
       </div>
       <div class="modal-body">
         {{associate.project.projectDescription}}
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default" ng-click="closeProjectStatusModal()">Close</button>
       </div>
     </div>
   </div>
 </div>
+
+<!-- MAP TO CLIENT MODAL toggleMappedModal() -->
+
 <div class="modal fade" id="mappedToClientModal" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title">Edit Mapped Status</h4>
       </div>
       <div class="modal-body">
@@ -179,19 +203,82 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default" ng-click="closeMappedToClientModal()">Close</button>
         <button ng-click="updateLockedTo()" ng-class="{ disabled: sendingRequest }" ng-bind="mappedModalButtonValue" type="button" class="btn btn-primary"></button>
       </div>
     </div>
   </div>
 </div>
 
+<!-- ASSOCIATE STATUS MODAL openAssociateStatusModal() -->
+
+<div class="modal fade" id="statusModal" role="dialog">
+    <div class="modal-dialog" role="document">    
+        <div class="modal-content">
+            <form ng-submit="updateAssociateStatus()">
+                <div class="modal-header">
+                    <h4 class="modal-title">Update Associate Status</h4>
+                </div>
+                <div class="modal-body">
+                    <div ng-if="submitted" class="alert alert-success" role="alert">
+                        <strong>Great!</strong> Associate status for {{associate.name}} was successfully updated.
+                    </div>
+                    <div ng-if="error" class="alert alert-danger" role="alert">
+                        <strong>Oh snap!</strong> An error occured while updating associate status. Please try again.
+                    </div>
+                    <div>
+                        <label for="associateStatus">Associate Status:</label>
+                        <select id="associateStatus" name="associateStatus" ng-model="associate.associateStatus.associateStatusId">
+                            <option ng-repeat="statusType in statusTypes" ng-value="statusType.associateStatusId">{{statusType.status}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" ng-disabled="submitting">Update</button>
+                    <button type="button" class="btn btn-default" ng-disabled="submitting" ng-click="closeAssociateStatusModal()">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- PORTFOLIO STATUS MODAL -->
+
+<div class="modal fade" id="portfolioStatusModal" role="dialog">
+    <div class="modal-dialog" role="document">    
+        <div class="modal-content">
+            <form ng-submit="updatePortfolioStatus()">
+                <div class="modal-header">
+                    <h4 class="modal-title">Update Associate Portfolio-Status</h4>
+                </div>
+                <div class="modal-body">
+                    <div ng-if="submitted" class="alert alert-success" role="alert">
+                        <strong>Great!</strong> Associate portfolio status for {{associate.name}} was successfully updated.
+                    </div>
+                    <div ng-if="error" class="alert alert-danger" role="alert">
+                        <strong>Oh snap!</strong> An error occured while updating associate portfolio status. Please try again.
+                    </div>
+                    <div>
+                        <label for="portfolioStatus">Portfolio Status:</label>
+                        <input type="radio" name="portfolioStatusTrue" ng-model="associate.portfolioStatus" ng-value="true"/> COMPLETE
+						<input type="radio" name="portfolioStatusFalse" ng-model="associate.portfolioStatus" ng-value="false"/>  INCOMPLETE
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" ng-disabled="submitting">Update</button>
+                    <button type="button" class="btn btn-default" ng-disabled="submitting" ng-click="closePortfolioStatusModal()">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- CHANGE PASSWORD MODAL showChangePassword() -->
 
 <div id="changePassword" class="modal fade" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title">Change Password</h4>
       </div>
       
@@ -208,7 +295,7 @@
       		<button type="button" id="changePasswordBtn" ng-click="changePassword()" class="btn btn-primary" ng-bind="changePasswordButton"></button>
       	</form>
       </div>
-      
+
       <div class="modal-footer">
         <div class="alert alert-success" ng-show="successMsgShow" style="text-align: left;">
 		  Successfully changed password!
@@ -216,7 +303,7 @@
 		<div class="alert alert-danger" ng-bind="errorMsg" ng-show="errorMsgShow" style="text-align: left;">
 		  Failed to change password.
 		</div>
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default" ng-click="closeChangePassword()">Close</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->

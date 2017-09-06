@@ -121,7 +121,6 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       url: '/user',
       templateUrl: 'manager-pages/create/user.html',
       controller: userCtrl,
-
     })
     .state('manager.create.client', {
       url: '/client',
@@ -137,7 +136,6 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       url: '/job',
       templateUrl: 'manager-pages/create/job.html',
       controller: jobCtrl,
-
     })
     .state('manager.create.project', {
       url: '/project',
@@ -200,16 +198,15 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       url: '/projects',
       templateUrl: 'manager-pages/advanced/projects/projects.html'
     })
-    .state('manager.advanced.batches.edit', {
-      url: '/edit/:id',
-      templateUrl: 'manager-pages/create/batch.html',
-      controller: batchCtrl,
-    })
-
     .state('manager.panel',{
     	url: '/panel',
     	templateUrl: 'manager-pages/panel/panel.html',
     	controller: managerPanelCtrl,
+    })
+    .state('manager.advanced.batches.edit', {
+      url: '/edit/:id',
+      templateUrl: 'manager-pages/create/batch.html',
+      controller: batchCtrl,
     })
     .state('manager.advanced.projects.edit', {
       url: '/edit/:id',

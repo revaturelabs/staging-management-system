@@ -163,7 +163,7 @@ public class Associate {
 
 	public void checkAssociateStatus() {
 		
-		if (this.isTrackedOnDate(LocalDateTime.now()) && !this.isTrainingOnDate(LocalDateTime.now())) {
+		if (isTrackedOnDate(LocalDateTime.now())) {
 			AssociatesStatus status = new AssociatesStatus(1, "STAGING");
 			setAssociateStatus(status);
 		}
@@ -382,15 +382,13 @@ public class Associate {
 		return true;
 	}
 
-	@Override
-	public String toString() {
-		return "Associate [id=" + id + ", salesforceId=" + salesforceId + ", credential=" + credential + ", name="
-				+ name + ", portfolioLink=" + portfolioLink + ", latestPanelStatus=" + latestPanelStatus + ", batch="
-				+ batch + ", project=" + project + ", lockedTo=" + lockedTo + ", portfolioStatus=" + portfolioStatus
-				+ ", associateStatus=" + associateStatus + ", skills=" + skills + ", jobs=" + jobs + ", certifications="
-				+ certifications + "]";
-	}
-
-
+//	@Override
+//	public String toString() {
+//		return "Associate [id=" + id + ", salesforceId=" + salesforceId + ", credential=" + credential + ", name="
+//				+ name + ", portfolioLink=" + portfolioLink + ", latestPanelStatus=" + latestPanelStatus + ", batch="
+//				+ batch + ", project=" + project + ", lockedTo=" + lockedTo + ", portfolioStatus=" + portfolioStatus
+//				+ ", associateStatus=" + associateStatus + ", skills=" + skills + ", jobs=" + jobs + ", certifications="
+//				+ certifications + "]";
+//	}
 	
 }
