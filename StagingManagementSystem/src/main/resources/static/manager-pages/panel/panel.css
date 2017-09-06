@@ -20,4 +20,10 @@
 .center-title{
 	text-align: center;
 }
+#panel-associate{
+	color:black;
+}
+#panel-associate > input{
+	color:black;
+}
 

@@ -25,6 +25,10 @@ import associateInterviewCtrl from './associate-pages/interview/interview';
 import associatePanelCtrl from './associate-pages/associatePanel/associatePanel';
 import associateCtrl from './associate-pages/associate';
 import loginCtrl from './login/login';
+import certificationCtrl from './associate-pages/Certifications/certifications';
+import certificationManCtrl from './manager-pages/home/certifications/certifications';
+
+
 
 require('fusioncharts/fusioncharts.charts')(FusionCharts);
 
@@ -165,6 +169,11 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
           templateUrl: 'manager-pages/home/checkin/checkin.html',
           controller: managerCheckinsCtrl,
         },
+      //certifications view
+        'certifications@manager.home': {
+            templateUrl: 'manager-pages/home/certifications/certifications.html',
+            controller: certificationManCtrl,
+          },
       },
     })
     .state('manager.advanced.allassociates.associateView', {
@@ -203,6 +212,7 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       url: '/edit/:id',
       templateUrl: 'manager-pages/create/project.html',
       controller: projectCtrl,
+
     })
     .state('associate', {
       url: '/associate',
@@ -228,5 +238,12 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       url: '/profile',
       templateUrl: 'associate-pages/profile/profile.html',
       controller: profileCtrl,
-    });
+
+    })
+    .state('associate.Certifications',{
+        url:'/certifications',
+        templateUrl:'associate-pages/Certifications/certifications.html',
+        controller: certificationCtrl,
+     });
+
 });
