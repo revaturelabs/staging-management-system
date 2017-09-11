@@ -63780,34 +63780,36 @@
 	    type: $scope.filterList2.list[0]
 	  };
 
-	  $http.get('batchtype/all').then(function (data) {
-	    $scope.batchtypes = data.data;
-	    $scope.selectedBatchTypes = [];
-	    $scope.batchtypes.forEach(function (type) {
-	      $scope.selectedBatchTypes.push(type);
+	  $scope.updateAll = function () {
+	    $http.get('batchtype/all').then(function (data) {
+	      $scope.batchtypes = data.data;
+	      $scope.selectedBatchTypes = [];
+	      $scope.batchtypes.forEach(function (type) {
+	        $scope.selectedBatchTypes.push(type);
+	      });
 	    });
-	  });
 
-	  $http.get('status/allStatusType').then(function (data) {
-	    $scope.statusTypes = data.data;
-	    $scope.selectedStatusTypes = [];
-	    $scope.statusTypes.forEach(function (statusType) {
-	      $scope.selectedStatusTypes.push(statusType);
+	    $http.get('status/allStatusType').then(function (data) {
+	      $scope.statusTypes = data.data;
+	      $scope.selectedStatusTypes = [];
+	      $scope.statusTypes.forEach(function (statusType) {
+	        $scope.selectedStatusTypes.push(statusType);
+	      });
 	    });
-	  });
 
-	  $http.get('associate/all').then(function (response) {
-	    $scope.associates = response.data;
-	  });
+	    $http.get('associate/all').then(function (response) {
+	      $scope.associates = response.data;
+	    });
 
-	  $http.get('batch/all').then(function (data) {
-	    $scope.batches = data.data;
-	  }, function (data) {});
+	    $http.get('batch/all').then(function (data) {
+	      $scope.batches = data.data;
+	    }, function (data) {});
 
-	  // fetching all project data
-	  $http.get('project/all').then(function (data) {
-	    $scope.projects = data.data;
-	  }, function (data) {});
+	    // fetching all project data
+	    $http.get('project/all').then(function (data) {
+	      $scope.projects = data.data;
+	    }, function (data) {});
+	  };
 
 	  $scope.isAssociates = function () {
 	    if ($state.is('manager.advanced.allassociates')) {
@@ -63894,8 +63896,20 @@
 
 	  $scope.closeAssociateModal = function () {
 	    $('#associateModal').modal('hide');
-	    location.reload();
+	    $scope.updateAll();
 	  };
+
+	  $scope.closeBatchModal = function () {
+	    $('#batchModal').modal('hide');
+	    $scope.updateAll();
+	  };
+
+	  $scope.closeProjectModal = function () {
+	    $('#projectModal').modal('hide');
+	    $scope.updateAll();
+	  };
+
+	  $scope.updateAll();
 	}
 	exports.default = managerAdvancedCtrl;
 
