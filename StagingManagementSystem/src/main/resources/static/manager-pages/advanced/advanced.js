@@ -29,7 +29,8 @@ function managerAdvancedCtrl($scope, $http, $state) {
   $scope.filterType2 = {
 		    type: $scope.filterList2.list[0]
 		  }
-
+  
+$scope.updateAll = function(){
   $http.get('batchtype/all')
     .then((data) => {
       $scope.batchtypes = data.data;
@@ -59,12 +60,14 @@ function managerAdvancedCtrl($scope, $http, $state) {
     }, (data) => {
     });
   
+  
     // fetching all project data
    $http.get('project/all')
     .then((data) => {
       $scope.projects = data.data;
     }, (data) => {
     });
+}
 
   
   $scope.isAssociates = () => {
@@ -147,8 +150,20 @@ function managerAdvancedCtrl($scope, $http, $state) {
 	
 	$scope.closeAssociateModal = () => {
 		  $('#associateModal').modal('hide');
-		  location.reload();
+		  $scope.updateAll();
 	  };
+	  
+	  $scope.closeBatchModal = () => {
+		  $('#batchModal').modal('hide');
+		  $scope.updateAll();
+	  };
+	  
+	  $scope.closeProjectModal = () => {
+		  $('#projectModal').modal('hide');
+		  $scope.updateAll();
+	  };
+	  
+	  $scope.updateAll();
 	
 }
 export default managerAdvancedCtrl;
