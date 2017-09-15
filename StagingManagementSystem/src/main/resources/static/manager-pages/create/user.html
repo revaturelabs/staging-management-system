@@ -1,18 +1,18 @@
 <table class="table table-striped">
   <thead>
     <tr>
-      <th class="create-th" scope="col">Create a User</th>
+      <th class="create-th" scope="col">Create an Associate User</th>
     </tr>
   </thead>
 
   <tbody>
     <tr>
-      <td> <label>Select User Type: </label>
+      <!--td> <label>Select User Type: </label>
         <select class="manager-input" ng-model="user.type" ng-init="user.type = 'associate'">
 					<option value="manager" ng-click="type = 'manager'" selected="selected">Manager</option>
 					<option value="associate" ng-click="type = 'associate'">Associate</option>
 				</select>
-      </td>
+      </td-->
     </tr>
     <tr>
       <td>
@@ -34,11 +34,11 @@
     </tr>
     <tr>
       <td>
-        <div ng-show="user.type === 'associate'">
+        <!--div ng-show="user.type === 'associate'"-->
           <label>Portfolio Link:</label>
 					<input class="manager-input" ng-model="user.portfolioLink"/>
-        </div>
-        <div ng-show="user.type === 'manager'">
+        <!--/div-->
+        <!--div ng-show="user.type === 'manager'">
           <Label>Permission: </Label>
 					<select class="manager-input" ng-show="user.type === 'manager'" ng-model="user.permission.level">
 						<option disabled selected value> -- Select a Permission -- </option>
@@ -46,7 +46,7 @@
 						<option value="MGR" ng-click="permission = 'MGR'">Manager</option>
 						<option value="ASSOC" ng-click="permission = 'ASSOC'">Associate</option>
 					</select>
-				</div>
+				</div-->
       </td>
     </tr>
   </tbody>

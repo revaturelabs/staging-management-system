@@ -63555,26 +63555,29 @@
 	    $scope.requestMade = true;
 	    $scope.createMessage = 'Attempting to create client';
 	    $scope.createMessageStyle = { color: 'black' };
+	    $scope.user.type = 'associate';
 
 	    // need 2 different post requests for manager and associate
-	    if ($scope.user.type == 'associate') {
-	      $http.post('/associate', $scope.user).then(function (response) {
-	        $scope.createMessage = 'Successfully created client';
-	        $scope.createMessageStyle = { color: 'green' };
-	      }, function () {
-	        $scope.createMessage = 'Failed to create client';
-	        $scope.createMessageStyle = { color: 'red' };
-	      });
-	    }
-	    if ($scope.user.type == 'manager') {
-	      $http.post('/manager', $scope.user).then(function (response) {
-	        $scope.createMessage = 'Successfully created client';
-	        $scope.createMessageStyle = { color: 'green' };
-	      }, function () {
-	        $scope.createMessage = 'Failed to create client';
-	        $scope.createMessageStyle = { color: 'red' };
-	      });
-	    }
+	    // if ($scope.user.type == 'associate') {
+	    console.log($scope.user);
+	    $http.post('/associate', $scope.user).then(function (response) {
+	      $scope.createMessage = 'Successfully created client';
+	      $scope.createMessageStyle = { color: 'green' };
+	    }, function () {
+	      $scope.createMessage = 'Failed to create client';
+	      $scope.createMessageStyle = { color: 'red' };
+	    });
+	    //}
+	    //Old Manager creation function. Replaced by Salesforce and salesforce login
+	    /* if ($scope.user.type == 'manager') {
+	       $http.post('/manager', $scope.user).then((response) => {
+	         $scope.createMessage = 'Successfully created client';
+	         $scope.createMessageStyle = { color: 'green' };
+	       }, () => {
+	         $scope.createMessage = 'Failed to create client';
+	         $scope.createMessageStyle = { color: 'red' };
+	       });
+	     }*/
 	  };
 	}
 
@@ -63780,34 +63783,36 @@
 	    type: $scope.filterList2.list[0]
 	  };
 
-	  $http.get('batchtype/all').then(function (data) {
-	    $scope.batchtypes = data.data;
-	    $scope.selectedBatchTypes = [];
-	    $scope.batchtypes.forEach(function (type) {
-	      $scope.selectedBatchTypes.push(type);
+	  $scope.updateAll = function () {
+	    $http.get('batchtype/all').then(function (data) {
+	      $scope.batchtypes = data.data;
+	      $scope.selectedBatchTypes = [];
+	      $scope.batchtypes.forEach(function (type) {
+	        $scope.selectedBatchTypes.push(type);
+	      });
 	    });
-	  });
 
-	  $http.get('status/allStatusType').then(function (data) {
-	    $scope.statusTypes = data.data;
-	    $scope.selectedStatusTypes = [];
-	    $scope.statusTypes.forEach(function (statusType) {
-	      $scope.selectedStatusTypes.push(statusType);
+	    $http.get('status/allStatusType').then(function (data) {
+	      $scope.statusTypes = data.data;
+	      $scope.selectedStatusTypes = [];
+	      $scope.statusTypes.forEach(function (statusType) {
+	        $scope.selectedStatusTypes.push(statusType);
+	      });
 	    });
-	  });
 
-	  $http.get('associate/all').then(function (response) {
-	    $scope.associates = response.data;
-	  });
+	    $http.get('associate/all').then(function (response) {
+	      $scope.associates = response.data;
+	    });
 
-	  $http.get('batch/all').then(function (data) {
-	    $scope.batches = data.data;
-	  }, function (data) {});
+	    $http.get('batch/all').then(function (data) {
+	      $scope.batches = data.data;
+	    }, function (data) {});
 
-	  // fetching all project data
-	  $http.get('project/all').then(function (data) {
-	    $scope.projects = data.data;
-	  }, function (data) {});
+	    // fetching all project data
+	    $http.get('project/all').then(function (data) {
+	      $scope.projects = data.data;
+	    }, function (data) {});
+	  };
 
 	  $scope.isAssociates = function () {
 	    if ($state.is('manager.advanced.allassociates')) {
@@ -63894,8 +63899,20 @@
 
 	  $scope.closeAssociateModal = function () {
 	    $('#associateModal').modal('hide');
-	    location.reload();
+	    $scope.updateAll();
 	  };
+
+	  $scope.closeBatchModal = function () {
+	    $('#batchModal').modal('hide');
+	    $scope.updateAll();
+	  };
+
+	  $scope.closeProjectModal = function () {
+	    $('#projectModal').modal('hide');
+	    $scope.updateAll();
+	  };
+
+	  $scope.updateAll();
 	}
 	exports.default = managerAdvancedCtrl;
 
