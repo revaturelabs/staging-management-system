@@ -1,0 +1,27 @@
+<div>
+	<br>
+	<table
+		class="table table-striped manager-advanced-associates-table selectable-table">
+		<thead>
+		<button type="button" ng-click="massUpdatePortfolioStatus(true)">Approve Selected</button>
+		<button type="button" ng-click="massUpdatePortfolioStatus(false)">Deny Selected</button>
+			<tr>
+				<th><input type="checkbox" ng-model="item.checkbox_status" ng-click="selectAllAssociates(item.checkbox_status)"></th>
+				<th class="columnClickable" ng-click="changeOrdering('name')" scope="col">Associate</th>
+				<th class="columnClickable" ng-click="changeOrdering('batch.batchType.value')" scope="col">Portfolio Status</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="associate in associates | filter: 'staging' | orderBy: ordering : reverse"  >
+				
+				<td><input type="checkbox"  ng-model="selectedAssociates[associate.id]" ng-false-value="undefined"></td>
+				<td ng-bind="associate.name"></td>
+				<td ng-bind="displayPortfolioStatus(associate.portfolioStatus)"></td>
+
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+
+

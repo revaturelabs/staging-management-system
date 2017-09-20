@@ -2,6 +2,24 @@ function managerAdvancedCtrl($scope, $http, $state) {
   window.scope = $scope;
   
   $scope.$state = $state;
+ 
+  $scope.ordering = ['name', 'name'];
+  $scope.reverse = false;
+  $scope.statusSelection = 'training';
+  
+  $scope.changeOrdering = function(option){
+	  
+	  if($scope.ordering[0] == option) { //Lets you click twice to reverse order but prevents it on the first click to change type
+		  if($scope.reverse)
+			  $scope.reverse=false;
+		  else
+			  $scope.reverse=true;
+	  }
+	  else
+		  $scope.reverse = false; //Make sure the first time you order it, its not reversed
+	  
+	  $scope.ordering = [option, 'name']; //Keeps them alphabetical, even after changing ordering type
+  }
   
   $scope.filterList = {
 		 list:
@@ -22,6 +40,18 @@ function managerAdvancedCtrl($scope, $http, $state) {
 			 ]
 	  };
 
+  
+  $scope.filterStatusList = {
+			 list:
+			[
+				 {id : 1, name : 'Staging'},
+				 {id : 2, name : 'Project'},
+				 {id : 3, name : 'Bench'},
+				 {id : 4, name : 'Training'},
+				 {id : 4, name : 'All'},
+			 ]
+	  };
+
   $scope.filterType = {
 		    type: $scope.filterList.list[0]
 		  }
@@ -29,6 +59,69 @@ function managerAdvancedCtrl($scope, $http, $state) {
   $scope.filterType2 = {
 		    type: $scope.filterList2.list[0]
 		  }
+
+  //Default Status filter for status
+  $scope.userSearch =  {
+		  associateStatus : {
+			  status: 'Staging'
+		  } 
+  };
+  
+  //Default dropdown menu selection
+  $scope.statusSelection = {
+		    type: $scope.filterStatusList.list[0]
+		  }
+  
+  $scope.selectStatusFilter = function (statusSelection) {
+	  if (statusSelection === "All")
+		  $scope.userSearch.associateStatus.status = undefined; //Seems like a janky fix, works though
+	  else
+		  $scope.userSearch.associateStatus.status = statusSelection;
+  }
+  
+  
+  //Portfolio Status Page
+  //=====================
+  $scope.displayPortfolioStatus = function (status) {
+	  if(status)
+		  return "Approved"
+	  else
+		  return "Pending Approval"
+			 
+  }
+  
+  $scope.selectedAssociates = {};
+  $scope.selectAllAssociates = function(checked) {
+	  for (let i = 0; i < $scope.associates.length; i++) {
+		let associate = $scope.associates[i];
+		
+		if(associate.associateStatus.status.includes("STAGING")){ //Gotta make sure people not in staging dont get changed
+			if(checked){
+				$scope.selectedAssociates[associate.id] = true;
+			}
+			else $scope.selectedAssociates[associate.id] = undefined;
+		}
+	  }
+  }
+  
+  $scope.massUpdatePortfolioStatus = (selection) => {		
+	  
+	 //Not efficient. Wanted to keep track of the array position of the associate and just update it like that, but I couldn't get that on the html/angularjs side to send in the array position.
+	  $.each($scope.selectedAssociates, function(index, value){
+		  for (let i = 0; i < $scope.associates.length; i++) {
+			  
+				if($scope.associates[i].associateStatus.status.includes("STAGING") && $scope.associates[i].id == index && value != undefined){ //Gotta make sure people not in staging dont get changed
+					 $scope.associates[i].portfolioStatus = selection;
+					$http.put('associate/updateAssociateStatus', $scope.associates[i]).then(() => {
+					}).catch(() => {
+						$scope.associates[i].portfolioStatus = !selection;
+					});
+					break;
+				}
+			  } 
+	  });
+  } 
+  //=====================
   
 $scope.updateAll = function(){
   $http.get('batchtype/all')
@@ -51,7 +144,7 @@ $scope.updateAll = function(){
 
   	$http.get('associate/all')
   	.then((response) => {
-		$scope.associates = response.data;
+		$scope.associates = response.data;		  
   	});
 
   $http.get('batch/all')
@@ -90,6 +183,13 @@ $scope.updateAll = function(){
 	  return true;
 	return false;
   };
+  
+  //button to get to portfolio management
+  $scope.isPortfolios = () => {
+		if($state.is('manager.advanced.portfolios'))
+		  return true;
+		return false;
+	  };
 
   $scope.isInterviews = () => {
     if ($state.is('manager.advanced.interviews')) {

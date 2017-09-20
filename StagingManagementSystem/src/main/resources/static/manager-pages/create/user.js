@@ -9,11 +9,11 @@ function userCtrl($scope, $http) {
     $scope.requestMade = true;
     $scope.createMessage = 'Attempting to create client';
     $scope.createMessageStyle = { color: 'black' };
-    $scope.user.type = 'associate';
+    $scope.user.type = 'associate'; //Remove this if you re-add manager creation
+    
     
     // need 2 different post requests for manager and associate
    // if ($scope.user.type == 'associate') {
-    	console.log( $scope.user);
       $http.post('/associate', $scope.user).then((response) => {
         $scope.createMessage = 'Successfully created client';
         $scope.createMessageStyle = { color: 'green' };
