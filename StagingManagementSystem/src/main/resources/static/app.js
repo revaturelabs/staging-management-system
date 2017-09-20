@@ -198,6 +198,10 @@ routerApp.config(($stateProvider, $urlRouterProvider) => {
       url: '/projects',
       templateUrl: 'manager-pages/advanced/projects/projects.html'
     })
+    .state('manager.advanced.portfolios', {
+      url: '/portfolios',
+      templateUrl: 'manager-pages/advanced/portfolios/portfolios.html'
+    })
     .state('manager.panel',{
     	url: '/panel',
     	templateUrl: 'manager-pages/panel/panel.html',

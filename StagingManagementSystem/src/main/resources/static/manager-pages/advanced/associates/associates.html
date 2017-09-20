@@ -7,6 +7,7 @@
 				<div class="table-header-buttons">
 					<div class="manager-advanced-row">
 						<div id="searchBars">
+						
 							<input type="text" ng-model="userSearch.name" class="text-center"
 								placeholder="Search"
 								ng-hide="filterType.type.name != 'Associate'"> 
@@ -17,22 +18,30 @@
 								type="text" ng-model="userSearch.batch.trainers.name"
 								class="text-center" placeholder="Search"
 								ng-hide="filterType.type.name != 'Trainer'"> 
+						
 							<select
 								ng-model="filterType.type"
 								ng-options="item.name for item in filterList.list">
-							</select> <br> <br>
+							</select>
+							
+							Only show Associates with status: 
+							<select
+								ng-click="selectStatusFilter(statusSelection.type.name)"
+								ng-model="statusSelection.type"
+								ng-options="item.name for item in filterStatusList.list">
+							</select>
 						</div>
 					</div>
 				</div>
-				<th scope="col">Associate</th>
-				<th scope="col">Batch Type</th>
-				<th scope="col">Trainer</th>
-				<th scope="col">Status</th>
-				<th scope="col">Internal Project</th>
+				<th class="columnClickable" ng-click="changeOrdering('name')" scope="col">Associate</th>
+				<th class="columnClickable" ng-click="changeOrdering('batch.batchType.value')" scope="col">Batch Type</th>
+				<th class="columnClickable" ng-click="changeOrdering('batch.trainers[0].name')" scope="col">Trainer</th>
+				<th class="columnClickable" ng-click="changeOrdering('associateStatus.status')" scope="col">Status</th>
+				<th class="columnClickable" ng-click="changeOrdering('project.projectName')" scope="col">Internal Project</th>
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="associate in associates | filter:userSearch"
+			<tr ng-repeat="associate in associates | filter: userSearch | orderBy: ordering : reverse" 
 				ui-sref="manager.advanced.allassociates.associateView({id: associate.id})"
 				data-toggle="modal" data-target="#associateModal">
 
