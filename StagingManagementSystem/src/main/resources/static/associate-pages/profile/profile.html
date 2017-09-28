@@ -228,8 +228,8 @@
                     </div>
                     <div>
                         <label for="associateStatus">Associate Status:</label>
-                        <select id="associateStatus" name="associateStatus" ng-model="associate.associateStatus.associateStatusId">
-                            <option ng-repeat="statusType in statusTypes" ng-value="statusType.associateStatusId">{{statusType.status}}</option>
+                        <select id="associateStatus" name="associateStatus" ng-model="associate.associateStatus">
+                            <option ng-repeat="statusType in statusTypes" ng-value="statusType">{{statusType.status}}</option>
                         </select>
                     </div>
                 </div>
