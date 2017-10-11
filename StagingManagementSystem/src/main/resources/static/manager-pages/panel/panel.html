@@ -1,0 +1,121 @@
+<div class="panel-container">
+	<div class="text-center">
+		<p>{{PanelLoad}}</p>
+		<div>
+			<table class="table table-striped manager-advanced-associates-table selectable-table">
+			<thead>
+					<tr>
+						<th id="panel-associate" scope="col">Associate <input ng-disabled="disabled_search" ng-model="searchName.name" type="text" placeholder="Name" />
+							<select ng-disabled="disabled_select" ng-model="selectChoice" ng-change="statusSelected(selectChoice)">
+								<option value="ALL">ALL</option>
+								<option value="PENDING">PENDING</option>
+								<option value="PASS">PASS</option>
+								<option value="FAIL">FAIL</option>
+								<option value="NULL">NO PANEL RECORD</option>
+							</select> 
+							<button type="button" ng-disabled="refreshIcon" ng-click="statusSelected(selectChoice)" class="btn btn-primary" ><span class="glyphicon glyphicon-refresh"></span></button>
+						</th>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-show="searchShowUp" ng-repeat="associate in associates | filter:searchName">
+						<td ng-click="associateNameClick(associate)" ng-bind="associate.name"></td>
+					</tr>
+				</tbody>
+			</table>
+			
+			<div id="associateName">{{choose.name}}</div>
+			<button id ="panel-margin" type="button" ng-show ="(plist[plist.length-1].status =='FAIL'||plist[plist.length-1].status =='PASS')  || (choose.length != 0 && plist.length == 0)"  ng-click="showAddModal()" class="btn btn-primary">Add Panel</button>
+			<table ng-show="show_panel" class="table table-striped manager-associates-panel-table selectable-table">
+				<thead>
+					<tr>
+						<th class="assPanel-th center-title" scope="col">Date</th>
+						<th class="assPanel-th center-title" scope="col">Status</th>
+						<th class="assPanel-th center-title" scope="col">Comment</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="associatePanelTable" ng-repeat="p in plist" ng-click="PanelClick(p)">
+						<td>{{dateConverter(p.statusDate)}}</td>
+						<td>{{p.status}}</td>
+						<td class="comment-ellipsis">{{p.comments}}</td>
+					</tr>
+				</tbody>
+			</table>
+			
+		</div>
+
+	<!-- Modal for add new panel -->
+		<div id="addModal" class="modal fade" tabindex="-1" role="dialog">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title">Add Panel</h4>
+					</div>
+					<div class="modal-body">
+						<div>
+							<h5 class="newH5">Associate Name</h5>
+						 {{choose.name}}
+						</div>
+					<div class="row" style="margin-top: 2em;">
+						<div class="col-sm-12 col-xs-12" style="text-align: center;">
+							Comment
+							<textarea class="form-control commentArea" ng-model="defaultCommnt" rows="8"></textarea>
+						</div>
+	    			</div>	
+					</div>
+					<div class="modal-footer">
+						<div class="alert alert-success" ng-show="successMsgShow" style="text-align: left;">Successfully added an Panel! </div>
+						<div class="alert alert-danger" ng-bind="errorMsg" ng-show="errorMsgShow" style="text-align: left;">Failed to add an Panel.</div>
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="button" id="addPanelBtn" ng-click="addPanelClick()" class="btn btn-primary">Add Panel</button>
+					</div>
+				</div>
+				<!-- /.modal-content -->
+			</div>
+			<!-- /.modal-dialog -->
+		</div>
+		<!-- /.modal -->
+
+
+		<!-- Add comment in Panel -->
+		<div id="PanelCommentModal" class="modal fade" tabindex="-1" role="dialog">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		     <!--    <h4 class="modal-title">{{clickedInterview.client.name}} - {{ dateConverter(clickedInterview.scheduled) }}</h4> -->
+		      </div>
+		      
+		      <div class="modal-body">
+		      	<div class="row">
+					<div class="col-sm-6" style="text-align: center;">
+						Status
+						<select ng-model="statusOption">
+							<option value="PENDING">PENDING</option>
+		  					<option value="PASS">PASS</option>
+		  					<option value="FAIL">FAIL</option>
+		  				</select>
+						<!-- <select class="form-control" ng-model="updateStatus" ng-options="x.value for x in interviewStatuses"></select> -->
+					</div>
+			    </div>
+				
+				<div class="row" style="margin-top: 2em;">
+					<div class="col-sm-12 col-xs-12" style="text-align: center;">
+						Comment
+						<textarea class="form-control commentArea" ng-model="updateComment" rows="8"></textarea>
+					</div>
+			    </div>	
+      		</div>
+	      	<div class="modal-footer">
+	      	<div class="alert alert-success" ng-show="successUpdateMsgShow" style="text-align: left;">Successfully updated the Panel!</div>
+			<div class="alert alert-danger" ng-bind="errorUpdateMsg" ng-show="errorUpdateMsgShow" style="text-align: left;">Failed to add an Panel.</div>
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        <button type="button" id="updateInterviewBtn" ng-click="updateInterviewClick(statusOption, updateComment)" class="btn btn-primary">Update Panel</button>
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+</div>
+</div>

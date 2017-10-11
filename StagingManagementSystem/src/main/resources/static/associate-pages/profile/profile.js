@@ -1,24 +1,34 @@
-const profileCtrl = ($scope, $http, userService, $stateParams, $state, $window) => {
-  if($state.includes('manager')) {
+function profileCtrl($scope, $http, userService, $stateParams, $state, $window) {
+  if ($state.includes('manager')) {
     $scope.isManager = true;
     $http.get('client/priority').then((response) => {
       $scope.clients = response.data;
-    })
+    });
   }
+  
+  
   const associateId = $scope.isManager ? $stateParams.id : userService.getUser().id;
 
   if (associateId === undefined) {
     return;
   }
-
-  const associateUrl = `/associate/${associateId}`;
+  
+  const associateUrl = `/associate/by-identifier/${associateId}`;
+  
   $http({
     method: 'GET',
     url: associateUrl,
-  }).then((response) => {
-    $scope.associate = { ...response.data };
+  }).then((response1) => {
+    $scope.associate = { ...response1.data };
+    $http({
+        method: 'GET',
+        url: '/credential/'+$scope.associate.credential.id,
+      }).then((response2) => {
+        $scope.credential = { ...response2.data };
+        
+      });
   });
-
+  
   $scope.portfolioUrlInput = '';
 
   $scope.addSkill = () => {
@@ -44,6 +54,20 @@ const profileCtrl = ($scope, $http, userService, $stateParams, $state, $window) 
     $scope.newSkillValue = '';
     $('#additionalSkillsModal').modal('show');
   };
+  
+  $scope.closeSkillModal = () => {
+	  $('#additionalSkillsModal').modal('hide');
+  };
+  
+  $scope.showChangePassword = function(){
+	  $scope.sendingRequest = false;
+	  $scope.changePasswordButton= 'Save';
+	  $('#changePassword').modal('show');
+  };
+  
+  $scope.closeChangePassword = () => {
+	  $('#changePassword').modal('hide');
+  }
 
   $scope.openPortfolioUrlModal = () => {
     $scope.sendingRequest = false;
@@ -51,14 +75,102 @@ const profileCtrl = ($scope, $http, userService, $stateParams, $state, $window) 
     $scope.portfolioUrlInput = $scope.associate.portfolioLink;
     $('#portfolioUrlModal').modal('show');
   };
+  
+  $scope.closePortfolioUrlModal = () => {
+	  $('#portfolioUrlModal').modal('hide');
+  };
+  
+  $scope.openAssociateStatusModal = () => {
+	  $scope.loading = true;
+	  $scope.submitting = false;
+	  $scope.submitted = false;
+	  $scope.error = false;
+
+		$('#statusModal').modal('show');
+		
+		$scope.updateAssociateStatus = () => {		
+			$scope.submitting = true;
+			$scope.submitted = false;
+			$scope.error = false;
+			
+			// Hack! Business logic on the front-end.
+			switch ($scope.associate.associateStatus.associateStatusId) {
+			case 1:
+				$scope.associate.associateStatus.status = 'STAGING';
+				break;
+			case 2:
+				$scope.associate.associateStatus.status = 'PROJECT';
+				break;
+			case 3:
+				$scope.associate.associateStatus.status = 'BENCH';
+				$scope.associate.portfolioStatus = false;
+				break;
+			default:
+				$scope.associate.associateStatus.status = 'TRAINING';
+				break;
+			}
+
+			$http.put('associate/updateAssociateStatus', $scope.associate).then(() => {
+				$scope.submitting = false;
+				$scope.submitted = true;
+				
+			}).catch(() => {
+				$scope.submitting = false;			
+				$scope.error = true;
+			});
+		}
+  };
+  
+  $scope.closeAssociateStatusModal = () => {
+	  $('#statusModal').modal('hide');
+  };
+  
+  $scope.openPortfolioStatusModal = () => {
+	  $scope.loading = true;
+	  $scope.submitting = false;
+	  $scope.submitted = false;
+	  $scope.error = false;
+	  
+	  $('#portfolioStatusModal').modal('show');
+	  
+	  $scope.updatePortfolioStatus = () => {		
+			$scope.submitting = true;
+			$scope.submitted = false;
+			$scope.error = false;
+		    $http.put('associate/updateAssociateStatus', $scope.associate).then(() => {
+				$scope.submitting = false;
+				$scope.submitted = true;
+			}).catch(() => {
+				$scope.submitting = false;			
+				$scope.error = true;
+			});
+	  }
+  };
+  
+  $scope.closePortfolioStatusModal = () => {
+	  $('#portfolioStatusModal').modal('hide');
+  }
+  
+  $scope.formatPortfolioStatus = (portfolioStatus) => {
+		return portfolioStatus ? 'COMPLETE' : 'INCOMPLETE';
+  };
+	
+  $scope.openProjectStatusModal = () => {
+	    $scope.sendingRequest = false;
+	    $('#projectStatusModal').modal('show');
+  };
+  
+  $scope.closeProjectStatusModal = () => {
+	  $('#projectStatusModal').modal('hide');
+  };
 
   $scope.toggleMappedModal = () => {
     window.scope = $scope;
     $scope.sendingRequest = false;
     $scope.mappedModalButtonValue = 'Save';
-    if($scope.associate.lockedTo) {
+    if ($scope.associate.lockedTo) {
       $scope.clients.some((client) => {
-        if(client.name === $scope.associate.lockedTo.name) {
+        if (client.name === $scope.associate.lockedTo.name) {
           $scope.associate.lockedTo = client;
           return true;
         }
@@ -66,7 +178,11 @@ const profileCtrl = ($scope, $http, userService, $stateParams, $state, $window) 
     }
 
     $('#mappedToClientModal').modal('show');
-  }
+  };
+  
+  $scope.closeMappedToClientModal = () => {
+	  $('#mappedToClientModal').modal('hide');
+  };
 
   $scope.submitPortfolioUrl = () => {
     $scope.associate.portfolioLink = $scope.portfolioUrlInput;
@@ -101,6 +217,39 @@ const profileCtrl = ($scope, $http, userService, $stateParams, $state, $window) 
     });
   };
 
+  $scope.changePassword = function(){
+	  $scope.credential.password = $scope.newPassword;
+	  $scope.sendingRequest = true;
+	  if ($scope.newPassword != null && $scope.checkNewPassword()){
+		    $scope.changePasswordButton = 'Saving...';
+		    $http({
+		      method: 'PUT',
+		      url: '/credential/',
+		      data: $scope.credential,
+		    }).then(() => {
+		      $('#changePassword').modal('hide');
+		      $scope.newPassword="";
+		      $scope.confirmPassword="";
+		      $scope.createMessage = "";
+		    }, () => {
+		      $('#changePassword').modal('hide');
+		      $scope.newPassword="";
+		      $scope.confirmPassword="";
+		      $scope.createMessage = "";
+		    });
+		  } else {
+			  $scope.createMessage = 'Password information incorrect!';
+		      $scope.createMessageStyle = { color: 'red' };
+		  }
+  };
+  
+  $scope.checkNewPassword = function() {
+	  if ($scope.newPassword == $scope.confirmPassword)
+		  return true;
+	  else
+		  return false;
+  }
+  
   $scope.updateLockedTo = () => {
     $scope.sendingRequest = true;
     $scope.mappedModalButtonValue = 'Saving...';
@@ -113,7 +262,7 @@ const profileCtrl = ($scope, $http, userService, $stateParams, $state, $window) 
     }, () => {
       $('#mappedToClientModal').modal('hide');
     });
-  }
+  };
 
   $scope.openPortfolioLink = () => {
     $window.open($scope.associate.portfolioLink);
@@ -131,6 +280,6 @@ const profileCtrl = ($scope, $http, userService, $stateParams, $state, $window) 
       $scope.addSkill();
     }
   };
-};
+}
 
 export default profileCtrl;

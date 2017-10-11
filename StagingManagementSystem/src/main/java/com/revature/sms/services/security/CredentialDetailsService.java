@@ -35,7 +35,7 @@ public class CredentialDetailsService implements UserDetailsService {
     @Autowired
     private ManagerRepo managerRepo;
 
-    @Override
+    @Override //TODO:Tied into authentication, needs to be replaced
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
 
         Associate associate = associateRepo.getByCredential_Username(s);

@@ -1,6 +1,7 @@
 package com.revature.sms.services;
 
 import com.revature.sms.entities.Associate;
+import com.revature.sms.entities.AssociatesStatus;
 import com.revature.sms.entities.Skill;
 import com.revature.sms.entities.StaggingAssociate;
 import com.revature.sms.repositories.AssociateRepo;
@@ -14,99 +15,166 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class AssociateServiceImpl implements AssociateService {
 
-    @Autowired
-    private AssociateRepo associateRepo;
+	@Autowired
+	private AssociateRepo associateRepo;
 
-    @Autowired
-    private StaggingAssociateRepo staggingAssociateRepo;
-    
-    @Autowired
-    private CredentialRepo credentialRepo;
+	@Autowired
+	private StaggingAssociateRepo staggingAssociateRepo;
 
-    @Autowired
-    private SkillRepo skillRepo;
+	@Autowired
+	private CredentialRepo credentialRepo;
 
-    public AssociateServiceImpl(AssociateRepo associateRepo, CredentialRepo credentialRepo) {
+	@Autowired
+	private SkillRepo skillRepo;
 
-        super();
-        this.associateRepo = associateRepo;
-        this.credentialRepo = credentialRepo;
-    }
+	public AssociateServiceImpl(AssociateRepo associateRepo, CredentialRepo credentialRepo) {
 
-    public AssociateServiceImpl() {
+		super();
+		this.associateRepo = associateRepo;
+		this.credentialRepo = credentialRepo;
+	}
 
-        super();
-    }
+	public AssociateServiceImpl() {
 
-    @Override
-    public Associate getById(long id) {
+		super();
+	}
 
-        return associateRepo.getOne(id);
-    }
+	@Override
+	public Associate getById(long id) {
 
-    @Override
-    @Transactional
-    public void add(Associate associate) {
+		return associateRepo.getOne(id);
+	}
 
-        credentialRepo.save(associate.getCredential());
-        associateRepo.saveAndFlush(associate);
-    }
+	@Override
+	@Transactional
+	public void add(Associate associate) {
 
-    @Override
-    public void delete(Associate associate) {
+		credentialRepo.save(associate.getCredential());
+		associateRepo.saveAndFlush(associate);
+	}
 
-        associateRepo.delete(associate);
-        credentialRepo.delete(associate.getCredential());
-    }
+	@Override
+	public void delete(Associate associate) {
 
-    @Override
-    public void update(Associate associate) {
+		associateRepo.delete(associate);
+		credentialRepo.delete(associate.getCredential());
+	}
 
-        final Set<Skill> skills = new LinkedHashSet<>();
-        for (Skill associateSkill : associate.getSkills()) {
-            Skill skill = skillRepo.findFirstByValueIgnoreCase(associateSkill.getValue());
-            if (skill != null) {
-                skills.add(skill);
-            } else {
-                skills.add(skillRepo.saveAndFlush(associateSkill));
-            }
-        }
-        associate.setSkills(skills);
-        associateRepo.saveAndFlush(associate);
-        credentialRepo.save(associate.getCredential());
-    }
+	@Override
+	public void update(Associate associate) {
+		if (!associate.isActive()) {
+			associate.setProject(null);
+		}
 
-    @Override
-    public Set<Associate> getAll() {
+		final Set<Skill> skills = new LinkedHashSet<>();
+		for (Skill associateSkill : associate.getSkills()) {
+			Skill skill = skillRepo.findFirstByValueIgnoreCase(associateSkill.getValue());
+			if (skill != null) {
+				skills.add(skill);
+			} else {
+				skills.add(skillRepo.saveAndFlush(associateSkill));
+			}
+		}
+		associate.setSkills(skills);
+		associateRepo.saveAndFlush(associate);
+		credentialRepo.save(associate.getCredential());
+	}
 
-        return new HashSet<>(associateRepo.findAll());
-    }
+	@Override
+	public void updateStatus(Associate associate) {
+			associateRepo.saveAndFlush(associate);
+	}
 
-    @Override
-    public Set<Associate> getAllActive() {
+	@Override
+	public Set<Associate> getAll() {
 
-        return associateRepo.findAssociatesByActiveTrue();
-    }
+		return new HashSet<>(associateRepo.findAll());
+	}
 
-    @Override
-    public Set<Associate> haveNoBatch() {
+	@Override
+	public Set<Associate> haveNoBatch() {
 
-        return associateRepo.findByBatchIsNull();
-    }
+		return associateRepo.findByBatchIsNull();
+	}
 
-    @Override
-    public Set<Associate> findByBatchId(Long id) {
+	@Override
+	public Set<Associate> findByBatchId(Long id) {
 
-        return associateRepo.findByBatchId(id);
-    }
+		return associateRepo.findByBatchId(id);
+	}
 
-    @Override
-    public Set<StaggingAssociate> getAssociatesInStaggingOn(String date) {
-      return staggingAssociateRepo.getAssociatesInStaggingOn(date);
-    }
+	@Override
+	public Set<Associate> findByProjectId(Long id) {
+
+		return associateRepo.findByProjectProjectId(id);
+	}
+
+	@Override
+	public Set<StaggingAssociate> getAssociatesInStaggingOn(String date) {
+		return staggingAssociateRepo.getAssociatesInStaggingOn(date);
+	}
+
+	@Override
+	public Set<Associate> getAllByStatus(String status) {
+		return associateRepo.findByAssociateStatus_Status(status);
+	}
+
+	@Override
+	public Set<Associate> findByAssociateStatus(String status) {
+		return null;
+	}
+
+	@Override
+	public Set<Associate> getAllActive() {
+		Set<Associate> associates = new HashSet<Associate>();
+		Set<Associate> allAssociateStaging = associateRepo.findByAssociateStatus_Status("STAGING");
+		for (Associate a : allAssociateStaging) {
+			associates.add(a);
+		}
+		Set<Associate> allAssociateBench = associateRepo.findByAssociateStatus_Status("BENCH");
+		for (Associate a : allAssociateBench) {
+			associates.add(a);
+		}
+		return associates;
+	}
+
+	@Override
+	public Set<Associate> haveNoProject() {
+		Set<Associate> noProject = new HashSet<Associate>();
+		Set<Associate> allAssociateStaging = associateRepo.findByAssociateStatus_Status("STAGING");
+		for (Associate a : allAssociateStaging) {
+			if (a.getProject() == null) {
+				noProject.add(a);
+			}
+		}
+		Set<Associate> allAssociateBench = associateRepo.findByAssociateStatus_Status("BENCH");
+		for (Associate a : allAssociateBench) {
+			if (a.getProject() == null) {
+				noProject.add(a);
+			}
+		}
+		return noProject;
+	}
+
+	@Override
+	public Set<Associate> findByNameLike(String name) {
+		return associateRepo.findByNameContainingIgnoreCase(name);
+	}
+	@Override 
+	public int countAssociateByAssociateStatus_Status(String status){
+		return associateRepo.countAssociateByAssociateStatus_Status(status);
+	}
+
+	@Override
+	public Set<Associate> findByLatestPanelStatus(String latestPanelStatus) {
+		
+		return associateRepo.findByLatestPanelStatus(latestPanelStatus);
+	}
 }

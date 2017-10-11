@@ -1,66 +1,75 @@
 <div>
-  <table class="table table-striped manager-advanced-associates-table selectable-table">
-    <thead>
-    <tr>
-      <div class="table-header-buttons">
-        <div>Select Batch Types</div>
-        <div class="manager-advanced-row">
-          <div ng-repeat="batchtype in batchtypes">
-            <input
-              type="checkbox"
-              value="{{batchtype}}"
-              ng-checked="selectedBatchTypes.indexOf(batchtype) > -1"
-              ng-click="toggleSelectedBatchTypes(batchtype)"
-            > {{batchtype.value}}
-          </div>
-        </div>
-      </div>
-      <th scope="col">Associate</th>
-      <th scope="col">Batch Type</th>
-      <th scope="col">Trainer</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr ng-repeat="associate in associates | filter: associateBatchFilter | filter: nameFilter | filter: trainerFilter" ui-sref="manager.associateView({id: associate.id})">
-      <td ng-bind="associate.name"></td>
-      <td ng-bind="associate.batch.batchType.value"></td>
-      <td>
-        <div ng-repeat="trainer in associate.batch.trainers">
-          <div ng-bind="trainer.name"></div>
-        </div>
-      </td>
-    </tr>
-    </tbody>
-  </table>
+	<br>
+	<table
+		class="table table-striped manager-advanced-associates-table selectable-table">
+		<thead>
+			<tr>
+				<div class="table-header-buttons">
+					<div class="manager-advanced-row">
+						<div id="searchBars">
+						
+							<input type="text" ng-model="userSearch.name" class="text-center"
+								placeholder="Search"
+								ng-hide="filterType.type.name != 'Associate'"> 
+							<input type="text" ng-model="userSearch.batch.batchType.value"
+								class="text-center" placeholder="Search"
+								ng-hide="filterType.type.name != 'Batch'"> 
+							<input
+								type="text" ng-model="userSearch.batch.trainers.name"
+								class="text-center" placeholder="Search"
+								ng-hide="filterType.type.name != 'Trainer'"> 
+						
+							<select
+								ng-model="filterType.type"
+								ng-options="item.name for item in filterList.list">
+							</select>
+							
+							Only show Associates with status: 
+							<select
+								ng-click="selectStatusFilter(statusSelection.type.name)"
+								ng-model="statusSelection.type"
+								ng-options="item.name for item in filterStatusList.list">
+							</select>
+						</div>
+					</div>
+				</div>
+				<th class="columnClickable" ng-click="changeOrdering('name')" scope="col">Associate</th>
+				<th class="columnClickable" ng-click="changeOrdering('batch.batchType.value')" scope="col">Batch Type</th>
+				<th class="columnClickable" ng-click="changeOrdering('batch.trainers[0].name')" scope="col">Trainer</th>
+				<th class="columnClickable" ng-click="changeOrdering('associateStatus.status')" scope="col">Status</th>
+				<th class="columnClickable" ng-click="changeOrdering('project.projectName')" scope="col">Internal Project</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="associate in associates | filter: userSearch | orderBy: ordering : reverse" 
+				ui-sref="manager.advanced.allassociates.associateView({id: associate.id})"
+				data-toggle="modal" data-target="#associateModal">
+
+				<td ng-bind="associate.name"></td>
+				<td ng-bind="associate.batch.batchType.value"></td>
+				<td>
+					<div ng-repeat="trainer in associate.batch.trainers">
+						<div ng-bind="trainer.name"></div>
+					</div>
+				</td>
+				<td ng-bind="associate.associateStatus.status"></td>
+				<td ng-bind="associate.project.projectName"></td>
+
+			</tr>
+		</tbody>
+	</table>
+</div>
 
 <!-- Modal -->
-<div id="filterModal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Select Filter Options Below</h4>
-      </div>
-      <div class="modal-body">
-        <p>Select Batch Types</p>
-        <div class="row">
-          <div ng-repeat="batchtype in batchtypes">
-            <input
-              type="checkbox"
-              value="{{batchtype}}"
-              ng-checked="selectedBatchTypes.indexOf(batchtype) > -1"
-              ng-click="toggleSelectedBatchTypes(batchtype)"
-            > {{batchtype.value}}
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-
-  </div>
+<div id="associateModal" class="modal fade" role="dialog">
+	<div>
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div ui-view></div>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-default" ng-click="closeAssociateModal()">Close</button>
+		</div>
+	</div>
 </div>
-</div>
+

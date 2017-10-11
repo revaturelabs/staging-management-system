@@ -21,7 +21,6 @@ public class TotalReport {
 
     public Tuple() {
       super();
-      // TODO Auto-generated constructor stub
     }
 
     public I getFirst() {
@@ -91,7 +90,11 @@ public class TotalReport {
     private long totalUnavailable;
     private List<Tuple<String, String>> availibleAssociates = new ArrayList<>();
     private List<Tuple<String, String>> mappedAssociates = new ArrayList<>();
-
+    
+    public TotalData(String batchName) {
+        super();
+        this.batchName = batchName;
+      }
 
     public List<Tuple<String, String>> getAvailible() {
       return availibleAssociates;
@@ -129,10 +132,7 @@ public class TotalReport {
       this.totalUnavailable = totalUnavailable;
     }
 
-    public TotalData(String batchName) {
-      super();
-      this.batchName = batchName;
-    }
+   
 
     public void addAvailible(String name, String portLink) {
       availibleAssociates.add(new Tuple<String, String>(name, portLink));
@@ -146,7 +146,7 @@ public class TotalReport {
   private Map<String, TotalData> totaldata = new HashMap<String, TotalData>();
 
   public void addBatch(Associate associate) {
-    String batchName = associate.getBatch().getBatchType().getValue();
+    String batchName = associate.getBatch()==null?"None":associate.getBatch().getBatchType().getValue();
     String name = associate.getName();
     String portLink = associate.getPortfolioLink();
 

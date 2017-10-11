@@ -59,8 +59,9 @@ public class CredentialControllerImpl {
      */
     @PutMapping
     public void updatecredential(@RequestBody Credential credential) {
-
-        credentialService.update(credential);
+    	Credential old = credentialService.findById(credential.getId());
+    	old.setPassword(credential.getPassword());
+        credentialService.update(old);
     }
 
     /**
@@ -69,6 +70,7 @@ public class CredentialControllerImpl {
      * @param id - id of credential to be retrieved.
      * @return credential object from dataBase.
      */
+    //TODO: May be deprecated, test.
     @GetMapping("/{id}")
     public Credential findById(@PathVariable long id) {
 

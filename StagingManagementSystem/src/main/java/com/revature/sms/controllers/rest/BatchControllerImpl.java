@@ -50,7 +50,7 @@ public class BatchControllerImpl {
 		// this is business logic that should be moved to the service
 		for (BatchType bt : batchTypes) {
 			Set<Skill> skills = bt.getSkills();
-			Set<Skill> persistantSkill = new HashSet<Skill>();
+			Set<Skill> persistantSkill = new HashSet<>();
 			for (Skill s : skills) {
 				persistantSkill.add(skillService.addSkill(s));
 			}

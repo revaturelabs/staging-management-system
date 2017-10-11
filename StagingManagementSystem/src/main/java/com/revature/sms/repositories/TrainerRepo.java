@@ -8,5 +8,5 @@ import javax.transaction.Transactional;
 
 @Transactional
 public interface TrainerRepo extends JpaRepository<Trainer, Long> {
-
+	Trainer getByName(String name);
 }

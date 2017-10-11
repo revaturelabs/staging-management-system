@@ -1,0 +1,29 @@
+.manager-associates-panel-table > thead > tr {
+  background-color: #FF8000;
+}
+#associateName {
+	font-size: 20px;
+	font-family: serif;
+	padding-bottom: 15px;
+	font-weight: bold;
+}
+#panel-margin{
+	margin-bottom: 10px;
+}
+.comment-ellipsis {
+    max-width: 120px;
+    min-width: 120px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.center-title{
+	text-align: center;
+}
+#panel-associate{
+	color:black;
+}
+#panel-associate > input{
+	color:black;
+}
+

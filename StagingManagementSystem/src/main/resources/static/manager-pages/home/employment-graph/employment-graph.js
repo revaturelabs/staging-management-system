@@ -4,14 +4,13 @@ const chart = {
   caption: 'Employed Percentage versus Those awaiting placement',
   subcaption: 'Revature, LLC',
   startingangle: '120',
-  showlabels: '0',
+  showlabels: '1',
   showlegend: '1',
   enablemultislicing: '0',
   slicingdistance: '25',
-  showpercentvalues: '1',
-  showpercentintooltip: '0',
-  palettecolors: '#0075c2,#ff0000',
-  plottooltext: '$label Total: $datavalue',
+  showpercentvalues: '0',
+  showpercentintooltip: '1',
+  palettecolors: '#0075c2,#ff0000,#FF8000',
   theme: 'fint',
 };
 
@@ -33,7 +32,7 @@ const employmentGraphCtrl = ($scope, $http, $cacheFactory) => {
     pieChart.render();
   }
 
-  function processChartData(responseData) {
+/*  function processChartData(responseData) {
     const chartData = [
       {
         label: 'Employed',
@@ -43,27 +42,58 @@ const employmentGraphCtrl = ($scope, $http, $cacheFactory) => {
         label: 'Awaiting placement',
         value: 0,
       },
+      {
+          label: 'In Training',
+          value: 0,
+        },
     ];
-
     for (let i = 0; i < responseData.data.length; i += 1) {
-      if (responseData.data[i].active) {
+      if (responseData.data[i].associateStatus.status == 'STAGING' || responseData.data[i].associateStatus.status == 'BENCH') {
         chartData[1].value += 1;
-      } else {
+      } else if(responseData.data[i].associateStatus.status == 'PROJECT'){
         chartData[0].value += 1;
+      }	else {
+    	chartData[2].value += 1;
       }
     }
     $scope.cache.put('chartData', chartData);
     return chartData;
-  }
+  }*/
 
 
   function httpRequest() {
-    $http({
-      method: 'GET',
-      url: '/associate/all',
-    }).then((response) => {
-      const chartData = processChartData(response);
-      renderChart(chartData);
+	  let asscStatus = [
+			  {status: 'STAGING'},
+			  {status: 'BENCH'},
+			  {status: 'PROJECT'},
+			  {status: 'TRAINING'},
+	  ];
+	  const chartData = [
+	          {
+	            label: 'Employed',
+	            value: 0,
+	          },
+	          {
+	            label: 'Awaiting placement',
+	            value: 0,
+	          },
+	          {
+	              label: 'In Training',
+	              value: 0,
+	            },
+	        ];
+    $http.get('associate/number-by-status/'+asscStatus[0].status).then((response1) => {
+    	chartData[1].value += response1.data;
+    	 $http.get('associate/number-by-status/'+asscStatus[1].status).then((response2) => {
+    		 chartData[1].value += response2.data;
+    	    $http.get('associate/number-by-status/'+asscStatus[2].status).then((response3) => {
+    	    	chartData[0].value += response3.data;
+    	      	 $http.get('associate/number-by-status/'+asscStatus[3].status).then((response4) => {
+    	      	    	chartData[2].value += response4.data;
+    	      	    	renderChart(chartData);
+    	      	    });
+    	      });
+    	  });
     });
   }
 

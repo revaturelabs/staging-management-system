@@ -21,6 +21,7 @@ import com.revature.sms.exceptions.NotCheckedInException;
 import com.revature.sms.exceptions.NotLoggedInException;
 import com.revature.sms.repositories.AssociateRepo;
 import com.revature.sms.repositories.CheckinRepo;
+import com.revature.sms.security.models.SalesforceUser;
 
 /**
  * Created by Mykola Nikitin on 6/1/17. An implementation of the CheckinService.
@@ -51,8 +52,7 @@ public class CheckinServiceImpl implements CheckinService {
 	}
 
 	@Override
-	public void approveCheckin(Manager approvingManager, Checkin checkin) {
-		checkin.setApprovedBy(approvingManager);
+	public void approveCheckin(Checkin checkin) {
 		checkin.setApproveTime(LocalDateTime.now());
 		checkinRepo.save(checkin);
 		checkinRepo.flush();
@@ -62,18 +62,27 @@ public class CheckinServiceImpl implements CheckinService {
 	public boolean hasCheckedInToday(Associate associate) {
 		Set<Checkin> checkins = checkinRepo
 				.getAllByCheckinTimeBetween(LocalDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT), LocalDateTime.now());
-		return (checkins != null && !checkins.isEmpty());
+		for (Checkin check : checkins) {
+			if (check.getAssociate().getId() == associate.getId()) {
+				return true;
+			}
+		}
+		return false;
 	}
-	
-	 @Override
-	  public boolean hasCheckedInOnDate(Associate associate, LocalDateTime date) {
-	   LocalDateTime start = LocalDateTime.of(date.toLocalDate(), LocalTime.MIN);
-	   LocalDateTime end = LocalDateTime.of(date.toLocalDate(), LocalTime.MAX);
-	    Set<Checkin> checkins = checkinRepo
-	        .getAllByCheckinTimeBetween(start, end);
-	    
-	    return (checkins != null && checkins.isEmpty());
-	  }
+
+	@Override
+	public boolean hasCheckedInOnDate(Associate associate, LocalDateTime date) {
+		LocalDateTime start = LocalDateTime.of(date.toLocalDate(), LocalTime.MIN);
+		LocalDateTime end = LocalDateTime.of(date.toLocalDate(), LocalTime.MAX);
+		Set<Checkin> checkins = checkinRepo.getAllByCheckinTimeBetween(start, end);
+
+		for (Checkin check : checkins) {
+			if (check.getAssociate().getId() == associate.getId()) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	@Override
 	public boolean hasCheckedInToday() throws NotLoggedInException {
@@ -136,7 +145,7 @@ public class CheckinServiceImpl implements CheckinService {
 
 	@Override
 	public void addcheckins(Set<Checkin> checkins) {
-		// TODO Auto-generated method stub
+		//Empty
 
 	}
 
@@ -147,8 +156,15 @@ public class CheckinServiceImpl implements CheckinService {
 
 	@Override
 	public Set<Checkin> getTodaysCheckins() {
-		return checkinRepo
-				.getAllByCheckinTimeBetween(LocalDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT), LocalDateTime.now());
+		Set<Checkin> todayCheckin = new HashSet<>();
+		Set<Checkin> allCheckin = checkinRepo.getAllByCheckinTimeBetween(LocalDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT),
+				LocalDateTime.now());
+		for (Checkin c : allCheckin){
+			if(c.getApproveTime()==null){
+				todayCheckin.add(c);
+			}
+		}
+		return todayCheckin;
 	}
 
 	@Override
@@ -173,10 +189,9 @@ public class CheckinServiceImpl implements CheckinService {
 	}
 
 	@Override
-	public void approveMultiple(Set<Checkin> checkins, Manager manager) {
+	public void approveMultiple(Set<Checkin> checkins) {
 		LocalDateTime now = LocalDateTime.now();
 		for (Checkin checkin : checkins) {
-			checkin.setApprovedBy(manager);
 			checkin.setApproveTime(now);
 			checkinRepo.saveAndFlush(checkin);
 		}

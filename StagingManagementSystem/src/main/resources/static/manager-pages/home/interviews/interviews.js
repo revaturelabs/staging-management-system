@@ -5,13 +5,11 @@ const interviewsCtrl = ($scope, $http) => {
   }).then((response) => {
     $scope.interviews = response.data;
   }, () => {
-    console.log('error!');
   });
 
   $http.get('/interviewStatus/all').then((successResponse) => {
     $scope.interviewStatuses = successResponse.data;
   }, () => {
-    console.log('failed to retreive interview statuses');
   });
 
   // configure the modal for the interview selected

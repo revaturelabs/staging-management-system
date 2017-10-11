@@ -1,4 +1,15 @@
-.manager-advanced-view-container {
-  display: flex;
-  justify-content: center;
+.ellipsis {
+  max-width: 250px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.manager-advanced-view-controller {
+	
+	display:flex;
+	justify-content:center;
+}
+
+thead {
+	color: white;
 }

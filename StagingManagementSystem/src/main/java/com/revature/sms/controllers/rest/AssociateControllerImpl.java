@@ -5,7 +5,9 @@ import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -35,6 +37,10 @@ public class AssociateControllerImpl {
 	private DataGeneration dataGen;
 	@Autowired
 	TotalReport totalReport;
+	@Value("${sms.salesforce}")
+	private boolean salesforce;
+	
+	private static Logger logger = Logger.getRootLogger();
 
 	private static final String LM = "login_manager";
 	private static final String LA = "login_associate";
@@ -67,8 +73,14 @@ public class AssociateControllerImpl {
 	}
 
 	@GetMapping("/generate/mock-data")
-	public void generateAssociateMockDate() {
-		dataGen.generate();
+	public ResponseEntity generateAssociateMockDate() {
+		if(!salesforce)
+		{
+			dataGen.generate();
+			return ResponseEntity.status(HttpStatus.OK).body(null);
+		}
+		else
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 	}
 
 	@DeleteMapping
@@ -103,7 +115,7 @@ public class AssociateControllerImpl {
 		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 	}
 
-	@GetMapping("/{id}")
+	@GetMapping("/by-identifier/{id}")
 	public ResponseEntity<Associate> getAssociate(@PathVariable long id, HttpSession session) {
 		Associate associate = (Associate) session.getAttribute(LA);
 		if (session.getAttribute(LM) == null && (associate == null || associate.getId() != id)) {
@@ -122,27 +134,71 @@ public class AssociateControllerImpl {
 
 	@GetMapping("/allActive")
 	public Set<Associate> getAllActiveAssociates(HttpSession session) {
-		return associateService.getAllActive();
+	return associateService.getAllActive();
 	}
 
+	//getting all the associates by theit status
+	//status is passing throuh the js file
+	@GetMapping("{status}")
+	public Set<Associate> getAllTraining(@PathVariable String status, HttpSession session)
+	{
+		return associateService.findByAssociateStatus(status);
+	}
+	
 	@GetMapping("no-batch")
 	public Set<Associate> haveNoBatch() {
 		return associateService.haveNoBatch();
+	}
+	
+	@GetMapping("no-project")
+	public Set<Associate> haveNoProject(){
+		return associateService.haveNoProject();
 	}
 
 	@GetMapping("by-batch/{id}")
 	public Set<Associate> byBatch(@PathVariable Long id) {
 		return associateService.findByBatchId(id);
 	}
+	
+	@GetMapping("by-project/{id}")
+	public Set<Associate> byProject(@PathVariable Long id) {
+		return associateService.findByProjectId(id);
+	}
 
+	// is this broken? what is the purpose of this method
 	@GetMapping(path = "/totaldata")
-	public ResponseEntity<Collection<TotalData>> getAssocaites() {
+	public ResponseEntity<Collection<TotalData>> getAssocaites()
+	{
 		return ResponseEntity.ok(totalReport.process(associateService.getAllActive()));
 	}
 	
 	@GetMapping(path = "/AssociatesInStaggin/{date}")
-	public Set<StaggingAssociate> getAssociatesInStaggingOn(@PathVariable String date){
-	  System.out.println("DATE!!!!    " + date);
+	public Set<StaggingAssociate> getAssociatesInStaggingOn(@PathVariable String date) {
+		logger.trace("DATE!!!!    " + date);
 	  return associateService.getAssociatesInStaggingOn(date);
+	}
+	
+	@GetMapping("/search/{searchName}")
+	public Set<Associate> findByNameLike(@PathVariable String searchName) {
+		return associateService.findByNameLike(searchName);
+	}
+
+	@PutMapping("updateAssociateStatus")
+	public ResponseEntity<Associate> updateStatus(@RequestBody Associate associate, HttpSession session) {
+		if (session.getAttribute(LM) == null) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+		}
+		associateService.updateStatus(associate);
+		return ResponseEntity.ok(associate);
+	}
+
+	@GetMapping("number-by-status/{status}")
+	public int countAssociateByAssociateStatus_Status(@PathVariable String status){
+		int asscCount = associateService.countAssociateByAssociateStatus_Status(status);
+		if(!(asscCount>0)){
+			asscCount = 0;
+		}
+		System.out.println(asscCount);
+		return asscCount;
 	}
 }

@@ -37,19 +37,15 @@ const batchCtrl = ($scope, $http, $state, $stateParams) => {
                     })
                   })
               	}, () => {
-              		// console.log('failure')
               	})
             }
           })
 
         	}, () => {
-        		console.log('failure')
         	})
       	}, () => {
-      		console.log('failure')
       	})
   	}, () => {
-  		// console.log('failure')
   	})
 
 
@@ -114,7 +110,11 @@ const batchCtrl = ($scope, $http, $state, $stateParams) => {
     $scope.newBatchTypeShow = true;
     $scope.newBatchType = {};
     $scope.newBatchType.skills = [];
-
+    if ($scope.batch.batchType !== undefined) {
+    	$scope.newBatchType.value = $scope.batch.batchType.value;
+        $scope.newBatchType.skills = $scope.batch.batchType.skills;
+        $scope.newBatchType.id = $scope.batch.batchType.id;
+    }
     $scope.addSkill = (newBatchTypeSkill) => {
       if(!newBatchTypeSkill) {
         return;

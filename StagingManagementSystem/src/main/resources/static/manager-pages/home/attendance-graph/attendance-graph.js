@@ -229,7 +229,6 @@ function getObj(data, time) {
  */
 function buildWeekly() {
   weeklyData = originalData;
-  console.log(JSON.stringify(originalData));
 }
 
 /**
@@ -261,6 +260,8 @@ function setWeekly($scope, tarDate) {
   for (i = 0; i < 7; i += 1) {
     const currObj = getObj(weeklyData, currDate);
 
+    weeklyLabels[i].label = weeklyLabels[i].label + "\n" + currDate.format('MM/DD');
+    
     const hourCount = currObj.hourCount;
     const hourEstimate = currObj.hourEstimate;
 
@@ -275,7 +276,7 @@ function setWeekly($scope, tarDate) {
 
   displayData = JSON.parse(dataString);
   diaplayLabels = weeklyLabels;
-
+  
   displayChart($scope);
 }
 
@@ -298,7 +299,6 @@ function weeklyColumnClick(ev, props, $scope) {
   }).then((response) => {
     $scope.checkedInAssociates = [];
     $scope.notCheckedInAssociates = [];
-    console.log(JSON.stringify(response.data, null, 2));
     response.data.forEach(function (item) {
       item.checkinTime = moment(item.checkinTime).format('HH:MM');
       if(item.checkinTime === 'Invalid date')
@@ -326,7 +326,7 @@ function buildMonthlyForEach(item) {
     const itemCpy = JSON.parse(JSON.stringify(item));
     itemCpy.time = identityString;
     monthlyData.push(itemCpy);
-  } else if (timeMoment.isoWeekday() < 6 && timeMoment < moment()) {// TODO: && moment() > timeMoment) {
+  } else if (timeMoment.isoWeekday() < 6 && timeMoment < moment()) {
     dataObj.hourCount = parseFloat(dataObj.hourCount) + parseFloat(item.hourCount);
     dataObj.hourEstimate = parseFloat(dataObj.hourEstimate) + parseFloat(item.hourEstimate);
   }
@@ -358,14 +358,15 @@ function setMonthly($scope, tarDate) {
   let i;
   const currDate = moment(date.format());
   for (i = 0; i < 5; i += 1) {
+	convertToFirstOfMonth(currDate);
     const currObj = getObj(monthlyData, currDate);
-    const nextObj = getObj(monthlyData, currDate.add(7, 'days'));
+    const nextObj = getObj(monthlyData, currDate);
 
     const hourCount = currObj.hourCount;
     const hourEstimate = currObj.hourEstimate;
-
+    
     const start = moment(currObj.time).format('MM/DD');
-    const stop = moment(nextObj.time).subtract(1, 'days').format('MM/DD');
+    const stop = moment(nextObj.time).add(1, 'months').subtract(1, 'days').format('MM/DD');
     valueString += `{"label":"${start}-${stop}"}`;
 
     const value = Math.floor((hourCount / hourEstimate) * 100);
@@ -374,7 +375,7 @@ function setMonthly($scope, tarDate) {
       dataString += ',';
       valueString += ',';
     }
-    currDate.add(7, 'days');
+    currDate.add(1, 'months');
   }
   dataString += ']}]';
   valueString += ']';
@@ -386,7 +387,34 @@ function setMonthly($scope, tarDate) {
 }
 
 function monthlyColumnClick(ev, props, $scope) {
-  setWeekly($scope, moment(focalDate.add(props.dataIndex * 7, 'days')));
+	let i;
+	 for (i = 0; i < 7; i += 1) {
+ 		  switch(i) {
+ 		  	case 0:
+ 		  		weeklyLabels[i].label = 'Sunday';
+ 		  		break;
+ 		  	case 1:
+ 		  		weeklyLabels[i].label = 'Monday';
+ 		  		break;
+ 		  	case 2:
+ 		  		weeklyLabels[i].label =  'Tuesday';
+ 		  		break;
+ 		  	case 3:
+ 		  		weeklyLabels[i].label = 'Wednesday';
+ 		  		break;
+ 		  	case 4:
+ 		  		weeklyLabels[i].label = 'Thursday';
+ 		  		break;
+ 		  	case 5:
+ 		  		weeklyLabels[i].label = 'Friday';
+ 		  		break;
+ 		  	case 6:
+ 		  		weeklyLabels[i].label = 'Saturday';
+ 		  		break;
+ 		  	default:
+ 		  }
+ 	  }
+  setWeekly($scope, moment(convertToFirstOfMonth(focalDate.add(props.dataIndex, 'months'))));
 
   $scope.selectedValue = `$props.displayValue}/${props.categoryLabel}/${props.dataIndex}`;
 }
@@ -436,8 +464,8 @@ function setYearly($scope, tarDate) {
 
   // Set global view properties.
   focalDate = moment(date.format());
-  $scope.zoomOutStr = 'Not Visible';
-  $scope.canZoom = '';
+  $scope.zoomOutStr = 'Weekly';
+  $scope.canZoom = 'true';
   scale = YEAR;
 
   let dataString = '[{"seriesname":"Yearly","data":[';
@@ -447,6 +475,8 @@ function setYearly($scope, tarDate) {
   for (i = 0; i < 4; i += 1) {
     const currObj = getObj(yearlyData, currDate);
 
+    yearlyLabels[i].label = yearlyLabels[i].label + " " + currDate.format('MM/YYYY') + " - " + currDate.add(2, 'months').format('MM/YYYY');
+    currDate.subtract(2, 'months');
     const hourCount = currObj.hourCount;
     const hourEstimate = currObj.hourEstimate;
 
@@ -455,7 +485,7 @@ function setYearly($scope, tarDate) {
     if (i !== 3) {
       dataString += ',';
     }
-    currDate = currDate.add(3, 'months'); // Go to next quarter
+    currDate = currDate.add(3, 'months');// Go to next quarter
   }
   dataString += ']}]';
 
@@ -480,6 +510,33 @@ function setNavFunctions($scope) {
   $scope.step = function step(steps) {
     switch (scale) {
       case WEEK:
+    	let i;
+    	  for (i = 0; i < 7; i += 1) {
+    		  switch(i) {
+    		  	case 0:
+    		  		weeklyLabels[i].label = 'Sunday';
+    		  		break;
+    		  	case 1:
+    		  		weeklyLabels[i].label = 'Monday';
+    		  		break;
+    		  	case 2:
+    		  		weeklyLabels[i].label =  'Tuesday';
+    		  		break;
+    		  	case 3:
+    		  		weeklyLabels[i].label = 'Wednesday';
+    		  		break;
+    		  	case 4:
+    		  		weeklyLabels[i].label = 'Thursday';
+    		  		break;
+    		  	case 5:
+    		  		weeklyLabels[i].label = 'Friday';
+    		  		break;
+    		  	case 6:
+    		  		weeklyLabels[i].label = 'Saturday';
+    		  		break;
+    		  	default:
+    		  }
+    	  }
         focalDate = focalDate.add(steps * 7, 'days');
         setWeekly($scope, focalDate);
         break;
@@ -488,6 +545,23 @@ function setNavFunctions($scope) {
         setMonthly($scope, focalDate);
         break;
       case YEAR:
+    	  for (i = 0; i < 4; i += 1) {
+    		  switch(i) {
+    		  	case 0:
+    		  		yearlyLabels[i].label = '1st Quarter';
+    		  		break;
+    		  	case 1:
+    		  		yearlyLabels[i].label = '2nd Quarter';
+    		  		break;
+    		  	case 2:
+    		  		yearlyLabels[i].label = '3rd Quarter';
+    		  		break;
+    		  	case 3:
+    		  		yearlyLabels[i].label = '4th Quarter';
+    		  		break;
+    		  	default:
+    		  }
+    	  }
         focalDate = focalDate.add(steps, 'years');
         setYearly($scope, focalDate);
         break;
@@ -496,10 +570,57 @@ function setNavFunctions($scope) {
   };
 
   $scope.zoomOut = function zoomOut() {
+	  let i;
     if (scale === WEEK) {
       setMonthly($scope, focalDate);
     } else if (scale === MONTH) {
+    	
+    	 for (i = 0; i < 4; i += 1) {
+   		  switch(i) {
+   		  	case 0:
+   		  		yearlyLabels[i].label = '1st Quarter';
+   		  		break;
+   		  	case 1:
+   		  		yearlyLabels[i].label = '2nd Quarter';
+   		  		break;
+   		  	case 2:
+   		  		yearlyLabels[i].label = '3rd Quarter';
+   		  		break;
+   		  	case 3:
+   		  		yearlyLabels[i].label = '4th Quarter';
+   		  		break;
+   		  	default:
+   		  }
+   	  }
       setYearly($scope, focalDate);
+    } else if (scale === YEAR) {
+  	  for (i = 0; i < 7; i += 1) {
+  		  switch(i) {
+  		  	case 0:
+  		  		weeklyLabels[i].label = 'Sunday';
+  		  		break;
+  		  	case 1:
+  		  		weeklyLabels[i].label = 'Monday';
+  		  		break;
+  		  	case 2:
+  		  		weeklyLabels[i].label =  'Tuesday';
+  		  		break;
+  		  	case 3:
+  		  		weeklyLabels[i].label = 'Wednesday';
+  		  		break;
+  		  	case 4:
+  		  		weeklyLabels[i].label = 'Thursday';
+  		  		break;
+  		  	case 5:
+  		  		weeklyLabels[i].label = 'Friday';
+  		  		break;
+  		  	case 6:
+  		  		weeklyLabels[i].label = 'Saturday';
+  		  		break;
+  		  	default:
+  		  }
+  	  }
+      setWeekly($scope, focalDate);
     }
   };
 }

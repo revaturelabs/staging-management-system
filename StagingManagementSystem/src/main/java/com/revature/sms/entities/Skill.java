@@ -83,9 +83,9 @@ public class Skill {
         return true;
     }
 
-    @Override
-    public String toString() {
-
-        return "Skill [id=" + id + ", value=" + value + "]";
-    }
+//    @Override
+//    public String toString() {
+//
+//        return "Skill [id=" + id + ", value=" + value + "]";
+//    }
 }
